@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>技术项目 - Zentrix云原生实验室</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-gradient: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #2d3748;
+            --success-color: #10b981;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2.5rem 2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            width: 90%;
+            max-width: 520px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #718096;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .project-item {
+            text-align: left;
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 12px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1rem;
+            border-left: 4px solid #667eea;
+        }
+
+        .project-name {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 1rem;
+            margin-bottom: 0.3rem;
+        }
+
+        .project-desc {
+            color: #4a5568;
+            font-size: 0.85rem;
+            line-height: 1.6;
+        }
+
+        .tech-stack {
+            margin-top: 0.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .tech-tag {
+            background: rgba(102, 126, 234, 0.15);
+            color: #667eea;
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .status-badge {
+            display: inline-flex;
+            align-items: center;
+            background: rgba(16, 185, 129, 0.1);
+            color: var(--success-color);
+            padding: 6px 12px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .status-badge::before {
+            content: "";
+            width: 8px;
+            height: 8px;
+            background-color: var(--success-color);
+            border-radius: 50%;
+            margin-right: 6px;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { transform: scale(0.9); opacity: 1; }
+            70% { transform: scale(1.4); opacity: 0; }
+            100% { transform: scale(0.9); opacity: 0; }
+        }
+
+        .back {
+            display: inline-block;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+
+        .back:hover {
+            color: #764ba2;
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>技术项目</h1>
+        <p class="subtitle">实践出真知，探索无止境</p>
+        
+        <div class="status-badge">持续更新中</div>
+
+        <div class="project-item">
+            <div class="project-name">🚀 自动化部署流水线</div>
+            <div class="project-desc">
+                基于 GitHub Actions 构建完整的 CI/CD 流程，支持代码检查、镜像构建、自动部署到 Kubernetes 集群。
+            </div>
+            <div class="tech-stack">
+                <span class="tech-tag">GitHub Actions</span>
+                <span class="tech-tag">Docker</span>
+                <span class="tech-tag">K8s</span>
+            </div>
+        </div>
+
+        <div class="project-item">
+            <div class="project-name">☸️ Kubernetes 基础设施</div>
+            <div class="project-desc">
+                使用 Terraform 和 Ansible 自动化搭建和配置 Kubernetes 集群，实现基础设施即代码。
+            </div>
+            <div class="tech-stack">
+                <span class="tech-tag">Terraform</span>
+                <span class="tech-tag">Ansible</span>
+                <span class="tech-tag">K8s</span>
+            </div>
+        </div>
+
+        <div class="project-item">
+            <div class="project-name">📊 可观测性平台搭建</div>
+            <div class="project-desc">
+                基于 Prometheus + Grafana 构建完整的监控告警体系，实现集群和应用的全方位监控。
+            </div>
+            <div class="tech-stack">
+                <span class="tech-tag">Prometheus</span>
+                <span class="tech-tag">Grafana</span>
+                <span class="tech-tag">Alertmanager</span>
+            </div>
+        </div>
+
+        <div>
+            <a href="/" class="back">← 返回首页</a>
+        </div>
+    </div>
+</body>
+</html>

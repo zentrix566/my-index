@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>架构演进 - Zentrix云原生实验室</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --bg-gradient: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #2d3748;
+            --info-color: #3182ce;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2.5rem 2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            width: 90%;
+            max-width: 520px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #718096;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .architecture-timeline {
+            text-align: left;
+        }
+
+        .arch-item {
+            position: relative;
+            padding-left: 30px;
+            padding-bottom: 1.5rem;
+            border-left: 2px solid #e2e8f0;
+            margin-left: 10px;
+        }
+
+        .arch-item:last-child {
+            padding-bottom: 0;
+            border-left: none;
+        }
+
+        .arch-item::before {
+            content: "";
+            position: absolute;
+            left: -8px;
+            top: 0;
+            width: 14px;
+            height: 14px;
+            border-radius: 50%;
+            background: var(--info-color);
+            border: 2px solid white;
+            box-shadow: 0 0 0 2px var(--info-color);
+        }
+
+        .arch-stage {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 0.95rem;
+            margin-bottom: 0.4rem;
+        }
+
+        .arch-desc {
+            color: #4a5568;
+            font-size: 0.85rem;
+            line-height: 1.6;
+            margin-bottom: 0.5rem;
+        }
+
+        .arch-technologies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .arch-tag {
+            background: rgba(49, 130, 206, 0.1);
+            color: var(--info-color);
+            padding: 3px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+        }
+
+        .principles {
+            background: rgba(102, 126, 234, 0.05);
+            border-radius: 12px;
+            padding: 1rem;
+            margin-top: 1.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .principles-title {
+            font-weight: 600;
+            color: var(--text-main);
+            margin-bottom: 0.6rem;
+            font-size: 0.95rem;
+        }
+
+        .principle-item {
+            color: #4a5568;
+            font-size: 0.85rem;
+            line-height: 1.5;
+            margin-bottom: 0.3rem;
+            padding-left: 1rem;
+            position: relative;
+        }
+
+        .principle-item::before {
+            content: "✓";
+            position: absolute;
+            left: 0;
+            color: #667eea;
+            font-weight: bold;
+        }
+
+        .back {
+            display: inline-block;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+
+        .back:hover {
+            color: #764ba2;
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>架构演进</h1>
+        <p class="subtitle">从单体到云原生的架构升级之路</p>
+
+        <div class="architecture-timeline">
+            <div class="arch-item">
+                <div class="arch-stage">🏢 单体架构</div>
+                <div class="arch-desc">
+                    所有功能模块耦合在一个进程中，部署简单但扩展困难，适合小型项目。
+                </div>
+                <div class="arch-technologies">
+                    <span class="arch-tag">Monolith</span>
+                    <span class="arch-tag">VM</span>
+                    <span class="arch-tag">All-in-One</span>
+                </div>
+            </div>
+
+            <div class="arch-item">
+                <div class="arch-stage">📦 分布式架构</div>
+                <div class="arch-desc">
+                    按业务拆分服务，独立部署，引入远程调用，服务治理开始变得重要。
+                </div>
+                <span class="arch-technologies">
+                    <span class="arch-tag">SOA</span>
+                    <span class="arch-tag">Microservices</span>
+                    <span class="arch-tag">REST/gRPC</span>
+                </span>
+            </div>
+
+            <div class="arch-item">
+                <div class="arch-stage">🐳 容器化阶段</div>
+                <div class="arch-desc">
+                    环境一致性，快速交付，基础设施开始抽象化，资源利用率提升。
+                </div>
+                <div class="arch-technologies">
+                    <span class="arch-tag">Docker</span>
+                    <span class="arch-tag">CI/CD</span>
+                    <span class="arch-tag">Immutable</span>
+                </div>
+            </div>
+
+            <div class="arch-item">
+                <div class="arch-stage">☸️ 云原生架构</div>
+                <div class="arch-desc">
+                    基于 Kubernetes 的容器编排，自动化运维，弹性伸缩，服务网格全面落地。
+                </div>
+                <div class="arch-technologies">
+                    <span class="arch-tag">Kubernetes</span>
+                    <span class="arch-tag">Istio</span>
+                    <span class="arch-tag">GitOps</span>
+                    <span class="arch-tag">Observability</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="principles">
+            <div class="principles-title">云原生设计原则</div>
+            <div class="principle-item">自动化一切可以自动化的流程</div>
+            <div class="principle-item">容错设计，面向失败架构</div>
+            <div class="principle-item">可观测性优先，无处不在的监控</div>
+            <div class="principle-item">持续交付，小步快跑快速反馈</div>
+        </div>
+
+        <div>
+            <a href="/" class="back">← 返回首页</a>
+        </div>
+    </div>
+</body>
+</html>

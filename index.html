@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zentrix的云原生实验室</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #2af598 0%, #009efd 100%);
+            --bg-gradient: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #2d3748;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh; /* 改为 min-height 防止内容多时撑破容器 */
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            width: 90%;
+            max-width: 500px; /* 限制最大宽度，保证每行两个看起来最舒服 */
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            margin-bottom: 2rem;
+            color: var(--text-main);
+        }
+
+        /* --- 核心修改部分：自动换行布局 --- */
+        .nav-links {
+            display: flex;
+            flex-wrap: wrap;    /* 允许换行 */
+            gap: 15px;          /* 按钮之间的间距 */
+            justify-content: center;
+        }
+
+        .btn {
+            /* 关键：每个按钮占据 50% 减去 间距的一半 */
+            flex: 0 1 calc(50% - 8px); 
+            box-sizing: border-box;
+            padding: 15px 10px;
+            text-decoration: none;
+            color: white;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.95rem;
+            transition: all 0.2s ease;
+            text-align: center;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        /* ------------------------------ */
+
+        .btn-primary { background: var(--primary-gradient); }
+        .btn-secondary { background: var(--secondary-gradient); }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+            filter: brightness(1.05);
+        }
+
+        /* 框外下方时钟 */
+        .clock-container {
+            margin-top: 30px;
+            text-align: center;
+        }
+
+        #clock {
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 3.5rem;
+            font-weight: 800;
+            color: #ffffff;
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
+            line-height: 1;
+        }
+
+        .date-info {
+            font-size: 1.1rem;
+            margin-top: 10px;
+            color: #4a5568;
+            font-weight: 500;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="card">
+        <h1>Zentrix的云原生实验室</h1>
+        <div class="nav-links">
+            <a href="/yanshi" class="btn btn-primary">CI/CD 部署</a>
+            <a href="/ceshi" class="btn btn-secondary">系统状态检测</a>
+            <a href="/page3" class="btn btn-secondary">关于我</a>
+            <a href="/page4" class="btn btn-primary">技术项目</a>
+            <a href="/page5" class="btn btn-secondary">工具链</a>
+            <a href="/page6" class="btn btn-primary">架构演进</a>
+        </div>
+    </div>
+
+    <div class="clock-container">
+        <div id="clock">00:00:00</div>
+        <div id="date" class="date-info">正在同步时间...</div>
+    </div>
+
+    <script>
+        function startClock() {
+            const clockElement = document.getElementById('clock');
+            const dateElement = document.getElementById('date');
+
+            function update() {
+                const now = new Date();
+                
+                const h = String(now.getHours()).padStart(2, '0');
+                const m = String(now.getMinutes()).padStart(2, '0');
+                const s = String(now.getSeconds()).padStart(2, '0');
+                clockElement.innerText = h + ":" + m + ":" + s;
+
+                const y = now.getFullYear();
+                const mo = now.getMonth() + 1;
+                const d = now.getDate();
+                const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
+                dateElement.innerText = y + "年" + mo + "月" + d + "日 " + days[now.getDay()];
+            }
+
+            update();
+            setInterval(update, 1000);
+        }
+        window.onload = startClock;
+    </script>
+
+</body>
+</html>

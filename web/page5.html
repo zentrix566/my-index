@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>工具链 - Zentrix云原生实验室</title>
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --secondary-gradient: linear-gradient(135deg, #2af598 0%, #009efd 100%);
+            --bg-gradient: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --text-main: #2d3748;
+        }
+
+        body {
+            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+            background: var(--bg-gradient);
+            background-attachment: fixed;
+            margin: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        .card {
+            background: var(--card-bg);
+            padding: 2.5rem 2rem;
+            border-radius: 24px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
+            text-align: center;
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            width: 90%;
+            max-width: 520px;
+        }
+
+        h1 {
+            font-size: 1.8rem;
+            color: #2d3748;
+            margin-bottom: 0.5rem;
+        }
+
+        .subtitle {
+            color: #718096;
+            margin-bottom: 2rem;
+            font-size: 1rem;
+        }
+
+        .tool-category {
+            margin-bottom: 1.5rem;
+            text-align: left;
+        }
+
+        .category-title {
+            font-weight: 600;
+            color: var(--text-main);
+            font-size: 1rem;
+            margin-bottom: 0.8rem;
+            display: flex;
+            align-items: center;
+        }
+
+        .category-title .icon {
+            margin-right: 8px;
+            font-size: 1.2rem;
+        }
+
+        .tools-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .tool-card {
+            background: white;
+            border-radius: 10px;
+            padding: 10px 12px;
+            border: 1px solid #e2e8f0;
+            transition: all 0.2s;
+        }
+
+        .tool-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+            border-color: #667eea;
+        }
+
+        .tool-name {
+            font-weight: 600;
+            color: #2d3748;
+            font-size: 0.85rem;
+            margin-bottom: 2px;
+        }
+
+        .tool-desc {
+            color: #718096;
+            font-size: 0.75rem;
+        }
+
+        .tool-card.primary {
+            border-left: 3px solid #667eea;
+        }
+
+        .tool-card.secondary {
+            border-left: 3px solid #009efd;
+        }
+
+        .back {
+            display: inline-block;
+            text-decoration: none;
+            color: #667eea;
+            font-weight: 600;
+            transition: all 0.2s;
+            margin-top: 1rem;
+        }
+
+        .back:hover {
+            color: #764ba2;
+            transform: translateX(-5px);
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h1>DevOps 工具链</h1>
+        <p class="subtitle">工欲善其事，必先利其器</p>
+
+        <div class="tool-category">
+            <div class="category-title">
+                <span class="icon">🔄</span>持续集成 & 部署
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card primary">
+                    <div class="tool-name">GitHub Actions</div>
+                    <div class="tool-desc">自动化工作流</div>
+                </div>
+                <div class="tool-card secondary">
+                    <div class="tool-name">Jenkins</div>
+                    <div class="tool-desc">灵活的构建引擎</div>
+                </div>
+                <div class="tool-card secondary">
+                    <div class="tool-name">Argo CD</div>
+                    <div class="tool-desc">GitOps 持续部署</div>
+                </div>
+                <div class="tool-card primary">
+                    <div class="tool-name">Flux CD</div>
+                    <div class="tool-desc">自动化同步</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tool-category">
+            <div class="category-title">
+                <span class="icon">📦</span>容器编排
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card primary">
+                    <div class="tool-name">Docker</div>
+                    <div class="tool-desc">容器构建</div>
+                </div>
+                <div class="tool-card secondary">
+                    <div class="tool-name">Kubernetes</div>
+                    <div class="tool-desc">容器编排</div>
+                </div>
+                <div class="tool-card secondary">
+                    <div class="tool-name">Harbor</div>
+                    <div class="tool-desc">镜像仓库</div>
+                </div>
+                <div class="tool-card primary">
+                    <div class="tool-name">Helm</div>
+                    <div class="tool-desc">包管理器</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tool-category">
+            <div class="category-title">
+                <span class="icon">🏗️</span>基础设施
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card secondary">
+                    <div class="tool-name">Terraform</div>
+                    <div class="tool-desc">基础设施即代码</div>
+                </div>
+                <div class="tool-card primary">
+                    <div class="tool-name">Ansible</div>
+                    <div class="tool-desc">配置自动化</div>
+                </div>
+                <div class="tool-card primary">
+                    <div class="tool-name">Packer</div>
+                    <div class="tool-desc">镜像自动化</div>
+                </div>
+                <div class="tool-card secondary">
+                    <div class="tool-name">Vagrant</div>
+                    <div class="tool-desc">开发环境</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="tool-category">
+            <div class="category-title">
+                <span class="icon">📊</span>可观测性
+            </div>
+            <div class="tools-grid">
+                <div class="tool-card primary">
+                    <div class="tool-name">Prometheus</div>
+                    <div class="tool-desc">监控采集</div>
+                </div>
+                <div class="tool-card secondary">
+                    <div class="tool-name">Grafana</div>
+                    <div class="tool-desc">数据可视化</div>
+                </div>
+                <div class="tool-card secondary">
+                    <div class="tool-name">ELK Stack</div>
+                    <div class="tool-desc">日志分析</div>
+                </div>
+                <div class="tool-card primary">
+                    <div class="tool-name">Jaeger</div>
+                    <div class="tool-desc">链路追踪</div>
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <a href="/" class="back">← 返回首页</a>
+        </div>
+    </div>
+</body>
+</html>
