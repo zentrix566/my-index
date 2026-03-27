@@ -1,40 +1,27 @@
-# FROM nginx:alpine
-
-# # 1. 删除默认配置和默认网页
-# RUN rm /etc/nginx/nginx.conf && rm -rf /usr/share/nginx/html/*
-
-# # 2. 复制自定义配置文件
-# COPY nginx.conf /etc/nginx/nginx.conf
-
-# # 3. 复制网页文件
-# # 首页放根目录
-# COPY index.html /usr/share/nginx/html/
-# # 子页面放 web 文件夹
-# COPY web/*.html /usr/share/nginx/html/
-
-# EXPOSE 80
-# CMD ["nginx", "-g", "daemon off;"]
-
-
-# 故意不指定具体版本，使用 latest
+# 使用官方 nginx 镜像作为基础镜像
 FROM nginx:latest
 
-# 1. 删除默认配置和默认网页
+# 维护者信息
+LABEL maintainer="Zentrix"
+
+# 1. 删除默认配置和默认网页，准备放入自定义内容
 RUN rm /etc/nginx/nginx.conf && rm -rf /usr/share/nginx/html/*
 
-# 2. 故意引入一个不规范的安装命令：
-# 问题 A：没有固定版本
-# 问题 B：没有使用 --no-install-recommends
-# 问题 C：没有在安装后清理缓存
-RUN apt-get update && apt-get install -y vim
+# 2. 安装 vim 编辑器用于调试
+# --no-install-recommends: 不安装推荐的额外依赖，减小镜像体积
+# 固定版本: 确保构建的可重复性
+# 清理缓存: 删除 apt 缓存减小镜像体积
+RUN apt-get update && apt-get install -y --no-install-recommends vim=2:8.2.3995-1ubuntu2.3 \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
 
-# 3. 复制文件（保持原样）
+# 3. 复制自定义配置和静态文件到容器中
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY index.html /usr/share/nginx/html/
 COPY web/*.html /usr/share/nginx/html/
 
-# 故意使用维护者不推荐的写法 (MAINTAINER 已废弃)
-MAINTAINER Zentrix
-
+# 声明容器运行时监听的端口
 EXPOSE 80
+
+# 启动 nginx 并在前台运行（守护进程关闭）
 CMD ["nginx", "-g", "daemon off;"]
