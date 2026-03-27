@@ -9,9 +9,8 @@ RUN rm /etc/nginx/nginx.conf && rm -rf /usr/share/nginx/html/*
 
 # 2. 安装 vim 编辑器用于调试
 # --no-install-recommends: 不安装推荐的额外依赖，减小镜像体积
-# 固定版本: 确保构建的可重复性
 # 清理缓存: 删除 apt 缓存减小镜像体积
-RUN apt-get update && apt-get install -y --no-install-recommends vim=2:8.2.3995-1ubuntu2.3 \
+RUN apt-get update && apt-get install -y --no-install-recommends vim \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/*
 
