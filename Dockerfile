@@ -17,6 +17,7 @@ RUN apt-get update && apt-get install -y --no-install-recommends vim \
 # 3. 复制自定义配置和静态文件到容器中
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY index.html /usr/share/nginx/html/
+COPY favicon.svg /usr/share/nginx/html/
 COPY web/*.html /usr/share/nginx/html/
 
 # 声明容器运行时监听的端口
