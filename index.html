@@ -1,151 +1,272 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Zentrix的云原生实验室</title>
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-    <style>
-        :root {
-            --primary-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --secondary-gradient: linear-gradient(135deg, #2af598 0%, #009efd 100%);
-            --bg-gradient: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --text-main: #2d3748;
-        }
-
-        body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background: var(--bg-gradient);
-            background-attachment: fixed;
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh; /* 改为 min-height 防止内容多时撑破容器 */
-        }
-
-        .card {
-            background: var(--card-bg);
-            padding: 2.5rem;
-            border-radius: 24px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.08);
-            text-align: center;
-            backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            width: 90%;
-            max-width: 500px; /* 限制最大宽度，保证每行两个看起来最舒服 */
-        }
-
-        h1 {
-            font-size: 1.8rem;
-            margin-bottom: 2rem;
-            color: var(--text-main);
-        }
-
-        /* --- 核心修改部分：自动换行布局 --- */
-        .nav-links {
-            display: flex;
-            flex-wrap: wrap;    /* 允许换行 */
-            gap: 15px;          /* 按钮之间的间距 */
-            justify-content: center;
-        }
-
-        .btn {
-            /* 关键：每个按钮占据 50% 减去 间距的一半 */
-            flex: 0 1 calc(50% - 8px); 
-            box-sizing: border-box;
-            padding: 15px 10px;
-            text-decoration: none;
-            color: white;
-            border-radius: 12px;
-            font-weight: 600;
-            font-size: 0.95rem;
-            transition: all 0.2s ease;
-            text-align: center;
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
-        }
-        /* ------------------------------ */
-
-        .btn-primary { background: var(--primary-gradient); }
-        .btn-secondary { background: var(--secondary-gradient); }
-
-        .btn:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
-            filter: brightness(1.05);
-        }
-
-        /* 框外下方时钟 */
-        .clock-container {
-            margin-top: 30px;
-            text-align: center;
-        }
-
-        #clock {
-            font-family: 'Courier New', Courier, monospace;
-            font-size: 3.5rem;
-            font-weight: 800;
-            color: #ffffff;
-            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.1);
-            line-height: 1;
-        }
-
-        .date-info {
-            font-size: 1.1rem;
-            margin-top: 10px;
-            color: #4a5568;
-            font-weight: 500;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>赛博空间 | Cyber Space</title>
+  <meta name="description" content="欢迎来到我的赛博空间 🚀">
+  <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
-
-    <div class="card">
-        <h1>Zentrix的云原生实验室</h1>
-        <div class="nav-links">
-            <a href="/yanshi" class="btn btn-primary">CI/CD 部署</a>
-            <a href="/ceshi" class="btn btn-secondary">系统状态检测</a>
-            <a href="/page3" class="btn btn-secondary">关于我</a>
-            <a href="/page4" class="btn btn-primary">技术项目</a>
-            <a href="/page5" class="btn btn-secondary">工具链</a>
-            <a href="/page6" class="btn btn-primary">架构演进</a>
+  <div class="content-wrapper">
+    <nav>
+      <div class="nav-container">
+        <div class="logo">CyberSpace</div>
+        <ul class="nav-links">
+          <li><a href="#" data-page="home" class="active">首页</a></li>
+          <li><a href="#about" data-page="about">关于</a></li>
+          <li><a href="#contact" data-page="contact">联系</a></li>
+        </ul>
+        <div class="menu-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
         </div>
+      </div>
+    </nav>
+
+    <div id="home" class="page active">
+      <div class="container">
+        <div class="hero">
+          <div class="hero-content">
+            <h1 class="hero-title">
+              <span class="gradient-text">Zentrix</span> 的作品集
+            </h1>
+            <p class="hero-subtitle">
+              探索 DevOps & Cloud Native 的无限可能
+            </p>
+          </div>
+        </div>
+        <h2 class="section-title">我的 <span>项目</span></h2>
+        <div class="projects-grid">
+          <div class="project-card" onclick="window.location.href='./projects/opsagentai.html'">
+            <div class="project-image">🤖</div>
+            <div class="project-content">
+              <h3 class="project-title">OpsAgentAI</h3>
+              <p class="project-description">基于 RAG 架构与 Dify 编排的 DevOps 故障智能自愈平台</p>
+              <div class="project-tags">
+                <span class="tag">DevOps</span>
+                <span class="tag">AI</span>
+                <span class="tag">RAG</span>
+                <span class="tag">Dify</span>
+              </div>
+              <div class="project-links">
+                <a href="./projects/opsagentai.html" class="project-link">查看详情 →</a>
+              </div>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-image">☸️</div>
+            <div class="project-content">
+              <h3 class="project-title">Kubernetes 集群运维平台</h3>
+              <p class="project-description">自动化 Kubernetes 集群管理平台，支持多集群、监控告警和一键故障诊断。</p>
+              <div class="project-tags">
+                <span class="tag">K8s</span>
+                <span class="tag">Go</span>
+                <span class="tag">Prometheus</span>
+              </div>
+              <div class="project-links">
+                <a href="#" class="project-link">即将开源 →</a>
+              </div>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-image">🚀</div>
+            <div class="project-content">
+              <h3 class="project-title">GitOps 持续部署工具</h3>
+              <p class="project-description">轻量化 GitOps 持续部署工具，支持 ArgoCD 替代方案，更快更简单。</p>
+              <div class="project-tags">
+                <span class="tag">GitOps</span>
+                <span class="tag">CI/CD</span>
+                <span class="tag">Rust</span>
+              </div>
+              <div class="project-links">
+                <a href="#" class="project-link">开发中 →</a>
+              </div>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-image">🔐</div>
+            <div class="project-content">
+              <h3 class="project-title">云原生安全扫描器</h3>
+              <p class="project-description">容器镜像与 Kubernetes 配置安全扫描工具，发现漏洞提前预警。</p>
+              <div class="project-tags">
+                <span class="tag">Security</span>
+                <span class="tag">DevSecOps</span>
+                <span class="tag">Python</span>
+              </div>
+              <div class="project-links">
+                <a href="#" class="project-link">规划中 →</a>
+              </div>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-image">📊</div>
+            <div class="project-content">
+              <h3 class="project-title">可观测性平台</h3>
+              <p class="project-description">一体化可观测性平台，聚合日志、指标、链路追踪一站式分析。</p>
+              <div class="project-tags">
+                <span class="tag">Observability</span>
+                <span class="tag">OpenTelemetry</span>
+                <span class="tag">Grafana</span>
+              </div>
+              <div class="project-links">
+                <a href="#" class="project-link">设计中 →</a>
+              </div>
+            </div>
+          </div>
+          <div class="project-card">
+            <div class="project-image">✨</div>
+            <div class="project-content">
+              <h3 class="project-title">新项目</h>
+              <p class="project-description">欢迎添加更多有趣的云原生项目，持续更新中...</p>
+              <div class="project-tags">
+                <span class="tag">Coming Soon</span>
+              </div>
+              <div class="project-links">
+                <a href="https://github.com/zentrix566" class="project-link">关注 GitHub →</a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>© <span class="year">2026</span> Zentrix. Built with ❤️ on GitHub Pages.</p>
+      </footer>
     </div>
 
-    <div class="clock-container">
-        <div id="clock">00:00:00</div>
-        <div id="date" class="date-info">正在同步时间...</div>
+    <div id="about" class="page">
+      <div class="container">
+        <h2 class="section-title">关于 <span>我</span></h2>
+        <div class="about-grid">
+          <div class="about-card">
+            <div class="about-card-icon">👨‍💻</div>
+            <h3>关于我</h3>
+            <p>
+              云原生 & DevOps 领域实践者，热衷于探索现代化软件工程实践。热爱开源，持续学习，不断构建更优雅的自动化工具。
+            </p>
+          </div>
+          <div class="about-card">
+            <div class="about-card-icon">🚀</div>
+            <h3>技术方向</h3>
+            <p>
+              专注于 DevOps、CI/CD、Kubernetes、可观测性、AI 赋能运维等领域，追求简单、高效、自动化的工程理念。
+            </p>
+          </div>
+          <div class="about-card">
+            <div class="about-card-icon">🎯</div>
+            <h3>开源信仰</h3>
+            <p>
+              相信开源的力量，通过代码分享推动技术进步，在社区交流中共同成长。
+            </p>
+          </div>
+        </div>
+        <div class="skills">
+          <h3 style="text-align: center; margin: 3rem 0 2rem; font-size: 2rem;">技术栈</h3>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">Kubernetes / 云原生</span>
+              <span class="skill-percent">90%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-progress" style="width: 90%; animation-play-state: paused;"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">DevOps / CI/CD</span>
+              <span class="skill-percent">88%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-progress" style="width: 88%; animation-play-state: paused;"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">Python / Go / Rust</span>
+              <span class="skill-percent">80%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-progress" style="width: 80%; animation-play-state: paused;"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">AI / RAG / Agent</span>
+              <span class="skill-percent">75%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-progress" style="width: 75%; animation-play-state: paused;"></div>
+            </div>
+          </div>
+          <div class="skill-item">
+            <div class="skill-info">
+              <span class="skill-name">可观测性 / SRE</span>
+              <span class="skill-percent">85%</span>
+            </div>
+            <div class="skill-bar">
+              <div class="skill-progress" style="width: 85%; animation-play-state: paused;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>© <span class="year">2026</span> Zentrix. Built with ❤️ on GitHub Pages.</p>
+      </footer>
     </div>
 
-    <script>
-        function startClock() {
-            const clockElement = document.getElementById('clock');
-            const dateElement = document.getElementById('date');
+    <div id="contact" class="page">
+      <div class="container">
+        <h2 class="section-title">联系 <span>我</span></h2>
+        <div class="contact-container">
+          <div class="contact-info">
+            <div class="contact-item">
+              <div class="contact-icon">📧</div>
+              <div class="contact-label">邮箱</div>
+              <div class="contact-value">
+                <a href="mailto:zentrix566@gmail.com">zentrix566@gmail.com</a>
+              </div>
+            </div>
+            <div class="contact-item">
+              <div class="contact-icon">🐙</div>
+              <div class="contact-label">GitHub</div>
+              <div class="contact-value">
+                <a href="https://github.com/zentrix566" target="_blank">@zentrix566</a>
+              </div>
+            </div>
+          </div>
+          <div style="text-align: center; margin-top: 2rem;">
+            <p style="color: var(--text-muted); font-size: 1.1rem; line-height: 1.8;">
+              欢迎交流云原生、DevOps、AI 运维相关话题，期待与你一起构建更好的自动化工具！
+            </p>
+          </div>
+          <div class="social-links">
+            <a href="https://github.com/zentrix566" target="_blank" class="social-link" title="GitHub">
+              <span>🐙</span>
+            </a>
+            <a href="mailto:zentrix566@gmail.com" class="social-link" title="Email">
+              <span>📧</span>
+            </a>
+            <a href="#" class="social-link" title="LinkedIn">
+              <span>💼</span>
+            </a>
+            <a href="#" class="social-link" title="Blog">
+              <span>📝</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>© <span class="year">2026</span> Zentrix. Built with ❤️ on GitHub Pages.</p>
+      </footer>
+    </div>
+  </div>
 
-            function update() {
-                const now = new Date();
-                
-                const h = String(now.getHours()).padStart(2, '0');
-                const m = String(now.getMinutes()).padStart(2, '0');
-                const s = String(now.getSeconds()).padStart(2, '0');
-                clockElement.innerText = h + ":" + m + ":" + s;
-
-                const y = now.getFullYear();
-                const mo = now.getMonth() + 1;
-                const d = now.getDate();
-                const days = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
-                dateElement.innerText = y + "年" + mo + "月" + d + "日 " + days[now.getDay()];
-            }
-
-            update();
-            setInterval(update, 1000);
-        }
-        window.onload = startClock;
-    </script>
-
+  <script src="./js/main.js"></script>
+  <script>
+    document.querySelectorAll('.year').forEach(el => {
+      el.textContent = new Date().getFullYear();
+    });
+  </script>
 </body>
 </html>

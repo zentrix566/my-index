@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>OpsAgentAI - 故障智能自愈平台 | Zentrix</title>
+  <meta name="description" content="基于 RAG 架构与 Dify 编排的 DevOps 故障智能自愈平台">
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+  <div class="content-wrapper">
+    <nav>
+      <div class="nav-container">
+        <div class="logo">CyberSpace</div>
+        <ul class="nav-links">
+          <li><a href="../index.html" data-page="home">首页</a></li>
+          <li><a href="../index.html#about" data-page="about">关于</a></li>
+          <li><a href="../index.html#contact" data-page="contact">联系</a></li>
+        </ul>
+        <div class="menu-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="page active" style="display: block; padding-top: 8rem;">
+      <div class="container">
+        <div class="project-detail">
+          <div class="project-header">
+            <div class="project-icon">🤖</div>
+            <h1 class="project-title">OpsAgentAI</h1>
+            <p class="project-subtitle">基于 RAG 架构与 Dify 编排的 DevOps 故障智能自愈平台</p>
+            <div class="project-links-top">
+              <a href="https://mp.weixin.qq.com/s/4CTzMWUdcFEiLnP0YRAEXA" target="_blank" class="btn btn-primary">技术文章</a>
+              <a href="https://github.com/zentrix566/OpsAgentAI" target="_blank" class="btn btn-outline">GitHub 源码</a>
+            </div>
+          </div>
+
+          <div class="project-section">
+            <h2>项目背景</h2>
+            <p>
+              针对传统运维告警<strong>"仅通知、不诊断"</strong>的痛点，解决 CI/CD 流水线报错日志冗长、依赖人工排查导致的 MTTR（平均修复时间）过长问题。
+              通过整合内部运维 SOP 手册与 LLM 能力，构建一套从告警捕获到修复建议推送的<strong>自动化闭环系统</strong>。
+            </p>
+          </div>
+
+          <div class="project-section">
+            <h2>核心职责</h2>
+            <ul class="feature-list">
+              <li>
+                <strong>架构设计与实现</strong>
+                <p>主导基于 Dify 的 AI Agent 流程编排，利用 Python 开发中转网关，对接 GitHub Actions/K8s 告警源，实现告警信息的自动化清洗与上下文提取。</p>
+              </li>
+              <li>
+                <strong>知识库（RAG）优化</strong>
+                <p>针对非结构化运维文档进行精细化语义切分，采用 <strong>混合检索（Hybrid Search）</strong> 方案，将 LLM 在专业运维领域的回答准确率提升至 90% 以上。</p>
+              </li>
+              <li>
+                <strong>交互闭环集成</strong>
+                <p>深度集成 <strong>飞书卡片消息（Action Card）</strong>，设计"现象解析-根因分析-修复建议-人工确认"的一键式交互链路，支持移动端快速复核排查结论。</p>
+              </li>
+              <li>
+                <strong>工程化保障</strong>
+                <p>设计日志预处理逻辑，解决大宗告警日志超过 Token 限制的问题，并引入人工审批环节规避 AI 误操作风险。</p>
+              </li>
+            </ul>
+          </div>
+
+          <div class="project-section">
+            <h2>技术架构</h2>
+            <div class="tech-stack">
+              <span class="tag">Python</span>
+              <span class="tag">Dify</span>
+              <span class="tag">RAG</span>
+              <span class="tag">Hybrid Search</span>
+              <span class="tag">GitHub Actions</span>
+              <span class="tag">WebHook</span>
+              <span class="tag">飞书机器人</span>
+              <span class="tag">LLM</span>
+              <span class="tag">DeepSeek</span>
+            </div>
+            <div class="architecture-diagram">
+              <pre class="arch-code">
+┌─────────────────┐     ┌──────────────┐     ┌───────────┐     ┌────────────┐
+│  GitHub Actions │────▶│  WebHook    │────▶│  Dify    │────▶│   LLM     │
+│  (CI/CD 告警)  │     │  中转网关    │     │ 工作流编排│     │  推理生成  │
+└─────────────────┘     └──────────────┘     └───────────┘     └────────────┘
+                             │                      │
+                             ▼                      ▼
+                        ┌───────────┐        ┌──────────────┐
+                        │  RAG 知识库│        │  飞书卡片    │
+                        │  混合检索  │        │  推送结论    │
+                        └───────────┘        └──────────────┘
+              </pre>
+            </div>
+          </div>
+
+          <div class="project-section">
+            <h2>项目收益</h2>
+            <div class="benefits-grid">
+              <div class="benefit-card">
+                <div class="benefit-number">⚡</div>
+                <h3>效率提升</h3>
+                <p>核心业务线故障恢复时间（MTTR）<br>从 <strong>30 分钟</strong> 缩短至 <strong>10 分钟</strong></p>
+              </div>
+              <div class="benefit-card">
+                <div class="benefit-number">💰</div>
+                <h3>成本降低</h3>
+                <p>80% 常见构建错误自动定位<br>降低运维人员 <strong>60%</strong> 重复工作量</p>
+              </div>
+              <div class="benefit-card">
+                <div class="benefit-number">📚</div>
+                <h3>资产沉淀</h3>
+                <p>通过 RAG 流程激活内部闲置 SOP 文档<br>实现运维经验自动化流转</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-section">
+            <h2>项目链接</h2>
+            <div class="link-list">
+              <a href="https://mp.weixin.qq.com/s/4CTzMWUdcFEiLnP0YRAEXA" target="_blank" class="link-item">
+                <span class="link-icon">📝</span>
+                <div class="link-info">
+                  <div class="link-title">技术文章</div>
+                  <div class="link-desc">拒绝盲目排查！手把手教你搭建 DevOps 故障 AI 自动诊断助手</div>
+                </div>
+                <span class="arrow">→</span>
+              </a>
+              <a href="https://github.com/zentrix566/OpsAgentAI" target="_blank" class="link-item">
+                <span class="link-icon">🐙</span>
+                <div class="link-info">
+                  <div class="link-title">GitHub 仓库</div>
+                  <div class="link-desc">项目开源代码，欢迎 Star & Fork</div>
+                </div>
+                <span class="arrow">→</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="project-footer">
+            <a href="../index.html" class="btn btn-outline">← 返回首页</a>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>© <span class="year">2026</span> Zentrix. Built with ❤️ on GitHub Pages.</p>
+      </footer>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script>
+    document.querySelectorAll('.year').forEach(el => {
+      el.textContent = new Date().getFullYear();
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = link.getAttribute('href');
+      });
+    });
+  </script>
+</body>
+</html>

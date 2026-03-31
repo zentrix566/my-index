@@ -18,6 +18,9 @@ RUN apt-get update && apt-get install -y --no-install-recommends vim \
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY index.html /usr/share/nginx/html/
 COPY favicon.svg /usr/share/nginx/html/
+COPY css/ /usr/share/nginx/html/css/
+COPY js/ /usr/share/nginx/html/js/
+COPY projects/ /usr/share/nginx/html/projects/
 COPY web/*.html /usr/share/nginx/html/
 
 # 声明容器运行时监听的端口
