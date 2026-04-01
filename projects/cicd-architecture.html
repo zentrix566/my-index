@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>企业级全场景 CI/CD 平台架构优化 | Zentrix</title>
+  <meta name="description" content="企业级全场景 CI/CD 平台架构优化与自动化实战">
+  <link rel="stylesheet" href="../css/main.css">
+</head>
+<body>
+  <div class="content-wrapper">
+    <nav>
+      <div class="nav-container">
+        <div class="logo">CyberSpace</div>
+        <ul class="nav-links">
+          <li><a href="../index.html" data-page="home">首页</a></li>
+          <li><a href="../index.html#about" data-page="about">关于</a></li>
+          <li><a href="../index.html#contact" data-page="contact">联系</a></li>
+        </ul>
+        <div class="menu-toggle">
+          <span></span>
+          <span></span>
+          <span></span>
+        </div>
+      </div>
+    </nav>
+
+    <div class="page active" style="display: block; padding-top: 8rem;">
+      <div class="container">
+        <div class="project-detail">
+          <div class="project-header">
+            <div class="project-icon">⚙️</div>
+            <h1 class="project-title">企业级全场景 CI/CD 平台</h1>
+            <p class="project-subtitle">架构优化与自动化实战，构建覆盖传统到云原生的标准化持续交付体系</p>
+            <div class="project-links-top">
+              <a href="https://github.com/zentrix566/my-devops-core" target="_blank" class="btn btn-primary">GitHub 源码</a>
+              <a href="https://mp.weixin.qq.com/s/uRiGNWdht1gbIIyFWiRe5A" target="_blank" class="btn btn-outline">技术文章</a>
+            </div>
+          </div>
+
+          <div class="project-section">
+            <h2>项目背景</h2>
+            <p>
+              针对研发流程中<strong>代码交付质量参差不齐</strong>、<strong>发布模式不统一</strong>、<strong>新服务接入慢</strong>及<strong>运维观测滞后</strong>等痛点，
+              从零构建了一套覆盖<strong>"传统架构"</strong> 与 <strong>"云原生架构"</strong> 的标准化持续集成/持续部署体系。
+              通过脚手架自动化、流水线模板化、质量门禁强制化、发布策略多样化，系统性提升了企业级研发交付效率与系统稳定性。
+            </p>
+          </div>
+
+          <div class="project-section">
+            <h2>主要工作</h2>
+            <ul class="feature-list">
+              <li>
+                <strong>研发标准化脚手架与流程统一</strong>
+                <p>设计并推行统一的服务初始化工具，预集成健康检查、日志规范及容器化配置，确保新业务"开箱即用"并符合全局架构规范。</p>
+              </li>
+              <li>
+                <strong>声明式 DevOps 流水线模板化</strong>
+                <p>基于 Jenkins Shared Libraries 与 GitHub Actions 抽象出通用模板，研发人员通过简单的参数化配置即可自动生成涵盖测试、扫描、构建、部署的全生命周期流水线。</p>
+              </li>
+              <li>
+                <strong>多维代码质量红线与门禁集成</strong>
+                <p>深度集成 <strong>JUnit</strong> 与 <strong>JaCoCo</strong>，实施单元测试与代码覆盖率强制准入机制，未达标分支自动阻断合并，确保进入主分支代码的健壮性。</p>
+              </li>
+              <li>
+                <strong>全场景发布策略实现（蓝绿/灰度）</strong>
+                <p>在 K8s 环境下实现<strong>蓝绿部署</strong>与<strong>灰度发布</strong>，支持基于流量比例的无损变更；同时兼容 Jar 包直投、文件替换等传统非标发布模式，打通异构环境交付。</p>
+              </li>
+              <li>
+                <strong>Jenkins 插件化扩展与深度定制</strong>
+                <p>自研 <strong>Jenkins 触发器插件</strong>，解决微服务架构下多模块联动构建与特定业务逻辑触发的复杂需求。</p>
+              </li>
+            </ul>
+          </div>
+
+          <div class="project-section">
+            <h2>技术架构</h2>
+            <div class="tech-stack">
+              <span class="tag">CI/CD</span>
+              <span class="tag">Jenkins</span>
+              <span class="tag">Jenkins Shared Libraries</span>
+              <span class="tag">GitHub Actions</span>
+              <span class="tag">Kubernetes</span>
+              <span class="tag">Docker</span>
+              <span class="tag">Maven</span>
+              <span class="tag">JUnit</span>
+              <span class="tag">JaCoCo</span>
+              <span class="tag">Blue-Green Deployment</span>
+              <span class="tag">Canary Release</span>
+              <span class="tag">Quality Gate</span>
+              <span class="tag">飞书机器人</span>
+              <span class="tag">WebHook</span>
+            </div>
+            <div class="architecture-diagram">
+              <pre class="arch-code">
+  开发者提交代码
+      │
+      ▼
+  MR 代码审核
+      │
+      ▼
+  ┌─────────────────────────────────────────────┐
+  │  脚手架初始化 Scaffold                   │
+  │  • 自动生成项目结构                     │
+  │  • 预配置 Dockerfile / Jenkinsfile       │
+  │  • 集成健康检查 / 日志规范               │
+  └─────────────────────────────────────────────┘
+      │
+      ▼
+  ┌─────────────────────────────────────────────┐
+  │  模板化流水线 Template                   │
+  │  • Jenkins Shared Libraries 复用         │
+  │  • GitHub Actions 参数化配置             │
+  │  • 测试 → 扫描 → 构建 → 部署全流程      │
+  └─────────────────────────────────────────────┘
+      │
+      ▼
+  ┌─────────────────────────────────────────────┐
+  │  质量门禁 Quality Gate                   │
+  │  • JUnit 单元测试准入                    │
+  │  • JaCoCo 覆盖率检查                    │
+  │  • 不达标 → 自动阻断 MR 合并            │
+  └─────────────────────────────────────────────┘
+      │
+      ▼
+  ┌─────────────────────────────────────────────┐
+  │  镜像构建 Image Build                   │
+  │  • 支持单阶段 / 多阶段构建              │
+  │  • 推送到私有制品库                     │
+  └─────────────────────────────────────────────┘
+      │
+      ▼
+  ┌─────────────────────────────────────────────┐
+  │  发布阶段 Deployment                    │
+  │  ┌─────────────┐ ┌─────────────┐        │
+  │  │ 蓝绿部署     │ │ 灰度/金丝雀  │        │
+  │  │ 滚动发布     │ │ 传统 Jar 包  │        │
+  │  └─────────────┘ └─────────────┘        │
+  │  覆盖云原生 + 传统架构全场景            │
+  └─────────────────────────────────────────────┘
+      │
+      ▼
+  ┌─────────────────────────────────────────────┐
+  │  观测通知 Observability                 │
+  │  • 统计部署次数 / 成功率 / 平均耗时      │
+  │  • 飞书卡片推送 + GitHub Issue 归档      │
+  │  • 失败自动告警                         │
+  └─────────────────────────────────────────────┘
+              </pre>
+            </div>
+          </div>
+
+          <div class="project-section">
+            <h2>项目成果</h2>
+            <div class="benefits-grid">
+              <div class="benefit-card">
+                <div class="benefit-number">⚡</div>
+                <h3>交付效率提升</h3>
+                <p>通过脚手架与模板化<br>新服务接入时间<br>从 <strong>数小时</strong> 缩短至 <strong>5 分钟以内</strong></p>
+              </div>
+              <div class="benefit-card">
+                <div class="benefit-number">✅</div>
+                <h3>质量稳定性</h3>
+                <p>生产环境变更事故率<br>下降约 <strong>30%</strong><br>核心业务覆盖率达标率 100%</p>
+              </div>
+              <div class="benefit-card">
+                <div class="benefit-number">📊</div>
+                <h3>标准化统一</h3>
+                <p>全公司研发流程标准化<br>降低协作成本<br>新人上手速度提升</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-section">
+            <h2>技术文章</h2>
+            <div class="link-list">
+              <a href="https://mp.weixin.qq.com/s/kaD_NAsMxAYP9C_e1ZhtWQ" target="_blank" class="link-item">
+                <span class="link-icon">📊</span>
+                <div class="link-info">
+                  <div class="link-title">深度实践：从 GitHub Action 到飞书机器人回调，构建生产级 DevOps 看板</div>
+                  <div class="link-desc">统计流水线部署数据，自动生成效能看板推送飞书</div>
+                </div>
+                <span class="arrow">→</span>
+              </a>
+              <a href="https://mp.weixin.qq.com/s/K9PlPRmVwrdO1XqioTmsNQ" target="_blank" class="link-item">
+                <span class="link-icon">🚀</span>
+                <div class="link-info">
+                  <div class="link-title">手把手教你用 GitHub Actions 玩转 K8s 四大发布模式</div>
+                  <div class="link-desc">滚动/蓝绿/金丝雀/A/B 发布图解 + 完整回滚指南</div>
+                </div>
+                <span class="arrow">→</span>
+              </a>
+              <a href="https://mp.weixin.qq.com/s/uRiGNWdht1gbIIyFWiRe5A" target="_blank" class="link-item">
+                <span class="link-icon">📖</span>
+                <div class="link-info">
+                  <div class="link-title">从传统部署到云原生：标准与非标准 CI/CD 全场景实战指南</div>
+                  <div class="link-desc">单阶段 vs 多阶段构建，标准/非标流程最佳实践</div>
+                </div>
+                <span class="arrow">→</span>
+              </a>
+              <a href="https://mp.weixin.qq.com/s/3CiheVat3XGjRhCE1Mve5Q" target="_blank" class="link-item">
+                <span class="link-icon">🔌</span>
+                <div class="link-info">
+                  <div class="link-title">微服务架构下的 Jenkins 自动化：自定义批量构建插件指南</div>
+                  <div class="link-desc">Jenkins 插件开发，实现多模块联动触发构建</div>
+                </div>
+                <span class="arrow">→</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="project-section">
+            <h2>项目 Demo</h2>
+            <div class="link-list">
+              <a href="https://github.com/zentrix566/my-devops-core" target="_blank" class="link-item">
+                <span class="link-icon">🐱</span>
+                <div class="link-info">
+                  <div class="link-title">my-devops-core</div>
+                  <div class="link-desc">DevOps 核心库与流水线模板</div>
+                </div>
+                <span class="arrow">→</span>
+              </a>
+              <a href="https://github.com/zentrix566/devops" target="_blank" class="link-item">
+                <span class="link-icon">📦</span>
+                <div class="link-info">
+                  <div class="link-title">devops</div>
+                  <div class="link-desc">企业级 CI/CD 配置示例与实践</div>
+                </div>
+                <span class="arrow">→</span>
+              </a>
+              <a href="https://github.com/zentrix566/test-jenkins-plugin" target="_blank" class="link-item">
+                <span class="link-icon">🔌</span>
+                <div class="link-info">
+                  <div class="link-title">test-jenkins-plugin</div>
+                  <div class="link-desc">Jenkins 自定义触发器插件 Demo</div>
+                </div>
+                <span class="arrow">→</span>
+              </a>
+            </div>
+          </div>
+
+          <div class="project-footer">
+            <a href="../index.html" class="btn btn-outline">← 返回首页</a>
+          </div>
+        </div>
+      </div>
+      <footer>
+        <p>© <span class="year">2026</span> Zentrix. Built with ❤️ on GitHub Pages.</p>
+      </footer>
+    </div>
+  </div>
+
+  <script src="../js/main.js"></script>
+  <script>
+    document.querySelectorAll('.year').forEach(el => {
+      el.textContent = new Date().getFullYear();
+    });
+
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        window.location.href = link.getAttribute('href');
+      });
+    });
+  </script>
+</body>
+</html>
