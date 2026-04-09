@@ -1,20 +1,14 @@
-# 使用官方 nginx 镜像作为基础镜像
-FROM nginx:latest
+# 多阶段构建：最终运行阶段
+# 使用 alpine 版本减小镜像体积，锁定具体版本
+FROM nginx:1.25-alpine
 
 # 维护者信息
 LABEL maintainer="Zentrix"
 
-# 1. 删除默认配置和默认网页，准备放入自定义内容
+# 删除默认配置和默认网页，准备放入自定义内容
 RUN rm /etc/nginx/nginx.conf && rm -rf /usr/share/nginx/html/*
 
-# 2. 安装 vim 编辑器用于调试
-# --no-install-recommends: 不安装推荐的额外依赖，减小镜像体积
-# 清理缓存: 删除 apt 缓存减小镜像体积
-RUN apt-get update && apt-get install -y --no-install-recommends vim \
-    && apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
-
-# 3. 复制自定义配置和静态文件到容器中
+# 复制自定义配置和静态文件到容器中
 COPY nginx.conf /etc/nginx/nginx.conf
 COPY index.html /usr/share/nginx/html/
 COPY favicon.svg /usr/share/nginx/html/
