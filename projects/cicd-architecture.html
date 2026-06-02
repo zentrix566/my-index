@@ -251,17 +251,5 @@
   </div>
 
   <script src="../js/main.js"></script>
-  <script>
-    document.querySelectorAll('.year').forEach(el => {
-      el.textContent = new Date().getFullYear();
-    });
-
-    document.querySelectorAll('.nav-links a').forEach(link => {
-      link.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.location.href = link.getAttribute('href');
-      });
-    });
-  </script>
 </body>
 </html>

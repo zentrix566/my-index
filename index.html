@@ -71,16 +71,19 @@
               </div>
             </div>
           </div>
-          <div class="project-card">
-            <div class="project-image">✨</div>
+          <div class="project-card" onclick="window.location.href='./projects/aiops-mcp-analyzer.html'">
+            <div class="project-image">🛠️</div>
             <div class="project-content">
-              <h3 class="project-title">新项目</h>
-              <p class="project-description">欢迎添加更多有趣的云原生项目，持续更新中...</p>
+              <h3 class="project-title">AIOps MCP Analyzer</h3>
+              <p class="project-description">基于 MCP 工具补查、规则分析与 DeepSeek 归因的轻量级 Linux 运维诊断应用</p>
               <div class="project-tags">
-                <span class="tag">Coming Soon</span>
+                <span class="tag">AIOps</span>
+                <span class="tag">MCP</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">DeepSeek</span>
               </div>
               <div class="project-links">
-                <a href="https://github.com/zentrix566" class="project-link">关注 GitHub →</a>
+                <a href="./projects/aiops-mcp-analyzer.html" class="project-link">查看详情 →</a>
               </div>
             </div>
           </div>
@@ -219,10 +222,5 @@
   </div>
 
   <script src="./js/main.js"></script>
-  <script>
-    document.querySelectorAll('.year').forEach(el => {
-      el.textContent = new Date().getFullYear();
-    });
-  </script>
 </body>
 </html>
