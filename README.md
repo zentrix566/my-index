@@ -1,6 +1,6 @@
-# 云原生作品集
+# AIOps 运维作品集
 
-个人作品集网站，展示我的云原生、DevOps 与 AI 运维项目实践。
+个人作品集网站，展示我的 AIOps、智能运维、DevOps 与云原生实践项目。
 
 ## 项目介绍
 
@@ -10,9 +10,9 @@
 
 ### 已开放项目
 
-- **OpsAgentAI** - 基于 RAG 架构与 Dify 编排的 DevOps 故障智能自愈平台
-- **企业级 CI/CD 平台** - 覆盖传统到云原生的标准化持续交付流水线
 - **AIOps MCP Analyzer** - 基于 MCP 工具补查、规则分析与 DeepSeek 归因的轻量级 Linux 运维诊断应用
+- **OpsAgentAI** - 基于 Dify、RAG 与飞书机器人的 CI/CD 失败日志智能诊断实践
+- **CI/CD 流水线实践** - 围绕 GitHub Actions、Jenkins 与 K8s 发布模式整理的 DevOps 实践项目
 
 ## 技术栈
 

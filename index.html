@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>赛博空间 | Cyber Space</title>
-  <meta name="description" content="欢迎来到我的赛博空间 🚀">
+  <title>Zentrix | AIOps 运维作品集</title>
+  <meta name="description" content="Zentrix 的 AIOps、智能运维、DevOps 与云原生实践作品集">
   <link rel="stylesheet" href="./css/main.css">
 </head>
 <body>
@@ -33,17 +33,33 @@
               <span class="gradient-text">Zentrix</span> 的作品集
             </h1>
             <p class="hero-subtitle">
-              探索 DevOps & Cloud Native 的无限可能
+              AIOps / 智能运维 / DevOps 实践记录
             </p>
           </div>
         </div>
         <h2 class="section-title">我的 <span>项目</span></h2>
         <div class="projects-grid">
+          <div class="project-card" onclick="window.location.href='./projects/aiops-mcp-analyzer.html'">
+            <div class="project-image">🛠️</div>
+            <div class="project-content">
+              <h3 class="project-title">AIOps MCP Analyzer</h3>
+              <p class="project-description">基于 MCP 工具补查、规则分析与 DeepSeek 归因的轻量级 Linux 运维诊断应用</p>
+              <div class="project-tags">
+                <span class="tag">AIOps</span>
+                <span class="tag">MCP</span>
+                <span class="tag">FastAPI</span>
+                <span class="tag">DeepSeek</span>
+              </div>
+              <div class="project-links">
+                <a href="./projects/aiops-mcp-analyzer.html" class="project-link">查看详情 →</a>
+              </div>
+            </div>
+          </div>
           <div class="project-card" onclick="window.location.href='./projects/opsagentai.html'">
             <div class="project-image">🤖</div>
             <div class="project-content">
               <h3 class="project-title">OpsAgentAI</h3>
-              <p class="project-description">基于 RAG 架构与 Dify 编排的 DevOps 故障智能自愈平台</p>
+              <p class="project-description">基于 Dify、RAG 与飞书机器人的 CI/CD 失败日志智能诊断实践</p>
               <div class="project-tags">
                 <span class="tag">DevOps</span>
                 <span class="tag">AI</span>
@@ -58,8 +74,8 @@
           <div class="project-card" onclick="window.location.href='./projects/cicd-architecture.html'">
             <div class="project-image">⚙️</div>
             <div class="project-content">
-              <h3 class="project-title">企业级 CI/CD 平台</h3>
-              <p class="project-description">覆盖传统到云原生的标准化持续交付，脚手架自动化+质量门禁+全场景发布</p>
+              <h3 class="project-title">CI/CD 流水线实践</h3>
+              <p class="project-description">围绕 GitHub Actions、Jenkins 与 K8s 发布模式整理的 DevOps 实践项目</p>
               <div class="project-tags">
                 <span class="tag">CI/CD</span>
                 <span class="tag">Jenkins</span>
@@ -68,22 +84,6 @@
               </div>
               <div class="project-links">
                 <a href="./projects/cicd-architecture.html" class="project-link">查看详情 →</a>
-              </div>
-            </div>
-          </div>
-          <div class="project-card" onclick="window.location.href='./projects/aiops-mcp-analyzer.html'">
-            <div class="project-image">🛠️</div>
-            <div class="project-content">
-              <h3 class="project-title">AIOps MCP Analyzer</h3>
-              <p class="project-description">基于 MCP 工具补查、规则分析与 DeepSeek 归因的轻量级 Linux 运维诊断应用</p>
-              <div class="project-tags">
-                <span class="tag">AIOps</span>
-                <span class="tag">MCP</span>
-                <span class="tag">FastAPI</span>
-                <span class="tag">DeepSeek</span>
-              </div>
-              <div class="project-links">
-                <a href="./projects/aiops-mcp-analyzer.html" class="project-link">查看详情 →</a>
               </div>
             </div>
           </div>
@@ -102,69 +102,69 @@
             <div class="about-card-icon">👨‍💻</div>
             <h3>关于我</h3>
             <p>
-              云原生 & DevOps 领域实践者，热衷于探索现代化软件工程实践。热爱开源，持续学习，不断构建更优雅的自动化工具。
+              系统运维背景，正在向 AIOps、智能运维和运维自动化方向转型。习惯把实际排查、监控告警和工具探索沉淀成文章与可演示项目。
             </p>
           </div>
           <div class="about-card">
             <div class="about-card-icon">🚀</div>
             <h3>技术方向</h3>
             <p>
-              专注于 DevOps、CI/CD、Kubernetes、可观测性、AI 赋能运维等领域，追求简单、高效、自动化的工程理念。
+              关注 Linux、Kubernetes、监控告警、CI/CD、MCP、RAG、LLM 诊断助手等方向，尝试把运维现场经验转化为自动化工具。
             </p>
           </div>
           <div class="about-card">
             <div class="about-card-icon">🎯</div>
             <h3>开源信仰</h3>
             <p>
-              相信开源的力量，通过代码分享推动技术进步，在社区交流中共同成长。
+              持续通过 GitHub 与公众号记录实践过程，重视可复盘、可解释、可复用的运维知识沉淀。
             </p>
           </div>
         </div>
         <div class="skills">
-          <h3 style="text-align: center; margin: 3rem 0 2rem; font-size: 2rem;">技术栈</h3>
+          <h3 style="text-align: center; margin: 3rem 0 2rem; font-size: 2rem;">技术方向</h3>
           <div class="skill-item">
             <div class="skill-info">
-              <span class="skill-name">Kubernetes / 云原生</span>
-              <span class="skill-percent">90%</span>
+              <span class="skill-name">Linux / 系统运维 / 故障排查</span>
+              <span class="skill-percent">实践中</span>
             </div>
             <div class="skill-bar">
-              <div class="skill-progress" style="width: 90%; animation-play-state: paused;"></div>
+              <div class="skill-progress" style="width: 82%; animation-play-state: paused;"></div>
             </div>
           </div>
           <div class="skill-item">
             <div class="skill-info">
-              <span class="skill-name">DevOps / CI/CD</span>
-              <span class="skill-percent">88%</span>
+              <span class="skill-name">AIOps / RAG / MCP / LLM 运维助手</span>
+              <span class="skill-percent">重点探索</span>
             </div>
             <div class="skill-bar">
-              <div class="skill-progress" style="width: 88%; animation-play-state: paused;"></div>
+              <div class="skill-progress" style="width: 78%; animation-play-state: paused;"></div>
             </div>
           </div>
           <div class="skill-item">
             <div class="skill-info">
-              <span class="skill-name">Python / Go / Rust</span>
-              <span class="skill-percent">80%</span>
+              <span class="skill-name">Kubernetes / 云原生基础</span>
+              <span class="skill-percent">持续学习</span>
             </div>
             <div class="skill-bar">
-              <div class="skill-progress" style="width: 80%; animation-play-state: paused;"></div>
+              <div class="skill-progress" style="width: 72%; animation-play-state: paused;"></div>
             </div>
           </div>
           <div class="skill-item">
             <div class="skill-info">
-              <span class="skill-name">AI / RAG / Agent</span>
-              <span class="skill-percent">75%</span>
+              <span class="skill-name">DevOps / CI/CD / 自动化发布</span>
+              <span class="skill-percent">实践项目</span>
             </div>
             <div class="skill-bar">
-              <div class="skill-progress" style="width: 75%; animation-play-state: paused;"></div>
+              <div class="skill-progress" style="width: 70%; animation-play-state: paused;"></div>
             </div>
           </div>
           <div class="skill-item">
             <div class="skill-info">
-              <span class="skill-name">可观测性 / SRE</span>
-              <span class="skill-percent">85%</span>
+              <span class="skill-name">监控告警 / 可观测性 / SRE 思维</span>
+              <span class="skill-percent">项目使用</span>
             </div>
             <div class="skill-bar">
-              <div class="skill-progress" style="width: 85%; animation-play-state: paused;"></div>
+              <div class="skill-progress" style="width: 74%; animation-play-state: paused;"></div>
             </div>
           </div>
         </div>
