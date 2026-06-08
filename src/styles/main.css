@@ -478,6 +478,80 @@ label.button {
   margin-bottom: 18px;
 }
 
+.countdown-layout {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+}
+
+.countdown-form {
+  display: grid;
+  gap: 16px;
+  margin-bottom: 0;
+}
+
+.countdown-form label {
+  color: var(--text);
+  display: grid;
+  font-weight: 750;
+  gap: 8px;
+}
+
+.countdown-form input,
+.countdown-form select {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  min-height: 44px;
+  padding: 10px 12px;
+}
+
+.custom-countdown-fields {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: minmax(0, 1.2fr) minmax(160px, 0.8fr);
+}
+
+.form-hint {
+  color: var(--muted);
+  font-size: 0.92rem;
+}
+
+.countdown-results {
+  display: grid;
+  gap: 14px;
+}
+
+.countdown-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  display: grid;
+  gap: 8px;
+  padding: 22px;
+}
+
+.countdown-card h2 {
+  font-size: 1.25rem;
+}
+
+.countdown-card p,
+.countdown-card span {
+  color: var(--muted);
+}
+
+.countdown-card strong {
+  color: var(--primary);
+  font-size: clamp(1.7rem, 4vw, 2.7rem);
+  line-height: 1.15;
+}
+
+.countdown-card.expired strong {
+  color: var(--danger);
+}
+
 .training-grid {
   display: grid;
   gap: 18px;
@@ -759,7 +833,9 @@ label.button {
   .content-grid,
   .content-grid.two-columns,
   .training-grid,
-  .training-stats {
+  .training-stats,
+  .countdown-layout,
+  .custom-countdown-fields {
     grid-template-columns: 1fr;
   }
 
