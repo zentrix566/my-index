@@ -5,11 +5,12 @@
         <p class="eyebrow">个人内容入口</p>
         <h1>Zentrix 的项目、数据与工具索引</h1>
         <p class="hero-subtitle">
-          这里不再只是项目经历展示，而是把 AIOps 实践、跑步间歇数据、工具实验和接下来想做的网页统一收纳起来。
+          这里整理 AIOps 实践、跑步间歇数据和一些带点自嘲精神的生活工具，让技术记录和个人记录放在同一个入口里。
         </p>
         <div class="hero-actions">
           <RouterLink class="button primary" to="/projects">看项目</RouterLink>
           <RouterLink class="button secondary" to="/interval-training">打开训练数据</RouterLink>
+          <RouterLink class="button secondary" to="/countdown">人生倒计时</RouterLink>
         </div>
       </div>
       <div class="hero-panel" aria-label="站点模块概览">
@@ -24,9 +25,9 @@
           <span>间歇记录</span>
         </div>
         <div class="signal-card">
-          <span class="signal-label">Lab</span>
-          <strong>2</strong>
-          <span>网页方向</span>
+          <span class="signal-label">Life</span>
+          <strong>35</strong>
+          <span>斩杀线计算</span>
         </div>
       </div>
     </div>
@@ -65,6 +66,33 @@
         <div class="metric-item">
           <span>平均配速</span>
           <strong>{{ trainingStats.avgPace }}</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container split-layout">
+      <div class="section-heading align-left">
+        <p class="eyebrow">Countdown</p>
+        <h2>人生倒计时</h2>
+        <p>
+          输入出生日期和性别，看看距离 35 岁互联网斩杀线、退休年龄和平均预期寿命还剩多久。残酷但醒脑。
+        </p>
+        <RouterLink class="button primary" to="/countdown">开始计算</RouterLink>
+      </div>
+      <div class="metric-list">
+        <div class="metric-item">
+          <span>互联网梗</span>
+          <strong>35岁</strong>
+        </div>
+        <div class="metric-item">
+          <span>退休年龄</span>
+          <strong>男65 / 女60</strong>
+        </div>
+        <div class="metric-item">
+          <span>寿命参考</span>
+          <strong>按性别估算</strong>
         </div>
       </div>
     </div>
