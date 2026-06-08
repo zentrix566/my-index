@@ -1,0 +1,10 @@
+.git
+.github
+node_modules
+dist
+css
+data
+js
+life
+projects
+README.md

@@ -1,94 +1,61 @@
-# AIOps 运维作品集
+# Zentrix 个人索引
 
-个人作品集网站，展示我的 AIOps、智能运维、DevOps 与云原生实践项目。
+这是一个 Vue/Vite 个人索引站，用来整理 AIOps 项目、间歇训练数据、工具实验和未来网页计划。
 
-## 项目介绍
+部署架构保持为静态站：Vue 构建为 `dist/` 后交给 Nginx 容器托管，`nginx.conf` 继续使用 SPA 回退到 `/index.html`，适合继续挂在既有内网域名下。
 
-这是一个纯静态作品集网站，当前使用 HTML、CSS、JavaScript 编写，并通过 Nginx 容器提供访问。
+## 当前内容
 
-当前代码量不大，直接维护静态 HTML 仍然可行；如果项目数量继续增加，建议迁移到 Vue/Vite 或 Astro 这类静态站框架，用数据文件或 Markdown 管理项目内容，减少重复 HTML。
+- **项目**：AIOps MCP Analyzer、OpsAgentAI、CI/CD 流水线实践。
+- **训练数据**：`/interval-training`，从 `zentrix566.github.io` 的间歇训练数据迁移而来。
+- **实验室**：预留工具集合和另一个网页入口。
+- **关于**：说明站点定位和联系方式。
 
-### 已开放项目
-
-- **AIOps MCP Analyzer** - 基于 MCP 工具补查、规则分析与 DeepSeek 归因的轻量级 Linux 运维诊断应用
-- **OpsAgentAI** - 基于 Dify、RAG 与飞书机器人的 CI/CD 失败日志智能诊断实践
-- **CI/CD 流水线实践** - 围绕 GitHub Actions、Jenkins 与 K8s 发布模式整理的 DevOps 实践项目
-
-## 技术栈
-
-- **前端**: HTML, CSS, JavaScript
-- **Web 服务器**: Nginx
-- **容器化**: Docker
-- **CI/CD**: GitHub Actions
-- **部署**: 支持 Nginx 容器部署到 Kubernetes/K3s，也可以直接托管到 GitHub Pages、Cloudflare Pages 或 Vercel
-
-## 本地运行
-
-### 直接打开
-
-这是静态站，开发调试时可以直接打开 `index.html`。
-
-### 本地静态服务
+## 本地开发
 
 ```bash
-python -m http.server 5179
+npm install
+npm run dev
 ```
 
-访问 http://localhost:5179 即可查看。
+默认访问 Vite 输出的本地地址。
 
-### Docker / Nginx
+## 构建
 
 ```bash
-# 构建镜像
-docker build -t my-index .
+npm run build
+npm run preview
+```
 
-# 运行容器
+## Docker / Nginx
+
+```bash
+docker build -t my-index .
 docker run -d -p 8080:80 my-index
 ```
 
-访问 http://localhost:8080 即可查看。
-
-## 部署方式建议
-
-当前项目是纯静态页面，部署方式可以按目标选择：
-
-- **最省心**：GitHub Pages、Cloudflare Pages、Vercel。适合个人主页，推送代码后自动发布，不需要镜像仓库和服务器运维。
-- **保留工程实践展示**：Docker + Nginx + K3s。适合展示容器化和 CI/CD 能力，但对个人主页来说链路偏重。
-- **内容继续增长时**：迁移到 Vue/Vite + Nginx。Vue 负责组件化和项目数据管理，构建后的 `dist/` 仍然由 Nginx 提供静态访问。
-
-如果后续迁移 Vue/Vite，推荐结构：
-
-```text
-src/
-├── data/projects.json
-├── components/
-│   ├── NavBar.vue
-│   ├── FooterBar.vue
-│   └── ProjectCard.vue
-└── views/
-    ├── HomeView.vue
-    └── ProjectDetailView.vue
-```
+访问 http://localhost:8080。
 
 ## 目录结构
 
-```
+```text
 .
-├── css/           # 样式文件
-├── js/            # JavaScript 文件
-├── projects/      # 项目详情页面
-│   ├── opsagentai.html
-│   ├── cicd-architecture.html
-│   └── aiops-mcp-analyzer.html
-├── index.html     # 首页
-├── nginx.conf     # Nginx 配置
-├── Dockerfile     # Docker 镜像构建
-└── README.md      # 说明文档
+├── src/
+│   ├── components/       # 复用组件
+│   ├── data/             # 项目和训练数据
+│   ├── router/           # Vue Router
+│   ├── styles/           # 全局样式
+│   ├── views/            # 页面
+│   ├── App.vue
+│   └── main.js
+├── index.html            # Vite 入口
+├── vite.config.js
+├── nginx.conf            # Nginx 配置
+├── Dockerfile            # 多阶段构建镜像
+└── README.md
 ```
 
 ## 联系方式
 
 - GitHub: [@zentrix566](https://github.com/zentrix566)
 - Email: zentrix566@gmail.com
-
-欢迎交流云原生、DevOps、AI 运维相关话题！
