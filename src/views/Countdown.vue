@@ -1,14 +1,17 @@
 <template>
-  <section class="section page-section">
+  <section class="section page-section countdown-page">
     <div class="container">
-      <div class="section-heading">
-        <p class="eyebrow">Countdown</p>
-        <h1>人生倒计时</h1>
-        <p>输入出生日期和性别，计算离 35 岁、退休年龄和平均预期寿命还剩多久。</p>
-      </div>
+      <div class="countdown-capture">
+        <div class="countdown-capture-header">
+          <div>
+            <p class="eyebrow">Countdown</p>
+            <h1>人生倒计时</h1>
+            <p>输入出生日期和性别，一屏查看几个关键节点还剩多久。</p>
+          </div>
+          <span class="capture-date">今天：{{ currentDateText }}</span>
+        </div>
 
-      <div class="countdown-layout">
-        <form class="dashboard-panel countdown-form" @submit.prevent>
+        <form class="countdown-form compact-form" @submit.prevent>
           <label>
             出生日期
             <input v-model="birthDate" type="date" :max="todayKey">
@@ -34,20 +37,21 @@
             自定义描述
             <input v-model="customDescription" type="text" placeholder="写点自己的说明，比如：某个计划、考试、转折点或 deadline">
           </label>
-          <p class="form-hint">
-            自定义目标按所选月份的 1 日计算。预期寿命使用一个便于个人页面展示的参考值：男 75 岁，女 80 岁；退休年龄按男 65 岁、女 60 岁计算。
-          </p>
         </form>
 
-        <div class="countdown-results">
+        <div class="countdown-results screenshot-grid">
           <article v-for="item in countdownItems" :key="item.key" class="countdown-card" :class="{ expired: item.expired }">
             <div class="card-kicker">{{ item.kicker }}</div>
             <h2>{{ item.title }}</h2>
-            <p>{{ item.description }}</p>
             <strong>{{ item.remainingText }}</strong>
+            <p>{{ item.description }}</p>
             <span>{{ item.targetDateText }}</span>
           </article>
         </div>
+
+        <p class="form-hint capture-note">
+          自定义目标按所选月份的 1 日计算；预期寿命参考值：男 75 岁，女 80 岁；退休年龄：男 65 岁，女 60 岁。
+        </p>
       </div>
     </div>
   </section>
@@ -58,6 +62,7 @@ import { computed, ref } from 'vue'
 
 const today = new Date()
 const todayKey = formatDateKey(today)
+const currentDateText = formatDisplayDate(today)
 const birthDate = ref('1995-01-01')
 const gender = ref('male')
 const customTitle = ref('离 2028 年 9 月')
