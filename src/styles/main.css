@@ -478,16 +478,59 @@ label.button {
   margin-bottom: 18px;
 }
 
-.countdown-layout {
+.countdown-page {
+  padding-bottom: 28px;
+  padding-top: 24px;
+}
+
+.countdown-capture {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
   display: grid;
-  gap: 18px;
-  grid-template-columns: minmax(280px, 0.8fr) minmax(0, 1.2fr);
+  gap: 10px;
+  padding: 18px;
+}
+
+.countdown-capture-header {
+  align-items: end;
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+}
+
+.countdown-capture-header h1 {
+  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+  letter-spacing: 0;
+  line-height: 1.05;
+  margin: 6px 0;
+}
+
+.countdown-capture-header p:not(.eyebrow),
+.capture-date {
+  color: var(--muted);
+}
+
+.capture-date {
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  flex: 0 0 auto;
+  font-size: 0.9rem;
+  font-weight: 800;
+  padding: 7px 12px;
 }
 
 .countdown-form {
   display: grid;
-  gap: 16px;
+  gap: 10px;
   margin-bottom: 0;
+}
+
+.compact-form {
+  align-items: end;
+  grid-template-columns: 180px 110px minmax(260px, 1fr) minmax(260px, 1fr);
 }
 
 .countdown-form label {
@@ -503,13 +546,13 @@ label.button {
   border: 1px solid var(--line);
   border-radius: 8px;
   color: var(--text);
-  min-height: 44px;
-  padding: 10px 12px;
+  min-height: 40px;
+  padding: 8px 10px;
 }
 
 .custom-countdown-fields {
   display: grid;
-  gap: 12px;
+  gap: 10px;
   grid-template-columns: minmax(0, 1.2fr) minmax(160px, 0.8fr);
 }
 
@@ -520,21 +563,25 @@ label.button {
 
 .countdown-results {
   display: grid;
-  gap: 14px;
+  gap: 12px;
+}
+
+.screenshot-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .countdown-card {
-  background: var(--surface);
+  background: var(--bg);
   border: 1px solid var(--line);
   border-radius: 8px;
-  box-shadow: var(--shadow);
   display: grid;
-  gap: 8px;
-  padding: 22px;
+  gap: 6px;
+  min-height: 158px;
+  padding: 15px;
 }
 
 .countdown-card h2 {
-  font-size: 1.25rem;
+  font-size: 1.15rem;
 }
 
 .countdown-card p,
@@ -544,12 +591,17 @@ label.button {
 
 .countdown-card strong {
   color: var(--primary);
-  font-size: clamp(1.7rem, 4vw, 2.7rem);
+  font-size: clamp(1.35rem, 2.6vw, 2rem);
   line-height: 1.15;
 }
 
 .countdown-card.expired strong {
   color: var(--danger);
+}
+
+.capture-note {
+  border-top: 1px solid var(--line);
+  padding-top: 10px;
 }
 
 .training-grid {
@@ -834,7 +886,8 @@ label.button {
   .content-grid.two-columns,
   .training-grid,
   .training-stats,
-  .countdown-layout,
+  .compact-form,
+  .screenshot-grid,
   .custom-countdown-fields {
     grid-template-columns: 1fr;
   }
@@ -848,7 +901,8 @@ label.button {
   }
 
   .training-header,
-  .calendar-title-row {
+  .calendar-title-row,
+  .countdown-capture-header {
     align-items: flex-start;
     flex-direction: column;
   }
