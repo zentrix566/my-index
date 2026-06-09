@@ -4,6 +4,7 @@ import Projects from '../views/Projects.vue'
 import ProjectDetail from '../views/ProjectDetail.vue'
 import IntervalTraining from '../views/IntervalTraining.vue'
 import Countdown from '../views/Countdown.vue'
+import AIOpsConsole from '../views/AIOpsConsole.vue'
 import About from '../views/About.vue'
 
 const routes = [
@@ -18,6 +19,7 @@ const routes = [
   { path: '/interval-training', name: 'interval-training', component: IntervalTraining },
   { path: '/lab', redirect: '/countdown' },
   { path: '/countdown', name: 'countdown', component: Countdown },
+  { path: '/aiops', name: 'aiops', component: AIOpsConsole },
   { path: '/about', name: 'about', component: About }
 ]
 
