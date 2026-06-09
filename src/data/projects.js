@@ -13,6 +13,13 @@ export const projects = [
     ],
     stack: ['Python', 'FastAPI', 'MCP', 'DeepSeek', 'Linux'],
     links: {
+      demos: [
+        {
+          title: 'AIOps 告警分析演示',
+          description: '从 my-aiops 迁移来的智能运维控制台，包含告警筛选、根因分析、MCP 证据和 AI 助手。',
+          url: '/aiops'
+        }
+      ],
       articles: [
         {
           title: '技术文章',

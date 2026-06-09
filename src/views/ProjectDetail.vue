@@ -14,12 +14,12 @@
             v-for="link in primaryLinks"
             :key="link.url"
             class="button"
-            :class="link.kind === 'repositories' ? 'primary' : 'secondary'"
+            :class="link.kind === 'demos' || link.kind === 'repositories' ? 'primary' : 'secondary'"
             :href="link.url"
-            target="_blank"
-            rel="noopener noreferrer"
+            :target="link.external ? '_blank' : undefined"
+            :rel="link.external ? 'noopener noreferrer' : undefined"
           >
-            {{ link.kind === 'repositories' ? 'GitHub 源码' : '技术文章' }}
+            {{ link.kind === 'demos' ? '在线演示' : link.kind === 'repositories' ? 'GitHub 源码' : '技术文章' }}
           </a>
         </div>
       </div>
@@ -58,6 +58,27 @@
             <span class="link-copy">
               <strong>{{ article.title }}</strong>
               <span>{{ article.description }}</span>
+            </span>
+            <span class="arrow">→</span>
+          </a>
+        </div>
+      </section>
+
+      <section v-if="project.links?.demos?.length" class="dashboard-panel">
+        <h2>演示页面</h2>
+        <div class="link-list">
+          <a
+            v-for="demo in project.links.demos"
+            :key="demo.url"
+            class="link-item"
+            :href="demo.url"
+            :target="demo.external ? '_blank' : undefined"
+            :rel="demo.external ? 'noopener noreferrer' : undefined"
+          >
+            <span class="link-icon">Demo</span>
+            <span class="link-copy">
+              <strong>{{ demo.title }}</strong>
+              <span>{{ demo.description }}</span>
             </span>
             <span class="arrow">→</span>
           </a>
@@ -107,6 +128,7 @@ const primaryLinks = computed(() => {
   if (!project.value?.links) return []
 
   return [
+    project.value.links.demos?.[0] && { ...project.value.links.demos[0], kind: 'demos' },
     project.value.links.repositories?.[0] && { ...project.value.links.repositories[0], kind: 'repositories' },
     project.value.links.articles?.[0] && { ...project.value.links.articles[0], kind: 'articles' }
   ].filter(Boolean)
