@@ -607,12 +607,19 @@ label.button {
 .training-grid {
   display: grid;
   gap: 18px;
-  grid-template-columns: minmax(0, 1.25fr) minmax(320px, 0.75fr);
+  grid-template-columns: 1fr;
   margin-bottom: 18px;
 }
 
 .panel-heading {
   margin-bottom: 16px;
+}
+
+.wide-panel .panel-heading {
+  align-items: flex-start;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
 }
 
 .panel-heading h2 {
@@ -631,10 +638,90 @@ label.button {
   overflow: auto;
 }
 
+.chart-actions,
+.chart-date-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.chart-actions {
+  flex: 0 0 auto;
+}
+
+.chart-action-btn,
+.chart-date-option {
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 750;
+  min-height: 32px;
+}
+
+.chart-action-btn {
+  cursor: pointer;
+  padding: 0 12px;
+}
+
+.chart-action-btn:hover {
+  border-color: rgba(37, 99, 235, 0.45);
+  color: var(--text);
+}
+
+.chart-date-options {
+  margin-bottom: 16px;
+}
+
+.chart-date-option {
+  align-items: center;
+  cursor: pointer;
+  display: inline-flex;
+  gap: 6px;
+  padding: 0 10px;
+}
+
+.chart-date-option input {
+  accent-color: var(--primary);
+}
+
+.chart-date-option.is-active {
+  background: rgba(37, 99, 235, 0.1);
+  border-color: rgba(37, 99, 235, 0.45);
+  color: var(--text);
+}
+
 .chart-shell svg {
   display: block;
   min-width: 620px;
   width: 100%;
+}
+
+.chart-grid-lines line {
+  stroke: rgba(148, 163, 184, 0.82);
+  stroke-dasharray: 4 6;
+  stroke-width: 1;
+}
+
+.chart-axis-line {
+  stroke: #94a3b8;
+  stroke-width: 1.2;
+}
+
+.chart-tooltip {
+  pointer-events: none;
+}
+
+.chart-tooltip rect {
+  fill: rgba(15, 23, 42, 0.9);
+  stroke: rgba(255, 255, 255, 0.18);
+}
+
+.chart-tooltip text {
+  fill: #ffffff;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .chart-legend {
@@ -901,6 +988,7 @@ label.button {
   }
 
   .training-header,
+  .wide-panel .panel-heading,
   .calendar-title-row,
   .countdown-capture-header {
     align-items: flex-start;

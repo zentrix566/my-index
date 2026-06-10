@@ -7,7 +7,7 @@
 ## 当前内容
 
 - **项目**：AIOps MCP Analyzer、OpsAgentAI、CI/CD 流水线实践。
-- **训练数据**：`/interval-training`，从 `zentrix566.github.io` 的间歇训练数据迁移而来。
+- **训练数据**：`/interval-training`，从 `zentrix566.github.io` 的间歇训练数据迁移而来，配速趋势图支持多日期对比并显示横纵坐标网格线。
 - **实验室**：预留工具集合和另一个网页入口。
 - **关于**：说明站点定位和联系方式。
 
