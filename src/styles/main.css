@@ -256,6 +256,18 @@ label.button {
   padding: 22px;
 }
 
+a.signal-card {
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+a.signal-card:hover {
+  border-color: rgba(37, 99, 235, 0.5);
+  box-shadow: 0 22px 55px rgba(28, 39, 60, 0.16);
+  transform: translateY(-2px);
+}
+
 .signal-card strong {
   color: var(--primary);
   font-size: 2.25rem;
@@ -278,6 +290,12 @@ label.button {
   margin: 0 auto 32px;
   max-width: 760px;
   text-align: center;
+}
+
+.section-more {
+  display: flex;
+  justify-content: center;
+  margin-top: 32px;
 }
 
 .section-heading.align-left {
@@ -303,19 +321,33 @@ label.button {
   padding: 24px;
 }
 
+a.content-card {
+  color: inherit;
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+a.content-card:hover {
+  border-color: rgba(37, 99, 235, 0.5);
+  box-shadow: 0 22px 55px rgba(28, 39, 60, 0.16);
+  transform: translateY(-2px);
+}
+
 .content-card h3 {
   font-size: 1.35rem;
   line-height: 1.25;
 }
 
 .content-card a,
-.back-link {
+.back-link,
+.card-cta {
   color: var(--primary);
   font-weight: 800;
   text-decoration: none;
 }
 
-.content-card a {
+.content-card a,
+.card-cta {
   margin-top: auto;
 }
 

@@ -11,9 +11,7 @@
         <ul class="nav-links" :class="{ active: isMenuOpen }">
           <li><RouterLink to="/" @click="closeMenu">首页</RouterLink></li>
           <li><RouterLink to="/projects" @click="closeMenu">项目</RouterLink></li>
-          <li><RouterLink to="/aiops" @click="closeMenu">AIOps</RouterLink></li>
-          <li><RouterLink to="/interval-training" @click="closeMenu">训练</RouterLink></li>
-          <li><RouterLink to="/countdown" @click="closeMenu">倒计时</RouterLink></li>
+          <li><RouterLink to="/vue-apps" @click="closeMenu">Vue 项目</RouterLink></li>
           <li><RouterLink to="/about" @click="closeMenu">关于</RouterLink></li>
         </ul>
       </nav>
