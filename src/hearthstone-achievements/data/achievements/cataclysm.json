@@ -1,0 +1,257 @@
+{
+  "id": "cataclysm",
+  "name": "大地的裂变",
+  "description": "炉石传说大地的裂变版本成就数据",
+  "updatedAt": "2026-07-09",
+  "cardImageDir": "cataclysm",
+  "achievements": [
+    {
+      "id": "ct-001",
+      "name": "团队协作，梦幻协作",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["团队协作"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用75张团队协作创建的白银之手新兵。", "xpReward": 300, "points": 30, "quota": 75 },
+        { "description": "使用150张团队协作创建的白银之手新兵。", "xpReward": 400, "points": 60, "quota": 150 }
+      ]
+    },
+    {
+      "id": "ct-002",
+      "name": "长矛贯心",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "易",
+      "relatedCards": ["矛心哨卫"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "施放15个矛心哨卫创建的法术。", "xpReward": 300, "points": 10, "quota": 15 },
+        { "description": "施放30个矛心哨卫创建的法术。", "xpReward": 400, "points": 20, "quota": 30 }
+      ]
+    },
+    {
+      "id": "ct-003",
+      "name": "花开满路",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["生命绽放"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用生命绽放恢复75点生命值。", "xpReward": 300, "points": 30, "quota": 75 },
+        { "description": "用生命绽放恢复150点生命值。", "xpReward": 400, "points": 60, "quota": 150 }
+      ]
+    },
+    {
+      "id": "ct-004",
+      "name": "恐怖之家",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["柳牙"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用柳牙的腿提高柳牙的攻击力，总计50次。", "xpReward": 300, "points": 10, "quota": 50 },
+        { "description": "用柳牙的腿提高柳牙的攻击力，总计100次。", "xpReward": 400, "points": 20, "quota": 100 }
+      ]
+    },
+    {
+      "id": "ct-005",
+      "name": "镣铐崩裂",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["奈瑟匹拉"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "放出奈瑟匹拉5次。", "xpReward": 300, "points": 10, "quota": 5 },
+        { "description": "放出奈瑟匹拉10次。", "xpReward": 400, "points": 20, "quota": 10 }
+      ]
+    },
+    {
+      "id": "ct-006",
+      "name": "烈焰之环",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["拉格纳罗斯，绝世烈火", "灾变战斧", "灼烧掠夺者"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用拉格纳罗斯的士兵或拉格纳罗斯之手造成400点伤害。", "xpReward": 300, "points": 10, "quota": 400 },
+        { "description": "用拉格纳罗斯的士兵或拉格纳罗斯之手造成800点伤害。", "xpReward": 400, "points": 20, "quota": 800 }
+      ]
+    },
+    {
+      "id": "ct-007",
+      "name": "天堂伯爵",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": ["地狱公爵"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用一张10/10或更大的地狱公爵。", "xpReward": 300, "points": 10, "quota": 10 },
+        { "description": "使用一张20/20或更大的地狱公爵。", "xpReward": 400, "points": 20, "quota": 20 }
+      ]
+    },
+    {
+      "id": "ct-008",
+      "name": "要口香糖吗？",
+      "heroClass": "死亡骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": ["黑翼实验品"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "通过黑翼实验品获取一张造成10点或以上伤害的龙息。", "xpReward": 300, "points": 10, "quota": 1 },
+        { "description": "通过黑翼实验品获取一张造成20点或以上伤害的龙息。", "xpReward": 400, "points": 20, "quota": 1 }
+      ]
+    },
+    {
+      "id": "ct-009",
+      "name": "坠入魔网",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["晶华魔网", "迸发魔网", "魔网地图", "魔网枢纽", "湍流之针", "秘魔刃豹", "魔力行者"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用75张魔网牌。", "xpReward": 300, "points": 30, "quota": 75 },
+        { "description": "使用150张魔网牌。", "xpReward": 400, "points": 60, "quota": 150 }
+      ]
+    },
+    {
+      "id": "ct-010",
+      "name": "杀戮女王",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["辛达苟萨的胜利"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用辛达苟萨的胜利造成50点超过目标生命值的伤害。", "xpReward": 300, "points": 10, "quota": 50 },
+        { "description": "用辛达苟萨的胜利造成100点超过目标生命值的伤害。", "xpReward": 400, "points": 20, "quota": 100 }
+      ]
+    },
+    {
+      "id": "ct-011",
+      "name": "受财消灾",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["迦罗娜的奋战"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用迦罗娜的奋战消灭15个传说随从。", "xpReward": 300, "points": 10, "quota": 15 },
+        { "description": "用迦罗娜的奋战消灭30个传说随从。", "xpReward": 400, "points": 20, "quota": 30 }
+      ]
+    },
+    {
+      "id": "ct-012",
+      "name": "治命愈合",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["愈合"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用愈合消灭10个随从。", "xpReward": 300, "points": 10, "quota": 10 },
+        { "description": "用愈合消灭20个随从。", "xpReward": 400, "points": 20, "quota": 20 }
+      ]
+    },
+    {
+      "id": "ct-013",
+      "name": "免费散养",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["自由漫步"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用自由漫步召唤总计法力值消耗50点的野兽。", "xpReward": 300, "points": 30, "quota": 50 },
+        { "description": "用自由漫步召唤总计法力值消耗100点的野兽。", "xpReward": 400, "points": 60, "quota": 100 }
+      ]
+    },
+    {
+      "id": "ct-014",
+      "name": "我讨厌链腿",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["熔喉"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "召唤100个熔喉的肢节。", "xpReward": 300, "points": 10, "quota": 100 },
+        { "description": "召唤200个熔喉的肢节。", "xpReward": 400, "points": 20, "quota": 200 }
+      ]
+    },
+    {
+      "id": "ct-015",
+      "name": "摸牌客",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": ["莫卓克"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用莫卓克的战吼效果一次抽4张牌。", "xpReward": 300, "points": 10, "quota": 4 },
+        { "description": "用莫卓克的战吼效果一次抽8张牌。", "xpReward": 400, "points": 20, "quota": 8 }
+      ]
+    },
+    {
+      "id": "ct-016",
+      "name": "万物终结",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["灭世者死亡之翼"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用灭世者死亡之翼释放20项灾变。", "xpReward": 300, "points": 10, "quota": 20 },
+        { "description": "用灭世者死亡之翼释放40项灾变。", "xpReward": 400, "points": 20, "quota": 40 }
+      ]
+    },
+    {
+      "id": "ct-017",
+      "name": "兆示……死亡之翼",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用50张兆示牌。", "xpReward": 300, "points": 10, "quota": 50 },
+        { "description": "使用100张兆示牌。", "xpReward": 300, "points": 10, "quota": 100 },
+        { "description": "使用150张兆示牌。", "xpReward": 800, "points": 20, "quota": 150 }
+      ]
+    },
+    {
+      "id": "ct-018",
+      "name": "胶水粘一切",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用10张拼合后的裂变牌。", "xpReward": 300, "points": 10, "quota": 10 },
+        { "description": "使用20张拼合后的裂变牌。", "xpReward": 300, "points": 10, "quota": 20 },
+        { "description": "使用30张拼合后的裂变牌。", "xpReward": 800, "points": 20, "quota": 30 }
+      ]
+    },
+    {
+      "id": "ct-019",
+      "name": "蛋液未干",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["暮光龙卵"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "孵化出一条10攻9血或更大的速生雏龙。", "xpReward": 800, "points": 20, "quota": 1 }
+      ]
+    }
+  ]
+}

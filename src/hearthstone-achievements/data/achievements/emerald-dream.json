@@ -1,0 +1,360 @@
+{
+  "id": "emerald-dream",
+  "name": "翡翠梦境",
+  "description": "炉石传说翡翠梦境版本成就数据",
+  "updatedAt": "2026-07-09",
+  "cardImageDir": "emerald-dream",
+  "achievements": [
+    {
+      "id": "ed-001",
+      "name": "窥得门径",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "stages": [
+        { "description": "使用圣骑士，召唤20条法力值消耗大于或等于（8）的龙。", "xpReward": 300, "points": 10, "quota": 20 },
+        { "description": "使用圣骑士，召唤40条法力值消耗大于或等于（8）的龙。", "xpReward": 400, "points": 20, "quota": 40 }
+      ]
+    },
+    {
+      "id": "ed-002",
+      "name": "迸发成长",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": ["哈缪尔·符文图腾"],
+      "stages": [
+        { "description": "用魔像的祝福召唤一个10/10的植物魔像。", "xpReward": 300, "points": 10, "quota": 10 },
+        { "description": "用魔像的祝福召唤一个20/20的植物魔像。", "xpReward": 400, "points": 20, "quota": 20 }
+      ]
+    },
+    {
+      "id": "ed-003",
+      "name": "恶魔显化",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["阿莱纳希"],
+      "stages": [
+        { "description": "使用25张阿莱纳希变出的恶魔牌。", "xpReward": 300, "points": 10, "quota": 25 },
+        { "description": "使用50张阿莱纳希变出的恶魔牌。", "xpReward": 400, "points": 20, "quota": 50 }
+      ]
+    },
+    {
+      "id": "ed-004",
+      "name": "暗面溏心",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["腐蚀之巢"],
+      "stages": [
+        { "description": "召唤30条从恐怖的龙蛋中孵化的龙。", "xpReward": 300, "points": 10, "quota": 30 },
+        { "description": "召唤60条从恐怖的龙蛋中孵化的龙。", "xpReward": 400, "points": 20, "quota": 60 }
+      ]
+    },
+    {
+      "id": "ed-005",
+      "name": "赐礼往来",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["瓦洛，污邪古树"],
+      "stages": [
+        { "description": "使用一张具有4项黑暗之赐的瓦洛，污邪古树。", "xpReward": 300, "points": 10, "quota": 4 },
+        { "description": "使用一张具有8项黑暗之赐的瓦洛，污邪古树。", "xpReward": 400, "points": 20, "quota": 8 }
+      ]
+    },
+    {
+      "id": "ed-006",
+      "name": "吸取鲜血",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["丑恶的残躯", "感染吐息", "血虫感染"],
+      "stages": [
+        { "description": "用饱胀水蛭偷取30点生命值。", "xpReward": 300, "points": 10, "quota": 30 },
+        { "description": "用饱胀水蛭偷取60点生命值。", "xpReward": 400, "points": 20, "quota": 60 }
+      ]
+    },
+    {
+      "id": "ed-007",
+      "name": "风灵轻语",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "stages": [
+        { "description": "用小精灵造成50点伤害。", "xpReward": 300, "points": 10, "quota": 50 },
+        { "description": "用小精灵造成100点伤害。", "xpReward": 400, "points": 20, "quota": 100 }
+      ]
+    },
+    {
+      "id": "ed-008",
+      "name": "走出阴影",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["凋零先驱"],
+      "stages": [
+        { "description": "在一局对战中使用3张凋零先驱。", "xpReward": 300, "points": 10, "quota": 3 },
+        { "description": "在一局对战中使用6张凋零先驱。", "xpReward": 400, "points": 20, "quota": 6 }
+      ]
+    },
+    {
+      "id": "ed-009",
+      "name": "卡牌全蚀",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["艾维娜，艾露恩钦选者"],
+      "stages": [
+        { "description": "使用15张法力值消耗被艾维娜，艾露恩钦选者变为1点的卡牌。", "xpReward": 300, "points": 10, "quota": 15 },
+        { "description": "使用30张法力值消耗被艾维娜，艾露恩钦选者变为1点的卡牌。", "xpReward": 400, "points": 20, "quota": 30 }
+      ]
+    },
+    {
+      "id": "ed-010",
+      "name": "蹦蹦跳跳",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["两栖之灵"],
+      "stages": [
+        { "description": "在一局对战中触发5次两栖之灵的亡语。", "xpReward": 300, "points": 10, "quota": 5 },
+        { "description": "在一局对战中触发10次两栖之灵的亡语。", "xpReward": 400, "points": 20, "quota": 10 }
+      ]
+    },
+    {
+      "id": "ed-011",
+      "name": "巨龙驾到",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": ["麦琳瑟拉"],
+      "stages": [
+        { "description": "用一张麦琳瑟拉召唤总计法力值消耗25点的随从。", "xpReward": 300, "points": 10, "quota": 25 },
+        { "description": "用一张麦琳瑟拉召唤总计法力值消耗50点的随从。", "xpReward": 400, "points": 20, "quota": 50 }
+      ]
+    },
+    {
+      "id": "ed-012",
+      "name": "世界树之影",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["莎拉达希尔"],
+      "stages": [
+        { "description": "使用40张莎拉达希尔创建的已腐蚀的梦境牌。", "xpReward": 800, "points": 20, "quota": 40 }
+      ]
+    },
+    {
+      "id": "ed-013",
+      "name": "翡翠梦之队",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "stages": [
+        { "description": "使用40张法力值消耗为10点的随从牌。", "xpReward": 300, "points": 10, "quota": 40 },
+        { "description": "使用80张法力值消耗为10点的随从牌。", "xpReward": 400, "points": 20, "quota": 80 }
+      ]
+    },
+    {
+      "id": "ed-014",
+      "name": "自然天性",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "易",
+      "relatedCards": [],
+      "stages": [
+        { "description": "使用30次灌注过的英雄技能。", "xpReward": 300, "points": 10, "quota": 30 },
+        { "description": "使用60次灌注过的英雄技能。", "xpReward": 300, "points": 10, "quota": 60 },
+        { "description": "使用120次灌注过的英雄技能。", "xpReward": 800, "points": 20, "quota": 120 }
+      ]
+    },
+    {
+      "id": "ed-015",
+      "name": "暗夜恐怖",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用20张具有黑暗之赐的随从牌。", "xpReward": 300, "points": 10, "quota": 20 },
+        { "description": "使用40张具有黑暗之赐的随从牌。", "xpReward": 300, "points": 10, "quota": 40 },
+        { "description": "使用80张具有黑暗之赐的随从牌。", "xpReward": 800, "points": 20, "quota": 80 }
+      ]
+    },
+    {
+      "id": "ed-016",
+      "name": "真枝灼见",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["烧灼映像"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用烧灼映像召唤4个不同的随从。", "xpReward": 100, "points": 10, "quota": 4 },
+        { "description": "使用烧灼映像召唤8个不同的随从。", "xpReward": 200, "points": 20, "quota": 8 }
+      ]
+    },
+    {
+      "id": "ed-017",
+      "name": "宁和之冠",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["阿梅达希尔"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用阿梅达希尔复原20个法力水晶。", "xpReward": 100, "points": 10, "quota": 20 },
+        { "description": "用阿梅达希尔复原40个法力水晶。", "xpReward": 200, "points": 20, "quota": 40 }
+      ]
+    },
+    {
+      "id": "ed-018",
+      "name": "瞬间爆邪",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["邪火爆焰"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用一次邪火爆焰的爆炸造成8点伤害。", "xpReward": 100, "points": 10, "quota": 8 },
+        { "description": "用一次邪火爆焰的爆炸造成16点伤害。", "xpReward": 200, "points": 20, "quota": 16 }
+      ]
+    },
+    {
+      "id": "ed-019",
+      "name": "黑暗转赐",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用战士，在一局对战中使用3张具有黑暗之赐的随从牌。", "xpReward": 100, "points": 10, "quota": 3 },
+        { "description": "使用战士，在一局对战中使用6张具有黑暗之赐的随从牌。", "xpReward": 200, "points": 20, "quota": 6 }
+      ]
+    },
+    {
+      "id": "ed-020",
+      "name": "补火区",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["焚烧"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用焚烧抽10张牌。", "xpReward": 100, "points": 10, "quota": 10 },
+        { "description": "用焚烧抽20张牌。", "xpReward": 200, "points": 20, "quota": 20 }
+      ]
+    },
+    {
+      "id": "ed-021",
+      "name": "别招惹沃",
+      "heroClass": "死亡骑士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["沃尔克罗斯"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用沃尔克罗斯的战吼获得+100/+100。", "xpReward": 100, "points": 10, "quota": 100 },
+        { "description": "用沃尔克罗斯的战吼获得+200/+200。", "xpReward": 200, "points": 20, "quota": 200 }
+      ]
+    },
+    {
+      "id": "ed-022",
+      "name": "火上浇冰",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["地狱火先锋"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用20张地狱火先锋创建的元素牌。", "xpReward": 100, "points": 10, "quota": 20 },
+        { "description": "使用40张地狱火先锋创建的元素牌。", "xpReward": 200, "points": 20, "quota": 40 }
+      ]
+    },
+    {
+      "id": "ed-023",
+      "name": "灵沸凤凰",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["永燃火凤"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用15张法力值消耗为0的永燃火凤。", "xpReward": 100, "points": 10, "quota": 15 },
+        { "description": "使用30张法力值消耗为0的永燃火凤。", "xpReward": 200, "points": 20, "quota": 30 }
+      ]
+    },
+    {
+      "id": "ed-024",
+      "name": "匆匆数月",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": ["满月辉光"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "在一局对战中施放3次满月辉光。", "xpReward": 100, "points": 10, "quota": 3 },
+        { "description": "在一局对战中施放6次满月辉光。", "xpReward": 200, "points": 20, "quota": 6 }
+      ]
+    },
+    {
+      "id": "ed-025",
+      "name": "如此狂野",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["龙裔护育师"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用龙裔护育师复制1张传说野兽牌。", "xpReward": 100, "points": 10, "quota": 1 },
+        { "description": "用龙裔护育师复制15张传说野兽牌。", "xpReward": 200, "points": 20, "quota": 15 }
+      ]
+    },
+    {
+      "id": "ed-026",
+      "name": "烧得不错",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["烬鳞雏龙"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用烬鳞雏龙获得10法力水晶。", "xpReward": 100, "points": 10, "quota": 10 },
+        { "description": "用烬鳞雏龙获得20法力水晶。", "xpReward": 200, "points": 20, "quota": 20 }
+      ]
+    },
+    {
+      "id": "ed-027",
+      "name": "烫手山芋",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用10张会在当回合弃掉的焚火牌。", "xpReward": 100, "points": 10, "quota": 10 },
+        { "description": "使用20张会在当回合弃掉的焚火牌。", "xpReward": 200, "points": 20, "quota": 20 }
+      ]
+    },
+    {
+      "id": "ed-028",
+      "name": "烈焰德鲁伊",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "施放5个不同职业的火焰法术。", "xpReward": 100, "points": 10, "quota": 5 },
+        { "description": "施放10个不同职业的火焰法术。", "xpReward": 200, "points": 20, "quota": 10 }
+      ]
+    }
+  ]
+}

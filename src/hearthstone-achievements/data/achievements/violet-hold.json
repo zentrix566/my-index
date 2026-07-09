@@ -1,0 +1,237 @@
+{
+  "id": "violet-hold",
+  "name": "紫罗兰监狱",
+  "description": "炉石传说紫罗兰监狱版本成就数据",
+  "updatedAt": "2026-07-09",
+  "cardImageDir": "violet-hold",
+  "achievements": [
+    {
+      "id": "vh-001",
+      "name": "无差别骑士",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["瓦玛，死亡幽影"],
+      "recommendedDecks": [
+        { "name": "瓦玛骑", "code": "AAEBAdK+BQbWEdadA+uABvWVBqn1BpbUBwzYxwLZ/gL9uAPruQPTvQTi0wS4xQWZjgbt3waS4Aac6Aaf6AYAAA==" }
+      ],
+      "stages": [
+        { "description": "用瓦玛，死亡幽影一次消灭4个敌方随从。", "xpReward": 300, "points": 10, "quota": 4 },
+        { "description": "用瓦玛，死亡幽影一次消灭7个敌方随从。", "xpReward": 400, "points": 20, "quota": 7 }
+      ]
+    },
+    {
+      "id": "vh-002",
+      "name": "法力厨",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "易",
+      "relatedCards": [],
+      "recommendedDecks": [
+        { "name": "凯子德", "code": "AAEBAc6LBQSFuALbpQOuugO+mQYNh84Cj/YCxoYDm84D8NQDr4AErp8ErsAEoukF1boGoIEHqq8H2cQHAAA=" }
+      ],
+      "stages": [
+        { "description": "使用德鲁伊，在第6回合消耗10点法力值。", "xpReward": 300, "points": 10, "quota": 10 },
+        { "description": "使用德鲁伊，在第6回合消耗15点法力值。", "xpReward": 400, "points": 20, "quota": 15 }
+      ]
+    },
+    {
+      "id": "vh-003",
+      "name": "吞噬者",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["特莱斯塔斯，寄生之魂"],
+      "recommendedDecks": [
+        { "name": "吞噬瞎1", "code": "AAEBAdKLBQqFF/fDA5WSBffDBf3EBYqqB5KqB5OqB6exB47aBwqv3gSw3gSq4gSF5QSGkgWQkgXh+AXe/wa2lweSvwcAAQKq6gb9xAXp7Qb9xAUAAA==" },
+        { "name": "吞噬瞎2", "code": "AAEBAdKLBQS/7QOq3QTh+AWO2gcNvu0D/e0Dr94EquIEheUEqrgGwf4Gwv4G7JsHxN0Hxt0Hx90HteEHAAA=" }
+      ],
+      "stages": [
+        { "description": "通过召唤恶魔培养出15点攻击力或更大的特莱斯塔斯，寄生之魂。", "xpReward": 300, "points": 10, "quota": 15 },
+        { "description": "通过召唤恶魔培养出50点攻击力或更大的特莱斯塔斯，寄生之魂。", "xpReward": 400, "points": 20, "quota": 50 }
+      ]
+    },
+    {
+      "id": "vh-004",
+      "name": "冲就完了",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "易",
+      "relatedCards": ["突牙"],
+      "recommendedDecks": [
+        { "name": "突牙战", "code": "AAEBAbyRBQT4EZG8AuvWB7LYBw38BIKwAumwA6S2A5X2A6mzBPyoBrHrBrSPB5XCB/DgB/HgB5ziBwAA" }
+      ],
+      "stages": [
+        { "description": "在第4回合之前召唤突牙。", "xpReward": 300, "points": 10, "quota": 1 },
+        { "description": "在一局对战中，在第4回合之前召唤两只突牙。", "xpReward": 400, "points": 20, "quota": 2 }
+      ]
+    },
+    {
+      "id": "vh-005",
+      "name": "高弗雷，搞不累",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [
+        { "name": "高弗雷术", "code": "AAEBAZT9BgSAngag9AaExAet2QcN58sC66wD184DxvkD/voDgvsDpdQE7qEGibUGk8sGqq0HsdkHjdwHAAA=" }
+      ],
+      "stages": [
+        { "description": "连续在满手牌的情况下结束2个回合。", "xpReward": 300, "points": 10, "quota": 2 },
+        { "description": "连续在满手牌的情况下结束8个回合。", "xpReward": 400, "points": 20, "quota": 8 }
+      ]
+    },
+    {
+      "id": "vh-006",
+      "name": "向你致疫",
+      "heroClass": "死亡骑士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["活体疫病"],
+      "recommendedDecks": [
+        { "name": "疫病DK", "code": "AAEBAf7gBgjt/wW7sQa9sQap9Qbsmwf0qgfKqwez2gcL/eMEh/YEkqAG/7oGoOIG2OUG/fwGgf0GloIHl4IHupUHAAA=" }
+      ],
+      "stages": [
+        { "description": "用活体疫病的一次攻击将15张疾疫牌洗入对手的牌库。", "xpReward": 300, "points": 10, "quota": 15 },
+        { "description": "用活体疫病的一次攻击将无穷大张疾疫牌洗入对手的牌库。", "xpReward": 400, "points": 20, "quota": 999 }
+      ]
+    },
+    {
+      "id": "vh-007",
+      "name": "法力暴风",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["米尔牢斯·法力风暴"],
+      "recommendedDecks": [
+        { "name": "法力风暴法", "code": "AAEBAauwBAS/CKn1BtfDB5HbBw3IhwOemwPzrwPNzgP30QP43QOH5APyxAWx/gWYnQaBvwbR5QaflgcAAA==" }
+      ],
+      "stages": [
+        { "description": "用米尔牢斯·法力风暴召唤一个法力值消耗为10的随从。", "xpReward": 300, "points": 10, "quota": 10 },
+        { "description": "用米尔牢斯·法力风暴召唤一个法力值消耗为11的随从。", "xpReward": 400, "points": 20, "quota": 11 }
+      ]
+    },
+    {
+      "id": "vh-008",
+      "name": "犯罪的代价",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "易",
+      "relatedCards": [],
+      "recommendedDecks": [
+        { "name": "幸运币贼", "code": "AAEBAfahBwLlrwel2AcOzhX1uwLT8wPr9gOJ0gTV9gWQgwa5hgaNlgaM1ga0wQek2AeR2QeN2gcAAA==" }
+      ],
+      "stages": [
+        { "description": "使用潜行者，在一局对战中使用4张幸运币（什么币都行！）。", "xpReward": 300, "points": 10, "quota": 4 },
+        { "description": "使用潜行者，在一局对战中使用8张幸运币（什么币都行！）。", "xpReward": 400, "points": 20, "quota": 8 }
+      ]
+    },
+    {
+      "id": "vh-009",
+      "name": "窃魂者",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [
+        { "name": "窃魂牧", "code": "AAEBAdG+BQaJzQLrmwPIvgP70QOX7wTPxgURHuq/AtXBAsbMAujQAvf8ApeHA5zrA46BBL6fBPLbBLjcBP7uBJTEBdHsBbj+BZ2tBwAA" }
+      ],
+      "stages": [
+        { "description": "使用牧师，使用10张对手的卡牌的复制。", "xpReward": 300, "points": 10, "quota": 10 },
+        { "description": "使用牧师，使用50张对手的卡牌的复制。", "xpReward": 400, "points": 20, "quota": 50 }
+      ]
+    },
+    {
+      "id": "vh-010",
+      "name": "统统绊住",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["奥术绊索", "野兽绊索"],
+      "recommendedDecks": [
+        { "name": "绊索猎", "code": "AAEBAda+BQSFF+LjBqiXB9nbBw3YwgL1gAPolgO61QP09gPrmAbOnAbCvgbk6gbH9Qbunwes2AfT2wcAAA==" }
+      ],
+      "stages": [
+        { "description": "抽20张绊索牌。", "xpReward": 300, "points": 10, "quota": 20 },
+        { "description": "抽100张绊索牌。", "xpReward": 400, "points": 20, "quota": 100 }
+      ]
+    },
+    {
+      "id": "vh-011",
+      "name": "速干法术",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [
+        { "name": "法术萨", "code": "AAEBAdOLBQLhqAOp9QYOpaEDlugD4+4Dre0Fs40G65gGwr4G+OIGtOYG5OoG+7AHx9sHytsHzdsHAAA=" }
+      ],
+      "stages": [
+        { "description": "将10张紫罗兰监狱萨满祭司法术牌变形成为元素牌。", "xpReward": 300, "points": 10, "quota": 10 },
+        { "description": "将40张紫罗兰监狱萨满祭司法术牌变形成为元素牌。", "xpReward": 400, "points": 20, "quota": 40 }
+      ]
+    },
+    {
+      "id": "vh-012",
+      "name": "希望仍在",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "易",
+      "relatedCards": ["大头目梵妮莎"],
+      "recommendedDecks": [
+        { "name": "梵妮莎牧", "code": "AAEBAdG+BQKWvwf2yQcOmakD+98Dh/cDhZ8EyKwE+dsE7fcFmqAGmcAGhv0GuIcH5J4H0q8Hm78HAAA=" }
+      ],
+      "stages": [
+        { "description": "使用一张法力值消耗为（0）的大头目梵妮莎。", "xpReward": 800, "points": 20, "quota": 1 }
+      ]
+    },
+    {
+      "id": "vh-013",
+      "name": "私运繁忙",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "易",
+      "relatedCards": [],
+      "recommendedDecks": [
+        { "name": "全橙战", "code": "AAEBAbKRBSisBOgP1hGRvAL/vQLD6gLN7wKShwPerQO+uQOT0AOq0gPA3gOV7QOP7wPY+QOooASKpQTlsASStwSX7wSk7wTMkgW2xAW53QWo4AXm5AXG8wXOmAbJngaJvwbJ4gbK4gbDgwfujwfblwf0qgfRwwfr1gey2AcAAAA=" }
+      ],
+      "stages": [
+        { "description": "在一局对战中，牌库中包含40张或以上的牌。", "xpReward": 300, "points": 10, "quota": 40 },
+        { "description": "在一局对战中，牌库中包含60张或以上的牌。", "xpReward": 400, "points": 20, "quota": 60 }
+      ]
+    },
+    {
+      "id": "vh-014",
+      "name": "肮脏手段",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["黑暗贿赂", "腐毒贿赂", "伪装的侦探", "伪装的医生", "伪装的看守", "伪装的行刑者"],
+      "recommendedDecks": [
+        { "name": "贿赂贼", "code": "AAEBAfahBwTD6gLq3QPmkweI2QcN9YADutUD4eQD65gGwr4GltYG5OoGxIEHu5cHxpcH1J0Hjb4HkdkHAAA=" },
+        { "name": "伪装牧", "code": "AAEBAdG+BQSZqQPPxgXGqAbksgcN6r8C0cEC6NACl4cD5ogDk7oD184D+98Du8cF7fcFl6AGna0HtOgHAAA=" }
+      ],
+      "stages": [
+        { "description": "使用10张紫罗兰监狱的贿赂牌或伪装的随从牌。", "xpReward": 300, "points": 10, "quota": 10 },
+        { "description": "使用30张紫罗兰监狱的贿赂牌或伪装的随从牌。", "xpReward": 300, "points": 10, "quota": 30 },
+        { "description": "使用50张紫罗兰监狱的贿赂牌或伪装的随从牌。", "xpReward": 800, "points": 20, "quota": 50 }
+      ]
+    },
+    {
+      "id": "vh-015",
+      "name": "预备妥当！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [
+        { "name": "预备牧", "code": "AAEBAdG+BQLPxgXksgcO6r8C0cEC8M8C6NACl4cD5ogD184D+98Du8cF7fcFl6AGna0HqskHsMkHAAA=" }
+      ],
+      "stages": [
+        { "description": "预备25张牌。", "xpReward": 300, "points": 10, "quota": 25 },
+        { "description": "预备50张牌。", "xpReward": 300, "points": 10, "quota": 50 },
+        { "description": "预备100张牌。", "xpReward": 800, "points": 20, "quota": 100 }
+      ]
+    }
+  ]
+}
