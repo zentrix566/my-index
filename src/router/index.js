@@ -10,6 +10,7 @@ import CrazyPeople from '../crazy-people/CrazyPeople.vue'
 import WorldCupKick from '../views/WorldCupKick.vue'
 import JiangyinBattle from '../views/JiangyinBattle.vue'
 import DominoFall from '../views/DominoFall.vue'
+import HearthstoneAchievements from '../views/HearthstoneAchievements.vue'
 import About from '../views/About.vue'
 
 const routes = [
@@ -30,6 +31,7 @@ const routes = [
   { path: '/worldcup', name: 'worldcup', component: WorldCupKick },
   { path: '/jiangyin', name: 'jiangyin', component: JiangyinBattle },
   { path: '/domino', name: 'domino', component: DominoFall },
+  { path: '/hearthstone', name: 'hearthstone-achievements', component: HearthstoneAchievements },
   { path: '/about', name: 'about', component: About }
 ]
 

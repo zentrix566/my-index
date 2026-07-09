@@ -1045,3 +1045,644 @@ a.content-card:hover {
     padding: 6px;
   }
 }
+
+/* ============================
+   炉石传说成就页面 (hs- 前缀)
+   ============================ */
+.hs-page {
+  background:
+    linear-gradient(180deg, rgba(244, 241, 234, 0.95), rgba(236, 239, 234, 0.95)),
+    radial-gradient(circle at 14% 0%, rgba(214, 102, 63, 0.16), transparent 28%),
+    radial-gradient(circle at 95% 12%, rgba(36, 100, 132, 0.16), transparent 32%);
+}
+
+.hs-page .container {
+  max-width: 1180px;
+}
+
+.hs-page .section-heading h1,
+.hs-page .section-heading p {
+  color: #1c1f24;
+}
+
+.hs-page .section-heading .eyebrow {
+  color: #a7472f;
+}
+
+.hs-topbar,
+.hs-controls,
+.hs-result-bar,
+.hs-achievement-card {
+  border: 1px solid rgba(38, 43, 50, 0.12);
+  background: rgba(255, 255, 255, 0.76);
+  box-shadow: 0 14px 38px rgba(45, 39, 31, 0.08);
+  backdrop-filter: blur(14px);
+}
+
+.hs-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 18px;
+  border-radius: 8px;
+  margin-top: 24px;
+}
+
+.hs-brand {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  min-width: 0;
+}
+
+.hs-brand-mark {
+  display: grid;
+  width: 48px;
+  height: 48px;
+  place-items: center;
+  flex: 0 0 auto;
+  border-radius: 8px;
+  color: #fff;
+  background: #a7472f;
+}
+
+.hs-brand h2 {
+  margin: 0;
+  font-size: 24px;
+  line-height: 1.15;
+  color: #1c1f24;
+}
+
+.hs-brand p {
+  margin: 6px 0 0;
+  color: #686158;
+  font-size: 13px;
+}
+
+.hs-top-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 扩展包切换标签 */
+.hs-expansion-tabs {
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: minmax(0, 1fr);
+  gap: 4px;
+  padding: 4px;
+  border: 1px solid rgba(38, 43, 50, 0.14);
+  border-radius: 8px;
+  background: #ece8df;
+}
+
+.hs-expansion-tabs button {
+  height: 36px;
+  padding: 0 16px;
+  border: 0;
+  border-radius: 6px;
+  color: #5c554d;
+  background: transparent;
+  white-space: nowrap;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  font-size: 14px;
+}
+
+.hs-expansion-tabs button:hover {
+  color: #2c5669;
+}
+
+.hs-expansion-tabs button.active {
+  color: #fff;
+  background: #a7472f;
+  box-shadow: 0 2px 6px rgba(167, 71, 47, 0.3);
+}
+
+.hs-controls {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) repeat(3, auto);
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px;
+  border-radius: 8px;
+}
+
+.hs-search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 42px;
+  padding: 0 12px;
+  border: 1px solid rgba(38, 43, 50, 0.14);
+  border-radius: 8px;
+  background: #fff;
+  color: #6b6258;
+}
+
+.hs-search-box input {
+  width: 100%;
+  min-width: 0;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  color: #1d2329;
+  font-size: 14px;
+}
+
+.hs-select-wrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #686158;
+  font-size: 13px;
+}
+
+.hs-select-wrap select {
+  height: 42px;
+  min-width: 104px;
+  border: 1px solid rgba(38, 43, 50, 0.14);
+  border-radius: 8px;
+  background: #fff;
+  color: #1d2329;
+  padding: 0 10px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+.hs-result-bar {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  color: #655e56;
+  font-size: 13px;
+}
+
+/* 职业分组 */
+.hs-expansion-groups {
+  margin-top: 16px;
+  display: grid;
+  gap: 20px;
+}
+
+.hs-class-section {
+  display: grid;
+  gap: 10px;
+}
+
+.hs-class-header {
+  cursor: pointer;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 18px;
+  border-radius: 8px;
+  font-weight: 600;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: opacity 0.15s ease;
+  color: #fff;
+}
+
+.hs-class-header:hover {
+  opacity: 0.9;
+}
+
+.hs-class-header-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.hs-class-name {
+  font-size: 16px;
+}
+
+.hs-class-count {
+  font-size: 13px;
+  opacity: 0.9;
+  font-weight: 400;
+}
+
+.hs-collapse-arrow {
+  font-size: 12px;
+  opacity: 0.7;
+  transition: transform 0.2s ease;
+}
+
+/* 成就卡片网格 */
+.hs-achievement-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+  gap: 12px;
+}
+
+/* 成就卡片 */
+.hs-achievement-card {
+  padding: 16px;
+  border-radius: 10px;
+  border-left: 4px solid #8b7355;
+  transition: all 0.2s ease;
+  cursor: default;
+}
+
+.hs-achievement-card.hs-clickable {
+  cursor: pointer;
+}
+
+.hs-achievement-card.hs-clickable:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(45, 39, 31, 0.15);
+}
+
+.hs-card-content {
+  min-width: 0;
+}
+
+.hs-card-title-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.hs-card-title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: #20262d;
+  line-height: 1.3;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.hs-card-hint {
+  font-size: 11px;
+  font-weight: 400;
+  color: #a7472f;
+  background: rgba(167, 71, 47, 0.1);
+  padding: 2px 6px;
+  border-radius: 4px;
+}
+
+.hs-card-badges {
+  display: flex;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.hs-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.hs-type-badge.hs-one-time {
+  background: #e3f2fd;
+  color: #1565c0;
+}
+
+.hs-type-badge.hs-cumulative {
+  background: #f3e5f5;
+  color: #7b1fa2;
+}
+
+.hs-difficulty-badge {
+  background: #ffebee;
+}
+
+/* 阶段列表 */
+.hs-stage-list {
+  list-style: none;
+  margin: 10px 0 0;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.hs-stage {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 6px;
+  font-size: 13px;
+  line-height: 1.4;
+  background: rgba(255, 255, 255, 0.7);
+}
+
+.hs-stage-text {
+  color: #3d3a35;
+}
+
+.hs-stage-rewards {
+  display: flex;
+  gap: 10px;
+  flex-shrink: 0;
+  font-size: 11px;
+}
+
+.hs-stage-rewards span {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  color: #888;
+}
+
+.hs-stage-xp {
+  color: #e65100 !important;
+}
+
+.hs-stage-pts {
+  color: #c2185b !important;
+}
+
+/* 关联卡牌 */
+.hs-related-cards {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(38, 43, 50, 0.15);
+  font-size: 12px;
+  color: #6b6258;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 4px 8px;
+}
+
+.hs-related-label {
+  color: #8b7355;
+}
+
+.hs-related-card-name {
+  color: #2c5669;
+  font-weight: 500;
+}
+
+.hs-related-card-name.hs-missing {
+  color: #aaa;
+}
+
+.hs-missing-hint {
+  color: #c0392b;
+  font-size: 11px;
+  margin-left: 2px;
+}
+
+/* 推荐卡组 */
+.hs-deck-section {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(38, 43, 50, 0.15);
+}
+
+.hs-deck-label {
+  font-size: 12px;
+  color: #8b7355;
+  margin-bottom: 6px;
+}
+
+.hs-deck-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hs-deck-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 6px 10px;
+  background: #f8f5f0;
+  border-radius: 6px;
+  font-size: 13px;
+}
+
+.hs-deck-name {
+  color: #2c5669;
+  font-weight: 500;
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.hs-copy-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 4px 10px;
+  border-radius: 4px;
+  background: #2c5669;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 500;
+  transition: all 0.15s ease;
+  flex-shrink: 0;
+  cursor: pointer;
+  border: none;
+}
+
+.hs-copy-button:hover {
+  background: #1e3f4f;
+}
+
+.hs-copy-button.hs-copied {
+  background: #2d7a55;
+}
+
+.hs-copy-button.hs-copied:hover {
+  background: #236344;
+}
+
+/* 空状态 */
+.hs-empty-state {
+  display: grid;
+  place-items: center;
+  min-height: 200px;
+  margin-top: 24px;
+  padding: 40px;
+  border: 1px dashed rgba(38, 43, 50, 0.2);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.5);
+  color: #8b8174;
+  font-size: 14px;
+}
+
+.hs-empty-state p {
+  margin: 0;
+  color: #8b8174;
+}
+
+/* 卡牌图片弹窗 */
+.hs-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.65);
+  display: grid;
+  place-items: center;
+  z-index: 200;
+  padding: 24px;
+  animation: hs-fadeIn 0.15s ease;
+}
+
+@keyframes hs-fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.hs-modal {
+  position: relative;
+  background: #fff;
+  border-radius: 12px;
+  padding: 24px;
+  max-width: 90vw;
+  max-height: 90vh;
+  overflow: auto;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.hs-modal-close {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 0;
+  background: #f0ece4;
+  color: #666;
+  font-size: 20px;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+
+.hs-modal-close:hover {
+  background: #e0dbd0;
+  color: #333;
+}
+
+.hs-modal-title {
+  margin: 0 32px 16px 0;
+  font-size: 18px;
+  color: #20262d;
+}
+
+.hs-modal-cards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: center;
+}
+
+.hs-modal-card-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.hs-modal-card-item img {
+  display: block;
+  max-width: 260px;
+  width: 100%;
+  height: auto;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
+}
+
+.hs-no-image {
+  width: 260px;
+  height: 360px;
+  display: grid;
+  place-items: center;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  color: #999;
+  font-size: 13px;
+  margin: 0;
+}
+
+.hs-card-name-label {
+  margin: 0;
+  font-size: 13px;
+  color: #555;
+  font-weight: 500;
+}
+
+/* 回到顶部按钮 */
+.hs-scroll-top {
+  position: fixed;
+  right: 24px;
+  bottom: 32px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 10px 14px;
+  border: 1px solid rgba(38, 43, 50, 0.14);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.9);
+  backdrop-filter: blur(8px);
+  color: #5c554d;
+  font-size: 11px;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.2s ease;
+  z-index: 50;
+  line-height: 1;
+}
+
+.hs-scroll-top:hover {
+  background: #2c5669;
+  color: #fff;
+  transform: translateY(-2px);
+}
+
+/* 炉石页面响应式 */
+@media (max-width: 840px) {
+  .hs-topbar,
+  .hs-result-bar {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .hs-top-actions {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+
+  .hs-controls {
+    grid-template-columns: 1fr;
+  }
+
+  .hs-select-wrap {
+    justify-content: space-between;
+  }
+
+  .hs-expansion-tabs {
+    width: 100%;
+    grid-auto-flow: row;
+  }
+
+  .hs-achievement-list {
+    grid-template-columns: 1fr;
+  }
+}

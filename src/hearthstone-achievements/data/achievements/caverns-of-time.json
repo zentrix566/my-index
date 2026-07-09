@@ -1,0 +1,346 @@
+{
+  "id": "caverns-of-time",
+  "name": "穿越时间流",
+  "description": "炉石传说穿越时间流版本成就数据",
+  "updatedAt": "2026-07-09",
+  "cardImageDir": "caverns-of-time",
+  "achievements": [
+    {
+      "id": "cot-001",
+      "name": "愿望成真",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["时间流具象"],
+      "stages": [
+        { "description": "用时间流具象造成100点伤害。", "xpReward": 300, "points": 10, "quota": 100 },
+        { "description": "用时间流具象造成200点伤害。", "xpReward": 400, "points": 20, "quota": 200 }
+      ]
+    },
+    {
+      "id": "cot-002",
+      "name": "授知以渔",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["上层精灵教师"],
+      "stages": [
+        { "description": "用上层精灵教师教会小学生5种不同的法术。", "xpReward": 300, "points": 10, "quota": 5 },
+        { "description": "用上层精灵教师教会小学生10种不同的法术。", "xpReward": 400, "points": 20, "quota": 10 }
+      ]
+    },
+    {
+      "id": "cot-003",
+      "name": "超长待机",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["永时坚垒"],
+      "stages": [
+        { "description": "使用40张永时坚垒创建的随从牌。", "xpReward": 300, "points": 10, "quota": 40 },
+        { "description": "使用80张永时坚垒创建的随从牌。", "xpReward": 400, "points": 20, "quota": 80 }
+      ]
+    },
+    {
+      "id": "cot-004",
+      "name": "你们还不满意吗？",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "stages": [
+        { "description": "使用战士，在你的回合中为你的对手召唤30个随从。", "xpReward": 300, "points": 10, "quota": 30 },
+        { "description": "使用战士，在你的回合中为你的对手召唤60个随从。", "xpReward": 400, "points": 20, "quota": 60 }
+      ]
+    },
+    {
+      "id": "cot-005",
+      "name": "时间酷刑",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["时空撕裂"],
+      "stages": [
+        { "description": "受到90点时空撕裂的伤害。", "xpReward": 300, "points": 10, "quota": 90 },
+        { "description": "受到180点时空撕裂的伤害。", "xpReward": 400, "points": 20, "quota": 180 }
+      ]
+    },
+    {
+      "id": "cot-006",
+      "name": "恩泽，还是灾厄",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["邦桑迪"],
+      "stages": [
+        { "description": "使邦桑迪获得40项恩泽。", "xpReward": 300, "points": 10, "quota": 40 },
+        { "description": "使邦桑迪获得80项恩泽。", "xpReward": 400, "points": 20, "quota": 80 }
+      ]
+    },
+    {
+      "id": "cot-007",
+      "name": "侏儒特训日",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["时光循环者托奇"],
+      "stages": [
+        { "description": "在一局对战中使用时光循环者托奇2次。", "xpReward": 300, "points": 10, "quota": 2 },
+        { "description": "在一局对战中使用时光循环者托奇4次。", "xpReward": 400, "points": 20, "quota": 4 }
+      ]
+    },
+    {
+      "id": "cot-008",
+      "name": "重要时刻",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["诛灭暴君"],
+      "stages": [
+        { "description": "用诛灭暴君消灭15个传说随从。", "xpReward": 300, "points": 10, "quota": 30 },
+        { "description": "用诛灭暴君消灭30个传说随从。", "xpReward": 400, "points": 20, "quota": 60 }
+      ]
+    },
+    {
+      "id": "cot-009",
+      "name": "免费洗车",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["净化的光耀之子"],
+      "stages": [
+        { "description": "用净化的光耀之子的一次战吼造成10点伤害。", "xpReward": 300, "points": 10, "quota": 10 },
+        { "description": "用净化的光耀之子的一次战吼造成15点伤害。", "xpReward": 400, "points": 20, "quota": 15 }
+      ]
+    },
+    {
+      "id": "cot-010",
+      "name": "开镜视角",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["精确射击"],
+      "stages": [
+        { "description": "施放30个位于你手牌的正中间的精确射击。", "xpReward": 300, "points": 10, "quota": 30 },
+        { "description": "施放60个位于你手牌的正中间的精确射击。", "xpReward": 400, "points": 20, "quota": 60 }
+      ]
+    },
+    {
+      "id": "cot-011",
+      "name": "自然锤炼",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["时流亡魂", "雷鸫"],
+      "stages": [
+        { "description": "用时流亡魂或雷鸫抵消50点自然法术伤害。", "xpReward": 300, "points": 10, "quota": 50 },
+        { "description": "用时流亡魂或雷鸫抵消100点自然法术伤害。", "xpReward": 400, "points": 20, "quota": 100 }
+      ]
+    },
+    {
+      "id": "cot-012",
+      "name": "灌注2：末世之战",
+      "heroClass": "双职业",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [],
+      "stages": [
+        { "description": "使用死亡骑士或潜行者，在一局对战中灌注你的英雄技能6次。", "xpReward": 100, "points": 10, "quota": 6 },
+        { "description": "使用死亡骑士或潜行者，在一局对战中灌注你的英雄技能8次。", "xpReward": 200, "points": 20, "quota": 8 }
+      ]
+    },
+    {
+      "id": "cot-013",
+      "name": "1刻千金",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["暮光时空撕裂者"],
+      "stages": [
+        { "description": "用暮光时空撕裂者降低其他随从的属性值总计100点。", "xpReward": 100, "points": 10, "quota": 100 },
+        { "description": "用暮光时空撕裂者降低其他随从的属性值总计200点。", "xpReward": 200, "points": 20, "quota": 200 }
+      ]
+    },
+    {
+      "id": "cot-014",
+      "name": "空爪之时",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["时空之爪"],
+      "stages": [
+        { "description": "用时空之爪攻击且不弃牌，总计25次。", "xpReward": 100, "points": 10, "quota": 25 },
+        { "description": "用时空之爪攻击且不弃牌，总计50次。", "xpReward": 200, "points": 20, "quota": 50 }
+      ]
+    },
+    {
+      "id": "cot-015",
+      "name": "死不死随你",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["永时困苦"],
+      "stages": [
+        { "description": "施放永时困苦40次。", "xpReward": 100, "points": 10, "quota": 40 },
+        { "description": "施放永时困苦80次。", "xpReward": 200, "points": 20, "quota": 80 }
+      ]
+    },
+    {
+      "id": "cot-016",
+      "name": "英雄之影",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["旧时回响"],
+      "stages": [
+        { "description": "用旧时回响召唤45个随从。", "xpReward": 100, "points": 10, "quota": 45 },
+        { "description": "用旧时回响召唤90个随从。", "xpReward": 200, "points": 20, "quota": 90 }
+      ]
+    },
+    {
+      "id": "cot-017",
+      "name": "完四大吉",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["力敌万世"],
+      "stages": [
+        { "description": "用力敌万世消灭44个随从。", "xpReward": 100, "points": 10, "quota": 44 },
+        { "description": "用力敌万世消灭88个随从。", "xpReward": 200, "points": 20, "quota": 88 }
+      ]
+    },
+    {
+      "id": "cot-018",
+      "name": "无用无为",
+      "heroClass": "双职业",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["虚无残遗"],
+      "stages": [
+        { "description": "在一回合中触发同一个虚无残遗的效果4次。", "xpReward": 100, "points": 10, "quota": 4 },
+        { "description": "在一回合中触发同一个虚无残遗的效果6次。", "xpReward": 200, "points": 20, "quota": 8 }
+      ]
+    },
+    {
+      "id": "cot-019",
+      "name": "深受打冻",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["苦涩结局"],
+      "stages": [
+        { "description": "用苦涩结局消灭30个随从。", "xpReward": 100, "points": 10, "quota": 30 },
+        { "description": "用苦涩结局消灭60个随从。", "xpReward": 200, "points": 20, "quota": 60 }
+      ]
+    },
+    {
+      "id": "cot-020",
+      "name": "脱骨连击",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["飞翼畸变体"],
+      "stages": [
+        { "description": "触发飞翼畸变体的连击效果30次。", "xpReward": 100, "points": 10, "quota": 30 },
+        { "description": "触发飞翼畸变体的连击效果60次。", "xpReward": 200, "points": 20, "quota": 60 }
+      ]
+    },
+    {
+      "id": "cot-021",
+      "name": "顽强生存",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["永存蟑螂"],
+      "stages": [
+        { "description": "触发永存蟑螂的效果30次。", "xpReward": 100, "points": 10, "quota": 30 },
+        { "description": "触发永存蟑螂的效果60次。", "xpReward": 200, "points": 20, "quota": 60 }
+      ]
+    },
+    {
+      "id": "cot-022",
+      "name": "黑暗时间线",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["戮屠末日巨口"],
+      "stages": [
+        { "description": "使用30张戮屠末日巨口创建的随从牌。", "xpReward": 100, "points": 10, "quota": 30 },
+        { "description": "使用60张戮屠末日巨口创建的随从牌。", "xpReward": 200, "points": 20, "quota": 60 }
+      ]
+    },
+    {
+      "id": "cot-023",
+      "name": "扫荡击碎",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["碎裂扫荡者"],
+      "stages": [
+        { "description": "用碎裂扫荡者的效果摧毁40个目标。", "xpReward": 100, "points": 10, "quota": 40 },
+        { "description": "用碎裂扫荡者的效果摧毁80个目标。", "xpReward": 200, "points": 20, "quota": 80 }
+      ]
+    },
+    {
+      "id": "cot-024",
+      "name": "穿越克罗米",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["米罗克"],
+      "stages": [
+        { "description": "用米罗克保留回溯的两种结局，总计30次。", "xpReward": 100, "points": 10, "quota": 30 },
+        { "description": "用米罗克保留回溯的两种结局，总计60次。", "xpReward": 200, "points": 20, "quota": 60 }
+      ]
+    },
+    {
+      "id": "cot-025",
+      "name": "传世奇闻",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["奇闻牌"],
+      "stages": [
+        { "description": "在套牌中加入奇闻牌，赢得25场对战。", "xpReward": 300, "points": 10, "quota": 25 },
+        { "description": "在套牌中加入奇闻牌，赢得50场对战。", "xpReward": 300, "points": 10, "quota": 50 },
+        { "description": "在套牌中加入奇闻牌，赢得100场对战。", "xpReward": 800, "points": 20, "quota": 100 }
+      ]
+    },
+    {
+      "id": "cot-026",
+      "name": "还记得我吗？",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "易",
+      "relatedCards": [],
+      "stages": [
+        { "description": "在标准模式下施放来自过去的法术或召唤来自过去的随从，总计75个。", "xpReward": 300, "points": 10, "quota": 75 },
+        { "description": "在标准模式下施放来自过去的法术或召唤来自过去的随从，总计150个。", "xpReward": 400, "points": 20, "quota": 150 }
+      ]
+    },
+    {
+      "id": "cot-027",
+      "name": "Ctrl + Z",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["回溯牌"],
+      "stages": [
+        { "description": "使用50张回溯牌。", "xpReward": 300, "points": 10, "quota": 50 },
+        { "description": "使用100张回溯牌。", "xpReward": 300, "points": 10, "quota": 100 },
+        { "description": "使用150张回溯牌。", "xpReward": 800, "points": 20, "quota": 150 }
+      ]
+    },
+    {
+      "id": "cot-028",
+      "name": "另类剧毒",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "stages": [
+        { "description": "一次性对敌方英雄造成无穷大的伤害。", "xpReward": 800, "points": 20, "quota": 1 }
+      ]
+    }
+  ]
+}

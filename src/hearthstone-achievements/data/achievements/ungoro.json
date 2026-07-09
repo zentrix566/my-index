@@ -1,0 +1,374 @@
+{
+  "id": "ungoro",
+  "name": "安戈洛龟途",
+  "description": "炉石传说安戈洛龟途版本成就数据",
+  "updatedAt": "2026-07-09",
+  "cardImageDir": "ungoro",
+  "achievements": [
+    {
+      "id": "ungoro-001",
+      "name": "生猛恐龙",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "易",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用20张法力值消耗大于或等于（5）点的野兽牌。", "xpReward": 100, "points": 10, "quota": 20 },
+        { "description": "使用40张法力值消耗大于或等于（5）点的野兽牌。", "xpReward": 200, "points": 20, "quota": 40 }
+      ]
+    },
+    {
+      "id": "ungoro-002",
+      "name": "先有蛋，再有……",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "易",
+      "relatedCards": ["凯洛斯"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "孵化凯洛斯的蛋，总计10次。", "xpReward": 100, "points": 10, "quota": 10 },
+        { "description": "孵化凯洛斯的蛋，总计20次。", "xpReward": 200, "points": 20, "quota": 20 }
+      ]
+    },
+    {
+      "id": "ungoro-003",
+      "name": "高级导航",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["导航员伊莉斯"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用导航员伊莉斯制造25个自定义的地标。", "xpReward": 800, "points": 20, "quota": 25 }
+      ]
+    },
+    {
+      "id": "ungoro-004",
+      "name": "光盘行动",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["蚀解软泥怪"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用蚀解软泥怪创建的骸骨使随从获得+25/+25。", "xpReward": 300, "points": 10, "quota": 25 },
+        { "description": "用蚀解软泥怪创建的骸骨使随从获得+50/+50。", "xpReward": 400, "points": 20, "quota": 50 }
+      ]
+    },
+    {
+      "id": "ungoro-005",
+      "name": "冒险征程",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "完成10个安戈洛龟途的任务。", "xpReward": 300, "points": 10, "quota": 10 },
+        { "description": "完成25个安戈洛龟途的任务。", "xpReward": 300, "points": 10, "quota": 25 },
+        { "description": "完成50个安戈洛龟途的任务。", "xpReward": 800, "points": 20, "quota": 50 }
+      ]
+    },
+    {
+      "id": "ungoro-006",
+      "name": "亲如一家",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "触发50次延系效果。", "xpReward": 300, "points": 10, "quota": 50 },
+        { "description": "触发100次延系效果。", "xpReward": 300, "points": 10, "quota": 100 },
+        { "description": "触发150次延系效果。", "xpReward": 800, "points": 20, "quota": 150 }
+      ]
+    },
+    {
+      "id": "ungoro-007",
+      "name": "全伙在此",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["英雄欢迎仪式"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用英雄欢迎仪式召唤5个不同的传说随从。", "xpReward": 100, "points": 10, "quota": 5 },
+        { "description": "用英雄欢迎仪式召唤10个不同的传说随从。", "xpReward": 200, "points": 20, "quota": 10 }
+      ]
+    },
+    {
+      "id": "ungoro-008",
+      "name": "你这鱼人",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用圣骑士，在连续5个回合中召唤鱼人。", "xpReward": 300, "points": 10, "quota": 5 },
+        { "description": "使用圣骑士，在连续10个回合中召唤鱼人。", "xpReward": 400, "points": 20, "quota": 10 }
+      ]
+    },
+    {
+      "id": "ungoro-009",
+      "name": "震地之躯",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["震地雷龙"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用震地雷龙使随从获得75/75的属性值。", "xpReward": 100, "points": 10, "quota": 75 },
+        { "description": "用震地雷龙使随从获得150/150的属性值。", "xpReward": 200, "points": 20, "quota": 150 }
+      ]
+    },
+    {
+      "id": "ungoro-010",
+      "name": "嗷嗷待哺",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "易",
+      "relatedCards": ["啸天龙宝宝"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "召唤30只啸天龙宝宝。", "xpReward": 300, "points": 10, "quota": 30 },
+        { "description": "召唤60只啸天龙宝宝。", "xpReward": 400, "points": 20, "quota": 60 }
+      ]
+    },
+    {
+      "id": "ungoro-011",
+      "name": "伶俐猛龙",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "易",
+      "relatedCards": ["贪婪的迅猛龙"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用贪婪的迅猛龙攻击15次。", "xpReward": 100, "points": 10, "quota": 15 },
+        { "description": "用贪婪的迅猛龙攻击30次。", "xpReward": 200, "points": 20, "quota": 30 }
+      ]
+    },
+    {
+      "id": "ungoro-012",
+      "name": "防控虫害",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["烟雾熏蒸"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用烟雾熏蒸消灭25个随从。", "xpReward": 300, "points": 10, "quota": 25 },
+        { "description": "用烟雾熏蒸消灭50个随从。", "xpReward": 400, "points": 20, "quota": 50 }
+      ]
+    },
+    {
+      "id": "ungoro-013",
+      "name": "萌友暴龙",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "易",
+      "relatedCards": ["伟岸的德拉克雷斯"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用伟岸的德拉克雷斯消灭15个随从。", "xpReward": 100, "points": 10, "quota": 15 },
+        { "description": "用伟岸的德拉克雷斯消灭30个随从。", "xpReward": 200, "points": 20, "quota": 30 }
+      ]
+    },
+    {
+      "id": "ungoro-014",
+      "name": "安戈洛传奇",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["拉特维厄斯，城市之眼"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用5张拉特维厄斯，城市之眼创建的不同的任务奖励牌。", "xpReward": 300, "points": 10, "quota": 5 },
+        { "description": "使用9张拉特维厄斯，城市之眼创建的不同的任务奖励牌。", "xpReward": 400, "points": 20, "quota": 9 }
+      ]
+    },
+    {
+      "id": "ungoro-015",
+      "name": "摒弃呼吸",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "易",
+      "relatedCards": ["绝息剑龙"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用绝息剑龙造成50点伤害。", "xpReward": 100, "points": 10, "quota": 50 },
+        { "description": "用绝息剑龙造成100点伤害。", "xpReward": 200, "points": 20, "quota": 100 }
+      ]
+    },
+    {
+      "id": "ungoro-016",
+      "name": "趋邪进化",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "召唤50只邪能野兽。", "xpReward": 300, "points": 10, "quota": 50 },
+        { "description": "召唤100只邪能野兽。", "xpReward": 400, "points": 20, "quota": 100 }
+      ]
+    },
+    {
+      "id": "ungoro-017",
+      "name": "爱的代价",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "易",
+      "relatedCards": ["空角恐角龙"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用空角恐角龙消灭25个敌方随从。", "xpReward": 100, "points": 10, "quota": 25 },
+        { "description": "用空角恐角龙消灭50个敌方随从。", "xpReward": 200, "points": 20, "quota": 50 }
+      ]
+    },
+    {
+      "id": "ungoro-018",
+      "name": "它还（算）活着",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "召唤50只亡灵野兽。", "xpReward": 300, "points": 10, "quota": 50 },
+        { "description": "召唤100只亡灵野兽。", "xpReward": 400, "points": 20, "quota": 100 }
+      ]
+    },
+    {
+      "id": "ungoro-019",
+      "name": "暗羊术：咩",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "易",
+      "relatedCards": ["绵羊面具"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "对攻击力大于或等于5点的随从施放绵羊面具，总计10次。", "xpReward": 100, "points": 10, "quota": 10 },
+        { "description": "对攻击力大于或等于5点的随从施放绵羊面具，总计20次。", "xpReward": 200, "points": 20, "quota": 20 }
+      ]
+    },
+    {
+      "id": "ungoro-020",
+      "name": "考据历史",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": ["泰坦考据学家"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用泰坦考据学家施放5个不同的泰坦技能。", "xpReward": 300, "points": 10, "quota": 5 },
+        { "description": "用泰坦考据学家施放10个不同的泰坦技能。", "xpReward": 400, "points": 20, "quota": 10 }
+      ]
+    },
+    {
+      "id": "ungoro-021",
+      "name": "洞中魔镜",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["米尔雷斯，晶化镜甲龙"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用变化成5个不同职业的随从的米尔雷斯，晶化镜甲龙。", "xpReward": 100, "points": 10, "quota": 5 },
+        { "description": "使用变化成10个不同职业的随从的米尔雷斯，晶化镜甲龙。", "xpReward": 200, "points": 20, "quota": 10 }
+      ]
+    },
+    {
+      "id": "ungoro-022",
+      "name": "忍者始祖龟",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用潜行者，将75个忍者洗入你的牌库。", "xpReward": 300, "points": 10, "quota": 75 },
+        { "description": "使用潜行者，将150个忍者洗入你的牌库。", "xpReward": 400, "points": 20, "quota": 150 }
+      ]
+    },
+    {
+      "id": "ungoro-023",
+      "name": "海底远光",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "易",
+      "relatedCards": ["巨鳗面具"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用戴着巨鳗面具的随从恢复30点生命值。", "xpReward": 100, "points": 10, "quota": 30 },
+        { "description": "用戴着巨鳗面具的随从恢复60点生命值。", "xpReward": 200, "points": 20, "quota": 60 }
+      ]
+    },
+    {
+      "id": "ungoro-024",
+      "name": "万物平衡",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["索利托斯"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用1张索利托斯。", "xpReward": 300, "points": 10, "quota": 1 },
+        { "description": "使用3张不同的索利托斯。", "xpReward": 400, "points": 20, "quota": 3 }
+      ]
+    },
+    {
+      "id": "ungoro-025",
+      "name": "克敌之王",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": ["魔暴龙面具"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用戴着魔暴龙面具的随从消灭敌方英雄。", "xpReward": 100, "points": 10, "quota": 1 },
+        { "description": "用戴着魔暴龙面具的随从消灭敌方英雄，总计3次。", "xpReward": 200, "points": 20, "quota": 3 }
+      ]
+    },
+    {
+      "id": "ungoro-026",
+      "name": "猛兽无双",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "使用猎人，使用100张攻击力为奇数的野兽牌。", "xpReward": 300, "points": 10, "quota": 100 },
+        { "description": "使用猎人，使用200张攻击力为奇数的野兽牌。", "xpReward": 400, "points": 20, "quota": 200 }
+      ]
+    },
+    {
+      "id": "ungoro-027",
+      "name": "寒芒在背",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "易",
+      "relatedCards": ["冰脊剑龙"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用冰脊剑龙造成50点伤害。", "xpReward": 100, "points": 10, "quota": 50 },
+        { "description": "用冰脊剑龙造成100点伤害。", "xpReward": 200, "points": 20, "quota": 100 }
+      ]
+    },
+    {
+      "id": "ungoro-028",
+      "name": "同归于烬",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": ["炽烈烬火"],
+      "recommendedDecks": [],
+      "stages": [
+        { "description": "用炽烈烬火造成100点伤害。", "xpReward": 300, "points": 10, "quota": 100 },
+        { "description": "用炽烈烬火造成200点伤害。", "xpReward": 400, "points": 20, "quota": 200 }
+      ]
+    }
+  ]
+}
