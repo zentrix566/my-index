@@ -26,3 +26,4 @@ Thumbs.db
 
 # ZCode local config
 .zcode/
+k8s/cloudflared-deployment.yaml
