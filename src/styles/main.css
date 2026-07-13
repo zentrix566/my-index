@@ -1086,6 +1086,41 @@ a.content-card:hover {
   color: #a7472f;
 }
 
+/* 视图模式切换 */
+.hs-view-switch {
+  display: inline-flex;
+  gap: 4px;
+  padding: 4px;
+  margin-bottom: 12px;
+  border: 1px solid rgba(38, 43, 50, 0.14);
+  border-radius: 8px;
+  background: #ece8df;
+}
+
+.hs-view-switch button {
+  height: 32px;
+  padding: 0 18px;
+  border: 0;
+  border-radius: 6px;
+  color: #5c554d;
+  background: transparent;
+  white-space: nowrap;
+  font-weight: 500;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.hs-view-switch button:hover {
+  color: #2c5669;
+}
+
+.hs-view-switch button.active {
+  color: #fff;
+  background: #2c5669;
+  box-shadow: 0 2px 6px rgba(44, 86, 105, 0.3);
+}
+
 .hs-topbar,
 .hs-controls,
 .hs-result-bar,
@@ -1671,6 +1706,230 @@ a.content-card:hover {
   background: #2c5669;
   color: #fff;
   transform: translateY(-2px);
+}
+
+/* 我的成就 - 子分组切换 */
+.hs-my-sub-switch {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 8px;
+  font-size: 13px;
+  color: #666;
+}
+
+.hs-my-sub-label {
+  font-weight: 500;
+}
+
+.hs-my-sub-switch button {
+  padding: 4px 14px;
+  border: 1px solid rgba(38, 43, 50, 0.2);
+  border-radius: 6px;
+  background: #fff;
+  color: #5c554d;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.hs-my-sub-switch button:hover {
+  border-color: #2c5669;
+  color: #2c5669;
+}
+
+.hs-my-sub-switch button.active {
+  background: #2c5669;
+  border-color: #2c5669;
+  color: #fff;
+}
+
+/* 我的成就 - 统计面板 */
+.hs-stats-panel {
+  margin: 12px 0;
+  padding: 16px 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #2c5669 0%, #3d7a8a 100%);
+  color: #fff;
+}
+
+.hs-stats-info {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+
+.hs-stats-percent {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1;
+}
+
+.hs-stats-detail {
+  flex: 1;
+  font-size: 13px;
+  opacity: 0.9;
+}
+
+.hs-stats-bar {
+  height: 10px;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.2);
+  overflow: hidden;
+}
+
+.hs-stats-bar-fill {
+  height: 100%;
+  border-radius: 5px;
+  background: linear-gradient(90deg, #ffd700, #ffb347);
+  transition: width 0.3s ease;
+  min-width: 0;
+}
+
+/* 我的成就卡片 */
+.hs-my-card {
+  position: relative;
+}
+
+.hs-my-card.hs-completed {
+  border-color: #4caf50 !important;
+  background-color: rgba(76, 175, 80, 0.06) !important;
+}
+
+.hs-completed-badge {
+  display: inline-block;
+  margin-left: 8px;
+  padding: 2px 8px;
+  border-radius: 10px;
+  background: #4caf50;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 500;
+  vertical-align: middle;
+}
+
+/* 阶段状态标记（只读） */
+.hs-stage {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+}
+
+.hs-stage-status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  margin-top: 0;
+}
+
+.hs-stage-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #c0b8a8;
+  flex-shrink: 0;
+}
+
+.hs-stage-done .hs-stage-text {
+  color: #4caf50;
+}
+
+.hs-stage-strikethrough {
+  text-decoration: line-through;
+  opacity: 0.65;
+}
+
+.hs-reward-done {
+  color: #4caf50;
+}
+
+/* 累计进度卡片 */
+.hs-count-progress {
+  margin: 10px 0 4px;
+  padding: 10px 12px;
+  background: rgba(44, 86, 105, 0.05);
+  border-radius: 8px;
+  border: 1px solid rgba(44, 86, 105, 0.1);
+}
+
+.hs-count-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.hs-count-header .hs-count-label {
+  font-weight: 600;
+  font-size: 12px;
+  color: #666;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.hs-count-header .hs-count-number {
+  font-size: 20px;
+  font-weight: 700;
+  color: #2c5669;
+  line-height: 1;
+}
+
+.hs-count-stage-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hs-count-stage {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.hs-count-stage-bar {
+  flex: 1;
+  height: 8px;
+  border-radius: 4px;
+  background: rgba(0,0,0,0.06);
+  overflow: hidden;
+  min-width: 60px;
+}
+
+.hs-count-stage-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: linear-gradient(90deg, #f4a34e, #ffb347);
+  transition: width 0.3s ease;
+  min-width: 0;
+}
+
+.hs-count-stage-done .hs-count-stage-fill {
+  background: linear-gradient(90deg, #4caf50, #66bb6a);
+}
+
+.hs-count-stage-text {
+  font-size: 13px;
+  color: #555;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.hs-count-stage-done .hs-count-stage-text {
+  color: #4caf50;
+}
+
+.hs-count-stage-text strong {
+  font-weight: 700;
+  color: #2c5669;
+}
+
+.hs-count-stage-done .hs-count-stage-text strong {
+  color: #4caf50;
 }
 
 /* ========== 访问统计页面 ========== */

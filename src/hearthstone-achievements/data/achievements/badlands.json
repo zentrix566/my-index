@@ -1,0 +1,1406 @@
+{
+  "id": "badlands",
+  "name": "荒芜之地",
+  "description": "炉石传说荒芜之地版本成就数据",
+  "updatedAt": "2026-07-13",
+  "cardImageDir": "badlands",
+  "achievements": [
+    {
+      "id": "bl-019",
+      "name": "嘿！吼！我们登场喽！",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "荒芜之地劫掠者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "一次召唤7个荒芜之地劫掠者。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "bl-020",
+      "name": "乌瑟尔先手",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "决战！"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时拥有3个用“决战！”召唤的歹徒，且你的对手一个都没有。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 3
+        }
+      ]
+    },
+    {
+      "id": "bl-021",
+      "name": "折射效应",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "棱彩光束"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用棱彩光束消灭50个敌人。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "用棱彩光束消灭100个敌人。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "用棱彩光束消灭150个敌人。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 150
+        }
+      ]
+    },
+    {
+      "id": "bl-001",
+      "name": "小小仙人掌",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "仙人掌构造术"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用仙人掌构造术发现16张不同的随从牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 16
+        }
+      ]
+    },
+    {
+      "id": "bl-002",
+      "name": "接龙不断",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "巨龙魔像"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，场上有7个巨龙魔像。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "bl-003",
+      "name": "最佳睡前故事",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "巨龙传说"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用25张巨龙传说创建的龙牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "使用50张巨龙传说创建的龙牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用75张巨龙传说创建的龙牌。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "bl-028",
+      "name": "骰子灌铅了？！",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "蛇眼"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用蛇眼投出两个1点。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "id": "bl-029",
+      "name": "击锤急捶",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "迅疾连射"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张迅疾连射消灭6个敌人。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "bl-030",
+      "name": "闭眼盲打",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "盲眼神射手"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发盲眼神射手的效果30次。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "触发盲眼神射手的效果60次。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "触发盲眼神射手的效果90次。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 90
+        }
+      ]
+    },
+    {
+      "id": "bl-031",
+      "name": "三个钻石+两个木棍",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "矿镐战斧"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用同一把矿镐战斧攻击6次。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "bl-032",
+      "name": "恶人好斗",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "荒芜之地乱斗打手"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "荒芜之地乱斗打手赢得25场她发起的乱斗。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "bl-033",
+      "name": "滴，滴，轰！",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "爆破工头索格伦"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用爆破工头索格伦的TNT炸药炸毁40张牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "用爆破工头索格伦的TNT炸药炸毁80张牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 80
+        },
+        {
+          "description": "用爆破工头索格伦的TNT炸药炸毁150张牌。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 150
+        }
+      ]
+    },
+    {
+      "id": "bl-022",
+      "name": "跨轨漂移",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "列车难题",
+        "列车司机杰里"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用矿车攻击120次。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "bl-023",
+      "name": "全员上车！",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "锅炉燃料"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在非使用的情况下用锅炉燃料抽60张牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "bl-024",
+      "name": "彻底清理",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "列车机务工",
+        "排污助理",
+        "轮式淤泥怪",
+        "腐臭淤泥波普加"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用，弃掉或摧毁50张淤泥桶。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用，弃掉或摧毁100张淤泥桶。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用，弃掉或摧毁150张淤泥桶。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 150
+        }
+      ]
+    },
+    {
+      "id": "bl-025",
+      "name": "伦理问题",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "白骨堆"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤100个白骨堆。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "bl-026",
+      "name": "续写传说",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "矿坑老板雷斯卡"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用矿坑老板雷斯卡夺取一个传说随从的控制权。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "id": "bl-027",
+      "name": "尸死无生",
+      "heroClass": "死亡骑士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "堆尸荒野"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张残骸遍野造成10点伤害。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "用一张残骸遍野造成15点伤害。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "用一张残骸遍野造成20点伤害。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "bl-004",
+      "name": "岩浆横流",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "溢流熔岩"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用溢流熔岩的效果尝试召唤10个放不下的溢流熔岩。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "bl-005",
+      "name": "夜观星空",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "观星（决战荒芜之地）"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用观星的效果施放法术两次，完成30次。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "bl-006",
+      "name": "遗物学会的使命",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "泰瑟兰·血望者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用泰瑟兰·血望者少消耗50点法力值。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "用泰瑟兰·血望者少消耗100点法力值。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "用泰瑟兰·血望者少消耗200点法力值。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "bl-013",
+      "name": "美好愿井",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "许愿井"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "将5枚幸运币投入一座许愿井。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "bl-014",
+      "name": "好运常在",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "飞镖投掷"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "赢得30次飞镖投掷。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "bl-015",
+      "name": "古董杀手",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "古董投手"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用古董投手消灭10个敌人。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "用古董投手消灭20个敌人。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "用古董投手消灭40个敌人。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "bl-010",
+      "name": "脱离正轨",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "飞车劫掠"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用40张飞车劫掠创建的牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "bl-011",
+      "name": "伊莉斯之力",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "荒地奇兵伊莉斯"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张荒地奇兵伊莉斯召唤总计法力值消耗24点的随从。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 24
+        }
+      ]
+    },
+    {
+      "id": "bl-012",
+      "name": "俭以防匮",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "神圣泉水",
+        "影叶入侵",
+        "萤光虫群"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "将75点余下的材料存入法力值消耗为1的瓶子。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 75
+        },
+        {
+          "description": "将150点余下的材料存入法力值消耗为1的瓶子。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "将300点余下的材料存入法力值消耗为1的瓶子。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "bl-007",
+      "name": "死亡之谷",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "骷髅牛"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中召唤8头骷髅牛。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "bl-008",
+      "name": "看不到我",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "迷彩坐骑"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用迷彩坐骑骑乘全部8种变色龙。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "bl-009",
+      "name": "死亡之翼降临之日",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "迷失者塞尔杜林"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用迷失者塞尔杜林攻击并消灭20个敌人。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "用迷失者塞尔杜林攻击并消灭40个敌人。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "用迷失者塞尔杜林攻击并消灭80个敌人。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "bl-016",
+      "name": "蛤利戴来啦",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "荷利戴医生"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用荷利戴医生的法杖召唤第9只青蛙。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 9
+        }
+      ]
+    },
+    {
+      "id": "bl-017",
+      "name": "鳞潜羽翔",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "可靠陪伴"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "对8个不同随从类型的随从施放可靠陪伴。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "bl-018",
+      "name": "坚定步移",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "步移山丘"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用步移山丘攻击40次。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "用步移山丘攻击60次。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "用步移山丘攻击80次。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "bl-034",
+      "name": "深岩断裂带",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "余震"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用余震造成100点伤害。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "用余震造成200点伤害。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "bl-035",
+      "name": "岩形物语",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "地幔塑型者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使地幔塑型者的法力值消耗减少50点。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使地幔塑型者的法力值消耗减少100点。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "bl-036",
+      "name": "在下，鄙人，和我",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "破碎映像"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "对总计消耗60点法力值的随从施放破碎映像。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "对总计消耗120点法力值的随从施放破碎映像。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "bl-037",
+      "name": "易燃易怒",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "灼燃之心"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用灼燃之心使你的英雄获得攻击力，完成30次。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "用灼燃之心使你的英雄获得攻击力，完成60次。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "bl-038",
+      "name": "如此冷血",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "灵魂冻结"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用灵魂冻结冻结60个随从。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "用灵魂冻结冻结120个随从。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "bl-039",
+      "name": "疗愈水晶",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "隐藏宝石"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一个隐藏宝石恢复6点生命值。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 6
+        },
+        {
+          "description": "用一个隐藏宝石恢复12点生命值。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "bl-040",
+      "name": "古生物砖家",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "错位化石"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用40张错位化石创建的随从牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "使用80张错位化石创建的随从牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "bl-041",
+      "name": "接棒！",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "影石潜伏者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使影石潜伏者获得一把具有5点攻击力的武器。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使影石潜伏者获得一把具有8点攻击力的武器。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "bl-042",
+      "name": "磁善援手",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "义肢假手"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "对同一个随从磁力吸附2个义肢假手。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 2
+        },
+        {
+          "description": "对同一个随从磁力吸附3个义肢假手。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 3
+        }
+      ]
+    },
+    {
+      "id": "bl-043",
+      "name": "腥腥相惜",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "无畏爵士芬利"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用无畏爵士芬利将25个敌方随从变形成为1/1的鱼人。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "用无畏爵士芬利将50个敌方随从变形成为1/1的鱼人。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "bl-044",
+      "name": "暴跳彩糖",
+      "heroClass": "双职业",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "穴居人宝石投掷者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用穴居人宝石投掷者消灭40个敌人。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "用穴居人宝石投掷者消灭80个敌人。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "bl-045",
+      "name": "准备，瞄准……",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "日斑巨龙"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用50张当回合拿到的快枪牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用100张当回合拿到的快枪牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用200张当回合拿到的快枪牌。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "bl-046",
+      "name": "不得经过起点",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "桶沿警长"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "将20个随从送入桶沿警长的监狱。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "将40个随从送入桶沿警长的监狱。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "bl-047",
+      "name": "挖呀挖呀挖",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "破地钻机"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "发掘100个宝藏。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "发掘200个宝藏。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "发掘300个宝藏。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "bl-048",
+      "name": "石母的召唤",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "塞拉赞恩"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用25张属性值被塞拉赞恩翻倍的元素牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "使用50张属性值被塞拉赞恩翻倍的元素牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "bl-049",
+      "name": "泥嚎呀吼咯啦！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "交际鱼人"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用20张交际鱼人创建的鱼人牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用40张交际鱼人创建的鱼人牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "使用80张交际鱼人创建的鱼人牌。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "bl-050",
+      "name": "好人，坏人，食人",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "食人魔帮歹徒",
+        "食人魔帮骑手",
+        "食人魔帮王牌"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用食人魔帮的随从攻击40次。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "用食人魔帮的随从攻击80次。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 80
+        },
+        {
+          "description": "用食人魔帮的随从攻击120次。",
+          "xpReward": 500,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "bl-051",
+      "name": "峋岩炫彩",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "炫彩旋岩虫"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一只炫彩旋岩虫使随从获得3种不同的额外效果。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "用一只炫彩旋岩虫使随从获得5种不同的额外效果。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "bl-052",
+      "name": "正午时分",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "正午决斗者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用正午决斗者摧毁你对手的12张牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "bl-053",
+      "name": "治命灵药",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "奇迹推销员"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用蛇油消灭敌方英雄。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "id": "bl-054",
+      "name": "血石传奇",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用5种不同的发掘出来的传说级艾泽里特野兽牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "bl-055",
+      "name": "通缉：不论死活",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "悬赏公告栏"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在场上有悬赏公告栏的情况下使用发掘，快枪，可交易和传说卡牌各一张。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "id": "bl-056",
+      "name": "天生一对",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "贪婪的伴侣",
+        "排舞的伴侣",
+        "吵闹的伴侣"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发30次伴侣的战吼效果。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "触发60次伴侣的战吼效果。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "bl-057",
+      "name": "救世雷诺",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用没有重复的牌的套牌赢得100场对战。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "bl-058",
+      "name": "淘金热潮",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "淘金客"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用淘金客淘到金。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "id": "bl-059",
+      "name": "连环灾异",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "艾泽里特巨人"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "连续在10个回合中均使用元素牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    }
+  ]
+}

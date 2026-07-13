@@ -1,0 +1,716 @@
+{
+  "id": "perils-in-paradise",
+  "name": "胜地历险记",
+  "description": "炉石传说胜地历险记版本成就数据",
+  "updatedAt": "2026-07-13",
+  "cardImageDir": "perils-in-paradise",
+  "achievements": [
+    {
+      "id": "pr-013",
+      "name": "圣光“避”护？",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "沙滩排槌",
+        "救生光环"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用50张防晒霜。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用100张防晒霜。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "pr-014",
+      "name": "团队加油！！",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "信任背摔"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用10张信任背摔创建的随从牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用20张信任背摔创建的随从牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "pr-001",
+      "name": "春回大地",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "补水区"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张补水区复活总计法力值消耗15点的随从。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "用一张补水区复活总计法力值消耗25点的随从。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "pr-002",
+      "name": "闲居德鲁伊",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "蛮熊搬家"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张蛮熊搬家创建的8/8或更大的熊。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 8
+        },
+        {
+          "description": "使用一张蛮熊搬家创建的12/12或更大的熊。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "pr-019",
+      "name": "带头冲锋",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "飞行员帕奇斯",
+        "伞降咒符",
+        "惊险悬崖"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用恶魔猎手，召唤250个具有冲锋的海盗。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 250
+        },
+        {
+          "description": "使用恶魔猎手，召唤500个具有冲锋的海盗。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 500
+        }
+      ]
+    },
+    {
+      "id": "pr-020",
+      "name": "极速送达",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "精魂商贩"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用15张法力值消耗被精魂商贩的效果减为（0）点的随从牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用30张法力值消耗被精魂商贩的效果减为（0）点的随从牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "pr-021",
+      "name": "培根，生菜，胜利！",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "黑麦切割者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张内含4个随从的三明治。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 4
+        },
+        {
+          "description": "使用一张内含7个随从的三明治。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "pr-022",
+      "name": "准时打……脸！",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "打卡"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在打卡的效果下用你的英雄攻击20次。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "在打卡的效果下用你的英雄攻击40次。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "pr-015",
+      "name": "改正归邪",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "弃明投暗"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用50张弃明投暗创建的牌。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用100张弃明投暗创建的牌。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "pr-016",
+      "name": "生死时刻",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "最后期限"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用最后期限消灭15个随从。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "用最后期限消灭30个随从。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "pr-017",
+      "name": "高寒冷饮",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "甜筒殡淇淋"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用甜筒殡淇淋造成80点伤害。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 80
+        },
+        {
+          "description": "用甜筒殡淇淋造成160点伤害。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 160
+        }
+      ]
+    },
+    {
+      "id": "pr-018",
+      "name": "到了没有？",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "无限滞留"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用无限滞留消灭100个随从。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "用无限滞留消灭200个随从。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "pr-003",
+      "name": "风头浪尖",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "冲浪章鱼"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用冲浪章鱼的效果施放总计法力值消耗50点的法术。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "用冲浪章鱼的效果施放总计法力值消耗100点的法术。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "pr-004",
+      "name": "就这样吧",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "失火"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用25张被失火的效果点燃的卡牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "使用50张被失火的效果点燃的卡牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "pr-009",
+      "name": "好货上手",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "财宝猎人尤朵拉"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用8件财宝猎人尤朵拉找到的不同的战利品。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 8
+        },
+        {
+          "description": "使用16件财宝猎人尤朵拉找到的不同的战利品。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 16
+        }
+      ]
+    },
+    {
+      "id": "pr-010",
+      "name": "分享即是关爱",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "旅社谍战"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用50张旅社谍战创建的牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用100张旅社谍战创建的牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "pr-007",
+      "name": "氪金改运",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "纳瑞安·柔想"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张变为传说卡牌的预知命运。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 1
+        },
+        {
+          "description": "使用一张变为纳瑞安·柔想的预知命运。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "id": "pr-008",
+      "name": "熟能生巧",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "影随员工"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤30个影随员工。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "召唤60个影随员工。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "pr-005",
+      "name": "招摇翻滚",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "死亡翻滚"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张死亡翻滚消灭3个随从。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "用一张死亡翻滚消灭5个随从。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "pr-006",
+      "name": "专业大牛",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "摇钱金牛"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "通过摇钱金牛获取25张幸运币。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "通过摇钱金牛获取50张幸运币。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "pr-011",
+      "name": "多栖纳迦",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "歌唱明星卡瑞斯"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用5种不同形态的歌唱明星卡瑞斯。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用10种不同形态的歌唱明星卡瑞斯。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "pr-012",
+      "name": "时刻补水",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "饮水图腾"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用饮水图腾使你的随从获得+25/+25",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "用饮水图腾使你的随从获得+50/+50",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "pr-023",
+      "name": "8适得很！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "八爪按摩机"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用八爪按摩机造成888点伤害。",
+          "xpReward": 800,
+          "points": 20,
+          "quota": 888
+        }
+      ]
+    },
+    {
+      "id": "pr-024",
+      "name": "来去自如",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在使用地标的同一回合重新开启该地标50次。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "在使用地标的同一回合重新开启该地标100次。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "pr-025",
+      "name": "干杯！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "饮品侍者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用100张饮品法术牌。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用200张饮品法术牌。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "使用300张饮品法术牌。",
+          "xpReward": 800,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "pr-026",
+      "name": "珍奇热带游",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在套牌中加入游客，赢得25场对战。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "在套牌中加入游客，赢得50场对战。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "在套牌中加入游客，赢得100场对战。",
+          "xpReward": 800,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "pr-027",
+      "name": "假期目的地",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "银月城宣传单",
+        "冰冠堡垒宣传单",
+        "安戈洛宣传单"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用40张宣传单。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "使用80张宣传单。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "pr-028",
+      "name": "计划（可能）完美",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "梦想策划师杰弗里斯"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用25张杰弗里斯的旅行路线创建的牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "使用50张杰弗里斯的旅行路线创建的牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    }
+  ]
+}
