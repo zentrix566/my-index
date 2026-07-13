@@ -22,9 +22,10 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
-# 复制构建产物和服务端代码
+# 复制构建产物、服务端代码和成就数据
 COPY --from=build /app/dist/ ./dist/
 COPY server/ ./server/
+COPY data/ ./data/
 
 # 创建日志目录（将通过 K8s hostPath 挂载到宿主机）
 RUN mkdir -p /app/logs
