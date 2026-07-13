@@ -14,8 +14,8 @@
       "relatedCards": ["团队协作"],
       "recommendedDecks": [],
       "stages": [
-        { "description": "使用75张团队协作创建的白银之手新兵。", "xpReward": 300, "points": 30, "quota": 75 },
-        { "description": "使用150张团队协作创建的白银之手新兵。", "xpReward": 400, "points": 60, "quota": 150 }
+        { "description": "使用75张团队协作创建的白银之手新兵。", "xpReward": 325, "points": 30, "quota": 75 },
+        { "description": "使用150张团队协作创建的白银之手新兵。", "xpReward": 650, "points": 60, "quota": 150 }
       ]
     },
     {
@@ -40,8 +40,8 @@
       "relatedCards": ["生命绽放"],
       "recommendedDecks": [],
       "stages": [
-        { "description": "用生命绽放恢复75点生命值。", "xpReward": 300, "points": 30, "quota": 75 },
-        { "description": "用生命绽放恢复150点生命值。", "xpReward": 400, "points": 60, "quota": 150 }
+        { "description": "用生命绽放恢复75点生命值。", "xpReward": 325, "points": 30, "quota": 75 },
+        { "description": "用生命绽放恢复150点生命值。", "xpReward": 650, "points": 60, "quota": 150 }
       ]
     },
     {
@@ -105,8 +105,8 @@
       "relatedCards": ["黑翼实验品"],
       "recommendedDecks": [],
       "stages": [
-        { "description": "通过黑翼实验品获取一张造成10点或以上伤害的龙息。", "xpReward": 300, "points": 10, "quota": 1 },
-        { "description": "通过黑翼实验品获取一张造成20点或以上伤害的龙息。", "xpReward": 400, "points": 20, "quota": 1 }
+        { "description": "通过黑翼实验品获取一张造成5点或以上伤害的龙息。", "xpReward": 300, "points": 10, "quota": 5 },
+        { "description": "通过黑翼实验品获取一张造成10点或以上伤害的龙息。", "xpReward": 400, "points": 20, "quota": 10 }
       ]
     },
     {
@@ -118,8 +118,8 @@
       "relatedCards": ["晶华魔网", "迸发魔网", "魔网地图", "魔网枢纽", "湍流之针", "秘魔刃豹", "魔力行者"],
       "recommendedDecks": [],
       "stages": [
-        { "description": "使用75张魔网牌。", "xpReward": 300, "points": 30, "quota": 75 },
-        { "description": "使用150张魔网牌。", "xpReward": 400, "points": 60, "quota": 150 }
+        { "description": "使用75张魔网牌。", "xpReward": 325, "points": 30, "quota": 75 },
+        { "description": "使用150张魔网牌。", "xpReward": 650, "points": 60, "quota": 150 }
       ]
     },
     {
@@ -170,8 +170,8 @@
       "relatedCards": ["自由漫步"],
       "recommendedDecks": [],
       "stages": [
-        { "description": "用自由漫步召唤总计法力值消耗50点的野兽。", "xpReward": 300, "points": 30, "quota": 50 },
-        { "description": "用自由漫步召唤总计法力值消耗100点的野兽。", "xpReward": 400, "points": 60, "quota": 100 }
+        { "description": "用自由漫步召唤总计法力值消耗50点的野兽。", "xpReward": 325, "points": 30, "quota": 50 },
+        { "description": "用自由漫步召唤总计法力值消耗100点的野兽。", "xpReward": 650, "points": 60, "quota": 100 }
       ]
     },
     {
