@@ -4,12 +4,13 @@ metadata:
   name: zentrix-service
   namespace: default
   labels:
-    app: zentrix-lab
+    app: zentrix
 spec:
-  selector:
-    app: zentrix-lab
   ports:
-    - port: 80
+    - nodePort: 30080
+      port: 80
+      protocol: TCP
       targetPort: 80
-      name: http
-  type: ClusterIP
+  selector:
+    app: zentrix
+  type: NodePort

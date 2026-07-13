@@ -4,53 +4,33 @@ metadata:
   name: zentrix-lab
   namespace: default
   labels:
-    app: zentrix-lab
+    app: zentrix
 spec:
   replicas: 1
+  revisionHistoryLimit: 10
   selector:
     matchLabels:
-      app: zentrix-lab
+      app: zentrix
+  strategy:
+    type: Recreate
   template:
     metadata:
       labels:
-        app: zentrix-lab
+        app: zentrix
     spec:
       containers:
-        - name: web
+        - name: lab-container
           image: crpi-nfo20s3jyve6dt2s.cn-beijing.personal.cr.aliyuncs.com/zentrix-repo/devops:latest
           imagePullPolicy: Always
           ports:
             - containerPort: 80
-              name: http
-          env:
-            - name: NODE_ENV
-              value: production
-            - name: PORT
-              value: "80"
-            - name: LOG_DIR
-              value: /app/logs
+              protocol: TCP
+          resources: {}
           volumeMounts:
-            - name: access-logs
-              mountPath: /app/logs
-          resources:
-            requests:
-              cpu: 50m
-              memory: 128Mi
-            limits:
-              cpu: 500m
-              memory: 256Mi
-          livenessProbe:
-            httpGet:
-              path: /health
-              port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 30
-          readinessProbe:
-            httpGet:
-              path: /health
-              port: 80
-            initialDelaySeconds: 3
-            periodSeconds: 10
+            - mountPath: /app/logs
+              name: access-logs
+      imagePullSecrets:
+        - name: aliyun-registry-secret
       volumes:
         - name: access-logs
           hostPath:
