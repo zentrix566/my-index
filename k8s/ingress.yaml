@@ -4,18 +4,17 @@ metadata:
   name: zentrix-main-ingress
   namespace: default
   annotations:
-    # 传递 Cloudflare 真实客户端 IP
+    nginx.ingress.kubernetes.io/forwarded-for-header: CF-Connecting-IP
     nginx.ingress.kubernetes.io/use-forwarded-headers: "true"
-    nginx.ingress.kubernetes.io/forwarded-for-header: "CF-Connecting-IP"
 spec:
   ingressClassName: nginx
   rules:
-  - http:
-      paths:
-      - backend:
-          service:
-            name: zentrix-service
-            port:
-              number: 80
-        path: /
-        pathType: Prefix
+    - http:
+        paths:
+          - backend:
+              service:
+                name: zentrix-service
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
