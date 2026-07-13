@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: zentrix-service
+  namespace: default
+  labels:
+    app: zentrix-lab
+spec:
+  selector:
+    app: zentrix-lab
+  ports:
+    - port: 80
+      targetPort: 80
+      name: http
+  type: ClusterIP
