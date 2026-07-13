@@ -4,16 +4,21 @@ defineProps({
   selectedClass: { type: String, default: 'all' },
   selectedDifficulty: { type: String, default: 'all' },
   selectedType: { type: String, default: 'all' },
+  selectedStatus: { type: String, default: 'all' },
   availableClasses: { type: Array, default: () => [] },
   difficulties: { type: Array, default: () => [] },
-  types: { type: Array, default: () => [] }
+  types: { type: Array, default: () => [] },
+  statuses: { type: Array, default: () => [] },
+  hideClassFilter: { type: Boolean, default: false },
+  showStatusFilter: { type: Boolean, default: false }
 })
 
 const emit = defineEmits([
   'update:query',
   'update:selectedClass',
   'update:selectedDifficulty',
-  'update:selectedType'
+  'update:selectedType',
+  'update:selectedStatus'
 ])
 </script>
 
@@ -26,12 +31,12 @@ const emit = defineEmits([
       <input
         :value="query"
         type="search"
-        placeholder="搜索名称、描述、卡牌或职业"
+        placeholder="搜索名称、描述或卡牌"
         @input="emit('update:query', $event.target.value)"
       />
     </label>
 
-    <label class="hs-select-wrap">
+    <label v-if="!hideClassFilter" class="hs-select-wrap">
       <span>职业</span>
       <select :value="selectedClass" @change="emit('update:selectedClass', $event.target.value)">
         <option value="all">全部职业</option>
@@ -52,6 +57,14 @@ const emit = defineEmits([
       <select :value="selectedType" @change="emit('update:selectedType', $event.target.value)">
         <option value="all">全部类型</option>
         <option v-for="t in types" :key="t" :value="t">{{ t }}</option>
+      </select>
+    </label>
+
+    <label v-if="showStatusFilter" class="hs-select-wrap">
+      <span>完成</span>
+      <select :value="selectedStatus" @change="emit('update:selectedStatus', $event.target.value)">
+        <option value="all">全部</option>
+        <option v-for="s in statuses" :key="s" :value="s">{{ s }}</option>
       </select>
     </label>
   </section>

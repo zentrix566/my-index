@@ -1,12 +1,14 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, h, resolveComponent } from 'vue'
 import AchievementCard from './AchievementCard.vue'
+import MyAchievementCard from './MyAchievementCard.vue'
 
 const props = defineProps({
   heroClass: { type: String, required: true },
   achievements: { type: Array, default: () => [] },
   badgeStyle: { type: Object, default: () => ({}) },
-  classStyle: { type: Object, default: () => ({}) }
+  classStyle: { type: Object, default: () => ({}) },
+  useMyCard: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['card-click'])
@@ -37,7 +39,8 @@ const toggleCollapse = () => {
       </span>
     </header>
     <div v-show="!collapsed" class="hs-achievement-list">
-      <AchievementCard
+      <component
+        :is="useMyCard ? MyAchievementCard : AchievementCard"
         v-for="ach in achievements"
         :key="ach.id"
         :achievement="ach"

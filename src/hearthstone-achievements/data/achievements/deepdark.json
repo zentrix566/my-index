@@ -1,0 +1,740 @@
+{
+  "id": "deepdark",
+  "name": "深暗领域",
+  "description": "炉石传说深暗领域版本成就数据",
+  "updatedAt": "2026-07-13",
+  "cardImageDir": "deepdark",
+  "achievements": [
+    {
+      "id": "dd-013",
+      "name": "轻量读物",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "明澈圣契",
+        "神性圣契",
+        "信仰圣契",
+        "伊瑞尔，希望信标"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用75张法力值消耗为（0）的圣契。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 75
+        },
+        {
+          "description": "使用150张法力值消耗为（0）的圣契。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 150
+        }
+      ]
+    },
+    {
+      "id": "dd-014",
+      "name": "强化剂万岁",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "回收地堡"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用圣骑士，召唤30个陆战队员。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用圣骑士，召唤60个陆战队员。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "dd-001",
+      "name": "空间",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "究极边境"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用究极边境发现8个不同的随从。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 8
+        },
+        {
+          "description": "用究极边境发现16个不同的随从。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 16
+        }
+      ]
+    },
+    {
+      "id": "dd-002",
+      "name": "航母末日",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "航母"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用拦截机攻击80次。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 80
+        },
+        {
+          "description": "用拦截机攻击160次。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 160
+        }
+      ]
+    },
+    {
+      "id": "dd-019",
+      "name": "同心同德（莱尼）",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "蒂尔德拉，反抗军头目",
+        "紧急会议",
+        "沃罗尼招募官",
+        "猎头"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一个包含4名乘务员的乘务组。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 4
+        },
+        {
+          "description": "使用一个包含7名乘务员的乘务组。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "dd-020",
+      "name": "我是怪咖",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "菌毯肿瘤"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一张菌毯肿瘤的效果下用异虫攻击9次。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 9
+        },
+        {
+          "description": "在一张菌毯肿瘤的效果下用异虫攻击18次。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 18
+        }
+      ]
+    },
+    {
+      "id": "dd-021",
+      "name": "你服了吗？",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "不屈的守备官"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张不屈的守备官的战吼使你的英雄获得+10攻击力。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "用一张不屈的守备官的战吼使你的英雄获得+16攻击力。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 16
+        }
+      ]
+    },
+    {
+      "id": "dd-022",
+      "name": "航路制霸",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "大和炮"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用大和炮的效果消灭40个随从。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "用大和炮的效果消灭80个随从。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "dd-015",
+      "name": "不是疗石是炉石",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "治疗石"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张治疗石恢复8点生命值。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 8
+        },
+        {
+          "description": "用一张治疗石恢复15点生命值。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 15
+        }
+      ]
+    },
+    {
+      "id": "dd-016",
+      "name": "控制饮食",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "吞噬"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用吞噬摧毁15个友方地标。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "用吞噬摧毁30个友方地标。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "dd-017",
+      "name": "重要抓手",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "深暗八爪怪"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用深暗八爪怪的效果摧毁100张牌。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "用深暗八爪怪的效果摧毁200张牌。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "dd-018",
+      "name": "菌淋天下",
+      "heroClass": "死亡骑士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "感染者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中触发感染者的亡语效果4次。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 4
+        },
+        {
+          "description": "在一局对战中触发感染者的亡语效果6次。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "dd-003",
+      "name": "空间意识",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "袖珍次元"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "施放25个袖珍次元创建的法术。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "施放50个袖珍次元创建的法术。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "dd-004",
+      "name": "热能神枪",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "巨像"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张伤害提升到8点的巨像。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 8
+        },
+        {
+          "description": "使用一张伤害提升到15点的巨像。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 15
+        }
+      ]
+    },
+    {
+      "id": "dd-009",
+      "name": "垃圾汇集",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "星舰详图",
+        "引力置换器",
+        "四处搜刮的造舰师"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "发射一艘具有4个不同职业组件的星舰。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 4
+        },
+        {
+          "description": "发射一艘具有6个不同职业组件的星舰。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "dd-010",
+      "name": "1+1=1",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "黑暗圣堂武士",
+        "高阶圣堂武士"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用黑暗圣堂武士或高阶圣堂武士融合20个执政官。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "用黑暗圣堂武士或高阶圣堂武士融合40个执政官。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "dd-007",
+      "name": "神圣船说！",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "克乌雷，圣光领域"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一回合中触发克乌雷，圣光领域的效果4次。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 4
+        },
+        {
+          "description": "在一回合中触发克乌雷，圣光领域的效果6次。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "dd-008",
+      "name": "-400/-400",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "母舰"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中使用5种不同的可收集星灵随从牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "在一局对战中使用全部8种可收集星灵随从牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "dd-005",
+      "name": "异形克敌",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "异星虫卵"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用异星虫卵召唤出的野兽攻击40次。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "用异星虫卵召唤出的野兽攻击80次。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "dd-006",
+      "name": "太刺脊啦",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "刺蛇"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用刺蛇消灭40个敌人。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "用刺蛇消灭80个敌人。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "dd-011",
+      "name": "渐次灭绝",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "流彩巨岩",
+        "月石重拳手",
+        "陨石风暴",
+        "极紫外破坏者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用小行星造成250点伤害。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 250
+        },
+        {
+          "description": "用小行星造成500点伤害。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 500
+        }
+      ]
+    },
+    {
+      "id": "dd-012",
+      "name": "克骨铭心",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "攻城坦克"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用攻城坦克对敌方英雄造成100点伤害。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "用攻城坦克对敌方英雄造成200点伤害。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "dd-023",
+      "name": "三位数！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "无界空宇"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用无界空宇消灭100个随从。",
+          "xpReward": 800,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "dd-024",
+      "name": "迸发风味",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发75次法术迸发效果。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 75
+        },
+        {
+          "description": "触发150次法术迸发效果。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 150
+        }
+      ]
+    },
+    {
+      "id": "dd-025",
+      "name": "纳鲁钦选",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤100个德莱尼。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤200个德莱尼。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "召唤300个德莱尼。",
+          "xpReward": 800,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "dd-026",
+      "name": "仍需装配",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "发射星舰所用的组件总计达到50个。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "发射星舰所用的组件总计达到100个。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "发射星舰所用的组件总计达到200个。",
+          "xpReward": 800,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "dd-027",
+      "name": "当女王好难",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤200个异虫随从。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "召唤400个异虫随从。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 400
+        }
+      ]
+    },
+    {
+      "id": "dd-028",
+      "name": "建造更多水晶塔",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使星灵卡牌的法力值消耗减少100点。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使星灵卡牌的法力值消耗减少200点。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "dd-029",
+      "name": "大舰巨炮",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "发射40艘人族战列巡航舰。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "发射80艘人族战列巡航舰。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    }
+  ]
+}

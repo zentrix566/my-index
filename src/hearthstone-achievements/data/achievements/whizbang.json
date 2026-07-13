@@ -1,0 +1,713 @@
+{
+  "id": "whizbang",
+  "name": "威兹班",
+  "description": "炉石传说威兹班版本成就数据",
+  "updatedAt": "2026-07-13",
+  "cardImageDir": "whizbang",
+  "achievements": [
+    {
+      "id": "wz-013",
+      "name": "积压存货",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "发条执行者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用发条执行者的战吼召唤3个它的复制。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "用发条执行者的战吼召唤6个它的复制。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "wz-014",
+      "name": "荧光熠熠",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "灯火机器人"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用20张法力值消耗为（0）的灯火机器人。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用40张法力值消耗为（0）的灯火机器人。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "wz-001",
+      "name": "玉野仙踪",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "青玉展品"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张5/5或更大的青玉展品。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用一张10/10或更大的青玉展品。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "wz-002",
+      "name": "茎奇魔法",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "豆蔓疯长"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张豆蔓疯长抽4张牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 4
+        },
+        {
+          "description": "用一张豆蔓疯长抽7张牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "wz-019",
+      "name": "无需削弱",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "希希集"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用20张希希集创建的牌。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用40张希希集创建的牌。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "wz-020",
+      "name": "纳迦？还是手偶？",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "滑矛布袋手偶"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用攻击力6点的滑矛布袋手偶攻击。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 6
+        },
+        {
+          "description": "用攻击力12点的滑矛布袋手偶攻击。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "wz-021",
+      "name": "科学至上！",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "实验室奴隶主"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤25个实验室奴隶主。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "召唤50个实验室奴隶主。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "wz-022",
+      "name": "爆炸（娱乐）试验",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "爆破工程师",
+        "安全专家"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用战士，将25张炸弹洗入你对手的牌库。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "使用战士，将50张炸弹洗入你对手的牌库。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "wz-015",
+      "name": "传神速写",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "速写美术家"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "施放20个速写美术家创建的临时版暗影法术。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "施放40个速写美术家创建的临时版暗影法术。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "wz-016",
+      "name": "加大产能",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "批量生产"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中使用4张批量生产。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 4
+        },
+        {
+          "description": "在一局对战中使用8张批量生产。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "wz-017",
+      "name": "狗狗之力！",
+      "heroClass": "死亡骑士",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "毛绒暴暴狗"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中召唤6只毛绒暴暴狗。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 6
+        },
+        {
+          "description": "在一局对战中召唤12只毛绒暴暴狗。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "wz-018",
+      "name": "绵绵无绝",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "海绵斧"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一把海绵斧攻击4次。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 4
+        },
+        {
+          "description": "用一把海绵斧攻击6次。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "wz-003",
+      "name": "悲情晕染",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "水彩美术家"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张法力值消耗被水彩美术家降低3点的法术牌。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "使用一张法力值消耗被水彩美术家降低6点的法术牌。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "wz-004",
+      "name": "帽子戏法",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "暗月魔术师"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一个暗月魔术师施放消耗总计8点法力值的法术。",
+          "xpReward": 200,
+          "points": 10,
+          "quota": 8
+        },
+        {
+          "description": "用一个暗月魔术师施放消耗总计12点法力值的法术。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "wz-009",
+      "name": "这是盗窃！",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "大盗金胡子"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一回合中用大盗金胡子的效果召唤3个海盗。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "在一回合中用大盗金胡子的效果召唤6个海盗。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "wz-010",
+      "name": "哇！金色成就！",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "难",
+      "relatedCards": [
+        "幻变的卡牌包"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一回合中使用2张扭曲的卡牌包创建的卡牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 2
+        },
+        {
+          "description": "在一回合中使用4张扭曲的卡牌包创建的卡牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 4
+        }
+      ]
+    },
+    {
+      "id": "wz-007",
+      "name": "春季大扫除",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "重新打包"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用重新打包将总计消耗15点法力值的随从打包进一个箱子。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "用重新打包将总计消耗30点法力值的随从打包进一个箱子。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "wz-008",
+      "name": "砰砰放映室",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "木偶剧场"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用15张木偶剧场创建的随从牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用30张木偶剧场创建的随从牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "wz-005",
+      "name": "幸福点滴",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "遥控器",
+        "遥控狂潮"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤50只遥控猎犬。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "召唤101只遥控猎犬。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 101
+        }
+      ]
+    },
+    {
+      "id": "wz-006",
+      "name": "智慧过人",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "量产品9号"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用量产品9号施放30个奥秘。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "用量产品9号施放60个奥秘。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "wz-011",
+      "name": "重在参与",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "苏打火山"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用苏打火山消灭15个随从。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "用苏打火山消灭30个随从。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "wz-012",
+      "name": "美好往昔",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "恋旧风潮"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用恋旧风潮将20个非传说随从变形成为传说随从。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "用恋旧风潮将40个非传说随从变形成为传说随从。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "wz-023",
+      "name": "微型的我",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用20张微型随从牌。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用40张微型随从牌。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "使用80张微型随从牌。",
+          "xpReward": 800,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "wz-024",
+      "name": "你猜对了！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "通道沉眠者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "唤醒10个通道沉眠者。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "唤醒20个通道沉眠者。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "唤醒40个通道沉眠者。",
+          "xpReward": 800,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "wz-025",
+      "name": "完 美",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "奇利亚斯豪华版3000型"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用4张不同的定制奇利亚斯。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 4
+        },
+        {
+          "description": "使用8张不同的定制奇利亚斯。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "wz-026",
+      "name": "胡搞英雄",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "漫画美术家"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用画有滑稽的小胡子的随从消灭敌方英雄。",
+          "xpReward": 800,
+          "points": 20,
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "id": "wz-027",
+      "name": "站在巨人肩上",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用10张大型随从牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用20张大型随从牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "wz-028",
+      "name": "GG EZ",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "高端玩家"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "赢得1局高端玩家的石头剪刀布。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 1
+        },
+        {
+          "description": "赢得3局高端玩家的石头剪刀布。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 3
+        }
+      ]
+    }
+  ]
+}

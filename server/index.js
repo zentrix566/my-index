@@ -1,6 +1,7 @@
 import express from 'express'
 import compression from 'compression'
 import path from 'path'
+import fs from 'fs'
 import { fileURLToPath } from 'url'
 import { writeLog, cleanOldLogs, getStats, getTopPages, getGeoDistribution, getRecentVisits, getHourlyTrend } from './logger.js'
 import { lookup } from './geoip.js'
@@ -9,9 +10,32 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const isProd = process.env.NODE_ENV === 'production'
 const PORT = Number(process.env.PORT) || (isProd ? 80 : 3000)
 const DIST_DIR = path.resolve(__dirname, '../dist')
+const DATA_DIR = path.resolve(__dirname, '../data')
+const ACHIEVEMENT_PROGRESS_FILE = path.join(DATA_DIR, 'achievement-progress.json')
 const STATIC_CACHE_MAX_AGE = 365 * 24 * 60 * 60 * 1000 // 1 年
 
+// 确保数据目录存在
+if (!fs.existsSync(DATA_DIR)) {
+  fs.mkdirSync(DATA_DIR, { recursive: true })
+}
+
+// 读取成就进度
+function loadAchievementProgress() {
+  try {
+    if (fs.existsSync(ACHIEVEMENT_PROGRESS_FILE)) {
+      const raw = fs.readFileSync(ACHIEVEMENT_PROGRESS_FILE, 'utf-8')
+      return JSON.parse(raw)
+    }
+  } catch (err) {
+    console.error('[achievement] 读取进度失败:', err)
+  }
+  return {}
+}
+
 const app = express()
+
+// 解析 JSON body
+app.use(express.json({ limit: '1mb' }))
 
 // 启动时清理一次过期日志，之后每 24 小时清理一次
 cleanOldLogs()
@@ -170,6 +194,18 @@ app.get('/api/stats/recent', async (req, res) => {
 app.get('/api/stats/hourly', async (req, res) => {
   try {
     const data = await getHourlyTrend()
+    res.json(data)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// ========== 成就进度 API ==========
+
+// 获取成就进度（只读）
+app.get('/api/achievements/progress', (req, res) => {
+  try {
+    const data = loadAchievementProgress()
     res.json(data)
   } catch (err) {
     res.status(500).json({ error: err.message })
