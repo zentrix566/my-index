@@ -12,6 +12,7 @@ import JiangyinBattle from '../views/JiangyinBattle.vue'
 import DominoFall from '../views/DominoFall.vue'
 import HearthstoneAchievements from '../views/HearthstoneAchievements.vue'
 import About from '../views/About.vue'
+import Stats from '../views/Stats.vue'
 
 const routes = [
   { path: '/', name: 'home', component: Home },
@@ -32,6 +33,7 @@ const routes = [
   { path: '/jiangyin', name: 'jiangyin', component: JiangyinBattle },
   { path: '/domino', name: 'domino', component: DominoFall },
   { path: '/hearthstone', name: 'hearthstone-achievements', component: HearthstoneAchievements },
+  { path: '/stats', name: 'stats', component: Stats },
   { path: '/about', name: 'about', component: About }
 ]
 
@@ -40,6 +42,24 @@ const router = createRouter({
   routes,
   scrollBehavior() {
     return { top: 0 }
+  }
+})
+
+// 页面访问上报：每次路由切换后向后端发送 PV 统计
+router.afterEach((to) => {
+  // 不统计重定向路由本身
+  if (to.matched.length === 0) return
+  const path = to.fullPath || '/'
+  try {
+    const url = `/api/track?path=${encodeURIComponent(path)}`
+    // 优先使用 sendBeacon，不阻塞页面切换
+    if (navigator.sendBeacon) {
+      navigator.sendBeacon(url)
+    } else {
+      fetch(url, { method: 'POST', keepalive: true }).catch(() => {})
+    }
+  } catch {
+    // 静默失败，不影响用户体验
   }
 })
 

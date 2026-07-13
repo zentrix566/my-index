@@ -23,6 +23,9 @@
 
     <footer class="site-footer">
       <p>© {{ year }} Zentrix. Built as a Vue-powered personal index.</p>
+      <p class="footer-links">
+        <RouterLink to="/stats">访问统计</RouterLink>
+      </p>
     </footer>
   </div>
 </template>

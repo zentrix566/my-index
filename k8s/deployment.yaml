@@ -1,0 +1,77 @@
+# K3s/Kubernetes 部署配置示例
+# 关键改动：增加 hostPath 卷挂载，将容器内 /app/logs 映射到宿主机磁盘实现日志持久化
+# 请根据你的实际命名空间、镜像地址、宿主机路径修改
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: zentrix-lab
+  labels:
+    app: zentrix-lab
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: zentrix-lab
+  template:
+    metadata:
+      labels:
+        app: zentrix-lab
+    spec:
+      containers:
+        - name: web
+          # 替换为你的实际镜像地址
+          image: crpi-nfo20s3jyve6dt2s.cn-beijing.personal.cr.aliyuncs.com/zentrix-repo/devops:latest
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              name: http
+          env:
+            - name: NODE_ENV
+              value: production
+            - name: PORT
+              value: "80"
+            - name: LOG_DIR
+              value: /app/logs
+          volumeMounts:
+            # 将日志目录挂载到宿主机，实现日志持久化落盘
+            - name: access-logs
+              mountPath: /app/logs
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
+            limits:
+              cpu: 500m
+              memory: 256Mi
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 3
+            periodSeconds: 10
+      volumes:
+        # 宿主机目录挂载：日志将落盘到宿主机的 /data/zentrix/logs 目录
+        - name: access-logs
+          hostPath:
+            path: /data/zentrix/logs
+            type: DirectoryOrCreate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: zentrix-lab
+spec:
+  selector:
+    app: zentrix-lab
+  ports:
+    - port: 80
+      targetPort: 80
+      name: http
+  type: ClusterIP

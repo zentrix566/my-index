@@ -972,6 +972,23 @@ a.content-card:hover {
   text-align: center;
 }
 
+.footer-links {
+  margin-top: 6px;
+  font-size: 0.82rem;
+}
+
+.footer-links a {
+  color: var(--muted);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.footer-links a:hover {
+  opacity: 1;
+  color: var(--primary);
+}
+
 @media (max-width: 840px) {
   .menu-toggle {
     display: flex;
@@ -1654,6 +1671,263 @@ a.content-card:hover {
   background: #2c5669;
   color: #fff;
   transform: translateY(-2px);
+}
+
+/* ========== 访问统计页面 ========== */
+.section-desc {
+  color: var(--muted);
+  font-size: 0.95rem;
+  margin-bottom: 32px;
+  margin-top: 8px;
+}
+
+.stats-loading,
+.stats-error {
+  padding: 64px 24px;
+  text-align: center;
+  color: var(--muted);
+  font-size: 1rem;
+}
+
+.stats-error {
+  color: var(--danger);
+}
+
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.stat-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.stat-label {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.2;
+}
+
+.stat-compare {
+  font-size: 0.78rem;
+  color: var(--muted);
+}
+
+.stat-compare.up {
+  color: #16a34a;
+}
+
+.stat-compare.down {
+  color: var(--danger);
+}
+
+.stats-block {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+}
+
+.stats-block h2 {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 20px;
+  color: var(--text);
+}
+
+.stats-empty {
+  color: var(--muted);
+  font-size: 0.9rem;
+  text-align: center;
+  padding: 24px 0;
+}
+
+/* 小时趋势图 */
+.hourly-chart {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.hourly-svg {
+  width: 100%;
+  height: 140px;
+}
+
+.hourly-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: var(--muted);
+  padding: 0 10px;
+}
+
+/* 热门页面列表 */
+.top-pages-list,
+.geo-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.top-pages-list li,
+.geo-list li {
+  display: grid;
+  grid-template-columns: 140px 1fr 50px;
+  gap: 12px;
+  align-items: center;
+  font-size: 0.88rem;
+}
+
+.page-path,
+.geo-name {
+  color: var(--text);
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.page-bar-wrap,
+.geo-bar-wrap {
+  height: 8px;
+  background: var(--surface-soft);
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.page-bar,
+.geo-bar {
+  height: 100%;
+  background: var(--primary);
+  border-radius: 4px;
+  transition: width 0.3s ease;
+  min-width: 4px;
+}
+
+.geo-bar {
+  background: var(--accent);
+}
+
+.page-count,
+.geo-count {
+  text-align: right;
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 600;
+}
+
+/* 最近访问表格 */
+.recent-table-wrap {
+  overflow-x: auto;
+}
+
+.recent-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+
+.recent-table th {
+  text-align: left;
+  padding: 8px 10px;
+  border-bottom: 2px solid var(--line);
+  color: var(--muted);
+  font-weight: 600;
+  font-size: 0.78rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.recent-table td {
+  padding: 9px 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--text);
+}
+
+.recent-table tr:last-child td {
+  border-bottom: none;
+}
+
+.recent-table tr:hover td {
+  background: var(--surface-soft);
+}
+
+.td-time {
+  white-space: nowrap;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  font-size: 0.8rem;
+}
+
+.td-ip {
+  white-space: nowrap;
+  font-family: "SF Mono", "Consolas", "Menlo", monospace;
+  font-size: 0.78rem;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+}
+
+.td-path {
+  font-weight: 500;
+}
+
+.td-referer {
+  color: var(--muted);
+  font-size: 0.8rem;
+  max-width: 160px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.stats-updated {
+  text-align: center;
+  color: var(--muted);
+  font-size: 0.78rem;
+  margin-top: 8px;
+}
+
+/* 响应式 */
+@media (max-width: 760px) {
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .top-pages-list li,
+  .geo-list li {
+    grid-template-columns: 100px 1fr 40px;
+    gap: 8px;
+    font-size: 0.82rem;
+  }
+
+  .page-path,
+  .geo-name {
+    max-width: 100px;
+  }
+}
+
+@media (max-width: 480px) {
+  .stats-grid {
+    grid-template-columns: 1fr;
+  }
 }
 
 /* 炉石页面响应式 */
