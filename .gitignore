@@ -4,6 +4,7 @@ devops-actions/
 # Node.js
 node_modules/
 dist/
+logs/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*

@@ -1,6 +1,13 @@
 // 我自己做的 Vue 项目索引：新增页面只需在这里追加一项
 export const vueApps = [
   {
+    to: '/hearthstone',
+    title: '炉石传说成就查看器',
+    kicker: '游戏 · 数据浏览',
+    summary: '按扩展包/职业浏览炉石传说成就，支持筛选、查看关联卡牌图片、一键复制推荐卡组代码。',
+    tags: ['炉石传说', '成就', '卡牌']
+  },
+  {
     to: '/crazy-people',
     title: '疯狂的人',
     kicker: '互动 · 小游戏',
@@ -48,12 +55,5 @@ export const vueApps = [
     kicker: '数据 · 看板',
     summary: '配速趋势、评级、日历与导入导出的跑步间歇训练数据看板。',
     tags: ['训练', '配速', '图表']
-  },
-  {
-    to: '/hearthstone',
-    title: '炉石传说成就查看器',
-    kicker: '游戏 · 数据浏览',
-    summary: '按扩展包/职业浏览炉石传说成就，支持筛选、查看关联卡牌图片、一键复制推荐卡组代码。',
-    tags: ['炉石传说', '成就', '卡牌']
   }
 ]

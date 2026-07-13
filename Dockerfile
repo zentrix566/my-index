@@ -7,19 +7,32 @@ RUN npm ci
 
 COPY index.html vite.config.js ./
 COPY favicon.svg ./
+COPY public/ ./public/
 COPY src/ ./src/
 
 RUN npm run build
 
-FROM nginx:1.25-alpine
+FROM node:20-alpine
 
 LABEL maintainer="Zentrix"
 
-RUN rm /etc/nginx/nginx.conf && rm -rf /usr/share/nginx/html/*
+WORKDIR /app
 
-COPY nginx.conf /etc/nginx/nginx.conf
-COPY --from=build /app/dist/ /usr/share/nginx/html/
+# 安装生产依赖（Express + 日志 + 地理定位）
+COPY package*.json ./
+RUN npm ci --omit=dev && npm cache clean --force
+
+# 复制构建产物和服务端代码
+COPY --from=build /app/dist/ ./dist/
+COPY server/ ./server/
+
+# 创建日志目录（将通过 K8s hostPath 挂载到宿主机）
+RUN mkdir -p /app/logs
+
+ENV NODE_ENV=production
+ENV PORT=80
+ENV LOG_DIR=/app/logs
 
 EXPOSE 80
 
-CMD ["nginx", "-g", "daemon off;"]
+CMD ["node", "server/index.js"]

@@ -3,16 +3,24 @@
   "version": "1.0.0",
   "type": "module",
   "scripts": {
-    "dev": "vite",
+    "dev": "concurrently -n vite,server -c blue,green \"vite\" \"node server/index.js\"",
+    "dev:frontend": "vite",
+    "dev:server": "node server/index.js",
     "build": "vite build",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "server": "node server/index.js",
+    "start": "NODE_ENV=production node server/index.js"
   },
   "dependencies": {
+    "compression": "^1.7.4",
+    "express": "^4.19.2",
+    "ip2region": "^2.3.0",
     "vue": "^3.4.0",
     "vue-router": "^4.2.0"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.7",
+    "concurrently": "^10.0.3",
     "vite": "^8.0.16"
   }
 }
