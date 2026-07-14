@@ -2,8 +2,14 @@
   "id": "badlands",
   "name": "荒芜之地",
   "description": "炉石传说荒芜之地版本成就数据",
-  "updatedAt": "2026-07-13",
+  "updatedAt": "2026-07-14",
   "cardImageDir": "badlands",
+  "referenceLinks": [
+    {
+      "name": "旅法师营地：荒芜之地成就卡组攻略",
+      "url": "https://www.iyingdi.com/tz/post/5460879"
+    }
+  ],
   "achievements": [
     {
       "id": "bl-019",
@@ -14,7 +20,12 @@
       "relatedCards": [
         "荒芜之地劫掠者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "劫掠骑",
+          "code": "AAECAdK+BQS9jwbkmAbPngbSuQYNyaAEuMUFre0Fuf4FkIMGhY4GzpwGy58Gw78G6ckG7ckGpeEG7eYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "一次召唤7个荒芜之地劫掠者。",
@@ -33,7 +44,12 @@
       "relatedCards": [
         "决战！"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "棱镜骑",
+          "code": "AAECAdK+BQLkmAbSuQYOyaAEuMUFkIMGmY4G9ZUG65gGzpwGz54Gy58Gw78G6ckG7ckG78kGpeEGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时拥有3个用“决战！”召唤的歹徒，且你的对手一个都没有。",
@@ -52,7 +68,12 @@
       "relatedCards": [
         "棱彩光束"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "棱镜骑",
+          "code": "AAECAdK+BQLkmAbSuQYOyaAEuMUFkIMGmY4G9ZUG65gGzpwGz54Gy58Gw78G6ckG7ckG78kGpeEGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用棱彩光束消灭50个敌人。",
@@ -83,7 +104,12 @@
       "relatedCards": [
         "仙人掌构造术"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "仙人掌德",
+          "code": "AAECAc6LBQL83wW6zgYOqeAFp/oF2voFu5UGvJUGvZUG65gGzpwG2JwG2pwG6qgG0roGpLsGouIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用仙人掌构造术发现16张不同的随从牌。",
@@ -102,7 +128,12 @@
       "relatedCards": [
         "巨龙魔像"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "接龙德",
+          "code": "AAECAc6LBQKxwQa6zgYOp/oF2voFu5UGvJUGvZUG+ZcGzpwG15wG2pwG4KgG6qgG76kGh7EG88oGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时，场上有7个巨龙魔像。",
@@ -121,7 +152,12 @@
       "relatedCards": [
         "巨龙传说"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "故事德",
+          "code": "AAECAc6LBQLSuga6zgYOp/oF2voF8foFmIAGu5UGvJUG+ZcG65gGzpwG2pwG6qgG76kG88oGouIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用25张巨龙传说创建的龙牌。",
@@ -152,7 +188,12 @@
       "relatedCards": [
         "蛇眼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "灌铅瞎",
+          "code": "AAECAdKLBQSW1ASs0QXIjwb8wAYNq58EnKAEuMUF7c0FpPoFhY4GiZAGj5AGnJoG75sGz54G7p4G38AGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用蛇眼投出两个1点。",
@@ -171,7 +212,12 @@
       "relatedCards": [
         "迅疾连射"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "击锤瞎",
+          "code": "AAEBAdKLBQAP1p0D6b4D98MD2d4DifcD7KAEvsoE4fgF4/gFipAG6Z4G7p4GvrAG1sAG38AGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张迅疾连射消灭6个敌人。",
@@ -190,7 +236,12 @@
       "relatedCards": [
         "盲眼神射手"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "盲打瞎",
+          "code": "AAEBAdKLBQKW1ATIjwYO5OQF4fgFxfkFkIMGhY4GhpAGiZAGjZAG65gG6Z4G17gGwr4G9OUG1/MGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "触发盲眼神射手的效果30次。",
@@ -221,7 +272,12 @@
       "relatedCards": [
         "矿镐战斧"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "矿镐战",
+          "code": "AAECAbyRBQLVugb6yQYOuMUF5eQF3o0Gu5EGkJcG8ZwGv6IGkagGo7sGpLsG9skG88oGweEGm/IGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用同一把矿镐战斧攻击6次。",
@@ -240,7 +296,12 @@
       "relatedCards": [
         "荒芜之地乱斗打手"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "好战斗",
+          "code": "AAECAbyRBQKxwQb6yQYOhqAEjtQEofsFyoMGko4GwpEG6JgGnJ4Gh6AG4KgG7KkG1boG88oGouIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "荒芜之地乱斗打手赢得25场她发起的乱斗。",
@@ -259,7 +320,12 @@
       "relatedCards": [
         "爆破工头索格伦"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "爆破战",
+          "code": "AAECAbyRBR6oigSIoASJoASO1ASQ1AT9xAXwzQWs0QXG8wW0+AWQ+wWh+wXYgQaFggaSjgaLlAb3lwacngafngbRngaHoAavqAbDugbVugbCvgaOvwa6wQb6yQbzygbB4QYAAAEDpPsF/cQFhpQG/cQF0LAG/cQFAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用爆破工头索格伦的TNT炸药炸毁40张牌。",
@@ -291,7 +357,12 @@
         "列车难题",
         "列车司机杰里"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "矿车术",
+          "code": "AAECAZT9BgSW1ASnqAaxwQaTywYNnKAEuMUF9MYFkIMGyoMG2JgG75sGzpwGo6AG+KMGpqgG4KgG8KkGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用矿车攻击120次。",
@@ -310,7 +381,12 @@
       "relatedCards": [
         "锅炉燃料"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "上车术",
+          "code": "AAECAZT9BgK4igSangYO2dAFhOUFi+wF2oAGhY4GzpwGhJ4Gz54G054Gm6AGo6AG96MGpqgGheIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在非使用的情况下用锅炉燃料抽60张牌。",
@@ -332,7 +408,12 @@
         "轮式淤泥怪",
         "腐臭淤泥波普加"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "清理术",
+          "code": "AAECAZT9BgL5xgWAngYO9MYFyOsF9fgFhY4GlZcGl5cGmJcGzpwGhJ4Go6AGq6AGpqgG8KkGlbMGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用，弃掉或摧毁50张淤泥桶。",
@@ -363,7 +444,12 @@
       "relatedCards": [
         "白骨堆"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "白骨DK",
+          "code": "AAECAf7gBgTDvgakwAaowAaWywYNh/YEyoMG0IMG9YwG94wGhY4G85EGkqAGu7EG/7oGv74GpsAGkMsGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "召唤100个白骨堆。",
@@ -382,7 +468,12 @@
       "relatedCards": [
         "矿坑老板雷斯卡"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "传说DK",
+          "code": "AAECAf7gBgaoigT/lwbDvgakwAaowAaWywYMh/YEyoMG9YwG94wGhY4G85EGkqAG4KgGu7EG/7oGpsAGkMsGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用矿坑老板雷斯卡夺取一个传说随从的控制权。",
@@ -401,7 +492,12 @@
       "relatedCards": [
         "堆尸荒野"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "尸死DK",
+          "code": "AAECAf7gBga0gAW5sQbDvgakwAaowAaWywYMh/YEhY4Gg5IGkZcGkqAGu7EG/7oGv74GpsAGrsoGkMsG5OUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张残骸遍野造成10点伤害。",
@@ -432,7 +528,12 @@
       "relatedCards": [
         "溢流熔岩"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "岩浆法",
+          "code": "AAECAdeEBQL3mwb9sAYOlrcF8sQFsf4F3/4F1JUG75sG8ZsGmJ0Gsp4G054GzKIG4qYGtKcG7eYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用溢流熔岩的效果尝试召唤10个放不下的溢流熔岩。",
@@ -451,7 +552,12 @@
       "relatedCards": [
         "观星（决战荒芜之地）"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "观星法",
+          "code": "AAECAYHPBgLQ+AX14gYO4MMFuMUF6MUF3vgFkIMGkY4G65gG8psGzpwGz54GxKIG5bgGwr4G6ckGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用观星的效果施放法术两次，完成30次。",
@@ -470,7 +576,12 @@
       "relatedCards": [
         "泰瑟兰·血望者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "使命法",
+          "code": "AAECAdeEBQj9xAWs0QWL7AXRgwbkmAb4mwbM4Qb14gYLn9QE4MMFuMUF2dAF3vgFhY4GzpwGz54G054G6ckGy+EGAAEB95sG/cQFAez2Bf3EBQA="
+        }
+      ],
       "stages": [
         {
           "description": "用泰瑟兰·血望者少消耗50点法力值。",
@@ -501,7 +612,12 @@
       "relatedCards": [
         "许愿井"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "许愿贼",
+          "code": "AAECAdW+BQAP9p8E958E38MFuMUFv/cFyPsFkIMGuYYGyJQGzpQGjZYG4KgGtrUG6ckGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "将5枚幸运币投入一座许愿井。",
@@ -520,7 +636,12 @@
       "relatedCards": [
         "飞镖投掷"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "飞镖贼",
+          "code": "AAECAdW+BQLuwwWtpwYO9p8E958E38MFv/cFyPsFyYAGuYYGyJQGvZ4G7p4G2aIGwr4G8skGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "赢得30次飞镖投掷。",
@@ -539,7 +660,12 @@
       "relatedCards": [
         "古董投手"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "古董贼",
+          "code": "AAECAdW+BQLI+wXQlAYO9p8E958E38MFuMUFv/cFofwFyoMG0IMGyJQGyZQGypQGtrUG6ckGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用古董投手消灭10个敌人。",
@@ -570,7 +696,12 @@
       "relatedCards": [
         "飞车劫掠"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "飞车牧",
+          "code": "AAECAdG+BQAPougDrYoEucQFuMUF+/gFkIMGyoMGhY4GhpgG65gGzpwGz54GlqAG17oG3PMGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用40张飞车劫掠创建的牌。",
@@ -589,7 +720,12 @@
       "relatedCards": [
         "荒地奇兵伊莉斯"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "伊莉斯牧",
+          "code": "AAECAdG+BR6oigStigSEnwSFnwSvwwW/xAW7xwXP9gXt9wX++AWh+gXJgAaLlQbRmwblnAamnQaSngaaoAbVogavqAbDqAbxqQaZwAaQwQa6wQbawQbe2Abn5gbo5gbh6wYAAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张荒地奇兵伊莉斯召唤总计法力值消耗24点的随从。",
@@ -610,7 +746,12 @@
         "影叶入侵",
         "萤光虫群"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "材料牧",
+          "code": "AAECAdG+BQAPougDrYoEoukF+/gFkIMGhY4G9pUG6ZgG65gGw5wGzpwGo50Gpp0G8akGwr4GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "将75点余下的材料存入法力值消耗为1的瓶子。",
@@ -641,7 +782,12 @@
       "relatedCards": [
         "骷髅牛"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "骷髅猎",
+          "code": "AAEBAda+BQLHD5S1BA6AB5zNAv+6A5T8A6mfBNejBMG5BOT1Bc2OBv2UBr6cBuqlBs7ABv7lBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中召唤8头骷髅牛。",
@@ -660,7 +806,12 @@
       "relatedCards": [
         "迷彩坐骑"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "迷彩猎",
+          "code": "AAECAda+BQAP2qwFuMUF5soFhY4Gzo4G344G65gGzpwGz54G/6UGjMEGi9YGjtYGtOEG7eYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用迷彩坐骑骑乘全部8种变色龙。",
@@ -679,7 +830,12 @@
       "relatedCards": [
         "迷失者塞尔杜林"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "翼猎",
+          "code": "AAECAda+BR6coASW1ATmygXqygXf7QXq8gXz8gXk9QXI9gXS+AXX+QWAggaFjgbOjgbUjgbfjgbvmwbxpQb+pQavqAaGvwbQwAaMwQavwQa3wQa6wQa6zgan0waL1gbX8wYAAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用迷失者塞尔杜林攻击并消灭20个敌人。",
@@ -710,7 +866,12 @@
       "relatedCards": [
         "荷利戴医生"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "青蛙萨",
+          "code": "AAECAdOLBR6oigT9nwSF1AT9xAW+0AWv0QX26AXe6QXN7gX08gWH+wX5jAavjQbDjwarnQatnQacngafngbmnganpQakpwaopwbTpwavqAbgqAbDvgakwAamwAaowAaA4gYAAAEDn54G/cQF1KUG/cQF06cG/cQFAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用荷利戴医生的法杖召唤第9只青蛙。",
@@ -729,7 +890,12 @@
       "relatedCards": [
         "可靠陪伴"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "陪伴萨",
+          "code": "AAECAdOLBQAP5eQF3ukFyoMGs40GhY4Gw48G7JUG65gGzpwGnJ4Gz54Gy58GpKcGpsAG0dAGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "对8个不同随从类型的随从施放可靠陪伴。",
@@ -748,7 +914,12 @@
       "relatedCards": [
         "步移山丘"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "步移萨",
+          "code": "AAECAdOLBQLUpQal0wYOhdQEh/sF6pgGq50Gp6UGpKcGqKcG66kGw74G1sAG18AG9sAG+MAGluYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用步移山丘攻击40次。",
@@ -779,7 +950,12 @@
       "relatedCards": [
         "余震"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "余震萨",
+          "code": "AAECAdOLBQAP5eQF3ukFyoMGs40GhY4G7JUG65gGzpwGnJ4Gn54Gz54Gy58GpKcGpsAG0dAGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用余震造成100点伤害。",
@@ -804,7 +980,12 @@
       "relatedCards": [
         "地幔塑型者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "塑岩猎",
+          "code": "AAECAda+BQAPqZ8E5J8E6OgF3+0F6vIF5PUFvpwGkJ4G6qUG8aUG4KgG3LgGi9YG/uUGguYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使地幔塑型者的法力值消耗减少50点。",
@@ -829,7 +1010,12 @@
       "relatedCards": [
         "破碎映像"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "映像牧",
+          "code": "AAEBAdG+BQAP+hHqvwLRwQKZmwPXzgPi3gP73wOtigSNsgTgpAXt9wWjnQaXoAaaoAaAuAYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "对总计消耗60点法力值的随从施放破碎映像。",
@@ -854,7 +1040,12 @@
       "relatedCards": [
         "灼燃之心"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "易怒战",
+          "code": "AAECAbyRBQLkmAbLnwYOuMUF5eQFkPsFl/sFofsFuf4F65gG75sGzpwGnJ4Gz54G054G6Z4Gv6IGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用灼燃之心使你的英雄获得攻击力，完成30次。",
@@ -879,7 +1070,12 @@
       "relatedCards": [
         "灵魂冻结"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "冷血法",
+          "code": "AAECAdeEBQAPq58E4MMF6MUFxscF2dAFi+wF3vgFkIMG65gGzpwGmJ0Gz54G0J4G054GxKIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用灵魂冻结冻结60个随从。",
@@ -904,7 +1100,12 @@
       "relatedCards": [
         "隐藏宝石"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "水晶牧",
+          "code": "AAECAdG+BQa5xAXMxgXPxgXP9gWknQbX0gYMougDy6AEu8cFoukF7fcF+/gF6ZgGpp0GlqAGmcAGzsAGzNUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一个隐藏宝石恢复6点生命值。",
@@ -929,7 +1130,12 @@
       "relatedCards": [
         "错位化石"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "化石猎",
+          "code": "AAECAda+BQLf7QX95QYOqZ8E5J8EuMUF6OgF6vIFzpwGh54G6qUG4KgG3LgGzsAGjMEGi9YGguYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用40张错位化石创建的随从牌。",
@@ -954,7 +1160,12 @@
       "relatedCards": [
         "影石潜伏者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "接棒贼",
+          "code": "AAECAdW+BQAPkp8E958E07IF2sMFv/cFyPsFyJQGvZ4G6p4G7p4G2aIGracG7qkGtrUGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使影石潜伏者获得一把具有5点攻击力的武器。",
@@ -979,7 +1190,12 @@
       "relatedCards": [
         "义肢假手"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "磁力骑",
+          "code": "AAEBAdK+BQSUD4UXltQEscEGDdf+AtL5A5K1BOG1BLLBBNrTBIHiBJWqBdnQBY71Bbn+Bc6cBsywBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "对同一个随从磁力吸附2个义肢假手。",
@@ -1004,7 +1220,12 @@
       "relatedCards": [
         "无畏爵士芬利"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "芬利萨",
+          "code": "AAECAdOLBQLl5AWTngYO3ukFyoMGs40GhY4G7JUG65gGzpwGnJ4Gz54Gy58GpKcGzrAGpsAG0dAGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用无畏爵士芬利将25个敌方随从变形成为1/1的鱼人。",
@@ -1029,7 +1250,12 @@
       "relatedCards": [
         "穴居人宝石投掷者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "彩糖德",
+          "code": "AAECAc6LBQTBlQaxwQa6wQa6zgYNrp8E2voFu5UGvJUG15wG2JwG2pwGoqAG6qgG76kGh7EG0roG88oGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用穴居人宝石投掷者消灭40个敌人。",
@@ -1054,7 +1280,12 @@
       "relatedCards": [
         "日斑巨龙"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "快枪法",
+          "code": "AAECAdeEBQj9xAWs0QWL7AXRgwbkmAb4mwbM4Qb14gYLn9QE4MMFuMUF2dAF3vgFhY4GzpwGz54G054G6ckGy+EGAAEB95sG/cQFAez2Bf3EBQA="
+        }
+      ],
       "stages": [
         {
           "description": "使用50张当回合拿到的快枪牌。",
@@ -1085,7 +1316,12 @@
       "relatedCards": [
         "桶沿警长"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "警长术",
+          "code": "AAECAZT9BgT5xgWhkgaAngaVswYNhKAEzvoFxJ4G0J4Go6AGpqgGnLMGnrgGw7gGkb8GlcoGp8oG8OYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "将20个随从送入桶沿警长的监狱。",
@@ -1110,7 +1346,12 @@
       "relatedCards": [
         "破地钻机"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "挖宝法",
+          "code": "AAECAdeEBQAP4MMF6MUF3vgFkIMGyoMG0IMGlYcG65gG85sGzpwGmJ0Gz54G0J4G054Ghb8GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "发掘100个宝藏。",
@@ -1141,7 +1382,12 @@
       "relatedCards": [
         "塞拉赞恩"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "石母法",
+          "code": "AAECAdeEBQLNogb9sAYOlrcF8sQF3vgFsf4F3/4F75sG8ZsG9ZsGmJ0Gsp4G054GzKIG4KgG7eYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用25张属性值被塞拉赞恩翻倍的元素牌。",
@@ -1166,7 +1412,12 @@
       "relatedCards": [
         "交际鱼人"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "鱼人贼",
+          "code": "AAECAdW+BQAPkZ8E9p8E958E38MF2dAFi+wFv/cFkY4GyJQGzpwGz54G054G7p4GjNYGyfQGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用20张交际鱼人创建的鱼人牌。",
@@ -1199,7 +1450,12 @@
         "食人魔帮骑手",
         "食人魔帮王牌"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "食人魔贼",
+          "code": "AAECAdW+BQLuwwWzmQYO9p8E958E38MFuMUFkIMGyJQGrZkGrpkGr5kG75sG7p4GtrUG6ckGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用食人魔帮的随从攻击40次。",
@@ -1230,7 +1486,12 @@
       "relatedCards": [
         "炫彩旋岩虫"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "炫岩瞎",
+          "code": "AAECAdKLBQLEuAb8wAYOr6AE5OQF4fgF7Z8GzaIG/KgGqrgG17gG17oG1sAG2MAG38AG9sAGrcUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一只炫彩旋岩虫使随从获得3种不同的额外效果。",
@@ -1255,7 +1516,12 @@
       "relatedCards": [
         "正午决斗者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "正午牧",
+          "code": "AAEBAdG+BQKspQO7xAUO+hHRwQLo0AKZmwOfqQPXzgP73wOg9wOMgQStigSkkQWGpAXt9wWbngYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用正午决斗者摧毁你对手的12张牌。",
@@ -1274,7 +1540,12 @@
       "relatedCards": [
         "奇迹推销员"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "蛇油法",
+          "code": "AAECAdeEBQTr9AW0pwbjzwaW1gYNre0F7PYF3vgFv/4F2P4FpP8FhY4Gg5UG8psGsp4GtqcGy9AGhuYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用蛇油消灭敌方英雄。",
@@ -1310,7 +1581,12 @@
       "relatedCards": [
         "悬赏公告栏"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "通缉贼",
+          "code": "AAECAdW+BQLQlAbkmAYO9p8E958EuMUFkIMGyoMG0YMGhY4GyJQGyZQGjZYGzpwG2aIGtrUGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在场上有悬赏公告栏的情况下使用发掘，快枪，可交易和传说卡牌各一张。",
@@ -1331,7 +1607,12 @@
         "排舞的伴侣",
         "吵闹的伴侣"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "伴侣贼",
+          "code": "AAECAdW+BQLuwwWxwQYO9p8E958E38MFuMUFwPgFkIMGvoMGyJQG75sG0JwG7p4GtrUG6ckGpeEGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "触发30次伴侣的战吼效果。",
@@ -1354,7 +1635,12 @@
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "宇宙战",
+          "code": "AAECAbyRBSiGoASIoASJoASO1ASQ1AT9xAXwzQW0+AWQ+wWh+wXYgQaFggaQgwaLlAaplQb3lwacngafngbNngbRngaHoAaPowbHpAavqAbsqQbQsAbDugbVugakuwbCvgaOvwauwAa6wQb6yQbzygaPzwan0wbk5gbx5gbJ6AYAAAEGltQE/cQFz54G/cQF9bMGx6QG97MGx6QGvb4G/cQF7t4Gx6QGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用没有重复的牌的套牌赢得100场对战。",
@@ -1373,7 +1659,12 @@
       "relatedCards": [
         "淘金客"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "淘金猎",
+          "code": "AAECAda+BQAPqZ8E5J8E3+0F6vIFyPYF0vgFy44GvpwGzpwG6qUG8aUG3LgGzsAG/uUGguYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用淘金客淘到金。",
@@ -1392,7 +1683,12 @@
       "relatedCards": [
         "艾泽里特巨人"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "元素法",
+          "code": "AAECAdeEBQL3mwb9sAYOlrcF8sQFsf4F3/4F1JUG75sG8ZsGmJ0Gsp4G054GzKIG4qYGtKcG7eYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "连续在10个回合中均使用元素牌。",

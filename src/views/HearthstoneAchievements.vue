@@ -118,7 +118,21 @@
 
       <section class="hs-result-bar">
         <span>共 {{ filteredAchievements.length.toLocaleString() }} 个成就</span>
-        <span v-if="viewMode === 'expansion'">{{ currentExpansion?.description }}</span>
+        <span v-if="viewMode === 'expansion'">
+          {{ currentExpansion?.description }}
+          <template v-if="currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0">
+            <span class="hs-ref-links">
+              <template v-for="(link, idx) in currentExpansion.referenceLinks" :key="link.url">
+                <a :href="link.url" target="_blank" rel="noopener noreferrer" class="hs-ref-link">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                  {{ link.name }}
+                </a>
+              </template>
+            </span>
+          </template>
+        </span>
         <span v-else-if="viewMode === 'class'">按职业查看所有版本中的成就</span>
         <span v-else>查看我的成就完成进度</span>
       </section>
