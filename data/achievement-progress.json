@@ -534,8 +534,10 @@
     "count": 3
   },
   "ed-008": {
-    "stages": {},
-    "count": 0
+    "stages": {
+      "0": true,
+      "1": true
+    }
   },
   "ed-023": {
     "stages": {
@@ -564,8 +566,10 @@
     "count": 0
   },
   "ed-011": {
-    "stages": {},
-    "count": 0
+    "stages": {
+      "0": true,
+      "1": true
+    }
   },
   "ed-026": {
     "stages": {},
@@ -641,16 +645,20 @@
     "count": 0
   },
   "dd-021": {
-    "stages": {},
-    "count": 0
+    "stages": {
+      "0": true,
+      "1": true
+    }
   },
   "dd-022": {
     "stages": {},
     "count": 0
   },
   "dd-015": {
-    "stages": {},
-    "count": 5
+    "stages": {
+      "0": true,
+      "1": true
+    }
   },
   "dd-016": {
     "stages": {},
@@ -685,8 +693,10 @@
     }
   },
   "dd-007": {
-    "stages": {},
-    "count": 0
+    "stages": {
+      "0": true,
+      "1": true
+    }
   },
   "dd-008": {
     "stages": {
@@ -1189,8 +1199,10 @@
     }
   },
   "bl-034": {
-    "stages": {},
-    "count": 179
+    "stages": {
+      "0": true,
+      "1": true
+    }
   },
   "bl-035": {
     "stages": {},
