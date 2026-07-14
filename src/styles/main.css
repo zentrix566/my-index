@@ -1276,6 +1276,31 @@ a.content-card:hover {
   font-size: 13px;
 }
 
+.hs-ref-links {
+  display: inline-flex;
+  gap: 12px;
+  margin-left: 12px;
+}
+
+.hs-ref-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: #2563eb;
+  text-decoration: none;
+  border-bottom: 1px dashed #93c5fd;
+  transition: color 0.15s, border-color 0.15s;
+}
+
+.hs-ref-link:hover {
+  color: #1d4ed8;
+  border-bottom-color: #2563eb;
+}
+
+.hs-ref-link svg {
+  flex-shrink: 0;
+}
+
 /* 职业分组 */
 .hs-expansion-groups {
   margin-top: 16px;
