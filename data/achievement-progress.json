@@ -5,7 +5,7 @@
   },
   "wz-021": {
     "stages": {},
-    "count": 27
+    "count": 50
   },
   "dd-005": {
     "stages": {},
@@ -14,40 +14,40 @@
   "pr-026": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
   "bl-044": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ed-021": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "dd-027": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "cot-024": {
     "stages": {},
-    "count": 1
+    "count": 19
   },
   "pr-017": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -57,15 +57,15 @@
   },
   "ungoro-009": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ungoro-003": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -75,19 +75,19 @@
   },
   "wz-003": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "wz-006": {
     "stages": {},
-    "count": 0
+    "count": 6
   },
   "bl-056": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -99,16 +99,16 @@
   },
   "ed-019": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ed-014": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
@@ -118,57 +118,57 @@
   },
   "ed-028": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "vh-009": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "wz-010": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ct-007": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "wz-004": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "cot-005": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ed-009": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "pr-001": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -178,15 +178,15 @@
   },
   "ungoro-014": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "cot-004": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -202,16 +202,16 @@
   },
   "ct-017": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ed-015": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
@@ -225,8 +225,8 @@
   },
   "cot-006": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 80
   },
@@ -236,23 +236,23 @@
   },
   "vh-002": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "wz-024": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
   "dd-014": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 60
   },
@@ -262,29 +262,29 @@
   },
   "ct-003": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "pr-014": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "cot-001": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "wz-001": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -296,15 +296,15 @@
   },
   "pr-028": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "wz-027": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -320,8 +320,8 @@
   },
   "dd-007": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -341,19 +341,19 @@
   },
   "pr-008": {
     "stages": {},
-    "count": 21
+    "count": 60
   },
   "ed-006": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ct-015": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -369,14 +369,17 @@
   },
   "bl-039": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 12
   },
   "wz-016": {
-    "stages": {},
-    "count": 4
+    "stages": {
+      "0": true,
+      "1": true
+    },
+    "count": 0
   },
   "dd-023": {
     "stages": {
@@ -398,15 +401,15 @@
   },
   "pr-013": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ed-011": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -426,8 +429,8 @@
   },
   "dd-011": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -437,36 +440,36 @@
   },
   "pr-002": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "bl-036": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 120
   },
   "bl-021": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
   "ungoro-018": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "bl-052": {
     "stages": {},
-    "count": 5
+    "count": 6
   },
   "bl-057": {
     "stages": {
@@ -482,15 +485,15 @@
   },
   "wz-028": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ed-013": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -508,8 +511,8 @@
   },
   "wz-018": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -521,7 +524,7 @@
   },
   "cot-023": {
     "stages": {},
-    "count": 4
+    "count": 26
   },
   "bl-047": {
     "stages": {},
@@ -539,14 +542,17 @@
   },
   "ct-014": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "wz-002": {
-    "stages": {},
-    "count": 5
+    "stages": {
+      "0": true,
+      "1": true
+    },
+    "count": 0
   },
   "bl-010": {
     "stages": {},
@@ -558,15 +564,15 @@
   },
   "ungoro-011": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "bl-042": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 3
   },
@@ -578,8 +584,8 @@
   },
   "cot-011": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -590,15 +596,15 @@
   "cot-027": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
   "ungoro-015": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -608,8 +614,8 @@
   },
   "cot-009": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -619,15 +625,15 @@
   },
   "cot-002": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "dd-013": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -655,8 +661,8 @@
   },
   "ungoro-023": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -676,8 +682,8 @@
   },
   "pr-024": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -703,15 +709,15 @@
   },
   "ct-008": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "dd-015": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -721,23 +727,23 @@
   },
   "ungoro-019": {
     "stages": {},
-    "count": 6
+    "count": 9
   },
   "dd-028": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ungoro-020": {
     "stages": {},
-    "count": 2
+    "count": 10
   },
   "dd-004": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 15
   },
@@ -747,8 +753,8 @@
   },
   "dd-008": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -758,15 +764,15 @@
   },
   "dd-001": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "dd-019": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -787,8 +793,8 @@
   "dd-025": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
@@ -802,36 +808,36 @@
   },
   "ungoro-028": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ed-027": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "cot-015": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 8
   },
   "cot-028": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
   "vh-015": {
     "stages": {},
-    "count": 58
+    "count": 85
   },
   "bl-055": {
     "stages": {
@@ -842,8 +848,8 @@
   "dd-026": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
@@ -853,68 +859,69 @@
   },
   "wz-011": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "bl-050": {
     "stages": {},
-    "count": 69
+    "count": 120
   },
   "cot-026": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "vh-004": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "dd-002": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ct-001": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ungoro-005": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
   "dd-024": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "wz-013": {
     "stages": {
-      "0": true
+      "0": true,
+      "1": true
     },
-    "count": 3
+    "count": 0
   },
   "pr-020": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -924,7 +931,7 @@
   },
   "wz-019": {
     "stages": {},
-    "count": 35
+    "count": 40
   },
   "cot-010": {
     "stages": {},
@@ -947,8 +954,8 @@
   "pr-025": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
@@ -958,7 +965,7 @@
   },
   "wz-008": {
     "stages": {},
-    "count": 27
+    "count": 30
   },
   "cot-018": {
     "stages": {},
@@ -988,15 +995,15 @@
   },
   "wz-014": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "wz-012": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1010,50 +1017,50 @@
   },
   "ct-004": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ed-007": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ed-018": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ungoro-007": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ungoro-013": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ungoro-027": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "wz-025": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1065,8 +1072,8 @@
   },
   "pr-019": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1076,19 +1083,19 @@
   },
   "vh-001": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "cot-022": {
     "stages": {},
-    "count": 9
+    "count": 28
   },
   "dd-021": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1104,16 +1111,16 @@
   },
   "wz-022": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ct-018": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
@@ -1128,15 +1135,15 @@
   "ct-019": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
   "bl-034": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1146,28 +1153,29 @@
   },
   "pr-007": {
     "stages": {
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "wz-007": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "bl-041": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 8
   },
   "ed-020": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1177,47 +1185,50 @@
   },
   "vh-006": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "cot-012": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "pr-021": {
-    "stages": {},
+    "stages": {
+      "0": true,
+      "1": true
+    },
     "count": 0
   },
   "ed-024": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ed-002": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "vh-008": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ungoro-001": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1227,15 +1238,15 @@
   },
   "ed-023": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "dd-010": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1250,23 +1261,23 @@
   "bl-018": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
   "pr-018": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 171
   },
   "bl-027": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
@@ -1277,8 +1288,8 @@
   "ungoro-006": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
@@ -1300,8 +1311,8 @@
   },
   "pr-012": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1315,15 +1326,15 @@
   },
   "bl-035": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 100
   },
   "ct-010": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1333,15 +1344,15 @@
   },
   "ungoro-022": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ed-016": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1355,26 +1366,26 @@
   },
   "ed-017": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "dd-018": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "vh-014": {
     "stages": {},
-    "count": 35
+    "count": 50
   },
   "ungoro-010": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1390,13 +1401,16 @@
   },
   "ungoro-008": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "wz-009": {
-    "stages": {},
+    "stages": {
+      "0": true,
+      "1": true
+    },
     "count": 0
   },
   "bl-054": {
@@ -1406,8 +1420,8 @@
   "wz-023": {
     "stages": {
       "0": true,
-      "2": true,
-      "1": true
+      "1": true,
+      "2": true
     },
     "count": 0
   },
@@ -1417,8 +1431,8 @@
   },
   "pr-004": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1434,8 +1448,8 @@
   },
   "ed-008": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1445,50 +1459,50 @@
   },
   "cot-020": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 200
   },
   "pr-003": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "vh-013": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ungoro-004": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "cot-007": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ungoro-024": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
   "ed-001": {
     "stages": {
-      "1": true,
-      "0": true
+      "0": true,
+      "1": true
     },
     "count": 0
   },
@@ -1513,5 +1527,12 @@
   "bl-046": {
     "stages": {},
     "count": 9
+  },
+  "vh-003": {
+    "stages": {
+      "0": true,
+      "1": true
+    },
+    "count": 0
   }
 }
