@@ -42,7 +42,7 @@
   },
   "cot-024": {
     "stages": {},
-    "count": 19
+    "count": 23
   },
   "pr-017": {
     "stages": {
@@ -217,7 +217,7 @@
   },
   "bl-045": {
     "stages": {},
-    "count": 139
+    "count": 146
   },
   "pr-022": {
     "stages": {},
@@ -469,7 +469,7 @@
   },
   "bl-052": {
     "stages": {},
-    "count": 6
+    "count": 11
   },
   "bl-057": {
     "stages": {
@@ -528,7 +528,7 @@
   },
   "bl-047": {
     "stages": {},
-    "count": 52
+    "count": 75
   },
   "pr-010": {
     "stages": {},
@@ -800,7 +800,7 @@
   },
   "dd-003": {
     "stages": {},
-    "count": 25
+    "count": 31
   },
   "wz-015": {
     "stages": {},
@@ -855,7 +855,7 @@
   },
   "pr-027": {
     "stages": {},
-    "count": 66
+    "count": 69
   },
   "wz-011": {
     "stages": {
@@ -949,7 +949,7 @@
   },
   "bl-025": {
     "stages": {},
-    "count": 24
+    "count": 44
   },
   "pr-025": {
     "stages": {
@@ -1234,7 +1234,7 @@
   },
   "ed-026": {
     "stages": {},
-    "count": 15
+    "count": 16
   },
   "ed-023": {
     "stages": {
@@ -1297,7 +1297,7 @@
     "stages": {
       "0": true
     },
-    "count": 76
+    "count": 80
   },
   "bl-003": {
     "stages": {},
@@ -1397,7 +1397,7 @@
   },
   "bl-012": {
     "stages": {},
-    "count": 60
+    "count": 212
   },
   "ungoro-008": {
     "stages": {
@@ -1415,7 +1415,7 @@
   },
   "bl-054": {
     "stages": {},
-    "count": 0
+    "count": 2
   },
   "wz-023": {
     "stages": {
@@ -1427,7 +1427,7 @@
   },
   "dd-012": {
     "stages": {},
-    "count": 60
+    "count": 101
   },
   "pr-004": {
     "stages": {
@@ -1526,7 +1526,7 @@
   },
   "bl-046": {
     "stages": {},
-    "count": 9
+    "count": 10
   },
   "vh-003": {
     "stages": {
