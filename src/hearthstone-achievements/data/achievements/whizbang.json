@@ -9,7 +9,7 @@
       "id": "wz-013",
       "name": "积压存货",
       "heroClass": "圣骑士",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "难",
       "relatedCards": [
         "发条执行者"
@@ -134,7 +134,7 @@
       "id": "wz-020",
       "name": "纳迦？还是手偶？",
       "heroClass": "恶魔猎手",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "难",
       "relatedCards": [
         "滑矛布袋手偶"

@@ -4,12 +4,21 @@ import { difficultyColors } from '../utils/achievements.js'
 import { useAchievementProgress } from '../composables/useAchievementProgress.js'
 
 const props = defineProps({
-  achievement: { type: Object, required: true }
+  achievement: { type: Object, required: true },
+  showRemaining: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['click'])
 
-const { isStageCompleted, isAchievementCompleted, getCount } = useAchievementProgress()
+const { isStageCompleted, isAchievementCompleted, getCount, getProgressInfo } = useAchievementProgress()
+
+// "快完成"徽标文字（仅在开启 showRemaining 且未完成的累计/多阶段成就上显示）
+const remainingBadge = computed(() => {
+  if (!props.showRemaining) return ''
+  const info = getProgressInfo(props.achievement)
+  if (info.completed) return ''
+  return info.remainingText
+})
 
 const copiedDeckName = ref('')
 
@@ -66,9 +75,10 @@ const copyDeckCode = async (deck, event) => {
   >
     <div class="hs-card-content">
       <div class="hs-card-title-row">
-        <h3 class="hs-card-title">
+          <h3 class="hs-card-title">
           {{ achievement.name }}
           <span v-if="isAchievementCompleted(achievement)" class="hs-completed-badge">✓ 已完成</span>
+          <span v-else-if="remainingBadge" class="hs-almost-badge">{{ remainingBadge }}</span>
           <span v-else-if="isClickable(achievement)" class="hs-card-hint">点击查看卡牌</span>
         </h3>
         <div class="hs-card-badges">
@@ -82,6 +92,11 @@ const copyDeckCode = async (deck, event) => {
             {{ achievement.difficulty }}
           </span>
         </div>
+      </div>
+
+      <div class="hs-card-meta">
+        <span class="hs-meta-item hs-meta-version">📦 {{ achievement._expansionName }}</span>
+        <span class="hs-meta-item hs-meta-class">🎴 {{ achievement.heroClass }}</span>
       </div>
 
       <ul class="hs-stage-list">

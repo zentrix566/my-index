@@ -75,7 +75,7 @@
       <!-- 我的成就模式：分组切换 + 统计面板 -->
       <template v-if="viewMode === 'my'">
         <div class="hs-my-sub-switch">
-          <span class="hs-my-sub-label">分组：</span>
+          <span class="hs-my-sub-label">视图：</span>
           <button
             :class="{ active: myGroupBy === 'expansion' }"
             type="button"
@@ -86,23 +86,39 @@
             type="button"
             @click="myGroupBy = 'class'"
           >按职业</button>
+          <button
+            :class="{ active: myGroupBy === 'almost' }"
+            type="button"
+            @click="myGroupBy = 'almost'"
+          >快完成</button>
         </div>
 
         <div class="hs-stats-panel">
-          <div class="hs-stats-info">
-            <span class="hs-stats-percent">{{ myStats.percentage }}%</span>
-            <span class="hs-stats-detail">
-              已完成阶段 {{ myStats.earnedPoints }} / {{ myStats.totalPoints }} 点
-              （已完成 {{ myCompletedCount }} / {{ myAchievementsList.length }} 个成就）
-            </span>
-          </div>
-          <div class="hs-stats-bar">
-            <div class="hs-stats-bar-fill" :style="{ width: myStats.percentage + '%' }"></div>
-          </div>
+          <template v-if="myGroupBy === 'almost'">
+            <div class="hs-stats-info">
+              <span class="hs-stats-percent">🔥 {{ almostStats.count }}</span>
+              <span class="hs-stats-detail">
+                未完成（含 0%）：累计 {{ almostCumulativeList.length }} 个 · 一次性 {{ almostOneTimeList.length }} 个，按"还差最少"排序
+              </span>
+            </div>
+          </template>
+          <template v-else>
+            <div class="hs-stats-info">
+              <span class="hs-stats-percent">{{ myStats.percentage }}%</span>
+              <span class="hs-stats-detail">
+                已完成阶段 {{ myStats.earnedPoints }} / {{ myStats.totalPoints }} 点
+                （已完成 {{ myCompletedCount }} / {{ myAchievementsList.length }} 个成就）
+              </span>
+            </div>
+            <div class="hs-stats-bar">
+              <div class="hs-stats-bar-fill" :style="{ width: myStats.percentage + '%' }"></div>
+            </div>
+          </template>
         </div>
       </template>
 
       <FilterBar
+        v-if="!(viewMode === 'my' && myGroupBy === 'almost')"
         v-model:query="query"
         v-model:selected-class="selectedClass"
         v-model:selected-difficulty="selectedDifficulty"
@@ -134,6 +150,7 @@
           </template>
         </span>
         <span v-else-if="viewMode === 'class'">按职业查看所有版本中的成就</span>
+        <span v-else-if="myGroupBy === 'almost'">即将完成的成就已按「一次性 / 累计」分开，针对性清掉更顺手</span>
         <span v-else>查看我的成就完成进度</span>
       </section>
 
@@ -181,7 +198,7 @@
       </div>
 
       <!-- 我的成就-按职业：按版本分组 -->
-      <div v-else class="hs-expansion-groups">
+      <div v-else-if="myGroupBy === 'class'" class="hs-expansion-groups">
         <template v-for="exp in expansions" :key="exp.id">
           <ClassSection
             v-if="myFilteredByExpansion[exp.id] && myFilteredByExpansion[exp.id].length > 0"
@@ -195,7 +212,114 @@
         </template>
       </div>
 
-      <div v-if="showEmpty" class="hs-empty-state">
+      <!-- 我的成就-快完成：拆分为「累计」与「一次性」两个区块 -->
+      <div v-else class="hs-almost-wrap">
+        <div class="hs-almost-filters">
+          <label class="hs-filter-field">
+            <span class="hs-filter-label">版本</span>
+            <select v-model="almostVersionFilter" class="hs-filter-select">
+              <option value="all">全部版本</option>
+              <option v-for="v in versionOptions" :key="v.id" :value="v.id">{{ v.name }}</option>
+            </select>
+          </label>
+          <label class="hs-filter-field">
+            <span class="hs-filter-label">职业</span>
+            <select v-model="almostClassFilter" class="hs-filter-select">
+              <option value="all">全部职业</option>
+              <option v-for="c in allClasses" :key="c" :value="c">{{ c }}</option>
+            </select>
+          </label>
+        </div>
+        <section v-if="almostCumulativeList.length" class="hs-almost-group">
+          <div class="hs-almost-group-head">
+            <h3 class="hs-almost-group-title hs-almost-cumulative-title">
+              📊 累计成就 · 还差 {{ almostCumulativeRemainTotal }} 次（共 {{ almostCumulativeList.length }} 个）
+            </h3>
+            <div class="hs-page-size">
+              <span class="hs-page-size-label">每页</span>
+              <button
+                v-for="sz in pageSizes"
+                :key="sz"
+                type="button"
+                :class="{ active: cumulativePageSize === sz }"
+                @click="cumulativePageSize = sz"
+              >{{ sz }}</button>
+            </div>
+          </div>
+          <div class="hs-achievement-list hs-almost-list">
+            <MyAchievementCard
+              v-for="ach in almostCumulativePaged"
+              :key="ach.id"
+              :achievement="ach"
+              :show-remaining="true"
+              @click="openCardModal"
+            />
+          </div>
+          <div v-if="almostCumulativeTotalPages > 1" class="hs-pager">
+            <button
+              type="button"
+              class="hs-pager-btn"
+              :disabled="cumulativePage <= 1"
+              @click="cumulativePage--"
+            >‹ 上一页</button>
+            <span class="hs-pager-info">第 {{ cumulativePage }} / {{ almostCumulativeTotalPages }} 页</span>
+            <button
+              type="button"
+              class="hs-pager-btn"
+              :disabled="cumulativePage >= almostCumulativeTotalPages"
+              @click="cumulativePage++"
+            >下一页 ›</button>
+          </div>
+        </section>
+
+        <section v-if="almostOneTimeList.length" class="hs-almost-group">
+          <div class="hs-almost-group-head">
+            <h3 class="hs-almost-group-title hs-almost-onetime-title">
+              🎯 一次性成就 · 还差 {{ almostOneTimeRemainTotal }} 阶段（共 {{ almostOneTimeList.length }} 个）
+            </h3>
+            <div class="hs-page-size">
+              <span class="hs-page-size-label">每页</span>
+              <button
+                v-for="sz in pageSizes"
+                :key="sz"
+                type="button"
+                :class="{ active: oneTimePageSize === sz }"
+                @click="oneTimePageSize = sz"
+              >{{ sz }}</button>
+            </div>
+          </div>
+          <div class="hs-achievement-list hs-almost-list">
+            <MyAchievementCard
+              v-for="ach in almostOneTimePaged"
+              :key="ach.id"
+              :achievement="ach"
+              :show-remaining="true"
+              @click="openCardModal"
+            />
+          </div>
+          <div v-if="almostOneTimeTotalPages > 1" class="hs-pager">
+            <button
+              type="button"
+              class="hs-pager-btn"
+              :disabled="oneTimePage <= 1"
+              @click="oneTimePage--"
+            >‹ 上一页</button>
+            <span class="hs-pager-info">第 {{ oneTimePage }} / {{ almostOneTimeTotalPages }} 页</span>
+            <button
+              type="button"
+              class="hs-pager-btn"
+              :disabled="oneTimePage >= almostOneTimeTotalPages"
+              @click="oneTimePage++"
+            >下一页 ›</button>
+          </div>
+        </section>
+
+        <p v-if="!almostCumulativeList.length && !almostOneTimeList.length" class="hs-almost-empty">
+          🎉 暂无即将完成的成就，去别处卷吧！
+        </p>
+      </div>
+
+      <div v-if="showEmpty && !(viewMode === 'my' && myGroupBy === 'almost')" class="hs-empty-state">
         <p>没有符合筛选条件的成就</p>
       </div>
 
@@ -222,8 +346,9 @@ import FilterBar from '../hearthstone-achievements/components/FilterBar.vue'
 import ClassSection from '../hearthstone-achievements/components/ClassSection.vue'
 import CardModal from '../hearthstone-achievements/components/CardModal.vue'
 import ScrollToTop from '../hearthstone-achievements/components/ScrollToTop.vue'
+import MyAchievementCard from '../hearthstone-achievements/components/MyAchievementCard.vue'
 
-const { getStats, isAchievementCompleted } = useAchievementProgress()
+const { getStats, isAchievementCompleted, getProgressInfo } = useAchievementProgress()
 
 // 动态加载所有卡牌图片
 const cardImages = import.meta.glob('../hearthstone-achievements/assets/cards/**/*.png', { eager: true, import: 'default' })
@@ -284,9 +409,10 @@ const currentExpansion = computed(() =>
 )
 
 const currentClassName = computed(() => currentClass.value)
-const myViewSubLabel = computed(() =>
-  myGroupBy.value === 'expansion' ? currentExpansion.value?.name : currentClassName.value
-)
+const myViewSubLabel = computed(() => {
+  if (myGroupBy.value === 'almost') return '快完成'
+  return myGroupBy.value === 'expansion' ? currentExpansion.value?.name : currentClassName.value
+})
 
 // 当前版本的成就
 const currentExpansionAchievements = computed(() => {
@@ -302,12 +428,102 @@ const currentClassAchievements = computed(() => {
 
 // 我的成就模式 - 当前范围的成就列表
 const myAchievementsList = computed(() => {
+  if (myGroupBy.value === 'almost') return almostDoneList.value
   if (myGroupBy.value === 'expansion') {
     return currentExpansionAchievements.value
   } else {
     return allAchievements.value.filter((ach) => ach.heroClass === currentClass.value)
   }
 })
+
+// 累计成就"快完成"：所有未完成(含 0% 未启动)的累计成就，按"还差最少"排序（展示全部，前端分页）
+const almostCumulativeList = computed(() => {
+  return allAchievements.value
+    .filter((ach) => {
+      if (ach.type !== '累计') return false
+      const info = getProgressInfo(ach)
+      if (info.completed) return false
+      if (almostVersionFilter.value !== 'all' && ach._expansionId !== almostVersionFilter.value) return false
+      if (almostClassFilter.value !== 'all' && ach.heroClass !== almostClassFilter.value) return false
+      // 0% 未启动的也展示，靠"还差次数"排序自然落到末尾
+      return true
+    })
+    .sort((a, b) => {
+      const ia = getProgressInfo(a)
+      const ib = getProgressInfo(b)
+      if (ia.remainingCount !== ib.remainingCount) return ia.remainingCount - ib.remainingCount
+      return ib.percent - ia.percent
+    })
+})
+
+// 累计区分页（可配置每页数量：10 / 20 / 50）
+const pageSizes = [10, 20, 50]
+const cumulativePageSize = ref(10)
+const cumulativePage = ref(1)
+const almostCumulativeTotalPages = computed(() =>
+  Math.max(1, Math.ceil(almostCumulativeList.value.length / cumulativePageSize.value))
+)
+const almostCumulativePaged = computed(() => {
+  const start = (cumulativePage.value - 1) * cumulativePageSize.value
+  return almostCumulativeList.value.slice(start, start + cumulativePageSize.value)
+})
+// 切换每页数量时回到第 1 页
+watch(cumulativePageSize, () => { cumulativePage.value = 1 })
+
+// 一次性成就"快完成"：所有未完成的(含 0% 未启动)，按还差最少排序
+const almostOneTimeList = computed(() => {
+  return allAchievements.value
+    .filter((ach) => {
+      if (ach.type === '累计') return false
+      const info = getProgressInfo(ach)
+      if (almostVersionFilter.value !== 'all' && ach._expansionId !== almostVersionFilter.value) return false
+      if (almostClassFilter.value !== 'all' && ach.heroClass !== almostClassFilter.value) return false
+      // 所有未完成的(含 0% 未启动)都展示，按"还差阶段"排序
+      return !info.completed
+    })
+    .sort((a, b) => {
+      const ia = getProgressInfo(a)
+      const ib = getProgressInfo(b)
+      if (ia.remainingCount !== ib.remainingCount) return ia.remainingCount - ib.remainingCount
+      return ib.percent - ia.percent
+    })
+})
+
+// 一次性区分页（可配置每页数量：10 / 20 / 50）
+const oneTimePageSize = ref(10)
+const oneTimePage = ref(1)
+const almostOneTimeTotalPages = computed(() =>
+  Math.max(1, Math.ceil(almostOneTimeList.value.length / oneTimePageSize.value))
+)
+const almostOneTimePaged = computed(() => {
+  const start = (oneTimePage.value - 1) * oneTimePageSize.value
+  return almostOneTimeList.value.slice(start, start + oneTimePageSize.value)
+})
+// 切换每页数量时回到第 1 页
+watch(oneTimePageSize, () => { oneTimePage.value = 1 })
+
+// 快完成视图：版本 / 职业 筛选
+const almostVersionFilter = ref('all')
+const almostClassFilter = ref('all')
+const versionOptions = computed(() => expansions.map((e) => ({ id: e.id, name: e.name })))
+// 筛选条件变化时回到第 1 页
+watch([almostVersionFilter, almostClassFilter], () => {
+  cumulativePage.value = 1
+  oneTimePage.value = 1
+})
+
+// 合并（供 myAchievementsList / 统计使用）
+const almostDoneList = computed(() => [...almostCumulativeList.value, ...almostOneTimeList.value])
+
+const almostCumulativeRemainTotal = computed(() =>
+  almostCumulativeList.value.reduce((sum, a) => sum + (getProgressInfo(a).remainingCount || 0), 0)
+)
+const almostOneTimeRemainTotal = computed(() =>
+  almostOneTimeList.value.reduce((sum, a) => sum + (getProgressInfo(a).remainingCount || 0), 0)
+)
+
+// 快完成统计
+const almostStats = computed(() => ({ count: almostDoneList.value.length }))
 
 // 展示的成就列表
 const displayAchievements = computed(() => {
@@ -417,6 +633,8 @@ watch(myGroupBy, () => {
   selectedDifficulty.value = 'all'
   selectedType.value = 'all'
   selectedStatus.value = '未完成'
+  cumulativePage.value = 1
+  oneTimePage.value = 1
   closeModal()
   window.scrollTo({ top: 0, behavior: 'smooth' })
 })
