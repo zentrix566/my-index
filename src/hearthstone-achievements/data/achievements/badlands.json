@@ -183,7 +183,7 @@
       "id": "bl-028",
       "name": "骰子灌铅了？！",
       "heroClass": "恶魔猎手",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "难",
       "relatedCards": [
         "蛇眼"
@@ -801,7 +801,7 @@
       "id": "bl-008",
       "name": "看不到我",
       "heroClass": "猎人",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "难",
       "relatedCards": [
         "迷彩坐骑"
@@ -885,7 +885,7 @@
       "id": "bl-017",
       "name": "鳞潜羽翔",
       "heroClass": "萨满祭司",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "难",
       "relatedCards": [
         "可靠陪伴"
@@ -1481,7 +1481,7 @@
       "id": "bl-051",
       "name": "峋岩炫彩",
       "heroClass": "中立",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "难",
       "relatedCards": [
         "炫彩旋岩虫"

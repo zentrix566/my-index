@@ -470,7 +470,7 @@
       "id": "ed-025",
       "name": "如此狂野",
       "heroClass": "猎人",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "难",
       "relatedCards": [
         "龙裔护育师"

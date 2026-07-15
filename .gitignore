@@ -27,3 +27,10 @@ Thumbs.db
 # ZCode local config
 .zcode/
 k8s/cloudflared-deployment.yaml
+
+# WorkBuddy local data (not for commit)
+.workbuddy/
+
+# 构建中间产物（验证用，可手动删除）
+.build-tmp/
+dist-old/

@@ -474,7 +474,7 @@
       "id": "ungoro-026",
       "name": "克敌之王",
       "heroClass": "猎人",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "难",
       "relatedCards": [
         "魔暴龙面具"
