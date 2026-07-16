@@ -29,15 +29,28 @@ const getDifficultyStyle = (difficulty) => ({
   color: difficultyColors[difficulty] || '#666'
 })
 
-// 累计进度文字（各阶段都用实际的 count 值）
+// 累计进度显示：done 以 isStageCompleted 为准（兼容「stages 勾选」标记的完成），
+// 已完成阶段显示满额（quota），避免「已完成却 0% 进度条」的显示矛盾
 const countValue = computed(() => getCount(props.achievement))
+const isCompleted = computed(() => isAchievementCompleted(props.achievement))
+const showCountProgress = computed(() => countValue.value != null || isCompleted.value)
+// 头部展示的累计值：未完成用真实 count；已完成用末阶段 quota（代表已达成的目标值）
+const headerCount = computed(() => {
+  if (isCompleted.value) {
+    const st = props.achievement.stages
+    return st && st.length ? st[st.length - 1].quota : countValue.value
+  }
+  return countValue.value
+})
 const progressText = computed(() => {
-  if (countValue.value == null) return ''
   const stages = props.achievement.stages
-  if (!stages || stages.length === 0) return ''
-  return stages.map((s) => {
-    const done = countValue.value >= s.quota
-    return { quota: s.quota, done }
+  if (!stages || stages.length === 0) return []
+  const cv = countValue.value
+  return stages.map((s, idx) => {
+    const done = isStageCompleted(props.achievement, idx)
+    // 已完成阶段显示满额；未完成的阶段用真实累计值（无 count 记录则为 0）
+    const value = done ? s.quota : (cv != null ? cv : 0)
+    return { quota: s.quota, done, value }
   })
 })
 
@@ -128,11 +141,11 @@ const copyDeckCode = async (deck, event) => {
         </li>
       </ul>
 
-      <!-- 累积进度显示（直接录入的 count 值） -->
-      <div v-if="countValue != null" class="hs-count-progress">
+      <!-- 累积进度显示（直接录入的 count 值，已完成阶段按满额显示） -->
+      <div v-if="showCountProgress" class="hs-count-progress">
         <div class="hs-count-header">
           <span class="hs-count-label">累计</span>
-          <span class="hs-count-number">{{ countValue }}</span>
+          <span class="hs-count-number">{{ headerCount }}</span>
         </div>
         <div class="hs-count-stage-list">
           <div
@@ -144,12 +157,12 @@ const copyDeckCode = async (deck, event) => {
             <div class="hs-count-stage-bar">
               <div
                 class="hs-count-stage-fill"
-                :style="{ width: Math.min(100, (countValue / p.quota) * 100) + '%' }"
+                :style="{ width: Math.min(100, (p.value / p.quota) * 100) + '%' }"
               ></div>
             </div>
             <span class="hs-count-stage-text">
               <template v-if="p.done">✓ </template>
-              <strong>{{ countValue }}</strong> / {{ p.quota }}
+              <strong>{{ p.value }}</strong> / {{ p.quota }}
             </span>
           </div>
         </div>
