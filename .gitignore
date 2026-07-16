@@ -1,3 +1,7 @@
+# 所有以点(.)开头的目录都不提交（隐藏目录，如 .workbuddy/.vscode/.idea/.zcode/.build-tmp 等）
+# 注：.git 目录由 git 自身管理，不受此规则影响
+**/.*/
+
 # DevOps Actions directory
 devops-actions/
 
@@ -14,8 +18,6 @@ yarn-error.log*
 *.log
 
 # IDE
-.vscode/
-.idea/
 *.swp
 *.swo
 *~
@@ -25,12 +27,7 @@ yarn-error.log*
 Thumbs.db
 
 # ZCode local config
-.zcode/
 k8s/cloudflared-deployment.yaml
 
-# WorkBuddy local data (not for commit)
-.workbuddy/
-
 # 构建中间产物（验证用，可手动删除）
-.build-tmp/
 dist-old/
