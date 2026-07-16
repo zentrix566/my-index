@@ -56,15 +56,15 @@
             :current-id="currentExpansionId"
             @switch="currentExpansionId = $event"
           />
-          <!-- 按职业/我的(按职业)：职业选择 -->
+          <!-- 按职业/我的(按职业)/快完成/推荐冲刺：职业选择 -->
           <div v-else class="hs-expansion-tabs" role="tablist" aria-label="选择职业">
             <button
               v-for="cls in allClasses"
               :key="cls"
-              :class="{ active: currentClass === cls }"
+              :class="{ active: (myGroupBy === 'almost' || myGroupBy === 'priority') ? almostClassFilter === cls : currentClass === cls }"
               type="button"
               role="tab"
-              @click="currentClass = cls"
+              @click="onClassTabClick(cls)"
             >
               {{ cls }}
             </button>
@@ -502,6 +502,12 @@ const currentExpansion = computed(() =>
 )
 
 const currentClassName = computed(() => currentClass.value)
+const onClassTabClick = (cls) => {
+  if (myGroupBy.value === 'almost' || myGroupBy.value === 'priority') {
+    almostClassFilter.value = cls
+  }
+  currentClass.value = cls
+}
 const myViewSubLabel = computed(() => {
   if (myGroupBy.value === 'almost') return '快完成'
   if (myGroupBy.value === 'priority') return '推荐冲刺'
@@ -539,6 +545,8 @@ const priorityGroups = computed(() => {
   const D = [] // 一次性剩多阶段（优先级最低）
 
   for (const ach of allAchievements.value) {
+    if (almostVersionFilter.value !== 'all' && ach._expansionId !== almostVersionFilter.value) continue
+    if (almostClassFilter.value !== 'all' && ach.heroClass !== almostClassFilter.value) continue
     const info = getProgressInfo(ach)
     if (info.completed) continue
     if (ach.type === '累计') {
