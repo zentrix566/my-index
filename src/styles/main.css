@@ -1136,10 +1136,10 @@ a.content-card:hover {
   align-items: center;
   justify-content: space-between;
   flex-wrap: wrap;
-  gap: 10px 16px;
-  padding: 14px 18px;
-  border-radius: 14px;
-  margin-top: 16px;
+  gap: 8px 12px;
+  padding: 10px 14px;
+  border-radius: 12px;
+  margin-top: 12px;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(250, 247, 242, 0.86) 100%);
   border: 1px solid rgba(107, 91, 79, 0.12);
   box-shadow:
@@ -1150,18 +1150,18 @@ a.content-card:hover {
 .hs-brand {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
   flex: 0 0 auto;
 }
 
 .hs-brand-mark {
   display: grid;
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   place-items: center;
   flex: 0 0 auto;
-  border-radius: 10px;
+  border-radius: 8px;
   color: #fff;
   background: linear-gradient(135deg, #c45c3e 0%, #9c3a25 100%);
   box-shadow:
@@ -1170,14 +1170,14 @@ a.content-card:hover {
 }
 
 .hs-brand-mark svg {
-  width: 22px;
-  height: 22px;
+  width: 18px;
+  height: 18px;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.12));
 }
 
 .hs-brand h2 {
   margin: 0;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -1188,23 +1188,20 @@ a.content-card:hover {
 .hs-brand p {
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  margin: 2px 0 0;
-  padding: 2px 8px;
+  gap: 4px;
+  margin: 0;
+  padding: 0;
   width: fit-content;
   color: #7a6b5f;
   font-size: 11px;
   font-weight: 500;
-  background: rgba(107, 91, 79, 0.08);
-  border-radius: 999px;
-  border: 1px solid rgba(107, 91, 79, 0.08);
   white-space: nowrap;
 }
 
 .hs-top-actions {
   display: flex;
   align-items: center;
-  gap: 6px;
+  gap: 4px;
   flex: 1 1 auto;
   min-width: 0;
   justify-content: flex-end;
@@ -1215,10 +1212,10 @@ a.content-card:hover {
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-end;
-  gap: 3px;
-  padding: 3px;
+  gap: 2px;
+  padding: 2px;
   border: 1px solid rgba(38, 43, 50, 0.14);
-  border-radius: 8px;
+  border-radius: 6px;
   background: #ece8df;
 }
 
@@ -1226,16 +1223,16 @@ a.content-card:hover {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  height: 28px;
-  padding: 0 10px;
+  height: 24px;
+  padding: 0 8px;
   border: 0;
-  border-radius: 6px;
+  border-radius: 4px;
   color: #5c554d;
   background: transparent;
   white-space: nowrap;
   font-weight: 500;
   transition: all 0.15s ease;
-  font-size: 13px;
+  font-size: 12px;
 }
 
 .hs-expansion-tabs button:hover {
