@@ -1133,6 +1133,7 @@ a.content-card:hover {
 .hs-topbar {
   display: flex;
   align-items: center;
+  justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px 12px;
   padding: 6px 10px;
