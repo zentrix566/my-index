@@ -1091,7 +1091,7 @@ a.content-card:hover {
   display: inline-flex;
   gap: 4px;
   padding: 4px;
-  margin-bottom: 12px;
+  margin-bottom: 4px;
   border: 1px solid rgba(38, 43, 50, 0.14);
   border-radius: 8px;
   background: #ece8df;
@@ -1121,7 +1121,6 @@ a.content-card:hover {
   box-shadow: 0 2px 6px rgba(44, 86, 105, 0.3);
 }
 
-.hs-topbar,
 .hs-controls,
 .hs-result-bar,
 .hs-achievement-card {
@@ -1134,50 +1133,48 @@ a.content-card:hover {
 .hs-topbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
   flex-wrap: wrap;
   gap: 8px 12px;
-  padding: 10px 14px;
-  border-radius: 12px;
-  margin-top: 12px;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(250, 247, 242, 0.86) 100%);
-  border: 1px solid rgba(107, 91, 79, 0.12);
-  box-shadow:
-    0 1px 2px rgba(45, 39, 31, 0.04),
-    0 8px 24px rgba(107, 91, 79, 0.1);
+  padding: 6px 10px;
+  border-radius: 10px;
+  margin-top: 4px;
+  background: transparent;
+  border: none;
+  box-shadow: none;
+  backdrop-filter: none;
 }
 
 .hs-brand {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
   flex: 0 0 auto;
 }
 
 .hs-brand-mark {
   display: grid;
-  width: 36px;
-  height: 36px;
+  width: 28px;
+  height: 28px;
   place-items: center;
   flex: 0 0 auto;
-  border-radius: 8px;
+  border-radius: 6px;
   color: #fff;
   background: linear-gradient(135deg, #c45c3e 0%, #9c3a25 100%);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.22),
-    0 4px 10px rgba(156, 58, 37, 0.28);
+    0 2px 6px rgba(156, 58, 37, 0.28);
 }
 
 .hs-brand-mark svg {
-  width: 18px;
-  height: 18px;
+  width: 14px;
+  height: 14px;
   filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.12));
 }
 
 .hs-brand h2 {
   margin: 0;
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
   letter-spacing: -0.02em;
   line-height: 1.2;
@@ -1190,28 +1187,27 @@ a.content-card:hover {
   align-items: center;
   gap: 4px;
   margin: 0;
-  padding: 0;
+  padding: 0 0 0 4px;
   width: fit-content;
   color: #7a6b5f;
   font-size: 11px;
   font-weight: 500;
   white-space: nowrap;
+  border-left: 1px solid rgba(107, 91, 79, 0.2);
 }
 
 .hs-top-actions {
   display: flex;
   align-items: center;
   gap: 4px;
-  flex: 1 1 auto;
+  flex: 0 0 auto;
   min-width: 0;
-  justify-content: flex-end;
 }
 
 /* 扩展包切换标签 */
 .hs-expansion-tabs {
   display: flex;
   flex-wrap: wrap;
-  justify-content: flex-end;
   gap: 2px;
   padding: 2px;
   border: 1px solid rgba(38, 43, 50, 0.14);
@@ -1987,7 +1983,7 @@ a.content-card:hover {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 8px;
+  margin-bottom: 4px;
   font-size: 13px;
   color: #666;
 }
@@ -2020,8 +2016,8 @@ a.content-card:hover {
 
 /* 我的成就 - 统计面板 */
 .hs-stats-panel {
-  margin: 12px 0;
-  padding: 16px 20px;
+  margin: 4px 0;
+  padding: 10px 14px;
   border-radius: 10px;
   background: linear-gradient(135deg, #2c5669 0%, #3d7a8a 100%);
   color: #fff;
