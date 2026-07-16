@@ -1135,7 +1135,8 @@ a.content-card:hover {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 20px;
+  flex-wrap: wrap;
+  gap: 16px 24px;
   padding: 20px 22px;
   border-radius: 14px;
   margin-top: 24px;
@@ -1151,6 +1152,7 @@ a.content-card:hover {
   align-items: center;
   gap: 16px;
   min-width: 0;
+  flex: 0 0 auto;
 }
 
 .hs-brand-mark {
@@ -1180,6 +1182,7 @@ a.content-card:hover {
   letter-spacing: -0.02em;
   line-height: 1.2;
   color: #1c1f24;
+  white-space: nowrap;
 }
 
 .hs-brand p {
@@ -1195,19 +1198,23 @@ a.content-card:hover {
   background: rgba(107, 91, 79, 0.08);
   border-radius: 999px;
   border: 1px solid rgba(107, 91, 79, 0.08);
+  white-space: nowrap;
 }
 
 .hs-top-actions {
   display: flex;
   align-items: center;
   gap: 8px;
+  flex: 1 1 auto;
+  min-width: 0;
+  justify-content: flex-end;
 }
 
 /* 扩展包切换标签 */
 .hs-expansion-tabs {
-  display: grid;
-  grid-auto-flow: column;
-  grid-auto-columns: minmax(0, 1fr);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: flex-end;
   gap: 4px;
   padding: 4px;
   border: 1px solid rgba(38, 43, 50, 0.14);
@@ -1216,8 +1223,11 @@ a.content-card:hover {
 }
 
 .hs-expansion-tabs button {
-  height: 36px;
-  padding: 0 16px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  height: 32px;
+  padding: 0 12px;
   border: 0;
   border-radius: 6px;
   color: #5c554d;
@@ -1225,7 +1235,7 @@ a.content-card:hover {
   white-space: nowrap;
   font-weight: 500;
   transition: all 0.15s ease;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .hs-expansion-tabs button:hover {
@@ -2481,6 +2491,7 @@ a.content-card:hover {
   .hs-top-actions {
     width: 100%;
     flex-wrap: wrap;
+    justify-content: flex-start;
   }
 
   .hs-controls {
@@ -2493,7 +2504,11 @@ a.content-card:hover {
 
   .hs-expansion-tabs {
     width: 100%;
-    grid-auto-flow: row;
+    justify-content: flex-start;
+  }
+
+  .hs-expansion-tabs button {
+    flex: 1 1 auto;
   }
 
   .hs-achievement-list {
