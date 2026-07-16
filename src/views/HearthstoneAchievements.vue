@@ -91,6 +91,11 @@
             type="button"
             @click="myGroupBy = 'almost'"
           >快完成</button>
+          <button
+            :class="{ active: myGroupBy === 'priority' }"
+            type="button"
+            @click="myGroupBy = 'priority'"
+          >推荐冲刺</button>
         </div>
 
         <div class="hs-stats-panel">
@@ -99,6 +104,14 @@
               <span class="hs-stats-percent">🔥 {{ almostStats.count }}</span>
               <span class="hs-stats-detail">
                 未完成（含 0%）：累计 {{ almostCumulativeList.length }} 个 · 一次性 {{ almostOneTimeList.length }} 个，按"还差最少"排序
+              </span>
+            </div>
+          </template>
+          <template v-else-if="myGroupBy === 'priority'">
+            <div class="hs-stats-info">
+              <span class="hs-stats-percent">🚀 {{ priorityAllList.length }}</span>
+              <span class="hs-stats-detail">
+                推荐冲刺目标：A 组 {{ priorityGroups.A.length }} · B 组 {{ priorityGroups.B.length }} · C 组 {{ priorityGroups.C.length }} · D 组 {{ priorityGroups.D.length }}
               </span>
             </div>
           </template>
@@ -118,7 +131,7 @@
       </template>
 
       <FilterBar
-        v-if="!(viewMode === 'my' && myGroupBy === 'almost')"
+        v-if="!(viewMode === 'my' && (myGroupBy === 'almost' || myGroupBy === 'priority'))"
         v-model:query="query"
         v-model:selected-class="selectedClass"
         v-model:selected-difficulty="selectedDifficulty"
@@ -151,6 +164,7 @@
         </span>
         <span v-else-if="viewMode === 'class'">按职业查看所有版本中的成就</span>
         <span v-else-if="myGroupBy === 'almost'">即将完成的成就已按「一次性 / 累计」分开，针对性清掉更顺手</span>
+        <span v-else-if="myGroupBy === 'priority'">按「零成本 → 低投入 → 中等投入 → 低优先级」分组，优先清 A 组</span>
         <span v-else>查看我的成就完成进度</span>
       </section>
 
@@ -213,7 +227,7 @@
       </div>
 
       <!-- 我的成就-快完成：拆分为「累计」与「一次性」两个区块 -->
-      <div v-else class="hs-almost-wrap">
+      <div v-else-if="myGroupBy === 'almost'" class="hs-almost-wrap">
         <div class="hs-almost-filters">
           <label class="hs-filter-field">
             <span class="hs-filter-label">版本</span>
@@ -319,7 +333,86 @@
         </p>
       </div>
 
-      <div v-if="showEmpty && !(viewMode === 'my' && myGroupBy === 'almost')" class="hs-empty-state">
+      <!-- 我的成就-推荐冲刺：按 A/B/C/D 四档分组 -->
+      <div v-else-if="myGroupBy === 'priority'" class="hs-priority-wrap">
+        <section v-if="priorityGroups.A.length" class="hs-priority-group hs-priority-group-a">
+          <div class="hs-priority-group-head">
+            <h3 class="hs-priority-group-title">
+              🥇 A 组 · 一次即成（零成本，{{ priorityGroups.A.length }} 个）
+            </h3>
+            <span class="hs-priority-group-tip">优先清掉，完成数涨最快</span>
+          </div>
+          <div class="hs-achievement-list hs-priority-list">
+            <MyAchievementCard
+              v-for="ach in priorityGroups.A"
+              :key="ach.id"
+              :achievement="ach"
+              :show-remaining="true"
+              @click="openCardModal"
+            />
+          </div>
+        </section>
+
+        <section v-if="priorityGroups.B.length" class="hs-priority-group hs-priority-group-b">
+          <div class="hs-priority-group-head">
+            <h3 class="hs-priority-group-title">
+              🥈 B 组 · 还差 ≤20 次（做几把就满，{{ priorityGroups.B.length }} 个）
+            </h3>
+            <span class="hs-priority-group-tip">A 组清完后顺手做</span>
+          </div>
+          <div class="hs-achievement-list hs-priority-list">
+            <MyAchievementCard
+              v-for="ach in priorityGroups.B"
+              :key="ach.id"
+              :achievement="ach"
+              :show-remaining="true"
+              @click="openCardModal"
+            />
+          </div>
+        </section>
+
+        <section v-if="priorityGroups.C.length" class="hs-priority-group hs-priority-group-c">
+          <div class="hs-priority-group-head">
+            <h3 class="hs-priority-group-title">
+              🥉 C 组 · 还差 21~50 次（中等投入，{{ priorityGroups.C.length }} 个）
+            </h3>
+            <span class="hs-priority-group-tip">按兴致推进</span>
+          </div>
+          <div class="hs-achievement-list hs-priority-list">
+            <MyAchievementCard
+              v-for="ach in priorityGroups.C"
+              :key="ach.id"
+              :achievement="ach"
+              :show-remaining="true"
+              @click="openCardModal"
+            />
+          </div>
+        </section>
+
+        <section v-if="priorityGroups.D.length" class="hs-priority-group hs-priority-group-d">
+          <div class="hs-priority-group-head">
+            <h3 class="hs-priority-group-title">
+              📌 D 组 · 一次性剩多阶段（优先级最低，{{ priorityGroups.D.length }} 个）
+            </h3>
+            <span class="hs-priority-group-tip">需要多步推进，放最后</span>
+          </div>
+          <div class="hs-achievement-list hs-priority-list">
+            <MyAchievementCard
+              v-for="ach in priorityGroups.D"
+              :key="ach.id"
+              :achievement="ach"
+              :show-remaining="true"
+              @click="openCardModal"
+            />
+          </div>
+        </section>
+
+        <p v-if="!priorityAllList.length" class="hs-almost-empty">
+          🎉 暂无推荐冲刺目标，你已经很强了！
+        </p>
+      </div>
+
+      <div v-if="showEmpty && !(viewMode === 'my' && (myGroupBy === 'almost' || myGroupBy === 'priority'))" class="hs-empty-state">
         <p>没有符合筛选条件的成就</p>
       </div>
 
@@ -411,6 +504,7 @@ const currentExpansion = computed(() =>
 const currentClassName = computed(() => currentClass.value)
 const myViewSubLabel = computed(() => {
   if (myGroupBy.value === 'almost') return '快完成'
+  if (myGroupBy.value === 'priority') return '推荐冲刺'
   return myGroupBy.value === 'expansion' ? currentExpansion.value?.name : currentClassName.value
 })
 
@@ -429,12 +523,58 @@ const currentClassAchievements = computed(() => {
 // 我的成就模式 - 当前范围的成就列表
 const myAchievementsList = computed(() => {
   if (myGroupBy.value === 'almost') return almostDoneList.value
+  if (myGroupBy.value === 'priority') return priorityAllList.value
   if (myGroupBy.value === 'expansion') {
     return currentExpansionAchievements.value
   } else {
     return allAchievements.value.filter((ach) => ach.heroClass === currentClass.value)
   }
 })
+
+// 推荐冲刺分组：按投入产出比分为 A/B/C/D 四档
+const priorityGroups = computed(() => {
+  const A = [] // 一次即成（零成本）
+  const B = [] // 累计还差 ≤20（做几把就满）
+  const C = [] // 累计还差 21~50（中等投入）
+  const D = [] // 一次性剩多阶段（优先级最低）
+
+  for (const ach of allAchievements.value) {
+    const info = getProgressInfo(ach)
+    if (info.completed) continue
+    if (ach.type === '累计') {
+      const rem = info.remainingCount
+      if (rem <= 1) A.push(ach)
+      else if (rem <= 20) B.push(ach)
+      else if (rem <= 50) C.push(ach)
+    } else {
+      if (info.remainingCount === 1 && info.doneStages >= 1) A.push(ach)
+      else if (info.totalStages === 1 && info.doneStages === 0) A.push(ach)
+      else D.push(ach)
+    }
+  }
+
+  const sortByRemaining = (list) => {
+    return [...list].sort((a, b) => {
+      const ia = getProgressInfo(a)
+      const ib = getProgressInfo(b)
+      if (ia.remainingCount !== ib.remainingCount) return ia.remainingCount - ib.remainingCount
+      return ib.percent - ia.percent
+    })
+  }
+
+  return {
+    A: sortByRemaining(A),
+    B: sortByRemaining(B),
+    C: sortByRemaining(C),
+    D: sortByRemaining(D)
+  }
+})
+const priorityAllList = computed(() => [
+  ...priorityGroups.value.A,
+  ...priorityGroups.value.B,
+  ...priorityGroups.value.C,
+  ...priorityGroups.value.D
+])
 
 // 累计成就"快完成"：所有未完成(含 0% 未启动)的累计成就，按"还差最少"排序（展示全部，前端分页）
 const almostCumulativeList = computed(() => {
