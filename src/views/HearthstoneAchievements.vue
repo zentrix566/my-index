@@ -111,7 +111,7 @@
             <div class="hs-stats-info">
               <span class="hs-stats-percent">🚀 {{ priorityAllList.length }}</span>
               <span class="hs-stats-detail">
-                推荐冲刺目标：A 组 {{ priorityGroups.A.length }} · B 组 {{ priorityGroups.B.length }} · C 组 {{ priorityGroups.C.length }} · D 组 {{ priorityGroups.D.length }}
+                推荐冲刺目标：A 组 {{ priorityGroups.A.length }} · B 组 {{ priorityGroups.B.length }} · C 组 {{ priorityGroups.C.length }} · D 组 {{ priorityGroups.D.length }} · E 组 {{ priorityGroups.E.length }}
               </span>
             </div>
           </template>
@@ -407,6 +407,24 @@
           </div>
         </section>
 
+        <section v-if="priorityGroups.E.length" class="hs-priority-group hs-priority-group-e">
+          <div class="hs-priority-group-head">
+            <h3 class="hs-priority-group-title">
+              🐢 E 组 · 累计还差 ≥51 次（长期目标，{{ priorityGroups.E.length }} 个）
+            </h3>
+            <span class="hs-priority-group-tip">需大量投入，慢慢磨</span>
+          </div>
+          <div class="hs-achievement-list hs-priority-list">
+            <MyAchievementCard
+              v-for="ach in priorityGroups.E"
+              :key="ach.id"
+              :achievement="ach"
+              :show-remaining="true"
+              @click="openCardModal"
+            />
+          </div>
+        </section>
+
         <p v-if="!priorityAllList.length" class="hs-almost-empty">
           🎉 暂无推荐冲刺目标，你已经很强了！
         </p>
@@ -543,6 +561,7 @@ const priorityGroups = computed(() => {
   const B = [] // 累计还差 ≤20（做几把就满）
   const C = [] // 累计还差 21~50（中等投入）
   const D = [] // 一次性剩多阶段（优先级最低）
+  const E = [] // 累计还差 ≥51（长期目标，最大投入）
 
   for (const ach of allAchievements.value) {
     if (almostVersionFilter.value !== 'all' && ach._expansionId !== almostVersionFilter.value) continue
@@ -554,6 +573,7 @@ const priorityGroups = computed(() => {
       if (rem <= 1) A.push(ach)
       else if (rem <= 20) B.push(ach)
       else if (rem <= 50) C.push(ach)
+      else E.push(ach)
     } else {
       if (info.remainingCount === 1 && info.doneStages >= 1) A.push(ach)
       else if (info.totalStages === 1 && info.doneStages === 0) A.push(ach)
@@ -574,14 +594,16 @@ const priorityGroups = computed(() => {
     A: sortByRemaining(A),
     B: sortByRemaining(B),
     C: sortByRemaining(C),
-    D: sortByRemaining(D)
+    D: sortByRemaining(D),
+    E: sortByRemaining(E)
   }
 })
 const priorityAllList = computed(() => [
   ...priorityGroups.value.A,
   ...priorityGroups.value.B,
   ...priorityGroups.value.C,
-  ...priorityGroups.value.D
+  ...priorityGroups.value.D,
+  ...priorityGroups.value.E
 ])
 
 // 累计成就"快完成"：所有未完成(含 0% 未启动)的累计成就，按"还差最少"排序（展示全部，前端分页）
