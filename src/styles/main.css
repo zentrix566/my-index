@@ -1074,7 +1074,7 @@ a.content-card:hover {
 }
 
 .hs-page .container {
-  max-width: 1180px;
+  max-width: 1400px;
 }
 
 .hs-page .section-heading h1,
@@ -1133,9 +1133,9 @@ a.content-card:hover {
 .hs-topbar {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
-  gap: 8px 12px;
+  gap: 12px;
   padding: 6px 10px;
   border-radius: 10px;
   margin-top: 4px;
@@ -1201,7 +1201,8 @@ a.content-card:hover {
   display: flex;
   align-items: center;
   gap: 4px;
-  flex: 0 0 auto;
+  flex: 1 1 auto;
+  justify-content: flex-start;
   min-width: 0;
 }
 
@@ -1387,6 +1388,7 @@ a.content-card:hover {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
   gap: 12px;
+  justify-content: flex-start;
 }
 
 /* 快完成视图：累计 / 一次性 两个区块 */
@@ -1473,6 +1475,7 @@ a.content-card:hover {
 .hs-priority-group-b { background: linear-gradient(180deg, #f6fbf7 0%, #fff 100%); border-color: rgba(76, 175, 80, 0.2); }
 .hs-priority-group-c { background: linear-gradient(180deg, #f7fafd 0%, #fff 100%); border-color: rgba(74, 144, 217, 0.2); }
 .hs-priority-group-d { background: linear-gradient(180deg, #fafafa 0%, #fff 100%); border-color: rgba(107, 91, 79, 0.12); }
+.hs-priority-group-e { background: linear-gradient(180deg, #fdf3f3 0%, #fff 100%); border-color: rgba(185, 28, 28, 0.16); }
 
 .hs-priority-group-head {
   display: flex;
@@ -1494,6 +1497,7 @@ a.content-card:hover {
 .hs-priority-group-b .hs-priority-group-title { color: #2e7d32; }
 .hs-priority-group-c .hs-priority-group-title { color: #2a5a8a; }
 .hs-priority-group-d .hs-priority-group-title { color: #6b5b4f; }
+.hs-priority-group-e .hs-priority-group-title { color: #a32424; }
 .hs-priority-group-tip {
   font-size: 12px;
   color: #8a7e72;
