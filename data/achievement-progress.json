@@ -70,8 +70,11 @@
     "count": 0
   },
   "ed-005": {
-    "stages": {},
-    "count": 4
+    "stages": {
+      "0": true,
+      "1": true
+    },
+    "count": 8
   },
   "wz-003": {
     "stages": {
@@ -82,7 +85,7 @@
   },
   "wz-006": {
     "stages": {},
-    "count": 6
+    "count": 23
   },
   "bl-056": {
     "stages": {
@@ -129,6 +132,12 @@
       "1": true
     },
     "count": 0
+  },
+  "vh-010": {
+    "stages": {
+      "0": true
+    },
+    "count": 31
   },
   "wz-010": {
     "stages": {
@@ -387,10 +396,6 @@
     },
     "count": 0
   },
-  "vh-010": {
-    "stages": {},
-    "count": 0
-  },
   "bl-017": {
     "stages": {},
     "count": 7
@@ -435,8 +440,11 @@
     "count": 0
   },
   "ungoro-016": {
-    "stages": {},
-    "count": 14
+    "stages": {
+      "0": true,
+      "1": true
+    },
+    "count": 100
   },
   "pr-002": {
     "stages": {
@@ -468,8 +476,10 @@
     "count": 0
   },
   "bl-052": {
-    "stages": {},
-    "count": 11
+    "stages": {
+      "0": true
+    },
+    "count": 12
   },
   "bl-057": {
     "stages": {
@@ -643,9 +653,10 @@
   },
   "ed-010": {
     "stages": {
-      "0": true
+      "0": true,
+      "1": true
     },
-    "count": 8
+    "count": 10
   },
   "bl-014": {
     "stages": {},
@@ -722,12 +733,17 @@
     "count": 0
   },
   "ungoro-026": {
-    "stages": {},
-    "count": 0
+    "stages": {
+      "0": true,
+      "1": true
+    },
+    "count": 3
   },
   "ungoro-019": {
-    "stages": {},
-    "count": 9
+    "stages": {
+      "0": true
+    },
+    "count": 11
   },
   "dd-028": {
     "stages": {
@@ -748,8 +764,11 @@
     "count": 15
   },
   "ungoro-012": {
-    "stages": {},
-    "count": 26
+    "stages": {
+      "0": true,
+      "1": true
+    },
+    "count": 50
   },
   "dd-008": {
     "stages": {
@@ -778,9 +797,10 @@
   },
   "vh-005": {
     "stages": {
-      "0": true
+      "0": true,
+      "1": true
     },
-    "count": 2
+    "count": 8
   },
   "ct-005": {
     "stages": {},
@@ -960,8 +980,10 @@
     "count": 0
   },
   "bl-024": {
-    "stages": {},
-    "count": 56
+    "stages": {
+      "0": true
+    },
+    "count": 61
   },
   "wz-008": {
     "stages": {},
@@ -1511,8 +1533,11 @@
     "count": 8
   },
   "ct-013": {
-    "stages": {},
-    "count": 0
+    "stages": {
+      "0": true,
+      "1": true
+    },
+    "count": 200
   },
   "pr-023": {
     "stages": {
