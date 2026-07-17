@@ -7,21 +7,38 @@ import { ref } from 'vue'
 // 全局单例进度数据
 const progressData = ref({})
 const loaded = ref(false)
+const loading = ref(false)
+const error = ref(null)
+let loadPromise = null
 
 // 从服务器加载
-async function loadFromServer() {
-  if (loaded.value) return
-  try {
-    const resp = await fetch('/api/achievements/progress')
-    if (resp.ok) {
+async function loadFromServer({ force = false } = {}) {
+  if (loading.value) return loadPromise
+  if (loaded.value && !force) return
+
+  loading.value = true
+  error.value = null
+  loadPromise = (async () => {
+    try {
+      const resp = await fetch('/api/achievements/progress')
+      if (!resp.ok) throw new Error(`Request failed with status ${resp.status}`)
+
       const data = await resp.json()
       progressData.value = data && typeof data === 'object' ? data : {}
+    } catch (cause) {
+      error.value = cause instanceof Error ? cause.message : '加载成就进度失败'
+      console.warn('加载成就进度失败:', cause)
+    } finally {
+      loaded.value = true
+      loading.value = false
+      loadPromise = null
     }
-  } catch (e) {
-    console.warn('加载成就进度失败:', e)
-  }
-  loaded.value = true
+  })()
+
+  return loadPromise
 }
+
+const reload = () => loadFromServer({ force: true })
 
 // 初始化加载
 loadFromServer()
@@ -193,6 +210,9 @@ export function useAchievementProgress() {
   return {
     progress: progressData,
     loaded,
+    loading,
+    error,
+    reload,
     isStageCompleted,
     isAchievementCompleted,
     getStats,

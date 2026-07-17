@@ -1074,12 +1074,18 @@ a.content-card:hover {
 }
 
 .hs-page .container {
-  max-width: 1400px;
+  max-width: none;
 }
 
 .hs-page .section-heading h1,
 .hs-page .section-heading p {
   color: #1c1f24;
+}
+
+.hs-page .section-heading {
+  max-width: none;
+  margin: 0 0 24px;
+  text-align: left;
 }
 
 .hs-page .section-heading .eyebrow {
@@ -1091,7 +1097,7 @@ a.content-card:hover {
   display: inline-flex;
   gap: 4px;
   padding: 4px;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
   border: 1px solid rgba(38, 43, 50, 0.14);
   border-radius: 8px;
   background: #ece8df;
@@ -1136,9 +1142,9 @@ a.content-card:hover {
   justify-content: flex-start;
   flex-wrap: wrap;
   gap: 12px;
-  padding: 6px 10px;
+  padding: 6px 12px;
   border-radius: 10px;
-  margin-top: 4px;
+  margin-top: 0;
   background: transparent;
   border: none;
   box-shadow: none;
@@ -1253,6 +1259,10 @@ a.content-card:hover {
   border-radius: 8px;
 }
 
+.hs-controls--with-status {
+  grid-template-columns: minmax(280px, 1fr) repeat(4, auto);
+}
+
 .hs-search-box {
   display: flex;
   align-items: center;
@@ -1293,6 +1303,25 @@ a.content-card:hover {
   padding: 0 10px;
   cursor: pointer;
   font-size: 14px;
+}
+
+@media (min-width: 841px) and (max-width: 1180px) {
+  .hs-controls--with-status {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+
+  .hs-controls--with-status .hs-search-box {
+    grid-column: 1 / -1;
+  }
+
+  .hs-controls--with-status .hs-select-wrap {
+    min-width: 0;
+  }
+
+  .hs-controls--with-status .hs-select-wrap select {
+    min-width: 0;
+    width: 100%;
+  }
 }
 
 .hs-result-bar {
@@ -2020,6 +2049,32 @@ a.content-card:hover {
 }
 
 /* 我的成就 - 统计面板 */
+.hs-progress-status {
+  margin-top: 12px;
+  padding: 8px 12px;
+  border: 1px solid rgba(44, 86, 105, 0.22);
+  border-radius: 8px;
+  color: #2c5669;
+  background: rgba(236, 248, 251, 0.78);
+  font-size: 13px;
+}
+
+.hs-progress-error {
+  color: #9c3a25;
+  border-color: rgba(156, 58, 37, 0.24);
+  background: rgba(255, 244, 239, 0.9);
+}
+
+.hs-progress-status button {
+  margin-left: 8px;
+  border: 0;
+  color: inherit;
+  background: transparent;
+  font-weight: 700;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
 .hs-stats-panel {
   margin: 4px 0;
   padding: 10px 14px;

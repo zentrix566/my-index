@@ -15,7 +15,7 @@ const getDifficultyStyle = (difficulty) => ({
 })
 
 const isClickable = (ach) =>
-  ach.cards && ach.cards.length > 0 && ach.cards.some((c) => c.image)
+  ach.cards && ach.cards.length > 0 && ach.cards.some((c) => c.imageLoader)
 
 const copyDeckCode = async (deck, event) => {
   event.stopPropagation()
@@ -87,9 +87,9 @@ const copyDeckCode = async (deck, event) => {
           v-for="card in achievement.cards"
           :key="card.name"
           class="hs-related-card-name"
-          :class="{ 'hs-missing': !card.image }"
+          :class="{ 'hs-missing': !card.imageLoader }"
         >
-          {{ card.name }}<span v-if="!card.image" class="hs-missing-hint">（暂无图）</span>
+          {{ card.name }}<span v-if="!card.imageLoader" class="hs-missing-hint">（暂无图）</span>
         </span>
       </div>
 

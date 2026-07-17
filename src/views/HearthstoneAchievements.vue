@@ -98,12 +98,18 @@
           >推荐冲刺</button>
         </div>
 
+        <div v-if="progressLoading" class="hs-progress-status" role="status">正在加载成就进度…</div>
+        <div v-else-if="progressError" class="hs-progress-status hs-progress-error" role="alert">
+          成就进度加载失败，当前显示的数据可能不是最新的。
+          <button type="button" @click="reloadProgress">重试</button>
+        </div>
+
         <div class="hs-stats-panel">
           <template v-if="myGroupBy === 'almost'">
             <div class="hs-stats-info">
               <span class="hs-stats-percent">🔥 {{ almostStats.count }}</span>
               <span class="hs-stats-detail">
-                未完成（含 0%）：累计 {{ almostCumulativeList.length }} 个 · 一次性 {{ almostOneTimeList.length }} 个，按"还差最少"排序
+                接近完成：累计 {{ almostCumulativeList.length }} 个 · 一次性 {{ almostOneTimeList.length }} 个，按"还差最少"排序
               </span>
             </div>
           </template>
@@ -459,14 +465,22 @@ import CardModal from '../hearthstone-achievements/components/CardModal.vue'
 import ScrollToTop from '../hearthstone-achievements/components/ScrollToTop.vue'
 import MyAchievementCard from '../hearthstone-achievements/components/MyAchievementCard.vue'
 
-const { getStats, isAchievementCompleted, getProgressInfo } = useAchievementProgress()
+const {
+  getStats,
+  isAchievementCompleted,
+  getProgressInfo,
+  isAlmostDone,
+  loading: progressLoading,
+  error: progressError,
+  reload: reloadProgress
+} = useAchievementProgress()
 
 // 动态加载所有卡牌图片
-const cardImages = import.meta.glob('../hearthstone-achievements/assets/cards/**/*.png', { eager: true, import: 'default' })
+const cardImageLoaders = import.meta.glob('../hearthstone-achievements/assets/cards/**/*.png', { import: 'default' })
 
-const getCardImageUrl = (cardName, imageDir) => {
+const getCardImageLoader = (cardName, imageDir) => {
   const path = `../hearthstone-achievements/assets/cards/${imageDir}/${cardName}.png`
-  return cardImages[path] || null
+  return cardImageLoaders[path] || null
 }
 
 // 给成就附加卡牌图片和版本信息
@@ -474,7 +488,7 @@ const attachCards = (ach, exp) => ({
   ...ach,
   cards: (ach.relatedCards || []).map((name) => ({
     name,
-    image: getCardImageUrl(name, exp.cardImageDir)
+    imageLoader: getCardImageLoader(name, exp.cardImageDir)
   })),
   _expansionId: exp.id,
   _expansionName: exp.name
@@ -613,9 +627,9 @@ const almostCumulativeList = computed(() => {
       if (ach.type !== '累计') return false
       const info = getProgressInfo(ach)
       if (info.completed) return false
+      if (!isAlmostDone(ach)) return false
       if (almostVersionFilter.value !== 'all' && ach._expansionId !== almostVersionFilter.value) return false
       if (almostClassFilter.value !== 'all' && ach.heroClass !== almostClassFilter.value) return false
-      // 0% 未启动的也展示，靠"还差次数"排序自然落到末尾
       return true
     })
     .sort((a, b) => {
@@ -646,9 +660,9 @@ const almostOneTimeList = computed(() => {
     .filter((ach) => {
       if (ach.type === '累计') return false
       const info = getProgressInfo(ach)
+      if (!isAlmostDone(ach)) return false
       if (almostVersionFilter.value !== 'all' && ach._expansionId !== almostVersionFilter.value) return false
       if (almostClassFilter.value !== 'all' && ach.heroClass !== almostClassFilter.value) return false
-      // 所有未完成的(含 0% 未启动)都展示，按"还差阶段"排序
       return !info.completed
     })
     .sort((a, b) => {
@@ -787,57 +801,57 @@ const myCompletedCount = computed(() =>
   myAchievementsList.value.filter(ach => isAchievementCompleted(ach)).length
 )
 
-// 切换视图时重置筛选
-watch(viewMode, () => {
+const resetFilters = () => {
   query.value = ''
   selectedClass.value = 'all'
   selectedDifficulty.value = 'all'
   selectedType.value = 'all'
   selectedStatus.value = viewMode.value === 'my' ? '未完成' : 'all'
+}
+
+const resetViewState = ({ resetPages = false, scroll = false } = {}) => {
+  resetFilters()
   closeModal()
+  if (resetPages) {
+    cumulativePage.value = 1
+    oneTimePage.value = 1
+  }
+  if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+// 切换视图时重置筛选
+watch(viewMode, () => {
+  resetViewState()
 })
 
 watch(myGroupBy, () => {
-  query.value = ''
-  selectedClass.value = 'all'
-  selectedDifficulty.value = 'all'
-  selectedType.value = 'all'
-  selectedStatus.value = '未完成'
-  cumulativePage.value = 1
-  oneTimePage.value = 1
-  closeModal()
-  window.scrollTo({ top: 0, behavior: 'smooth' })
+  resetViewState({ resetPages: true, scroll: true })
 })
 
 watch(currentExpansionId, () => {
   if (viewMode.value === 'expansion' || (viewMode.value === 'my' && myGroupBy.value === 'expansion')) {
-    query.value = ''
-    selectedClass.value = 'all'
-    selectedDifficulty.value = 'all'
-    selectedType.value = 'all'
-    selectedStatus.value = viewMode.value === 'my' ? '未完成' : 'all'
-    closeModal()
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    resetViewState({ scroll: true })
   }
 })
 
 watch(currentClass, () => {
   if (viewMode.value === 'class' || (viewMode.value === 'my' && myGroupBy.value === 'class')) {
-    query.value = ''
-    selectedClass.value = 'all'
-    selectedDifficulty.value = 'all'
-    selectedType.value = 'all'
-    selectedStatus.value = viewMode.value === 'my' ? '未完成' : 'all'
-    closeModal()
-    window.scrollTo({ top: 0, behavior: 'smooth' })
+    resetViewState({ scroll: true })
   }
 })
 
 // 弹窗
-const openCardModal = (achievement) => {
-  if (!achievement.cards || achievement.cards.length === 0) return
+const openCardModal = async (achievement) => {
+  if (!achievement.cards || !achievement.cards.some((card) => card.imageLoader)) return
   modalTitle.value = achievement.name
-  modalCards.value = achievement.cards
+  modalCards.value = await Promise.all(achievement.cards.map(async (card) => {
+    if (!card.imageLoader) return { ...card, image: null }
+    try {
+      return { ...card, image: await card.imageLoader() }
+    } catch {
+      return { ...card, image: null }
+    }
+  }))
   modalVisible.value = true
 }
 
