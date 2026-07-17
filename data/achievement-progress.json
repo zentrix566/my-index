@@ -226,7 +226,7 @@
   },
   "bl-045": {
     "stages": {},
-    "count": 154
+    "count": 178
   },
   "pr-022": {
     "stages": {},
@@ -267,7 +267,7 @@
   },
   "bl-005": {
     "stages": {},
-    "count": 3
+    "count": 7
   },
   "ct-003": {
     "stages": {
@@ -325,7 +325,7 @@
   },
   "bl-015": {
     "stages": {},
-    "count": 0
+    "count": 15
   },
   "dd-007": {
     "stages": {
@@ -538,7 +538,7 @@
   },
   "bl-047": {
     "stages": {},
-    "count": 75
+    "count": 111
   },
   "pr-010": {
     "stages": {},
@@ -569,7 +569,9 @@
     "count": 0
   },
   "cot-008": {
-    "stages": {},
+    "stages": {
+      "0": true
+    },
     "count": 19
   },
   "ungoro-011": {
@@ -664,7 +666,7 @@
   },
   "bl-006": {
     "stages": {},
-    "count": 76
+    "count": 200
   },
   "ungoro-021": {
     "stages": {},
@@ -689,7 +691,7 @@
   },
   "bl-038": {
     "stages": {},
-    "count": 64
+    "count": 70
   },
   "pr-024": {
     "stages": {
@@ -1551,7 +1553,7 @@
   },
   "bl-046": {
     "stages": {},
-    "count": 10
+    "count": 12
   },
   "vh-003": {
     "stages": {
