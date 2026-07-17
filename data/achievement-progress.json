@@ -342,8 +342,11 @@
     "count": 0
   },
   "dd-009": {
-    "stages": {},
-    "count": 4
+    "stages": {
+      "0": true,
+      "1": true
+    },
+    "count": 6
   },
   "bl-008": {
     "stages": {},
