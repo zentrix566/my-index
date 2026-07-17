@@ -267,7 +267,7 @@
   },
   "bl-005": {
     "stages": {},
-    "count": 11
+    "count": 13
   },
   "ct-003": {
     "stages": {
@@ -324,8 +324,12 @@
     "count": 0
   },
   "bl-015": {
-    "stages": {},
-    "count": 28
+    "stages": {
+      "0": true,
+      "1": true,
+      "2": true
+    },
+    "count": 40
   },
   "dd-007": {
     "stages": {
@@ -537,8 +541,10 @@
     "count": 26
   },
   "bl-047": {
-    "stages": {},
-    "count": 125
+    "stages": {
+      "0": true
+    },
+    "count": 154
   },
   "pr-010": {
     "stages": {},
