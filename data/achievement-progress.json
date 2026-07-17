@@ -99,9 +99,10 @@
   },
   "wz-020": {
     "stages": {
-      "0": true
+      "0": true,
+      "1": true
     },
-    "count": 10
+    "count": 12
   },
   "ed-019": {
     "stages": {
@@ -136,11 +137,19 @@
     },
     "count": 0
   },
+  "vh-007": {
+    "stages": {
+      "0": true,
+      "1": true
+    },
+    "count": 11
+  },
   "vh-010": {
     "stages": {
-      "0": true
+      "0": true,
+      "1": true
     },
-    "count": 31
+    "count": 100
   },
   "wz-010": {
     "stages": {
@@ -1146,8 +1155,10 @@
     "count": 6
   },
   "vh-011": {
-    "stages": {},
-    "count": 3
+    "stages": {
+      "0": true
+    },
+    "count": 16
   },
   "wz-022": {
     "stages": {
