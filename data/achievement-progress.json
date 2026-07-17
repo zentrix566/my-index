@@ -84,8 +84,11 @@
     "count": 0
   },
   "wz-006": {
-    "stages": {},
-    "count": 23
+    "stages": {
+      "0": true,
+      "1": true
+    },
+    "count": 60
   },
   "bl-056": {
     "stages": {
@@ -401,11 +404,15 @@
     "count": 0
   },
   "bl-017": {
-    "stages": {},
-    "count": 7
+    "stages": {
+      "0": true
+    },
+    "count": 0
   },
   "ct-016": {
-    "stages": {},
+    "stages": {
+      "0": true
+    },
     "count": 0
   },
   "pr-013": {
@@ -1444,8 +1451,10 @@
     "count": 0
   },
   "bl-054": {
-    "stages": {},
-    "count": 2
+    "stages": {
+      "0": true
+    },
+    "count": 5
   },
   "wz-023": {
     "stages": {
