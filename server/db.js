@@ -1,139 +1,160 @@
 /**
- * SQLite 数据层（better-sqlite3）
- * - 单文件数据库：data/app.db（WAL 模式）
+ * PostgreSQL 数据层（node-postgres / pg）
  * - 存储层隔离：业务代码只调用本文件导出的干净接口，不碰 SQL
- * - 换引擎（如 Postgres）时只需重写本文件，业务代码不动
+ * - 连接参数来自环境变量（默认值适合常见托管 PG）：
+ *     PG_HOST      必填（如 rds.xxx.aliyuncs.com）
+ *     PG_PASS      必填，建议经 Secret 注入
+ *     PG_USER      默认 postgres
+ *     PG_DATABASE  默认 zentrix
+ *     PG_PORT      默认 5432
+ *     PG_SSL       设 "false" 关闭；否则默认 sslmode=require（rejectUnauthorized:false，兼容自签证书）
+ * - 业务接口均为 async（pg 基于回调/Promise），调用点需 await
  */
-import Database from 'better-sqlite3'
-import fs from 'fs'
-import path from 'path'
-import { fileURLToPath } from 'url'
+import pg from 'pg'
 import { getAchievementMeta } from './achievements-meta.js'
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const DATA_DIR = path.resolve(__dirname, '../data')
-const DB_PATH = path.join(DATA_DIR, 'app.db')
-const MIGRATIONS_DIR = path.join(__dirname, 'migrations')
+const { Pool } = pg
 
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true })
+const pool = new Pool({
+  host: process.env.PG_HOST,
+  port: parseInt(process.env.PG_PORT || '5432', 10),
+  user: process.env.PG_USER || 'postgres',
+  database: process.env.PG_DATABASE || 'zentrix',
+  password: process.env.PG_PASS,
+  ssl: process.env.PG_SSL === 'false' ? false : { rejectUnauthorized: false },
+  max: 10,
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000
+})
+
+// 优雅关闭：SIGTERM/SIGINT 时结束连接池
+for (const sig of ['SIGINT', 'SIGTERM']) {
+  process.on(sig, () => {
+    pool.end().finally(() => process.exit(0))
+  })
 }
 
-const db = new Database(DB_PATH)
-db.pragma('journal_mode = WAL') // 读写并发更稳
-// WAL 模式下用 NORMAL 同步级别：仍保证崩溃不损坏数据库，但避免每次提交都 fsync 一次 WAL 文件，
-// 大幅降低写入延迟（在高延迟磁盘/网络卷上尤为明显）。代价仅是断电时可能丢失最近一个事务。
-db.pragma('synchronous = NORMAL')
-db.pragma('foreign_keys = ON')
+// ========== 建表（幂等，首次部署自动执行）==========
+const SCHEMA_SQL = `
+CREATE TABLE IF NOT EXISTS users (
+  id            SERIAL PRIMARY KEY,
+  username      TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
+  created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 
-// ========== 迁移机制 ==========
-// 启动时按文件名序号补齐未执行的 .sql，记录到 schema_migrations
-function runMigrations() {
-  if (!fs.existsSync(MIGRATIONS_DIR)) return
-  // 迁移记录表本身先确保存在，否则下面查询会失败（该表由 001_init.sql 创建，但排在查询之后）
-  db.exec(
-    `CREATE TABLE IF NOT EXISTS schema_migrations (
-      version    INTEGER PRIMARY KEY,
-      applied_at TEXT NOT NULL DEFAULT (datetime('now'))
-    )`
-  )
-  const files = fs
-    .readdirSync(MIGRATIONS_DIR)
-    .filter((f) => f.endsWith('.sql'))
-    .sort()
+CREATE TABLE IF NOT EXISTS progress (
+  user_id         INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  achievement_id  TEXT NOT NULL,
+  stages_json     JSONB NOT NULL DEFAULT '{}'::jsonb,
+  count           INT NOT NULL DEFAULT 0,
+  achievement_name TEXT,
+  version         TEXT,
+  updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
+  PRIMARY KEY (user_id, achievement_id)
+);
 
-  const applied = new Set(
-    db
-      .prepare('SELECT version FROM schema_migrations')
-      .all()
-      .map((r) => r.version)
-  )
+CREATE INDEX IF NOT EXISTS idx_progress_user ON progress(user_id);
 
-  for (const file of files) {
-    const version = parseInt(file.split('_')[0], 10)
-    if (applied.has(version)) continue
-    const sql = fs.readFileSync(path.join(MIGRATIONS_DIR, file), 'utf-8')
-    console.log(`[db] 执行迁移 ${file}`)
-    db.exec(sql)
-    db.prepare('INSERT INTO schema_migrations(version) VALUES(?)').run(version)
-  }
+CREATE TABLE IF NOT EXISTS schema_migrations (
+  version    INT PRIMARY KEY,
+  applied_at TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+`
+
+let schemaReady = false
+export async function ensureSchema() {
+  if (schemaReady) return
+  await pool.query(SCHEMA_SQL)
+  schemaReady = true
 }
-runMigrations()
-backfillProgressMeta()
 
-// ========== 干净接口（业务层只调用这些）==========
+// 启动时确保表存在（失败仅记录，不阻塞服务启动）
+ensureSchema().catch((e) => console.error('[db] 建表失败:', e))
+
+// ========== 干净接口（业务层只调用这些，均为 async）==========
 
 // 按用户名查用户（含 password_hash，仅内部鉴权用）
-export function getUserByUsername(username) {
-  return db.prepare('SELECT * FROM users WHERE username = ?').get(username)
+export async function getUserByUsername(username) {
+  const { rows } = await pool.query('SELECT * FROM users WHERE username = $1', [username])
+  return rows[0] || null
 }
 
 // 按 id 查用户（对外脱敏，不含 password_hash）
-export function getUserById(id) {
-  return db.prepare('SELECT id, username, created_at FROM users WHERE id = ?').get(id)
+export async function getUserById(id) {
+  const { rows } = await pool.query(
+    'SELECT id, username, created_at FROM users WHERE id = $1',
+    [id]
+  )
+  return rows[0] || null
 }
 
 // 创建用户，返回新 id
-export function createUser(username, passwordHash) {
-  const info = db
-    .prepare('INSERT INTO users(username, password_hash) VALUES(?, ?)')
-    .run(username, passwordHash)
-  return Number(info.lastInsertRowid)
+export async function createUser(username, passwordHash) {
+  const { rows } = await pool.query(
+    'INSERT INTO users(username, password_hash) VALUES($1, $2) RETURNING id',
+    [username, passwordHash]
+  )
+  return rows[0].id
 }
 
 // 写回单条进度（upsert），自动带入成就名称与版本（便于查库排查）
-export function upsertProgress(userId, achievementId, stages, count) {
+// 可选传入 client（事务内复用同一连接）；不传则用连接池
+export async function upsertProgress(userId, achievementId, stages, count, client) {
+  const q = client || pool
   const meta = getAchievementMeta(achievementId)
-  db.prepare(
+  await q.query(
     `INSERT INTO progress(user_id, achievement_id, stages_json, count, achievement_name, version, updated_at)
-     VALUES(?, ?, ?, ?, ?, ?, datetime('now'))
+     VALUES($1, $2, $3, $4, $5, $6, now())
      ON CONFLICT(user_id, achievement_id)
-     DO UPDATE SET stages_json = excluded.stages_json, count = excluded.count,
-                   achievement_name = excluded.achievement_name, version = excluded.version,
-                   updated_at = datetime('now')`
-  ).run(
-    userId,
-    achievementId,
-    JSON.stringify(stages || {}),
-    count || 0,
-    meta.name,
-    meta.version
+     DO UPDATE SET stages_json = EXCLUDED.stages_json, count = EXCLUDED.count,
+                   achievement_name = EXCLUDED.achievement_name, version = EXCLUDED.version,
+                   updated_at = now()`,
+    [
+      userId,
+      achievementId,
+      JSON.stringify(stages || {}),
+      count || 0,
+      meta.name,
+      meta.version
+    ]
   )
-}
-
-// 迁移 002 之后回填历史行的名称/版本（仅处理 achievement_name 为空的行）
-function backfillProgressMeta() {
-  const rows = db
-    .prepare('SELECT DISTINCT achievement_id FROM progress WHERE achievement_name IS NULL')
-    .all()
-  if (rows.length === 0) return
-  const stmt = db.prepare(
-    'UPDATE progress SET achievement_name = ?, version = ? WHERE achievement_id = ? AND achievement_name IS NULL'
-  )
-  const tx = db.transaction((items) => {
-    for (const it of items) {
-      const meta = getAchievementMeta(it.achievement_id)
-      stmt.run(meta.name, meta.version, it.achievement_id)
-    }
-  })
-  tx(rows)
-  console.log(`[db] 回填 ${rows.length} 个成就的名称/版本到 progress 表`)
 }
 
 // 读取某用户全部进度，返回结构 { [achievementId]: { stages, count } }
 // 与前端现有 progressData 结构完全一致，前端零改造复用
-export function getProgress(userId) {
-  const rows = db
-    .prepare('SELECT achievement_id, stages_json, count FROM progress WHERE user_id = ?')
-    .all(userId)
+export async function getProgress(userId) {
+  const { rows } = await pool.query(
+    'SELECT achievement_id, stages_json, count FROM progress WHERE user_id = $1',
+    [userId]
+  )
   const out = {}
   for (const r of rows) {
+    // pg 的 JSONB 默认已解析为对象；个别驱动配置下可能是字符串，统一兜底
+    const stages =
+      typeof r.stages_json === 'string' ? JSON.parse(r.stages_json) : (r.stages_json || {})
     out[r.achievement_id] = {
-      stages: JSON.parse(r.stages_json || '{}'),
+      stages,
       count: r.count
     }
   }
   return out
 }
 
-export default db
+// 事务包装：fn(client) 内可执行多条 SQL，自动 BEGIN/COMMIT/ROLLBACK
+export async function transaction(fn) {
+  const client = await pool.connect()
+  try {
+    await client.query('BEGIN')
+    const result = await fn(client)
+    await client.query('COMMIT')
+    return result
+  } catch (e) {
+    await client.query('ROLLBACK')
+    throw e
+  } finally {
+    client.release()
+  }
+}
+
+export default pool

@@ -10,7 +10,7 @@
       <!-- 介绍 + 登录态 -->
       <div class="hs-intro">
         <p class="hs-intro-text">
-          这是你的炉石成就专属进度本：登录后可保存自己的完成进度、按版本/职业查看、一键编辑并自动统计完成度；未登录也能浏览全部成就定义，并以示例账号预览登录后的效果。
+          这是你的炉石成就专属进度本：登录后可保存自己的完成进度、按版本/职业查看、一键编辑并自动统计完成度；未登录也能浏览全部成就，并全部显示为未完成状态。
         </p>
         <div class="hs-intro-actions">
           <template v-if="user">
@@ -92,9 +92,9 @@
       <!-- 我的成就模式：分组切换 + 统计面板 -->
       <template v-if="viewMode === 'my'">
         <div v-if="!user" class="hs-example-banner">
-          <span>🔍 当前展示的是 <strong>示例账号</strong> 的进度（只读预览）。</span>
+          <span>📋 当前展示的是<strong>全部成就</strong>（未记录进度）。</span>
           <button type="button" class="hs-link" @click="router.push('/login')">登录 / 注册</button>
-          <span>后即可查看并保存你自己的进度。</span>
+          <span>后即可记录并保存你自己的完成进度。</span>
         </div>
         <div class="hs-my-sub-switch">
           <span class="hs-my-sub-label">视图：</span>
@@ -526,11 +526,9 @@ import MyAchievementCard from '../hearthstone-achievements/components/MyAchievem
 const { user, init: initAuth, logout } = useAuth()
 const router = useRouter()
 const userAch = useAchievementProgress() // 默认加载当前用户进度到 progressData
-const exampleProgress = ref({})
-// 未登录展示所有者示例进度；登录展示自己的进度
-// 注意：必须取 .value（解包一层 ref），否则 displayProgress.value 仍是 ref 套 ref，
-// useAchievementProgress 里 progress.value[achId] 会访问到 ref 对象而非数据，导致全部判定未完成。
-const displayProgress = computed(() => (user.value ? userAch.progress.value : exampleProgress.value))
+// 进度数据源：登录显示自己的进度；未登录时服务端 /api/achievements/progress 返回空对象，
+// 即「全部成就、全部未完成」，用于匿名浏览与导出全部成就（不再展示 owner 示例账号进度）。
+const displayProgress = computed(() => userAch.progress.value)
 const {
   getStats,
   getAchievementXp,
@@ -544,22 +542,12 @@ const {
   reload: reloadProgress
 } = useAchievementProgress(displayProgress)
 
-// 初始化：加载认证态；未登录时加载示例进度
+// 初始化：加载认证态
 initAuth()
-const loadExample = async () => {
-  if (Object.keys(exampleProgress.value).length > 0) return
-  try {
-    const resp = await fetch('/api/achievements/example')
-    if (resp.ok) exampleProgress.value = await resp.json()
-  } catch {
-    /* 静默失败 */
-  }
-}
 // 登录态变化：登录后重新拉取「自己的」进度（单例初始以匿名拉取过，需强制刷新）；
-// 未登录时加载示例账号进度用于只读预览。
+// 未登录时服务端返回空进度，页面展示全部成就的未完成状态，无需额外加载。
 watch(user, (u) => {
   if (u) reloadProgress()
-  else loadExample()
 }, { immediate: true })
 
 // 编辑进度弹窗
@@ -665,7 +653,7 @@ function exportJson() {
     meta: {
       app: '炉石传说成就查看器',
       exportedAt: new Date().toISOString(),
-      user: user.value ? user.value.username : '示例账号',
+      user: user.value ? user.value.username : '全部成就（未登录）',
       scope: viewMode.value === 'my' ? myGroupBy.value : viewMode.value
     },
     progress: displayProgress.value || {},
@@ -815,7 +803,7 @@ const onClassTabClick = (cls) => {
   currentClass.value = cls
 }
 const myViewSubLabel = computed(() => {
-  const prefix = user.value ? '我的进度' : '示例进度'
+  const prefix = user.value ? '我的进度' : '全部成就'
   if (myGroupBy.value === 'almost') return `${prefix} - 快完成`
   if (myGroupBy.value === 'priority') return `${prefix} - 推荐冲刺`
   const scope = myGroupBy.value === 'expansion' ? currentExpansion.value?.name : currentClassName.value
@@ -1141,12 +1129,7 @@ const openCardModal = async (achievement) => {
     openEditModal(achievement)
     return
   }
-  // 我的成就 + 未登录：示例数据仅供预览，引导登录
-  if (viewMode.value === 'my' && !user.value) {
-    router.push('/login')
-    return
-  }
-  // 浏览模式：查看关联卡牌图片
+  // 浏览模式 / 我的成就（未登录仅查看）：展示关联卡牌图片，编辑需登录
   if (!achievement.cards || !achievement.cards.some((card) => card.imageLoader)) return
   modalTitle.value = achievement.name
   modalCards.value = await Promise.all(achievement.cards.map(async (card) => {

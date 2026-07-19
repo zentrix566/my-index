@@ -46,8 +46,28 @@ spec:
                 secretKeyRef:
                   name: zentrix-secrets
                   key: owner-password
+            # ========== PostgreSQL 连接（数据层已从 SQLite 迁移到 PG）==========
+            # 非敏感参数明文注入；密码来自 Secret（见 secret.yaml 的 pg-pass）
+            - name: PG_HOST
+              value: "39.106.136.18"
+            - name: PG_USER
+              value: "postgres"
+            - name: PG_DATABASE
+              value: "zentrix"
+            - name: PG_PORT
+              value: "5432"
+            # PG 跑在 docker 内，通常未开启 SSL，设为 "false"；若你的 PG 强制 SSL 改为 "require"
+            - name: PG_SSL
+              value: "false"
+            - name: PG_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: zentrix-secrets
+                  key: pg-pass
           resources: {}
-          # SQLite 单节点部署，必须 replicas:1 + Recreate，禁止多副本共享同一文件
+          # 数据层已迁移到 PostgreSQL（外部托管），不再有单文件数据库共享限制。
+          # 此处 replicas:1 仅为让访问日志（hostPath 单节点写入）保持单写者；
+          # 若后续日志改存 PG/对象存储，可安全扩到多副本。
           livenessProbe:
             httpGet:
               path: /health
@@ -63,17 +83,10 @@ spec:
           volumeMounts:
             - mountPath: /app/logs
               name: access-logs
-            # SQLite 数据库持久化（单文件 + WAL），必须 hostPath 落盘
-            - mountPath: /app/data
-              name: app-data
       imagePullSecrets:
         - name: aliyun-registry-secret
       volumes:
         - name: access-logs
           hostPath:
             path: /data/zentrix/logs
-            type: DirectoryOrCreate
-        - name: app-data
-          hostPath:
-            path: /data/zentrix/data
             type: DirectoryOrCreate

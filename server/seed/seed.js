@@ -25,10 +25,10 @@ export async function ensureSeeded() {
   const username = process.env.OWNER_USERNAME || 'owner'
   const password = process.env.OWNER_PASSWORD || 'owner123456'
 
-  let user = getUserByUsername(username)
+  let user = await getUserByUsername(username)
   if (!user) {
     const hash = await bcrypt.hash(password, 10)
-    const id = createUser(username, hash)
+    const id = await createUser(username, hash)
     user = { id }
     console.log(`[seed] 创建所有者账号 "${username}"`)
   } else {
@@ -36,7 +36,7 @@ export async function ensureSeeded() {
   }
 
   // 仅当所有者还没有任何进度时，才导入初始示例进度，避免覆盖已有数据
-  const existing = getProgress(user.id)
+  const existing = await getProgress(user.id)
   if (Object.keys(existing).length > 0) {
     console.log(`[seed] 所有者 "${username}" 已有 ${Object.keys(existing).length} 条进度，跳过导入`)
     return
@@ -47,7 +47,7 @@ export async function ensureSeeded() {
   )
   let n = 0
   for (const [achId, prog] of Object.entries(ownerProgress)) {
-    upsertProgress(user.id, achId, prog.stages || {}, prog.count || 0)
+    await upsertProgress(user.id, achId, prog.stages || {}, prog.count || 0)
     n++
   }
   console.log(`[seed] 已导入 ${n} 条初始进度到 "${username}"`)

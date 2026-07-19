@@ -98,7 +98,7 @@ router.post('/register', authLimiter, async (req, res) => {
 // 登录
 router.post('/login', authLimiter, async (req, res) => {
   const { username, password } = req.body || {}
-  const user = getUserByUsername(username)
+  const user = await getUserByUsername(username)
   if (!user) {
     return res.status(401).json({ error: '用户名或密码错误' })
   }
@@ -128,12 +128,12 @@ router.post('/logout', (req, res) => {
 })
 
 // 当前登录用户（供前端初始化 auth 状态）
-router.get('/me', (req, res) => {
+router.get('/me', async (req, res) => {
   const token = req.cookies?.[TOKEN_NAME]
   if (!token) return res.json({ user: null })
   try {
     const payload = jwt.verify(token, JWT_SECRET)
-    const user = getUserById(payload.uid)
+    const user = await getUserById(payload.uid)
     return res.json({ user: user ? { id: user.id, username: user.username } : null })
   } catch {
     return res.json({ user: null })

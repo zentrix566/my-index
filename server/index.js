@@ -7,7 +7,7 @@ import { writeLog, appLog, cleanOldLogs, getStats, getTopPages, getGeoDistributi
 import { lookup } from './geoip.js'
 import cookieParser from 'cookie-parser'
 import authRouter, { requireAuth, getUserIdFromReq } from './auth.js'
-import db, { getProgress, upsertProgress, getUserByUsername } from './db.js'
+import { getProgress, upsertProgress, getUserByUsername, transaction } from './db.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const isProd = process.env.NODE_ENV === 'production'
@@ -214,14 +214,14 @@ app.use('/api/auth', authRouter)
 // ========== 成就进度 API ==========
 
 // 获取当前登录用户的进度；匿名返回空对象（前端据此隐藏进度、引导登录）
-app.get('/api/achievements/progress', (req, res) => {
+app.get('/api/achievements/progress', async (req, res) => {
   try {
     const userId = getUserIdFromReq(req)
     if (!userId) {
       appLog('PROGRESS', 'GET 匿名访问，无进度')
       return res.json({})
     }
-    const data = getProgress(userId)
+    const data = await getProgress(userId)
     appLog('PROGRESS', `GET user=${userId} 条目=${Object.keys(data).length}`)
     res.json(data)
   } catch (err) {
@@ -230,10 +230,10 @@ app.get('/api/achievements/progress', (req, res) => {
 })
 
 // 公开示例：返回所有者账号进度（只读预览，不泄露其他用户数据）
-app.get('/api/achievements/example', (req, res) => {
+app.get('/api/achievements/example', async (req, res) => {
   try {
     const ownerName = process.env.OWNER_USERNAME || 'owner'
-    const owner = getUserByUsername(ownerName)
+    const owner = await getUserByUsername(ownerName)
     if (!owner) {
       appLog('PROGRESS', `example 所有者 "${ownerName}" 不存在`)
       return res.json({})
@@ -247,7 +247,7 @@ app.get('/api/achievements/example', (req, res) => {
 })
 
 // 保存当前登录用户的进度（整份草稿 upsert，事务保证原子）
-app.put('/api/achievements/progress', requireAuth, (req, res) => {
+app.put('/api/achievements/progress', requireAuth, async (req, res) => {
   const progress = req.body && req.body.progress
   if (!progress || typeof progress !== 'object') {
     return res.status(400).json({ error: 'progress 格式错误' })
@@ -257,7 +257,7 @@ app.put('/api/achievements/progress', requireAuth, (req, res) => {
   if (entries.length > 2000) return res.status(400).json({ error: '进度条目过多' })
 
   try {
-    const save = db.transaction(() => {
+    await transaction(async (client) => {
       for (const [achId, prog] of entries) {
         if (typeof achId !== 'string' || !/^[a-z0-9_-]+$/i.test(achId)) {
           throw new Error(`非法成就 ID: ${achId}`)
@@ -272,10 +272,9 @@ app.put('/api/achievements/progress', requireAuth, (req, res) => {
         for (const v of Object.values(stages)) {
           if (typeof v !== 'boolean') throw new Error(`非法 stage 值: ${achId}`)
         }
-        upsertProgress(req.userId, achId, stages, count)
+        await upsertProgress(req.userId, achId, stages, count, client)
       }
     })
-    save()
     appLog('PROGRESS', `PUT user=${req.userId} 保存=${entries.length} 条`)
     res.json({ ok: true, saved: entries.length })
   } catch (err) {
