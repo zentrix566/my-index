@@ -25,14 +25,55 @@ spec:
           ports:
             - containerPort: 80
               protocol: TCP
+          env:
+            - name: NODE_ENV
+              value: "production"
+            - name: PORT
+              value: "80"
+            # 启动自动种子（所有者账号 + 示例进度），设为 "false" 可关闭
+            - name: SEED_ON_STARTUP
+              value: "true"
+            - name: OWNER_USERNAME
+              value: "owner"
+            # 敏感信息来自 Secret（见 secret.yaml）
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: zentrix-secrets
+                  key: jwt-secret
+            - name: OWNER_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: zentrix-secrets
+                  key: owner-password
           resources: {}
+          # SQLite 单节点部署，必须 replicas:1 + Recreate，禁止多副本共享同一文件
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 10
+            periodSeconds: 30
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: 80
+            initialDelaySeconds: 5
+            periodSeconds: 15
           volumeMounts:
             - mountPath: /app/logs
               name: access-logs
+            # SQLite 数据库持久化（单文件 + WAL），必须 hostPath 落盘
+            - mountPath: /app/data
+              name: app-data
       imagePullSecrets:
         - name: aliyun-registry-secret
       volumes:
         - name: access-logs
           hostPath:
             path: /data/zentrix/logs
+            type: DirectoryOrCreate
+        - name: app-data
+          hostPath:
+            path: /data/zentrix/data
             type: DirectoryOrCreate

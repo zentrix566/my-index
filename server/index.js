@@ -3,8 +3,11 @@ import compression from 'compression'
 import path from 'path'
 import fs from 'fs'
 import { fileURLToPath } from 'url'
-import { writeLog, cleanOldLogs, getStats, getTopPages, getGeoDistribution, getRecentVisits, getHourlyTrend } from './logger.js'
+import { writeLog, appLog, cleanOldLogs, getStats, getTopPages, getGeoDistribution, getRecentVisits, getHourlyTrend } from './logger.js'
 import { lookup } from './geoip.js'
+import cookieParser from 'cookie-parser'
+import authRouter, { requireAuth, getUserIdFromReq } from './auth.js'
+import db, { getProgress, upsertProgress, getUserByUsername } from './db.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const isProd = process.env.NODE_ENV === 'production'
@@ -36,6 +39,8 @@ const app = express()
 
 // 解析 JSON body
 app.use(express.json({ limit: '1mb' }))
+// 解析 Cookie（登录态 JWT 放在 httpOnly Cookie 中）
+app.use(cookieParser())
 
 // 启动时清理一次过期日志，之后每 24 小时清理一次
 cleanOldLogs()
@@ -45,7 +50,10 @@ setInterval(cleanOldLogs, 24 * 60 * 60 * 1000)
 app.use(compression())
 
 // 获取真实客户端 IP（支持 X-Forwarded-For 代理）
-app.set('trust proxy', true)
+// 注意：不能用宽松的 `true`——那等于信任任意代理，X-Forwarded-For 可被客户端伪造，
+// express-rate-limit 会抛 ERR_ERL_PERMISSIVE_TRUST_PROXY。
+// 设为 1 表示「只信任上一跳代理」（如 Cloudflare Tunnel）；本地无代理时 req.ip 回退为直连 socket 地址，安全且不出错。
+app.set('trust proxy', 1)
 
 // 安全头
 app.use((req, res, next) => {
@@ -200,15 +208,78 @@ app.get('/api/stats/hourly', async (req, res) => {
   }
 })
 
+// ========== 认证 API ==========
+app.use('/api/auth', authRouter)
+
 // ========== 成就进度 API ==========
 
-// 获取成就进度（只读）
+// 获取当前登录用户的进度；匿名返回空对象（前端据此隐藏进度、引导登录）
 app.get('/api/achievements/progress', (req, res) => {
   try {
-    const data = loadAchievementProgress()
+    const userId = getUserIdFromReq(req)
+    if (!userId) {
+      appLog('PROGRESS', 'GET 匿名访问，无进度')
+      return res.json({})
+    }
+    const data = getProgress(userId)
+    appLog('PROGRESS', `GET user=${userId} 条目=${Object.keys(data).length}`)
     res.json(data)
   } catch (err) {
     res.status(500).json({ error: err.message })
+  }
+})
+
+// 公开示例：返回所有者账号进度（只读预览，不泄露其他用户数据）
+app.get('/api/achievements/example', (req, res) => {
+  try {
+    const ownerName = process.env.OWNER_USERNAME || 'owner'
+    const owner = getUserByUsername(ownerName)
+    if (!owner) {
+      appLog('PROGRESS', `example 所有者 "${ownerName}" 不存在`)
+      return res.json({})
+    }
+    const data = getProgress(owner.id)
+    appLog('PROGRESS', `example 所有者="${ownerName}" 条目=${Object.keys(data).length}`)
+    res.json(data)
+  } catch (err) {
+    res.status(500).json({ error: err.message })
+  }
+})
+
+// 保存当前登录用户的进度（整份草稿 upsert，事务保证原子）
+app.put('/api/achievements/progress', requireAuth, (req, res) => {
+  const progress = req.body && req.body.progress
+  if (!progress || typeof progress !== 'object') {
+    return res.status(400).json({ error: 'progress 格式错误' })
+  }
+  const entries = Object.entries(progress)
+  if (entries.length === 0) return res.status(400).json({ error: '没有要保存的进度' })
+  if (entries.length > 2000) return res.status(400).json({ error: '进度条目过多' })
+
+  try {
+    const save = db.transaction(() => {
+      for (const [achId, prog] of entries) {
+        if (typeof achId !== 'string' || !/^[a-z0-9_-]+$/i.test(achId)) {
+          throw new Error(`非法成就 ID: ${achId}`)
+        }
+        if (!prog || typeof prog !== 'object') throw new Error(`进度格式错误: ${achId}`)
+        const count = Number(prog.count) || 0
+        if (!Number.isFinite(count) || count < 0) throw new Error(`非法 count: ${achId}`)
+        const stages = prog.stages
+        if (!stages || typeof stages !== 'object' || Array.isArray(stages)) {
+          throw new Error(`非法 stages: ${achId}`)
+        }
+        for (const v of Object.values(stages)) {
+          if (typeof v !== 'boolean') throw new Error(`非法 stage 值: ${achId}`)
+        }
+        upsertProgress(req.userId, achId, stages, count)
+      }
+    })
+    save()
+    appLog('PROGRESS', `PUT user=${req.userId} 保存=${entries.length} 条`)
+    res.json({ ok: true, saved: entries.length })
+  } catch (err) {
+    res.status(400).json({ error: err.message })
   }
 })
 
@@ -245,8 +316,24 @@ app.get('*', (req, res) => {
   })
 })
 
-// 启动服务
-app.listen(PORT, () => {
-  console.log(`[server] 服务已启动，监听端口 ${PORT}`)
-  console.log(`[server] 静态文件目录: ${DIST_DIR}`)
-})
+// ========== 启动引导 ==========
+// 首次部署：确保数据库表已建（db.js 导入时自动执行迁移），
+// 并在所有者账号缺失/无进度时导入初始示例进度（供「未登录预览」使用）。
+async function bootstrap() {
+  if (process.env.SEED_ON_STARTUP !== 'false') {
+    try {
+      const { ensureSeeded } = await import('./seed/seed.js')
+      await ensureSeeded()
+    } catch (err) {
+      appLog('ERROR', `启动种子失败: ${err.message}`)
+    }
+  }
+
+    app.listen(PORT, () => {
+    appLog('SERVER', `服务已启动，监听端口 ${PORT}`)
+    appLog('SERVER', `静态文件目录: ${DIST_DIR}`)
+    appLog('SERVER', `数据目录: ${DATA_DIR}`)
+  })
+}
+
+bootstrap()

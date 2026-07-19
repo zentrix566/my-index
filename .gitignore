@@ -31,3 +31,15 @@ k8s/cloudflared-deployment.yaml
 
 # 构建中间产物（验证用，可手动删除）
 dist-old/
+
+# SQLite 数据库（运行时数据，不入库；种子文件 server/seed/ 保留跟踪）
+data/app.db
+data/app.db-wal
+data/app.db-shm
+server/seed/*.local.json
+
+# Windows 保留设备名误生成的垃圾文件，永不入库
+nul
+
+# Windows 保留设备名误生成的垃圾文件，永不入库
+nul

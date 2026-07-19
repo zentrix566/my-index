@@ -4,6 +4,16 @@
   "description": "炉石传说穿越时间流版本成就数据",
   "updatedAt": "2026-07-13",
   "cardImageDir": "caverns-of-time",
+  "referenceLinks": [
+    {
+      "name": "旅法师营地：穿越时间流全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5639095"
+    },
+    {
+      "name": "旅法师营地：永恒回响全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5650280"
+    }
+  ],
   "achievements": [
     {
       "id": "cot-001",

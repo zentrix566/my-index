@@ -4,6 +4,12 @@
   "description": "炉石传说深暗领域版本成就数据",
   "updatedAt": "2026-07-13",
   "cardImageDir": "deepdark",
+  "referenceLinks": [
+    {
+      "name": "旅法师营地：深暗领域全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5484895"
+    }
+  ],
   "achievements": [
     {
       "id": "dd-013",

@@ -4,6 +4,12 @@
   "description": "炉石传说紫罗兰监狱版本成就数据",
   "updatedAt": "2026-07-09",
   "cardImageDir": "violet-hold",
+  "referenceLinks": [
+    {
+      "name": "旅法师营地：紫罗兰监狱全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5671573"
+    }
+  ],
   "achievements": [
     {
       "id": "vh-001",

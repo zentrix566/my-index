@@ -4,6 +4,16 @@
   "description": "炉石传说安戈洛龟途版本成就数据",
   "updatedAt": "2026-07-13",
   "cardImageDir": "ungoro",
+  "referenceLinks": [
+    {
+      "name": "旅法师营地：安戈洛的龟途全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5611921"
+    },
+    {
+      "name": "旅法师营地：重生之日全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5624688"
+    }
+  ],
   "achievements": [
     {
       "id": "ungoro-007",

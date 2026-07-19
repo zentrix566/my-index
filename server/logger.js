@@ -18,6 +18,33 @@ function getLogFilePath(date = new Date()) {
 }
 
 /**
+ * 应用操作日志（auth / progress / server 等）按日期写入 logs/app-YYYY-MM-DD.log，
+ * 同时镜像到控制台，便于本地排查。
+ * @param {string} tag - 日志标签，如 AUTH / PROGRESS / SERVER
+ * @param {string} message - 日志内容
+ */
+export function appLog(tag, message) {
+  const ts = new Date().toISOString()
+  const line = `[${ts}] [${tag}] ${message}\n`
+  // 镜像到控制台（WARN/ERROR 用 console.warn 更醒目）
+  if (tag === 'ERROR' || tag === 'WARN') {
+    console.warn(line.trim())
+  } else {
+    console.log(line.trim())
+  }
+  fs.appendFile(getAppLogPath(), line, (err) => {
+    if (err) console.error('[logger] 写入 app 日志失败:', err)
+  })
+}
+
+function getAppLogPath(date = new Date()) {
+  const y = date.getFullYear()
+  const m = String(date.getMonth() + 1).padStart(2, '0')
+  const d = String(date.getDate()).padStart(2, '0')
+  return path.join(LOG_DIR, `app-${y}-${m}-${d}.log`)
+}
+
+/**
  * 写入一条访问日志（JSON Lines 格式）
  * @param {object} entry - 日志条目
  */

@@ -12,11 +12,17 @@
     "start": "NODE_ENV=production node server/index.js"
   },
   "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "better-sqlite3": "^12.11.1",
     "compression": "^1.7.4",
+    "cookie-parser": "^1.4.7",
     "express": "^4.19.2",
+    "express-rate-limit": "^8.6.0",
     "ip2region": "^2.3.0",
+    "jsonwebtoken": "^9.0.3",
     "vue": "^3.4.0",
-    "vue-router": "^4.2.0"
+    "vue-router": "^4.2.0",
+    "xlsx": "^0.18.5"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.7",

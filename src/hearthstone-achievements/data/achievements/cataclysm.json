@@ -4,6 +4,16 @@
   "description": "炉石传说大地的裂变版本成就数据",
   "updatedAt": "2026-07-13",
   "cardImageDir": "cataclysm",
+  "referenceLinks": [
+    {
+      "name": "旅法师营地：大地的裂变全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5656817"
+    },
+    {
+      "name": "旅法师营地：治愈艾泽拉斯全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5663732"
+    }
+  ],
   "achievements": [
     {
       "id": "ct-001",

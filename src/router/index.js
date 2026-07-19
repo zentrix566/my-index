@@ -13,6 +13,8 @@ import DominoFall from '../views/DominoFall.vue'
 import HearthstoneAchievements from '../views/HearthstoneAchievements.vue'
 import About from '../views/About.vue'
 import Stats from '../views/Stats.vue'
+import Login from '../views/Login.vue'
+import Changelog from '../views/Changelog.vue'
 
 const routes = [
   { path: '/', name: 'home', component: Home },
@@ -34,7 +36,9 @@ const routes = [
   { path: '/domino', name: 'domino', component: DominoFall },
   { path: '/hearthstone', name: 'hearthstone-achievements', component: HearthstoneAchievements },
   { path: '/stats', name: 'stats', component: Stats },
-  { path: '/about', name: 'about', component: About }
+  { path: '/about', name: 'about', component: About },
+  { path: '/changelog', name: 'changelog', component: Changelog },
+  { path: '/login', name: 'login', component: Login }
 ]
 
 const router = createRouter({

@@ -4,6 +4,12 @@
   "description": "炉石传说威兹班版本成就数据",
   "updatedAt": "2026-07-13",
   "cardImageDir": "whizbang",
+  "referenceLinks": [
+    {
+      "name": "旅法师营地：威兹班的工坊全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5457946"
+    }
+  ],
   "achievements": [
     {
       "id": "wz-013",

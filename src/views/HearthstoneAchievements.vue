@@ -7,6 +7,22 @@
         <p>浏览成就数据，或记录自己的成就完成进度。支持按职业/难度/类型筛选，查看关联卡牌图片，一键复制推荐卡组代码。</p>
       </div>
 
+      <!-- 介绍 + 登录态 -->
+      <div class="hs-intro">
+        <p class="hs-intro-text">
+          这是你的炉石成就专属进度本：登录后可保存自己的完成进度、按版本/职业查看、一键编辑并自动统计完成度；未登录也能浏览全部成就定义，并以示例账号预览登录后的效果。
+        </p>
+        <div class="hs-intro-actions">
+          <template v-if="user">
+            <span class="hs-user-badge">👤 {{ user.username }}</span>
+            <button type="button" class="hs-btn hs-btn-ghost" @click="logoutAndRefresh">退出</button>
+          </template>
+          <template v-else>
+            <button type="button" class="hs-btn hs-btn-primary" @click="router.push('/login')">登录 / 注册</button>
+          </template>
+        </div>
+      </div>
+
       <!-- 视图模式切换 -->
       <div class="hs-view-switch">
         <button
@@ -44,7 +60,7 @@
             <p>
               <template v-if="viewMode === 'expansion'">{{ currentExpansion?.name }}</template>
               <template v-else-if="viewMode === 'class'">{{ currentClassName }}</template>
-              <template v-else>我的进度 - {{ myViewSubLabel }}</template>
+              <template v-else>{{ myViewSubLabel }}</template>
             </p>
           </div>
         </div>
@@ -74,6 +90,11 @@
 
       <!-- 我的成就模式：分组切换 + 统计面板 -->
       <template v-if="viewMode === 'my'">
+        <div v-if="!user" class="hs-example-banner">
+          <span>🔍 当前展示的是 <strong>示例账号</strong> 的进度（只读预览）。</span>
+          <button type="button" class="hs-link" @click="router.push('/login')">登录 / 注册</button>
+          <span>后即可查看并保存你自己的进度。</span>
+        </div>
         <div class="hs-my-sub-switch">
           <span class="hs-my-sub-label">视图：</span>
           <button
@@ -128,11 +149,33 @@
                 已完成阶段 {{ myStats.earnedPoints }} / {{ myStats.totalPoints }} 点
                 （已完成 {{ myCompletedCount }} / {{ myAchievementsList.length }} 个成就）
               </span>
+              <span class="hs-stats-detail hs-xp-line">
+                已获经验 <b>{{ myEarnedXpBonus }}</b> / 总经验 {{ myStats.totalXp }}
+                <template v-if="passBonus > 0">（基础 {{ myStats.earnedXp }}，通行证 +{{ passBonusPercent }}%）</template>
+              </span>
             </div>
             <div class="hs-stats-bar">
               <div class="hs-stats-bar-fill" :style="{ width: myStats.percentage + '%' }"></div>
             </div>
           </template>
+        </div>
+
+        <!-- 本地备份：导出 / 导入 -->
+        <div class="hs-export-bar" v-if="viewMode === 'my'">
+          <span class="hs-export-label">本地备份：</span>
+          <button type="button" class="hs-btn hs-btn-ghost" @click="exportJson">导出 JSON</button>
+          <button type="button" class="hs-btn hs-btn-ghost" :disabled="exporting" @click="exportExcel">
+            {{ exporting ? '导出中…' : '导出 Excel' }}
+          </button>
+          <button type="button" class="hs-btn hs-btn-ghost" :disabled="!user" @click="triggerImport">导入 JSON</button>
+          <input ref="fileInput" type="file" accept=".json,application/json" hidden @change="onImportFile" />
+          <span v-if="!user" class="hs-export-hint">导入需先登录</span>
+          <label class="hs-pass">
+            通行证加成：
+            <select v-model.number="passBonus" class="hs-pass-select">
+              <option v-for="o in PASS_BONUS_OPTIONS" :key="o.value" :value="o.value">{{ o.label }}</option>
+            </select>
+          </label>
         </div>
       </template>
 
@@ -447,6 +490,13 @@
         @close="closeModal"
       />
 
+      <EditProgressModal
+        :visible="editVisible"
+        :achievement="editAchievement"
+        @close="editVisible = false"
+        @save="saveProgress"
+      />
+
       <ScrollToTop />
     </div>
   </section>
@@ -454,9 +504,13 @@
 
 <script setup>
 import { computed, ref, watch } from 'vue'
+import { useRouter } from 'vue-router'
+import * as XLSX from 'xlsx'
 import { expansions } from '../hearthstone-achievements/data/expansions.js'
 import { classColors, getClassOrder, groupByClass } from '../hearthstone-achievements/utils/achievements.js'
 import { useAchievementProgress } from '../hearthstone-achievements/composables/useAchievementProgress.js'
+import { useAuth } from '../auth/useAuth.js'
+import EditProgressModal from '../hearthstone-achievements/components/EditProgressModal.vue'
 
 import ExpansionTabs from '../hearthstone-achievements/components/ExpansionTabs.vue'
 import FilterBar from '../hearthstone-achievements/components/FilterBar.vue'
@@ -465,15 +519,218 @@ import CardModal from '../hearthstone-achievements/components/CardModal.vue'
 import ScrollToTop from '../hearthstone-achievements/components/ScrollToTop.vue'
 import MyAchievementCard from '../hearthstone-achievements/components/MyAchievementCard.vue'
 
+const { user, init: initAuth, logout } = useAuth()
+const router = useRouter()
+const userAch = useAchievementProgress() // 默认加载当前用户进度到 progressData
+const exampleProgress = ref({})
+// 未登录展示所有者示例进度；登录展示自己的进度
+// 注意：必须取 .value（解包一层 ref），否则 displayProgress.value 仍是 ref 套 ref，
+// useAchievementProgress 里 progress.value[achId] 会访问到 ref 对象而非数据，导致全部判定未完成。
+const displayProgress = computed(() => (user.value ? userAch.progress.value : exampleProgress.value))
 const {
   getStats,
+  getAchievementXp,
   isAchievementCompleted,
   getProgressInfo,
+  isStageCompleted,
+  getCount,
   isAlmostDone,
   loading: progressLoading,
   error: progressError,
   reload: reloadProgress
-} = useAchievementProgress()
+} = useAchievementProgress(displayProgress)
+
+// 初始化：加载认证态；未登录时加载示例进度
+initAuth()
+const loadExample = async () => {
+  if (Object.keys(exampleProgress.value).length > 0) return
+  try {
+    const resp = await fetch('/api/achievements/example')
+    if (resp.ok) exampleProgress.value = await resp.json()
+  } catch {
+    /* 静默失败 */
+  }
+}
+// 登录态变化：登录后重新拉取「自己的」进度（单例初始以匿名拉取过，需强制刷新）；
+// 未登录时加载示例账号进度用于只读预览。
+watch(user, (u) => {
+  if (u) reloadProgress()
+  else loadExample()
+}, { immediate: true })
+
+// 编辑进度弹窗
+const editVisible = ref(false)
+const editAchievement = ref(null)
+function openEditModal(achievement) {
+  editAchievement.value = achievement
+  editVisible.value = true
+}
+async function saveProgress(payload) {
+  try {
+    const resp = await fetch('/api/achievements/progress', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        progress: { [payload.id]: { stages: payload.stages, count: payload.count } }
+      })
+    })
+    if (!resp.ok) throw new Error('保存失败')
+    await reloadProgress() // 重新拉取自己的进度
+    editVisible.value = false
+  } catch (e) {
+    alert(e.message || '保存失败，请重试')
+  }
+}
+function logoutAndRefresh() {
+  logout()
+  reloadProgress()
+}
+
+// ============ 本地备份：导出 / 导入 ============
+const exporting = ref(false)
+const fileInput = ref(null)
+
+// 生成「下一步要做的事」文字描述（用于导出的可读性进度）
+function nextTodoText(ach) {
+  if (isAchievementCompleted(ach)) return '已完成'
+  const stages = ach.stages || []
+  if (ach.type === '累计') {
+    const count = getCount(ach) ?? 0
+    const next = stages.find(s => count < (s.quota || 0))
+    const quota = next ? next.quota : (stages[stages.length - 1]?.quota || 0)
+    const remain = Math.max(0, quota - count)
+    const desc = (next && next.description) || '累计目标'
+    return remain > 0 ? `累计 ${count}/${quota}：${desc}（还差 ${remain} 次）` : '待完成'
+  }
+  for (let i = 0; i < stages.length; i++) {
+    if (!isStageCompleted(ach, i)) {
+      const desc = stages[i].description || `阶段${i + 1}`
+      return `下一步：阶段${i + 1} ${desc}`.replace(/\s+$/, '')
+    }
+  }
+  return '待完成'
+}
+
+// 构建导出用的「每行一个成就」表格数据（面向游戏爱好者精简版）
+function buildExportRows() {
+  const rows = []
+  for (const ach of allAchievements.value) {
+    const completed = isAchievementCompleted(ach)
+    rows.push({
+      '版本': ach._expansionName,
+      '职业': ach.heroClass,
+      '成就名称': ach.name,
+      '成就详情': (ach.stages || []).map((s, i) => `阶段${i + 1}：${s.description || ''}`).join(' | '),
+      '目前进度': completed ? '已完成' : nextTodoText(ach),
+      '类型': ach.type,
+      '难度': ach.difficulty,
+      '经验值': Math.round(getAchievementXp(ach) * (1 + passBonus.value)),
+      '成就值': (ach.stages || []).reduce((s, st) => s + (st.points || 0), 0)
+    })
+  }
+  return rows
+}
+
+function downloadBlob(blob, filename) {
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = filename
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
+// 导出 JSON：含可再导入的 progress 与统计摘要
+function exportJson() {
+  const data = {
+    meta: {
+      app: '炉石传说成就查看器',
+      exportedAt: new Date().toISOString(),
+      user: user.value ? user.value.username : '示例账号',
+      scope: viewMode.value === 'my' ? myGroupBy.value : viewMode.value
+    },
+    progress: displayProgress.value || {},
+    todoList: allAchievements.value.map(ach => ({
+      id: ach.id,
+      name: ach.name,
+      type: ach.type,
+      completed: isAchievementCompleted(ach),
+      nextTodo: nextTodoText(ach)
+    })),
+    summary: {
+      total: allAchievements.value.length,
+      completed: myCompletedCount.value,
+      stats: myStats.value,
+      passBonus: passBonus.value,
+      passBonusPercent: passBonusPercent.value,
+      earnedXp: myStats.value.earnedXp,
+      earnedXpWithBonus: myEarnedXpBonus.value,
+      totalXp: myStats.value.totalXp
+    }
+  }
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
+  downloadBlob(blob, `hearthstone-progress-${Date.now()}.json`)
+}
+
+// 导出 Excel：生成真正的 .xlsx，每行一个成就
+async function exportExcel() {
+  exporting.value = true
+  try {
+    const rows = buildExportRows()
+    const wb = XLSX.utils.book_new()
+    const ws = XLSX.utils.json_to_sheet(rows)
+    ws['!cols'] = [
+      { wch: 16 }, { wch: 10 }, { wch: 28 }, { wch: 50 }, { wch: 40 },
+      { wch: 8 }, { wch: 8 }, { wch: 10 }, { wch: 10 }
+    ]
+    XLSX.utils.book_append_sheet(wb, ws, '成就进度')
+    const out = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
+    const blob = new Blob([out], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
+    downloadBlob(blob, `hearthstone-progress-${Date.now()}.xlsx`)
+  } catch (e) {
+    alert('导出 Excel 失败：' + (e.message || e))
+  } finally {
+    exporting.value = false
+  }
+}
+
+// 触发文件选择（导入需登录）
+function triggerImport() {
+  if (!user.value) {
+    alert('请先登录后再导入进度')
+    return
+  }
+  fileInput.value?.click()
+}
+
+// 从 JSON 文件导入进度（复用后端 PUT 接口保存）
+async function onImportFile(e) {
+  const file = e.target.files?.[0]
+  if (!file) return
+  const reader = new FileReader()
+  reader.onload = async () => {
+    try {
+      const parsed = JSON.parse(reader.result)
+      const progress = parsed.progress && typeof parsed.progress === 'object' ? parsed.progress : parsed
+      if (!progress || typeof progress !== 'object') throw new Error('文件格式不正确')
+      const resp = await fetch('/api/achievements/progress', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ progress })
+      })
+      if (!resp.ok) throw new Error('导入失败（' + resp.status + '）')
+      await reloadProgress()
+      alert('进度导入成功')
+    } catch (err) {
+      alert('导入失败：' + (err.message || err))
+    } finally {
+      e.target.value = '' // 允许重复选择同一文件
+    }
+  }
+  reader.readAsText(file)
+}
 
 // 动态加载所有卡牌图片
 const cardImageLoaders = import.meta.glob('../hearthstone-achievements/assets/cards/**/*.png', { import: 'default' })
@@ -541,9 +798,11 @@ const onClassTabClick = (cls) => {
   currentClass.value = cls
 }
 const myViewSubLabel = computed(() => {
-  if (myGroupBy.value === 'almost') return '快完成'
-  if (myGroupBy.value === 'priority') return '推荐冲刺'
-  return myGroupBy.value === 'expansion' ? currentExpansion.value?.name : currentClassName.value
+  const prefix = user.value ? '我的进度' : '示例进度'
+  if (myGroupBy.value === 'almost') return `${prefix} - 快完成`
+  if (myGroupBy.value === 'priority') return `${prefix} - 推荐冲刺`
+  const scope = myGroupBy.value === 'expansion' ? currentExpansion.value?.name : currentClassName.value
+  return `${prefix} - ${scope}`
 })
 
 // 当前版本的成就
@@ -801,6 +1060,24 @@ const myCompletedCount = computed(() =>
   myAchievementsList.value.filter(ach => isAchievementCompleted(ach)).length
 )
 
+// 通行证经验加成：默认不加成；可选 10% / 15% / 20%
+const PASS_BONUS_OPTIONS = [
+  { label: '无加成', value: 0 },
+  { label: '通行证 +10%', value: 0.1 },
+  { label: '通行证 +15%', value: 0.15 },
+  { label: '通行证 +20%', value: 0.2 }
+]
+const passBonus = ref(0)
+const passBonusPercent = computed(() => Math.round(passBonus.value * 100))
+// 已获得经验（受通行证加成影响，网页显示与导出都用它）
+const myEarnedXpBonus = computed(() =>
+  Math.round((myStats.value.earnedXp || 0) * (1 + passBonus.value))
+)
+// 总经验（受加成，仅作参考）
+const myTotalXpBonus = computed(() =>
+  Math.round((myStats.value.totalXp || 0) * (1 + passBonus.value))
+)
+
 const resetFilters = () => {
   query.value = ''
   selectedClass.value = 'all'
@@ -842,6 +1119,17 @@ watch(currentClass, () => {
 
 // 弹窗
 const openCardModal = async (achievement) => {
+  // 我的成就 + 已登录：打开进度编辑
+  if (viewMode.value === 'my' && user.value) {
+    openEditModal(achievement)
+    return
+  }
+  // 我的成就 + 未登录：示例数据仅供预览，引导登录
+  if (viewMode.value === 'my' && !user.value) {
+    router.push('/login')
+    return
+  }
+  // 浏览模式：查看关联卡牌图片
   if (!achievement.cards || !achievement.cards.some((card) => card.imageLoader)) return
   modalTitle.value = achievement.name
   modalCards.value = await Promise.all(achievement.cards.map(async (card) => {
@@ -883,3 +1171,58 @@ const getExpansionBadgeStyle = () => ({
 
 const showEmpty = computed(() => filteredAchievements.value.length === 0)
 </script>
+
+<style scoped>
+.hs-export-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0 4px;
+  padding: 10px 12px;
+  background: #faf7f2;
+  border: 1px solid #efe7da;
+  border-radius: 10px;
+}
+.hs-export-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b5b4f;
+}
+.hs-export-hint {
+  font-size: 12px;
+  color: #b08968;
+}
+.hs-pass {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b5b4f;
+}
+.hs-pass-select {
+  padding: 5px 8px;
+  font-size: 13px;
+  border: 1px solid #e3d8c7;
+  border-radius: 8px;
+  background: #fff;
+  color: #4a3f37;
+  cursor: pointer;
+}
+.hs-pass-select:focus {
+  outline: none;
+  border-color: #c9a86a;
+}
+.hs-xp-line {
+  margin-top: 2px;
+}
+.hs-xp-line b {
+  color: #c9881f;
+}
+.hs-btn[disabled] {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+</style>

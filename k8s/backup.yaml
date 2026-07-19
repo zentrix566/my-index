@@ -1,0 +1,57 @@
+# SQLite 数据库每日备份 CronJob
+# 将 hostPath 上的 /app/data（app.db + WAL/SHM）拷贝到 /data/zentrix/backups/ 并加日期后缀。
+# 仅备份「文件静止」时刻的快照——CronJob 在业务 Pod 同一节点(hostPath)读取，
+# 建议在低峰期运行；如需更强一致性，可在备份前对业务 Pod 发信号暂停写入（本简易版略）。
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: zentrix-db-backup
+  namespace: default
+  labels:
+    app: zentrix
+spec:
+  schedule: "17 4 * * *"   # 每天 04:17（避开整点，降低与其他任务冲突概率）
+  concurrencyPolicy: Forbid
+  successfulJobsHistoryLimit: 7
+  failedJobsHistoryLimit: 3
+  jobTemplate:
+    spec:
+      template:
+        metadata:
+          labels:
+            app: zentrix
+        spec:
+          restartPolicy: OnFailure
+          containers:
+            - name: backup
+              image: busybox:1.36
+              command:
+                - /bin/sh
+                - -c
+                - |
+                  set -e
+                  TS=$(date +%Y%m%d-%H%M%S)
+                  SRC=/data/zentrix/data
+                  DST=/data/zentrix/backups
+                  mkdir -p "$DST"
+                  echo "[backup] 备份 $SRC -> $DST/app.db.$TS"
+                  cp -f "$SRC/app.db"     "$DST/app.db.$TS"     2>/dev/null || true
+                  cp -f "$SRC/app.db-wal" "$DST/app.db-wal.$TS" 2>/dev/null || true
+                  cp -f "$SRC/app.db-shm" "$DST/app.db-shm.$TS" 2>/dev/null || true
+                  # 仅保留最近 14 天
+                  find "$DST" -name 'app.db-*' -mtime +14 -delete 2>/dev/null || true
+                  echo "[backup] 完成"
+              volumeMounts:
+                - name: app-data
+                  mountPath: /data/zentrix/data
+                - name: app-backups
+                  mountPath: /data/zentrix/backups
+          volumes:
+            - name: app-data
+              hostPath:
+                path: /data/zentrix/data
+                type: DirectoryOrCreate
+            - name: app-backups
+              hostPath:
+                path: /data/zentrix/backups
+                type: DirectoryOrCreate

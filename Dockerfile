@@ -12,23 +12,23 @@ COPY src/ ./src/
 
 RUN npm run build
 
-FROM node:20-alpine
+# 运行时改用 Debian(slim/glibc)，确保 better-sqlite3 预编译原生模块可用
+FROM node:20-slim
 
 LABEL maintainer="Zentrix"
 
 WORKDIR /app
 
-# 安装生产依赖（Express + 日志 + 地理定位）
+# 安装生产依赖（Express + better-sqlite3 等）
 COPY package*.json ./
 RUN npm ci --omit=dev && npm cache clean --force
 
-# 复制构建产物、服务端代码和成就数据
+# 复制构建产物、服务端代码和种子数据
 COPY --from=build /app/dist/ ./dist/
 COPY server/ ./server/
-COPY data/ ./data/
 
-# 创建日志目录（将通过 K8s hostPath 挂载到宿主机）
-RUN mkdir -p /app/logs
+# 创建数据与日志目录（运行时通过 K8s hostPath 挂载持久化，镜像内仅占位）
+RUN mkdir -p /app/logs /app/data
 
 ENV NODE_ENV=production
 ENV PORT=80

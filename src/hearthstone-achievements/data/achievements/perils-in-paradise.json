@@ -4,6 +4,12 @@
   "description": "炉石传说胜地历险记版本成就数据",
   "updatedAt": "2026-07-13",
   "cardImageDir": "perils-in-paradise",
+  "referenceLinks": [
+    {
+      "name": "旅法师营地：胜地历险记全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5457114"
+    }
+  ],
   "achievements": [
     {
       "id": "pr-013",

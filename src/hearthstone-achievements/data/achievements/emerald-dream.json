@@ -4,6 +4,16 @@
   "description": "炉石传说翡翠梦境版本成就数据",
   "updatedAt": "2026-07-09",
   "cardImageDir": "emerald-dream",
+  "referenceLinks": [
+    {
+      "name": "旅法师营地：翡翠梦境全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5588105"
+    },
+    {
+      "name": "旅法师营地：世界之树的余烬全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5599163"
+    }
+  ],
   "achievements": [
     {
       "id": "ed-001",
