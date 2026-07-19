@@ -16,6 +16,7 @@ CREATE TABLE IF NOT EXISTS achievement_progress (
   updated_at     TIMESTAMPTZ,
   achievement_name TEXT,
   version         TEXT,
+  hero_class      TEXT,
   PRIMARY KEY (user_id, achievement_id)
 );
 

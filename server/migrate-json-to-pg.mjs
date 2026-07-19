@@ -11,6 +11,7 @@ import { readFileSync } from 'node:fs'
 import path from 'node:path'
 import { fileURLToPath } from 'node:url'
 import pg from 'pg'
+import { getAchievementMeta } from './achievements-meta.js'
 
 const {
   PG_HOST,
@@ -81,8 +82,12 @@ CREATE TABLE IF NOT EXISTS achievement_progress (
   updated_at TIMESTAMPTZ,
   achievement_name TEXT,
   version TEXT,
+  hero_class TEXT,
   PRIMARY KEY (user_id, achievement_id)
 );
+ALTER TABLE achievement_progress ADD COLUMN IF NOT EXISTS achievement_name TEXT;
+ALTER TABLE achievement_progress ADD COLUMN IF NOT EXISTS version TEXT;
+ALTER TABLE achievement_progress ADD COLUMN IF NOT EXISTS hero_class TEXT;
 CREATE TABLE IF NOT EXISTS schema_migrations (
   version INTEGER PRIMARY KEY,
   applied_at TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -115,31 +120,42 @@ async function run() {
       )
     }
 
-    // 2) 进度：按 (user_id, achievement_id) 去重，冲突跳过（不覆盖）
+    // 2) 进度：按 (user_id, achievement_id) 去重。
+    //    可读字段（成就名/版本/职业）一律用本地成就元数据回填，
+    //    因为导出 JSON 里 achievement_name 往往就是编号、version 为空——直接写库人看不懂。
+    //    进度数值（stages_json/count）以导出 JSON 为准，冲突时不覆盖；
+    //    但可读三列即便冲突也 UPDATE，以便修正之前导错的数据。
     let progInserted = 0
-    const conflicts = exportProgress.length
+    let progUpdated = 0
+    const total = exportProgress.length
     for (const p of exportProgress) {
+      const meta = getAchievementMeta(p.achievement_id)
       const r = await client.query(
-        `INSERT INTO achievement_progress (user_id, achievement_id, stages_json, count, updated_at, achievement_name, version)
-         VALUES ($1,$2,$3,$4,$5,$6,$7)
-         ON CONFLICT (user_id, achievement_id) DO NOTHING
-         RETURNING user_id`,
+        `INSERT INTO achievement_progress (user_id, achievement_id, stages_json, count, updated_at, achievement_name, version, hero_class)
+         VALUES ($1,$2,$3,$4,$5,$6,$7,$8)
+         ON CONFLICT (user_id, achievement_id) DO UPDATE SET
+           achievement_name = EXCLUDED.achievement_name,
+           version = EXCLUDED.version,
+           hero_class = EXCLUDED.hero_class
+         RETURNING (xmax = 0) AS inserted`,
         [
           p.user_id,
           p.achievement_id,
           typeof p.stages_json === 'string' ? p.stages_json : JSON.stringify(p.stages_json || {}),
           p.count || 0,
           p.updated_at || null,
-          p.achievement_name || null,
-          p.version || null
+          meta.name,
+          meta.version,
+          meta.heroClass
         ]
       )
-      if (r.rowCount > 0) progInserted++
+      if (r.rows[0]?.inserted) progInserted++
+      else progUpdated++
     }
 
     console.log(`用户：共 ${exportUsers.length} 条，新导入 ${usersInserted} 条，已存在跳过 ${exportUsers.length - usersInserted} 条`)
-    console.log(`进度：共 ${conflicts} 条，新导入 ${progInserted} 条，冲突跳过 ${conflicts - progInserted} 条`)
-    console.log('迁移完成（幂等，可重复运行）')
+    console.log(`进度：共 ${total} 条，新导入 ${progInserted} 条，已存在(仅修正名称/版本/职业) ${progUpdated} 条`)
+    console.log('迁移完成（幂等，可重复运行；可读字段用本地成就数据回填）')
   } finally {
     client.release()
     await pool.end()

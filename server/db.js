@@ -50,9 +50,15 @@ CREATE TABLE IF NOT EXISTS achievement_progress (
   count           INT NOT NULL DEFAULT 0,
   achievement_name TEXT,
   version         TEXT,
+  hero_class      TEXT,
   updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
   PRIMARY KEY (user_id, achievement_id)
 );
+
+-- 兼容已存在的旧表：补上后加的可读列（幂等）
+ALTER TABLE achievement_progress ADD COLUMN IF NOT EXISTS achievement_name TEXT;
+ALTER TABLE achievement_progress ADD COLUMN IF NOT EXISTS version TEXT;
+ALTER TABLE achievement_progress ADD COLUMN IF NOT EXISTS hero_class TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_achievement_progress_user ON achievement_progress(user_id);
 
@@ -104,19 +110,20 @@ export async function upsertProgress(userId, achievementId, stages, count, clien
   const q = client || pool
   const meta = getAchievementMeta(achievementId)
   await q.query(
-    `INSERT INTO achievement_progress(user_id, achievement_id, stages_json, count, achievement_name, version, updated_at)
-     VALUES($1, $2, $3, $4, $5, $6, now())
+    `INSERT INTO achievement_progress(user_id, achievement_id, stages_json, count, achievement_name, version, hero_class, updated_at)
+     VALUES($1, $2, $3, $4, $5, $6, $7, now())
      ON CONFLICT(user_id, achievement_id)
      DO UPDATE SET stages_json = EXCLUDED.stages_json, count = EXCLUDED.count,
                    achievement_name = EXCLUDED.achievement_name, version = EXCLUDED.version,
-                   updated_at = now()`,
+                   hero_class = EXCLUDED.hero_class, updated_at = now()`,
     [
       userId,
       achievementId,
       JSON.stringify(stages || {}),
       count || 0,
       meta.name,
-      meta.version
+      meta.version,
+      meta.heroClass
     ]
   )
 }

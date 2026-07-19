@@ -20,6 +20,7 @@
  */
 import Database from 'better-sqlite3'
 import pg from 'pg'
+import { getAchievementMeta } from './achievements-meta.js'
 
 const sqlitePath = process.env.SQLITE_PATH || './data/app.db'
 
@@ -53,9 +54,13 @@ CREATE TABLE IF NOT EXISTS achievement_progress (
   count           INT NOT NULL DEFAULT 0,
   achievement_name TEXT,
   version         TEXT,
+  hero_class      TEXT,
   updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
   PRIMARY KEY (user_id, achievement_id)
 );
+ALTER TABLE achievement_progress ADD COLUMN IF NOT EXISTS achievement_name TEXT;
+ALTER TABLE achievement_progress ADD COLUMN IF NOT EXISTS version TEXT;
+ALTER TABLE achievement_progress ADD COLUMN IF NOT EXISTS hero_class TEXT;
 CREATE INDEX IF NOT EXISTS idx_achievement_progress_user ON achievement_progress(user_id);
 `
 
@@ -91,24 +96,30 @@ async function main() {
   for (const p of progs) {
     const stages =
       typeof p.stages_json === 'string' ? JSON.parse(p.stages_json) : (p.stages_json || {})
+    // 可读字段（成就名/版本/职业）一律用本地成就元数据回填，SQLite 旧库里的往往是编号或空值
+    const meta = getAchievementMeta(p.achievement_id)
     const r = await pool.query(
-      `INSERT INTO achievement_progress(user_id, achievement_id, stages_json, count, achievement_name, version, updated_at)
-       VALUES($1, $2, $3, $4, $5, $6, $7)
-       ON CONFLICT(user_id, achievement_id) DO NOTHING`,
+      `INSERT INTO achievement_progress(user_id, achievement_id, stages_json, count, achievement_name, version, hero_class, updated_at)
+       VALUES($1, $2, $3, $4, $5, $6, $7, $8)
+       ON CONFLICT(user_id, achievement_id) DO UPDATE SET
+         achievement_name = EXCLUDED.achievement_name,
+         version = EXCLUDED.version,
+         hero_class = EXCLUDED.hero_class`,
       [
         p.user_id,
         p.achievement_id,
         JSON.stringify(stages),
         p.count,
-        p.achievement_name,
-        p.version,
+        meta.name,
+        meta.version,
+        meta.heroClass,
         p.updated_at
       ]
     )
     if (r.rowCount) inserted++
   }
   console.log(
-    `[migrate] 进度共 ${progs.length} 条，新导入 ${inserted} 条，冲突跳过 ${progs.length - inserted} 条`
+    `[migrate] 进度共 ${progs.length} 条，处理 ${inserted} 条（可读字段用本地成就数据回填）`
   )
 }
 
