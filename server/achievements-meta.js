@@ -14,21 +14,22 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const ACHIEVEMENTS_DIR = path.resolve(
-  __dirname,
-  '../src/hearthstone-achievements/data/achievements'
-)
+// 候选目录（按顺序查找第一个存在的）：
+//  1) 本地开发：server/ 同级的 ../src/hearthstone-achievements/data/achievements
+//  2) 生产镜像：Dockerfile 已将成就 JSON 复制到 server/achievements-data/
+// 关键：线上运行时镜像里没有 src/，必须用第 2 个路径，否则 META 为空、
+//      getAchievementMeta 回退成编号，保存时会把中文名覆盖成编号。
+const ACHIEVEMENTS_DIRS = [
+  path.resolve(__dirname, '../src/hearthstone-achievements/data/achievements'),
+  path.resolve(__dirname, 'achievements-data')
+]
 
-function loadMeta() {
+function scanDir(dir) {
   const map = {}
-  if (!fs.existsSync(ACHIEVEMENTS_DIR)) {
-    console.warn('[meta] 成就数据目录不存在:', ACHIEVEMENTS_DIR)
-    return map
-  }
-  for (const file of fs.readdirSync(ACHIEVEMENTS_DIR)) {
+  for (const file of fs.readdirSync(dir)) {
     if (!file.endsWith('.json')) continue
     try {
-      const exp = JSON.parse(fs.readFileSync(path.join(ACHIEVEMENTS_DIR, file), 'utf-8'))
+      const exp = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf-8'))
       const version = exp.name || exp.id || ''
       for (const a of exp.achievements || []) {
         if (a && a.id) {
@@ -44,6 +45,16 @@ function loadMeta() {
     }
   }
   return map
+}
+
+function loadMeta() {
+  for (const dir of ACHIEVEMENTS_DIRS) {
+    if (fs.existsSync(dir)) {
+      return scanDir(dir)
+    }
+  }
+  console.warn('[meta] 成就数据目录均不存在，已回退为编号（保存会写成编号）:', ACHIEVEMENTS_DIRS)
+  return {}
 }
 
 const META = loadMeta()

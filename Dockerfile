@@ -35,6 +35,9 @@ RUN npm ci --omit=dev && npm cache clean --force
 
 COPY --from=build /app/dist/ ./dist/
 COPY server/ ./server/
+# 成就定义 JSON：运行时 achievements-meta.js 需要扫描它来写中文名/版本/职业。
+# 线上镜像没有 src/，必须显式复制到 server/achievements-data/（meta 的第 2 候选路径）。
+COPY src/hearthstone-achievements/data/achievements ./server/achievements-data/
 
 RUN mkdir -p /app/logs /app/data
 
