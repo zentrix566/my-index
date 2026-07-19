@@ -14,8 +14,9 @@
         >
           <div class="changelog-meta">
             <span class="changelog-date">{{ entry.date }}</span>
-            <h2 class="changelog-title">{{ entry.title }}</h2>
+            <h2 class="changelog-title changelog-link" role="button" tabindex="0" @click="goDetail" @keyup.enter="goDetail">{{ entry.title }}</h2>
           </div>
+          <button type="button" class="changelog-detail-link" @click="goDetail">查看炉石成就查看器 →</button>
           <ul class="changelog-changes">
             <li v-for="(c, i) in entry.changes" :key="i">{{ c }}</li>
           </ul>
@@ -26,7 +27,13 @@
 </template>
 
 <script setup>
+import { useRouter } from 'vue-router'
 import { changelog } from '../data/changelog.js'
+
+const router = useRouter()
+function goDetail() {
+  router.push('/hearthstone')
+}
 </script>
 
 <style scoped>
@@ -99,6 +106,28 @@ import { changelog } from '../data/changelog.js'
   font-size: 18px;
   margin: 0;
   color: #2c2c3a;
+  cursor: pointer;
+  transition: color .15s;
+}
+.changelog-title:hover {
+  color: #6c5ce7;
+  text-decoration: underline;
+}
+.changelog-detail-link {
+  display: inline-block;
+  margin: 8px 0 2px;
+  padding: 4px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6c5ce7;
+  background: #f3f0ff;
+  border: 1px solid #e0d8ff;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: background .15s;
+}
+.changelog-detail-link:hover {
+  background: #e9e3ff;
 }
 
 .changelog-changes {

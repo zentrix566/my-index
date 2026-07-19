@@ -20,6 +20,7 @@
           <template v-else>
             <button type="button" class="hs-btn hs-btn-primary" @click="router.push('/login')">登录 / 注册</button>
           </template>
+          <button type="button" class="hs-btn hs-btn-ghost" @click="goChangelog">更新说明</button>
         </div>
       </div>
 
@@ -196,7 +197,7 @@
 
       <section class="hs-result-bar">
         <span>共 {{ filteredAchievements.length.toLocaleString() }} 个成就</span>
-        <span v-if="viewMode === 'expansion'">
+        <span v-if="viewMode === 'expansion' || (viewMode === 'my' && myGroupBy === 'expansion')">
           {{ currentExpansion?.description }}
           <template v-if="currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0">
             <span class="hs-ref-links">
@@ -498,6 +499,13 @@
       />
 
       <ScrollToTop />
+
+      <transition name="hs-toast-fade">
+        <div v-if="toast.show" class="hs-toast" :class="toast.type" role="alert">
+          <span class="hs-toast-icon">{{ toast.type === 'success' ? '✓' : '✕' }}</span>
+          <span class="hs-toast-msg">{{ toast.message }}</span>
+        </div>
+      </transition>
     </div>
   </section>
 </template>
@@ -565,6 +573,15 @@ function openEditModal(achievement) {
   editAchievement.value = achievement
   editVisible.value = true
 }
+// 轻量提示（成功/失败），替代原生 alert
+const toast = ref({ show: false, type: '', message: '' })
+let toastTimer = null
+function showToast(type, message) {
+  toast.value = { show: true, type, message }
+  if (toastTimer) clearTimeout(toastTimer)
+  toastTimer = setTimeout(() => { toast.value = { ...toast.value, show: false } }, 2600)
+}
+
 async function saveProgress(payload) {
   try {
     const resp = await fetch('/api/achievements/progress', {
@@ -577,13 +594,17 @@ async function saveProgress(payload) {
     if (!resp.ok) throw new Error('保存失败')
     await reloadProgress() // 重新拉取自己的进度
     editVisible.value = false
+    showToast('success', '保存成功')
   } catch (e) {
-    alert(e.message || '保存失败，请重试')
+    showToast('error', e.message || '保存失败，请重试')
   }
 }
 function logoutAndRefresh() {
   logout()
   reloadProgress()
+}
+function goChangelog() {
+  router.push('/changelog')
 }
 
 // ============ 本地备份：导出 / 导入 ============
@@ -689,9 +710,9 @@ async function exportExcel() {
     const out = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
     const blob = new Blob([out], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
     downloadBlob(blob, `hearthstone-progress-${Date.now()}.xlsx`)
-  } catch (e) {
-    alert('导出 Excel 失败：' + (e.message || e))
-  } finally {
+    } catch (e) {
+      showToast('error', '导出 Excel 失败：' + (e.message || e))
+    } finally {
     exporting.value = false
   }
 }
@@ -699,7 +720,7 @@ async function exportExcel() {
 // 触发文件选择（导入需登录）
 function triggerImport() {
   if (!user.value) {
-    alert('请先登录后再导入进度')
+    showToast('error', '请先登录后再导入进度')
     return
   }
   fileInput.value?.click()
@@ -722,9 +743,9 @@ async function onImportFile(e) {
       })
       if (!resp.ok) throw new Error('导入失败（' + resp.status + '）')
       await reloadProgress()
-      alert('进度导入成功')
+      showToast('success', '进度导入成功')
     } catch (err) {
-      alert('导入失败：' + (err.message || err))
+      showToast('error', '导入失败：' + (err.message || err))
     } finally {
       e.target.value = '' // 允许重复选择同一文件
     }
@@ -1224,5 +1245,41 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
 .hs-btn[disabled] {
   opacity: 0.55;
   cursor: not-allowed;
+}
+.hs-toast {
+  position: fixed;
+  top: 24px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  max-width: 90vw;
+  padding: 12px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  pointer-events: none;
+}
+.hs-toast.success {
+  background: #2e9e5b;
+}
+.hs-toast.error {
+  background: #d64545;
+}
+.hs-toast-icon {
+  font-weight: 700;
+}
+.hs-toast-fade-enter-active,
+.hs-toast-fade-leave-active {
+  transition: opacity .25s ease, transform .25s ease;
+}
+.hs-toast-fade-enter-from,
+.hs-toast-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-8px);
 }
 </style>

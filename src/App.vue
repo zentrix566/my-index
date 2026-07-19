@@ -12,7 +12,6 @@
           <li><RouterLink to="/" @click="closeMenu">首页</RouterLink></li>
           <li><RouterLink to="/projects" @click="closeMenu">项目</RouterLink></li>
           <li><RouterLink to="/vue-apps" @click="closeMenu">Vue 项目</RouterLink></li>
-          <li><RouterLink to="/changelog" @click="closeMenu">更新说明</RouterLink></li>
           <li><RouterLink to="/about" @click="closeMenu">关于</RouterLink></li>
         </ul>
       </nav>
@@ -26,7 +25,6 @@
       <p>© {{ year }} Zentrix. Built as a Vue-powered personal index.</p>
       <p class="footer-links">
         <RouterLink to="/stats">访问统计</RouterLink>
-        <RouterLink to="/changelog">更新说明</RouterLink>
       </p>
     </footer>
   </div>
