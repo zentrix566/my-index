@@ -161,16 +161,12 @@
           </template>
         </div>
 
-        <!-- 本地备份：导出 / 导入 -->
+        <!-- 导出（JSON 导出/导入暂隐藏，待启用） -->
         <div class="hs-export-bar" v-if="viewMode === 'my'">
-          <span class="hs-export-label">本地备份：</span>
-          <button type="button" class="hs-btn hs-btn-ghost" @click="exportJson">导出 JSON</button>
+          <span class="hs-export-label">导出：</span>
           <button type="button" class="hs-btn hs-btn-ghost" :disabled="exporting" @click="exportExcel">
             {{ exporting ? '导出中…' : '导出 Excel' }}
           </button>
-          <button type="button" class="hs-btn hs-btn-ghost" :disabled="!user" @click="triggerImport">导入 JSON</button>
-          <input ref="fileInput" type="file" accept=".json,application/json" hidden @change="onImportFile" />
-          <span v-if="!user" class="hs-export-hint">导入需先登录</span>
           <label class="hs-pass">
             通行证加成：
             <select v-model.number="passBonus" class="hs-pass-select">
@@ -592,9 +588,9 @@ async function saveProgress(payload) {
       })
     })
     if (!resp.ok) throw new Error('保存失败')
-    await reloadProgress() // 重新拉取自己的进度
-    editVisible.value = false
     showToast('success', '保存成功')
+    editVisible.value = false
+    reloadProgress() // 后台静默刷新进度，不阻塞成功提示
   } catch (e) {
     showToast('error', e.message || '保存失败，请重试')
   }

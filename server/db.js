@@ -21,6 +21,9 @@ if (!fs.existsSync(DATA_DIR)) {
 
 const db = new Database(DB_PATH)
 db.pragma('journal_mode = WAL') // 读写并发更稳
+// WAL 模式下用 NORMAL 同步级别：仍保证崩溃不损坏数据库，但避免每次提交都 fsync 一次 WAL 文件，
+// 大幅降低写入延迟（在高延迟磁盘/网络卷上尤为明显）。代价仅是断电时可能丢失最近一个事务。
+db.pragma('synchronous = NORMAL')
 db.pragma('foreign_keys = ON')
 
 // ========== 迁移机制 ==========
