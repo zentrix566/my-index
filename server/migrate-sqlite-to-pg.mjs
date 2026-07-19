@@ -46,7 +46,7 @@ CREATE TABLE IF NOT EXISTS users (
   password_hash TEXT NOT NULL,
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
-CREATE TABLE IF NOT EXISTS progress (
+CREATE TABLE IF NOT EXISTS achievement_progress (
   user_id         INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   achievement_id  TEXT NOT NULL,
   stages_json     JSONB NOT NULL DEFAULT '{}'::jsonb,
@@ -56,7 +56,7 @@ CREATE TABLE IF NOT EXISTS progress (
   updated_at      TIMESTAMPTZ NOT NULL DEFAULT now(),
   PRIMARY KEY (user_id, achievement_id)
 );
-CREATE INDEX IF NOT EXISTS idx_progress_user ON progress(user_id);
+CREATE INDEX IF NOT EXISTS idx_achievement_progress_user ON achievement_progress(user_id);
 `
 
 async function main() {
@@ -92,7 +92,7 @@ async function main() {
     const stages =
       typeof p.stages_json === 'string' ? JSON.parse(p.stages_json) : (p.stages_json || {})
     const r = await pool.query(
-      `INSERT INTO progress(user_id, achievement_id, stages_json, count, achievement_name, version, updated_at)
+      `INSERT INTO achievement_progress(user_id, achievement_id, stages_json, count, achievement_name, version, updated_at)
        VALUES($1, $2, $3, $4, $5, $6, $7)
        ON CONFLICT(user_id, achievement_id) DO NOTHING`,
       [

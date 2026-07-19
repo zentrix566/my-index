@@ -38,6 +38,9 @@ data/app.db-wal
 data/app.db-shm
 server/seed/*.local.json
 
+# 数据库导出中间产物（含用户密码哈希等敏感数据，绝不入库）
+server/remote-data/
+
 # Windows 保留设备名误生成的垃圾文件，永不入库
 nul
 

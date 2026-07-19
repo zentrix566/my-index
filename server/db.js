@@ -43,7 +43,7 @@ CREATE TABLE IF NOT EXISTS users (
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-CREATE TABLE IF NOT EXISTS progress (
+CREATE TABLE IF NOT EXISTS achievement_progress (
   user_id         INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   achievement_id  TEXT NOT NULL,
   stages_json     JSONB NOT NULL DEFAULT '{}'::jsonb,
@@ -54,7 +54,7 @@ CREATE TABLE IF NOT EXISTS progress (
   PRIMARY KEY (user_id, achievement_id)
 );
 
-CREATE INDEX IF NOT EXISTS idx_progress_user ON progress(user_id);
+CREATE INDEX IF NOT EXISTS idx_achievement_progress_user ON achievement_progress(user_id);
 
 CREATE TABLE IF NOT EXISTS schema_migrations (
   version    INT PRIMARY KEY,
@@ -104,7 +104,7 @@ export async function upsertProgress(userId, achievementId, stages, count, clien
   const q = client || pool
   const meta = getAchievementMeta(achievementId)
   await q.query(
-    `INSERT INTO progress(user_id, achievement_id, stages_json, count, achievement_name, version, updated_at)
+    `INSERT INTO achievement_progress(user_id, achievement_id, stages_json, count, achievement_name, version, updated_at)
      VALUES($1, $2, $3, $4, $5, $6, now())
      ON CONFLICT(user_id, achievement_id)
      DO UPDATE SET stages_json = EXCLUDED.stages_json, count = EXCLUDED.count,
@@ -125,7 +125,7 @@ export async function upsertProgress(userId, achievementId, stages, count, clien
 // 与前端现有 progressData 结构完全一致，前端零改造复用
 export async function getProgress(userId) {
   const { rows } = await pool.query(
-    'SELECT achievement_id, stages_json, count FROM progress WHERE user_id = $1',
+    'SELECT achievement_id, stages_json, count FROM achievement_progress WHERE user_id = $1',
     [userId]
   )
   const out = {}
