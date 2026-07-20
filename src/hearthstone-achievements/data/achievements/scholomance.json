@@ -1,0 +1,202 @@
+{
+  "id": "scholomance",
+  "name": "通灵学园",
+  "description": "通灵学园成就数据（来自 ifindhs wiki）",
+  "updatedAt": "2026-07-20",
+  "cardImageDir": "scholomance",
+  "referenceLinks": [
+    {
+      "name": "通灵学园 wiki",
+      "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E9%80%9A%E7%81%B5%E5%AD%A6%E5%9B%AD"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "scholomance-001",
+      "name": "万能献血者",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤一个攻击力大于或等于30点的嗜血传令官。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "scholomance-002",
+      "name": "请勿高声！",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用演讲者吉德拉的法术迸发效果使其获得+10/+10。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "scholomance-003",
+      "name": "内有恶犬",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用动物保镖召唤两只法力值消耗大于（5）点的野兽。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "scholomance-004",
+      "name": "假想好友",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张幻觉药水将7张相同的随从复制置入你的手牌。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "scholomance-005",
+      "name": "随我朗读",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使高阶修士奥露拉施放触发其法术迸发效果的传说法术。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "scholomance-006",
+      "name": "永不录取",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用教导主任加丁消灭一个挂掉的学生。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "scholomance-007",
+      "name": "刀叉相配",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用钢铁舞者召唤一个属性值与你的武器相同的随从。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "scholomance-008",
+      "name": "语声鼎沸",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用莱斯·霜语单次造成10点伤害。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "scholomance-009",
+      "name": "塑造灵魂",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一回合中抽到10张灵魂残片。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "scholomance-010",
+      "name": "学术荣誉",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用仪式重槌召唤一个11/11的学员。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 11
+        }
+      ]
+    },
+    {
+      "id": "scholomance-011",
+      "name": "雷象不会遗忘",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "教会同一只驯化的雷象15种不同的法术。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 15
+        }
+      ]
+    }
+  ]
+}

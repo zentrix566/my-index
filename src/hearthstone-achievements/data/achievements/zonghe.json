@@ -1,0 +1,1958 @@
+{
+  "id": "zonghe",
+  "name": "游戏-综合",
+  "description": "游戏-综合成就数据（来自 ifindhs wiki）",
+  "updatedAt": "2026-07-20",
+  "cardImageDir": "zonghe",
+  "referenceLinks": [
+    {
+      "name": "游戏-综合 wiki",
+      "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E7%BB%BC%E5%90%88"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "zonghe-001",
+      "name": "奥术大师",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "施放15个奥术法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "施放50个奥术法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "施放150个奥术法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "施放500个奥术法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "施放1500个奥术法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-002",
+      "name": "大火球术",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "施放15个火焰法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "施放50个火焰法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "施放150个火焰法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "施放500个火焰法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "施放1500个火焰法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-003",
+      "name": "冷冰冰",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "施放15个冰霜法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "施放50个冰霜法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "施放150个冰霜法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "施放500个冰霜法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "施放1500个冰霜法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-004",
+      "name": "茁壮成长",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "施放15个自然法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "施放50个自然法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "施放150个自然法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "施放500个自然法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "施放1500个自然法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-005",
+      "name": "虚空召唤",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "施放15个暗影法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "施放50个暗影法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "施放150个暗影法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "施放500个暗影法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "施放1500个暗影法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-006",
+      "name": "太神圣了！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "施放15个神圣法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "施放50个神圣法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "施放150个神圣法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "施放500个神圣法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "施放1500个神圣法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-007",
+      "name": "邪能之乱",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "施放15个邪能法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "施放50个邪能法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "施放150个邪能法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "施放500个邪能法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "施放1500个邪能法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-008",
+      "name": "芒刺在背",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤10个野猪人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "召唤30个野猪人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "召唤100个野猪人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤300个野猪人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "召唤1000个野猪人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-009",
+      "name": "野兽乖乖",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤30只野兽。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "召唤100只野兽。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤300只野兽。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "召唤1000只野兽。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1000
+        },
+        {
+          "description": "召唤3000只野兽。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 3000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-010",
+      "name": "恶魔之友",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤10个恶魔。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "召唤30个恶魔。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "召唤100个恶魔。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤300个恶魔。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "召唤1000个恶魔。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-011",
+      "name": "巨龙吐火",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤10条龙。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "召唤30条龙。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "召唤100条龙。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤300条龙。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "召唤1000条龙。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-012",
+      "name": "听我召唤",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤10个元素。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "召唤30个元素。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "召唤100个元素。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤300个元素。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "召唤1000个元素。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-013",
+      "name": "零件成堆",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤10个机械。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "召唤30个机械。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "召唤100个机械。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤300个机械。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "召唤1000个机械。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-014",
+      "name": "鱼不可及",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤10个鱼人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "召唤30个鱼人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "召唤100个鱼人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤300个鱼人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "召唤1000个鱼人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-015",
+      "name": "恶名远播",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤10个海盗。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "召唤30个海盗。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "召唤100个海盗。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤300个海盗。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "召唤1000个海盗。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-016",
+      "name": "图腾真棒",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤10个图腾。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "召唤30个图腾。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "召唤100个图腾。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤300个图腾。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "召唤1000个图腾。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-017",
+      "name": "速战速决",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用四个或更少的回合消灭对手。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "zonghe-018",
+      "name": "完美胜利",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "赢得对战时拥有全部生命值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "zonghe-019",
+      "name": "毫发无损",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "赢得对战时拥有全部生命值，且从未受到伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "zonghe-020",
+      "name": "命悬一线",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "赢得对战时拥有1点生命值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "id": "zonghe-021",
+      "name": "我的牌呢",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "抽光整个牌库后赢得对战。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "zonghe-022",
+      "name": "人外有人",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，拥有一个20/20或更大的随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "zonghe-023",
+      "name": "以逸待劳",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用疲劳消灭对手。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "zonghe-024",
+      "name": "以寡敌众",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "赢得对战时召唤的随从数量不超过1个。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "id": "zonghe-025",
+      "name": "绝无“仅有”",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，拥有一个相同随从的3个复制。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "在你的回合结束时，拥有一个相同随从的4个复制。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 4
+        },
+        {
+          "description": "在你的回合结束时，拥有一个相同随从的5个复制。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "在你的回合结束时，拥有一个相同随从的6个复制。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 6
+        },
+        {
+          "description": "在你的回合结束时，拥有一个相同随从的7个复制。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "zonghe-026",
+      "name": "持久苦战",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中造成75点以上的伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 75
+        },
+        {
+          "description": "在一局对战中造成100点以上的伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "在一局对战中造成150点以上的伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "在一局对战中造成200点以上的伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "在一局对战中造成250点以上的伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 250
+        }
+      ]
+    },
+    {
+      "id": "zonghe-027",
+      "name": "？？？",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "解决历史谜题。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "zonghe-028",
+      "name": "说说我是谁",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "造成2-5点伤害。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 2
+        }
+      ]
+    },
+    {
+      "id": "zonghe-029",
+      "name": "或此或彼",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "最强大的战队。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "zonghe-030",
+      "name": "疯狂的八",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "八个回合，八个胜者。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "zonghe-031",
+      "name": "千奇百怪的漫长旅行",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "从找到的东西之中你又能找到什么？",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "zonghe-032",
+      "name": "孤傲横流",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发20次流放效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "触发60次流放效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "触发200次流放效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "触发600次流放效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 600
+        },
+        {
+          "description": "触发2000次流放效果。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 2000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-033",
+      "name": "艰难抉择",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用15张抉择牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用50张抉择牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用150张抉择牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用500张抉择牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "使用1500张抉择牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-034",
+      "name": "专业打脸",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用猎人对敌方英雄造成100次伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用猎人对敌方英雄造成300次伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "使用猎人对敌方英雄造成1000次伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1000
+        },
+        {
+          "description": "使用猎人对敌方英雄造成3000次伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3000
+        },
+        {
+          "description": "使用猎人对敌方英雄造成10000次伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-035",
+      "name": "烧吧宝贝",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用法师法术牌造成100次伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "用法师法术牌造成300次伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "用法师法术牌造成1000次伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1000
+        },
+        {
+          "description": "用法师法术牌造成3000次伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3000
+        },
+        {
+          "description": "用法师法术牌造成10000次伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-036",
+      "name": "增益降临",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "对友方角色施放20个圣骑士法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "对友方角色施放60个圣骑士法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "对友方角色施放200个圣骑士法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "对友方角色施放600个圣骑士法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 600
+        },
+        {
+          "description": "对友方角色施放2000个圣骑士法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 2000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-037",
+      "name": "保持健康",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用牧师恢复50次生命值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用牧师恢复150次生命值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用牧师恢复500次生命值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "使用牧师恢复1500次生命值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1500
+        },
+        {
+          "description": "使用牧师恢复5000次生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-038",
+      "name": "超值连击",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发20次连击效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "触发60次连击效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "触发200次连击效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "触发600次连击效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 600
+        },
+        {
+          "description": "触发2000次连击效果。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 2000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-039",
+      "name": "感官过载",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用15张过载牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用50张过载牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用150张过载牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用500张过载牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "使用1500张过载牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-040",
+      "name": "计牌度日",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用术士抽150张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用术士抽500张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "使用术士抽1500张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1500
+        },
+        {
+          "description": "使用术士抽5000张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5000
+        },
+        {
+          "description": "使用术士抽15000张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 15000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-041",
+      "name": "过度防护",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用战士获得50次护甲值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用战士获得150次护甲值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用战士获得500次护甲值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "使用战士获得1500次护甲值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1500
+        },
+        {
+          "description": "使用战士获得5000次护甲值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-042",
+      "name": "残骸畜牧业",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "消耗100具残骸。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "消耗500具残骸。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "消耗1000具残骸。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1000
+        },
+        {
+          "description": "消耗2000具残骸。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 2000
+        },
+        {
+          "description": "消耗6000具残骸。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 6000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-043",
+      "name": "其实有毒",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用5张具有剧毒的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用15张具有剧毒的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用50张具有剧毒的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用150张具有剧毒的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用500张具有剧毒的卡牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-044",
+      "name": "疾怒如风",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用5张具有风怒的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用15张具有风怒的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用50张具有风怒的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用150张具有风怒的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用500张具有风怒的卡牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-045",
+      "name": "读作伤害",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用10张具有法术伤害的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用30张具有法术伤害的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用100张具有法术伤害的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用300张具有法术伤害的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "使用1000张具有法术伤害的随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-046",
+      "name": "我要吸血",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用5张具有吸血的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用15张具有吸血的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用50张具有吸血的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用150张具有吸血的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用500张具有吸血的卡牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-047",
+      "name": "钟爱泡泡",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用10张具有圣盾的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用30张具有圣盾的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用100张具有圣盾的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用300张具有圣盾的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "使用1000张具有圣盾的随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-048",
+      "name": "视而不见",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用5张具有潜行的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用15张具有潜行的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用50张具有潜行的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用150张具有潜行的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用500张具有潜行的随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-049",
+      "name": "芬利学说",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "发现100张卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "发现300张卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "发现1000张卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1000
+        },
+        {
+          "description": "发现3000张卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3000
+        },
+        {
+          "description": "发现10000张卡牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-050",
+      "name": "写进日记",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用15张奥秘牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用50张奥秘牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用150张奥秘牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用500张奥秘牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "使用1500张奥秘牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1500
+        }
+      ]
+    },
+    {
+      "id": "zonghe-051",
+      "name": "现在就要",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用50张具有突袭或冲锋的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用150张具有突袭或冲锋的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用500张具有突袭或冲锋的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "使用1500张具有突袭或冲锋的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1500
+        },
+        {
+          "description": "使用5000张具有突袭或冲锋的随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-052",
+      "name": "强力主坦",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用100张具有嘲讽的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用300张具有嘲讽的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "使用1000张具有嘲讽的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1000
+        },
+        {
+          "description": "使用3000张具有嘲讽的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3000
+        },
+        {
+          "description": "使用10000张具有嘲讽的随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-053",
+      "name": "死亡之舞",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用100张具有亡语的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用300张具有亡语的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "使用1000张具有亡语的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1000
+        },
+        {
+          "description": "使用3000张具有亡语的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3000
+        },
+        {
+          "description": "使用10000张具有亡语的卡牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-054",
+      "name": "为了成就！！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用150张具有战吼的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用500张具有战吼的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "使用1500张具有战吼的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1500
+        },
+        {
+          "description": "使用5000张具有战吼的卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5000
+        },
+        {
+          "description": "使用15000张具有战吼的卡牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 15000
+        }
+      ]
+    },
+    {
+      "id": "zonghe-055",
+      "name": "复生异能",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用10张具有复生的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用30张具有复生的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用100张具有复生的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用300张具有复生的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "使用1000张具有复生的随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1000
+        }
+      ]
+    }
+  ]
+}

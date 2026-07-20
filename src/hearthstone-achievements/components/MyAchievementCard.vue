@@ -6,10 +6,17 @@ import { useAchievementProgress } from '../composables/useAchievementProgress.js
 const props = defineProps({
   achievement: { type: Object, required: true },
   showRemaining: { type: Boolean, default: false },
-  editable: { type: Boolean, default: false }
+  editable: { type: Boolean, default: false },
+  selectMode: { type: Boolean, default: false },
+  selected: { type: Boolean, default: false }
 })
 
-const emit = defineEmits(['click'])
+const emit = defineEmits(['click', 'toggle-select'])
+
+const onCardClick = () => {
+  if (props.selectMode) emit('toggle-select', props.achievement)
+  else emit('click', props.achievement)
+}
 
 const { isStageCompleted, isAchievementCompleted, getCount, getProgressInfo } = useAchievementProgress()
 
@@ -83,10 +90,22 @@ const copyDeckCode = async (deck, event) => {
     class="hs-achievement-card hs-my-card"
     :class="{
       'hs-clickable': editable || isClickable(achievement),
-      'hs-completed': isAchievementCompleted(achievement)
+      'hs-completed': isAchievementCompleted(achievement),
+      'hs-select-mode': selectMode,
+      'hs-selected': selectMode && selected
     }"
-    @click="emit('click', achievement)"
+    @click="onCardClick"
   >
+    <span
+      v-if="selectMode"
+      class="hs-select-box"
+      :class="{ checked: selected }"
+      @click.stop="emit('toggle-select', achievement)"
+    >
+      <svg v-if="selected" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="20 6 9 17 4 12"/>
+      </svg>
+    </span>
     <div class="hs-card-content">
       <div class="hs-card-title-row">
           <h3 class="hs-card-title">
@@ -106,7 +125,7 @@ const copyDeckCode = async (deck, event) => {
             {{ achievement.difficulty }}
           </span>
           <button
-            v-if="editable || isClickable(achievement)"
+            v-if="(editable || isClickable(achievement)) && !selectMode"
             class="hs-card-open"
             type="button"
             :aria-label="editable ? `编辑 ${achievement.name} 的进度` : `查看 ${achievement.name} 的关联卡牌`"

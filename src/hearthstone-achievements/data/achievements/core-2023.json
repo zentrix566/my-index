@@ -1,0 +1,401 @@
+{
+  "id": "core-2023",
+  "name": "核心（狮鹫年）",
+  "description": "核心（狮鹫年）成就数据（来自 ifindhs wiki）",
+  "updatedAt": "2026-07-20",
+  "cardImageDir": "core-2023",
+  "referenceLinks": [
+    {
+      "name": "核心（狮鹫年） wiki",
+      "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E6%A0%B8%E5%BF%83%EF%BC%88%E7%8B%AE%E9%B9%AB%E5%B9%B4%EF%BC%89"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "core-2023-001",
+      "name": "流进流出",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中使用3次考瓦斯·血棘。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "在一局对战中使用5次考瓦斯·血棘。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "core-2023-002",
+      "name": "森林再生",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "对30个树人施放丛林之魂。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "对100个树人施放丛林之魂。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "core-2023-003",
+      "name": "重装上膛",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "子弹上膛后使用30张法术牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "子弹上膛后使用100张法术牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "core-2023-004",
+      "name": "守护传承",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使15个随从继承守护者艾格文的力量。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使50个随从继承守护者艾格文的力量。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "core-2023-005",
+      "name": "末日领主的末日",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用清算消灭15个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用清算消灭50个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "core-2023-006",
+      "name": "令人头痛",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在暗影形态下用你的英雄技能造成100点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "在暗影形态下用你的英雄技能造成300点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "core-2023-007",
+      "name": "我要那个！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用梵妮莎·范克里夫复制的卡牌消灭对手。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 0
+        },
+        {
+          "description": "使用梵妮莎·范克里夫复制的卡牌消灭对手3次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 3
+        }
+      ]
+    },
+    {
+      "id": "core-2023-008",
+      "name": "滑稽元素",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发无羁元素的效果30次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "触发无羁元素的效果100次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "core-2023-009",
+      "name": "加拉克苏斯来面对你！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "变为加拉克苏斯大王，攻击并消灭10个角色。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "变为加拉克苏斯大王，攻击并消灭25个角色。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "core-2023-010",
+      "name": "战利品箱！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "打开5个战争储备箱并使用其中的物品。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "打开20个战争储备箱并使用其中的物品。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "core-2023-011",
+      "name": "你好！",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "被吵吵机器人消灭。",
+          "xpReward": 1,
+          "points": 1,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "core-2023-012",
+      "name": "你好！你好！你好！",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用吵吵机器人消灭敌方英雄。",
+          "xpReward": 9,
+          "points": 9,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "core-2023-013",
+      "name": "翻车溏心蛋",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "从卵中孵化出5个蛛魔。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "从卵中孵化出25个蛛魔。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "从卵中孵化出75个蛛魔。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "core-2023-014",
+      "name": "飒沓豪客",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用伦萨克大王强化10张随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用伦萨克大王强化30张随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用伦萨克大王强化100张随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "core-2023-015",
+      "name": "龙王之暮",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用10张狮鹫年的传说龙牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用30张狮鹫年的传说龙牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用100张狮鹫年的传说龙牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "core-2023-016",
+      "name": "瞬间获胜！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的起始套牌中加入永恒者诺兹多姆，赢得15场对战。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "在你的起始套牌中加入永恒者诺兹多姆，赢得50场对战。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "在你的起始套牌中加入永恒者诺兹多姆，赢得150场对战。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "在你的起始套牌中加入永恒者诺兹多姆，赢得500场对战。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 500
+        }
+      ]
+    }
+  ]
+}

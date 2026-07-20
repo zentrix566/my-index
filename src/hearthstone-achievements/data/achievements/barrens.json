@@ -1,0 +1,1219 @@
+{
+  "id": "barrens",
+  "name": "贫瘠之地",
+  "description": "贫瘠之地成就数据（来自 ifindhs wiki）",
+  "updatedAt": "2026-07-20",
+  "cardImageDir": "barrens",
+  "referenceLinks": [
+    {
+      "name": "贫瘠之地 wiki",
+      "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E8%B4%AB%E7%98%A0%E4%B9%8B%E5%9C%B0"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "barrens-001",
+      "name": "藤蔓起舞",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一个回合中施放5个德鲁伊自然法术，完成25次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "barrens-002",
+      "name": "终极上限",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一个回合中使用5张原本法力值消耗（8）点或以上的牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "barrens-003",
+      "name": "买一送一（个没有嘲讽的）",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用腐烂的普雷莫尔复制5个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用腐烂的普雷莫尔复制20个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用腐烂的普雷莫尔复制50个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "barrens-004",
+      "name": "幼崽之力",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用德鲁伊野兽牌，消耗的法力值较其正常消耗少30点。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用德鲁伊野兽牌，消耗的法力值较其正常消耗少100点。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "barrens-005",
+      "name": "冰爆连击",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "消灭50个被冻结的随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "barrens-006",
+      "name": "贫瘠水源",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一个回合中使用清凉的泉水复原8个法力水晶。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "barrens-007",
+      "name": "这不叫“骚扰”，这叫艺术",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用法师，用你的英雄技能造成75点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 75
+        },
+        {
+          "description": "使用法师，用你的英雄技能造成150点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用法师，用你的英雄技能造成300点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "barrens-008",
+      "name": "站住别动！",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用元素冻结25个角色。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "使用元素冻结75个角色。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "barrens-009",
+      "name": "族群出击",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一个回合中召唤6只迅捷土狼。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "barrens-010",
+      "name": "有龙父必有龙子",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发第5代赤鳞迅猛龙的暴怒效果。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "barrens-011",
+      "name": "谁把狗放出来了？",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用塔维什·雷矛召唤10只野兽。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用塔维什·雷矛召唤30只野兽。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用塔维什·雷矛召唤75只野兽。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "barrens-012",
+      "name": "毒来毒往",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用具有剧毒的野兽或武器消灭20个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用具有剧毒的野兽或武器消灭60个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "barrens-013",
+      "name": "两管血条",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用牧师在一局对战中为英雄恢复40点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "barrens-014",
+      "name": "献血之后",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用塞瑞娜·血羽攻击并消灭被偷取属性值的随从，完成5次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "barrens-015",
+      "name": "我怎么就拿不住这些牌？",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用牧师，在5个回合开始时手牌达到上限。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用牧师，在20个回合开始时手牌达到上限。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用牧师，在50个回合开始时手牌达到上限。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "barrens-016",
+      "name": "偶一为之",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张除奇致胜消灭7个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 7
+        },
+        {
+          "description": "使用一张除奇致胜消灭10个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "barrens-017",
+      "name": "盗用身份非儿戏",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "偷师学艺习得10种不同的英雄技能。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "barrens-018",
+      "name": "别碰刀刃",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "为猪牙匕首淬上4种不同的药膏。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 4
+        }
+      ]
+    },
+    {
+      "id": "barrens-019",
+      "name": "奇迹重现",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用潜行者，在一个回合内使用6张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 6
+        },
+        {
+          "description": "使用潜行者，在一个回合内使用9张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 9
+        },
+        {
+          "description": "使用潜行者，在一个回合内使用12张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "barrens-020",
+      "name": "凭空消失",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用潜伏帷幕使10个随从获得潜行。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用潜伏帷幕使30个随从获得潜行。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "barrens-021",
+      "name": "这是基本元素，华生",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "连续5回合使用元素牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "barrens-022",
+      "name": "鱼人击杀",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用萨满祭司，用鱼人消灭50个敌人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "barrens-023",
+      "name": "特别有机",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用自然法术造成15点额外伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用自然法术造成60点额外伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "使用自然法术造成150点额外伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 150
+        }
+      ]
+    },
+    {
+      "id": "barrens-024",
+      "name": "炽焰喷吐",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用永恒之火消灭25个敌方随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "使用永恒之火消灭75个敌方随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "barrens-025",
+      "name": "神术圣侍",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一个回合中施放5个圣骑士神圣法术，完成15次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "barrens-026",
+      "name": "你知我知",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一个回合中触发5个圣骑士奥秘。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "barrens-027",
+      "name": "盛装布道",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用动员布道强化60个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "使用动员布道强化200个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "使用动员布道强化600个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 600
+        }
+      ]
+    },
+    {
+      "id": "barrens-028",
+      "name": "志同道合",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用小队集合召唤3个相同的冒险者。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "使用小队集合召唤4个相同的冒险者。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 4
+        }
+      ]
+    },
+    {
+      "id": "barrens-029",
+      "name": "卡牌火狱",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张火焰祭坛摧毁3张传说卡牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 3
+        }
+      ]
+    },
+    {
+      "id": "barrens-030",
+      "name": "暗影之影",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "施放80个法力值消耗为（0）的术士暗影法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "barrens-031",
+      "name": "小鬼不嫌多",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤25个小鬼。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "召唤100个小鬼。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤250个小鬼。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 250
+        }
+      ]
+    },
+    {
+      "id": "barrens-032",
+      "name": "生而为此",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "消耗30点生命值来使用术士卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "消耗100点生命值来使用术士卡牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "barrens-033",
+      "name": "内有亡灵",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用恶魔猎手，在未使用对应随从牌的情况下召唤50个亡语随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "barrens-034",
+      "name": "左冲右突",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用库尔特鲁斯·陨烬消灭30个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "barrens-035",
+      "name": "下回合……复仇",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发20次咒符。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "触发60次咒符。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "触发200次咒符。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "barrens-036",
+      "name": "脏污的心",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用污心拷问者使你的对手额外消耗15点法力值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用污心拷问者使你的对手额外消耗45点法力值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 45
+        }
+      ]
+    },
+    {
+      "id": "barrens-037",
+      "name": "锻炼伙伴",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用重装上阵生成你手牌中同一张手牌的第4张复制。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 4
+        }
+      ]
+    },
+    {
+      "id": "barrens-038",
+      "name": "超级累积",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张仇怨累积获得14点护甲值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 14
+        }
+      ]
+    },
+    {
+      "id": "barrens-039",
+      "name": "还能再来",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用战士，在你的回合中使10个友方随从受到伤害并存活。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用战士，在你的回合中使40个友方随从受到伤害并存活。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "使用战士，在你的回合中使100个友方随从受到伤害并存活。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "barrens-040",
+      "name": "背甲龟来",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用龟甲尖刺攻击20次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用龟甲尖刺攻击60次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "barrens-041",
+      "name": "人生就像高速路",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在10个回合开始时，控制任意车队。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "在40个回合开始时，控制任意车队。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "在100个回合开始时，控制任意车队。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "barrens-042",
+      "name": "招牌动作",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "施放10个等级3的法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "施放40个等级3的法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "施放100个等级3的法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "barrens-043",
+      "name": "暴怒伙伴",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发10次暴怒效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "触发40次暴怒效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "触发100次暴怒效果。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "barrens-044",
+      "name": "最高安全等级",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用15张哨所牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用50张哨所牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "barrens-045",
+      "name": "所有人都过来了！",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，拥有7个满意的奴隶主。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "barrens-046",
+      "name": "有人见过曼科里克的妻子吗？",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "找到曼科里克的妻子！",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        },
+        {
+          "description": "使用怒火攻心的曼科里克消灭你的对手。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "barrens-047",
+      "name": "泄密特工",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张部落特工复制5个奥秘。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "barrens-048",
+      "name": "等价交换",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用暗影猎手沃金将一个法力值消耗为（0）的随从和一个法力值消耗为（10）的随从交换。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "barrens-049",
+      "name": "摇滚工坊",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用6种不同的草药构筑魔像。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 6
+        },
+        {
+          "description": "使用9种不同的草药构筑魔像。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 9
+        },
+        {
+          "description": "使用全部12种草药构筑魔像。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "barrens-050",
+      "name": "？？？",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "解开埋藏在贫瘠之地的谜题。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "barrens-051",
+      "name": "恶魔批发",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用火刃侍僧召唤50个恶魔生物。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "barrens-052",
+      "name": "元祖守护",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用始生保护者召唤一个法力值消耗为（10）的随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "barrens-053",
+      "name": "小猪快跑",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用放猪牧人召唤50只小猪。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "barrens-054",
+      "name": "毒刺行动",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用剧毒魔蝎消灭25个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "barrens-055",
+      "name": "冒险出发",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤30个冒险者。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "召唤100个冒险者。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "barrens-056",
+      "name": "饿贯满盈",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用吞噬者穆坦努斯吃掉7个4/4或更大的随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 7
+        },
+        {
+          "description": "使用吞噬者穆坦努斯吃掉20个4/4或更大的随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    }
+  ]
+}

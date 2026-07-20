@@ -1452,6 +1452,191 @@ a.content-card:hover {
   flex-shrink: 0;
 }
 
+/* 更多攻略：版本 Wiki 下拉导航 */
+.hs-wiki-menu {
+  position: relative;
+  z-index: 50;
+  display: inline-flex;
+}
+
+.hs-wiki-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hs-wiki-toggle.active .hs-wiki-caret {
+  transform: rotate(180deg);
+}
+
+.hs-wiki-caret {
+  transition: transform 0.18s ease;
+}
+
+.hs-wiki-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  width: min(360px, 78vw);
+  padding: 12px;
+  border: 1px solid var(--hs-border);
+  border-radius: 14px;
+  background: var(--hs-surface-overlay);
+  box-shadow: var(--hs-shadow-strong);
+  backdrop-filter: blur(10px);
+}
+
+.hs-wiki-panel-tip {
+  margin: 0 0 10px;
+  color: var(--hs-muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.hs-wiki-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.hs-wiki-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 7px 9px;
+  border: 1px solid var(--hs-border);
+  border-radius: 9px;
+  color: var(--hs-text-soft);
+  font-size: 12px;
+  text-decoration: none;
+  background: var(--hs-surface-soft);
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.hs-wiki-item svg {
+  flex-shrink: 0;
+  color: var(--hs-link);
+}
+
+.hs-wiki-item:hover {
+  color: var(--hs-text);
+  border-color: var(--hs-focus);
+  background: var(--hs-surface-card);
+}
+
+@media (max-width: 640px) {
+  .hs-wiki-panel {
+    width: min(320px, 88vw);
+  }
+  .hs-wiki-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* 更多版本：本次新增版本下拉（与原有版本主标签栏分开） */
+.hs-more-versions {
+  position: relative;
+  z-index: 50;
+  display: inline-flex;
+}
+
+.hs-more-versions-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.hs-more-versions-toggle.active .hs-more-versions-caret {
+  transform: rotate(180deg);
+}
+
+.hs-more-versions-caret {
+  transition: transform 0.18s ease;
+}
+
+.hs-more-versions-count {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 18px;
+  height: 18px;
+  padding: 0 5px;
+  border-radius: 9px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--hs-gold-soft, #a7472f);
+}
+
+.hs-more-versions-panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  width: min(360px, 78vw);
+  padding: 12px;
+  border: 1px solid var(--hs-border);
+  border-radius: 14px;
+  background: var(--hs-surface-overlay);
+  box-shadow: var(--hs-shadow-strong);
+  backdrop-filter: blur(10px);
+}
+
+.hs-more-versions-tip {
+  margin: 0 0 10px;
+  color: var(--hs-muted);
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.hs-more-versions-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 6px;
+}
+
+.hs-more-versions-item {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  padding: 7px 9px;
+  border: 1px solid var(--hs-border);
+  border-radius: 9px;
+  color: var(--hs-text-soft);
+  font-size: 12px;
+  background: var(--hs-surface-soft);
+  cursor: pointer;
+  text-align: left;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+
+.hs-more-versions-item:hover {
+  color: var(--hs-text);
+  border-color: var(--hs-focus);
+  background: var(--hs-surface-card);
+}
+
+.hs-more-versions-item.active {
+  color: var(--hs-tab-active-fg, #fff);
+  background: var(--hs-gold-soft, #a7472f);
+  border-color: var(--hs-gold-soft, #a7472f);
+}
+
+.hs-more-versions-item svg {
+  flex-shrink: 0;
+}
+
+@media (max-width: 640px) {
+  .hs-more-versions-panel {
+    width: min(320px, 88vw);
+  }
+  .hs-more-versions-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* 职业分组 */
 .hs-expansion-groups {
   margin-top: 16px;
@@ -1521,14 +1706,14 @@ a.content-card:hover {
   width: 64px;
   height: 6px;
   border-radius: 3px;
-  background: rgba(255, 255, 255, 0.35);
+  background: var(--hs-border);
   overflow: hidden;
 }
 
 .hs-class-summary-fill {
   display: block;
   height: 100%;
-  background: #fff;
+  background: var(--hs-gold-soft);
   border-radius: 3px;
   transition: width 0.2s ease;
 }
@@ -1537,6 +1722,86 @@ a.content-card:hover {
   white-space: nowrap;
   min-width: 34px;
   text-align: right;
+}
+
+/* 职业/版本分组头部：剩余成就数醒目标识 */
+.hs-class-remaining {
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  padding: 3px 9px;
+  border-radius: 999px;
+  color: #fff;
+  background: var(--hs-gold);
+  white-space: nowrap;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
+}
+
+.hs-class-remaining.is-done {
+  background: var(--hs-primary-bright);
+}
+
+/* 批量完成工具条 */
+.hs-batch-bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 12px 0 4px;
+  padding: 10px 14px;
+  border: 1px dashed var(--hs-gold);
+  border-radius: 12px;
+  background: var(--hs-surface-soft);
+}
+
+.hs-batch-hint {
+  color: var(--hs-muted);
+  font-size: 12px;
+}
+
+.hs-batch-count {
+  color: var(--hs-text-soft);
+  font-size: 13px;
+}
+
+.hs-batch-count b {
+  color: var(--hs-gold-soft);
+  font-size: 15px;
+}
+
+/* 成就卡片勾选框（批量模式） */
+.hs-select-box {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  width: 20px;
+  height: 20px;
+  border-radius: 6px;
+  border: 2px solid var(--hs-border);
+  background: var(--hs-surface);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  z-index: 2;
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.hs-select-box.checked {
+  background: var(--hs-gold);
+  border-color: var(--hs-gold);
+}
+
+.hs-my-card.hs-select-mode {
+  cursor: pointer;
+  position: relative;
+}
+
+.hs-my-card.hs-selected {
+  outline: 2px solid var(--hs-gold);
+  outline-offset: 1px;
 }
 
 /* 职业总览面板 */
@@ -1773,12 +2038,16 @@ a.content-card:hover {
 }
 
 .hs-badge {
-  display: inline-block;
-  padding: 2px 8px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 20px;
+  padding: 2px 9px;
   border-radius: 999px;
   font-size: 11px;
   font-weight: 500;
-  line-height: 1.4;
+  line-height: 1;
+  white-space: nowrap;
 }
 
 .hs-type-badge.hs-one-time {
@@ -2691,13 +2960,56 @@ a.content-card:hover {
 
 /* ============================
    炉石成就 UI Pro Max 设计系统
-   深色毡桌绿 + 炉石金，高密度仪表盘
+   默认明亮主题，可切换暗色（.hs-page[data-hs-theme="dark"]）
    ============================ */
 .hs-page {
+  /* 明亮主题（默认） */
+  --hs-bg: #f7f8fb;
+  --hs-surface: #ffffff;
+  --hs-surface-raised: #ffffff;
+  --hs-surface-soft: rgba(38, 43, 50, 0.045);
+  --hs-surface-card: rgba(255, 255, 255, 0.92);
+  --hs-surface-overlay: rgba(255, 255, 255, 0.94);
+  --hs-inset-bg: rgba(247, 248, 251, 0.7);
+  --hs-primary: #15803d;
+  --hs-primary-bright: #22c55e;
+  --hs-gold: #d97706;
+  --hs-gold-soft: #b45309;
+  --hs-text: #18212f;
+  --hs-text-soft: #3d4757;
+  --hs-muted: #6b7280;
+  --hs-border: rgba(38, 43, 50, 0.12);
+  --hs-focus: rgba(37, 99, 235, 0.5);
+  --hs-link: #15803d;
+  --hs-link-soft: #166534;
+  --hs-info: #1d4ed8;
+  --hs-info-soft: #1e40af;
+  --hs-success: #15803d;
+  --hs-warn: #92400e;
+  --hs-tab-active-fg: #1f1605;
+  --hs-shadow-card: 0 6px 22px rgba(28, 39, 60, 0.08);
+  --hs-hero-bg: rgba(255, 255, 255, 0.92);
+  --hs-shadow-hero: 0 24px 70px rgba(28, 39, 60, 0.1);
+  --hs-shadow-strong: 0 16px 42px rgba(28, 39, 60, 0.1);
+  --hs-shadow-hover: 0 14px 36px rgba(28, 39, 60, 0.1);
+  --hs-surface-gradient-end: rgba(255, 255, 255, 0.85);
+  padding-top: 48px;
+  color: var(--hs-text);
+  background:
+    radial-gradient(circle at 7% 2%, rgba(21, 128, 61, 0.1), transparent 28%),
+    radial-gradient(circle at 95% 14%, rgba(217, 119, 6, 0.08), transparent 24%),
+    linear-gradient(180deg, #f7f8fb 0%, #eef2f5 55%, #f7f8fb 100%);
+}
+
+.hs-page[data-hs-theme="dark"] {
+  /* 暗色主题 */
   --hs-bg: #0f172a;
   --hs-surface: #0f1f2b;
   --hs-surface-raised: #132938;
   --hs-surface-soft: rgba(255, 255, 255, 0.045);
+  --hs-surface-card: rgba(15, 31, 43, 0.84);
+  --hs-surface-overlay: rgba(15, 31, 43, 0.7);
+  --hs-inset-bg: rgba(2, 6, 23, 0.22);
   --hs-primary: #15803d;
   --hs-primary-bright: #22c55e;
   --hs-gold: #f59e0b;
@@ -2707,7 +3019,19 @@ a.content-card:hover {
   --hs-muted: #94a3b8;
   --hs-border: rgba(255, 255, 255, 0.09);
   --hs-focus: rgba(251, 191, 36, 0.65);
-  padding-top: 48px;
+  --hs-link: #86efac;
+  --hs-link-soft: #bbf7d0;
+  --hs-info: #bae6fd;
+  --hs-info-soft: #7dd3fc;
+  --hs-success: #86efac;
+  --hs-warn: #fcd34d;
+  --hs-tab-active-fg: #1f1605;
+  --hs-shadow-card: none;
+  --hs-hero-bg: rgba(15, 31, 43, 0.88);
+  --hs-shadow-hero: 0 24px 70px rgba(2, 6, 23, 0.28);
+  --hs-shadow-strong: 0 16px 42px rgba(2, 6, 23, 0.28);
+  --hs-shadow-hover: 0 14px 36px rgba(2, 6, 23, 0.26);
+  --hs-surface-gradient-end: rgba(15, 31, 43, 0.78);
   color: var(--hs-text);
   background:
     radial-gradient(circle at 7% 2%, rgba(21, 128, 61, 0.23), transparent 28%),
@@ -2730,8 +3054,8 @@ a.content-card:hover {
   border-radius: 22px;
   background:
     linear-gradient(120deg, rgba(21, 128, 61, 0.2), transparent 42%),
-    rgba(15, 31, 43, 0.88);
-  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.28);
+    var(--hs-hero-bg);
+  box-shadow: var(--hs-shadow-hero);
 }
 
 .hs-hero::after {
@@ -2758,7 +3082,7 @@ a.content-card:hover {
   align-items: center;
   gap: 8px;
   margin-bottom: 10px;
-  color: #86efac;
+  color: var(--hs-link);
   font-size: 11px;
   letter-spacing: 0.13em;
 }
@@ -2846,7 +3170,7 @@ a.content-card:hover {
 
 .hs-user-badge {
   min-height: 44px;
-  color: #bbf7d0;
+  color: var(--hs-link-soft);
   border: 1px solid rgba(34, 197, 94, 0.2);
   border-radius: 11px;
   background: rgba(21, 128, 61, 0.14);
@@ -2870,7 +3194,7 @@ a.content-card:hover {
   align-items: baseline;
   gap: 9px;
   padding: 13px 16px;
-  background: rgba(2, 6, 23, 0.26);
+  background: var(--hs-inset-bg);
 }
 
 .hs-hero-metrics strong {
@@ -2892,7 +3216,7 @@ a.content-card:hover {
   padding: 5px;
   border-color: var(--hs-border);
   border-radius: 13px;
-  background: rgba(2, 6, 23, 0.3);
+  background: var(--hs-inset-bg);
 }
 
 .hs-view-switch button,
@@ -2920,7 +3244,7 @@ a.content-card:hover {
   padding: 14px 16px;
   border: 1px solid var(--hs-border);
   border-radius: 14px;
-  background: rgba(15, 31, 43, 0.7);
+  background: var(--hs-surface-overlay);
 }
 
 .hs-brand {
@@ -2957,7 +3281,7 @@ a.content-card:hover {
   padding: 4px;
   border-color: var(--hs-border);
   border-radius: 10px;
-  background: rgba(2, 6, 23, 0.28);
+  background: var(--hs-inset-bg);
 }
 
 .hs-expansion-tabs button {
@@ -2975,7 +3299,7 @@ a.content-card:hover {
 }
 
 .hs-expansion-tabs button.active {
-  color: #1f1605;
+  color: var(--hs-tab-active-fg);
   background: var(--hs-gold-soft);
   box-shadow: none;
 }
@@ -2988,7 +3312,7 @@ a.content-card:hover {
 
 .hs-link {
   min-height: 38px;
-  color: #86efac;
+  color: var(--hs-link);
 }
 
 .hs-my-sub-switch {
@@ -2998,7 +3322,7 @@ a.content-card:hover {
   border: 1px solid var(--hs-border);
   border-radius: 11px;
   color: var(--hs-muted);
-  background: rgba(2, 6, 23, 0.26);
+  background: var(--hs-inset-bg);
 }
 
 .hs-my-sub-switch button {
@@ -3017,8 +3341,8 @@ a.content-card:hover {
   padding: 13px;
   border-color: rgba(255, 255, 255, 0.11);
   border-radius: 15px;
-  background: rgba(15, 31, 43, 0.94);
-  box-shadow: 0 16px 42px rgba(2, 6, 23, 0.28);
+  background: var(--hs-surface-overlay);
+  box-shadow: var(--hs-shadow-strong);
   backdrop-filter: blur(18px);
 }
 
@@ -3052,7 +3376,7 @@ a.content-card:hover {
   height: 30px;
   place-items: center;
   border-radius: 8px;
-  color: #86efac;
+  color: var(--hs-link);
   background: rgba(21, 128, 61, 0.17);
 }
 
@@ -3086,7 +3410,7 @@ a.content-card:hover {
   border-color: rgba(148, 163, 184, 0.22);
   border-radius: 9px;
   color: var(--hs-text);
-  background: rgba(2, 6, 23, 0.3);
+  background: var(--hs-inset-bg);
 }
 
 .hs-search-box {
@@ -3128,7 +3452,7 @@ a.content-card:hover {
   border-color: var(--hs-border);
   border-radius: 11px;
   color: var(--hs-muted);
-  background: rgba(15, 31, 43, 0.58);
+  background: var(--hs-surface-overlay);
   box-shadow: none;
 }
 
@@ -3138,20 +3462,20 @@ a.content-card:hover {
 }
 
 .hs-ref-link {
-  color: #86efac;
+  color: var(--hs-link);
   border-bottom-color: rgba(134, 239, 172, 0.35);
 }
 
 .hs-ref-link:hover {
-  color: #bbf7d0;
-  border-bottom-color: #86efac;
+  color: var(--hs-link-soft);
+  border-bottom-color: var(--hs-link);
 }
 
 .hs-class-overview,
 .hs-stats-panel {
   border: 1px solid var(--hs-border);
   border-radius: 14px;
-  background: rgba(15, 31, 43, 0.72);
+  background: var(--hs-surface-overlay);
 }
 
 .hs-class-overview-pct,
@@ -3184,7 +3508,7 @@ a.content-card:hover {
 
 .hs-class-summary-bar {
   height: 7px;
-  background: rgba(2, 6, 23, 0.28);
+  background: var(--hs-inset-bg);
 }
 
 .hs-achievement-list {
@@ -3199,7 +3523,7 @@ a.content-card:hover {
   border-left: 4px solid var(--hs-class-color, var(--hs-gold));
   border-radius: 12px;
   color: var(--hs-text-soft);
-  background: rgba(15, 31, 43, 0.84);
+  background: var(--hs-surface-card);
   box-shadow: none;
   backdrop-filter: none;
 }
@@ -3209,7 +3533,7 @@ a.content-card:hover {
   border-color: rgba(251, 191, 36, 0.28);
   border-left-color: var(--hs-class-color, var(--hs-gold));
   background: var(--hs-surface-raised);
-  box-shadow: 0 14px 36px rgba(2, 6, 23, 0.26);
+  box-shadow: var(--hs-shadow-hover);
 }
 
 .hs-card-title {
@@ -3219,7 +3543,7 @@ a.content-card:hover {
 }
 
 .hs-card-hint {
-  color: #fcd34d;
+  color: var(--hs-warn);
   background: rgba(217, 119, 6, 0.13);
 }
 
@@ -3243,13 +3567,13 @@ a.content-card:hover {
 }
 
 .hs-card-open:hover {
-  color: #1f1605;
+  color: var(--hs-tab-active-fg);
   background: var(--hs-gold-soft);
   transform: translateY(-1px);
 }
 
 .hs-type-badge.hs-one-time {
-  color: #bae6fd;
+  color: var(--hs-info);
   border-color: rgba(56, 189, 248, 0.16);
   background: rgba(3, 105, 161, 0.2);
 }
@@ -3271,14 +3595,14 @@ a.content-card:hover {
   background: rgba(255, 255, 255, 0.04);
 }
 
-.hs-meta-version { color: #86efac; border-color: rgba(34, 197, 94, 0.16); background: rgba(21, 128, 61, 0.12); }
-.hs-meta-class { color: #bae6fd; border-color: rgba(56, 189, 248, 0.16); background: rgba(3, 105, 161, 0.14); }
+.hs-meta-version { color: var(--hs-link); border-color: rgba(34, 197, 94, 0.16); background: rgba(21, 128, 61, 0.12); }
+.hs-meta-class { color: var(--hs-info); border-color: rgba(56, 189, 248, 0.16); background: rgba(3, 105, 161, 0.14); }
 
 .hs-stage {
   min-height: 42px;
   padding: 8px 10px;
   border: 1px solid rgba(255, 255, 255, 0.055);
-  background: rgba(2, 6, 23, 0.22);
+  background: var(--hs-inset-bg);
 }
 
 .hs-stage-text {
@@ -3292,7 +3616,7 @@ a.content-card:hover {
 .hs-stage-done .hs-stage-text,
 .hs-count-stage-done .hs-count-stage-text,
 .hs-count-stage-done .hs-count-stage-text strong {
-  color: #86efac;
+  color: var(--hs-link);
 }
 
 .hs-stage-xp { color: #fbbf24 !important; }
@@ -3312,13 +3636,13 @@ a.content-card:hover {
 .hs-related-card-name,
 .hs-deck-name,
 .hs-guide-summary {
-  color: #86efac;
+  color: var(--hs-link);
 }
 
 .hs-deck-item,
 .hs-guide-text {
   color: var(--hs-text-soft);
-  background: rgba(2, 6, 23, 0.25);
+  background: var(--hs-inset-bg);
 }
 
 .hs-copy-button {
@@ -3381,7 +3705,7 @@ a.content-card:hover {
   padding: 13px;
   border-color: var(--hs-border);
   border-radius: 14px;
-  background: rgba(15, 31, 43, 0.94);
+  background: var(--hs-surface-overlay);
   backdrop-filter: blur(18px);
 }
 
@@ -3397,15 +3721,15 @@ a.content-card:hover {
   padding: 16px;
   border-color: var(--hs-border);
   border-radius: 15px;
-  background: rgba(15, 31, 43, 0.7);
+  background: var(--hs-surface-overlay);
   box-shadow: none;
 }
 
-.hs-priority-group-a { border-color: rgba(251, 191, 36, 0.23); background: linear-gradient(180deg, rgba(217, 119, 6, 0.1), rgba(15, 31, 43, 0.78)); }
-.hs-priority-group-b { border-color: rgba(74, 222, 128, 0.2); background: linear-gradient(180deg, rgba(21, 128, 61, 0.1), rgba(15, 31, 43, 0.78)); }
-.hs-priority-group-c { border-color: rgba(56, 189, 248, 0.19); background: linear-gradient(180deg, rgba(3, 105, 161, 0.1), rgba(15, 31, 43, 0.78)); }
+.hs-priority-group-a { border-color: rgba(251, 191, 36, 0.23); background: linear-gradient(180deg, rgba(217, 119, 6, 0.1), var(--hs-surface-gradient-end)); }
+.hs-priority-group-b { border-color: rgba(74, 222, 128, 0.2); background: linear-gradient(180deg, rgba(21, 128, 61, 0.1), var(--hs-surface-gradient-end)); }
+.hs-priority-group-c { border-color: rgba(56, 189, 248, 0.19); background: linear-gradient(180deg, rgba(3, 105, 161, 0.1), var(--hs-surface-gradient-end)); }
 .hs-priority-group-d,
-.hs-priority-group-e { border-color: var(--hs-border); background: rgba(15, 31, 43, 0.72); }
+.hs-priority-group-e { border-color: var(--hs-border); background: var(--hs-surface-overlay); }
 
 .hs-priority-group-head {
   border-bottom-color: var(--hs-border);
@@ -3455,11 +3779,11 @@ a.content-card:hover {
 
 .hs-empty-state {
   border-color: rgba(148, 163, 184, 0.2);
-  background: rgba(15, 31, 43, 0.55);
+  background: var(--hs-surface-overlay);
 }
 
 .hs-progress-status {
-  color: #bbf7d0;
+  color: var(--hs-link-soft);
   border-color: rgba(34, 197, 94, 0.2);
   background: rgba(21, 128, 61, 0.13);
 }
@@ -3502,7 +3826,7 @@ a.content-card:hover {
   border-color: var(--hs-border);
   border-radius: 12px;
   color: var(--hs-text-soft);
-  background: rgba(15, 31, 43, 0.92);
+  background: var(--hs-surface-overlay);
 }
 
 .hs-scroll-top:hover {

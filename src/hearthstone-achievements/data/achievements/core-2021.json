@@ -1,0 +1,314 @@
+{
+  "id": "core-2021",
+  "name": "核心（独狼年）",
+  "description": "核心（独狼年）成就数据（来自 ifindhs wiki）",
+  "updatedAt": "2026-07-20",
+  "cardImageDir": "core-2021",
+  "referenceLinks": [
+    {
+      "name": "核心（独狼年） wiki",
+      "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E6%A0%B8%E5%BF%83%EF%BC%88%E7%8B%AC%E7%8B%BC%E5%B9%B4%EF%BC%89"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "core-2021-001",
+      "name": "嘲讽等于作弊",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在凯恩·日怒的效果影响下用40个友方角色攻击。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "在凯恩·日怒的效果影响下用80个友方角色攻击。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "core-2021-002",
+      "name": "环保倡议",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤250个树人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 250
+        },
+        {
+          "description": "召唤500个树人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 500
+        }
+      ]
+    },
+    {
+      "id": "core-2021-003",
+      "name": "奥术工艺",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用奥术工匠获得120点护甲值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 120
+        },
+        {
+          "description": "用奥术工匠获得240点护甲值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 240
+        }
+      ]
+    },
+    {
+      "id": "core-2021-004",
+      "name": "污手马仔",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用污手街供货商强化150张随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "用污手街供货商强化300张随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "core-2021-005",
+      "name": "上手，使用，损坏，维修",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一个掷弹机器人的战吼消灭3个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "用一个掷弹机器人的战吼消灭5个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "core-2021-006",
+      "name": "感谢治疗",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发200次过量治疗效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "触发400次过量治疗效果。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 400
+        }
+      ]
+    },
+    {
+      "id": "core-2021-007",
+      "name": "鸟以群分",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用40张宝石鹦鹉创建的野兽牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "使用80张宝石鹦鹉创建的野兽牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "core-2021-008",
+      "name": "法力洼地",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使深渊魔物的法力值消耗减少60点。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "使深渊魔物的法力值消耗减少120点。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "core-2021-009",
+      "name": "死吧，死吧！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用亵渎消灭150个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "用亵渎消灭300个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "core-2021-010",
+      "name": "举止可疑",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发150个潜行者奥秘。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "触发300个潜行者奥秘。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "core-2021-011",
+      "name": "不含符文",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用符文熔铸抽30张武器牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "用符文熔铸抽60张武器牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "core-2021-012",
+      "name": "异性相吸",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用100张具有磁力的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用200张具有磁力的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "core-2021-013",
+      "name": "自动爆破",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用砰砰机器人造成50点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "用砰砰机器人造成100点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        }
+      ]
+    }
+  ]
+}

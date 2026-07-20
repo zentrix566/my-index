@@ -1,0 +1,202 @@
+{
+  "id": "outland",
+  "name": "外域的灰烬",
+  "description": "外域的灰烬成就数据（来自 ifindhs wiki）",
+  "updatedAt": "2026-07-20",
+  "cardImageDir": "outland",
+  "referenceLinks": [
+    {
+      "name": "外域的灰烬 wiki",
+      "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E5%A4%96%E5%9F%9F%E7%9A%84%E7%81%B0%E7%83%AC"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "outland-001",
+      "name": "万年折磨",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在连续8个回合结束时处于恶魔变形状态。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "outland-002",
+      "name": "真菌过敏",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张真菌宝藏抽到（且不能弃掉）3张不是法术的牌。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 3
+        }
+      ]
+    },
+    {
+      "id": "outland-003",
+      "name": "深层智慧",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用拾荒者的智慧抽到一张裂蹄牛。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "outland-004",
+      "name": "见一个砍一个",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用被禁锢的眼魔消灭其入场时看到的所有敌方随从。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "outland-005",
+      "name": "必读书目",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "对同一个随从施放10张智慧圣契。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "outland-006",
+      "name": "记忆复苏",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一回合中施放6次复苏。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "outland-007",
+      "name": "终极攻击",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一个终极阿卡玛攻击3次。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 3
+        }
+      ]
+    },
+    {
+      "id": "outland-008",
+      "name": "摩天图腾",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用图腾映像召唤一个20点攻击力的图腾。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "outland-009",
+      "name": "不止是微痛",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用术士，在第5回合之前就在一回合中消耗8点法力值。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "outland-010",
+      "name": "操纵比赛",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使战槌挑战者在与剧毒随从的战斗中存活下来。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "outland-011",
+      "name": "规整伤害",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "对一个莫尔葛工匠造成刚好1024点伤害。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 1024
+        }
+      ]
+    }
+  ]
+}

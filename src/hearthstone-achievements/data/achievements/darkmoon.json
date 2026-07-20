@@ -1,0 +1,1140 @@
+{
+  "id": "darkmoon",
+  "name": "暗月马戏团",
+  "description": "暗月马戏团成就数据（来自 ifindhs wiki）",
+  "updatedAt": "2026-07-20",
+  "cardImageDir": "darkmoon",
+  "referenceLinks": [
+    {
+      "name": "暗月马戏团 wiki",
+      "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E6%9A%97%E6%9C%88%E9%A9%AC%E6%88%8F%E5%9B%A2"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "darkmoon-001",
+      "name": "森林反击",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤40个暗月树人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "召唤120个暗月树人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-002",
+      "name": "一定有诈",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "猜重量猜对10次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-003",
+      "name": "日月随心",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中施放6个月蚀或日蚀。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-004",
+      "name": "开枝散叶",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤20个格雷布。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "召唤100个格雷布。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤200个格雷布。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-005",
+      "name": "压缩饼干",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "吃掉10块法力饼干。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "吃掉30块法力饼干。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-006",
+      "name": "摘不掉的",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用克苏恩面具造成致命伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-007",
+      "name": "镜像大厅",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，拥有4个隐秘咒术师。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 4
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-008",
+      "name": "前途迷蒙",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用塞格抽5张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用塞格抽20张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用塞格抽50张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-009",
+      "name": "打一赠二",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用套索射击消灭20个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用套索射击消灭60个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-010",
+      "name": "同生共死",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，拥有三个相同的亡语随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-011",
+      "name": "送你一程",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "向对手发射一个随从，造成致命伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-012",
+      "name": "坦克军官",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用暗月坦克造成50点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用暗月坦克造成150点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用暗月坦克造成500点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 500
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-013",
+      "name": "暗月快餐",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用圣光战马的特效使随从获得30点生命值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用圣光战马的特效使随从获得90点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 90
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-014",
+      "name": "专职剧透",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤一个攻击力大于或等于10点的占卜机。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-015",
+      "name": "无名之辈",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用无名者一次偷取3个或以上的附加效果。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 3
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-016",
+      "name": "神表遗憾",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用牧师，消耗10点生命值来使用卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用牧师，消耗30点生命值来使用卡牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用牧师，消耗100点生命值来使用卡牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-017",
+      "name": "耍猴把戏",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使你的对手抽到10张香蕉。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使你的对手抽到30张香蕉。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-018",
+      "name": "禁忌之术",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用暗影克隆召唤一个法力值消耗大于或等于（10）的随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-019",
+      "name": "迈拉女皇",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张大女皇夏柯扎拉抽5张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-020",
+      "name": "奖品真棒",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用奖品掠夺者的连击效果造成10点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用奖品掠夺者的连击效果造成30点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用奖品掠夺者的连击效果造成100点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-021",
+      "name": "过载塌陷",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发20次大地崩陷。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "触发60次大地崩陷。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-022",
+      "name": "恐怖转轮",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用异变轮转一次变形14个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 14
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-023",
+      "name": "两拳超人",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一回合中，用英雄攻击造成16点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 16
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-024",
+      "name": "暗月木匠",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用巨型图腾埃索尔强化10个图腾。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用巨型图腾埃索尔强化30个图腾。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用巨型图腾埃索尔强化100个图腾。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-025",
+      "name": "正气逼人……",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用吸血武器恢复60点生命值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "使用吸血武器恢复180点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 180
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-026",
+      "name": "伊人赐教",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用大主教伊瑞尔恢复100点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-027",
+      "name": "古神至上",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用古神在上造成致命伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-028",
+      "name": "洛萨克森气球店",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使10个白银之手新兵获得圣盾。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使30个白银之手新兵获得圣盾。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使100个白银之手新兵获得圣盾。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-029",
+      "name": "不要躲，不要藏",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用术士职业使用6张终极随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 6
+        },
+        {
+          "description": "用术士职业使用18张终极随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 18
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-030",
+      "name": "缺少物品：神圣手雷",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "消耗1点法力值使用暗月兔子。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-031",
+      "name": "我们是一起的",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用免票入场抽两张恶魔牌，并使两张牌的法力值消耗减为（0）点。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-032",
+      "name": "车祸不断",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用连环灾难消灭5个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用连环灾难消灭15个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用连环灾难消灭50个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-033",
+      "name": "邪能大道",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "施放伊利达雷研习10次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "施放伊利达雷研习30次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-034",
+      "name": "投刃好手",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一个回合中，使用投掷利刃消灭5个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-035",
+      "name": "并不孤单",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，拥有一个攻击力大于或等于10点的获救的流民。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-036",
+      "name": "噫……格诺斯",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用伊格诺斯的效果造成10点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用伊格诺斯的效果造成30点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用伊格诺斯的效果造成100点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-037",
+      "name": "最佳防御",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "当你拥有护甲值时，用你的英雄攻击10次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "当你拥有护甲值时，用你的英雄攻击30次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-038",
+      "name": "有雷！有雷！",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张雷区挑战消灭5个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-039",
+      "name": "帐目清空",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张法力值消耗为（0）的帐篷摧毁者。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-040",
+      "name": "低音轰头",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发5次精英牛头人酋长，金属之神的鼓点独奏。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "触发15次精英牛头人酋长，金属之神的鼓点独奏。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "触发50次精英牛头人酋长，金属之神的鼓点独奏。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-041",
+      "name": "触不可及",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "月牙在受到伤害后依然存活，累计10次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "月牙在受到伤害后依然存活，累计30次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-042",
+      "name": "谁把龙放出来了？",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用窜逃的黑翼龙消灭10个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用窜逃的黑翼龙消灭30个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-043",
+      "name": "黑暗大古神",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在对手拥有全部生命值的情况下使用克苏恩，破碎之劫消灭对手。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-044",
+      "name": "举触手之劳",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用恩佐斯，深渊之神一次复活6个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-045",
+      "name": "小丑恐惧症",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，拥有满场的狂欢小丑。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-046",
+      "name": "癣疥之疾",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张攻击力大于或等于7点的恐怖增生体。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 7
+        },
+        {
+          "description": "使用一张攻击力大于或等于15点的恐怖增生体。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 15
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-047",
+      "name": "拥抱虚空",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用15张已腐蚀的牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用50张已腐蚀的牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用150张已腐蚀的牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用500张已腐蚀的牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 500
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-048",
+      "name": "免费游戏",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张法力值消耗为（0）的已腐蚀牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 0
+        },
+        {
+          "description": "使用法力值消耗为（0）的已腐蚀牌10次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 0
+        },
+        {
+          "description": "使用法力值消耗为（0）的已腐蚀牌30次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 0
+        },
+        {
+          "description": "使用法力值消耗为（0）的已腐蚀牌100次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-049",
+      "name": "尤格萨轮",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "转动尤格-萨隆的命运之轮。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 0
+        },
+        {
+          "description": "转动尤格-萨隆的命运之轮来赢得对战。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-050",
+      "name": "灾难之轮",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "从尤格-萨隆的命运之轮中获得3种不同的结果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "从尤格-萨隆的命运之轮中获得所有种类的结果。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "darkmoon-051",
+      "name": "人畜无害",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用暗月兔子消灭5个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用暗月兔子消灭10个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用暗月兔子消灭25个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    }
+  ]
+}

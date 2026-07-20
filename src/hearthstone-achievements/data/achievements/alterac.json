@@ -1,0 +1,1658 @@
+{
+  "id": "alterac",
+  "name": "奥特兰克",
+  "description": "奥特兰克成就数据（来自 ifindhs wiki）",
+  "updatedAt": "2026-07-20",
+  "cardImageDir": "alterac",
+  "referenceLinks": [
+    {
+      "name": "奥特兰克 wiki",
+      "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E5%A5%A5%E7%89%B9%E5%85%B0%E5%85%8B"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "alterac-001",
+      "name": "法力大牛",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "野性之心古夫"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，拥有20个法力水晶。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "alterac-002",
+      "name": "抉择？全选！",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "开路者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用开路者触发16个不同的抉择效果。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 16
+        }
+      ]
+    },
+    {
+      "id": "alterac-003",
+      "name": "狼宝宝！！",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "恐狼指挥官",
+        "凶恶霜狼",
+        "霜狼巢屋"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤30只霜狼宝宝。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "召唤60只霜狼宝宝。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "召唤120只霜狼宝宝。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "alterac-004",
+      "name": "枭兽暴烈",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "暴烈枭兽"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用暴烈枭兽造成200点伤害或恢复200点生命值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "使用暴烈枭兽造成400点伤害或恢复400点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 400
+        }
+      ]
+    },
+    {
+      "id": "alterac-005",
+      "name": "你想不想堆个雪怪？",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "堆塑雪人"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，拥有雪人，雪怪和冰雪巨怪。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "alterac-006",
+      "name": "光荣地死吧，虫子",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用法师，用你的英雄技能一次性造成8点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "alterac-007",
+      "name": "尤格以你为傲",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "冰血哨塔"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用冰血哨塔施放法力值消耗总计100点的法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用冰血哨塔施放法力值消耗总计200点的法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "使用冰血哨塔施放法力值消耗总计300点的法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "alterac-008",
+      "name": "承蒙关照",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "监护者哈尔琳"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用监护者哈尔琳造成100点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用监护者哈尔琳造成200点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "alterac-009",
+      "name": "天降暴龙王",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "空军指挥官艾克曼"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用空军指挥官艾克曼在一回合中召唤5只野兽。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "alterac-010",
+      "name": "逐血而来",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "觅血者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用觅血者，在一次攻击中造成8点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "alterac-011",
+      "name": "这是陷阱！",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发75个猎人奥秘。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 75
+        },
+        {
+          "description": "触发150个猎人奥秘。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "触发250个猎人奥秘。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 250
+        }
+      ]
+    },
+    {
+      "id": "alterac-012",
+      "name": "全数抓住",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "宠物收集者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用宠物收集者召唤70只野兽。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 70
+        },
+        {
+          "description": "使用宠物收集者召唤151只野兽。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 151
+        }
+      ]
+    },
+    {
+      "id": "alterac-013",
+      "name": "救赎大军",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "超脱"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用超脱召唤30个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "alterac-014",
+      "name": "祝福你！",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "祝福"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用祝福使随从获得200点攻击力。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "alterac-015",
+      "name": "我会记住你",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "虔诚祭司泽瑞拉"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用虔诚祭司泽瑞拉触发50个亡语。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用虔诚祭司泽瑞拉触发100个亡语。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用虔诚祭司泽瑞拉触发200个亡语。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "alterac-016",
+      "name": "未来耀眼，戴好墨镜",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "米达",
+        "纯净圣光"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤第4代米达，纯净圣光。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 4
+        },
+        {
+          "description": "召唤第7代米达，纯净圣光。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "alterac-017",
+      "name": "奥特兰克十大叛徒",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "双面间谍"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤60个双面间谍。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "alterac-018",
+      "name": "远房表亲",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "冷齿雪人",
+        "冰风雪人"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，拥有冷齿雪人和冰风雪人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "alterac-019",
+      "name": "大闹墓地",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "雪落墓地"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "当你控制雪落墓地时使30个亡语随从死亡。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "当你控制雪落墓地时使60个亡语随从死亡。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "当你控制雪落墓地时使120个亡语随从死亡。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "alterac-020",
+      "name": "！",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "军情七处走私贩"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用军情七处走私贩召唤一个法力值消耗为（10）的随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用军情七处走私贩召唤一个法力值消耗为（10）的传说随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "alterac-021",
+      "name": "雪球效应",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "雪球大战"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使10个随从参加同一场雪球大战。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "alterac-022",
+      "name": "元素雄起",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "元素使者布鲁坎"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用布鲁坎和他的英雄技能唤起元素100次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "alterac-023",
+      "name": "放寒假",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用萨满祭司冻结150个角色。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用萨满祭司冻结300个角色。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "使用萨满祭司冻结600个角色。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 600
+        }
+      ]
+    },
+    {
+      "id": "alterac-024",
+      "name": "快跑呀，小姑娘",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "别站在火里！"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用别站在火里对单个随从造成8点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 8
+        },
+        {
+          "description": "使用别站在火里对单个随从造成10点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "alterac-025",
+      "name": "非棕非红，唯有血色",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "血色骑士赛丹"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用血色骑士赛丹，在一次攻击中造成25点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "alterac-026",
+      "name": "大胆铜行",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "亮铜之翼"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用亮铜之翼恢复150点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 150
+        }
+      ]
+    },
+    {
+      "id": "alterac-027",
+      "name": "你还不配",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "光铸凯瑞尔"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用无法撼动之物防止100点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用无法撼动之物防止200点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "使用无法撼动之物防止300点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "alterac-028",
+      "name": "至尊之戒",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "勇气之戒"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用勇气之戒使随从获得+1/+1，25次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1
+        },
+        {
+          "description": "使用勇气之戒使随从获得+1/+1，75次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "id": "alterac-029",
+      "name": "都过来！",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "可怕的憎恶"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用可怕的憎恶荣誉消灭一个传说随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "alterac-030",
+      "name": "不努力就去死",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "被亵渎的墓园"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在被亵渎的墓园中牺牲100个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "alterac-031",
+      "name": "吓不倒它的",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "毁灭之种",
+        "恐惧巫妖塔姆辛",
+        "小鬼侵染"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤50个恐惧小鬼。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "召唤100个恐惧小鬼。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤200个恐惧小鬼。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "alterac-032",
+      "name": "上痛！上诅咒！上钉刺！",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "痛苦诅咒"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用痛苦诅咒，使你的对手受到84点疲劳伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 84
+        },
+        {
+          "description": "使用痛苦诅咒，使你的对手受到180点疲劳伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 180
+        }
+      ]
+    },
+    {
+      "id": "alterac-033",
+      "name": "猛击怒火按钮",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "裂魔者库尔特鲁斯"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用裂魔者库尔特鲁斯，在一回合中使用你的英雄技能7次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "alterac-034",
+      "name": "……摔得就越狠",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "恐惧牢笼战刃"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用恐惧牢笼战刃荣誉消灭一个生命值大于或等于5点的随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "alterac-035",
+      "name": "恶魔清算",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "清算咒符"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用清算咒符召唤10个恶魔。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用清算咒符召唤20个恶魔。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用清算咒符召唤40个恶魔。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "alterac-036",
+      "name": "选对边，抽翻天",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "爪刃哨兵"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用爪刃哨兵抽50张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用爪刃哨兵抽100张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "alterac-037",
+      "name": "后果如何……？",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "勇气战将洛卡拉"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用无坚不摧之力将一个随从撞向敌方英雄，造成致命伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "alterac-038",
+      "name": "德雷克大叔需要你！",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "奔赴前线"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用奔赴前线使随从牌的法力值消耗减少100点。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "alterac-039",
+      "name": "我的要塞听我的",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "冰血要塞"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用冰血要塞造成100点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用冰血要塞造成200点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "使用冰血要塞造成400点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 400
+        }
+      ]
+    },
+    {
+      "id": "alterac-040",
+      "name": "恣意猛攻",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "猛力进攻"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "猛力进攻20个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "猛力进攻40个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "alterac-041",
+      "name": "为了雷矛！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "范达尔·雷矛"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得40点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得120点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 120
+        },
+        {
+          "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得300点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得560点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 560
+        },
+        {
+          "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得960点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 960
+        },
+        {
+          "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得1460点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1460
+        },
+        {
+          "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得2000点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 2000
+        },
+        {
+          "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得2620点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 2620
+        },
+        {
+          "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得3280点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3280
+        },
+        {
+          "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得4060点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 4060
+        },
+        {
+          "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得4900点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 4900
+        },
+        {
+          "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得5800点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5800
+        },
+        {
+          "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得7200点荣誉点数。",
+          "xpReward": 30,
+          "points": 30,
+          "quota": 7200
+        }
+      ]
+    },
+    {
+      "id": "alterac-042",
+      "name": "为了霜狼！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "德雷克塔尔"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的套牌中加入德雷克塔尔，完成对战并获得40点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "在你的套牌中加入德雷克塔尔，完成对战并获得120点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 120
+        },
+        {
+          "description": "在你的套牌中加入德雷克塔尔，完成对战并获得300点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "在你的套牌中加入德雷克塔尔，完成对战并获得560点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 560
+        },
+        {
+          "description": "在你的套牌中加入德雷克塔尔，完成对战并获得960点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 960
+        },
+        {
+          "description": "在你的套牌中加入德雷克塔尔，完成对战并获得1460点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1460
+        },
+        {
+          "description": "在你的套牌中加入德雷克塔尔，完成对战并获得2000点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 2000
+        },
+        {
+          "description": "在你的套牌中加入德雷克塔尔，完成对战并获得2620点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 2620
+        },
+        {
+          "description": "在你的套牌中加入德雷克塔尔，完成对战并获得3280点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3280
+        },
+        {
+          "description": "在你的套牌中加入德雷克塔尔，完成对战并获得4060点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 4060
+        },
+        {
+          "description": "在你的套牌中加入德雷克塔尔，完成对战并获得4900点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 4900
+        },
+        {
+          "description": "在你的套牌中加入德雷克塔尔，完成对战并获得5800点荣誉点数。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5800
+        },
+        {
+          "description": "在你的套牌中加入德雷克塔尔，完成对战并获得7200点荣誉点数。",
+          "xpReward": 30,
+          "points": 30,
+          "quota": 7200
+        }
+      ]
+    },
+    {
+      "id": "alterac-043",
+      "name": "势如破竹",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发50次荣誉消灭效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "触发100次荣誉消灭效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "触发200次荣誉消灭效果。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "alterac-044",
+      "name": "山丘之王",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用20张持续3回合的目标地点法术牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用40张持续3回合的目标地点法术牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "使用60张持续3回合的目标地点法术牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "alterac-045",
+      "name": "英雄之路",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在使用英雄牌后赢得10场对战。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "在使用英雄牌后赢得20场对战。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "在使用英雄牌后赢得40场对战。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "alterac-046",
+      "name": "团队杀戮",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "话痨奥术师"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张话痨奥术师，触发其效果5次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用一张话痨奥术师，触发其效果14次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 14
+        }
+      ]
+    },
+    {
+      "id": "alterac-047",
+      "name": "不要斯尼维尔",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "狗头人监工"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "对友方随从施放60个护甲碎片。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "alterac-048",
+      "name": "悬赏1600尘",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "恐怖图腾赏金猎人"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用恐怖图腾赏金猎人消灭10个传说随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用恐怖图腾赏金猎人消灭20个传说随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "alterac-049",
+      "name": "大鸟",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "巨型猫头鹰"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用巨型猫头鹰消灭30个敌人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "alterac-050",
+      "name": "深铁困境",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "深铁穴居人"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "同时控制7个深铁穴居人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "alterac-051",
+      "name": "永生不灭",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "血怒者科尔拉克"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤血怒者科尔拉克10次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "召唤血怒者科尔拉克25次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "召唤血怒者科尔拉克50次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "alterac-052",
+      "name": "反射失败",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "反射工程师"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张生命值为0的随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "alterac-053",
+      "name": "伏兵乐园",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "伏兵"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用伏兵攻击并消灭15个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 15
+        }
+      ]
+    },
+    {
+      "id": "alterac-054",
+      "name": "肚肚饱饱",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "憎恶军官"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用憎恶军官吞食一个8/8或更大的随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "alterac-055",
+      "name": "树木，为自己代言",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "森林之王伊弗斯"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张12/12或更大的森林之王伊弗斯。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "alterac-056",
+      "name": "雏师大捷",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "奥妮克希亚守卫",
+        "团本首领奥妮克希亚",
+        "奥妮克希亚鳞片"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用奥妮克希亚雏龙攻击100次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用奥妮克希亚雏龙攻击200次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "alterac-057",
+      "name": "暗金遗珍",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "卡扎库杉"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用8张不同的卡扎库杉的宝藏牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 8
+        },
+        {
+          "description": "使用16张不同的卡扎库杉的宝藏牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 16
+        }
+      ]
+    },
+    {
+      "id": "alterac-058",
+      "name": "战场大师",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "德雷克塔尔",
+        "范达尔·雷矛"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的套牌中加入范达尔·雷矛或德雷克塔尔，完成对战并获得7200点荣誉点数。",
+          "xpReward": 30,
+          "points": 30,
+          "quota": 7200
+        }
+      ]
+    },
+    {
+      "id": "alterac-059",
+      "name": "精华凝结",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "赢得对战时拥有15点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 15
+        }
+      ]
+    },
+    {
+      "id": "alterac-060",
+      "name": "振翅小鸟",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "狂乱角鹰兽"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用狂乱角鹰兽攻击80次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "alterac-061",
+      "name": "冰霜来啦",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "洛克霍拉的使者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用洛克霍拉的使者抽50张冰霜法术牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "alterac-062",
+      "name": "一元猛将",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "雷矛元帅"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用40张法力值消耗为（1）点的雷矛元帅。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "alterac-063",
+      "name": "雪盲战吼忙",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "雪盲鹰身人"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发雪盲鹰身人的战吼效果50次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "alterac-064",
+      "name": "节约标兵",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "霜狼将领"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使霜狼将领的法力值消耗减少150点。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 150
+        }
+      ]
+    },
+    {
+      "id": "alterac-065",
+      "name": "玛丽有只小羊羔",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "群羊指挥官"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤100只群羊指挥官的作战山羊。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "alterac-066",
+      "name": "？？？",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "解开埋藏在奥特兰克的谜题。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    }
+  ]
+}

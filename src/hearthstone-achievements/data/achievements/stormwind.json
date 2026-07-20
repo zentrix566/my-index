@@ -1,0 +1,1310 @@
+{
+  "id": "stormwind",
+  "name": "暴风城",
+  "description": "暴风城成就数据（来自 ifindhs wiki）",
+  "updatedAt": "2026-07-20",
+  "cardImageDir": "stormwind",
+  "referenceLinks": [
+    {
+      "name": "暴风城 wiki",
+      "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E6%9A%B4%E9%A3%8E%E5%9F%8E"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "stormwind-001",
+      "name": "洗刷刷",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用德鲁伊，触发75张抽到时施放的法术牌效果。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "stormwind-002",
+      "name": "润物无声",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用100个随从堆肥。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "stormwind-003",
+      "name": "亮出锐爪",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用德鲁伊，使你的英雄获得150点攻击力。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用德鲁伊，使你的英雄获得300点攻击力。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "使用德鲁伊，使你的英雄获得600点攻击力。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 600
+        }
+      ]
+    },
+    {
+      "id": "stormwind-004",
+      "name": "为什么要选？",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "拆分20张抉择法术牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "拆分40张抉择法术牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "stormwind-005",
+      "name": "烧烤热源",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张点燃造成10点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "stormwind-006",
+      "name": "不要打脸！",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在使用安东尼达斯后，三个火球术全部击中对方英雄并将其消灭。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "stormwind-007",
+      "name": "书法课程",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用星空墨水套装，使法术牌的法力值消耗减少75点。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 75
+        },
+        {
+          "description": "使用星空墨水套装，使法术牌的法力值消耗减少150点。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用星空墨水套装，使法术牌的法力值消耗减少300点。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "stormwind-008",
+      "name": "我就喜欢残渣",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用奥术溢爆召唤一个10/10或更大的奥术残渣。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用奥术溢爆召唤一个12/12或更大的奥术残渣。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "stormwind-009",
+      "name": "招募：卫生督察",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤老鼠或将其置入你的手牌，总计200只。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "stormwind-010",
+      "name": "你到底有多少箭？",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用猎人，在一回合中用你的英雄技能造成12点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "stormwind-011",
+      "name": "传承有序",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "复活鼠王10次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "复活鼠王20次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "复活鼠王40次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "stormwind-012",
+      "name": "恶灵鹦鹉",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用巨型鹦鹉获取8张不同亡语牌的复制。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 8
+        },
+        {
+          "description": "使用巨型鹦鹉获取16张不同亡语牌的复制。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 16
+        }
+      ]
+    },
+    {
+      "id": "stormwind-013",
+      "name": "瞬间实现",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在将净化的碎片洗入牌库的同一回合抽到净化的碎片。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "stormwind-014",
+      "name": "杂技表演",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使泽瑞拉的雷象骑乘雷象坐骑。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "stormwind-015",
+      "name": "追随黑暗",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用牧师，用你的英雄技能造成45点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 45
+        },
+        {
+          "description": "使用牧师，用你的英雄技能造成90点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 90
+        },
+        {
+          "description": "使用牧师，用你的英雄技能造成180点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 180
+        }
+      ]
+    },
+    {
+      "id": "stormwind-016",
+      "name": "早该料到",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用牧师，用你复制的对手的牌消灭一个敌人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 0
+        },
+        {
+          "description": "使用牧师，用你复制的对手的牌消灭对手。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "stormwind-017",
+      "name": "无面女郎",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用变装大师，在对战开始时扮演所有其他职业。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "stormwind-018",
+      "name": "王牌特工",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中使用所有种类的间谍小工具。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "stormwind-019",
+      "name": "绝不流血",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用锁喉和流血造成100点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用锁喉和流血造成200点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "使用锁喉和流血造成400点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 400
+        }
+      ]
+    },
+    {
+      "id": "stormwind-020",
+      "name": "这不是规矩，是建议",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中和你的对手海盗谈判4次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 4
+        },
+        {
+          "description": "在一局对战中和你的对手海盗谈判8次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "stormwind-021",
+      "name": "债务减免",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张强行透支解锁9个或更多的法力水晶。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 9
+        }
+      ]
+    },
+    {
+      "id": "stormwind-022",
+      "name": "小小传说",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用小巧玩具召唤25个传说随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "stormwind-023",
+      "name": "勇气伯发",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用伯尔纳触发战吼25次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "使用伯尔纳触发战吼50次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用伯尔纳触发战吼100次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "stormwind-024",
+      "name": "感谢出借，萨尔",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用吸盘钩手将你的武器变形成为史诗或传说武器。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 0
+        },
+        {
+          "description": "使用吸盘钩手将你的武器变形成为传说武器。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "stormwind-025",
+      "name": "光之暗面",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用圣骑士卡牌吸血恢复300点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "stormwind-026",
+      "name": "全员集合",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤一个拥有5点攻击力的白银之手新兵。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "stormwind-027",
+      "name": "圣盾易碎",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用圣盾防止伤害40次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "使用圣盾防止伤害80次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 80
+        },
+        {
+          "description": "使用圣盾防止伤害150次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 150
+        }
+      ]
+    },
+    {
+      "id": "stormwind-028",
+      "name": "罗宾汉",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用分赃专员交换两个攻击力相差5点的随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用分赃专员交换两个攻击力相差10点的随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "stormwind-029",
+      "name": "我的小马驹",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中使塔姆辛的恐惧战马回归战场8次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "stormwind-030",
+      "name": "简单附魔",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用符文秘银杖，使你的手牌法力值消耗减少240点。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 240
+        }
+      ]
+    },
+    {
+      "id": "stormwind-031",
+      "name": "分担痛苦",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用枯萎化身塔姆辛将150点伤害转移给对手。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用枯萎化身塔姆辛将300点伤害转移给对手。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 300
+        },
+        {
+          "description": "使用枯萎化身塔姆辛将666点伤害转移给对手。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 666
+        }
+      ]
+    },
+    {
+      "id": "stormwind-032",
+      "name": "谁订了小鬼？！",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张邪恶船运召唤5个小鬼。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用一张邪恶船运召唤7个小鬼。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "stormwind-033",
+      "name": "抽出愤怒",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用雄狮之怒，在一次攻击中造成10点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "stormwind-034",
+      "name": "屡禁不止",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤75个固执的商贩。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "stormwind-035",
+      "name": "复仇不易",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用库尔特鲁斯和他的任务线，使卡牌的法力值消耗减少250点。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 250
+        },
+        {
+          "description": "使用库尔特鲁斯和他的任务线，使卡牌的法力值消耗减少500点。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 500
+        },
+        {
+          "description": "使用库尔特鲁斯和他的任务线，使卡牌的法力值消耗减少1000点。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 1000
+        }
+      ]
+    },
+    {
+      "id": "stormwind-036",
+      "name": "公平对决",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用试炼场后两个随从均幸存，完成10次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用试炼场后两个随从均幸存，完成20次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "stormwind-037",
+      "name": "舷侧炮击！",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用毁灭战舰的炮弹消灭对手。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "stormwind-038",
+      "name": "为什么欺负我？",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用战士，从你的牌库中召唤50个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "stormwind-039",
+      "name": "我的海盗生活",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用战士，用海盗攻击125次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 125
+        },
+        {
+          "description": "使用战士，用海盗攻击250次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 250
+        },
+        {
+          "description": "使用战士，用海盗攻击500次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 500
+        }
+      ]
+    },
+    {
+      "id": "stormwind-040",
+      "name": "吃我一锤！",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "装备一把拥有5点耐久度的铁匠锤。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "装备一把拥有7点耐久度的铁匠锤。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "stormwind-041",
+      "name": "出售，要的密",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "交易40次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "交易80次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 80
+        },
+        {
+          "description": "交易160次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 160
+        }
+      ]
+    },
+    {
+      "id": "stormwind-042",
+      "name": "药水还在它背上",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发劳累的驮骡的复制效果15次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "触发劳累的驮骡的复制效果30次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "触发劳累的驮骡的复制效果75次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "stormwind-043",
+      "name": "英雄之旅",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "完成10条任务线。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "完成25条任务线。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "完成50条任务线。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "stormwind-044",
+      "name": "你的专业是？！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用30张攻击力为0的武器牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用60张攻击力为0的武器牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "stormwind-045",
+      "name": "反抗我就送你见霍格",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使闪金镇豺狼人的法力值消耗减少200点。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "stormwind-046",
+      "name": "求购，有的密",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用30张可交易卡牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        },
+        {
+          "description": "使用75张可交易卡牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "stormwind-047",
+      "name": "可爱巨龙",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张法力值消耗为（0）的传说龙牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "stormwind-048",
+      "name": "为舞者投币",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "将100个幸运币置入任意玩家的手牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "stormwind-049",
+      "name": "上坐骑！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "施放10个坐骑法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "施放20个坐骑法术。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "施放40个坐骑法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "stormwind-050",
+      "name": "公会银行",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用热情的柜员储存50张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "stormwind-051",
+      "name": "王者归来",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤具有嘲讽，突袭和圣盾的瓦里安，暴风城国王。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "stormwind-052",
+      "name": "斯人已逝",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用锯齿符文剑消灭对手。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "stormwind-053",
+      "name": "普通嫌疑犯",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用顽固的嫌疑人召唤一个传说随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "stormwind-054",
+      "name": "没带就是没有",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用熊猫人进口商发现50张你的套牌之外的法术牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "stormwind-055",
+      "name": "黄油管够",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用香料面包师恢复200点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "stormwind-056",
+      "name": "刀剑摧蛇",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用锈烂蝰蛇摧毁10把武器。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "stormwind-057",
+      "name": "内部线人",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用25张用被困的女巫发现的法术牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "stormwind-058",
+      "name": "直达不停",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在杜加尔的航线上度过50个回合。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "stormwind-059",
+      "name": "？？？",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "烧灼我的预见。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        },
+        {
+          "description": "烧灼我的预见。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "stormwind-060",
+      "name": "魔法助手",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张多系施法者抽3张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "使用一张多系施法者抽5张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "stormwind-061",
+      "name": "斯尼德的新玩意",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用哥利亚的火箭消灭50个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用哥利亚的火箭消灭100个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    }
+  ]
+}

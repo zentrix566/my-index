@@ -1,0 +1,1288 @@
+{
+  "id": "lich-king",
+  "name": "巫妖王",
+  "description": "巫妖王成就数据（来自 ifindhs wiki）",
+  "updatedAt": "2026-07-20",
+  "cardImageDir": "lich-king",
+  "referenceLinks": [
+    {
+      "name": "巫妖王 wiki",
+      "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E5%B7%AB%E5%A6%96%E7%8E%8B"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "lich-king-001",
+      "name": "他真的，我枯死",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用枯萎消灭25个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "lich-king-002",
+      "name": "护甲被坎",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用阿努布雷坎的效果，消耗50点护甲值用于随从牌上。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        },
+        {
+          "description": "用阿努布雷坎的效果，消耗100点护甲值用于随从牌上。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "用阿努布雷坎的效果，消耗200点护甲值用于随从牌上。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "lich-king-003",
+      "name": "天灾第一步",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张无尽虫群复活7个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "lich-king-004",
+      "name": "死亡虫击",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用死亡甲虫消灭敌方英雄。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        },
+        {
+          "description": "用死亡甲虫消灭敌方英雄，完成4次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 4
+        }
+      ]
+    },
+    {
+      "id": "lich-king-005",
+      "name": "费用互助",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用法师，施放200个法力值消耗低于其原始法力值消耗的法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "lich-king-006",
+      "name": "风流罗曼斯",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张大法师罗曼斯重复施放15个法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 15
+        }
+      ]
+    },
+    {
+      "id": "lich-king-007",
+      "name": "奥术箭！奥术箭！",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用奥术箭造成100点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用奥术箭造成200点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "使用奥术箭造成300点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "lich-king-008",
+      "name": "现实由我掌控",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用撕裂现实将8个不同扩展包的法术牌置入你的手牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 8
+        },
+        {
+          "description": "用撕裂现实将16个不同扩展包的法术牌置入你的手牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 16
+        }
+      ]
+    },
+    {
+      "id": "lich-king-009",
+      "name": "正中靶心！",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张咒术之箭抽6张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "lich-king-010",
+      "name": "标记，带走",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在锐眼侦察兵的帮助下，用你的英雄消灭20个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "lich-king-011",
+      "name": "箭芒御宇",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用猎人，用奥术法术造成100点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用猎人，用奥术法术造成200点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "使用猎人，用奥术法术造成300点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "lich-king-012",
+      "name": "群兽巡游",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用可靠伙伴召唤价值50点法力值的野兽。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        },
+        {
+          "description": "用可靠伙伴召唤价值100点法力值的野兽。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "lich-king-013",
+      "name": "墓地重击",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用牧师，在一局对战中召唤25个亡灵。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "lich-king-014",
+      "name": "视力满分",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "从黑暗幻象中发现10张不同的暗影法术牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "lich-king-015",
+      "name": "恐吓战术",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用30张被纠缠梦魇纠缠的牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用60张被纠缠梦魇纠缠的牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "使用120张被纠缠梦魇纠缠的牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "lich-king-016",
+      "name": "大脑营养",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用野蛮残食恢复50点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        },
+        {
+          "description": "用野蛮残食恢复100点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "lich-king-017",
+      "name": "殒命在即",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用变形后的殒命暗影消灭敌方英雄，完成10次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "lich-king-018",
+      "name": "摇，不要搅",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用15张不同的调好的药剂。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 15
+        }
+      ]
+    },
+    {
+      "id": "lich-king-019",
+      "name": "最毒的淬毒",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用淬毒渗透者消灭10个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "用淬毒渗透者消灭25个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "用淬毒渗透者消灭50个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "lich-king-020",
+      "name": "它活了！！",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用完美的缝合造物，完成10次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        },
+        {
+          "description": "使用完美的缝合造物，完成20次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "lich-king-021",
+      "name": "灭世鱼人",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张腐鳃使6个随从获得亡语。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "lich-king-022",
+      "name": "亡语随心配",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "天灾巨魔死亡时具有亡语，完成25次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "lich-king-023",
+      "name": "彼界好友",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用彼界来客召唤25个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "使用彼界来客召唤50个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用彼界来客召唤100个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "lich-king-024",
+      "name": "荣耀之火",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用炽焰变幻将一个随从变形成为传说随从，完成3次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 3
+        },
+        {
+          "description": "用炽焰变幻将一个随从变形成为传说随从，完成5次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "lich-king-025",
+      "name": "你的血，行！",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用鲜血远征军的效果使用15张法力值消耗大于或等于（8）点的随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 15
+        }
+      ]
+    },
+    {
+      "id": "lich-king-026",
+      "name": "时空迷乱",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在使用阿纳克洛斯后，赶在随从归来之前消灭敌方英雄。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "lich-king-027",
+      "name": "血库",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用圣骑士，受到来自你自己的卡牌的100点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用圣骑士，受到来自你自己的卡牌的200点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "使用圣骑士，受到来自你自己的卡牌的300点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "lich-king-028",
+      "name": "展馆之威",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用纯净馆长一次抽3张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 3
+        },
+        {
+          "description": "用纯净馆长一次抽6张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "lich-king-029",
+      "name": "食腐魔块",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用流形泥浆怪召唤16个不同的亡灵。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 16
+        }
+      ]
+    },
+    {
+      "id": "lich-king-030",
+      "name": "自我放纵",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发同一个噬魂者的效果6次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "lich-king-031",
+      "name": "死亡伤痛",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在不使用灵魂弹幕的情况下用它造成25点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "在不使用灵魂弹幕的情况下用它造成50点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "在不使用灵魂弹幕的情况下用它造成100点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "lich-king-032",
+      "name": "鳍鬼莫测",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "一次使2个小鬼鱼人获得鳍形鬼状的亡语。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 2
+        },
+        {
+          "description": "一次使4个小鬼鱼人获得鳍形鬼状的亡语。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 4
+        }
+      ]
+    },
+    {
+      "id": "lich-king-033",
+      "name": "不存在极限",
+      "heroClass": "死亡骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用吸血鬼之血获得80点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "lich-king-034",
+      "name": "离别礼物",
+      "heroClass": "死亡骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中用死亡侍僧抽10张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "lich-king-035",
+      "name": "凋零孀蛛",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用凋零毒牙召唤20个僵尸。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "用凋零毒牙召唤40个僵尸。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "用凋零毒牙召唤80个僵尸。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "lich-king-036",
+      "name": "冰龙降临",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用冰霜女王辛达苟萨的效果消灭15个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 15
+        },
+        {
+          "description": "用冰霜女王辛达苟萨的效果消灭30个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "lich-king-037",
+      "name": "灵魂幸存者",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用食魂者之镰的受缚之魂发现50个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "lich-king-038",
+      "name": "真·重击",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中使用2张法力值消耗为（0）点的复仇重击者。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 2
+        }
+      ]
+    },
+    {
+      "id": "lich-king-039",
+      "name": "信了它的邪",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用魔鬼交易召唤30个邪犬。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "用魔鬼交易召唤60个邪犬。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "用魔鬼交易召唤90个邪犬。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 90
+        }
+      ]
+    },
+    {
+      "id": "lich-king-040",
+      "name": "激情唤醒",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用邪鳞唤醒师召唤15个恶魔。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 15
+        },
+        {
+          "description": "用邪鳞唤醒师召唤30个恶魔。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "lich-king-041",
+      "name": "你火了！",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张炫目之力使一个随从获得+8/+8。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "lich-king-042",
+      "name": "破法之道",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用搅局破法者使你的对手弃掉50张法术牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "lich-king-043",
+      "name": "死灰复燃",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "复活索利贝洛尔20次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "复活索利贝洛尔40次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "复活索利贝洛尔80次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "lich-king-044",
+      "name": "练无止境",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一次训练课程中使用三张随从牌，完成15次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 15
+        },
+        {
+          "description": "在一次训练课程中使用三张随从牌，完成30次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "lich-king-045",
+      "name": "太阳升起",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用太阳之井将50张法术牌置入你的手牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "用太阳之井将100张法术牌置入你的手牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "用太阳之井将200张法术牌置入你的手牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "lich-king-046",
+      "name": "水晶泉涌",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用100张激活了法力渴求效果的牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用200张激活了法力渴求效果的牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "使用300张激活了法力渴求效果的牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "lich-king-047",
+      "name": "附魔取胜",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用附魔师的效果造成40点额外伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "用附魔师的效果造成80点额外伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 80
+        },
+        {
+          "description": "用附魔师的效果造成150点额外伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 150
+        }
+      ]
+    },
+    {
+      "id": "lich-king-048",
+      "name": "不许换回",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用传送导师将随从与法力值消耗更低的随从交换，完成15次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "用传送导师将随从与法力值消耗更低的随从交换，完成30次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "lich-king-049",
+      "name": "军尸如山",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用虚魂下士消灭30个敌人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "lich-king-050",
+      "name": "看！是小鸡！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "从骨鸡蛋中孵化出30只亡灵小鸡。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        },
+        {
+          "description": "从骨鸡蛋中孵化出60只亡灵小鸡。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "lich-king-051",
+      "name": "远大前程",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用40张属性值被洛瑟玛·塞隆翻倍的随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "lich-king-052",
+      "name": "日常护肤",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用裂肤石像鬼造成100点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "lich-king-053",
+      "name": "天灾凋零",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤200个亡灵。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "召唤400个亡灵。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 400
+        },
+        {
+          "description": "召唤600个亡灵。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 600
+        }
+      ]
+    },
+    {
+      "id": "lich-king-054",
+      "name": "摸谁谁脏",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用魔药播撒者将一个传说随从变形成为魔药播撒者。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "lich-king-055",
+      "name": "危险打手",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中用肢体商贩使随从获得+9攻击力。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 9
+        }
+      ]
+    },
+    {
+      "id": "lich-king-056",
+      "name": "必死印记",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "被白骨领主霜语强化时消灭敌方英雄。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "lich-king-057",
+      "name": "暴怒过猛",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "天灾暴怒者死亡，完成75次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "lich-king-058",
+      "name": "青马死神",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用战争之骑士瑞文戴尔的骑士消灭敌方英雄。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        },
+        {
+          "description": "用战争之骑士瑞文戴尔的骑士消灭敌方英雄，完成4次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 4
+        }
+      ]
+    },
+    {
+      "id": "lich-king-059",
+      "name": "法尽其用",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用沉沦的大主教召唤40个僵尸。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        },
+        {
+          "description": "用沉沦的大主教召唤80个僵尸。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    }
+  ]
+}

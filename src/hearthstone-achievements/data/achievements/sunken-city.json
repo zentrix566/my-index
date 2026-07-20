@@ -1,0 +1,1392 @@
+{
+  "id": "sunken-city",
+  "name": "沉没之城",
+  "description": "沉没之城成就数据（来自 ifindhs wiki）",
+  "updatedAt": "2026-07-20",
+  "cardImageDir": "sunken-city",
+  "referenceLinks": [
+    {
+      "name": "沉没之城 wiki",
+      "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E6%B2%89%E6%B2%A1%E4%B9%8B%E5%9F%8E"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "sunken-city-001",
+      "name": "个人迷信",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "异端纳迦海德拉"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用异端纳迦海德拉召唤75个法力值消耗大于或等于（5）点的随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-002",
+      "name": "妙手若拙",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "妙手园丁"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用妙手园丁复原100个法力水晶。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用妙手园丁复原200个法力水晶。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "使用妙手园丁复原300个法力水晶。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-003",
+      "name": "从底层出发",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "底层掠食鱼"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张具有10点攻击力的底层掠食鱼。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-004",
+      "name": "星月奇迹",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "月光射线"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用月光射线造成30点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用月光射线造成60点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-005",
+      "name": "鲨鱼饵，吼哈",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "机械鲨鱼"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中使用机械鲨鱼造成20点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-006",
+      "name": "伊妮机，出动！",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "海床传送口"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用海床传送口，减少75张机械牌的法力值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-007",
+      "name": "法术听我指挥",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "指挥官西瓦拉"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用指挥官西瓦拉将10张法术牌置入你的手牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "使用指挥官西瓦拉将30张法术牌置入你的手牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用指挥官西瓦拉将60张法术牌置入你的手牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-008",
+      "name": "纳兹夏尔还在异变！",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "纳兹夏尔女士"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用2种不同形态的纳兹夏尔女士。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 2
+        },
+        {
+          "description": "使用火焰，冰霜和奥术形态的纳兹夏尔女士。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-009",
+      "name": "上下开弓",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "双弓积骇纳迦"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用双弓积骇纳迦的效果，额外施放法术25次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-010",
+      "name": "本该砍头",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "海卓拉顿"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中召唤12个海卓拉顿之头。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-011",
+      "name": "逐渐成瘾",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "海胆尖刺"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用剧毒法术消灭15个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用剧毒法术消灭30个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用剧毒法术消灭60个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-012",
+      "name": "亲昵爱抚",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "K9-0型机械狗"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用K9-0型机械狗召唤25个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 9
+        },
+        {
+          "description": "使用K9-0型机械狗召唤50个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 9
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-013",
+      "name": "山不转水转",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "湍流旋涡"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一个湍流旋涡消灭12个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-014",
+      "name": "嘘……侍奉恩佐斯",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "深海低语"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用深海低语造成100点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-015",
+      "name": "黏黏有鱼",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "黑水巨鳗"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用黑水巨鳗恢复50点生命值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用黑水巨鳗恢复100点生命值。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用黑水巨鳗恢复200点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-016",
+      "name": "起泡，冲洗，再一遍",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "缴械元素"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用缴械元素使敌人的卡牌法力值消耗增加20点。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用缴械元素使敌人的卡牌法力值消耗增加40点。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-017",
+      "name": "食食物者",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "鱼排斗士"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用鱼排斗士消灭敌方英雄。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-018",
+      "name": "把钱交出来！",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "海盗将领钩牙"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用海盗将领钩牙劫掠对手的物资25次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-019",
+      "name": "钓鱼小游戏",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "垂钓时光"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用垂钓时光抽20张你的套牌之外的牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用垂钓时光抽40张你的套牌之外的牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "使用垂钓时光抽60张你的套牌之外的牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-020",
+      "name": "好牌两对",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "头等大奖"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用头等大奖，将2张法力值消耗相同的卡牌置入你的手牌，完成1次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 2
+        },
+        {
+          "description": "使用头等大奖，将2张法力值消耗相同的卡牌置入你的手牌，完成3次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 2
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-021",
+      "name": "月色之舞",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "生物荧光"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使100个随从获得生物荧光。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-022",
+      "name": "冰冷热水",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "艾萨拉之辉"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "拥有艾萨拉之辉时，在一个回合中施放火焰，冰霜和自然法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-023",
+      "name": "吞食狂热",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "食人鱼集群",
+        "鱼群聚集",
+        "食人鱼偷猎者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用食人鱼集群造成75点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 75
+        },
+        {
+          "description": "使用食人鱼集群造成150点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用食人鱼集群造成300点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-024",
+      "name": "赶海收获",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "迷潮挖掘者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用迷潮挖掘者召唤鱼人的20个2/2的复制。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用迷潮挖掘者召唤鱼人的40个2/2的复制。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-025",
+      "name": "就酱吧",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "神圣寿司卷"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一回合中使用神圣寿司卷恢复20点生命值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-026",
+      "name": "雷达扫描",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "雷达探测"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张雷达探测抽5张机械牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-027",
+      "name": "光刃映辉",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "克托里·光刃"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在25个随从身上触发克托里·光刃的效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "在50个随从身上触发克托里·光刃的效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "在75个随从身上触发克托里·光刃的效果。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-028",
+      "name": "驻军上限：14",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "战争前线"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用战争前线召唤50个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用战争前线召唤100个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-029",
+      "name": "一顿75道菜",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "老巨鳍"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "永久消灭老巨鳍体内的75个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-030",
+      "name": "锋利鳞片",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "鱼饵桶"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用术士，使用一张具有10点攻击力的鱼人牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-031",
+      "name": "#@*&%!",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "希拉柯丝教徒",
+        "拖入深渊",
+        "扎库尔",
+        "深渊波流"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用深渊诅咒造成50点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用深渊诅咒造成150点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 150
+        },
+        {
+          "description": "使用深渊诅咒造成450点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 450
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-032",
+      "name": "就是我们点的火",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "献祭"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用献祭烧掉30张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        },
+        {
+          "description": "使用献祭烧掉15张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-033",
+      "name": "躲不过赛思诺",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "赛丝诺女士"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中使用赛思诺女士攻击8次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-034",
+      "name": "左右开攻",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "多重打击"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用恶魔猎手，在一个回合中用你的英雄消灭2个随从，完成30次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 2
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-035",
+      "name": "代价……全无",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "捕掠"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用恶魔猎手，使用30张法力值消耗降为0的法术牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用恶魔猎手，使用60张法力值消耗降为0的法术牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "使用恶魔猎手，使用100张法力值消耗降为0的法术牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-036",
+      "name": "艾萨拉的神像",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "损毁神像"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张损毁神像造成50点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用一张损毁神像造成70点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 70
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-037",
+      "name": "盗贼之海",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "奈利",
+        "超巨蛇颈龙"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "为奈利，超巨蛇颈龙组建一支法力值消耗大于或等于（14）点的船员团队。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 14
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-038",
+      "name": "熔火之城",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "火焰熔铸"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张火焰熔铸抽7张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-039",
+      "name": "热水澡",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "辛艾萨莉之火"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用50张辛艾萨莉之火创建的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用100张辛艾萨莉之火创建的随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "使用200张辛艾萨莉之火创建的随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-040",
+      "name": "放出海怪！",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "巨型剧斗"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用战士，使用5张其他职业的巨型随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "使用战士，使用10张其他职业的巨型随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-041",
+      "name": "艾萨拉大军",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤100个纳迦。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "召唤200个纳迦。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 200
+        },
+        {
+          "description": "召唤300个纳迦。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 300
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-042",
+      "name": "无视",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "掩息海星"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用掩息海星沉默30个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用掩息海星沉默60个随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "使用掩息海星沉默120个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-043",
+      "name": "海底拾贝",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "探底50次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "探底100次。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "探底200次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-044",
+      "name": "大海深处",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用25张沉没的牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "使用50张沉没的牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-045",
+      "name": "魔武双修",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "野蛮的女巫"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用野蛮的女巫，使手牌中的一张法术牌法力值消耗降低7点。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-046",
+      "name": "颠倒旋转",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "海中向导芬利爵士"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用海中向导芬利爵士，将3张手牌和你的套牌之外的牌交换。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "使用海中向导芬利爵士，将7张手牌和你的套牌之外的牌交换。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-047",
+      "name": "屏住呼吸",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "潜水俯冲鹈鹕",
+        "潜水泥鳞鱼人",
+        "堡礁行者",
+        "潜水跳板船员"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用潜水随从攻击60次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-048",
+      "name": "剑刀，石头，布！",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "剑圣奥卡尼"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用剑圣奥卡尼反制法力值消耗大于或等于（5）点的随从牌和法术牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-049",
+      "name": "深海水怪",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用你的巨型随从或其附属物消灭40个敌人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "使用你的巨型随从或其附属物消灭75个敌人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 75
+        },
+        {
+          "description": "使用你的巨型随从或其附属物消灭150个敌人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 150
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-050",
+      "name": "海洋大学",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "学校教师"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "教会纳迦小学生16种不同的法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 16
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-051",
+      "name": "扫雷专家",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "海军水雷"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用海军水雷造成120点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-052",
+      "name": "怪怪水族馆",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "深海融合怪"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用深海融合怪发现10个不同随从类型的随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-053",
+      "name": "失落的圣物",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "艾萨拉女王"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用全部4种艾萨拉女王的远古圣物。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 4
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-054",
+      "name": "海底反派",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "厄祖玛特"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用厄祖玛特的亡语一次消灭3个敌人。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "使用厄祖玛特的亡语一次消灭6个敌人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-055",
+      "name": "使徒是谁？",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "自然使徒",
+        "圣光使徒",
+        "混乱使徒",
+        "暗影使徒"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发25种纳迦使徒的战吼效果。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "触发50种纳迦使徒的战吼效果。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-056",
+      "name": "追猎宝藏",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "宝藏守卫"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用宝藏守卫抽30张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-057",
+      "name": "鱼昧童话",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "巫婆纳迦"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用巫婆纳迦造成90点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 90
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-058",
+      "name": "七相拳",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "凶恶的滑矛纳迦"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，拥有一个攻击力大于或等于7点的凶恶的滑矛纳迦。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-059",
+      "name": "机械都是我们的",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "积雷母舰"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用积雷母舰召唤75个机械。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    }
+  ]
+}

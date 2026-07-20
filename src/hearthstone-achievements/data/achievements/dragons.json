@@ -1,0 +1,185 @@
+{
+  "id": "dragons",
+  "name": "巨龙降临",
+  "description": "巨龙降临成就数据（来自 ifindhs wiki）",
+  "updatedAt": "2026-07-20",
+  "cardImageDir": "dragons",
+  "referenceLinks": [
+    {
+      "name": "巨龙降临 wiki",
+      "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E5%B7%A8%E9%BE%99%E9%99%8D%E4%B8%B4"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "dragons-001",
+      "name": "真·梦境成真",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在手牌中没有龙牌时用梦境吐息抽到龙牌，在一局对战中完成2次。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 2
+        }
+      ]
+    },
+    {
+      "id": "dragons-002",
+      "name": "美好路径，再次扫清",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用扫清道路召唤出的4/4的狮鹫完成扫清道路。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 4
+        }
+      ]
+    },
+    {
+      "id": "dragons-003",
+      "name": "5尺5寸雪",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，场上有6个齐恩瓦拉的冰雪元素。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "dragons-004",
+      "name": "感谢庇护",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使庇护召唤的随从在一回合中不受伤害。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "dragons-005",
+      "name": "专业预测",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中用拉祖尔的信使猜中3次。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 3
+        }
+      ]
+    },
+    {
+      "id": "dragons-006",
+      "name": "魔术蜡烛",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中召唤12条蜡烛巨龙。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "dragons-007",
+      "name": "尼玩蛋了",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用尼索格的风暴龙卵消灭敌方英雄。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "dragons-008",
+      "name": "手牌极限！",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用术士，在连续4个回合结束时拥有10张以上的手牌。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 4
+        }
+      ]
+    },
+    {
+      "id": "dragons-009",
+      "name": "近乎死亡之意",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使疯狂巨龙死亡之翼在其战吼中存活下来，且仅剩刚好1点生命值。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 1
+        }
+      ]
+    },
+    {
+      "id": "dragons-010",
+      "name": "真的好多鸦",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在召唤8只或以上的恐惧渡鸦后赢得对战。",
+          "xpReward": 100,
+          "points": 100,
+          "quota": 8
+        }
+      ]
+    }
+  ]
+}

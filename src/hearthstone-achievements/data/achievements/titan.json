@@ -1,0 +1,1408 @@
+{
+  "id": "titan",
+  "name": "泰坦诸神",
+  "description": "泰坦诸神版本成就数据（来自 ifindhs wiki）",
+  "updatedAt": "2026-07-20",
+  "cardImageDir": "titan",
+  "referenceLinks": [
+    {
+      "name": "泰坦诸神 wiki",
+      "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E6%B3%B0%E5%9D%A6%E8%AF%B8%E7%A5%9E"
+    }
+  ],
+  "achievements": [
+    {
+      "id": "titan-001",
+      "name": "完全生长",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "生长古树"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张生长古树将6个树人变形成为古树。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "titan-002",
+      "name": "园林生机",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "雪莲幼苗",
+        "林木幼苗"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用25张由幼苗长成的成株法术牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "使用50张由幼苗长成的成株法术牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "使用100张由幼苗长成的成株法术牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "titan-003",
+      "name": "顶级致敬",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "自然守护者弗蕾亚"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用弗蕾亚复制40张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "titan-004",
+      "name": "美味诱惑",
+      "heroClass": "德鲁伊",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "禁忌之果"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用禁忌之果获得70点攻击力或护甲值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 70
+        },
+        {
+          "description": "用禁忌之果获得140点攻击力或护甲值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 140
+        }
+      ]
+    },
+    {
+      "id": "titan-005",
+      "name": "生无可链",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "破链角斗士"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用破链角斗士抽50张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "titan-006",
+      "name": "品味彩虹",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "元素激励"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张元素激励召唤7个始生涡流。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "titan-007",
+      "name": "我的终极形态",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "诺甘农"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用1个完全强化的诺甘农的技能。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 1
+        },
+        {
+          "description": "使用2个完全强化的诺甘农的技能。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 2
+        },
+        {
+          "description": "使用3个完全强化的诺甘农的技能。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 3
+        }
+      ]
+    },
+    {
+      "id": "titan-008",
+      "name": "黏液时间",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "腐化残渣"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用腐化残渣造成100点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        },
+        {
+          "description": "用腐化残渣造成200点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "titan-009",
+      "name": "嚯，霍迪尔",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "巨人之父霍迪尔"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用50张被巨人之父霍迪尔祝福过的消耗（2）点或以下法力值的随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "titan-010",
+      "name": "神化神话",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "神话观测者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发同一个神话观测者的效果5次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "titan-011",
+      "name": "巨虫在后",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "虫外有虫"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用虫外有虫对敌方英雄造成40点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "用虫外有虫对敌方英雄造成80点伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 80
+        },
+        {
+          "description": "用虫外有虫对敌方英雄造成120点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "titan-012",
+      "name": "奇美拉时代",
+      "heroClass": "猎人",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "扭曲的霜翼龙"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用扭曲的霜翼龙召唤一只攻击力为8的奇美拉。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 8
+        },
+        {
+          "description": "用扭曲的霜翼龙召唤一只攻击力为12的奇美拉。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "titan-013",
+      "name": "水星逆行",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "星界自动机"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张具有7点攻击力的星界自动机。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        }
+      ]
+    },
+    {
+      "id": "titan-014",
+      "name": "百变星君",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "星辰排列"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用星辰排列使50张你手牌中的随从牌变形。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "titan-015",
+      "name": "众神之父的烦恼",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "阿曼苏尔"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用15张阿曼苏尔创建的传说随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "使用30张阿曼苏尔创建的传说随从牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "使用60张阿曼苏尔创建的传说随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "titan-016",
+      "name": "暗中治疗",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "影触克瓦迪尔"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用影触克瓦迪尔的效果造成100点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        },
+        {
+          "description": "用影触克瓦迪尔的效果造成200点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "titan-017",
+      "name": "油门踩死",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "换挡漂移"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你没有其他手牌时使用换挡漂移。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "titan-018",
+      "name": "工具齐备",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "天才米米尔隆"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用全部6种米米尔隆的小工具。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "titan-019",
+      "name": "泄漏油污",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "焦油飞溅"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用焦油飞溅的效果对随从造成50点额外伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "用焦油飞溅的效果对随从造成100点额外伤害。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "用焦油飞溅的效果对随从造成200点额外伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "titan-020",
+      "name": "他还是个孩子",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "迷你灭世者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用迷你灭世者消灭25个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        },
+        {
+          "description": "用迷你灭世者消灭50个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "titan-021",
+      "name": "你已经是个……",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "雷电崩鸣"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张法力值消耗为（0）的雷电崩鸣。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "titan-022",
+      "name": "失格者死",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "雷霆之锤"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用雷霆之锤消灭敌方英雄。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "titan-023",
+      "name": "艾泽拉斯最强英雄",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "风暴之王托里姆"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用风暴之王托里姆抽25张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "用风暴之王托里姆抽50张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "用风暴之王托里姆抽100张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "titan-024",
+      "name": "雷人事实",
+      "heroClass": "萨满祭司",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "电流导联"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用电流导联的效果消灭25个敌方随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        },
+        {
+          "description": "用电流导联的效果消灭50个敌方随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "titan-025",
+      "name": "非凡石像",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "石心之王",
+        "阿米图斯的信徒"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤一个具有14点攻击力的土灵魔像。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 14
+        }
+      ]
+    },
+    {
+      "id": "titan-026",
+      "name": "传说不朽",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "提尔"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一次提尔的战吼复活3个传说随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 3
+        }
+      ]
+    },
+    {
+      "id": "titan-027",
+      "name": "为什么不是22？",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "修理机器人X-21"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用修理机器人X-21将20个机械移回你的手牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 21
+        },
+        {
+          "description": "用修理机器人X-21将40个机械移回你的手牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 21
+        },
+        {
+          "description": "用修理机器人X-21将60个机械移回你的手牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 21
+        }
+      ]
+    },
+    {
+      "id": "titan-028",
+      "name": "力量试炼",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "守护者的力量"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张守护者的力量消灭5个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        },
+        {
+          "description": "用一张守护者的力量消灭10个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "titan-029",
+      "name": "巨人呢喃",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "意志熔炉"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "从意志熔炉中召唤一个攻击力大于或等于12的巨人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 12
+        }
+      ]
+    },
+    {
+      "id": "titan-030",
+      "name": "打包团灭",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "致死灭杀"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张致命诛灭消灭5个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "titan-031",
+      "name": "虚空不言，弃",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "灭世泰坦萨格拉斯"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤30个用萨格拉斯开向扭曲虚空的传送门创建的随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "召唤60个用萨格拉斯开向扭曲虚空的传送门创建的随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 60
+        },
+        {
+          "description": "召唤120个用萨格拉斯开向扭曲虚空的传送门创建的随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "titan-032",
+      "name": "封膜疯魔",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "狂乱侵蚀"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用狂乱侵蚀造成75点疲劳伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        },
+        {
+          "description": "用狂乱侵蚀造成150点疲劳伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 150
+        }
+      ]
+    },
+    {
+      "id": "titan-033",
+      "name": "我真的符了",
+      "heroClass": "死亡骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "兵主"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用25张兵主创建的卡牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "titan-034",
+      "name": "冰冷难持",
+      "heroClass": "死亡骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "严寒冰封"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用严寒冰封使你的对手过量抽取10张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "titan-035",
+      "name": "超级传播者",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "困苦的克瓦迪尔",
+        "殉船",
+        "兵主之杖",
+        "海拉"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "将50张疫病牌洗入你对手的牌库。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "将100张疫病牌洗入你对手的牌库。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "将200张疫病牌洗入你对手的牌库。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "titan-036",
+      "name": "社交灵距离",
+      "heroClass": "死亡骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "秽病行尸"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用剧毒亡灵消灭25个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        },
+        {
+          "description": "用剧毒亡灵消灭50个随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "titan-037",
+      "name": "温室一夜",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "晶石雕像"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在同一个回合召唤并唤醒晶石雕像。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "titan-038",
+      "name": "邪月狼嚎",
+      "heroClass": "恶魔猎手",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "神秘恐魔"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "迫使40个敌方随从攻击神秘恐魔。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "titan-039",
+      "name": "阿古尼特快递",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "符文装饰"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用恶魔猎手抽40张具有抽到时施放的法术牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "使用恶魔猎手抽80张具有抽到时施放的法术牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 80
+        },
+        {
+          "description": "使用恶魔猎手抽120张具有抽到时施放的法术牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "titan-040",
+      "name": "心灵体操",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "摧心魔"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用摧心魔的一次战吼造成7点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 7
+        },
+        {
+          "description": "用摧心魔的一次战吼造成10点伤害。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "titan-041",
+      "name": "老哞深锻",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "米诺陶牛头人"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张米诺陶牛头人获得20点护甲值。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "titan-042",
+      "name": "信任崩塌",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "火焰试炼"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用火焰试炼使瓦格里获得+200/+200。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "titan-043",
+      "name": "神圣干涉",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "卡兹格罗斯"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用卡兹格罗斯攻击并消灭25个敌方随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "用卡兹格罗斯攻击并消灭50个敌方随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "用卡兹格罗斯攻击并消灭100个敌方随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "titan-044",
+      "name": "无限鬼故事",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "维扎克斯将军"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤维扎克斯将军40次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 40
+        },
+        {
+          "description": "召唤维扎克斯将军80次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "titan-045",
+      "name": "它怎么在那儿？",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "锐目搜寻者"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用锐目搜寻者抽25张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "用锐目搜寻者抽50张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "用锐目搜寻者抽75张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 75
+        }
+      ]
+    },
+    {
+      "id": "titan-046",
+      "name": "抡锤时间！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "锻造50张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "锻造100张牌。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 100
+        },
+        {
+          "description": "锻造200张牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "titan-047",
+      "name": "早登神界",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用40个泰坦技能。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 40
+        },
+        {
+          "description": "使用80个泰坦技能。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 80
+        },
+        {
+          "description": "使用160个泰坦技能。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 160
+        }
+      ]
+    },
+    {
+      "id": "titan-048",
+      "name": "奥杜尔假日灯光秀",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "无人机拆解器",
+        "废料回收"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用4种不同的火花机器人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 4
+        },
+        {
+          "description": "使用全部8种不同的火花机器人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 8
+        }
+      ]
+    },
+    {
+      "id": "titan-049",
+      "name": "……巨人自有答案",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "霍迪尔之子"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤60个霍迪尔之子创建的冰霜霸主。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "titan-050",
+      "name": "杖剑弓全都有！",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "符文供能魔像"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用符文供能魔像发现5个不同职业的武器。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        },
+        {
+          "description": "用符文供能魔像发现11个不同职业的武器。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 11
+        }
+      ]
+    },
+    {
+      "id": "titan-051",
+      "name": "通讯不稳",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "星空投影师"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用30张星空投影师创建的临时版随从牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "titan-052",
+      "name": "蛙跳与信号",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "机甲跳蛙"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中触发机甲跳蛙的亡语10次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "titan-053",
+      "name": "审判之日",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "尤格-萨隆的监狱"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用尤格-萨隆的监狱消灭15个被选中的随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "用尤格-萨隆的监狱消灭30个被选中的随从。",
+          "xpReward": 10,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "用尤格-萨隆的监狱消灭60个被选中的随从。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "titan-054",
+      "name": "时光迷航",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "迷时始祖幼龙"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用30张迷时始祖幼龙创建的龙牌。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "titan-055",
+      "name": "最初的图腾",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "远古图腾"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用远古图腾攻击25次。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        }
+      ]
+    },
+    {
+      "id": "titan-056",
+      "name": "和谐共熔",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "风暴巨人"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中使用5张法力值消耗为（0）的风暴巨人。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 5
+        }
+      ]
+    },
+    {
+      "id": "titan-057",
+      "name": "专属武器",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "永恒之火伊格尼斯"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用永恒之火伊格尼斯制造的自定义武器消灭敌方英雄。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "titan-058",
+      "name": "缠乱触须",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "混乱触须"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "通过混乱触须施放一个法力值消耗为（8）的法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 8
+        },
+        {
+          "description": "通过混乱触须施放一个法力值消耗为（10）的法术。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "titan-059",
+      "name": "古神在肩",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "暮光头领古加尔"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的起始套牌中加入暮光头领古加尔，赢得25场对战。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 25
+        },
+        {
+          "description": "在你的起始套牌中加入暮光头领古加尔，赢得50场对战。",
+          "xpReward": 20,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    }
+  ]
+}

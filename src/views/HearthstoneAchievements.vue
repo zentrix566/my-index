@@ -1,5 +1,5 @@
 <template>
-  <section class="section page-section hs-page">
+  <section class="section page-section hs-page" :data-hs-theme="hsTheme">
     <div class="container">
       <section class="hs-hero" aria-labelledby="hs-page-title">
         <div class="section-heading">
@@ -28,6 +28,70 @@
               </button>
             </template>
             <button type="button" class="hs-btn hs-btn-ghost" @click="goChangelog">查看更新</button>
+            <button
+              type="button"
+              class="hs-btn hs-btn-ghost hs-theme-toggle"
+              @click="toggleTheme"
+              :aria-label="hsTheme === 'dark' ? '切换到明亮主题' : '切换到暗色主题'"
+              :title="hsTheme === 'dark' ? '切换到明亮主题' : '切换到暗色主题'"
+            >
+              <svg v-if="hsTheme === 'dark'" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+              </svg>
+              <svg v-else width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+              </svg>
+              {{ hsTheme === 'dark' ? '明亮' : '暗色' }}
+            </button>
+            <button
+              type="button"
+              class="hs-btn hs-btn-ghost hs-contact-btn"
+              @click="contactAuthor"
+              title="发送邮件给作者"
+            >
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+              </svg>
+              联系作者
+            </button>
+            <div class="hs-wiki-menu" v-click-outside="closeWikiMenu">
+              <button
+                type="button"
+                class="hs-btn hs-btn-ghost hs-wiki-toggle"
+                :class="{ active: wikiMenuOpen }"
+                @click="toggleWikiMenu"
+                :aria-expanded="wikiMenuOpen"
+                title="各版本成就 Wiki（含无经验值成就完整清单）"
+              >
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/>
+                </svg>
+                更多攻略
+                <svg class="hs-wiki-caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <polyline points="6 9 12 15 18 9"/>
+                </svg>
+              </button>
+              <div v-if="wikiMenuOpen" class="hs-wiki-panel" role="menu">
+                <p class="hs-wiki-panel-tip">各版本成就 Wiki（含无经验值成就完整清单）</p>
+                <div class="hs-wiki-grid">
+                  <a
+                    v-for="w in allWikiLinks"
+                    :key="w.url"
+                    :href="w.url"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="hs-wiki-item"
+                    role="menuitem"
+                    @click="closeWikiMenu"
+                  >
+                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                    </svg>
+                    {{ w.name }}
+                  </a>
+                </div>
+              </div>
+            </div>
           </div>
           <p class="hs-intro-text">
             {{ user ? '当前进度会自动保存到你的账号。' : '未登录可浏览全部内容；登录后即可记录并同步个人进度。' }}
@@ -90,12 +154,47 @@
         </div>
         <div class="hs-top-actions">
           <!-- 按版本/我的(按版本)：版本选择 -->
-          <ExpansionTabs
-            v-if="viewMode === 'expansion' || (viewMode === 'my' && myGroupBy === 'expansion')"
-            :expansions="expansions"
-            :current-id="currentExpansionId"
-            @switch="currentExpansionId = $event"
-          />
+          <template v-if="viewMode === 'expansion' || (viewMode === 'my' && myGroupBy === 'expansion')">
+            <ExpansionTabs
+              :expansions="originalExpansions"
+              :current-id="currentExpansionId"
+              @switch="currentExpansionId = $event"
+            />
+            <!-- 本次新增的版本：收进下拉，不与原有 9 个版本混排 -->
+            <div class="hs-more-versions" v-click-outside="closeMoreVersions">
+              <button
+                type="button"
+                class="hs-btn hs-btn-ghost hs-more-versions-toggle"
+                :class="{ active: moreVersionsOpen || addedExpansions.some((e) => e.id === currentExpansionId) }"
+                :title="`本次新增的 ${addedExpansions.length} 个版本`"
+                @click="toggleMoreVersions"
+              >
+                更多版本
+                <span class="hs-more-versions-count">{{ addedExpansions.length }}</span>
+                <svg class="hs-more-versions-caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M6 9l6 6 6-6" />
+                </svg>
+              </button>
+              <div v-if="moreVersionsOpen" class="hs-more-versions-panel" role="menu">
+                <p class="hs-more-versions-tip">本次新增的版本（已本地化成就数据）</p>
+                <div class="hs-more-versions-grid">
+                  <button
+                    v-for="exp in addedExpansions"
+                    :key="exp.id"
+                    type="button"
+                    class="hs-more-versions-item"
+                    :class="{ active: currentExpansionId === exp.id }"
+                    @click="selectAdded(exp.id)"
+                  >
+                    <span>{{ exp.name }}</span>
+                    <svg v-if="currentExpansionId === exp.id" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <path d="M20 6L9 17l-5-5" />
+                    </svg>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </template>
           <!-- 按职业/我的(按职业)：职业选择；冲刺推荐使用视图内的统一筛选器 -->
           <div
             v-else-if="viewMode === 'class' || (viewMode === 'my' && myGroupBy === 'class')"
@@ -190,8 +289,28 @@
             <select v-model.number="passBonus" class="hs-pass-select">
               <option v-for="o in PASS_BONUS_OPTIONS" :key="o.value" :value="o.value">{{ o.label }}</option>
             </select>
-          </label>
-        </div>
+        </label>
+      </div>
+
+      <!-- 批量完成工具条（仅登录用户可见） -->
+      <div class="hs-batch-bar" v-if="viewMode === 'my' && user">
+        <template v-if="!batchMode">
+          <button type="button" class="hs-btn hs-btn-ghost" @click="startBatch">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            批量完成
+          </button>
+          <span class="hs-batch-hint">勾选多个成就后一次性标记完成，省去逐个点击</span>
+        </template>
+        <template v-else>
+          <span class="hs-batch-count">已选 <b>{{ selectedAchIds.length }}</b> 个</span>
+          <button type="button" class="hs-btn hs-btn-ghost" @click="selectAllVisible">全选当前范围</button>
+          <button type="button" class="hs-btn hs-btn-ghost" @click="clearSelection">清除</button>
+          <button type="button" class="hs-btn hs-btn-primary" :disabled="selectedAchIds.length === 0 || savingProgress" @click="batchComplete">
+            {{ savingProgress ? '保存中…' : '完成选中 (' + selectedAchIds.length + ')' }}
+          </button>
+          <button type="button" class="hs-btn hs-btn-ghost" @click="cancelBatch">取消</button>
+        </template>
+      </div>
       </template>
 
       <FilterBar
@@ -292,7 +411,10 @@
             :summary="classViewSummaries[heroClass]"
             :use-my-card="true"
             :editable="Boolean(user)"
+            :select-mode="batchMode"
+            :selected-ids="selectedAchIds"
             @card-click="openCardModal"
+            @toggle-select="toggleSelect"
           />
         </template>
       </div>
@@ -309,7 +431,10 @@
             :class-style="getExpansionStyle()"
             :use-my-card="true"
             :editable="Boolean(user)"
+            :select-mode="batchMode"
+            :selected-ids="selectedAchIds"
             @card-click="openCardModal"
+            @toggle-select="toggleSelect"
           />
         </template>
       </div>
@@ -467,7 +592,8 @@
 import { computed, ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
-import { expansions } from '../hearthstone-achievements/data/expansions.js'
+import { expansions, originalExpansions, addedExpansions } from '../hearthstone-achievements/data/expansions.js'
+import { wikiLinks } from '../hearthstone-achievements/data/wikiLinks.js'
 import { classColors, getClassOrder, groupByClass } from '../hearthstone-achievements/utils/achievements.js'
 import { useAchievementProgress } from '../hearthstone-achievements/composables/useAchievementProgress.js'
 import { useAuth } from '../auth/useAuth.js'
@@ -482,6 +608,57 @@ import MyAchievementCard from '../hearthstone-achievements/components/MyAchievem
 
 const { user, init: initAuth, logout } = useAuth()
 const router = useRouter()
+
+// ============ 主题切换（明亮 / 暗色），默认明亮 ============
+const HS_THEME_KEY = 'hs-theme'
+const hsTheme = ref(localStorage.getItem(HS_THEME_KEY) === 'dark' ? 'dark' : 'light')
+watch(hsTheme, (t) => {
+  localStorage.setItem(HS_THEME_KEY, t)
+}, { immediate: true })
+function toggleTheme() {
+  hsTheme.value = hsTheme.value === 'dark' ? 'light' : 'dark'
+}
+// 作者邮箱
+const AUTHOR_EMAIL = '1987247500@qq.com'
+function contactAuthor() {
+  window.location.href = `mailto:${AUTHOR_EMAIL}?subject=${encodeURIComponent('炉石成就查看器 - 反馈/建议')}`
+}
+
+// ============ 「更多攻略」版本 Wiki 导航（含无经验值成就的完整清单） ============
+const wikiMenuOpen = ref(false)
+const allWikiLinks = wikiLinks
+function toggleWikiMenu() {
+  wikiMenuOpen.value = !wikiMenuOpen.value
+}
+function closeWikiMenu() {
+  wikiMenuOpen.value = false
+}
+
+// ============ 「更多版本」下拉：本次新增版本（不与原有 9 个混排） ============
+const moreVersionsOpen = ref(false)
+function toggleMoreVersions() {
+  moreVersionsOpen.value = !moreVersionsOpen.value
+}
+function closeMoreVersions() {
+  moreVersionsOpen.value = false
+}
+function selectAdded(id) {
+  currentExpansionId.value = id
+  moreVersionsOpen.value = false
+}
+// 局部指令：点击元素外部时触发回调（用于关闭下拉）
+const vClickOutside = {
+  mounted(el, binding) {
+    el._clickOutside = (e) => {
+      if (!el.contains(e.target)) binding.value(e)
+    }
+    document.addEventListener('click', el._clickOutside, true)
+  },
+  unmounted(el) {
+    document.removeEventListener('click', el._clickOutside, true)
+  }
+}
+
 const userAch = useAchievementProgress() // 默认加载当前用户进度到 progressData
 // 进度数据源：登录显示自己的进度；未登录时服务端 /api/achievements/progress 返回空对象，
 // 即「全部成就、全部未完成」，用于匿名浏览与导出全部成就（不再展示 owner 示例账号进度）。
@@ -545,6 +722,85 @@ async function saveProgress(payload) {
     savingProgress.value = false
   }
 }
+
+// ============ 批量完成 ============
+const batchMode = ref(false)
+const selectedAchIds = ref([])
+
+const startBatch = () => { batchMode.value = true }
+const cancelBatch = () => {
+  batchMode.value = false
+  selectedAchIds.value = []
+}
+const toggleSelect = (ach) => {
+  const i = selectedAchIds.value.indexOf(ach.id)
+  if (i >= 0) selectedAchIds.value = selectedAchIds.value.filter((x) => x !== ach.id)
+  else selectedAchIds.value = [...selectedAchIds.value, ach.id]
+}
+const clearSelection = () => { selectedAchIds.value = [] }
+
+// 当前「我的成就」可见范围（受版本/职业/状态筛选影响），用于「全选当前范围」
+const batchScopeAchievements = computed(() => {
+  if (viewMode.value !== 'my') return []
+  if (myGroupBy.value === 'expansion') {
+    const list = []
+    for (const c in myFilteredByClass.value) list.push(...myFilteredByClass.value[c])
+    return list
+  }
+  if (myGroupBy.value === 'class') {
+    const list = []
+    for (const id in myFilteredByExpansion.value) list.push(...myFilteredByExpansion.value[id])
+    return list
+  }
+  if (myGroupBy.value === 'sprint') return sprintAllList.value
+  return []
+})
+
+const selectAllVisible = () => {
+  const set = new Set(selectedAchIds.value)
+  for (const a of batchScopeAchievements.value) set.add(a.id)
+  selectedAchIds.value = [...set]
+}
+
+// 批量把选中成就标记为「全部阶段完成」并一次性写回（后端 PUT 支持多 key）
+async function batchComplete() {
+  const ids = selectedAchIds.value
+  if (!ids.length) return
+  savingProgress.value = true
+  try {
+    const progress = {}
+    for (const id of ids) {
+      const ach = allAchievements.value.find((a) => a.id === id)
+      if (!ach || !ach.stages || ach.stages.length === 0) continue
+      const stages = {}
+      ach.stages.forEach((_, i) => (stages[i] = true))
+      const count = ach.stages[ach.stages.length - 1].quota
+      progress[id] = { stages, count }
+    }
+    if (Object.keys(progress).length === 0) {
+      showToast('error', '没有可完成的成就')
+      return
+    }
+    const resp = await fetch('/api/achievements/progress', {
+      method: 'PUT',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ progress })
+    })
+    if (!resp.ok) {
+      const e = await resp.json().catch(() => ({}))
+      throw new Error(e.error || '保存失败')
+    }
+    await reloadProgress()
+    showToast('success', `已完成 ${Object.keys(progress).length} 个成就`)
+    selectedAchIds.value = []
+    batchMode.value = false
+  } catch (e) {
+    showToast('error', e.message || '保存失败，请重试')
+  } finally {
+    savingProgress.value = false
+  }
+}
+
 async function logoutAndRefresh() {
   await logout()
   clearProgress()
@@ -807,9 +1063,11 @@ const classViewSummaries = computed(() => {
     const achievements = groups[c]
     const completed = achievements.filter((achievement) => isAchievementCompleted(achievement)).length
     const total = achievements.length
+    const remaining = total - completed
     map[c] = {
       total,
       completed,
+      remaining,
       percent: total > 0 ? Math.round((completed / total) * 100) : 0
     }
   }
@@ -894,7 +1152,9 @@ const sprintAllList = computed(() => [
 ])
 
 // 展示的成就列表
+// 有搜索关键词时，跨所有版本与职业全局搜索；否则只看当前范围
 const displayAchievements = computed(() => {
+  if (query.value.trim()) return allAchievements.value
   if (viewMode.value === 'my') return myAchievementsList.value
   if (viewMode.value === 'class') return currentClassAchievements.value
   return currentExpansionAchievements.value
