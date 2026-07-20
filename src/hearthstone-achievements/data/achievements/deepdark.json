@@ -8,6 +8,10 @@
     {
       "name": "旅法师营地：深暗领域全成就攻略",
       "url": "https://www.iyingdi.com/tz/post/5484895"
+    },
+    {
+      "name": "旅法师营地：星际英雄传成就卡组攻略",
+      "url": "https://www.iyingdi.com/tz/post/5522089"
     }
   ],
   "achievements": [
@@ -48,7 +52,12 @@
       "relatedCards": [
         "回收地堡"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAEBAdK+BQSTpQP21gPSuQav8QYNuMUF65gGzpwGwr4G6ckGltYGi9wG5OoGtPEG2PEG2vEG4vEGu/QGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用圣骑士，召唤30个陆战队员。",
@@ -62,7 +71,8 @@
           "points": 20,
           "quota": 60
         }
-      ]
+      ],
+      "guide": "起手留下所有法术和虚灵神谕者。通过2种娜迦（干鳞警长/潮地学徒）复制大量回收地堡，再加上英雄技能和医疗运输机可以召唤大量陆战队员，60个真不多。"
     },
     {
       "id": "dd-001",
@@ -98,7 +108,12 @@
       "relatedCards": [
         "航母"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAEBAc6LBQSJiwSW1AT93wWT9AYNX+i6A8+sBMHfBJegBomhBu+pBtW6BvPKBqLiBov0Boz0Bpb0BgAA"
+        }
+      ],
       "stages": [
         {
           "description": "用拦截机攻击80次。",
@@ -112,7 +127,8 @@
           "points": 20,
           "quota": 160
         }
-      ]
+      ],
+      "guide": "起手找跳费，费用够了就拍航母，通过破碎印象和左拉可以复制多个航母。效率不算高，正常玩十几把还是要的。想一把完成可用无限拍照，带上无界空宇和生命之树。"
     },
     {
       "id": "dd-019",
@@ -151,7 +167,12 @@
       "relatedCards": [
         "菌毯肿瘤"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAEBAdKLBQbWEfbWA6/eBMnBBs7xBtuXBwzysQS+ygSq4gSF5QTh+AXj+AXungaf8QbC8Qbj8Qbl8Qao9wYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一张菌毯肿瘤的效果下用异虫攻击9次。",
@@ -165,7 +186,8 @@
           "points": 20,
           "quota": 18
         }
-      ]
+      ],
+      "guide": "起手找地标和无底海渊，尽快攒一手跳虫；挂场地后冲一波跳虫全部送掉，下欢乐术师耶比托回收跳虫，再冲一波就搞定。若对手场面不够，可拼运气用飞蛇（虫母幼虫变形）拉随从并全体套复生。"
     },
     {
       "id": "dd-021",
@@ -201,7 +223,12 @@
       "relatedCards": [
         "大和炮"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAEBAbyRBQSFF5bUBPrJBvbdBg2coASO1ATr0AWFggbvmwbsqQbVugbzygai4gbY8Qbp8Qa79Aa89AYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用大和炮的效果消灭40个随从。",
@@ -215,7 +242,8 @@
           "points": 20,
           "quota": 80
         }
-      ]
+      ],
+      "guide": "起手找跳费和大和炮，之后反复触发大和炮即可。铜须10费配合大和炮和左拉，可消灭2个敌方随从并拿2个大和炮。（铜须埃索达是浪费，别尝试。）"
     },
     {
       "id": "dd-015",
@@ -251,7 +279,12 @@
       "relatedCards": [
         "吞噬"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAEBAZT9BgLrowORuAYOxoAE5NAE65gGzpwG9qEGwr4GmMsGltYGh+IG5OoGn/EGgPgGg/gGifgGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用吞噬摧毁15个友方地标。",
@@ -265,7 +298,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "用圣骑士的虚灵任务体系，起手留任务并找虚灵神谕者，复制大量吞噬；地标1耐久时对它使用吞噬。带中立222发现地标补足地标数量（8个够了），30次真不多。"
     },
     {
       "id": "dd-017",
@@ -301,7 +335,12 @@
       "relatedCards": [
         "感染者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAEBAf7gBgL07QbO8QYO9eMEjOQEmMQF88gF8OgFzpwGz7wG3eUGvugGwOgGn/EGvvEGqPcG//cGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中触发感染者的亡语效果4次。",
@@ -315,7 +354,8 @@
           "points": 20,
           "quota": 6
         }
-      ]
+      ],
+      "guide": "直接用天梯异虫dk，起手找感染者和坑道虫。通过死亡嘶吼传播亡语，或给感染者套复生，6次真就洒洒水。"
     },
     {
       "id": "dd-003",
@@ -351,7 +391,12 @@
       "relatedCards": [
         "巨像"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAEBAdeEBQSvhwOd7gOp3gST9AYN5dED4MMF6MUF0PgF65gGwr4Gi/QGjPQGkPQGmfQGmvQGnfQGxfgGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张伤害提升到8点的巨像。",
@@ -365,7 +410,8 @@
           "points": 20,
           "quota": 15
         }
-      ]
+      ],
+      "guide": "起手找435指挥官、干鳞警长和加大音量，一直用星灵法术控场苟活（最好复制2费6甲）。等巨像伤害达到15时使用。注意伤害指单次伤害，双倍不可能凑奇数。"
     },
     {
       "id": "dd-009",
@@ -404,7 +450,12 @@
         "黑暗圣堂武士",
         "高阶圣堂武士"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAEBAdW+BQS3swTMoAWT9AbblwcNgBKvkQP+7gO9gAT3nwTIlAa2tQaL9AaM9AaN9AaQ9Aao9AbL+AYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用黑暗圣堂武士或高阶圣堂武士融合20个执政官。",
@@ -418,7 +469,8 @@
           "points": 20,
           "quota": 40
         }
-      ]
+      ],
+      "guide": "起手找阴谋和地标，卡组只3种随从，圣堂武士都用来合体。鲍勃劣势可冻一轮保命、优势稳定获得3个圣堂武士。合体后的执政官尽快送掉，对手就不容易死。"
     },
     {
       "id": "dd-007",
@@ -454,7 +506,12 @@
       "relatedCards": [
         "母舰"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAEBAdG+BQLmiAOT9AYO0cECk7oD+98DrYoEhqQFu8cF7fcFzNUGi/QGjPQGkPQGs/QGxfgGyvgGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中使用5种不同的可收集星灵随从牌。",
@@ -468,7 +525,8 @@
           "points": 20,
           "quota": 8
         }
-      ]
+      ],
+      "guide": "起手找造物协议和地标，尽快给母舰减费；不用巨像和航母，靠安息稳定复活母舰。配合灵媒术、真弦术：合复制母舰，一直使用/复活母舰拿齐全部8种星灵随从。"
     },
     {
       "id": "dd-005",
@@ -504,7 +562,12 @@
       "relatedCards": [
         "刺蛇"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAEBAda+BQTf0gLqpQbi4wbO8QYNlPwD458E5J8Ema0E6vIFvpwGzsAGiuIGleIGn/EG2/EG4/EGqPcGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用刺蛇消灭40个敌人。",
@@ -518,7 +581,8 @@
           "points": 20,
           "quota": 80
         }
-      ]
+      ],
+      "guide": "起手找刺蛇，铺场后用刺蛇消灭对手杂毛（普通攻击消灭敌方随从也加进度）。后续用魔块一直复制刺蛇解场即可。"
     },
     {
       "id": "dd-011",
@@ -557,7 +621,12 @@
       "relatedCards": [
         "攻城坦克"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAEBAAdOLBQThqAOW1ATR0Ab23QYNxpkDlZIE46AEs40Gw48Gz54Gy58Gi9wGtPEG2PEG7PEGu/QGyPkGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用攻城坦克对敌方英雄造成100点伤害。",
@@ -571,7 +640,8 @@
           "points": 20,
           "quota": 200
         }
-      ]
+      ],
+      "guide": "用任务萨，起手找低费战吼尽快完成任务；发射星舰后7费用技能再拍攻城坦克打脸。双倍战吼可配合（可鞭尸），残血时用第二辆攻城坦克的战吼打输出。"
     },
     {
       "id": "dd-023",
@@ -680,7 +750,12 @@
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAECAf7gBgL/lwbO8QYO9eMEh/YEmMQFhY4G/7oGkMsG/eYGwOgGn/EGrPEGwvEG4/EGqPcG//cGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "召唤200个异虫随从。",
@@ -694,7 +769,8 @@
           "points": 20,
           "quota": 400
         }
-      ]
+      ],
+      "guide": "起手找坑道虫，一直使用异虫；通过飞蛇、脆骨海盗、地标等给的复生，刷召唤进度很快。"
     },
     {
       "id": "dd-028",
@@ -703,7 +779,12 @@
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAEBAAdG+BQLPxgWT9AYO+hHRwQKXhwOTugPi3gOMgQStigSL5gaL9AaM9AaQ9AaY9Aaz9AbK+AYAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使星灵卡牌的法力值消耗减少100点。",
@@ -717,7 +798,8 @@
           "points": 20,
           "quota": 200
         }
-      ]
+      ],
+      "guide": "起手找探机，反复复活探机减费，之后一直使用星灵随从刷进度。做完星舰的4个职业成就，这个基本白给。"
     },
     {
       "id": "dd-029",
@@ -726,7 +808,12 @@
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "营地推荐卡组",
+          "code": "AAEBAbyRBQSW1AT6yQb23Qav8QYNiKAEjtQE75sG7KkG1boG88oGi9wGouIGtPEG2PEG6fEGu/QGvPQGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "发射40艘人族战列巡航舰。",
@@ -740,7 +827,8 @@
           "points": 20,
           "quota": 80
         }
-      ]
+      ],
+      "guide": "起手找跳费，星舰每次只发射一个组件，这样每局能发射很多次人类星舰；埃索达只需回收星舰组件。注：吉姆雷诺战吼发射的星舰也可能算进度（作者未实测）。"
     }
   ]
 }

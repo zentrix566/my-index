@@ -238,7 +238,7 @@ app.get('/api/achievements/example', async (req, res) => {
       appLog('PROGRESS', `example 所有者 "${ownerName}" 不存在`)
       return res.json({})
     }
-    const data = getProgress(owner.id)
+    const data = await getProgress(owner.id)
     appLog('PROGRESS', `example 所有者="${ownerName}" 条目=${Object.keys(data).length}`)
     res.json(data)
   } catch (err) {
@@ -275,10 +275,18 @@ app.put('/api/achievements/progress', requireAuth, async (req, res) => {
         await upsertProgress(req.userId, achId, stages, count, client)
       }
     })
-    appLog('PROGRESS', `PUT user=${req.userId} 保存=${entries.length} 条`)
+    const achievementIds = entries.map(([achievementId]) => achievementId)
+    const loggedIds = achievementIds.slice(0, 20).join(',')
+    const omitted = achievementIds.length > 20 ? `,另有${achievementIds.length - 20}条` : ''
+    appLog('PROGRESS', `PUT user=${req.userId} 保存=${entries.length} 条 ids=${loggedIds}${omitted}`)
     res.json({ ok: true, saved: entries.length })
   } catch (err) {
-    res.status(400).json({ error: err.message })
+    const errorMessage = String(err?.message || 'unknown').replace(/[\r\n]+/g, ' ')
+    const isDatabaseError = Boolean(err?.code)
+    appLog('ERROR', `进度保存失败: user=${req.userId}, error=${errorMessage}`)
+    res.status(isDatabaseError ? 500 : 400).json({
+      error: isDatabaseError ? '进度保存失败，请稍后重试' : errorMessage
+    })
   }
 })
 

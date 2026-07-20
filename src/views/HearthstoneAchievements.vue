@@ -214,15 +214,34 @@
         <span v-else>查看我的成就完成进度</span>
       </section>
 
+      <!-- 按版本浏览/我的-按版本：职业总览（默认收起，点击职业展开明细） -->
+      <div v-if="showClassOverview" class="hs-class-overview">
+        <div class="hs-class-overview-head">
+          <div class="hs-class-overview-stats">
+            <span class="hs-class-overview-pct">{{ overviewStats.percentage }}%</span>
+            <span class="hs-class-overview-detail">
+              已完成 {{ overviewCompletedCount }} / {{ currentExpansionAchievements.length }} 个成就 · 已得 {{ overviewStats.earnedPoints }}/{{ overviewStats.totalPoints }} 点
+            </span>
+          </div>
+          <div class="hs-class-overview-actions">
+            <button type="button" class="hs-btn hs-btn-ghost" @click="expandAllClasses">展开全部</button>
+            <button type="button" class="hs-btn hs-btn-ghost" @click="collapseAllClasses">收起全部</button>
+          </div>
+        </div>
+        <p class="hs-class-overview-tip">默认按职业收起，点击职业标题即可展开该职业的成就明细。</p>
+      </div>
+
       <!-- 按版本浏览：按职业分组 -->
       <div v-if="viewMode === 'expansion'" class="hs-expansion-groups">
         <template v-for="heroClass in classOrder" :key="heroClass">
           <ClassSection
             v-if="filteredByClass[heroClass] && filteredByClass[heroClass].length > 0"
+            v-model:collapsed="classViewCollapsed[heroClass]"
             :hero-class="heroClass"
             :achievements="filteredByClass[heroClass]"
             :badge-style="getClassBadgeStyle(heroClass)"
             :class-style="getClassStyle(heroClass)"
+            :summary="classViewSummaries[heroClass]"
             @card-click="openCardModal"
           />
         </template>
@@ -233,6 +252,7 @@
         <template v-for="exp in expansions" :key="exp.id">
           <ClassSection
             v-if="filteredByExpansion[exp.id] && filteredByExpansion[exp.id].length > 0"
+            v-model:collapsed="expViewCollapsed[exp.id]"
             :hero-class="exp.name"
             :achievements="filteredByExpansion[exp.id]"
             :badge-style="getExpansionBadgeStyle()"
@@ -247,10 +267,12 @@
         <template v-for="heroClass in classOrder" :key="heroClass">
           <ClassSection
             v-if="myFilteredByClass[heroClass] && myFilteredByClass[heroClass].length > 0"
+            v-model:collapsed="classViewCollapsed[heroClass]"
             :hero-class="heroClass"
             :achievements="myFilteredByClass[heroClass]"
             :badge-style="getClassBadgeStyle(heroClass)"
             :class-style="getClassStyle(heroClass)"
+            :summary="classViewSummaries[heroClass]"
             :use-my-card="true"
             @card-click="openCardModal"
           />
@@ -262,6 +284,7 @@
         <template v-for="exp in expansions" :key="exp.id">
           <ClassSection
             v-if="myFilteredByExpansion[exp.id] && myFilteredByExpansion[exp.id].length > 0"
+            v-model:collapsed="expViewCollapsed[exp.id]"
             :hero-class="exp.name"
             :achievements="myFilteredByExpansion[exp.id]"
             :badge-style="getExpansionBadgeStyle()"
@@ -490,6 +513,7 @@
       <EditProgressModal
         :visible="editVisible"
         :achievement="editAchievement"
+        :saving="savingProgress"
         @close="editVisible = false"
         @save="saveProgress"
       />
@@ -507,7 +531,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
 import { expansions } from '../hearthstone-achievements/data/expansions.js'
@@ -539,7 +563,8 @@ const {
   isAlmostDone,
   loading: progressLoading,
   error: progressError,
-  reload: reloadProgress
+  reload: reloadProgress,
+  clear: clearProgress
 } = useAchievementProgress(displayProgress)
 
 // 初始化：加载认证态
@@ -553,6 +578,7 @@ watch(user, (u) => {
 // 编辑进度弹窗
 const editVisible = ref(false)
 const editAchievement = ref(null)
+const savingProgress = ref(false)
 function openEditModal(achievement) {
   editAchievement.value = achievement
   editVisible.value = true
@@ -567,6 +593,8 @@ function showToast(type, message) {
 }
 
 async function saveProgress(payload) {
+  if (savingProgress.value) return
+  savingProgress.value = true
   try {
     const resp = await fetch('/api/achievements/progress', {
       method: 'PUT',
@@ -576,16 +604,18 @@ async function saveProgress(payload) {
       })
     })
     if (!resp.ok) throw new Error('保存失败')
+    await reloadProgress()
     showToast('success', '保存成功')
     editVisible.value = false
-    reloadProgress() // 后台静默刷新进度，不阻塞成功提示
   } catch (e) {
     showToast('error', e.message || '保存失败，请重试')
+  } finally {
+    savingProgress.value = false
   }
 }
-function logoutAndRefresh() {
-  logout()
-  reloadProgress()
+async function logoutAndRefresh() {
+  await logout()
+  clearProgress()
 }
 function goChangelog() {
   router.push('/changelog')
@@ -816,6 +846,53 @@ const currentExpansionAchievements = computed(() => {
   if (!exp) return []
   return exp.achievements.map(ach => attachCards(ach, exp))
 })
+
+// 职业总览：按版本浏览/我的-按版本 默认收起各职业，点击展开明细
+const classViewCollapsed = reactive({})
+for (const c of classOrder) classViewCollapsed[c] = true
+// 按职业浏览/我的-按职业：按版本分组，默认展开
+const expViewCollapsed = reactive({})
+for (const exp of expansions) expViewCollapsed[exp.id] = false
+
+const resetClassViews = () => {
+  for (const c of classOrder) classViewCollapsed[c] = true
+  for (const exp of expansions) expViewCollapsed[exp.id] = false
+}
+
+const expandAllClasses = () => {
+  for (const c of classOrder) classViewCollapsed[c] = false
+}
+const collapseAllClasses = () => {
+  for (const c of classOrder) classViewCollapsed[c] = true
+}
+
+// 仅在「按版本浏览 / 我的-按版本」时展示职业总览面板
+const showClassOverview = computed(
+  () => viewMode.value === 'expansion' || (viewMode.value === 'my' && myGroupBy.value === 'expansion')
+)
+
+// 每个职业的完成度总览（基于当前筛选结果）
+const classViewSummaries = computed(() => {
+  const groups = viewMode.value === 'my' && myGroupBy.value === 'expansion' ? myFilteredByClass.value : filteredByClass.value
+  const map = {}
+  for (const c in groups) {
+    const achievements = groups[c]
+    const completed = achievements.filter((achievement) => isAchievementCompleted(achievement)).length
+    const total = achievements.length
+    map[c] = {
+      total,
+      completed,
+      percent: total > 0 ? Math.round((completed / total) * 100) : 0
+    }
+  }
+  return map
+})
+
+// 当前版本整体完成度（总览面板用）
+const overviewStats = computed(() => getStats(currentExpansionAchievements.value))
+const overviewCompletedCount = computed(() =>
+  currentExpansionAchievements.value.filter((a) => isAchievementCompleted(a)).length
+)
 
 // 当前职业的成就（按职业浏览模式）
 const currentClassAchievements = computed(() => {
@@ -1104,16 +1181,19 @@ const resetViewState = ({ resetPages = false, scroll = false } = {}) => {
 // 切换视图时重置筛选
 watch(viewMode, () => {
   resetViewState()
+  resetClassViews()
 })
 
 watch(myGroupBy, () => {
   resetViewState({ resetPages: true, scroll: true })
+  resetClassViews()
 })
 
 watch(currentExpansionId, () => {
   if (viewMode.value === 'expansion' || (viewMode.value === 'my' && myGroupBy.value === 'expansion')) {
     resetViewState({ scroll: true })
   }
+  resetClassViews()
 })
 
 watch(currentClass, () => {

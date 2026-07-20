@@ -11,6 +11,7 @@ const loaded = ref(false)
 const loading = ref(false)
 const error = ref(null)
 let loadPromise = null
+let progressGeneration = 0
 
 // 从服务器加载（按登录态返回对应用户进度；匿名为空）
 async function loadFromServer({ force = false } = {}) {
@@ -19,22 +20,27 @@ async function loadFromServer({ force = false } = {}) {
 
   loading.value = true
   error.value = null
+  const generation = progressGeneration
   loadPromise = (async () => {
     try {
       const resp = await fetch('/api/achievements/progress')
       if (!resp.ok) throw new Error(`Request failed with status ${resp.status}`)
 
       const data = await resp.json()
+      if (generation !== progressGeneration) return
       progressData.value = data && typeof data === 'object' ? data : {}
       const n = Object.keys(progressData.value).length
       console.log(`[progress] 已加载成就进度 ${n} 条`, progressData.value)
     } catch (cause) {
+      if (generation !== progressGeneration) return
       error.value = cause instanceof Error ? cause.message : '加载成就进度失败'
       console.warn('加载成就进度失败:', cause)
     } finally {
-      loaded.value = true
-      loading.value = false
-      loadPromise = null
+      if (generation === progressGeneration) {
+        loaded.value = true
+        loading.value = false
+        loadPromise = null
+      }
     }
   })()
 
@@ -42,6 +48,16 @@ async function loadFromServer({ force = false } = {}) {
 }
 
 const reload = () => loadFromServer({ force: true })
+
+// 退出登录时立即清空内存中的用户进度，并阻止较早的请求回写旧用户数据。
+const clear = () => {
+  progressGeneration++
+  progressData.value = {}
+  loaded.value = true
+  loading.value = false
+  error.value = null
+  loadPromise = null
+}
 
 // 初始化加载
 loadFromServer()
@@ -216,6 +232,7 @@ export function useAchievementProgress(progressRef) {
     loading,
     error,
     reload,
+    clear,
     isStageCompleted,
     isAchievementCompleted,
     getStats,

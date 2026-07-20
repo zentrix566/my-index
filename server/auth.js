@@ -73,7 +73,7 @@ export function getUserIdFromReq(req) {
 // 注册
 router.post('/register', authLimiter, async (req, res) => {
   const { username, password } = req.body || {}
-  if (!username || !password) {
+  if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
     return res.status(400).json({ error: '用户名和密码必填' })
   }
   if (username.length < 3 || username.length > 20) {
@@ -85,14 +85,27 @@ router.post('/register', authLimiter, async (req, res) => {
   if (password.length < 6) {
     return res.status(400).json({ error: '密码至少 6 位' })
   }
-  if (getUserByUsername(username)) {
-    return res.status(409).json({ error: '用户名已存在' })
+  if (password.length > 128) {
+    return res.status(400).json({ error: '密码不能超过 128 位' })
   }
-  const hash = await bcrypt.hash(password, SALT_ROUNDS)
-  const id = createUser(username, hash)
-  setTokenCookie(req, res, id)
-  appLog('AUTH', `注册成功: ${username} (id=${id})`)
-  res.json({ ok: true, user: { id, username } })
+
+  try {
+    if (await getUserByUsername(username)) {
+      return res.status(409).json({ error: '用户名已存在' })
+    }
+    const hash = await bcrypt.hash(password, SALT_ROUNDS)
+    const id = await createUser(username, hash)
+    setTokenCookie(req, res, id)
+    appLog('AUTH', `注册成功: ${username} (id=${id})`)
+    return res.json({ ok: true, user: { id, username } })
+  } catch (err) {
+    // 查询后到插入前仍可能有同名请求并发写入，以数据库唯一约束为最终准绳。
+    if (err?.code === '23505') {
+      return res.status(409).json({ error: '用户名已存在' })
+    }
+    appLog('ERROR', `注册失败: username=${username}, error=${err?.message || 'unknown'}`)
+    return res.status(500).json({ error: '注册失败，请稍后重试' })
+  }
 })
 
 // 登录
@@ -112,13 +125,13 @@ router.post('/login', authLimiter, async (req, res) => {
 })
 
 // 登出
-router.post('/logout', (req, res) => {
+router.post('/logout', async (req, res) => {
   const token = req.cookies?.[TOKEN_NAME]
   let who = '未知'
   if (token) {
     try {
       const p = jwt.verify(token, JWT_SECRET)
-      const u = getUserById(p.uid)
+      const u = await getUserById(p.uid)
       who = u ? u.username : `#${p.uid}`
     } catch { /* ignore */ }
   }

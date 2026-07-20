@@ -1504,6 +1504,93 @@ a.content-card:hover {
   transition: transform 0.2s ease;
 }
 
+.hs-class-summary {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-weight: 400;
+  font-size: 12px;
+  opacity: 0.95;
+}
+
+.hs-class-summary-num {
+  white-space: nowrap;
+}
+
+.hs-class-summary-bar {
+  width: 64px;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(255, 255, 255, 0.35);
+  overflow: hidden;
+}
+
+.hs-class-summary-fill {
+  display: block;
+  height: 100%;
+  background: #fff;
+  border-radius: 3px;
+  transition: width 0.2s ease;
+}
+
+.hs-class-summary-pct {
+  white-space: nowrap;
+  min-width: 34px;
+  text-align: right;
+}
+
+/* 职业总览面板 */
+.hs-class-overview {
+  margin-top: 16px;
+  padding: 14px 16px;
+  background: #faf7f2;
+  border: 1px solid #efe7da;
+  border-radius: 10px;
+}
+
+.hs-class-overview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.hs-class-overview-stats {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.hs-class-overview-pct {
+  font-size: 26px;
+  font-weight: 700;
+  color: #c9881f;
+  line-height: 1;
+}
+
+.hs-class-overview-detail {
+  font-size: 13px;
+  color: #6b5b4f;
+}
+
+.hs-class-overview-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.hs-class-overview-actions .hs-btn {
+  font-size: 13px;
+  padding: 6px 12px;
+}
+
+.hs-class-overview-tip {
+  margin: 8px 0 0;
+  font-size: 12px;
+  color: #a08a72;
+}
+
 /* 成就卡片网格 */
 .hs-achievement-list {
   display: grid;
@@ -1955,6 +2042,49 @@ a.content-card:hover {
 
 .hs-copy-button.hs-copied:hover {
   background: #236344;
+}
+
+/* 攻略折叠块 */
+.hs-guide-section {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px dashed rgba(38, 43, 50, 0.15);
+}
+
+.hs-guide-details {
+  font-size: 13px;
+}
+
+.hs-guide-summary {
+  cursor: pointer;
+  color: #2c5669;
+  font-weight: 600;
+  user-select: none;
+  list-style: none;
+}
+
+.hs-guide-summary::-webkit-details-marker {
+  display: none;
+}
+
+.hs-guide-summary::before {
+  content: "▸";
+  display: inline-block;
+  margin-right: 6px;
+  transition: transform 0.15s ease;
+}
+
+.hs-guide-details[open] .hs-guide-summary::before {
+  transform: rotate(90deg);
+}
+
+.hs-guide-text {
+  margin: 8px 0 2px;
+  padding: 10px 12px;
+  background: #f8f5f0;
+  border-radius: 6px;
+  color: #4a3f37;
+  line-height: 1.6;
 }
 
 /* 空状态 */

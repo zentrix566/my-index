@@ -113,6 +113,12 @@ const copyDeckCode = async (deck, event) => {
           </div>
         </div>
       </div>
+      <div v-if="achievement.guide" class="hs-guide-section">
+        <details class="hs-guide-details">
+          <summary class="hs-guide-summary">📖 攻略</summary>
+          <p class="hs-guide-text">{{ achievement.guide }}</p>
+        </details>
+      </div>
     </div>
   </article>
 </template>

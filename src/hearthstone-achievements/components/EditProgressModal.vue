@@ -45,14 +45,14 @@ import { useAchievementProgress } from '../composables/useAchievementProgress.js
 
 const props = defineProps({
   visible: Boolean,
-  achievement: { type: Object, default: null }
+  achievement: { type: Object, default: null },
+  saving: { type: Boolean, default: false }
 })
 const emit = defineEmits(['close', 'save'])
 
 const { progress } = useAchievementProgress()
 const draftStages = ref({})
 const draftCount = ref(0)
-const saving = ref(false)
 
 // 打开时从当前进度初始化草稿
 watch(
@@ -75,17 +75,12 @@ function dec() {
 }
 
 function save() {
-  if (!props.achievement) return
-  saving.value = true
-  try {
-    emit('save', {
-      id: props.achievement.id,
-      stages: { ...draftStages.value },
-      count: Number(draftCount.value) || 0
-    })
-  } finally {
-    saving.value = false
-  }
+  if (!props.achievement || props.saving) return
+  emit('save', {
+    id: props.achievement.id,
+    stages: { ...draftStages.value },
+    count: Number(draftCount.value) || 0
+  })
 }
 </script>
 
