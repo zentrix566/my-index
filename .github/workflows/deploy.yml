@@ -68,4 +68,4 @@ jobs:
             kubectl rollout restart deployment zentrix-lab
             
             # 2. 检查状态
-            kubectl rollout status deployment zentrix-lab --timeout=90s
+            kubectl rollout status deployment zentrix-lab --timeout=5m

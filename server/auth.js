@@ -111,17 +111,26 @@ router.post('/register', authLimiter, async (req, res) => {
 // 登录
 router.post('/login', authLimiter, async (req, res) => {
   const { username, password } = req.body || {}
-  const user = await getUserByUsername(username)
-  if (!user) {
-    return res.status(401).json({ error: '用户名或密码错误' })
+  if (typeof username !== 'string' || typeof password !== 'string' || !username || !password) {
+    return res.status(400).json({ error: '用户名和密码必填' })
   }
-  const ok = await bcrypt.compare(password, user.password_hash)
-  if (!ok) {
-    return res.status(401).json({ error: '用户名或密码错误' })
+
+  try {
+    const user = await getUserByUsername(username)
+    if (!user) {
+      return res.status(401).json({ error: '用户名或密码错误' })
+    }
+    const ok = await bcrypt.compare(password, user.password_hash)
+    if (!ok) {
+      return res.status(401).json({ error: '用户名或密码错误' })
+    }
+    setTokenCookie(req, res, user.id)
+    appLog('AUTH', `登录成功: ${user.username} (id=${user.id})`)
+    return res.json({ ok: true, user: { id: user.id, username: user.username } })
+  } catch (err) {
+    appLog('ERROR', `登录失败: username=${username}, error=${err?.message || 'unknown'}`)
+    return res.status(500).json({ error: '登录服务暂时不可用，请稍后重试' })
   }
-  setTokenCookie(req, res, user.id)
-  appLog('AUTH', `登录成功: ${user.username} (id=${user.id})`)
-  res.json({ ok: true, user: { id: user.id, username: user.username } })
 })
 
 // 登出

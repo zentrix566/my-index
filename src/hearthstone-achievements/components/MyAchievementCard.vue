@@ -5,7 +5,8 @@ import { useAchievementProgress } from '../composables/useAchievementProgress.js
 
 const props = defineProps({
   achievement: { type: Object, required: true },
-  showRemaining: { type: Boolean, default: false }
+  showRemaining: { type: Boolean, default: false },
+  editable: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['click'])
@@ -81,10 +82,10 @@ const copyDeckCode = async (deck, event) => {
   <article
     class="hs-achievement-card hs-my-card"
     :class="{
-      'hs-clickable': isClickable(achievement),
+      'hs-clickable': editable || isClickable(achievement),
       'hs-completed': isAchievementCompleted(achievement)
     }"
-    @click="$emit('click', achievement)"
+    @click="emit('click', achievement)"
   >
     <div class="hs-card-content">
       <div class="hs-card-title-row">
@@ -104,12 +105,22 @@ const copyDeckCode = async (deck, event) => {
           <span class="hs-badge hs-difficulty-badge" :style="getDifficultyStyle(achievement.difficulty)">
             {{ achievement.difficulty }}
           </span>
+          <button
+            v-if="editable || isClickable(achievement)"
+            class="hs-card-open"
+            type="button"
+            :aria-label="editable ? `编辑 ${achievement.name} 的进度` : `查看 ${achievement.name} 的关联卡牌`"
+            @click.stop="emit('click', achievement)"
+          >
+            <svg v-if="editable" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/></svg>
+            <svg v-else width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
         </div>
       </div>
 
       <div class="hs-card-meta">
-        <span class="hs-meta-item hs-meta-version">📦 {{ achievement._expansionName }}</span>
-        <span class="hs-meta-item hs-meta-class">🎴 {{ achievement.heroClass }}</span>
+        <span class="hs-meta-item hs-meta-version">版本 · {{ achievement._expansionName }}</span>
+        <span class="hs-meta-item hs-meta-class">职业 · {{ achievement.heroClass }}</span>
       </div>
 
       <ul class="hs-stage-list">
@@ -201,8 +212,8 @@ const copyDeckCode = async (deck, event) => {
         </div>
       </div>
       <div v-if="achievement.guide" class="hs-guide-section">
-        <details class="hs-guide-details">
-          <summary class="hs-guide-summary">📖 攻略</summary>
+        <details class="hs-guide-details" @click.stop>
+          <summary class="hs-guide-summary">查看攻略</summary>
           <p class="hs-guide-text">{{ achievement.guide }}</p>
         </details>
       </div>

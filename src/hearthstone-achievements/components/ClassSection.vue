@@ -8,6 +8,7 @@ const props = defineProps({
   badgeStyle: { type: Object, default: () => ({}) },
   classStyle: { type: Object, default: () => ({}) },
   useMyCard: { type: Boolean, default: false },
+  editable: { type: Boolean, default: false },
   // 折叠状态由父组件控制（v-model:collapsed），默认展开
   collapsed: { type: Boolean, default: false },
   // 收起态头部展示的总览数据：{ total, completed, percent }
@@ -53,6 +54,7 @@ const toggleCollapse = () => {
         v-for="ach in achievements"
         :key="ach.id"
         :achievement="ach"
+        :editable="useMyCard ? editable : undefined"
         :style="classStyle"
         @click="emit('card-click', ach)"
       />

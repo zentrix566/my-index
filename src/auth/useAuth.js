@@ -10,13 +10,23 @@ const initialized = ref(false)
 const initializing = ref(false)
 let initPromise = null
 
+async function readJsonResponse(resp) {
+  const text = await resp.text()
+  if (!text) return {}
+  try {
+    return JSON.parse(text)
+  } catch {
+    throw new Error('服务响应格式错误，请确认后端服务已正常启动')
+  }
+}
+
 async function init() {
   if (initialized.value || initializing.value) return initPromise
   initializing.value = true
   initPromise = (async () => {
     try {
       const resp = await fetch('/api/auth/me')
-      const data = await resp.json()
+      const data = await readJsonResponse(resp)
       user.value = data.user || null
     } catch {
       user.value = null
@@ -32,7 +42,7 @@ async function init() {
 async function refreshUser() {
   try {
     const resp = await fetch('/api/auth/me')
-    const data = await resp.json()
+    const data = await readJsonResponse(resp)
     user.value = data.user || null
   } catch {
     user.value = null
@@ -46,7 +56,7 @@ async function login(username, password) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
   })
-  const data = await resp.json()
+  const data = await readJsonResponse(resp)
   if (!resp.ok) throw new Error(data.error || '登录失败')
   await refreshUser()
   return data.user
@@ -58,7 +68,7 @@ async function register(username, password) {
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ username, password })
   })
-  const data = await resp.json()
+  const data = await readJsonResponse(resp)
   if (!resp.ok) throw new Error(data.error || '注册失败')
   await refreshUser()
   return data.user

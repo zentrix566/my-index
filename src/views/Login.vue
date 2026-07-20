@@ -1,43 +1,91 @@
 <template>
   <div class="auth-page">
     <div class="auth-card">
-      <h2 class="auth-title">{{ mode === 'login' ? '登录' : '注册账号' }}</h2>
-      <p class="auth-sub">登录后记录你自己的炉石成就进度</p>
+      <RouterLink class="auth-back" to="/hearthstone">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="m15 18-6-6 6-6"/>
+        </svg>
+        返回成就查看器
+      </RouterLink>
+
+      <div class="auth-mark" aria-hidden="true">
+        <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
+        </svg>
+      </div>
+      <p class="auth-eyebrow">Hearthstone Tracker</p>
+      <h1 class="auth-title">{{ mode === 'login' ? '欢迎回来' : '创建进度档案' }}</h1>
+      <p class="auth-sub">{{ mode === 'login' ? '登录后继续记录你的炉石成就进度。' : '注册后即可跨设备保存和同步成就进度。' }}</p>
 
       <form class="auth-form" @submit.prevent="submit">
-        <input
-          v-model.trim="username"
-          class="auth-input"
-          type="text"
-          placeholder="用户名（3-20 位，支持中文）"
-          autocomplete="username"
-        />
-        <input
-          v-model="password"
-          class="auth-input"
-          type="password"
-          placeholder="密码（至少 6 位）"
-          autocomplete="current-password"
-        />
-        <input
-          v-if="mode === 'register'"
-          v-model="confirm"
-          class="auth-input"
-          type="password"
-          placeholder="确认密码"
-          autocomplete="new-password"
-        />
+        <label class="auth-field">
+          <span>用户名</span>
+          <span class="auth-input-shell">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/>
+            </svg>
+            <input
+              v-model.trim="username"
+              class="auth-input"
+              type="text"
+              placeholder="3–20 位，支持中文"
+              autocomplete="username"
+              required
+            />
+          </span>
+        </label>
 
-        <p v-if="error" class="auth-error">{{ error }}</p>
+        <label class="auth-field">
+          <span>密码</span>
+          <span class="auth-input-shell">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <input
+              v-model="password"
+              class="auth-input"
+              :type="showPassword ? 'text' : 'password'"
+              placeholder="至少 6 位"
+              :autocomplete="mode === 'login' ? 'current-password' : 'new-password'"
+              required
+            />
+            <button class="auth-visibility" type="button" :aria-label="showPassword ? '隐藏密码' : '显示密码'" @click="showPassword = !showPassword">
+              {{ showPassword ? '隐藏' : '显示' }}
+            </button>
+          </span>
+        </label>
+
+        <label v-if="mode === 'register'" class="auth-field">
+          <span>确认密码</span>
+          <span class="auth-input-shell">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="18" height="11" x="3" y="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+            </svg>
+            <input
+              v-model="confirm"
+              class="auth-input"
+              :type="showConfirm ? 'text' : 'password'"
+              placeholder="再次输入密码"
+              autocomplete="new-password"
+              required
+            />
+            <button class="auth-visibility" type="button" :aria-label="showConfirm ? '隐藏确认密码' : '显示确认密码'" @click="showConfirm = !showConfirm">
+              {{ showConfirm ? '隐藏' : '显示' }}
+            </button>
+          </span>
+        </label>
+
+        <p v-if="error" class="auth-error" role="alert">{{ error }}</p>
 
         <button class="auth-btn" type="submit" :disabled="loading">
-          {{ loading ? '处理中…' : mode === 'login' ? '登录' : '注册并登录' }}
+          <span v-if="loading" class="auth-spinner" aria-hidden="true"></span>
+          {{ loading ? '正在处理…' : mode === 'login' ? '登录并继续' : '创建账号并登录' }}
         </button>
       </form>
 
       <p class="auth-switch">
         {{ mode === 'login' ? '还没有账号？' : '已有账号？' }}
-        <a @click="toggle">{{ mode === 'login' ? '立即注册' : '去登录' }}</a>
+        <button type="button" @click="toggle">{{ mode === 'login' ? '立即注册' : '返回登录' }}</button>
       </p>
     </div>
   </div>
@@ -57,6 +105,8 @@ const password = ref('')
 const confirm = ref('')
 const error = ref('')
 const loading = ref(false)
+const showPassword = ref(false)
+const showConfirm = ref(false)
 
 async function submit() {
   error.value = ''
@@ -86,84 +136,200 @@ async function submit() {
 function toggle() {
   mode.value = mode.value === 'login' ? 'register' : 'login'
   error.value = ''
+  confirm.value = ''
+  showPassword.value = false
+  showConfirm.value = false
 }
 </script>
 
 <style scoped>
 .auth-page {
-  min-height: 70vh;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
+  min-height: calc(100vh - 137px);
+  display: grid;
+  place-items: center;
+  padding: 48px 24px;
+  color: #f8fafc;
+  background:
+    radial-gradient(circle at 20% 10%, rgba(21, 128, 61, 0.24), transparent 30%),
+    radial-gradient(circle at 90% 85%, rgba(217, 119, 6, 0.14), transparent 30%),
+    #0f172a;
 }
 .auth-card {
+  position: relative;
   width: 100%;
-  max-width: 380px;
-  background: #fff;
-  border-radius: 14px;
-  padding: 32px 28px;
-  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.08);
+  max-width: 440px;
+  padding: 34px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  background: rgba(15, 31, 43, 0.9);
+  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.38);
+  backdrop-filter: blur(18px);
+}
+.auth-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-bottom: 30px;
+  color: #94a3b8;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth-back:hover {
+  color: #fbbf24;
+}
+.auth-mark {
+  display: grid;
+  width: 54px;
+  height: 54px;
+  margin-bottom: 18px;
+  place-items: center;
+  border: 1px solid rgba(251, 191, 36, 0.28);
+  border-radius: 16px;
+  color: #fbbf24;
+  background: linear-gradient(145deg, rgba(217, 119, 6, 0.22), rgba(21, 128, 61, 0.2));
+}
+.auth-eyebrow {
+  margin: 0 0 5px;
+  color: #4ade80;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
 }
 .auth-title {
   margin: 0;
-  font-size: 22px;
-  color: #1f2937;
+  color: #f8fafc;
+  font-size: 28px;
+  line-height: 1.2;
 }
 .auth-sub {
-  margin: 6px 0 22px;
-  color: #6b7280;
-  font-size: 13px;
+  margin: 8px 0 26px;
+  color: #94a3b8;
+  font-size: 14px;
 }
 .auth-form {
   display: flex;
   flex-direction: column;
-  gap: 12px;
+  gap: 16px;
+}
+.auth-field {
+  display: grid;
+  gap: 7px;
+  color: #cbd5e1;
+  font-size: 13px;
+  font-weight: 650;
+}
+.auth-input-shell {
+  display: flex;
+  align-items: center;
+  min-height: 48px;
+  padding: 0 13px;
+  border: 1px solid rgba(148, 163, 184, 0.26);
+  border-radius: 11px;
+  color: #64748b;
+  background: rgba(2, 6, 23, 0.28);
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.auth-input-shell:focus-within {
+  border-color: #22c55e;
+  box-shadow: 0 0 0 3px rgba(34, 197, 94, 0.14);
 }
 .auth-input {
-  height: 42px;
-  padding: 0 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 8px;
+  width: 100%;
+  height: 46px;
+  min-width: 0;
+  padding: 0 10px;
+  border: 0;
+  outline: 0;
+  color: #f8fafc;
+  background: transparent;
   font-size: 14px;
-  outline: none;
-  transition: border-color 0.15s;
 }
-.auth-input:focus {
-  border-color: #6366f1;
+.auth-input::placeholder {
+  color: #64748b;
+}
+.auth-visibility {
+  min-width: 44px;
+  min-height: 36px;
+  border: 0;
+  color: #fbbf24;
+  background: transparent;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
 }
 .auth-error {
   margin: 0;
-  color: #dc2626;
+  padding: 10px 12px;
+  border: 1px solid rgba(248, 113, 113, 0.28);
+  border-radius: 9px;
+  color: #fecaca;
+  background: rgba(127, 29, 29, 0.28);
   font-size: 13px;
 }
 .auth-btn {
-  height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 48px;
+  margin-top: 4px;
   border: none;
-  border-radius: 8px;
-  background: #6366f1;
+  border-radius: 11px;
+  background: linear-gradient(135deg, #15803d, #166534);
   color: #fff;
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 750;
   cursor: pointer;
-  transition: background 0.15s;
+  box-shadow: 0 10px 24px rgba(21, 128, 61, 0.22);
+  transition: transform 0.2s ease, filter 0.2s ease;
 }
 .auth-btn:hover:not(:disabled) {
-  background: #4f46e5;
+  filter: brightness(1.12);
+  transform: translateY(-1px);
 }
 .auth-btn:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
+.auth-spinner {
+  width: 16px;
+  height: 16px;
+  border: 2px solid rgba(255, 255, 255, 0.35);
+  border-top-color: #fff;
+  border-radius: 50%;
+  animation: auth-spin 0.7s linear infinite;
+}
+@keyframes auth-spin { to { transform: rotate(360deg); } }
 .auth-switch {
-  margin: 18px 0 0;
+  margin: 22px 0 0;
   text-align: center;
-  color: #6b7280;
+  color: #94a3b8;
   font-size: 13px;
 }
-.auth-switch a {
-  color: #6366f1;
+.auth-switch button {
+  min-height: 44px;
+  padding: 0 6px;
+  border: 0;
+  color: #fbbf24;
+  background: transparent;
   cursor: pointer;
-  font-weight: 600;
+  font-weight: 700;
+}
+.auth-back:focus-visible,
+.auth-visibility:focus-visible,
+.auth-btn:focus-visible,
+.auth-switch button:focus-visible {
+  outline: 3px solid rgba(251, 191, 36, 0.65);
+  outline-offset: 3px;
+}
+@media (max-width: 520px) {
+  .auth-page { padding: 24px 14px; }
+  .auth-card { padding: 26px 20px; border-radius: 16px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .auth-btn { transition: none; }
+  .auth-spinner { animation: none; }
 }
 </style>

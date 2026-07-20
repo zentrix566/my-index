@@ -14,6 +14,14 @@ import pg from 'pg'
 import { getAchievementMeta } from './achievements-meta.js'
 
 const { Pool } = pg
+const isLocalDevMode =
+  process.env.NODE_ENV !== 'production' && process.env.LOCAL_DEV_MODE === 'true'
+
+// 显式开启的本地验证模式：数据只存在当前 Node 进程中，重启即清空。
+const localUsersById = new Map()
+const localUserIdsByName = new Map()
+const localProgressByUser = new Map()
+let localNextUserId = 1
 
 const pool = new Pool({
   host: process.env.PG_HOST,
@@ -27,11 +35,13 @@ const pool = new Pool({
   connectionTimeoutMillis: 10000
 })
 
-// 优雅关闭：SIGTERM/SIGINT 时结束连接池
-for (const sig of ['SIGINT', 'SIGTERM']) {
-  process.on(sig, () => {
-    pool.end().finally(() => process.exit(0))
-  })
+let poolClosed = false
+
+/** 停止接收 HTTP 请求后关闭数据库连接池。 */
+export async function closeDatabase() {
+  if (poolClosed) return
+  poolClosed = true
+  await pool.end()
 }
 
 // ========== 建表（幂等，首次部署自动执行）==========
@@ -70,6 +80,7 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
 
 let schemaReady = false
 export async function ensureSchema() {
+  if (isLocalDevMode) return
   if (schemaReady) return
   await pool.query(SCHEMA_SQL)
   schemaReady = true
@@ -82,12 +93,22 @@ ensureSchema().catch((e) => console.error('[db] 建表失败:', e))
 
 // 按用户名查用户（含 password_hash，仅内部鉴权用）
 export async function getUserByUsername(username) {
+  if (isLocalDevMode) {
+    const id = localUserIdsByName.get(username)
+    return id ? { ...localUsersById.get(id) } : null
+  }
   const { rows } = await pool.query('SELECT * FROM users WHERE username = $1', [username])
   return rows[0] || null
 }
 
 // 按 id 查用户（对外脱敏，不含 password_hash）
 export async function getUserById(id) {
+  if (isLocalDevMode) {
+    const user = localUsersById.get(Number(id))
+    if (!user) return null
+    const { password_hash: _passwordHash, ...safeUser } = user
+    return { ...safeUser }
+  }
   const { rows } = await pool.query(
     'SELECT id, username, created_at FROM users WHERE id = $1',
     [id]
@@ -97,6 +118,23 @@ export async function getUserById(id) {
 
 // 创建用户，返回新 id
 export async function createUser(username, passwordHash) {
+  if (isLocalDevMode) {
+    if (localUserIdsByName.has(username)) {
+      const error = new Error('用户名已存在')
+      error.code = '23505'
+      throw error
+    }
+    const id = localNextUserId++
+    const user = {
+      id,
+      username,
+      password_hash: passwordHash,
+      created_at: new Date().toISOString()
+    }
+    localUsersById.set(id, user)
+    localUserIdsByName.set(username, id)
+    return id
+  }
   const { rows } = await pool.query(
     'INSERT INTO users(username, password_hash) VALUES($1, $2) RETURNING id',
     [username, passwordHash]
@@ -107,8 +145,22 @@ export async function createUser(username, passwordHash) {
 // 写回单条进度（upsert），自动带入成就名称与版本（便于查库排查）
 // 可选传入 client（事务内复用同一连接）；不传则用连接池
 export async function upsertProgress(userId, achievementId, stages, count, client) {
-  const q = client || pool
   const meta = getAchievementMeta(achievementId)
+  if (isLocalDevMode) {
+    const normalizedUserId = Number(userId)
+    const userProgress = localProgressByUser.get(normalizedUserId) || new Map()
+    userProgress.set(achievementId, {
+      stages: { ...(stages || {}) },
+      count: count || 0,
+      achievement_name: meta.name,
+      version: meta.version,
+      hero_class: meta.heroClass,
+      updated_at: new Date().toISOString()
+    })
+    localProgressByUser.set(normalizedUserId, userProgress)
+    return
+  }
+  const q = client || pool
   await q.query(
     `INSERT INTO achievement_progress(user_id, achievement_id, stages_json, count, achievement_name, version, hero_class, updated_at)
      VALUES($1, $2, $3, $4, $5, $6, $7, now())
@@ -131,6 +183,17 @@ export async function upsertProgress(userId, achievementId, stages, count, clien
 // 读取某用户全部进度，返回结构 { [achievementId]: { stages, count } }
 // 与前端现有 progressData 结构完全一致，前端零改造复用
 export async function getProgress(userId) {
+  if (isLocalDevMode) {
+    const rows = localProgressByUser.get(Number(userId)) || new Map()
+    const out = {}
+    for (const [achievementId, progress] of rows) {
+      out[achievementId] = {
+        stages: { ...progress.stages },
+        count: progress.count
+      }
+    }
+    return out
+  }
   const { rows } = await pool.query(
     'SELECT achievement_id, stages_json, count FROM achievement_progress WHERE user_id = $1',
     [userId]
@@ -150,6 +213,7 @@ export async function getProgress(userId) {
 
 // 事务包装：fn(client) 内可执行多条 SQL，自动 BEGIN/COMMIT/ROLLBACK
 export async function transaction(fn) {
+  if (isLocalDevMode) return fn(null)
   const client = await pool.connect()
   try {
     await client.query('BEGIN')

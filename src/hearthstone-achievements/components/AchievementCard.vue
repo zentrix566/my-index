@@ -6,7 +6,7 @@ const props = defineProps({
   achievement: { type: Object, required: true }
 })
 
-defineEmits(['click'])
+const emit = defineEmits(['click'])
 
 const copiedDeckName = ref('')
 
@@ -44,7 +44,7 @@ const copyDeckCode = async (deck, event) => {
   <article
     class="hs-achievement-card"
     :class="{ 'hs-clickable': isClickable(achievement) }"
-    @click="$emit('click', achievement)"
+    @click="emit('click', achievement)"
   >
     <div class="hs-card-content">
       <div class="hs-card-title-row">
@@ -62,6 +62,15 @@ const copyDeckCode = async (deck, event) => {
           <span class="hs-badge hs-difficulty-badge" :style="getDifficultyStyle(achievement.difficulty)">
             {{ achievement.difficulty }}
           </span>
+          <button
+            v-if="isClickable(achievement)"
+            class="hs-card-open"
+            type="button"
+            :aria-label="`查看 ${achievement.name} 的关联卡牌`"
+            @click.stop="emit('click', achievement)"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
+          </button>
         </div>
       </div>
 
@@ -114,8 +123,8 @@ const copyDeckCode = async (deck, event) => {
         </div>
       </div>
       <div v-if="achievement.guide" class="hs-guide-section">
-        <details class="hs-guide-details">
-          <summary class="hs-guide-summary">📖 攻略</summary>
+        <details class="hs-guide-details" @click.stop>
+          <summary class="hs-guide-summary">查看攻略</summary>
           <p class="hs-guide-text">{{ achievement.guide }}</p>
         </details>
       </div>

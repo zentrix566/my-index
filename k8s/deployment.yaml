@@ -8,16 +8,24 @@ metadata:
 spec:
   replicas: 1
   revisionHistoryLimit: 10
+  minReadySeconds: 5
+  progressDeadlineSeconds: 300
   selector:
     matchLabels:
       app: zentrix
   strategy:
-    type: Recreate
+    type: RollingUpdate
+    rollingUpdate:
+      # 发布期间旧 Pod 必须保持可用，新 Pod Ready 后才允许退出。
+      maxUnavailable: 0
+      # 常态仍为单副本，发布时最多临时增加一个 Pod。
+      maxSurge: 1
   template:
     metadata:
       labels:
         app: zentrix
     spec:
+      terminationGracePeriodSeconds: 30
       containers:
         - name: lab-container
           image: crpi-nfo20s3jyve6dt2s.cn-beijing.personal.cr.aliyuncs.com/zentrix-repo/devops:latest
@@ -66,20 +74,33 @@ spec:
                   key: pg-pass
           resources: {}
           # 数据层已迁移到 PostgreSQL（外部托管），不再有单文件数据库共享限制。
-          # 此处 replicas:1 仅为让访问日志（hostPath 单节点写入）保持单写者；
-          # 若后续日志改存 PG/对象存储，可安全扩到多副本。
+          # 常态保持 replicas:1；滚动发布时两个 Pod 会短暂重叠。
+          lifecycle:
+            preStop:
+              exec:
+                # 给 Service/Ingress 留出摘除旧 Endpoint 的传播时间。
+                command: ["/bin/sh", "-c", "sleep 5"]
+          startupProbe:
+            httpGet:
+              path: /health
+              port: 80
+            periodSeconds: 2
+            timeoutSeconds: 2
+            failureThreshold: 45
           livenessProbe:
             httpGet:
               path: /health
               port: 80
-            initialDelaySeconds: 10
             periodSeconds: 30
+            timeoutSeconds: 2
+            failureThreshold: 3
           readinessProbe:
             httpGet:
               path: /health
               port: 80
-            initialDelaySeconds: 5
-            periodSeconds: 15
+            periodSeconds: 2
+            timeoutSeconds: 2
+            failureThreshold: 3
           volumeMounts:
             - mountPath: /app/logs
               name: access-logs

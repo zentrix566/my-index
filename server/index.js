@@ -7,7 +7,13 @@ import { writeLog, appLog, cleanOldLogs, getStats, getTopPages, getGeoDistributi
 import { lookup } from './geoip.js'
 import cookieParser from 'cookie-parser'
 import authRouter, { requireAuth, getUserIdFromReq } from './auth.js'
-import { getProgress, upsertProgress, getUserByUsername, transaction } from './db.js'
+import {
+  closeDatabase,
+  getProgress,
+  upsertProgress,
+  getUserByUsername,
+  transaction
+} from './db.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const isProd = process.env.NODE_ENV === 'production'
@@ -16,6 +22,7 @@ const DIST_DIR = path.resolve(__dirname, '../dist')
 const DATA_DIR = path.resolve(__dirname, '../data')
 const ACHIEVEMENT_PROGRESS_FILE = path.join(DATA_DIR, 'achievement-progress.json')
 const STATIC_CACHE_MAX_AGE = 365 * 24 * 60 * 60 * 1000 // 1 年
+const FORCE_SHUTDOWN_TIMEOUT_MS = 25_000
 
 // 确保数据目录存在
 if (!fs.existsSync(DATA_DIR)) {
@@ -326,6 +333,9 @@ app.get('*', (req, res) => {
 // ========== 启动引导 ==========
 // 首次部署：确保数据库表已建（db.js 导入时自动执行迁移），
 // 并在所有者账号缺失/无进度时导入初始示例进度（供「未登录预览」使用）。
+let httpServer = null
+let isShuttingDown = false
+
 async function bootstrap() {
   if (process.env.SEED_ON_STARTUP !== 'false') {
     try {
@@ -336,11 +346,56 @@ async function bootstrap() {
     }
   }
 
-    app.listen(PORT, () => {
+  httpServer = app.listen(PORT, () => {
     appLog('SERVER', `服务已启动，监听端口 ${PORT}`)
     appLog('SERVER', `静态文件目录: ${DIST_DIR}`)
     appLog('SERVER', `数据目录: ${DATA_DIR}`)
   })
 }
 
-bootstrap()
+/** Kubernetes 终止 Pod 时先停止接收新请求，再等待现有请求和数据库连接结束。 */
+async function shutdown(signal) {
+  if (isShuttingDown) return
+  isShuttingDown = true
+  appLog('SERVER', `收到 ${signal}，开始优雅停机`)
+
+  const forceTimer = setTimeout(() => {
+    appLog('ERROR', '优雅停机超时，强制退出')
+    httpServer?.closeAllConnections?.()
+    process.exit(1)
+  }, FORCE_SHUTDOWN_TIMEOUT_MS)
+  forceTimer.unref()
+
+  try {
+    await new Promise((resolve, reject) => {
+      if (!httpServer) {
+        resolve()
+        return
+      }
+      httpServer.close((err) => {
+        if (err) reject(err)
+        else resolve()
+      })
+      httpServer.closeIdleConnections?.()
+    })
+    await closeDatabase()
+    clearTimeout(forceTimer)
+    appLog('SERVER', '优雅停机完成')
+    process.exit(0)
+  } catch (err) {
+    clearTimeout(forceTimer)
+    appLog('ERROR', `优雅停机失败: ${err.message}`)
+    process.exit(1)
+  }
+}
+
+for (const signal of ['SIGINT', 'SIGTERM']) {
+  process.on(signal, () => {
+    void shutdown(signal)
+  })
+}
+
+bootstrap().catch((err) => {
+  appLog('ERROR', `服务启动失败: ${err.message}`)
+  void shutdown('BOOTSTRAP_ERROR')
+})

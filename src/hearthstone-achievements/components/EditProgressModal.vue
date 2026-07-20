@@ -1,9 +1,12 @@
 <template>
   <div v-if="visible" class="epm-overlay" @click.self="$emit('close')">
-    <div class="epm-modal">
-      <button class="epm-close" type="button" aria-label="关闭" @click="$emit('close')">×</button>
+    <div class="epm-modal" role="dialog" aria-modal="true" aria-labelledby="epm-title">
+      <button class="epm-close" type="button" aria-label="关闭" @click="$emit('close')">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
 
-      <h3 class="epm-title">{{ achievement?.name }}</h3>
+      <p class="epm-eyebrow">更新成就进度</p>
+      <h3 id="epm-title" class="epm-title">{{ achievement?.name }}</h3>
       <p class="epm-meta">{{ achievement?.heroClass }} · {{ achievement?.difficulty }} · {{ achievement?.type }}</p>
       <p v-if="achievement?.description" class="epm-desc">{{ achievement.description }}</p>
 
@@ -20,11 +23,11 @@
 
       <!-- 累计：count 输入 -->
       <div v-else-if="achievement" class="epm-cumulative">
-        <label class="epm-count-label">当前累计次数</label>
+        <label class="epm-count-label" for="epm-count">当前累计次数</label>
         <div class="epm-count-control">
-          <button type="button" @click="dec">−</button>
-          <input type="number" v-model.number="draftCount" min="0" />
-          <button type="button" @click="inc">＋</button>
+          <button type="button" aria-label="减少一次" @click="dec">−</button>
+          <input id="epm-count" type="number" inputmode="numeric" v-model.number="draftCount" min="0" />
+          <button type="button" aria-label="增加一次" @click="inc">＋</button>
         </div>
         <p class="epm-quota-hint">各阶段目标：{{ achievement.stages.map((s) => s.quota).join(' / ') }}</p>
       </div>
@@ -222,5 +225,80 @@ function save() {
 .epm-save:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+/* UI Pro Max：与炉石仪表盘统一的深色表单界面。 */
+.epm-overlay {
+  background: rgba(2, 6, 23, 0.78);
+  backdrop-filter: blur(8px);
+}
+.epm-modal {
+  max-width: 480px;
+  padding: 30px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  color: #e2e8f0;
+  background: #0f1f2b;
+  box-shadow: 0 28px 80px rgba(2, 6, 23, 0.5);
+}
+.epm-close {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  top: 12px;
+  right: 12px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  color: #94a3b8;
+  background: rgba(255, 255, 255, 0.04);
+}
+.epm-close:hover { color: #fff; background: rgba(255, 255, 255, 0.09); }
+.epm-eyebrow {
+  margin: 0 52px 5px 0;
+  color: #4ade80;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.epm-title { margin-right: 52px; color: #f8fafc; font-size: 21px; }
+.epm-meta { color: #fbbf24; }
+.epm-desc { color: #94a3b8; }
+.epm-stage {
+  min-height: 48px;
+  padding: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 10px;
+  color: #e2e8f0;
+  background: rgba(2, 6, 23, 0.24);
+}
+.epm-stage input { accent-color: #22c55e; }
+.epm-stage-points,
+.epm-count-label,
+.epm-quota-hint { color: #94a3b8; }
+.epm-count-control button,
+.epm-count-control input {
+  height: 46px;
+  border-color: rgba(148, 163, 184, 0.28);
+  color: #f8fafc;
+  background: rgba(2, 6, 23, 0.3);
+}
+.epm-count-control button { width: 46px; }
+.epm-count-control input:focus { outline: 3px solid rgba(34, 197, 94, 0.2); border-color: #22c55e; }
+.epm-cancel,
+.epm-save { min-height: 44px; border-radius: 10px; }
+.epm-cancel { border-color: rgba(148, 163, 184, 0.3); color: #cbd5e1; background: transparent; }
+.epm-save { background: linear-gradient(135deg, #15803d, #166534); }
+.epm-close:focus-visible,
+.epm-stage:focus-within,
+.epm-cancel:focus-visible,
+.epm-save:focus-visible {
+  outline: 3px solid rgba(251, 191, 36, 0.55);
+  outline-offset: 2px;
+}
+@media (max-width: 520px) {
+  .epm-modal { padding: 24px 18px; border-radius: 15px; }
+  .epm-actions > * { flex: 1; }
 }
 </style>

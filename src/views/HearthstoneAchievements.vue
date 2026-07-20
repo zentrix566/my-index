@@ -1,34 +1,53 @@
 <template>
   <section class="section page-section hs-page">
     <div class="container">
-      <div class="section-heading">
-        <p class="eyebrow">Hearthstone</p>
-        <h1>炉石传说成就查看器</h1>
-        <p>浏览成就数据，或记录自己的成就完成进度。支持按职业/难度/类型筛选，查看关联卡牌图片，一键复制推荐卡组代码。</p>
-      </div>
-
-      <!-- 介绍 + 登录态 -->
-      <div class="hs-intro">
-        <p class="hs-intro-text">
-          这是你的炉石成就专属进度本：登录后可保存自己的完成进度、按版本/职业查看、一键编辑并自动统计完成度；未登录也能浏览全部成就，并全部显示为未完成状态。
-        </p>
-        <div class="hs-intro-actions">
-          <template v-if="user">
-            <span class="hs-user-badge">👤 {{ user.username }}</span>
-            <button type="button" class="hs-btn hs-btn-ghost" @click="logoutAndRefresh">退出</button>
-          </template>
-          <template v-else>
-            <button type="button" class="hs-btn hs-btn-primary" @click="router.push('/login')">登录 / 注册</button>
-          </template>
-          <button type="button" class="hs-btn hs-btn-ghost" @click="goChangelog">更新说明</button>
+      <section class="hs-hero" aria-labelledby="hs-page-title">
+        <div class="section-heading">
+          <p class="eyebrow"><span class="hs-live-dot" aria-hidden="true"></span> Hearthstone Tracker</p>
+          <h1 id="hs-page-title">炉石传说成就查看器</h1>
+          <p>把分散的成就目标整理成清晰的行动清单。按版本与职业筛选、记录完成进度，并快速找到下一项值得冲刺的成就。</p>
         </div>
-      </div>
+
+        <div class="hs-hero-side">
+          <div class="hs-intro-actions">
+            <template v-if="user">
+              <span class="hs-user-badge">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/>
+                </svg>
+                {{ user.username }}
+              </span>
+              <button type="button" class="hs-btn hs-btn-ghost" @click="logoutAndRefresh">退出登录</button>
+            </template>
+            <template v-else>
+              <button type="button" class="hs-btn hs-btn-primary" @click="router.push('/login')">
+                登录或注册
+                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                  <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
+                </svg>
+              </button>
+            </template>
+            <button type="button" class="hs-btn hs-btn-ghost" @click="goChangelog">查看更新</button>
+          </div>
+          <p class="hs-intro-text">
+            {{ user ? '当前进度会自动保存到你的账号。' : '未登录可浏览全部内容；登录后即可记录并同步个人进度。' }}
+          </p>
+        </div>
+
+        <div class="hs-hero-metrics" aria-label="数据概览">
+          <div><strong>{{ allAchievements.length }}</strong><span>收录成就</span></div>
+          <div><strong>{{ expansions.length }}</strong><span>游戏版本</span></div>
+          <div><strong>{{ allClasses.length }}</strong><span>职业分类</span></div>
+        </div>
+      </section>
 
       <!-- 视图模式切换 -->
-      <div class="hs-view-switch">
+      <div class="hs-view-switch" role="tablist" aria-label="浏览方式">
         <button
           :class="{ active: viewMode === 'expansion' }"
           type="button"
+          role="tab"
+          :aria-selected="viewMode === 'expansion'"
           @click="viewMode = 'expansion'"
         >
           按版本浏览
@@ -36,6 +55,8 @@
         <button
           :class="{ active: viewMode === 'class' }"
           type="button"
+          role="tab"
+          :aria-selected="viewMode === 'class'"
           @click="viewMode = 'class'"
         >
           按职业浏览
@@ -43,6 +64,8 @@
         <button
           :class="{ active: viewMode === 'my' }"
           type="button"
+          role="tab"
+          :aria-selected="viewMode === 'my'"
           @click="viewMode = 'my'"
         >
           我的成就
@@ -73,12 +96,17 @@
             :current-id="currentExpansionId"
             @switch="currentExpansionId = $event"
           />
-          <!-- 按职业/我的(按职业)/快完成/推荐冲刺：职业选择 -->
-          <div v-else class="hs-expansion-tabs" role="tablist" aria-label="选择职业">
+          <!-- 按职业/我的(按职业)：职业选择；冲刺推荐使用视图内的统一筛选器 -->
+          <div
+            v-else-if="viewMode === 'class' || (viewMode === 'my' && myGroupBy === 'class')"
+            class="hs-expansion-tabs"
+            role="tablist"
+            aria-label="选择职业"
+          >
             <button
               v-for="cls in allClasses"
               :key="cls"
-              :class="{ active: (myGroupBy === 'almost' || myGroupBy === 'priority') ? almostClassFilter === cls : currentClass === cls }"
+              :class="{ active: currentClass === cls }"
               type="button"
               role="tab"
               @click="onClassTabClick(cls)"
@@ -92,7 +120,10 @@
       <!-- 我的成就模式：分组切换 + 统计面板 -->
       <template v-if="viewMode === 'my'">
         <div v-if="!user" class="hs-example-banner">
-          <span>📋 当前展示的是<strong>全部成就</strong>（未记录进度）。</span>
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
+          </svg>
+          <span>当前展示的是<strong>全部成就</strong>（未记录进度）。</span>
           <button type="button" class="hs-link" @click="router.push('/login')">登录 / 注册</button>
           <span>后即可记录并保存你自己的完成进度。</span>
         </div>
@@ -109,15 +140,10 @@
             @click="myGroupBy = 'class'"
           >按职业</button>
           <button
-            :class="{ active: myGroupBy === 'almost' }"
+            :class="{ active: myGroupBy === 'sprint' }"
             type="button"
-            @click="myGroupBy = 'almost'"
-          >快完成</button>
-          <button
-            :class="{ active: myGroupBy === 'priority' }"
-            type="button"
-            @click="myGroupBy = 'priority'"
-          >推荐冲刺</button>
+            @click="myGroupBy = 'sprint'"
+          >冲刺推荐</button>
         </div>
 
         <div v-if="progressLoading" class="hs-progress-status" role="status">正在加载成就进度…</div>
@@ -127,19 +153,11 @@
         </div>
 
         <div class="hs-stats-panel">
-          <template v-if="myGroupBy === 'almost'">
+          <template v-if="myGroupBy === 'sprint'">
             <div class="hs-stats-info">
-              <span class="hs-stats-percent">🔥 {{ almostStats.count }}</span>
+              <span class="hs-stats-percent">{{ sprintAllList.length }}</span>
               <span class="hs-stats-detail">
-                接近完成：累计 {{ almostCumulativeList.length }} 个 · 一次性 {{ almostOneTimeList.length }} 个，按"还差最少"排序
-              </span>
-            </div>
-          </template>
-          <template v-else-if="myGroupBy === 'priority'">
-            <div class="hs-stats-info">
-              <span class="hs-stats-percent">🚀 {{ priorityAllList.length }}</span>
-              <span class="hs-stats-detail">
-                推荐冲刺目标：A 组 {{ priorityGroups.A.length }} · B 组 {{ priorityGroups.B.length }} · C 组 {{ priorityGroups.C.length }} · D 组 {{ priorityGroups.D.length }} · E 组 {{ priorityGroups.E.length }}
+                项冲刺目标 · A {{ sprintGroups.A.length }} · B {{ sprintGroups.B.length }} · C {{ sprintGroups.C.length }} · D {{ sprintGroups.D.length }} · E {{ sprintGroups.E.length }}
               </span>
             </div>
           </template>
@@ -177,7 +195,7 @@
       </template>
 
       <FilterBar
-        v-if="!(viewMode === 'my' && (myGroupBy === 'almost' || myGroupBy === 'priority'))"
+        v-if="!(viewMode === 'my' && myGroupBy === 'sprint')"
         v-model:query="query"
         v-model:selected-class="selectedClass"
         v-model:selected-difficulty="selectedDifficulty"
@@ -209,8 +227,7 @@
           </template>
         </span>
         <span v-else-if="viewMode === 'class'">按职业查看所有版本中的成就</span>
-        <span v-else-if="myGroupBy === 'almost'">即将完成的成就已按「一次性 / 累计」分开，针对性清掉更顺手</span>
-        <span v-else-if="myGroupBy === 'priority'">按「零成本 → 低投入 → 中等投入 → 低优先级」分组，优先清 A 组</span>
+        <span v-else-if="myGroupBy === 'sprint'">按「接近完成 → 低投入 → 中等投入 → 长期目标」分组，始终遵循下方版本和职业筛选</span>
         <span v-else>查看我的成就完成进度</span>
       </section>
 
@@ -274,6 +291,7 @@
             :class-style="getClassStyle(heroClass)"
             :summary="classViewSummaries[heroClass]"
             :use-my-card="true"
+            :editable="Boolean(user)"
             @card-click="openCardModal"
           />
         </template>
@@ -290,216 +308,131 @@
             :badge-style="getExpansionBadgeStyle()"
             :class-style="getExpansionStyle()"
             :use-my-card="true"
+            :editable="Boolean(user)"
             @card-click="openCardModal"
           />
         </template>
       </div>
 
-      <!-- 我的成就-快完成：拆分为「累计」与「一次性」两个区块 -->
-      <div v-else-if="myGroupBy === 'almost'" class="hs-almost-wrap">
-        <div class="hs-almost-filters">
+      <!-- 我的成就-冲刺推荐：统一筛选后按投入程度分组 -->
+      <div v-else-if="myGroupBy === 'sprint'" class="hs-priority-wrap">
+        <div class="hs-sprint-filters">
           <label class="hs-filter-field">
             <span class="hs-filter-label">版本</span>
-            <select v-model="almostVersionFilter" class="hs-filter-select">
+            <select v-model="sprintVersionFilter" class="hs-filter-select">
               <option value="all">全部版本</option>
               <option v-for="v in versionOptions" :key="v.id" :value="v.id">{{ v.name }}</option>
             </select>
           </label>
           <label class="hs-filter-field">
             <span class="hs-filter-label">职业</span>
-            <select v-model="almostClassFilter" class="hs-filter-select">
+            <select v-model="sprintClassFilter" class="hs-filter-select">
               <option value="all">全部职业</option>
               <option v-for="c in allClasses" :key="c" :value="c">{{ c }}</option>
             </select>
           </label>
         </div>
-        <section v-if="almostCumulativeList.length" class="hs-almost-group">
-          <div class="hs-almost-group-head">
-            <h3 class="hs-almost-group-title hs-almost-cumulative-title">
-              📊 累计成就 · 还差 {{ almostCumulativeRemainTotal }} 次（共 {{ almostCumulativeList.length }} 个）
-            </h3>
-            <div class="hs-page-size">
-              <span class="hs-page-size-label">每页</span>
-              <button
-                v-for="sz in pageSizes"
-                :key="sz"
-                type="button"
-                :class="{ active: cumulativePageSize === sz }"
-                @click="cumulativePageSize = sz"
-              >{{ sz }}</button>
-            </div>
-          </div>
-          <div class="hs-achievement-list hs-almost-list">
-            <MyAchievementCard
-              v-for="ach in almostCumulativePaged"
-              :key="ach.id"
-              :achievement="ach"
-              :show-remaining="true"
-              @click="openCardModal"
-            />
-          </div>
-          <div v-if="almostCumulativeTotalPages > 1" class="hs-pager">
-            <button
-              type="button"
-              class="hs-pager-btn"
-              :disabled="cumulativePage <= 1"
-              @click="cumulativePage--"
-            >‹ 上一页</button>
-            <span class="hs-pager-info">第 {{ cumulativePage }} / {{ almostCumulativeTotalPages }} 页</span>
-            <button
-              type="button"
-              class="hs-pager-btn"
-              :disabled="cumulativePage >= almostCumulativeTotalPages"
-              @click="cumulativePage++"
-            >下一页 ›</button>
-          </div>
-        </section>
-
-        <section v-if="almostOneTimeList.length" class="hs-almost-group">
-          <div class="hs-almost-group-head">
-            <h3 class="hs-almost-group-title hs-almost-onetime-title">
-              🎯 一次性成就 · 还差 {{ almostOneTimeRemainTotal }} 阶段（共 {{ almostOneTimeList.length }} 个）
-            </h3>
-            <div class="hs-page-size">
-              <span class="hs-page-size-label">每页</span>
-              <button
-                v-for="sz in pageSizes"
-                :key="sz"
-                type="button"
-                :class="{ active: oneTimePageSize === sz }"
-                @click="oneTimePageSize = sz"
-              >{{ sz }}</button>
-            </div>
-          </div>
-          <div class="hs-achievement-list hs-almost-list">
-            <MyAchievementCard
-              v-for="ach in almostOneTimePaged"
-              :key="ach.id"
-              :achievement="ach"
-              :show-remaining="true"
-              @click="openCardModal"
-            />
-          </div>
-          <div v-if="almostOneTimeTotalPages > 1" class="hs-pager">
-            <button
-              type="button"
-              class="hs-pager-btn"
-              :disabled="oneTimePage <= 1"
-              @click="oneTimePage--"
-            >‹ 上一页</button>
-            <span class="hs-pager-info">第 {{ oneTimePage }} / {{ almostOneTimeTotalPages }} 页</span>
-            <button
-              type="button"
-              class="hs-pager-btn"
-              :disabled="oneTimePage >= almostOneTimeTotalPages"
-              @click="oneTimePage++"
-            >下一页 ›</button>
-          </div>
-        </section>
-
-        <p v-if="!almostCumulativeList.length && !almostOneTimeList.length" class="hs-almost-empty">
-          🎉 暂无即将完成的成就，去别处卷吧！
-        </p>
-      </div>
-
-      <!-- 我的成就-推荐冲刺：按 A/B/C/D 四档分组 -->
-      <div v-else-if="myGroupBy === 'priority'" class="hs-priority-wrap">
-        <section v-if="priorityGroups.A.length" class="hs-priority-group hs-priority-group-a">
+        <section v-if="sprintGroups.A.length" class="hs-priority-group hs-priority-group-a">
           <div class="hs-priority-group-head">
             <h3 class="hs-priority-group-title">
-              🥇 A 组 · 一次即成（零成本，{{ priorityGroups.A.length }} 个）
+              <span class="hs-priority-rank">A</span> 最接近完成 <small>{{ sprintGroups.A.length }} 个</small>
             </h3>
             <span class="hs-priority-group-tip">优先清掉，完成数涨最快</span>
           </div>
           <div class="hs-achievement-list hs-priority-list">
             <MyAchievementCard
-              v-for="ach in priorityGroups.A"
+              v-for="ach in sprintGroups.A"
               :key="ach.id"
               :achievement="ach"
               :show-remaining="true"
+              :editable="Boolean(user)"
               @click="openCardModal"
             />
           </div>
         </section>
 
-        <section v-if="priorityGroups.B.length" class="hs-priority-group hs-priority-group-b">
+        <section v-if="sprintGroups.B.length" class="hs-priority-group hs-priority-group-b">
           <div class="hs-priority-group-head">
             <h3 class="hs-priority-group-title">
-              🥈 B 组 · 还差 ≤20 次（做几把就满，{{ priorityGroups.B.length }} 个）
+              <span class="hs-priority-rank">B</span> 还差 ≤20 次 <small>{{ sprintGroups.B.length }} 个</small>
             </h3>
             <span class="hs-priority-group-tip">A 组清完后顺手做</span>
           </div>
           <div class="hs-achievement-list hs-priority-list">
             <MyAchievementCard
-              v-for="ach in priorityGroups.B"
+              v-for="ach in sprintGroups.B"
               :key="ach.id"
               :achievement="ach"
               :show-remaining="true"
+              :editable="Boolean(user)"
               @click="openCardModal"
             />
           </div>
         </section>
 
-        <section v-if="priorityGroups.C.length" class="hs-priority-group hs-priority-group-c">
+        <section v-if="sprintGroups.C.length" class="hs-priority-group hs-priority-group-c">
           <div class="hs-priority-group-head">
             <h3 class="hs-priority-group-title">
-              🥉 C 组 · 还差 21~50 次（中等投入，{{ priorityGroups.C.length }} 个）
+              <span class="hs-priority-rank">C</span> 还差 21–50 次 <small>{{ sprintGroups.C.length }} 个</small>
             </h3>
             <span class="hs-priority-group-tip">按兴致推进</span>
           </div>
           <div class="hs-achievement-list hs-priority-list">
             <MyAchievementCard
-              v-for="ach in priorityGroups.C"
+              v-for="ach in sprintGroups.C"
               :key="ach.id"
               :achievement="ach"
               :show-remaining="true"
+              :editable="Boolean(user)"
               @click="openCardModal"
             />
           </div>
         </section>
 
-        <section v-if="priorityGroups.D.length" class="hs-priority-group hs-priority-group-d">
+        <section v-if="sprintGroups.D.length" class="hs-priority-group hs-priority-group-d">
           <div class="hs-priority-group-head">
             <h3 class="hs-priority-group-title">
-              📌 D 组 · 一次性剩多阶段（优先级最低，{{ priorityGroups.D.length }} 个）
+              <span class="hs-priority-rank">D</span> 一次性剩余多阶段 <small>{{ sprintGroups.D.length }} 个</small>
             </h3>
             <span class="hs-priority-group-tip">需要多步推进，放最后</span>
           </div>
           <div class="hs-achievement-list hs-priority-list">
             <MyAchievementCard
-              v-for="ach in priorityGroups.D"
+              v-for="ach in sprintGroups.D"
               :key="ach.id"
               :achievement="ach"
               :show-remaining="true"
+              :editable="Boolean(user)"
               @click="openCardModal"
             />
           </div>
         </section>
 
-        <section v-if="priorityGroups.E.length" class="hs-priority-group hs-priority-group-e">
+        <section v-if="sprintGroups.E.length" class="hs-priority-group hs-priority-group-e">
           <div class="hs-priority-group-head">
             <h3 class="hs-priority-group-title">
-              🐢 E 组 · 累计还差 ≥51 次（长期目标，{{ priorityGroups.E.length }} 个）
+              <span class="hs-priority-rank">E</span> 累计还差 ≥51 次 <small>{{ sprintGroups.E.length }} 个</small>
             </h3>
             <span class="hs-priority-group-tip">需大量投入，慢慢磨</span>
           </div>
           <div class="hs-achievement-list hs-priority-list">
             <MyAchievementCard
-              v-for="ach in priorityGroups.E"
+              v-for="ach in sprintGroups.E"
               :key="ach.id"
               :achievement="ach"
               :show-remaining="true"
+              :editable="Boolean(user)"
               @click="openCardModal"
             />
           </div>
         </section>
 
-        <p v-if="!priorityAllList.length" class="hs-almost-empty">
-          🎉 暂无推荐冲刺目标，你已经很强了！
+        <p v-if="!sprintAllList.length" class="hs-sprint-empty">
+          当前筛选范围内没有未完成的冲刺目标。
         </p>
       </div>
 
-      <div v-if="showEmpty && !(viewMode === 'my' && (myGroupBy === 'almost' || myGroupBy === 'priority'))" class="hs-empty-state">
+      <div v-if="showEmpty && !(viewMode === 'my' && myGroupBy === 'sprint')" class="hs-empty-state">
         <p>没有符合筛选条件的成就</p>
       </div>
 
@@ -560,7 +493,6 @@ const {
   getProgressInfo,
   isStageCompleted,
   getCount,
-  isAlmostDone,
   loading: progressLoading,
   error: progressError,
   reload: reloadProgress,
@@ -799,7 +731,7 @@ const allAchievements = computed(() => {
 
 // 状态
 const viewMode = ref('expansion')
-const myGroupBy = ref('expansion') // 'expansion' | 'class'
+const myGroupBy = ref('expansion') // 'expansion' | 'class' | 'sprint'
 const currentExpansionId = ref(expansions[0].id)
 const currentClass = ref('圣骑士')
 const query = ref('')
@@ -827,15 +759,11 @@ const currentExpansion = computed(() =>
 
 const currentClassName = computed(() => currentClass.value)
 const onClassTabClick = (cls) => {
-  if (myGroupBy.value === 'almost' || myGroupBy.value === 'priority') {
-    almostClassFilter.value = cls
-  }
   currentClass.value = cls
 }
 const myViewSubLabel = computed(() => {
   const prefix = user.value ? '我的进度' : '全部成就'
-  if (myGroupBy.value === 'almost') return `${prefix} - 快完成`
-  if (myGroupBy.value === 'priority') return `${prefix} - 推荐冲刺`
+  if (myGroupBy.value === 'sprint') return `${prefix} - 冲刺推荐`
   const scope = myGroupBy.value === 'expansion' ? currentExpansion.value?.name : currentClassName.value
   return `${prefix} - ${scope}`
 })
@@ -901,8 +829,7 @@ const currentClassAchievements = computed(() => {
 
 // 我的成就模式 - 当前范围的成就列表
 const myAchievementsList = computed(() => {
-  if (myGroupBy.value === 'almost') return almostDoneList.value
-  if (myGroupBy.value === 'priority') return priorityAllList.value
+  if (myGroupBy.value === 'sprint') return sprintAllList.value
   if (myGroupBy.value === 'expansion') {
     return currentExpansionAchievements.value
   } else {
@@ -910,8 +837,13 @@ const myAchievementsList = computed(() => {
   }
 })
 
-// 推荐冲刺分组：按投入产出比分为 A/B/C/D 四档
-const priorityGroups = computed(() => {
+// 冲刺推荐视图只有这一套筛选状态，避免顶部标签和下拉框产生范围冲突。
+const sprintVersionFilter = ref('all')
+const sprintClassFilter = ref('all')
+const versionOptions = computed(() => expansions.map((e) => ({ id: e.id, name: e.name })))
+
+// 冲刺推荐分组：统一应用版本和职业范围，再按剩余投入分档。
+const sprintGroups = computed(() => {
   const A = [] // 一次即成（零成本）
   const B = [] // 累计还差 ≤20（做几把就满）
   const C = [] // 累计还差 21~50（中等投入）
@@ -919,8 +851,8 @@ const priorityGroups = computed(() => {
   const E = [] // 累计还差 ≥51（长期目标，最大投入）
 
   for (const ach of allAchievements.value) {
-    if (almostVersionFilter.value !== 'all' && ach._expansionId !== almostVersionFilter.value) continue
-    if (almostClassFilter.value !== 'all' && ach.heroClass !== almostClassFilter.value) continue
+    if (sprintVersionFilter.value !== 'all' && ach._expansionId !== sprintVersionFilter.value) continue
+    if (sprintClassFilter.value !== 'all' && ach.heroClass !== sprintClassFilter.value) continue
     const info = getProgressInfo(ach)
     if (info.completed) continue
     if (ach.type === '累计') {
@@ -953,102 +885,13 @@ const priorityGroups = computed(() => {
     E: sortByRemaining(E)
   }
 })
-const priorityAllList = computed(() => [
-  ...priorityGroups.value.A,
-  ...priorityGroups.value.B,
-  ...priorityGroups.value.C,
-  ...priorityGroups.value.D,
-  ...priorityGroups.value.E
+const sprintAllList = computed(() => [
+  ...sprintGroups.value.A,
+  ...sprintGroups.value.B,
+  ...sprintGroups.value.C,
+  ...sprintGroups.value.D,
+  ...sprintGroups.value.E
 ])
-
-// 累计成就"快完成"：所有未完成(含 0% 未启动)的累计成就，按"还差最少"排序（展示全部，前端分页）
-const almostCumulativeList = computed(() => {
-  return allAchievements.value
-    .filter((ach) => {
-      if (ach.type !== '累计') return false
-      const info = getProgressInfo(ach)
-      if (info.completed) return false
-      if (!isAlmostDone(ach)) return false
-      if (almostVersionFilter.value !== 'all' && ach._expansionId !== almostVersionFilter.value) return false
-      if (almostClassFilter.value !== 'all' && ach.heroClass !== almostClassFilter.value) return false
-      return true
-    })
-    .sort((a, b) => {
-      const ia = getProgressInfo(a)
-      const ib = getProgressInfo(b)
-      if (ia.remainingCount !== ib.remainingCount) return ia.remainingCount - ib.remainingCount
-      return ib.percent - ia.percent
-    })
-})
-
-// 累计区分页（可配置每页数量：10 / 20 / 50）
-const pageSizes = [10, 20, 50]
-const cumulativePageSize = ref(10)
-const cumulativePage = ref(1)
-const almostCumulativeTotalPages = computed(() =>
-  Math.max(1, Math.ceil(almostCumulativeList.value.length / cumulativePageSize.value))
-)
-const almostCumulativePaged = computed(() => {
-  const start = (cumulativePage.value - 1) * cumulativePageSize.value
-  return almostCumulativeList.value.slice(start, start + cumulativePageSize.value)
-})
-// 切换每页数量时回到第 1 页
-watch(cumulativePageSize, () => { cumulativePage.value = 1 })
-
-// 一次性成就"快完成"：所有未完成的(含 0% 未启动)，按还差最少排序
-const almostOneTimeList = computed(() => {
-  return allAchievements.value
-    .filter((ach) => {
-      if (ach.type === '累计') return false
-      const info = getProgressInfo(ach)
-      if (!isAlmostDone(ach)) return false
-      if (almostVersionFilter.value !== 'all' && ach._expansionId !== almostVersionFilter.value) return false
-      if (almostClassFilter.value !== 'all' && ach.heroClass !== almostClassFilter.value) return false
-      return !info.completed
-    })
-    .sort((a, b) => {
-      const ia = getProgressInfo(a)
-      const ib = getProgressInfo(b)
-      if (ia.remainingCount !== ib.remainingCount) return ia.remainingCount - ib.remainingCount
-      return ib.percent - ia.percent
-    })
-})
-
-// 一次性区分页（可配置每页数量：10 / 20 / 50）
-const oneTimePageSize = ref(10)
-const oneTimePage = ref(1)
-const almostOneTimeTotalPages = computed(() =>
-  Math.max(1, Math.ceil(almostOneTimeList.value.length / oneTimePageSize.value))
-)
-const almostOneTimePaged = computed(() => {
-  const start = (oneTimePage.value - 1) * oneTimePageSize.value
-  return almostOneTimeList.value.slice(start, start + oneTimePageSize.value)
-})
-// 切换每页数量时回到第 1 页
-watch(oneTimePageSize, () => { oneTimePage.value = 1 })
-
-// 快完成视图：版本 / 职业 筛选
-const almostVersionFilter = ref('all')
-const almostClassFilter = ref('all')
-const versionOptions = computed(() => expansions.map((e) => ({ id: e.id, name: e.name })))
-// 筛选条件变化时回到第 1 页
-watch([almostVersionFilter, almostClassFilter], () => {
-  cumulativePage.value = 1
-  oneTimePage.value = 1
-})
-
-// 合并（供 myAchievementsList / 统计使用）
-const almostDoneList = computed(() => [...almostCumulativeList.value, ...almostOneTimeList.value])
-
-const almostCumulativeRemainTotal = computed(() =>
-  almostCumulativeList.value.reduce((sum, a) => sum + (getProgressInfo(a).remainingCount || 0), 0)
-)
-const almostOneTimeRemainTotal = computed(() =>
-  almostOneTimeList.value.reduce((sum, a) => sum + (getProgressInfo(a).remainingCount || 0), 0)
-)
-
-// 快完成统计
-const almostStats = computed(() => ({ count: almostDoneList.value.length }))
 
 // 展示的成就列表
 const displayAchievements = computed(() => {
@@ -1168,13 +1011,9 @@ const resetFilters = () => {
   selectedStatus.value = viewMode.value === 'my' ? '未完成' : 'all'
 }
 
-const resetViewState = ({ resetPages = false, scroll = false } = {}) => {
+const resetViewState = ({ scroll = false } = {}) => {
   resetFilters()
   closeModal()
-  if (resetPages) {
-    cumulativePage.value = 1
-    oneTimePage.value = 1
-  }
   if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
@@ -1185,7 +1024,7 @@ watch(viewMode, () => {
 })
 
 watch(myGroupBy, () => {
-  resetViewState({ resetPages: true, scroll: true })
+  resetViewState({ scroll: true })
   resetClassViews()
 })
 
@@ -1230,8 +1069,7 @@ const closeModal = () => {
 }
 
 const getClassStyle = (heroClass) => ({
-  borderColor: classColors[heroClass] || '#8b7355',
-  backgroundColor: `${classColors[heroClass] || '#8b7355'}10`
+  '--hs-class-color': classColors[heroClass] || '#8b7355'
 })
 
 const getClassBadgeStyle = (heroClass) => ({
@@ -1241,8 +1079,7 @@ const getClassBadgeStyle = (heroClass) => ({
 
 const expansionColor = '#6b5b4f'
 const getExpansionStyle = () => ({
-  borderColor: expansionColor,
-  backgroundColor: `${expansionColor}08`
+  '--hs-class-color': expansionColor
 })
 const getExpansionBadgeStyle = () => ({
   backgroundColor: expansionColor,
@@ -1259,19 +1096,19 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
   flex-wrap: wrap;
   gap: 8px;
   margin: 12px 0 4px;
-  padding: 10px 12px;
-  background: #faf7f2;
-  border: 1px solid #efe7da;
-  border-radius: 10px;
+  padding: 12px 14px;
+  background: rgba(15, 31, 43, 0.72);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 12px;
 }
 .hs-export-label {
   font-size: 13px;
   font-weight: 600;
-  color: #6b5b4f;
+  color: #94a3b8;
 }
 .hs-export-hint {
   font-size: 12px;
-  color: #b08968;
+  color: #94a3b8;
 }
 .hs-pass {
   display: inline-flex;
@@ -1280,26 +1117,32 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
   margin-left: auto;
   font-size: 13px;
   font-weight: 600;
-  color: #6b5b4f;
+  color: #cbd5e1;
 }
 .hs-pass-select {
-  padding: 5px 8px;
+  min-height: 44px;
+  padding: 6px 30px 6px 10px;
   font-size: 13px;
-  border: 1px solid #e3d8c7;
-  border-radius: 8px;
-  background: #fff;
-  color: #4a3f37;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 9px;
+  background: rgba(2, 6, 23, 0.3);
+  color: #f8fafc;
   cursor: pointer;
 }
+.hs-pass-select option {
+  color: #0f172a;
+  background: #fff;
+}
 .hs-pass-select:focus {
-  outline: none;
-  border-color: #c9a86a;
+  outline: 3px solid rgba(251, 191, 36, 0.45);
+  outline-offset: 2px;
+  border-color: #fbbf24;
 }
 .hs-xp-line {
   margin-top: 2px;
 }
 .hs-xp-line b {
-  color: #c9881f;
+  color: #fbbf24;
 }
 .hs-btn[disabled] {
   opacity: 0.55;
