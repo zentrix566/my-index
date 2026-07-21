@@ -2509,7 +2509,7 @@ a.content-card:hover {
 .hs-modal-cards {
   display: flex;
   flex-wrap: wrap;
-  gap: 16px;
+  gap: 18px;
   justify-content: center;
 }
 
@@ -2522,20 +2522,20 @@ a.content-card:hover {
 
 .hs-modal-card-item img {
   display: block;
-  max-width: 260px;
+  max-width: 320px;
   width: 100%;
   height: auto;
-  border-radius: 8px;
+  border-radius: 10px;
   box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
 }
 
 .hs-no-image {
-  width: 260px;
-  height: 360px;
+  width: 320px;
+  height: 440px;
   display: grid;
   place-items: center;
   border: 2px dashed #ccc;
-  border-radius: 8px;
+  border-radius: 10px;
   color: #999;
   font-size: 13px;
   margin: 0;

@@ -131,6 +131,8 @@ export function useAchievementProgress(progressRef) {
   function getStats(achievements) {
     let total = 0
     let completed = 0
+    let totalAchievements = 0
+    let completedAchievements = 0
     let totalPoints = 0
     let earnedPoints = 0
     let totalXp = 0
@@ -139,6 +141,8 @@ export function useAchievementProgress(progressRef) {
     for (const ach of achievements) {
       if (!ach.stages) continue
       const achCompleted = isAchievementCompleted(ach)
+      totalAchievements++
+      if (achCompleted) completedAchievements++
       for (let i = 0; i < ach.stages.length; i++) {
         const stage = ach.stages[i]
         total++
@@ -157,6 +161,8 @@ export function useAchievementProgress(progressRef) {
     return {
       total,
       completed,
+      totalAchievements,
+      completedAchievements,
       totalPoints,
       earnedPoints,
       totalXp,

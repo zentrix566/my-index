@@ -1348,9 +1348,11 @@ const overviewRemaining = computed(() => {
 // 数值均来源于本地统计（安全整数），故用 v-html 包裹 .hs-num 高亮
 const overviewSummaryHtml = computed(() => {
   const stats = overviewStats.value
-  const total = stats.total
-  const completed = stats.completed
-  const remaining = total - completed
+  // 「个成就」行用成就单位（totalAchievements / completedAchievements），
+  // 不能用 stats.total（那是阶段数），否则会出现「15/31 个成就」这类单位错配。
+  const totalAch = stats.totalAchievements
+  const completedAch = stats.completedAchievements
+  const remaining = totalAch - completedAch
   const { countRemain, pointRemain } = overviewRemaining.value
   // 通行证经验加成：已获得/总经验均按 (1+加成) 放大（成就值不受加成影响）
   const earnedXp = Math.round(stats.earnedXp * (1 + passBonus.value))
@@ -1364,7 +1366,7 @@ const overviewSummaryHtml = computed(() => {
   if (pointRemain > 0) cumParts.push(`累计-点数还差 ${n(pointRemain)} 点`)
   const cumClause = cumParts.length ? `剩余成就中，${cumParts.join('，')}。` : ''
   const line1 =
-    `已完成 ${n(`${completed}/${total}`)} 个成就，剩余 ${n(remaining)} 个成就；` + cumClause
+    `已完成 ${n(`${completedAch}/${totalAch}`)} 个成就，剩余 ${n(remaining)} 个成就；` + cumClause
   const line2 =
     `已获得经验值 ${n(`${earnedXp}/${totalXp}`)}，剩余可获得经验值 ${n(remainXp)}；` +
     `已获得成就值 ${n(`${stats.earnedPoints}/${stats.totalPoints}`)}，剩余可获得成就值 ${n(remainPts)} 点。`

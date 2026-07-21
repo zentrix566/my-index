@@ -120,7 +120,7 @@ function save() {
 .epm-modal {
   position: relative;
   width: 100%;
-  max-width: 440px;
+  max-width: 600px;
   background: #fff;
   border-radius: 14px;
   padding: 28px 26px;
@@ -233,14 +233,16 @@ function save() {
 }
 .epm-cards-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
-  gap: 12px;
+  grid-template-columns: repeat(auto-fill, minmax(164px, 1fr));
+  gap: 14px;
+  justify-items: center;
 }
 .epm-card-item {
   text-align: center;
 }
 .epm-card-img {
   width: 100%;
+  max-width: 220px;
   border-radius: 8px;
   display: block;
 }
@@ -287,7 +289,7 @@ function save() {
   backdrop-filter: blur(8px);
 }
 .epm-modal {
-  max-width: 480px;
+  max-width: 600px;
   padding: 30px;
   border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 18px;

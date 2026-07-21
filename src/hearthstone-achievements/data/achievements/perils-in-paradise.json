@@ -118,11 +118,7 @@
       "heroClass": "恶魔猎手",
       "type": "累计",
       "difficulty": "难",
-      "relatedCards": [
-        "飞行员帕奇斯",
-        "伞降咒符",
-        "惊险悬崖"
-      ],
+      "relatedCards": [],
       "recommendedDecks": [],
       "stages": [
         {

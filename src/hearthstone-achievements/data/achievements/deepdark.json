@@ -21,12 +21,7 @@
       "heroClass": "圣骑士",
       "type": "累计",
       "difficulty": "难",
-      "relatedCards": [
-        "明澈圣契",
-        "神性圣契",
-        "信仰圣契",
-        "伊瑞尔，希望信标"
-      ],
+      "relatedCards": [],
       "recommendedDecks": [],
       "stages": [
         {
@@ -49,9 +44,7 @@
       "heroClass": "圣骑士",
       "type": "累计",
       "difficulty": "难",
-      "relatedCards": [
-        "回收地堡"
-      ],
+      "relatedCards": [],
       "recommendedDecks": [
         {
           "name": "营地推荐卡组",
@@ -136,12 +129,7 @@
       "heroClass": "恶魔猎手",
       "type": "一次性",
       "difficulty": "难",
-      "relatedCards": [
-        "蒂尔德拉，反抗军头目",
-        "紧急会议",
-        "沃罗尼招募官",
-        "猎头"
-      ],
+      "relatedCards": [],
       "recommendedDecks": [],
       "stages": [
         {
@@ -419,11 +407,7 @@
       "heroClass": "潜行者",
       "type": "一次性",
       "difficulty": "难",
-      "relatedCards": [
-        "星舰详图",
-        "引力置换器",
-        "四处搜刮的造舰师"
-      ],
+      "relatedCards": [],
       "recommendedDecks": [],
       "stages": [
         {
@@ -503,9 +487,7 @@
       "heroClass": "牧师",
       "type": "一次性",
       "difficulty": "难",
-      "relatedCards": [
-        "母舰"
-      ],
+      "relatedCards": [],
       "recommendedDecks": [
         {
           "name": "营地推荐卡组",
