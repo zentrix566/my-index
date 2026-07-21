@@ -288,6 +288,9 @@
             <button type="button" class="hs-btn hs-btn-ghost" @click="collapseAllSections">收起全部</button>
           </div>
         </div>
+        <p v-if="isMyAddedVersion" class="hs-overview-note">
+          当前浏览的是「更多版本」中的新增版本，仅用于查看成就，<strong>不计入「我的成就」统计</strong>（下方进度始终反映原有 9 个版本）。
+        </p>
         <div class="hs-overview-progress">
           <div class="hs-overview-progress-fill" :style="{ width: overviewStats.percentage + '%' }"></div>
           <span class="hs-overview-progress-label">{{ overviewStats.percentage }}%</span>
@@ -1084,9 +1087,15 @@ const classViewSummaries = computed(() => {
   return map
 })
 
+// 我的成就 - 按版本：若选中的是「更多版本」里的新增版本，仅作浏览，不计入统计
+// （统计始终反映原有 9 个版本，避免新增版本污染「我的成就」完成度）。
+const isMyAddedVersion = computed(
+  () => viewMode.value === 'my' && myGroupBy.value === 'expansion' && addedExpansionIdSet.has(currentExpansionId.value)
+)
 // 总览面板作用范围：按版本=当前版本；按职业=当前职业；待完成清单=全部 9 版本成就
 const overviewScope = computed(() => {
-  if (viewMode.value === 'my' && myGroupBy.value === 'expansion') return currentExpansionAchievements.value
+  if (viewMode.value === 'my' && myGroupBy.value === 'expansion')
+    return isMyAddedVersion.value ? classSprintAchievements.value : currentExpansionAchievements.value
   if (viewMode.value === 'my' && myGroupBy.value === 'class') return currentClassAchievements.value
   if (viewMode.value === 'my' && myGroupBy.value === 'sprint') return classSprintAchievements.value
   return []
@@ -1502,6 +1511,20 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
   color: var(--hs-text);
   font-size: 17px;
   font-weight: 700;
+}
+
+.hs-overview-note {
+  margin: 0 0 10px;
+  padding: 8px 12px;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #8a6d3b;
+  background: #fff8e6;
+  border: 1px solid #f0d9a8;
+  border-radius: 10px;
+}
+.hs-overview-note strong {
+  color: #a9791f;
 }
 
 .hs-export-bar {
