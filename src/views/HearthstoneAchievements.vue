@@ -694,7 +694,10 @@ async function saveProgress(payload) {
         progress: { [payload.id]: { stages: payload.stages, count: payload.count } }
       })
     })
-    if (!resp.ok) throw new Error('保存失败')
+    if (!resp.ok) {
+      const result = await resp.json().catch(() => ({}))
+      throw new Error(result.error || '保存失败')
+    }
     await reloadProgress()
     showToast('success', '保存成功')
     editVisible.value = false

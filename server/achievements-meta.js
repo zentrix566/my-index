@@ -36,7 +36,8 @@ function scanDir(dir) {
           map[a.id] = {
             name: a.name || a.id,
             version,
-            heroClass: a.heroClass || ''
+            heroClass: a.heroClass || '',
+            stageCount: Array.isArray(a.stages) ? a.stages.length : 0
           }
         }
       }
@@ -62,6 +63,11 @@ const META = loadMeta()
 /** 按成就 ID 取 { name, version, heroClass }；未知 ID 回退为 id 本身，避免写入报错 */
 export function getAchievementMeta(id) {
   return META[id] || { name: id, version: '', heroClass: '' }
+}
+
+/** 仅用于写入校验：未知 ID 不应以“回退元数据”的形式进入数据库。 */
+export function hasAchievementMeta(id) {
+  return Object.hasOwn(META, id)
 }
 
 /** 全部元数据（调试用） */

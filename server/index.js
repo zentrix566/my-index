@@ -14,6 +14,7 @@ import {
   getUserByUsername,
   transaction
 } from './db.js'
+import { getAchievementMeta, hasAchievementMeta } from './achievements-meta.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const isProd = process.env.NODE_ENV === 'production'
@@ -269,14 +270,23 @@ app.put('/api/achievements/progress', requireAuth, async (req, res) => {
         if (typeof achId !== 'string' || !/^[a-z0-9_-]+$/i.test(achId)) {
           throw new Error(`非法成就 ID: ${achId}`)
         }
+        if (!hasAchievementMeta(achId)) {
+          throw new Error(`未知成就 ID: ${achId}`)
+        }
         if (!prog || typeof prog !== 'object') throw new Error(`进度格式错误: ${achId}`)
-        const count = Number(prog.count) || 0
-        if (!Number.isFinite(count) || count < 0) throw new Error(`非法 count: ${achId}`)
+        if (typeof prog.count !== 'number' || !Number.isSafeInteger(prog.count) || prog.count < 0) {
+          throw new Error(`非法 count: ${achId}`)
+        }
+        const count = prog.count
         const stages = prog.stages
         if (!stages || typeof stages !== 'object' || Array.isArray(stages)) {
           throw new Error(`非法 stages: ${achId}`)
         }
-        for (const v of Object.values(stages)) {
+        const { stageCount } = getAchievementMeta(achId)
+        for (const [stageKey, v] of Object.entries(stages)) {
+          if (!/^(0|[1-9]\d*)$/.test(stageKey) || Number(stageKey) >= stageCount) {
+            throw new Error(`非法 stage 编号: ${achId}/${stageKey}`)
+          }
           if (typeof v !== 'boolean') throw new Error(`非法 stage 值: ${achId}`)
         }
         await upsertProgress(req.userId, achId, stages, count, client)
