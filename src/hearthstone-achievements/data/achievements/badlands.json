@@ -945,6 +945,10 @@
       "id": "bl-034",
       "name": "深岩断裂带",
       "heroClass": "双职业",
+      "dualClasses": [
+        "萨满祭司",
+        "战士"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -975,6 +979,10 @@
       "id": "bl-035",
       "name": "岩形物语",
       "heroClass": "双职业",
+      "dualClasses": [
+        "猎人",
+        "法师"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -1029,6 +1037,10 @@
           "points": 20,
           "quota": 120
         }
+      ],
+      "dualClasses": [
+        "德鲁伊",
+        "牧师"
       ]
     },
     {
@@ -1059,6 +1071,10 @@
           "points": 20,
           "quota": 60
         }
+      ],
+      "dualClasses": [
+        "恶魔猎手",
+        "战士"
       ]
     },
     {
@@ -1089,6 +1105,10 @@
           "points": 20,
           "quota": 120
         }
+      ],
+      "dualClasses": [
+        "法师",
+        "术士"
       ]
     },
     {
@@ -1119,6 +1139,10 @@
           "points": 20,
           "quota": 12
         }
+      ],
+      "dualClasses": [
+        "牧师",
+        "潜行者"
       ]
     },
     {
@@ -1149,6 +1173,10 @@
           "points": 20,
           "quota": 80
         }
+      ],
+      "dualClasses": [
+        "死亡骑士",
+        "猎人"
       ]
     },
     {
@@ -1179,6 +1207,10 @@
           "points": 20,
           "quota": 8
         }
+      ],
+      "dualClasses": [
+        "恶魔猎手",
+        "潜行者"
       ]
     },
     {
@@ -1209,6 +1241,10 @@
           "points": 20,
           "quota": 3
         }
+      ],
+      "dualClasses": [
+        "死亡骑士",
+        "圣骑士"
       ]
     },
     {
@@ -1239,6 +1275,10 @@
           "points": 20,
           "quota": 50
         }
+      ],
+      "dualClasses": [
+        "圣骑士",
+        "萨满祭司"
       ]
     },
     {
@@ -1269,6 +1309,10 @@
           "points": 20,
           "quota": 80
         }
+      ],
+      "dualClasses": [
+        "德鲁伊",
+        "术士"
       ]
     },
     {

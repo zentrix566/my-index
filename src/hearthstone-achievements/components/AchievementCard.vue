@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { difficultyColors } from '../utils/achievements.js'
+import { difficultyColors, getClassName } from '../utils/achievements.js'
 import { useAchievementProgress } from '../composables/useAchievementProgress.js'
 
 const props = defineProps({
@@ -64,7 +64,7 @@ const copyDeckCode = async (deck, event) => {
         </h3>
         <div class="hs-card-badges">
           <span class="hs-badge hs-version-badge">{{ achievement._expansionName }}</span>
-          <span class="hs-badge hs-class-badge">{{ achievement.heroClass }}</span>
+          <span class="hs-badge hs-class-badge">{{ getClassName(achievement) }}</span>
           <span
             class="hs-badge hs-type-badge"
             :class="achievement.type === '一次性' ? 'hs-one-time' : 'hs-cumulative'"

@@ -7,7 +7,7 @@
 
       <p class="epm-eyebrow">更新成就进度</p>
       <h3 id="epm-title" class="epm-title">{{ achievement?.name }}</h3>
-      <p class="epm-meta">{{ achievement?.heroClass }} · {{ achievement?.difficulty }} · {{ achievement?.type }}</p>
+      <p class="epm-meta">{{ achievement?.dualClasses ? achievement.dualClasses.join(' / ') : achievement?.heroClass }} · {{ achievement?.difficulty }} · {{ achievement?.type }}</p>
       <p v-if="achievement?.description" class="epm-desc">{{ achievement.description }}</p>
 
       <!-- 关联卡牌（与浏览卡牌弹窗一致） -->

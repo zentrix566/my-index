@@ -284,6 +284,7 @@
       "id": "cot-012",
       "name": "灌注2：末世之战",
       "heroClass": "双职业",
+      "dualClasses": ["死亡骑士", "潜行者"],
       "type": "一次性",
       "difficulty": "难",
       "relatedCards": [],
@@ -306,6 +307,7 @@
       "id": "cot-013",
       "name": "脱骨连击",
       "heroClass": "双职业",
+      "dualClasses": ["潜行者", "萨满祭司"],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -330,6 +332,7 @@
       "id": "cot-014",
       "name": "完四大吉",
       "heroClass": "双职业",
+      "dualClasses": ["牧师", "萨满祭司"],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -354,6 +357,7 @@
       "id": "cot-015",
       "name": "无用无为",
       "heroClass": "双职业",
+      "dualClasses": ["法师", "牧师"],
       "type": "一次性",
       "difficulty": "难",
       "relatedCards": [
@@ -378,6 +382,7 @@
       "id": "cot-016",
       "name": "深受打冻",
       "heroClass": "双职业",
+      "dualClasses": ["法师", "战士"],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -402,6 +407,7 @@
       "id": "cot-017",
       "name": "死不死随你",
       "heroClass": "双职业",
+      "dualClasses": ["术士", "战士"],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -426,6 +432,7 @@
       "id": "cot-018",
       "name": "空爪之时",
       "heroClass": "双职业",
+      "dualClasses": ["猎人", "术士"],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -450,6 +457,7 @@
       "id": "cot-019",
       "name": "黑暗时间线",
       "heroClass": "双职业",
+      "dualClasses": ["猎人", "圣骑士"],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -474,6 +482,7 @@
       "id": "cot-020",
       "name": "1刻千金",
       "heroClass": "双职业",
+      "dualClasses": ["德鲁伊", "圣骑士"],
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
@@ -498,6 +507,7 @@
       "id": "cot-021",
       "name": "顽强生存",
       "heroClass": "双职业",
+      "dualClasses": ["德鲁伊", "恶魔猎手"],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -522,6 +532,7 @@
       "id": "cot-022",
       "name": "英雄之影",
       "heroClass": "双职业",
+      "dualClasses": ["死亡骑士", "恶魔猎手"],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [

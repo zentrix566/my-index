@@ -599,7 +599,7 @@ import { computed, ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
 import { expansions, originalExpansions, addedExpansions } from '../hearthstone-achievements/data/expansions.js'
-import { classColors, getClassOrder, groupByClass } from '../hearthstone-achievements/utils/achievements.js'
+import { classColors, getClassOrder, groupByClass, matchesClass, getClassName } from '../hearthstone-achievements/utils/achievements.js'
 import { useAchievementProgress } from '../hearthstone-achievements/composables/useAchievementProgress.js'
 import { useAuth } from '../auth/useAuth.js'
 import EditProgressModal from '../hearthstone-achievements/components/EditProgressModal.vue'
@@ -710,7 +710,7 @@ function showAchievementCelebration(ach) {
     xp += s.xpReward || 0
     pts += s.points || 0
   }
-  const sub = [ach.heroClass, ach.difficulty, xp || pts ? `${xp} XP · ${pts} 点` : '']
+  const sub = [getClassName(ach), ach.difficulty, xp || pts ? `${xp} XP · ${pts} 点` : '']
     .filter(Boolean)
     .join(' · ')
   celebration.value = { show: true, name: ach.name, sub }
@@ -880,7 +880,7 @@ function buildExportRows() {
     const completed = isAchievementCompleted(ach)
     rows.push({
       '版本': ach._expansionName,
-      '职业': ach.heroClass,
+      '职业': getClassName(ach),
       '成就名称': ach.name,
       '成就详情': (ach.stages || []).map((s, i) => `阶段${i + 1}：${s.description || ''}`).join(' | '),
       '目前进度': completed ? '已完成' : nextTodoText(ach),
@@ -1054,8 +1054,8 @@ const metrics = [
 ]
 const statuses = ['未完成', '已完成']
 
-// 所有职业列表（保持炉石原顺序）
-const allClasses = getClassOrder().filter(c => c !== '双职业' && c !== '中立').concat(['双职业', '中立'])
+// 所有职业列表（保持炉石原顺序，不含双职业——双职业成就通过 dualClasses 分配到对应职业）
+const allClasses = getClassOrder().filter(c => c !== '双职业' && c !== '中立').concat(['中立'])
 const classOrder = getClassOrder()
 
 // 当前版本
@@ -1164,7 +1164,7 @@ const overviewCompletedCount = computed(() =>
 
 // 当前职业的成就（按职业浏览模式）
 const currentClassAchievements = computed(() => {
-  return classSprintAchievements.value.filter((ach) => ach.heroClass === currentClass.value)
+  return classSprintAchievements.value.filter((ach) => matchesClass(ach, currentClass.value))
 })
 
 // 我的成就模式 - 当前范围的成就列表
@@ -1173,7 +1173,7 @@ const myAchievementsList = computed(() => {
   if (myGroupBy.value === 'expansion') {
     return currentExpansionAchievements.value
   } else {
-    return classSprintAchievements.value.filter((ach) => ach.heroClass === currentClass.value)
+    return classSprintAchievements.value.filter((ach) => matchesClass(ach, currentClass.value))
   }
 })
 
@@ -1216,7 +1216,7 @@ const sprintGroups = computed(() => {
 
   for (const ach of classSprintAchievements.value) {
     if (sprintVersionFilter.value !== 'all' && ach._expansionId !== sprintVersionFilter.value) continue
-    if (sprintClassFilter.value !== 'all' && ach.heroClass !== sprintClassFilter.value) continue
+    if (sprintClassFilter.value !== 'all' && !matchesClass(ach, sprintClassFilter.value)) continue
     if (!matchSprintMetric(ach)) continue
     const info = getProgressInfo(ach)
     if (info.completed) continue
@@ -1268,6 +1268,9 @@ const getAvailableClassesForList = (list) => {
   const classes = new Set()
   for (const ach of list) {
     classes.add(ach.heroClass || '中立')
+    if (ach.dualClasses) {
+      ach.dualClasses.forEach(c => classes.add(c))
+    }
   }
   return getClassOrder().filter((c) => classes.has(c))
 }
@@ -1284,7 +1287,7 @@ const filterAvailableClasses = computed(() => {
 const filterAchievements = (list) => {
   const text = query.value.trim().toLowerCase()
   return list.filter((ach) => {
-    if (selectedClass.value !== 'all' && ach.heroClass !== selectedClass.value) return false
+    if (selectedClass.value !== 'all' && !matchesClass(ach, selectedClass.value)) return false
     if (selectedDifficulty.value !== 'all' && ach.difficulty !== selectedDifficulty.value) return false
     // 指标筛选：一次性 / 累计·次数 / 累计·点数
     if (selectedMetric.value !== 'all') {
@@ -1301,7 +1304,7 @@ const filterAchievements = (list) => {
       if (selectedStatus.value === '未完成' && completed) return false
     }
     if (text) {
-      const targets = [ach.name, ach.heroClass, ...(ach.relatedCards || []), ...ach.stages.map((s) => s.description)]
+      const targets = [ach.name, getClassName(ach), ...(ach.relatedCards || []), ...ach.stages.map((s) => s.description)]
       return targets.filter(Boolean).some((v) => String(v).toLowerCase().includes(text))
     }
     return true

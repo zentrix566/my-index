@@ -67,3 +67,26 @@ export function groupByClass(achievements) {
 export function getClassOrder() {
   return classOrderList;
 }
+
+/**
+ * 判断成就是否属于某职业（含双职业拆分）
+ * 双职业成就通过 dualClasses 字段分配到对应职业，heroClass 仍保留 "双职业"
+ * @param {Object} ach - 成就对象
+ * @param {string} cls - 职业名
+ * @returns {boolean}
+ */
+export function matchesClass(ach, cls) {
+  if (ach.heroClass === cls) return true;
+  if (ach.dualClasses && ach.dualClasses.includes(cls)) return true;
+  return false;
+}
+
+/**
+ * 获取成就的职业显示文本（双职业显示为 "职业A / 职业B"）
+ * @param {Object} ach - 成就对象
+ * @returns {string}
+ */
+export function getClassName(ach) {
+  if (ach.dualClasses) return ach.dualClasses.join(" / ");
+  return ach.heroClass || "中立";
+}
