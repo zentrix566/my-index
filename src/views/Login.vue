@@ -148,21 +148,21 @@ function toggle() {
   display: grid;
   place-items: center;
   padding: 48px 24px;
-  color: #f8fafc;
+  color: #0f172a;
   background:
-    radial-gradient(circle at 20% 10%, rgba(21, 128, 61, 0.24), transparent 30%),
-    radial-gradient(circle at 90% 85%, rgba(217, 119, 6, 0.14), transparent 30%),
-    #0f172a;
+    radial-gradient(circle at 20% 10%, rgba(21, 128, 61, 0.10), transparent 30%),
+    radial-gradient(circle at 90% 85%, rgba(217, 119, 6, 0.08), transparent 30%),
+    #f1f5f9;
 }
 .auth-card {
   position: relative;
   width: 100%;
   max-width: 440px;
   padding: 34px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(15, 23, 42, 0.08);
   border-radius: 20px;
-  background: rgba(15, 31, 43, 0.9);
-  box-shadow: 0 24px 70px rgba(2, 6, 23, 0.38);
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: 0 24px 70px rgba(15, 23, 42, 0.14);
   backdrop-filter: blur(18px);
 }
 .auth-back {
@@ -170,13 +170,13 @@ function toggle() {
   align-items: center;
   gap: 5px;
   margin-bottom: 30px;
-  color: #94a3b8;
+  color: #64748b;
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
 }
 .auth-back:hover {
-  color: #fbbf24;
+  color: #15803d;
 }
 .auth-mark {
   display: grid;
@@ -184,14 +184,14 @@ function toggle() {
   height: 54px;
   margin-bottom: 18px;
   place-items: center;
-  border: 1px solid rgba(251, 191, 36, 0.28);
+  border: 1px solid rgba(251, 191, 36, 0.4);
   border-radius: 16px;
-  color: #fbbf24;
-  background: linear-gradient(145deg, rgba(217, 119, 6, 0.22), rgba(21, 128, 61, 0.2));
+  color: #d97706;
+  background: linear-gradient(145deg, rgba(217, 119, 6, 0.12), rgba(21, 128, 61, 0.1));
 }
 .auth-eyebrow {
   margin: 0 0 5px;
-  color: #4ade80;
+  color: #16a34a;
   font-size: 11px;
   font-weight: 800;
   letter-spacing: 0.12em;
@@ -199,13 +199,13 @@ function toggle() {
 }
 .auth-title {
   margin: 0;
-  color: #f8fafc;
+  color: #0f172a;
   font-size: 28px;
   line-height: 1.2;
 }
 .auth-sub {
   margin: 8px 0 26px;
-  color: #94a3b8;
+  color: #64748b;
   font-size: 14px;
 }
 .auth-form {
@@ -216,7 +216,7 @@ function toggle() {
 .auth-field {
   display: grid;
   gap: 7px;
-  color: #cbd5e1;
+  color: #334155;
   font-size: 13px;
   font-weight: 650;
 }
@@ -225,10 +225,10 @@ function toggle() {
   align-items: center;
   min-height: 48px;
   padding: 0 13px;
-  border: 1px solid rgba(148, 163, 184, 0.26);
+  border: 1px solid rgba(15, 23, 42, 0.16);
   border-radius: 11px;
-  color: #64748b;
-  background: rgba(2, 6, 23, 0.28);
+  color: #475569;
+  background: #ffffff;
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
 }
 .auth-input-shell:focus-within {
@@ -242,18 +242,18 @@ function toggle() {
   padding: 0 10px;
   border: 0;
   outline: 0;
-  color: #f8fafc;
+  color: #0f172a;
   background: transparent;
   font-size: 14px;
 }
 .auth-input::placeholder {
-  color: #64748b;
+  color: #94a3b8;
 }
 .auth-visibility {
   min-width: 44px;
   min-height: 36px;
   border: 0;
-  color: #fbbf24;
+  color: #d97706;
   background: transparent;
   font-size: 12px;
   font-weight: 700;
@@ -262,10 +262,10 @@ function toggle() {
 .auth-error {
   margin: 0;
   padding: 10px 12px;
-  border: 1px solid rgba(248, 113, 113, 0.28);
+  border: 1px solid rgba(239, 68, 68, 0.3);
   border-radius: 9px;
-  color: #fecaca;
-  background: rgba(127, 29, 29, 0.28);
+  color: #b91c1c;
+  background: #fef2f2;
   font-size: 13px;
 }
 .auth-btn {
@@ -305,14 +305,14 @@ function toggle() {
 .auth-switch {
   margin: 22px 0 0;
   text-align: center;
-  color: #94a3b8;
+  color: #64748b;
   font-size: 13px;
 }
 .auth-switch button {
   min-height: 44px;
   padding: 0 6px;
   border: 0;
-  color: #fbbf24;
+  color: #d97706;
   background: transparent;
   cursor: pointer;
   font-weight: 700;
@@ -321,7 +321,7 @@ function toggle() {
 .auth-visibility:focus-visible,
 .auth-btn:focus-visible,
 .auth-switch button:focus-visible {
-  outline: 3px solid rgba(251, 191, 36, 0.65);
+  outline: 3px solid rgba(21, 128, 61, 0.5);
   outline-offset: 3px;
 }
 @media (max-width: 520px) {

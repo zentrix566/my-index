@@ -1,12 +1,18 @@
 <script setup>
-import { ref } from 'vue'
+import { ref, computed } from 'vue'
 import { difficultyColors } from '../utils/achievements.js'
+import { useAchievementProgress } from '../composables/useAchievementProgress.js'
 
 const props = defineProps({
   achievement: { type: Object, required: true }
 })
 
 const emit = defineEmits(['click'])
+
+const { getMetric } = useAchievementProgress()
+
+// 累计成就的细分单位：点数 / 次数（用于卡片徽标）
+const metric = computed(() => getMetric(props.achievement))
 
 const copiedDeckName = ref('')
 
@@ -53,11 +59,13 @@ const copyDeckCode = async (deck, event) => {
           <span v-if="isClickable(achievement)" class="hs-card-hint">点击查看卡牌</span>
         </h3>
         <div class="hs-card-badges">
+          <span class="hs-badge hs-version-badge">{{ achievement._expansionName }}</span>
+          <span class="hs-badge hs-class-badge">{{ achievement.heroClass }}</span>
           <span
             class="hs-badge hs-type-badge"
             :class="achievement.type === '一次性' ? 'hs-one-time' : 'hs-cumulative'"
           >
-            {{ achievement.type }}
+            {{ achievement.type === '一次性' ? '一次性' : (metric === 'points' ? '点数' : '次数') }}
           </span>
           <span class="hs-badge hs-difficulty-badge" :style="getDifficultyStyle(achievement.difficulty)">
             {{ achievement.difficulty }}

@@ -5,6 +5,13 @@
  */
 import { ref, computed } from 'vue'
 
+// 累计成就的度量单位判定：点数型（造成/获得 X 点伤害、攻击力、护甲、生命等）或次数型（使用 X 次/张）。
+// 命中以下模式即视为「点数」，否则为「次数」。成就 JSON 也可显式写 metric: 'count' | 'points' 覆盖自动判定。
+const POINTS_PATTERN = /点\s*(伤害|攻击力|攻击|护甲|生命值|生命|治疗|法力值?|荣誉点数)|造成[^，。；]*点|获得[^，。；]*点|吸取[^，。；]*点|消耗[^，。；]*点|总计[^，。；]*点|受到[^，。；]*点|抵消[^，。；]*点/
+function detectCumulativePoints(achievement) {
+  return (achievement.stages || []).some((s) => POINTS_PATTERN.test(s.description || ''))
+}
+
 // 全局单例：当前登录用户的进度
 const progressData = ref({})
 const loaded = ref(false)
@@ -88,6 +95,26 @@ export function useAchievementProgress(progressRef) {
     const ach = progress.value[achievement.id]
     if (!ach || ach.count == null) return null
     return ach.count
+  }
+
+  /**
+   * 累计成就的度量单位：'count'（次数）或 'points'（点数）。
+   * 优先使用成就数据里的显式 metric 字段；否则按描述自动判定。
+   */
+  function getMetric(achievement) {
+    if (achievement.metric === 'count' || achievement.metric === 'points') return achievement.metric
+    if (achievement.type !== '累计') return null
+    return detectCumulativePoints(achievement) ? 'points' : 'count'
+  }
+
+  /**
+   * 累计成就的显示单位：点数型为「点」，次数型为「次」。
+   */
+  function getUnit(achievement) {
+    const m = getMetric(achievement)
+    if (m === 'points') return '点'
+    if (m === 'count') return '次'
+    return ''
   }
 
   /**
@@ -183,7 +210,7 @@ export function useAchievementProgress(progressRef) {
         percent: Math.round(percent),
         hasCount: true,
         remainingCount: nextRemaining ?? 0,
-        remainingText: nextRemaining != null ? `还差 ${nextRemaining} 次` : '',
+        remainingText: nextRemaining != null ? `剩余 ${nextRemaining} ${getUnit(achievement)}` : '',
         doneStages,
         totalStages: total
       }
@@ -238,6 +265,8 @@ export function useAchievementProgress(progressRef) {
     getStats,
     getAchievementXp,
     getCount,
+    getMetric,
+    getUnit,
     getProgressInfo,
     isAlmostDone
   }

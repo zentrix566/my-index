@@ -23,11 +23,11 @@
 
       <!-- 累计：count 输入 -->
       <div v-else-if="achievement" class="epm-cumulative">
-        <label class="epm-count-label" for="epm-count">当前累计次数</label>
+        <label class="epm-count-label" for="epm-count">当前累计（{{ countUnit }}）</label>
         <div class="epm-count-control">
-          <button type="button" aria-label="减少一次" @click="dec">−</button>
+          <button type="button" :aria-label="`减少一${countUnit}`" @click="dec">−</button>
           <input id="epm-count" type="number" inputmode="numeric" v-model.number="draftCount" min="0" />
-          <button type="button" aria-label="增加一次" @click="inc">＋</button>
+          <button type="button" :aria-label="`增加一${countUnit}`" @click="inc">＋</button>
         </div>
         <p class="epm-quota-hint">各阶段目标：{{ achievement.stages.map((s) => s.quota).join(' / ') }}</p>
       </div>
@@ -43,7 +43,7 @@
 </template>
 
 <script setup>
-import { ref, watch } from 'vue'
+import { ref, watch, computed } from 'vue'
 import { useAchievementProgress } from '../composables/useAchievementProgress.js'
 
 const props = defineProps({
@@ -53,7 +53,10 @@ const props = defineProps({
 })
 const emit = defineEmits(['close', 'save'])
 
-const { progress } = useAchievementProgress()
+const { progress, getUnit } = useAchievementProgress()
+
+// 累计成就的度量单位（次 / 点），用于编辑弹窗标签
+const countUnit = computed(() => getUnit(props.achievement))
 const draftStages = ref({})
 const draftCount = ref(0)
 

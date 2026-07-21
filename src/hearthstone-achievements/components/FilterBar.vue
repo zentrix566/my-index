@@ -3,12 +3,12 @@ defineProps({
   query: { type: String, default: '' },
   selectedClass: { type: String, default: 'all' },
   selectedDifficulty: { type: String, default: 'all' },
-  selectedType: { type: String, default: 'all' },
   selectedStatus: { type: String, default: 'all' },
   availableClasses: { type: Array, default: () => [] },
   difficulties: { type: Array, default: () => [] },
-  types: { type: Array, default: () => [] },
   statuses: { type: Array, default: () => [] },
+  selectedMetric: { type: String, default: 'all' },
+  metrics: { type: Array, default: () => [] },
   hideClassFilter: { type: Boolean, default: false },
   showStatusFilter: { type: Boolean, default: false }
 })
@@ -17,7 +17,7 @@ const emit = defineEmits([
   'update:query',
   'update:selectedClass',
   'update:selectedDifficulty',
-  'update:selectedType',
+  'update:selectedMetric',
   'update:selectedStatus'
 ])
 </script>
@@ -70,10 +70,10 @@ const emit = defineEmits([
       </label>
 
       <label class="hs-filter-control hs-select-wrap">
-        <span class="hs-control-label">类型</span>
-        <select :value="selectedType" @change="emit('update:selectedType', $event.target.value)">
-          <option value="all">全部类型</option>
-          <option v-for="t in types" :key="t" :value="t">{{ t }}</option>
+        <span class="hs-control-label">指标</span>
+        <select :value="selectedMetric" @change="emit('update:selectedMetric', $event.target.value)">
+          <option value="all">全部指标</option>
+          <option v-for="m in metrics" :key="m.value" :value="m.value">{{ m.label }}</option>
         </select>
       </label>
 

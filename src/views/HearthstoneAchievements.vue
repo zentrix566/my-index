@@ -54,44 +54,6 @@
               </svg>
               联系作者
             </button>
-            <div class="hs-wiki-menu" v-click-outside="closeWikiMenu">
-              <button
-                type="button"
-                class="hs-btn hs-btn-ghost hs-wiki-toggle"
-                :class="{ active: wikiMenuOpen }"
-                @click="toggleWikiMenu"
-                :aria-expanded="wikiMenuOpen"
-                title="各版本成就 Wiki（含无经验值成就完整清单）"
-              >
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2Z"/>
-                </svg>
-                更多攻略
-                <svg class="hs-wiki-caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <polyline points="6 9 12 15 18 9"/>
-                </svg>
-              </button>
-              <div v-if="wikiMenuOpen" class="hs-wiki-panel" role="menu">
-                <p class="hs-wiki-panel-tip">各版本成就 Wiki（含无经验值成就完整清单）</p>
-                <div class="hs-wiki-grid">
-                  <a
-                    v-for="w in allWikiLinks"
-                    :key="w.url"
-                    :href="w.url"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    class="hs-wiki-item"
-                    role="menuitem"
-                    @click="closeWikiMenu"
-                  >
-                    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-                    </svg>
-                    {{ w.name }}
-                  </a>
-                </div>
-              </div>
-            </div>
           </div>
           <p class="hs-intro-text">
             {{ user ? '当前进度会自动保存到你的账号。' : '未登录可浏览全部内容；登录后即可记录并同步个人进度。' }}
@@ -216,6 +178,34 @@
         </div>
       </header>
 
+      <!-- 按职业筛选：职业栏下方第一个，搜索框上方，醒目提示当前职业还剩多少未完成 + 累计次数/点数总计（紧跟"共 X 个"之后） -->
+      <div
+        v-if="isClassView && classRemaining.total > 0"
+        class="hs-class-remaining"
+      >
+        <span class="hs-class-remaining-icon" aria-hidden="true">🎯</span>
+        <span class="hs-class-remaining-text">
+          <strong class="hs-class-remaining-name">{{ currentClassName }}</strong>
+          还剩
+          <strong class="hs-class-remaining-num">{{ classRemaining.remaining }}</strong>
+          个未完成（共 {{ classRemaining.total }} 个）
+          <span v-if="hasMetricTotals" class="hs-class-remaining-metrics">
+            <template v-if="selectedMetric === '一次性'">
+              · 共 <b>{{ oneTimeCount }}</b> 个一次性成就
+            </template>
+            <template v-else-if="selectedMetric === '次数'">
+              · 总计次数 <b>{{ metricTotals.countRemain }}</b> 次
+            </template>
+            <template v-else-if="selectedMetric === '点数'">
+              · 总计点数 <b>{{ metricTotals.pointRemain }}</b> 点
+            </template>
+            <template v-else>
+              · 总计次数 <b>{{ metricTotals.countRemain }}</b> 次 · 点数 <b>{{ metricTotals.pointRemain }}</b> 点
+            </template>
+          </span>
+        </span>
+      </div>
+
       <!-- 我的成就模式：分组切换 + 统计面板 -->
       <template v-if="viewMode === 'my'">
         <div v-if="!user" class="hs-example-banner">
@@ -251,7 +241,7 @@
           <button type="button" @click="reloadProgress">重试</button>
         </div>
 
-        <div class="hs-stats-panel">
+        <div class="hs-stats-panel" v-if="!showClassOverview">
           <template v-if="myGroupBy === 'sprint'">
             <div class="hs-stats-info">
               <span class="hs-stats-percent">{{ sprintAllList.length }}</span>
@@ -278,17 +268,86 @@
           </template>
         </div>
 
-        <!-- 导出（JSON 导出/导入暂隐藏，待启用） -->
-        <div class="hs-export-bar" v-if="viewMode === 'my'">
-          <span class="hs-export-label">导出：</span>
-          <button type="button" class="hs-btn hs-btn-ghost" :disabled="exporting" @click="exportExcel">
-            {{ exporting ? '导出中…' : '导出 Excel' }}
-          </button>
-          <label class="hs-pass">
-            通行证加成：
-            <select v-model.number="passBonus" class="hs-pass-select">
-              <option v-for="o in PASS_BONUS_OPTIONS" :key="o.value" :value="o.value">{{ o.label }}</option>
-            </select>
+      </template>
+
+      <!-- 按版本浏览/我的-按版本：职业总览（整体进度，默认展开） -->
+      <div v-if="showClassOverview" class="hs-class-overview">
+        <div class="hs-class-overview-head">
+          <div class="hs-class-overview-stats">
+            <span class="hs-class-overview-pct">{{ overviewStats.percentage }}%</span>
+            <span class="hs-class-overview-detail">
+              已完成 {{ overviewCompletedCount }} / {{ currentExpansionAchievements.length }} 个成就 · 已得 {{ overviewStats.earnedPoints }}/{{ overviewStats.totalPoints }} 点
+            </span>
+          </div>
+          <div class="hs-class-overview-actions">
+            <button type="button" class="hs-btn hs-btn-ghost" @click="expandAllClasses">展开全部</button>
+            <button type="button" class="hs-btn hs-btn-ghost" @click="collapseAllClasses">收起全部</button>
+          </div>
+        </div>
+        <p class="hs-class-overview-tip">默认按职业展开，点击职业标题即可折叠 / 展开该职业的成就明细。</p>
+      </div>
+
+      <!-- 进度条下方：剩余成就个数 / 剩余次数 / 剩余点数 -->
+      <div v-if="showClassOverview" class="hs-expansion-remaining">
+        <span class="hs-expansion-remaining-item">剩余 <b>{{ expansionRemaining.achievements }}</b> 个成就</span>
+        <span class="hs-expansion-remaining-sep">·</span>
+        <span class="hs-expansion-remaining-item">剩余次数 <b>{{ expansionRemaining.countRemain }}</b> 次</span>
+        <span class="hs-expansion-remaining-sep">·</span>
+        <span class="hs-expansion-remaining-item">剩余点数 <b>{{ expansionRemaining.pointRemain }}</b> 点</span>
+      </div>
+
+      <!-- 进度条下方：共 X 个成就 + 版本描述 + 参考链接 -->
+      <section v-if="showClassOverview" class="hs-result-bar">
+        <span>共 {{ filteredAchievements.length.toLocaleString() }} 个成就</span>
+        <span>
+          {{ currentExpansion?.description }}
+          <template v-if="currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0">
+            <span class="hs-ref-links">
+              <template v-for="(link, idx) in currentExpansion.referenceLinks" :key="link.url">
+                <a :href="link.url" target="_blank" rel="noopener noreferrer" class="hs-ref-link">
+                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
+                  </svg>
+                  {{ link.name }}
+                </a>
+              </template>
+            </span>
+          </template>
+        </span>
+      </section>
+
+      <FilterBar
+        v-if="!(viewMode === 'my' && myGroupBy === 'sprint')"
+        v-model:query="query"
+        v-model:selected-class="selectedClass"
+        v-model:selected-difficulty="selectedDifficulty"
+        v-model:selected-metric="selectedMetric"
+        v-model:selected-status="selectedStatus"
+        :available-classes="filterAvailableClasses"
+        :difficulties="difficulties"
+        :metrics="metrics"
+        :statuses="statuses"
+        :hide-class-filter="viewMode === 'class'"
+        :show-status-filter="viewMode === 'my'"
+      />
+
+      <section v-if="!isClassView && !showClassOverview" class="hs-result-bar">
+        <span>共 {{ filteredAchievements.length.toLocaleString() }} 个成就</span>
+        <span v-if="myGroupBy === 'sprint'">按「接近完成 → 低投入 → 中等投入 → 长期目标」分组，始终遵循下方版本和职业筛选</span>
+        <span v-else>查看我的成就完成进度</span>
+      </section>
+
+      <!-- 导出（JSON 导出/导入暂隐藏，待启用） -->
+      <div class="hs-export-bar" v-if="viewMode === 'my'">
+        <span class="hs-export-label">导出：</span>
+        <button type="button" class="hs-btn hs-btn-ghost" :disabled="exporting" @click="exportExcel">
+          {{ exporting ? '导出中…' : '导出 Excel' }}
+        </button>
+        <label class="hs-pass">
+          通行证加成：
+          <select v-model.number="passBonus" class="hs-pass-select">
+            <option v-for="o in PASS_BONUS_OPTIONS" :key="o.value" :value="o.value">{{ o.label }}</option>
+          </select>
         </label>
       </div>
 
@@ -311,61 +370,7 @@
           <button type="button" class="hs-btn hs-btn-ghost" @click="cancelBatch">取消</button>
         </template>
       </div>
-      </template>
 
-      <FilterBar
-        v-if="!(viewMode === 'my' && myGroupBy === 'sprint')"
-        v-model:query="query"
-        v-model:selected-class="selectedClass"
-        v-model:selected-difficulty="selectedDifficulty"
-        v-model:selected-type="selectedType"
-        v-model:selected-status="selectedStatus"
-        :available-classes="filterAvailableClasses"
-        :difficulties="difficulties"
-        :types="types"
-        :statuses="statuses"
-        :hide-class-filter="viewMode === 'class'"
-        :show-status-filter="viewMode === 'my'"
-      />
-
-      <section class="hs-result-bar">
-        <span>共 {{ filteredAchievements.length.toLocaleString() }} 个成就</span>
-        <span v-if="viewMode === 'expansion' || (viewMode === 'my' && myGroupBy === 'expansion')">
-          {{ currentExpansion?.description }}
-          <template v-if="currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0">
-            <span class="hs-ref-links">
-              <template v-for="(link, idx) in currentExpansion.referenceLinks" :key="link.url">
-                <a :href="link.url" target="_blank" rel="noopener noreferrer" class="hs-ref-link">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-                  </svg>
-                  {{ link.name }}
-                </a>
-              </template>
-            </span>
-          </template>
-        </span>
-        <span v-else-if="viewMode === 'class'">按职业查看所有版本中的成就</span>
-        <span v-else-if="myGroupBy === 'sprint'">按「接近完成 → 低投入 → 中等投入 → 长期目标」分组，始终遵循下方版本和职业筛选</span>
-        <span v-else>查看我的成就完成进度</span>
-      </section>
-
-      <!-- 按版本浏览/我的-按版本：职业总览（默认收起，点击职业展开明细） -->
-      <div v-if="showClassOverview" class="hs-class-overview">
-        <div class="hs-class-overview-head">
-          <div class="hs-class-overview-stats">
-            <span class="hs-class-overview-pct">{{ overviewStats.percentage }}%</span>
-            <span class="hs-class-overview-detail">
-              已完成 {{ overviewCompletedCount }} / {{ currentExpansionAchievements.length }} 个成就 · 已得 {{ overviewStats.earnedPoints }}/{{ overviewStats.totalPoints }} 点
-            </span>
-          </div>
-          <div class="hs-class-overview-actions">
-            <button type="button" class="hs-btn hs-btn-ghost" @click="expandAllClasses">展开全部</button>
-            <button type="button" class="hs-btn hs-btn-ghost" @click="collapseAllClasses">收起全部</button>
-          </div>
-        </div>
-        <p class="hs-class-overview-tip">默认按职业收起，点击职业标题即可展开该职业的成就明细。</p>
-      </div>
 
       <!-- 按版本浏览：按职业分组 -->
       <div v-if="viewMode === 'expansion'" class="hs-expansion-groups">
@@ -479,7 +484,7 @@
         <section v-if="sprintGroups.B.length" class="hs-priority-group hs-priority-group-b">
           <div class="hs-priority-group-head">
             <h3 class="hs-priority-group-title">
-              <span class="hs-priority-rank">B</span> 还差 ≤20 次 <small>{{ sprintGroups.B.length }} 个</small>
+              <span class="hs-priority-rank">B</span> 还差 ≤20 <small>{{ sprintGroups.B.length }} 个</small>
             </h3>
             <span class="hs-priority-group-tip">A 组清完后顺手做</span>
           </div>
@@ -498,7 +503,7 @@
         <section v-if="sprintGroups.C.length" class="hs-priority-group hs-priority-group-c">
           <div class="hs-priority-group-head">
             <h3 class="hs-priority-group-title">
-              <span class="hs-priority-rank">C</span> 还差 21–50 次 <small>{{ sprintGroups.C.length }} 个</small>
+              <span class="hs-priority-rank">C</span> 还差 21–50 <small>{{ sprintGroups.C.length }} 个</small>
             </h3>
             <span class="hs-priority-group-tip">按兴致推进</span>
           </div>
@@ -536,7 +541,7 @@
         <section v-if="sprintGroups.E.length" class="hs-priority-group hs-priority-group-e">
           <div class="hs-priority-group-head">
             <h3 class="hs-priority-group-title">
-              <span class="hs-priority-rank">E</span> 累计还差 ≥51 次 <small>{{ sprintGroups.E.length }} 个</small>
+              <span class="hs-priority-rank">E</span> 累计还差 ≥51 <small>{{ sprintGroups.E.length }} 个</small>
             </h3>
             <span class="hs-priority-group-tip">需大量投入，慢慢磨</span>
           </div>
@@ -593,7 +598,6 @@ import { computed, ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
 import { expansions, originalExpansions, addedExpansions } from '../hearthstone-achievements/data/expansions.js'
-import { wikiLinks } from '../hearthstone-achievements/data/wikiLinks.js'
 import { classColors, getClassOrder, groupByClass } from '../hearthstone-achievements/utils/achievements.js'
 import { useAchievementProgress } from '../hearthstone-achievements/composables/useAchievementProgress.js'
 import { useAuth } from '../auth/useAuth.js'
@@ -622,16 +626,6 @@ function toggleTheme() {
 const AUTHOR_EMAIL = '1987247500@qq.com'
 function contactAuthor() {
   window.location.href = `mailto:${AUTHOR_EMAIL}?subject=${encodeURIComponent('炉石成就查看器 - 反馈/建议')}`
-}
-
-// ============ 「更多攻略」版本 Wiki 导航（含无经验值成就的完整清单） ============
-const wikiMenuOpen = ref(false)
-const allWikiLinks = wikiLinks
-function toggleWikiMenu() {
-  wikiMenuOpen.value = !wikiMenuOpen.value
-}
-function closeWikiMenu() {
-  wikiMenuOpen.value = false
 }
 
 // ============ 「更多版本」下拉：本次新增版本（不与原有 9 个混排） ============
@@ -670,6 +664,8 @@ const {
   getProgressInfo,
   isStageCompleted,
   getCount,
+  getUnit,
+  getMetric,
   loading: progressLoading,
   error: progressError,
   reload: reloadProgress,
@@ -823,7 +819,8 @@ function nextTodoText(ach) {
     const quota = next ? next.quota : (stages[stages.length - 1]?.quota || 0)
     const remain = Math.max(0, quota - count)
     const desc = (next && next.description) || '累计目标'
-    return remain > 0 ? `累计 ${count}/${quota}：${desc}（还差 ${remain} 次）` : '待完成'
+    const unit = getUnit(ach)
+    return remain > 0 ? `累计 ${count}/${quota}：${desc}（剩余 ${remain} ${unit}）` : '待完成'
   }
   for (let i = 0; i < stages.length; i++) {
     if (!isStageCompleted(ach, i)) {
@@ -845,7 +842,7 @@ function buildExportRows() {
       '成就名称': ach.name,
       '成就详情': (ach.stages || []).map((s, i) => `阶段${i + 1}：${s.description || ''}`).join(' | '),
       '目前进度': completed ? '已完成' : nextTodoText(ach),
-      '类型': ach.type,
+      '类型': ach.type === '累计' ? `累计·${getUnit(ach) === '点' ? '点数' : '次数'}` : ach.type,
       '难度': ach.difficulty,
       '经验值': Math.round(getAchievementXp(ach) * (1 + passBonus.value)),
       '成就值': (ach.stages || []).reduce((s, st) => s + (st.points || 0), 0)
@@ -985,6 +982,13 @@ const allAchievements = computed(() => {
   return all
 })
 
+// 「更多版本」（本次新增、无经验值）的成就：只在「按版本浏览 / 我的-按版本」中出现，
+// 不进入「按职业浏览 / 我的-按职业 / 冲刺推荐」，以免干扰推荐与按职业统计。
+const addedExpansionIdSet = new Set(addedExpansions.map((e) => e.id))
+const classSprintAchievements = computed(() =>
+  allAchievements.value.filter((a) => !addedExpansionIdSet.has(a._expansionId))
+)
+
 // 状态
 const viewMode = ref('expansion')
 const myGroupBy = ref('expansion') // 'expansion' | 'class' | 'sprint'
@@ -993,7 +997,7 @@ const currentClass = ref('圣骑士')
 const query = ref('')
 const selectedClass = ref('all')
 const selectedDifficulty = ref('all')
-const selectedType = ref('all')
+const selectedMetric = ref('all')
 const selectedStatus = ref('未完成')
 
 const modalCards = ref([])
@@ -1001,10 +1005,14 @@ const modalTitle = ref('')
 const modalVisible = ref(false)
 
 const difficulties = ['易', '中等', '难']
-const types = ['一次性', '累计']
+const metrics = [
+  { value: '一次性', label: '一次性' },
+  { value: '次数', label: '累计-次数' },
+  { value: '点数', label: '累计-点数' }
+]
 const statuses = ['未完成', '已完成']
 
-// 所有职业列表
+// 所有职业列表（保持炉石原顺序）
 const allClasses = getClassOrder().filter(c => c !== '双职业' && c !== '中立').concat(['双职业', '中立'])
 const classOrder = getClassOrder()
 
@@ -1031,15 +1039,15 @@ const currentExpansionAchievements = computed(() => {
   return exp.achievements.map(ach => attachCards(ach, exp))
 })
 
-// 职业总览：按版本浏览/我的-按版本 默认收起各职业，点击展开明细
+// 职业总览：按版本浏览/我的-按版本 默认展开各职业（用户嫌长可自行收起）
 const classViewCollapsed = reactive({})
-for (const c of classOrder) classViewCollapsed[c] = true
+for (const c of classOrder) classViewCollapsed[c] = false
 // 按职业浏览/我的-按职业：按版本分组，默认展开
 const expViewCollapsed = reactive({})
 for (const exp of expansions) expViewCollapsed[exp.id] = false
 
 const resetClassViews = () => {
-  for (const c of classOrder) classViewCollapsed[c] = true
+  for (const c of classOrder) classViewCollapsed[c] = false
   for (const exp of expansions) expViewCollapsed[exp.id] = false
 }
 
@@ -1082,7 +1090,7 @@ const overviewCompletedCount = computed(() =>
 
 // 当前职业的成就（按职业浏览模式）
 const currentClassAchievements = computed(() => {
-  return allAchievements.value.filter((ach) => ach.heroClass === currentClass.value)
+  return classSprintAchievements.value.filter((ach) => ach.heroClass === currentClass.value)
 })
 
 // 我的成就模式 - 当前范围的成就列表
@@ -1091,14 +1099,16 @@ const myAchievementsList = computed(() => {
   if (myGroupBy.value === 'expansion') {
     return currentExpansionAchievements.value
   } else {
-    return allAchievements.value.filter((ach) => ach.heroClass === currentClass.value)
+    return classSprintAchievements.value.filter((ach) => ach.heroClass === currentClass.value)
   }
 })
 
 // 冲刺推荐视图只有这一套筛选状态，避免顶部标签和下拉框产生范围冲突。
 const sprintVersionFilter = ref('all')
 const sprintClassFilter = ref('all')
-const versionOptions = computed(() => expansions.map((e) => ({ id: e.id, name: e.name })))
+const versionOptions = computed(() =>
+  expansions.filter((e) => !addedExpansionIdSet.has(e.id)).map((e) => ({ id: e.id, name: e.name }))
+)
 
 // 冲刺推荐分组：统一应用版本和职业范围，再按剩余投入分档。
 const sprintGroups = computed(() => {
@@ -1108,7 +1118,7 @@ const sprintGroups = computed(() => {
   const D = [] // 一次性剩多阶段（优先级最低）
   const E = [] // 累计还差 ≥51（长期目标，最大投入）
 
-  for (const ach of allAchievements.value) {
+  for (const ach of classSprintAchievements.value) {
     if (sprintVersionFilter.value !== 'all' && ach._expansionId !== sprintVersionFilter.value) continue
     if (sprintClassFilter.value !== 'all' && ach.heroClass !== sprintClassFilter.value) continue
     const info = getProgressInfo(ach)
@@ -1183,7 +1193,15 @@ const filterAchievements = (list) => {
   return list.filter((ach) => {
     if (selectedClass.value !== 'all' && ach.heroClass !== selectedClass.value) return false
     if (selectedDifficulty.value !== 'all' && ach.difficulty !== selectedDifficulty.value) return false
-    if (selectedType.value !== 'all' && ach.type !== selectedType.value) return false
+    // 指标筛选：一次性 / 累计·次数 / 累计·点数
+    if (selectedMetric.value !== 'all') {
+      if (selectedMetric.value === '一次性') {
+        if (ach.type !== '一次性') return false
+      } else {
+        if (ach.type !== '累计') return false
+        if (getMetric(ach) !== selectedMetric.value) return false
+      }
+    }
     if (viewMode.value === 'my' && selectedStatus.value !== 'all') {
       const completed = isAchievementCompleted(ach)
       if (selectedStatus.value === '已完成' && !completed) return false
@@ -1245,6 +1263,67 @@ const myCompletedCount = computed(() =>
   myAchievementsList.value.filter(ach => isAchievementCompleted(ach)).length
 )
 
+// 按职业筛选时，顶部展示该职业还剩多少个未完成成就（按版本浏览 / 我的-按职业均适用）
+const classRemaining = computed(() => {
+  const list =
+    viewMode.value === 'class'
+      ? currentClassAchievements.value
+      : viewMode.value === 'my' && myGroupBy.value === 'class'
+        ? myAchievementsList.value
+        : []
+  const remaining = list.filter((a) => !isAchievementCompleted(a)).length
+  return { remaining, total: list.length }
+})
+
+// 当前范围累计成就「还剩多少次 / 多少点」总计（不含已完成），用于顶部总计横幅
+const metricTotals = computed(() => {
+  let countRemain = 0
+  let pointRemain = 0
+  for (const ach of filteredAchievements.value) {
+    if (ach.type !== '累计') continue
+    if (isAchievementCompleted(ach)) continue
+    const count = getCount(ach) ?? 0
+    const lastQuota = ach.stages[ach.stages.length - 1].quota
+    const remaining = Math.max(0, lastQuota - count)
+    if (getMetric(ach) === 'points') pointRemain += remaining
+    else countRemain += remaining
+  }
+  return { countRemain, pointRemain }
+})
+// 按版本视图：进度条下方的剩余总览（剩余成就个数 + 剩余次数 + 剩余点数），基于当前筛选范围
+const expansionRemaining = computed(() => {
+  const list = filteredAchievements.value
+  const achievements = list.filter((a) => !isAchievementCompleted(a)).length
+  return {
+    achievements,
+    countRemain: metricTotals.value.countRemain,
+    pointRemain: metricTotals.value.pointRemain
+  }
+})
+const metricTotalRemain = computed(() => metricTotals.value.countRemain + metricTotals.value.pointRemain)
+
+// 当前筛选范围内「一次性」成就个数（用于指标=一次性 时的总计横幅）
+const oneTimeCount = computed(() =>
+  filteredAchievements.value.filter((a) => a.type === '一次性').length
+)
+// 是否为「按职业」视图（按职业浏览 / 我的-按职业）
+const isClassView = computed(
+  () => viewMode.value === 'class' || (viewMode.value === 'my' && myGroupBy.value === 'class')
+)
+
+// 当前指标筛选下是否有总计次数/点数（或一次性个数）可展示
+const hasMetricTotals = computed(() => {
+  if (selectedMetric.value === '一次性') return oneTimeCount.value > 0
+  return metricTotalRemain.value > 0
+})
+
+// 独立总计横幅：仅在非「按职业」视图显示（按职业视图已并入职业剩余横幅）
+const showMetricBanner = computed(() => {
+  if (viewMode.value === 'my' && myGroupBy.value === 'sprint') return false
+  if (isClassView.value) return false
+  return hasMetricTotals.value
+})
+
 // 通行证经验加成：默认不加成；可选 10% / 15% / 20%
 const PASS_BONUS_OPTIONS = [
   { label: '无加成', value: 0 },
@@ -1267,7 +1346,7 @@ const resetFilters = () => {
   query.value = ''
   selectedClass.value = 'all'
   selectedDifficulty.value = 'all'
-  selectedType.value = 'all'
+  selectedMetric.value = 'all'
   selectedStatus.value = viewMode.value === 'my' ? '未完成' : 'all'
 }
 
@@ -1357,18 +1436,18 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
   gap: 8px;
   margin: 12px 0 4px;
   padding: 12px 14px;
-  background: rgba(15, 31, 43, 0.72);
-  border: 1px solid rgba(255, 255, 255, 0.09);
+  background: var(--hs-surface-overlay);
+  border: 1px solid var(--hs-border);
   border-radius: 12px;
 }
 .hs-export-label {
   font-size: 13px;
   font-weight: 600;
-  color: #94a3b8;
+  color: var(--hs-text-soft);
 }
 .hs-export-hint {
   font-size: 12px;
-  color: #94a3b8;
+  color: var(--hs-muted);
 }
 .hs-pass {
   display: inline-flex;
@@ -1377,16 +1456,16 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
   margin-left: auto;
   font-size: 13px;
   font-weight: 600;
-  color: #cbd5e1;
+  color: var(--hs-text-soft);
 }
 .hs-pass-select {
   min-height: 44px;
   padding: 6px 30px 6px 10px;
   font-size: 13px;
-  border: 1px solid rgba(148, 163, 184, 0.22);
+  border: 1px solid var(--hs-border);
   border-radius: 9px;
-  background: rgba(2, 6, 23, 0.3);
-  color: #f8fafc;
+  background: var(--hs-inset-bg);
+  color: var(--hs-text);
   cursor: pointer;
 }
 .hs-pass-select option {
