@@ -574,6 +574,22 @@
           <span class="hs-toast-msg">{{ toast.message }}</span>
         </div>
       </transition>
+
+      <!-- 成就达成庆祝提示 -->
+      <transition name="hs-celebrate-fade">
+        <div v-if="celebration.show" class="hs-celebrate" role="status" aria-live="polite">
+          <div class="hs-celebrate-confetti">
+            <span v-for="n in 10" :key="n" class="hs-confetti" :style="confettiStyle(n)"></span>
+          </div>
+          <div class="hs-celebrate-card">
+            <div class="hs-celebrate-ring"></div>
+            <div class="hs-celebrate-icon">🏆</div>
+            <p class="hs-celebrate-eyebrow">成就达成</p>
+            <h4 class="hs-celebrate-name">{{ celebration.name }}</h4>
+            <p class="hs-celebrate-sub">{{ celebration.sub }}</p>
+          </div>
+        </div>
+      </transition>
     </div>
   </section>
 </template>
@@ -683,8 +699,42 @@ function showToast(type, message) {
   toastTimer = setTimeout(() => { toast.value = { ...toast.value, show: false } }, 2600)
 }
 
+// ============ 成就达成庆祝提示 ============
+const celebration = ref({ show: false, name: '', sub: '' })
+let celebrationTimer = null
+function showAchievementCelebration(ach) {
+  if (!ach) return
+  let xp = 0
+  let pts = 0
+  for (const s of ach.stages || []) {
+    xp += s.xpReward || 0
+    pts += s.points || 0
+  }
+  const sub = [ach.heroClass, ach.difficulty, xp || pts ? `${xp} XP · ${pts} 点` : '']
+    .filter(Boolean)
+    .join(' · ')
+  celebration.value = { show: true, name: ach.name, sub }
+  if (celebrationTimer) clearTimeout(celebrationTimer)
+  celebrationTimer = setTimeout(() => {
+    celebration.value = { ...celebration.value, show: false }
+  }, 3400)
+}
+// 彩屑爆发：10 个色块沿圆周向外飞散
+const confettiColors = ['#fbbf24', '#4ade80', '#60a5fa', '#f472b6', '#a78bfa']
+function confettiStyle(n) {
+  const angle = (n * 36) * (Math.PI / 180)
+  const dist = 96 + (n % 3) * 20
+  return {
+    '--x': Math.cos(angle) * dist + 'px',
+    '--y': Math.sin(angle) * dist + 'px',
+    background: confettiColors[n % confettiColors.length]
+  }
+}
+
 async function saveProgress(payload) {
   if (savingProgress.value) return
+  const ach = allAchievements.value.find((a) => a.id === payload.id)
+  const wasCompleted = ach ? isAchievementCompleted(ach) : false
   savingProgress.value = true
   try {
     const resp = await fetch('/api/achievements/progress', {
@@ -699,7 +749,10 @@ async function saveProgress(payload) {
       throw new Error(result.error || '保存失败')
     }
     await reloadProgress()
-    showToast('success', '保存成功')
+    const nowCompleted = ach ? isAchievementCompleted(ach) : false
+    // 仅在「从未完成 → 完成」这一刻弹出庆祝，避免重复保存已完成的成就时打扰
+    if (!wasCompleted && nowCompleted) showAchievementCelebration(ach)
+    else showToast('success', '保存成功')
     editVisible.value = false
   } catch (e) {
     showToast('error', e.message || '保存失败，请重试')
@@ -1625,5 +1678,121 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
 .hs-toast-fade-leave-to {
   opacity: 0;
   transform: translateX(-50%) translateY(-8px);
+}
+
+/* ============ 成就达成庆祝提示 ============ */
+.hs-celebrate {
+  position: fixed;
+  top: 92px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 1100;
+  pointer-events: none;
+}
+.hs-celebrate-card {
+  position: relative;
+  width: min(360px, 86vw);
+  padding: 24px 26px 20px;
+  text-align: center;
+  border-radius: 18px;
+  background: linear-gradient(158deg, #1e3a2f 0%, #0f1f2b 100%);
+  border: 1px solid rgba(74, 222, 128, 0.4);
+  box-shadow: 0 22px 64px rgba(2, 6, 23, 0.6), 0 0 0 1px rgba(251, 191, 36, 0.14) inset;
+  color: #e2e8f0;
+  overflow: hidden;
+}
+.hs-celebrate-card::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 50%;
+  height: 100%;
+  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.14), transparent);
+  transform: skewX(-18deg);
+  animation: hs-celebrate-shimmer 2.2s ease-in-out 0.2s infinite;
+}
+.hs-celebrate-ring {
+  position: absolute;
+  top: 30px;
+  left: 50%;
+  width: 72px;
+  height: 72px;
+  margin-left: -36px;
+  border-radius: 50%;
+  border: 2px solid rgba(251, 191, 36, 0.6);
+  animation: hs-celebrate-ring 1.1s ease-out forwards;
+}
+.hs-celebrate-icon {
+  position: relative;
+  font-size: 46px;
+  line-height: 1;
+  margin: 4px 0 10px;
+  animation: hs-celebrate-pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.5) both;
+  filter: drop-shadow(0 4px 10px rgba(251, 191, 36, 0.4));
+}
+.hs-celebrate-eyebrow {
+  margin: 0 0 4px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.18em;
+  color: #fbbf24;
+  text-transform: uppercase;
+}
+.hs-celebrate-name {
+  margin: 0 0 6px;
+  font-size: 19px;
+  font-weight: 700;
+  color: #f8fafc;
+}
+.hs-celebrate-sub {
+  margin: 0;
+  font-size: 12.5px;
+  color: #94a3b8;
+}
+/* 彩屑爆发 */
+.hs-celebrate-confetti {
+  position: absolute;
+  top: 50px;
+  left: 50%;
+  width: 0;
+  height: 0;
+}
+.hs-confetti {
+  position: absolute;
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  opacity: 0;
+  transform: translate(-50%, -50%);
+  animation: hs-confetti-burst 0.9s ease-out forwards;
+}
+@keyframes hs-celebrate-pop {
+  0% { transform: scale(0.3) rotate(-20deg); opacity: 0; }
+  60% { transform: scale(1.18) rotate(6deg); opacity: 1; }
+  100% { transform: scale(1) rotate(0); opacity: 1; }
+}
+@keyframes hs-celebrate-ring {
+  0% { transform: scale(0.5); opacity: 0.85; }
+  100% { transform: scale(1.9); opacity: 0; }
+}
+@keyframes hs-celebrate-shimmer {
+  0% { left: -60%; }
+  60%, 100% { left: 130%; }
+}
+@keyframes hs-confetti-burst {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.4) rotate(180deg); }
+}
+.hs-celebrate-fade-enter-active {
+  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.3);
+}
+.hs-celebrate-fade-leave-active {
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+.hs-celebrate-fade-enter-from,
+.hs-celebrate-fade-leave-to {
+  opacity: 0;
+  transform: translateX(-50%) translateY(-18px);
 }
 </style>
