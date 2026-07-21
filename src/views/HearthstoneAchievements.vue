@@ -178,34 +178,6 @@
         </div>
       </header>
 
-      <!-- 按职业筛选：职业栏下方第一个，搜索框上方，醒目提示当前职业还剩多少未完成 + 累计次数/点数总计（紧跟"共 X 个"之后） -->
-      <div
-        v-if="viewMode === 'my' && myGroupBy === 'class' && classRemaining.total > 0"
-        class="hs-class-remaining"
-      >
-        <span class="hs-class-remaining-icon" aria-hidden="true">🎯</span>
-        <span class="hs-class-remaining-text">
-          <strong class="hs-class-remaining-name">{{ currentClassName }}</strong>
-          还剩
-          <strong class="hs-class-remaining-num">{{ classRemaining.remaining }}</strong>
-          个未完成（共 {{ classRemaining.total }} 个）
-          <span v-if="hasMetricTotals" class="hs-class-remaining-metrics">
-            <template v-if="selectedMetric === '一次性'">
-              · 共 <b>{{ oneTimeCount }}</b> 个一次性成就
-            </template>
-            <template v-else-if="selectedMetric === '次数'">
-              · 总计次数 <b>{{ metricTotals.countRemain }}</b> 次
-            </template>
-            <template v-else-if="selectedMetric === '点数'">
-              · 总计点数 <b>{{ metricTotals.pointRemain }}</b> 点
-            </template>
-            <template v-else>
-              · 总计次数 <b>{{ metricTotals.countRemain }}</b> 次 · 点数 <b>{{ metricTotals.pointRemain }}</b> 点
-            </template>
-          </span>
-        </span>
-      </div>
-
       <!-- 我的成就模式：分组切换 + 统计面板 -->
       <template v-if="viewMode === 'my'">
         <div v-if="!user" class="hs-example-banner">
@@ -217,7 +189,6 @@
           <span>后即可记录并保存你自己的完成进度。</span>
         </div>
         <div class="hs-my-sub-switch">
-          <span class="hs-my-sub-label">视图：</span>
           <button
             :class="{ active: myGroupBy === 'expansion' }"
             type="button"
@@ -239,6 +210,12 @@
         <div v-else-if="progressError" class="hs-progress-status hs-progress-error" role="alert">
           成就进度加载失败，当前显示的数据可能不是最新的。
           <button type="button" @click="reloadProgress">重试</button>
+        </div>
+
+        <!-- 待完成清单：说明（两行、数字高亮），位于筛选栏上方 -->
+        <div class="hs-stats-panel hs-sprint-stats" v-if="myGroupBy === 'sprint'">
+          <p class="hs-overview-summary-text" v-html="overviewSummaryHtml.line1"></p>
+          <p class="hs-overview-summary-text" v-html="overviewSummaryHtml.line2"></p>
         </div>
 
         <!-- 待完成清单：版本-职业-指标筛选 -->
@@ -265,33 +242,6 @@
               </select>
             </label>
           </div>
-        </div>
-
-        <div class="hs-stats-panel" v-if="!showClassOverview">
-          <template v-if="myGroupBy === 'sprint'">
-            <div class="hs-sprint-summary">
-              剩余 <b class="hs-sprint-num">{{ sprintAllList.length }}</b> 个成就项
-              · 一次性 <b class="hs-sprint-num">{{ sprintRemainingTotals.oneTime }}</b> 个
-              · 累计-次数 <b class="hs-sprint-num">{{ sprintRemainingTotals.countAch }}</b> 个
-              · 累计-点数 <b class="hs-sprint-num">{{ sprintRemainingTotals.pointAch }}</b> 个
-            </div>
-          </template>
-          <template v-else>
-            <div class="hs-stats-info">
-              <span class="hs-stats-percent">{{ myStats.percentage }}%</span>
-              <span class="hs-stats-detail">
-                已完成阶段 {{ myStats.earnedPoints }} / {{ myStats.totalPoints }} 点
-                （已完成 {{ myCompletedCount }} / {{ myAchievementsList.length }} 个成就）
-              </span>
-              <span class="hs-stats-detail hs-xp-line">
-                已获经验 <b>{{ myEarnedXpBonus }}</b> / 总经验 {{ myStats.totalXp }}
-                <template v-if="passBonus > 0">（基础 {{ myStats.earnedXp }}，通行证 +{{ passBonusPercent }}%）</template>
-              </span>
-            </div>
-            <div class="hs-stats-bar">
-              <div class="hs-stats-bar-fill" :style="{ width: myStats.percentage + '%' }"></div>
-            </div>
-          </template>
         </div>
 
         <!-- 待完成清单：导出 / 批量完成，置于剩余统计下方 -->
@@ -329,25 +279,22 @@
 
       </template>
 
-      <!-- 我的-按版本：职业总览（整体进度 + 剩余统计，默认展开） -->
+      <!-- 我的成就-按版本/按职业：总览面板（完成度进度条 + 一句话说明，默认展开） -->
       <div v-if="showClassOverview" class="hs-class-overview">
         <div class="hs-class-overview-head">
-          <div class="hs-class-overview-stats">
-            <span class="hs-class-overview-pct">{{ overviewStats.percentage }}%</span>
-            <span class="hs-class-overview-pct-label">完成百分比</span>
-          </div>
+          <span class="hs-class-overview-head-title">完成进度</span>
           <div class="hs-class-overview-actions">
-            <button type="button" class="hs-btn hs-btn-ghost" @click="expandAllClasses">展开全部</button>
-            <button type="button" class="hs-btn hs-btn-ghost" @click="collapseAllClasses">收起全部</button>
+            <button type="button" class="hs-btn hs-btn-ghost" @click="expandAllSections">展开全部</button>
+            <button type="button" class="hs-btn hs-btn-ghost" @click="collapseAllSections">收起全部</button>
           </div>
         </div>
-        <div class="hs-overview-metrics">
-          <span class="hs-overview-metric">已完成 <b>{{ overviewCompletedCount }}</b> / {{ currentExpansionAchievements.length }} 个成就</span>
-          <span class="hs-overview-metric">成就点数 <b>{{ overviewStats.earnedPoints }}</b> / {{ overviewStats.totalPoints }} 点</span>
-          <span class="hs-overview-metric hs-overview-remain">剩余 <b>{{ expansionRemaining.achievements }}</b> 个成就</span>
-          <span class="hs-overview-metric hs-overview-remain">剩余成就点数 <b>{{ overviewStats.totalPoints - overviewStats.earnedPoints }}</b> 点</span>
-          <span v-if="expansionRemaining.countRemain > 0" class="hs-overview-metric hs-overview-remain">累计-次数 剩余 <b>{{ expansionRemaining.countRemain }}</b> 次</span>
-          <span v-if="expansionRemaining.pointRemain > 0" class="hs-overview-metric hs-overview-remain">累计-点数 剩余 <b>{{ expansionRemaining.pointRemain }}</b> 点</span>
+        <div class="hs-overview-progress">
+          <div class="hs-overview-progress-fill" :style="{ width: overviewStats.percentage + '%' }"></div>
+          <span class="hs-overview-progress-label">{{ overviewStats.percentage }}%</span>
+        </div>
+        <div class="hs-overview-summary">
+          <p class="hs-overview-summary-text" v-html="overviewSummaryHtml.line1"></p>
+          <p class="hs-overview-summary-text" v-html="overviewSummaryHtml.line2"></p>
         </div>
       </div>
 
@@ -446,6 +393,7 @@
             :badge-style="getClassBadgeStyle(heroClass)"
             :class-style="getClassStyle(heroClass)"
             @card-click="openCardModal"
+            @deck-click="openDeckDetail"
           />
         </template>
       </div>
@@ -461,6 +409,7 @@
             :badge-style="getExpansionBadgeStyle()"
             :class-style="getExpansionStyle()"
             @card-click="openCardModal"
+            @deck-click="openDeckDetail"
           />
         </template>
       </div>
@@ -477,10 +426,12 @@
             :class-style="getClassStyle(heroClass)"
             :summary="classViewSummaries[heroClass]"
             :use-my-card="true"
+            :show-remaining="true"
             :editable="Boolean(user)"
             :select-mode="batchMode"
             :selected-ids="selectedAchIds"
             @card-click="openCardModal"
+            @deck-click="openDeckDetail"
             @toggle-select="toggleSelect"
           />
         </template>
@@ -497,10 +448,12 @@
             :badge-style="getExpansionBadgeStyle()"
             :class-style="getExpansionStyle()"
             :use-my-card="true"
+            :show-remaining="true"
             :editable="Boolean(user)"
             :select-mode="batchMode"
             :selected-ids="selectedAchIds"
             @card-click="openCardModal"
+            @deck-click="openDeckDetail"
             @toggle-select="toggleSelect"
           />
         </template>
@@ -527,6 +480,7 @@
               :show-remaining="true"
               :editable="Boolean(user)"
               @click="openCardModal"
+              @deck-click="openDeckDetail"
             />
           </div>
         </section>
@@ -550,6 +504,7 @@
               :show-remaining="true"
               :editable="Boolean(user)"
               @click="openCardModal"
+              @deck-click="openDeckDetail"
             />
           </div>
         </section>
@@ -573,6 +528,7 @@
               :show-remaining="true"
               :editable="Boolean(user)"
               @click="openCardModal"
+              @deck-click="openDeckDetail"
             />
           </div>
         </section>
@@ -599,6 +555,12 @@
         :saving="savingProgress"
         @close="editVisible = false"
         @save="saveProgress"
+      />
+
+      <DeckDetailModal
+        :visible="deckDetailVisible"
+        :deck="deckDetailData"
+        @close="deckDetailVisible = false"
       />
 
       <ScrollToTop />
@@ -629,6 +591,7 @@ import ClassSection from '../hearthstone-achievements/components/ClassSection.vu
 import CardModal from '../hearthstone-achievements/components/CardModal.vue'
 import ScrollToTop from '../hearthstone-achievements/components/ScrollToTop.vue'
 import MyAchievementCard from '../hearthstone-achievements/components/MyAchievementCard.vue'
+import DeckDetailModal from '../hearthstone-achievements/components/DeckDetailModal.vue'
 
 const { user, init: initAuth, logout } = useAuth()
 const router = useRouter()
@@ -972,20 +935,20 @@ async function onImportFile(e) {
   reader.readAsText(file)
 }
 
-// 动态加载所有卡牌图片
-const cardImageLoaders = import.meta.glob('../hearthstone-achievements/assets/cards/**/*.png', { import: 'default' })
+// 卡牌图片：构建期即解析出 URL（eager glob），点击卡片时同步可用，消除打开弹窗的等待。
+const cardImageMap = import.meta.glob('../hearthstone-achievements/assets/cards/**/*.png', { eager: true, import: 'default' })
 
-const getCardImageLoader = (cardName, imageDir) => {
+const getCardImageUrl = (cardName, imageDir) => {
   const path = `../hearthstone-achievements/assets/cards/${imageDir}/${cardName}.png`
-  return cardImageLoaders[path] || null
+  return cardImageMap[path] || null
 }
 
-// 给成就附加卡牌图片和版本信息
+// 给成就附加卡牌图片和版本信息（图片 URL 同步可用）
 const attachCards = (ach, exp) => ({
   ...ach,
   cards: (ach.relatedCards || []).map((name) => ({
     name,
-    imageLoader: getCardImageLoader(name, exp.cardImageDir)
+    image: getCardImageUrl(name, exp.cardImageDir)
   })),
   _expansionId: exp.id,
   _expansionName: exp.name
@@ -1077,14 +1040,29 @@ const expandAllClasses = () => {
 const collapseAllClasses = () => {
   for (const c of classOrder) classViewCollapsed[c] = true
 }
+// 总览面板「展开/收起全部」：按当前视图切换 职业分组 或 版本分组 的折叠态
+const expandAllSections = () => {
+  if (viewMode.value === 'my' && myGroupBy.value === 'class') {
+    for (const exp of expansions) expViewCollapsed[exp.id] = false
+  } else {
+    for (const c of classOrder) classViewCollapsed[c] = false
+  }
+}
+const collapseAllSections = () => {
+  if (viewMode.value === 'my' && myGroupBy.value === 'class') {
+    for (const exp of expansions) expViewCollapsed[exp.id] = true
+  } else {
+    for (const c of classOrder) classViewCollapsed[c] = true
+  }
+}
 
 // 是否为「按版本」视图（按版本浏览 / 我的-按版本），用于展示版本描述等通用信息
 const isExpansionView = computed(
   () => viewMode.value === 'expansion' || (viewMode.value === 'my' && myGroupBy.value === 'expansion')
 )
-// 仅在「我的-按版本」时展示职业总览面板（含个人完成度与剩余统计）
+// 仅在「我的-按版本 / 我的-按职业」时展示总览面板（含完成度进度条与剩余统计一句话说明）
 const showClassOverview = computed(
-  () => viewMode.value === 'my' && myGroupBy.value === 'expansion'
+  () => viewMode.value === 'my' && (myGroupBy.value === 'expansion' || myGroupBy.value === 'class')
 )
 
 // 每个职业的完成度总览（基于当前筛选结果）
@@ -1106,10 +1084,17 @@ const classViewSummaries = computed(() => {
   return map
 })
 
-// 当前版本整体完成度（总览面板用）
-const overviewStats = computed(() => getStats(currentExpansionAchievements.value))
+// 总览面板作用范围：按版本=当前版本；按职业=当前职业；待完成清单=全部 9 版本成就
+const overviewScope = computed(() => {
+  if (viewMode.value === 'my' && myGroupBy.value === 'expansion') return currentExpansionAchievements.value
+  if (viewMode.value === 'my' && myGroupBy.value === 'class') return currentClassAchievements.value
+  if (viewMode.value === 'my' && myGroupBy.value === 'sprint') return classSprintAchievements.value
+  return []
+})
+// 总览面板统计（完成度、点数、经验）
+const overviewStats = computed(() => getStats(overviewScope.value))
 const overviewCompletedCount = computed(() =>
-  currentExpansionAchievements.value.filter((a) => isAchievementCompleted(a)).length
+  overviewScope.value.filter((a) => isAchievementCompleted(a)).length
 )
 
 // 当前职业的成就（按职业浏览模式）
@@ -1333,13 +1318,12 @@ const metricTotals = computed(() => {
   }
   return { countRemain, pointRemain }
 })
-// 按版本视图：总览面板的剩余统计（剩余成就个数 + 剩余次数 + 剩余点数）。
-// 基于当前版本全部成就，保证 已完成 + 剩余 = 总数，与总览面板其他数字一致。
-const expansionRemaining = computed(() => {
+// 总览面板剩余统计（基于 overviewScope，保证 已完成 + 剩余 = 总数）
+const overviewRemaining = computed(() => {
   let achievements = 0
   let countRemain = 0
   let pointRemain = 0
-  for (const ach of currentExpansionAchievements.value) {
+  for (const ach of overviewScope.value) {
     if (isAchievementCompleted(ach)) continue
     achievements += 1
     if (ach.type !== '累计') continue
@@ -1350,6 +1334,32 @@ const expansionRemaining = computed(() => {
     else countRemain += remaining
   }
   return { achievements, countRemain, pointRemain }
+})
+// 总览面板说明：拆成两行、数字高亮（成就/累计 一行，经验/成就值 一行）
+// 数值均来源于本地统计（安全整数），故用 v-html 包裹 .hs-num 高亮
+const overviewSummaryHtml = computed(() => {
+  const stats = overviewStats.value
+  const total = stats.total
+  const completed = stats.completed
+  const remaining = total - completed
+  const { countRemain, pointRemain } = overviewRemaining.value
+  // 通行证经验加成：已获得/总经验均按 (1+加成) 放大（成就值不受加成影响）
+  const earnedXp = Math.round(stats.earnedXp * (1 + passBonus.value))
+  const totalXp = Math.round(stats.totalXp * (1 + passBonus.value))
+  const remainXp = Math.max(0, totalXp - earnedXp)
+  const remainPts = Math.max(0, stats.totalPoints - stats.earnedPoints)
+  const n = (v) => `<b class="hs-num">${v}</b>`
+  // 累计剩余：次数为 0 / 点数为 0 时各自不显示
+  const cumParts = []
+  if (countRemain > 0) cumParts.push(`累计-次数还差 ${n(countRemain)} 次`)
+  if (pointRemain > 0) cumParts.push(`累计-点数还差 ${n(pointRemain)} 点`)
+  const cumClause = cumParts.length ? `剩余成就中，${cumParts.join('，')}。` : ''
+  const line1 =
+    `已完成 ${n(`${completed}/${total}`)} 个成就，剩余 ${n(remaining)} 个成就；` + cumClause
+  const line2 =
+    `已获得经验值 ${n(`${earnedXp}/${totalXp}`)}，剩余可获得经验值 ${n(remainXp)}；` +
+    `已获得成就值 ${n(`${stats.earnedPoints}/${stats.totalPoints}`)}，剩余可获得成就值 ${n(remainPts)} 点。`
+  return { line1, line2 }
 })
 const metricTotalRemain = computed(() => metricTotals.value.countRemain + metricTotals.value.pointRemain)
 
@@ -1432,23 +1442,17 @@ watch(currentClass, () => {
 })
 
 // 弹窗
-const openCardModal = async (achievement) => {
+const openCardModal = (achievement) => {
   // 我的成就 + 已登录：打开进度编辑
   if (viewMode.value === 'my' && user.value) {
     openEditModal(achievement)
     return
   }
-  // 浏览模式 / 我的成就（未登录仅查看）：展示关联卡牌图片，编辑需登录
-  if (!achievement.cards || !achievement.cards.some((card) => card.imageLoader)) return
+  // 浏览模式 / 我的成就（未登录仅查看）：展示关联卡牌图片，编辑需登录。
+  // 图片 URL 已在构建期解析（eager glob），点击即同步可用，弹窗立即出现。
+  if (!achievement.cards || !achievement.cards.some((card) => card.image)) return
   modalTitle.value = achievement.name
-  modalCards.value = await Promise.all(achievement.cards.map(async (card) => {
-    if (!card.imageLoader) return { ...card, image: null }
-    try {
-      return { ...card, image: await card.imageLoader() }
-    } catch {
-      return { ...card, image: null }
-    }
-  }))
+  modalCards.value = achievement.cards.map((card) => ({ ...card }))
   modalVisible.value = true
 }
 
@@ -1456,6 +1460,15 @@ const closeModal = () => {
   modalVisible.value = false
   modalCards.value = []
   modalTitle.value = ''
+}
+
+// 推荐卡组详情弹窗
+const deckDetailVisible = ref(false)
+const deckDetailData = ref(null)
+const openDeckDetail = (deck) => {
+  if (!deck) return
+  deckDetailData.value = deck
+  deckDetailVisible.value = true
 }
 
 const getClassStyle = (heroClass) => ({

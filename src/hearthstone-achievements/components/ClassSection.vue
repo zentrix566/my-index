@@ -9,6 +9,8 @@ const props = defineProps({
   classStyle: { type: Object, default: () => ({}) },
   useMyCard: { type: Boolean, default: false },
   editable: { type: Boolean, default: false },
+  // 是否在卡片上显示"还差 X 次/阶段"剩余徽标（仅对 MyAchievementCard 生效）
+  showRemaining: { type: Boolean, default: false },
   // 折叠状态由父组件控制（v-model:collapsed），默认展开
   collapsed: { type: Boolean, default: false },
   // 收起态头部展示的总览数据：{ total, completed, percent }
@@ -18,7 +20,7 @@ const props = defineProps({
   selectedIds: { type: Array, default: () => [] }
 })
 
-const emit = defineEmits(['card-click', 'update:collapsed', 'toggle-select'])
+const emit = defineEmits(['card-click', 'update:collapsed', 'toggle-select', 'deck-click'])
 
 const toggleCollapse = () => {
   emit('update:collapsed', !props.collapsed)
@@ -61,11 +63,13 @@ const toggleCollapse = () => {
         :key="ach.id"
         :achievement="ach"
         :editable="useMyCard ? editable : undefined"
+        :show-remaining="useMyCard ? showRemaining : undefined"
         :style="classStyle"
         :select-mode="useMyCard && selectMode ? true : undefined"
         :selected="useMyCard && selectMode ? selectedIds.includes(ach.id) : undefined"
         @click="emit('card-click', ach)"
         @toggle-select="emit('toggle-select', $event)"
+        @deck-click="emit('deck-click', $event)"
       />
     </div>
   </section>

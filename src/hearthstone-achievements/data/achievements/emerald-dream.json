@@ -653,7 +653,11 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "焚火林地",
+        "焚火之力",
+        "焚火飞升"
+      ],
       "recommendedDecks": [],
       "stages": [
         {

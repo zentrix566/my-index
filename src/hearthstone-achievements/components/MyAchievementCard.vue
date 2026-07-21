@@ -11,7 +11,7 @@ const props = defineProps({
   selected: { type: Boolean, default: false }
 })
 
-const emit = defineEmits(['click', 'toggle-select'])
+const emit = defineEmits(['click', 'toggle-select', 'deck-click'])
 
 const onCardClick = () => {
   if (props.selectMode) emit('toggle-select', props.achievement)
@@ -34,7 +34,7 @@ const remainingBadge = computed(() => {
 const copiedDeckName = ref('')
 
 const isClickable = (ach) =>
-  ach.cards && ach.cards.length > 0 && ach.cards.some((c) => c.imageLoader)
+  ach.cards && ach.cards.length > 0 && ach.cards.some((c) => c.image)
 
 const getDifficultyStyle = (difficulty) => ({
   color: difficultyColors[difficulty] || '#666'
@@ -44,14 +44,17 @@ const getDifficultyStyle = (difficulty) => ({
 // 已完成阶段显示满额（quota），避免「已完成却 0% 进度条」的显示矛盾
 const countValue = computed(() => getCount(props.achievement))
 const isCompleted = computed(() => isAchievementCompleted(props.achievement))
-const showCountProgress = computed(() => countValue.value != null || isCompleted.value)
+// 累计成就恒显示进度条（即便 count=0 / 无进度记录也显示 0%），避免"无进度条"的观感断层
+const showCountProgress = computed(() =>
+  props.achievement.type === '累计' ? true : (countValue.value != null || isCompleted.value)
+)
 // 头部展示的累计值：未完成用真实 count；已完成用末阶段 quota（代表已达成的目标值）
 const headerCount = computed(() => {
   if (isCompleted.value) {
     const st = props.achievement.stages
-    return st && st.length ? st[st.length - 1].quota : countValue.value
+    return st && st.length ? st[st.length - 1].quota : (countValue.value ?? 0)
   }
-  return countValue.value
+  return countValue.value ?? 0
 })
 const progressText = computed(() => {
   const stages = props.achievement.stages
@@ -64,6 +67,11 @@ const progressText = computed(() => {
     return { quota: s.quota, done, value }
   })
 })
+
+const onDeckClick = (deck, event) => {
+  if (event) event.stopPropagation()
+  emit('deck-click', { ...deck, heroClass: props.achievement.heroClass })
+}
 
 const copyDeckCode = async (deck, event) => {
   event.stopPropagation()
@@ -206,13 +214,13 @@ const copyDeckCode = async (deck, event) => {
 
       <div v-if="achievement.relatedCards && achievement.relatedCards.length > 0" class="hs-related-cards">
         <span class="hs-related-label">关联卡牌：</span>
-        <span
+          <span
           v-for="card in achievement.cards"
           :key="card.name"
           class="hs-related-card-name"
-          :class="{ 'hs-missing': !card.imageLoader }"
+          :class="{ 'hs-missing': !card.image }"
         >
-          {{ card.name }}<span v-if="!card.imageLoader" class="hs-missing-hint">（暂无图）</span>
+          {{ card.name }}<span v-if="!card.image" class="hs-missing-hint">（暂无图）</span>
         </span>
       </div>
 
@@ -220,7 +228,9 @@ const copyDeckCode = async (deck, event) => {
         <div class="hs-deck-label">推荐卡组：</div>
         <div class="hs-deck-list">
           <div v-for="deck in achievement.recommendedDecks" :key="deck.name" class="hs-deck-item">
-            <span class="hs-deck-name">{{ deck.name }}</span>
+            <button type="button" class="hs-deck-name hs-deck-name-btn" @click="onDeckClick(deck, $event)">
+              {{ deck.name }}
+            </button>
             <button
               class="hs-copy-button"
               type="button"

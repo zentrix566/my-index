@@ -116,7 +116,9 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
-        "时空撕裂"
+        "续连熵能",
+        "暮光时空跃迁者",
+        "超光子弹幕"
       ],
       "stages": [
         {
@@ -632,9 +634,7 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [
-        "回溯牌"
-      ],
+      "relatedCards": [],
       "stages": [
         {
           "description": "使用50张回溯牌。",
@@ -662,9 +662,7 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [
-        "奇闻牌"
-      ],
+      "relatedCards": [],
       "stages": [
         {
           "description": "在套牌中加入奇闻牌，赢得25场对战。",

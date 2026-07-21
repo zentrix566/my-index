@@ -7,7 +7,7 @@ const props = defineProps({
   achievement: { type: Object, required: true }
 })
 
-const emit = defineEmits(['click'])
+const emit = defineEmits(['click', 'deck-click'])
 
 const { getMetric } = useAchievementProgress()
 
@@ -21,7 +21,12 @@ const getDifficultyStyle = (difficulty) => ({
 })
 
 const isClickable = (ach) =>
-  ach.cards && ach.cards.length > 0 && ach.cards.some((c) => c.imageLoader)
+  ach.cards && ach.cards.length > 0 && ach.cards.some((c) => c.image)
+
+const onDeckClick = (deck, event) => {
+  if (event) event.stopPropagation()
+  emit('deck-click', { ...deck, heroClass: props.achievement.heroClass })
+}
 
 const copyDeckCode = async (deck, event) => {
   event.stopPropagation()
@@ -55,7 +60,7 @@ const copyDeckCode = async (deck, event) => {
     <div class="hs-card-content">
       <div class="hs-card-title-row">
         <h3 class="hs-card-title">
-          {{ achievement.name }}
+          <span class="hs-card-name">{{ achievement.name }}</span>
         </h3>
         <div class="hs-card-badges">
           <span class="hs-badge hs-version-badge">{{ achievement._expansionName }}</span>
@@ -70,15 +75,6 @@ const copyDeckCode = async (deck, event) => {
             {{ achievement.difficulty }}
           </span>
           <span v-if="isClickable(achievement)" class="hs-card-hint">点击查看卡牌</span>
-          <button
-            v-if="isClickable(achievement)"
-            class="hs-card-open"
-            type="button"
-            :aria-label="`查看 ${achievement.name} 的关联卡牌`"
-            @click.stop="emit('click', achievement)"
-          >
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-          </button>
         </div>
       </div>
 
@@ -100,13 +96,13 @@ const copyDeckCode = async (deck, event) => {
 
       <div v-if="achievement.relatedCards && achievement.relatedCards.length > 0" class="hs-related-cards">
         <span class="hs-related-label">关联卡牌：</span>
-        <span
+          <span
           v-for="card in achievement.cards"
           :key="card.name"
           class="hs-related-card-name"
-          :class="{ 'hs-missing': !card.imageLoader }"
+          :class="{ 'hs-missing': !card.image }"
         >
-          {{ card.name }}<span v-if="!card.imageLoader" class="hs-missing-hint">（暂无图）</span>
+          {{ card.name }}<span v-if="!card.image" class="hs-missing-hint">（暂无图）</span>
         </span>
       </div>
 
@@ -114,7 +110,9 @@ const copyDeckCode = async (deck, event) => {
         <div class="hs-deck-label">推荐卡组：</div>
         <div class="hs-deck-list">
           <div v-for="deck in achievement.recommendedDecks" :key="deck.name" class="hs-deck-item">
-            <span class="hs-deck-name">{{ deck.name }}</span>
+            <button type="button" class="hs-deck-name hs-deck-name-btn" @click="onDeckClick(deck, $event)">
+              {{ deck.name }}
+            </button>
             <button
               class="hs-copy-button"
               type="button"

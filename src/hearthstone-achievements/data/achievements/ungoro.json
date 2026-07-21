@@ -95,7 +95,8 @@
       "type": "累计",
       "difficulty": "易",
       "relatedCards": [
-        "啸天龙宝宝"
+        "待哺群雏",
+        "啸天龙蛋"
       ],
       "recommendedDecks": [],
       "stages": [
@@ -120,7 +121,7 @@
       "type": "累计",
       "difficulty": "易",
       "relatedCards": [
-        "贪婪的迅猛龙"
+        "盛宴之角"
       ],
       "recommendedDecks": [],
       "stages": [
@@ -390,7 +391,9 @@
       "heroClass": "潜行者",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "审讯"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -562,7 +565,7 @@
       "type": "累计",
       "difficulty": "易",
       "relatedCards": [
-        "凯洛斯"
+        "凯洛斯的蛋"
       ],
       "recommendedDecks": [],
       "stages": [

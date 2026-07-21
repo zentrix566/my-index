@@ -23,7 +23,8 @@
       "recommendedDecks": [
         {
           "name": "瓦玛骑",
-          "code": "AAEBAdK+BQbWEdadA+uABvWVBqn1BpbUBwzYxwLZ/gL9uAPruQPTvQTi0wS4xQWZjgbt3waS4Aac6Aaf6AYAAA=="
+          "code": "AAEBAdK+BQbWEdadA+uABvWVBqn1BpbUBwzYxwLZ/gL9uAPruQPTvQTi0wS4xQWZjgbt3waS4Aac6Aaf6AYAAA==",
+          "deckIntro": "以「瓦玛，死亡幽影」为核心的圣骑士铺场型卡组。思路是用低费随从快速铺场，配合瓦玛的亡语把场面滚雪球做大，再用圣骑士的Buff/BUFF类法术和武器收尾。\n\n做「无差别骑士」成就时，尽量在单局内让瓦玛多次触发亡语、并打出尽可能多不同种类的随从即可。卡组偏向快攻，起手优先找 1~2 费随从与瓦玛本体，中期靠铺场压死对手。\n\n（卡组码可在游戏内「新游戏 → 导入卡组」直接粘贴；如环境与版本变动导致代码失效，可手动照抄核心随从重建。）"
         }
       ],
       "stages": [

@@ -1795,9 +1795,15 @@ a.content-card:hover {
 .hs-class-overview {
   margin-top: 16px;
   padding: 14px 16px;
-  background: #faf7f2;
-  border: 1px solid #efe7da;
-  border-radius: 10px;
+  background: var(--hs-surface-overlay);
+  border: 1px solid var(--hs-border);
+  border-radius: 12px;
+}
+
+.hs-class-overview-head-title {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--hs-text);
 }
 
 .hs-class-overview-head {
@@ -1843,25 +1849,63 @@ a.content-card:hover {
   color: #6b5b4f;
 }
 
-/* 总览面板：完成度 + 剩余统计一体化文字行 */
-.hs-overview-metrics {
-  display: flex;
-  align-items: baseline;
-  flex-wrap: wrap;
-  gap: 8px 18px;
+/* 总览面板：完成度进度条 */
+.hs-overview-progress {
+  position: relative;
+  height: 18px;
   margin-top: 12px;
-  padding-top: 12px;
-  border-top: 1px dashed #e6dccb;
-  font-size: 14px;
-  color: #5a6570;
+  background: var(--hs-inset-bg, #ececec);
+  border-radius: 999px;
+  overflow: hidden;
 }
-.hs-overview-metric b {
-  color: #b45309;
-  font-size: 16px;
+.hs-overview-progress-fill {
+  height: 100%;
+  border-radius: 999px;
+  background: linear-gradient(90deg, #ffd700, #ffb347);
+  transition: width 0.3s ease;
+}
+.hs-overview-progress-label {
+  position: absolute;
+  top: 0;
+  right: 12px;
+  line-height: 18px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--hs-text);
+}
+
+/* 总览面板：一句话说明（已完成/剩余/累计次数·点数/经验·成就值） */
+.hs-overview-summary-text {
+  margin: 12px 0 0;
+  font-size: 13px;
+  line-height: 1.65;
+  color: var(--hs-text-soft);
+}
+.hs-overview-summary-text b {
+  color: var(--hs-text);
   font-weight: 700;
 }
-.hs-overview-metric.hs-overview-remain b {
-  color: #15803d;
+/* 两行说明容器：第二行紧跟第一行 */
+.hs-overview-summary {
+  margin-top: 12px;
+}
+.hs-overview-summary .hs-overview-summary-text {
+  margin-top: 0;
+}
+.hs-overview-summary .hs-overview-summary-text + .hs-overview-summary-text {
+  margin-top: 4px;
+}
+/* 待完成清单说明面板留白 */
+.hs-sprint-stats .hs-overview-summary-text {
+  margin: 0;
+}
+.hs-sprint-stats .hs-overview-summary-text + .hs-overview-summary-text {
+  margin-top: 4px;
+}
+/* 说明文字中的数字高亮 */
+.hs-overview-summary-text .hs-num {
+  color: var(--hs-gold-soft);
+  font-weight: 700;
 }
 
 .hs-class-overview-tip {
@@ -2079,6 +2123,7 @@ a.content-card:hover {
   align-items: flex-start;
   justify-content: space-between;
   gap: 10px;
+  flex-wrap: wrap;
 }
 
 .hs-card-title {
@@ -2091,6 +2136,8 @@ a.content-card:hover {
   align-items: center;
   gap: 8px;
   flex-wrap: wrap;
+  flex: 1 1 auto;
+  min-width: 0;
 }
 
 .hs-card-name {
@@ -2137,6 +2184,7 @@ a.content-card:hover {
   display: flex;
   gap: 6px;
   flex: 0 0 auto;
+  flex-wrap: wrap;
 }
 
 .hs-badge {
@@ -2294,6 +2342,22 @@ a.content-card:hover {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+}
+.hs-deck-name-btn {
+  appearance: none;
+  -webkit-appearance: none;
+  border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  text-align: left;
+  cursor: pointer;
+  font: inherit;
+  color: inherit;
+}
+.hs-deck-name-btn:hover {
+  color: #1b8a5a;
+  text-decoration: underline;
 }
 
 .hs-copy-button {

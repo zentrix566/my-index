@@ -10,6 +10,18 @@
       <p class="epm-meta">{{ achievement?.heroClass }} · {{ achievement?.difficulty }} · {{ achievement?.type }}</p>
       <p v-if="achievement?.description" class="epm-desc">{{ achievement.description }}</p>
 
+      <!-- 关联卡牌（与浏览卡牌弹窗一致） -->
+      <div v-if="hasCards" class="epm-cards">
+        <p class="epm-cards-label">关联卡牌</p>
+        <div class="epm-cards-grid">
+          <div v-for="card in achievement.cards" :key="card.name" class="epm-card-item">
+            <img v-if="card.image" :src="card.image" :alt="card.name" class="epm-card-img" />
+            <p v-else class="epm-card-noimg">暂无「{{ card.name }}」的图片</p>
+            <p class="epm-card-name">{{ card.name }}</p>
+          </div>
+        </div>
+      </div>
+
       <!-- 一次性：阶段勾选 -->
       <div v-if="achievement?.type === '一次性'" class="epm-stages">
         <label v-for="(stage, i) in achievement.stages" :key="i" class="epm-stage">
@@ -57,6 +69,10 @@ const { progress, getUnit } = useAchievementProgress()
 
 // 累计成就的度量单位（次 / 点），用于编辑弹窗标签
 const countUnit = computed(() => getUnit(props.achievement))
+// 关联卡牌：有 relatedCards 时显示图片区域
+const hasCards = computed(
+  () => Array.isArray(props.achievement?.cards) && props.achievement.cards.length > 0
+)
 const draftStages = ref({})
 const draftCount = ref(0)
 
@@ -206,6 +222,41 @@ function save() {
   gap: 12px;
   justify-content: flex-end;
 }
+.epm-cards {
+  margin: 0 0 18px;
+}
+.epm-cards-label {
+  margin: 0 0 10px;
+  font-size: 13px;
+  font-weight: 700;
+  color: #4b5563;
+}
+.epm-cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(116px, 1fr));
+  gap: 12px;
+}
+.epm-card-item {
+  text-align: center;
+}
+.epm-card-img {
+  width: 100%;
+  border-radius: 8px;
+  display: block;
+}
+.epm-card-noimg {
+  margin: 0 0 6px;
+  padding: 18px 8px;
+  font-size: 12px;
+  color: #9ca3af;
+  background: #f3f4f6;
+  border-radius: 8px;
+}
+.epm-card-name {
+  margin: 6px 0 0;
+  font-size: 12px;
+  color: #4b5563;
+}
 .epm-cancel,
 .epm-save {
   height: 40px;
@@ -280,6 +331,10 @@ function save() {
 .epm-stage-points,
 .epm-count-label,
 .epm-quota-hint { color: #94a3b8; }
+.epm-cards-label { color: #cbd5e1; }
+.epm-card-name { color: #94a3b8; }
+.epm-card-noimg { color: #64748b; background: rgba(2, 6, 23, 0.3); border: 1px solid rgba(148, 163, 184, 0.18); }
+.epm-card-img { border: 1px solid rgba(148, 163, 184, 0.2); }
 .epm-count-control button,
 .epm-count-control input {
   height: 46px;

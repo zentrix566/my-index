@@ -23,8 +23,17 @@ function getLogFilePath(date = new Date()) {
  * @param {string} tag - 日志标签，如 AUTH / PROGRESS / SERVER
  * @param {string} message - 日志内容
  */
+/** 将 Date 格式化为北京时间字符串（ISO 8601 +08:00） */
+function toBeijingISO(date = new Date()) {
+  const pad = (n) => String(n).padStart(2, '0')
+  // 北京时间偏移：UTC +8 小时
+  const utc = date.getTime() + date.getTimezoneOffset() * 60000
+  const bj = new Date(utc + 8 * 3600000)
+  return `${bj.getFullYear()}-${pad(bj.getMonth() + 1)}-${pad(bj.getDate())}T${pad(bj.getHours())}:${pad(bj.getMinutes())}:${pad(bj.getSeconds())}.${String(date.getMilliseconds()).padStart(3, '0')}+08:00`
+}
+
 export function appLog(tag, message) {
-  const ts = new Date().toISOString()
+  const ts = toBeijingISO()
   const line = `[${ts}] [${tag}] ${message}\n`
   // 镜像到控制台（WARN/ERROR 用 console.warn 更醒目）
   if (tag === 'ERROR' || tag === 'WARN') {

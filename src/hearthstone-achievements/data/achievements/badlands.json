@@ -490,7 +490,7 @@
       "type": "一次性",
       "difficulty": "难",
       "relatedCards": [
-        "堆尸荒野"
+        "残骸遍野"
       ],
       "recommendedDecks": [
         {
@@ -550,7 +550,7 @@
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
-        "观星（决战荒芜之地）"
+        "观星"
       ],
       "recommendedDecks": [
         {
@@ -1277,9 +1277,7 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "难",
-      "relatedCards": [
-        "日斑巨龙"
-      ],
+      "relatedCards": [],
       "recommendedDecks": [
         {
           "name": "快枪法",
@@ -1343,9 +1341,7 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "难",
-      "relatedCards": [
-        "破地钻机"
-      ],
+      "relatedCards": [],
       "recommendedDecks": [
         {
           "name": "挖宝法",
@@ -1448,7 +1444,8 @@
       "relatedCards": [
         "食人魔帮歹徒",
         "食人魔帮骑手",
-        "食人魔帮王牌"
+        "食人魔帮王牌",
+        "帮派头领普德"
       ],
       "recommendedDecks": [
         {
@@ -1578,9 +1575,7 @@
       "heroClass": "中立",
       "type": "一次性",
       "difficulty": "难",
-      "relatedCards": [
-        "悬赏公告栏"
-      ],
+      "relatedCards": [],
       "recommendedDecks": [
         {
           "name": "通缉贼",
@@ -1680,9 +1675,7 @@
       "heroClass": "中立",
       "type": "一次性",
       "difficulty": "难",
-      "relatedCards": [
-        "艾泽里特巨人"
-      ],
+      "relatedCards": [],
       "recommendedDecks": [
         {
           "name": "元素法",
