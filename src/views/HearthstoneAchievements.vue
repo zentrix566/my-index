@@ -387,7 +387,7 @@
 
       <!-- 按版本浏览：按职业分组 -->
       <div v-if="viewMode === 'expansion'" class="hs-expansion-groups">
-        <template v-for="heroClass in classOrder" :key="heroClass">
+        <template v-for="heroClass in classGroupOrder" :key="heroClass">
           <ClassSection
             v-if="filteredByClass[heroClass] && filteredByClass[heroClass].length > 0"
             v-model:collapsed="classViewCollapsed[heroClass]"
@@ -419,7 +419,7 @@
 
       <!-- 我的成就-按版本：按职业分组 -->
       <div v-else-if="myGroupBy === 'expansion'" class="hs-expansion-groups">
-        <template v-for="heroClass in classOrder" :key="heroClass">
+        <template v-for="heroClass in classGroupOrder" :key="heroClass">
           <ClassSection
             v-if="myFilteredByClass[heroClass] && myFilteredByClass[heroClass].length > 0"
             v-model:collapsed="classViewCollapsed[heroClass]"
@@ -1057,6 +1057,12 @@ const statuses = ['未完成', '已完成']
 // 所有职业列表（保持炉石原顺序，不含双职业——双职业成就通过 dualClasses 分配到对应职业）
 const allClasses = getClassOrder().filter(c => c !== '双职业' && c !== '中立').concat(['中立'])
 const classOrder = getClassOrder()
+// 按职业分组视图（按版本浏览 / 我的-按版本）的渲染顺序：
+// 选中具体职业筛选时只渲染该职业分组；否则按原顺序（双职业组若为空则由 v-if 隐藏）
+const classGroupOrder = computed(() => {
+  if (selectedClass.value !== 'all') return [selectedClass.value]
+  return classOrder
+})
 
 // 当前版本
 const currentExpansion = computed(() =>

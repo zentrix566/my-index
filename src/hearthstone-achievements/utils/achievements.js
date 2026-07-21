@@ -45,17 +45,24 @@ const classOrderList = [
 
 /**
  * 将成就按职业分组
+ * 双职业成就若含 dualClasses 字段，则拆分到对应职业（双职业组不再出现）；
+ * 若仅 heroClass="双职业" 但无 dualClasses（如新增版本未补全映射），则仍归入双职业组作兜底。
  * @param {Array} achievements - 成就列表
  * @returns {Object} 按职业分组的成就
  */
 export function groupByClass(achievements) {
   const groups = {};
+  const pushTo = (cls, ach) => {
+    if (!groups[cls]) groups[cls] = [];
+    groups[cls].push(ach);
+  };
   for (const achievement of achievements) {
-    const heroClass = achievement.heroClass || "中立";
-    if (!groups[heroClass]) {
-      groups[heroClass] = [];
+    if (achievement.dualClasses && achievement.dualClasses.length) {
+      for (const cls of achievement.dualClasses) pushTo(cls, achievement);
+    } else {
+      const heroClass = achievement.heroClass || "中立";
+      pushTo(heroClass, achievement);
     }
-    groups[heroClass].push(achievement);
   }
   return groups;
 }
