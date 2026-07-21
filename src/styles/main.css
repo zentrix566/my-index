@@ -1837,10 +1837,75 @@ a.content-card:hover {
   padding: 6px 12px;
 }
 
+.hs-class-overview-pct-label {
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b5b4f;
+}
+
+/* 总览面板：完成度 + 剩余统计一体化文字行 */
+.hs-overview-metrics {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px dashed #e6dccb;
+  font-size: 14px;
+  color: #5a6570;
+}
+.hs-overview-metric b {
+  color: #b45309;
+  font-size: 16px;
+  font-weight: 700;
+}
+.hs-overview-metric.hs-overview-remain b {
+  color: #15803d;
+}
+
 .hs-class-overview-tip {
   margin: 8px 0 0;
   font-size: 12px;
   color: #a08a72;
+}
+
+/* 冲刺推荐：可折叠分类标题 */
+.hs-sprint-cat-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  padding: 4px 2px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+}
+.hs-sprint-cat-caret {
+  font-size: 11px;
+  color: #b45309;
+  transition: transform 0.18s ease;
+}
+.hs-sprint-cat-caret.open {
+  transform: rotate(90deg);
+}
+.hs-sprint-cat-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #3a3128;
+  letter-spacing: 0.2px;
+}
+.hs-sprint-cat-count {
+  font-size: 12px;
+  font-weight: 600;
+  color: #8a7e72;
+  padding: 3px 10px;
+  background: rgba(107, 91, 79, 0.06);
+  border-radius: 999px;
+}
+.hs-sprint-cat .hs-achievement-list {
+  margin-top: 14px;
 }
 
 /* 按版本视图：进度条下方剩余统计（剩余成就个数 / 剩余次数 / 剩余点数） */
@@ -1915,6 +1980,24 @@ a.content-card:hover {
   color: #888;
   padding: 40px 0;
   font-size: 15px;
+}
+
+.hs-sprint-toolbar {
+  margin-top: 4px;
+}
+
+.hs-sprint-remaining-summary {
+  margin-top: 10px;
+  padding: 10px 14px;
+  font-size: 13px;
+  color: #475569;
+  background: #fff7ed;
+  border: 1px solid #fed7aa;
+  border-radius: 10px;
+}
+
+.hs-sprint-remaining-summary b {
+  color: #c2410c;
 }
 
 /* 冲刺推荐视图：按剩余投入分档 */
@@ -2010,6 +2093,10 @@ a.content-card:hover {
   flex-wrap: wrap;
 }
 
+.hs-card-name {
+  min-width: 0;
+}
+
 .hs-card-meta {
   display: flex;
   flex-wrap: wrap;
@@ -2034,12 +2121,16 @@ a.content-card:hover {
 .hs-meta-class { background: #eef2fb; color: #2b5fb0; border-color: #d6e1f5; }
 
 .hs-card-hint {
+  display: inline-flex;
+  align-items: center;
   font-size: 11px;
-  font-weight: 400;
+  font-weight: 500;
   color: #a7472f;
   background: rgba(167, 71, 47, 0.1);
-  padding: 2px 6px;
-  border-radius: 4px;
+  border: 1px solid rgba(167, 71, 47, 0.18);
+  padding: 2px 9px;
+  border-radius: 999px;
+  white-space: nowrap;
 }
 
 .hs-card-badges {
@@ -2528,6 +2619,20 @@ a.content-card:hover {
   min-width: 0;
 }
 
+/* 待完成清单：剩余统计（普通字号，仅数字强调） */
+.hs-sprint-summary {
+  font-size: 13px;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--hs-text-soft);
+}
+.hs-sprint-summary .hs-sprint-num {
+  color: var(--hs-gold-soft);
+  font-weight: 700;
+  font-size: 16px;
+  margin: 0 2px;
+}
+
 /* 我的成就卡片 */
 .hs-my-card {
   position: relative;
@@ -2550,18 +2655,30 @@ a.content-card:hover {
   vertical-align: middle;
 }
 
-/* 快完成视图 - "还差 X" 徽标 */
+/* 待完成清单 / 快完成视图 - "还差 X 阶段 / 剩余 X 次" 徽标（与其他椭圆一致） */
 .hs-almost-badge {
-  display: inline-block;
-  margin-left: 8px;
-  padding: 2px 8px;
-  border-radius: 10px;
-  background: linear-gradient(135deg, #ff8c42, #ff6b35);
-  color: #fff;
+  display: inline-flex;
+  align-items: center;
+  min-height: 20px;
+  margin-left: 0;
+  padding: 2px 9px;
+  border-radius: 999px;
   font-size: 11px;
   font-weight: 600;
-  vertical-align: middle;
-  box-shadow: 0 1px 4px rgba(255, 107, 53, 0.4);
+  line-height: 1;
+  white-space: nowrap;
+  flex-shrink: 0;
+  color: #e65100;
+  background: #fff3e0;
+  border: 1px solid #ffe0b2;
+}
+
+.hs-card-remaining {
+  margin-top: 8px;
+}
+
+.hs-card-remaining .hs-almost-badge {
+  margin-left: 0;
 }
 
 /* 阶段状态标记（只读） */
@@ -3572,8 +3689,31 @@ a.content-card:hover {
 
 .hs-class-overview-detail,
 .hs-class-overview-tip,
+.hs-class-overview-pct-label,
 .hs-stats-detail {
   color: var(--hs-muted);
+}
+
+.hs-page[data-hs-theme="dark"] .hs-overview-metrics {
+  border-top-color: var(--hs-border);
+  color: var(--hs-muted);
+}
+.hs-page[data-hs-theme="dark"] .hs-overview-metric b {
+  color: #fbbf24;
+}
+.hs-page[data-hs-theme="dark"] .hs-overview-metric.hs-overview-remain b {
+  color: #4ade80;
+}
+
+.hs-page[data-hs-theme="dark"] .hs-sprint-cat-caret {
+  color: #fbbf24;
+}
+.hs-page[data-hs-theme="dark"] .hs-sprint-cat-title {
+  color: var(--hs-text);
+}
+.hs-page[data-hs-theme="dark"] .hs-sprint-cat-count {
+  color: var(--hs-muted);
+  background: rgba(255, 255, 255, 0.045);
 }
 
 .hs-page[data-hs-theme="dark"] .hs-expansion-remaining {
@@ -3638,9 +3778,13 @@ a.content-card:hover {
   line-height: 1.45;
 }
 
-.hs-card-hint {
+.hs-page[data-hs-theme="dark"] .hs-card-hint {
   color: var(--hs-warn);
   background: rgba(217, 119, 6, 0.13);
+  border: 1px solid rgba(217, 119, 6, 0.22);
+  border-radius: 999px;
+  padding: 2px 9px;
+  font-weight: 500;
 }
 
 .hs-badge {
@@ -3802,9 +3946,10 @@ a.content-card:hover {
   background: #4ade80;
 }
 
-.hs-almost-badge {
-  color: #271502;
-  background: var(--hs-gold-soft);
+.hs-page[data-hs-theme="dark"] .hs-almost-badge {
+  color: #fdba74;
+  background: rgba(251, 146, 60, 0.16);
+  border: 1px solid rgba(251, 146, 60, 0.28);
   box-shadow: none;
 }
 
@@ -3817,6 +3962,16 @@ a.content-card:hover {
   border-radius: 14px;
   background: var(--hs-surface-overlay);
   backdrop-filter: blur(18px);
+}
+
+.hs-sprint-remaining-summary {
+  background: var(--hs-surface-overlay);
+  border-color: var(--hs-border);
+  color: var(--hs-muted);
+}
+
+.hs-sprint-remaining-summary b {
+  color: var(--hs-text);
 }
 
 .hs-filter-label {

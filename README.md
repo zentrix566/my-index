@@ -122,7 +122,6 @@ docker run -d -p 8080:80 my-index
 ## 联系 / 作者
 
 - GitHub: [@zentrix566](https://github.com/zentrix566)
-- Email: zentrix566@gmail.com
 
 ## 许可证
 

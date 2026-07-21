@@ -34,7 +34,7 @@ const routes = [
   { path: '/worldcup', name: 'worldcup', component: WorldCupKick },
   { path: '/jiangyin', name: 'jiangyin', component: JiangyinBattle },
   { path: '/domino', name: 'domino', component: DominoFall },
-  { path: '/hearthstone', name: 'hearthstone-achievements', component: HearthstoneAchievements },
+  { path: '/hearthstone', name: 'hearthstone-achievements', component: HearthstoneAchievements, meta: { title: '炉石传说成就查看器 | Zentrix' } },
   { path: '/stats', name: 'stats', component: Stats },
   { path: '/about', name: 'about', component: About },
   { path: '/changelog', name: 'changelog', component: Changelog },
@@ -51,6 +51,8 @@ const router = createRouter({
 
 // 页面访问上报：每次路由切换后向后端发送 PV 统计
 router.afterEach((to) => {
+  // 按路由设置页面标题，未指定时回退到默认标题
+  document.title = to.meta?.title || 'Zentrix | 个人索引'
   // 不统计重定向路由本身
   if (to.matched.length === 0) return
   const path = to.fullPath || '/'

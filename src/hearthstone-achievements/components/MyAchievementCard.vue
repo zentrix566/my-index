@@ -112,10 +112,8 @@ const copyDeckCode = async (deck, event) => {
     <div class="hs-card-content">
       <div class="hs-card-title-row">
           <h3 class="hs-card-title">
-          {{ achievement.name }}
+          <span class="hs-card-name">{{ achievement.name }}</span>
           <span v-if="isAchievementCompleted(achievement)" class="hs-completed-badge">✓ 已完成</span>
-          <span v-else-if="remainingBadge" class="hs-almost-badge">{{ remainingBadge }}</span>
-          <span v-else-if="isClickable(achievement)" class="hs-card-hint">点击查看卡牌</span>
         </h3>
         <div class="hs-card-badges">
           <span class="hs-badge hs-version-badge">{{ achievement._expansionName }}</span>
@@ -129,6 +127,10 @@ const copyDeckCode = async (deck, event) => {
           <span class="hs-badge hs-difficulty-badge" :style="getDifficultyStyle(achievement.difficulty)">
             {{ achievement.difficulty }}
           </span>
+          <span
+            v-if="!editable && !isAchievementCompleted(achievement) && isClickable(achievement)"
+            class="hs-card-hint"
+          >点击查看卡牌</span>
           <button
             v-if="(editable || isClickable(achievement)) && !selectMode"
             class="hs-card-open"
@@ -140,6 +142,10 @@ const copyDeckCode = async (deck, event) => {
             <svg v-else width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
           </button>
         </div>
+      </div>
+
+      <div v-if="remainingBadge" class="hs-card-remaining">
+        <span class="hs-almost-badge">{{ remainingBadge }}</span>
       </div>
 
       <ul class="hs-stage-list">

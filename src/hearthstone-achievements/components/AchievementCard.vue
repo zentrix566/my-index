@@ -56,7 +56,6 @@ const copyDeckCode = async (deck, event) => {
       <div class="hs-card-title-row">
         <h3 class="hs-card-title">
           {{ achievement.name }}
-          <span v-if="isClickable(achievement)" class="hs-card-hint">点击查看卡牌</span>
         </h3>
         <div class="hs-card-badges">
           <span class="hs-badge hs-version-badge">{{ achievement._expansionName }}</span>
@@ -70,6 +69,7 @@ const copyDeckCode = async (deck, event) => {
           <span class="hs-badge hs-difficulty-badge" :style="getDifficultyStyle(achievement.difficulty)">
             {{ achievement.difficulty }}
           </span>
+          <span v-if="isClickable(achievement)" class="hs-card-hint">点击查看卡牌</span>
           <button
             v-if="isClickable(achievement)"
             class="hs-card-open"

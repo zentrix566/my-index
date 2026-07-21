@@ -157,7 +157,7 @@
               </div>
             </div>
           </template>
-          <!-- 按职业/我的(按职业)：职业选择；冲刺推荐使用视图内的统一筛选器 -->
+          <!-- 按职业/我的(按职业)：职业选择；待完成清单使用视图内的统一筛选器 -->
           <div
             v-else-if="viewMode === 'class' || (viewMode === 'my' && myGroupBy === 'class')"
             class="hs-expansion-tabs"
@@ -180,7 +180,7 @@
 
       <!-- 按职业筛选：职业栏下方第一个，搜索框上方，醒目提示当前职业还剩多少未完成 + 累计次数/点数总计（紧跟"共 X 个"之后） -->
       <div
-        v-if="isClassView && classRemaining.total > 0"
+        v-if="viewMode === 'my' && myGroupBy === 'class' && classRemaining.total > 0"
         class="hs-class-remaining"
       >
         <span class="hs-class-remaining-icon" aria-hidden="true">🎯</span>
@@ -232,7 +232,7 @@
             :class="{ active: myGroupBy === 'sprint' }"
             type="button"
             @click="myGroupBy = 'sprint'"
-          >冲刺推荐</button>
+          >待完成清单</button>
         </div>
 
         <div v-if="progressLoading" class="hs-progress-status" role="status">正在加载成就进度…</div>
@@ -241,13 +241,39 @@
           <button type="button" @click="reloadProgress">重试</button>
         </div>
 
+        <!-- 待完成清单：版本-职业-指标筛选 -->
+        <div v-if="viewMode === 'my' && myGroupBy === 'sprint'" class="hs-sprint-toolbar">
+          <div class="hs-sprint-filters">
+            <label class="hs-filter-field">
+              <span class="hs-filter-label">版本</span>
+              <select v-model="sprintVersionFilter" class="hs-filter-select">
+                <option value="all">全部版本</option>
+                <option v-for="v in versionOptions" :key="v.id" :value="v.id">{{ v.name }}</option>
+              </select>
+            </label>
+            <label class="hs-filter-field">
+              <span class="hs-filter-label">职业</span>
+              <select v-model="sprintClassFilter" class="hs-filter-select">
+                <option value="all">全部职业</option>
+                <option v-for="c in allClasses" :key="c" :value="c">{{ c }}</option>
+              </select>
+            </label>
+            <label class="hs-filter-field">
+              <span class="hs-filter-label">指标</span>
+              <select v-model="sprintMetricFilter" class="hs-filter-select">
+                <option v-for="m in sprintMetricOptions" :key="m.value" :value="m.value">{{ m.label }}</option>
+              </select>
+            </label>
+          </div>
+        </div>
+
         <div class="hs-stats-panel" v-if="!showClassOverview">
           <template v-if="myGroupBy === 'sprint'">
-            <div class="hs-stats-info">
-              <span class="hs-stats-percent">{{ sprintAllList.length }}</span>
-              <span class="hs-stats-detail">
-                项冲刺目标 · A {{ sprintGroups.A.length }} · B {{ sprintGroups.B.length }} · C {{ sprintGroups.C.length }} · D {{ sprintGroups.D.length }} · E {{ sprintGroups.E.length }}
-              </span>
+            <div class="hs-sprint-summary">
+              剩余 <b class="hs-sprint-num">{{ sprintAllList.length }}</b> 个成就项
+              · 一次性 <b class="hs-sprint-num">{{ sprintRemainingTotals.oneTime }}</b> 个
+              · 累计-次数 <b class="hs-sprint-num">{{ sprintRemainingTotals.countAch }}</b> 个
+              · 累计-点数 <b class="hs-sprint-num">{{ sprintRemainingTotals.pointAch }}</b> 个
             </div>
           </template>
           <template v-else>
@@ -268,37 +294,76 @@
           </template>
         </div>
 
+        <!-- 待完成清单：导出 / 批量完成，置于剩余统计下方 -->
+        <div class="hs-export-bar" v-if="viewMode === 'my' && myGroupBy === 'sprint'">
+          <span class="hs-export-label">导出：</span>
+          <button type="button" class="hs-btn hs-btn-ghost" :disabled="exporting" @click="exportExcel">
+            {{ exporting ? '导出中…' : '导出 Excel' }}
+          </button>
+          <label class="hs-pass">
+            通行证加成：
+            <select v-model.number="passBonus" class="hs-pass-select">
+              <option v-for="o in PASS_BONUS_OPTIONS" :key="o.value" :value="o.value">{{ o.label }}</option>
+            </select>
+          </label>
+        </div>
+
+        <div class="hs-batch-bar" v-if="viewMode === 'my' && user && myGroupBy === 'sprint'">
+          <template v-if="!batchMode">
+            <button type="button" class="hs-btn hs-btn-ghost" @click="startBatch">
+              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+              批量完成
+            </button>
+            <span class="hs-batch-hint">勾选多个成就后一次性标记完成，省去逐个点击</span>
+          </template>
+          <template v-else>
+            <span class="hs-batch-count">已选 <b>{{ selectedAchIds.length }}</b> 个</span>
+            <button type="button" class="hs-btn hs-btn-ghost" @click="selectAllVisible">全选当前范围</button>
+            <button type="button" class="hs-btn hs-btn-ghost" @click="clearSelection">清除</button>
+            <button type="button" class="hs-btn hs-btn-primary" :disabled="selectedAchIds.length === 0 || savingProgress" @click="batchComplete">
+              {{ savingProgress ? '保存中…' : '完成选中 (' + selectedAchIds.length + ')' }}
+            </button>
+            <button type="button" class="hs-btn hs-btn-ghost" @click="cancelBatch">取消</button>
+          </template>
+        </div>
+
       </template>
 
-      <!-- 按版本浏览/我的-按版本：职业总览（整体进度，默认展开） -->
+      <!-- 我的-按版本：职业总览（整体进度 + 剩余统计，默认展开） -->
       <div v-if="showClassOverview" class="hs-class-overview">
         <div class="hs-class-overview-head">
           <div class="hs-class-overview-stats">
             <span class="hs-class-overview-pct">{{ overviewStats.percentage }}%</span>
-            <span class="hs-class-overview-detail">
-              已完成 {{ overviewCompletedCount }} / {{ currentExpansionAchievements.length }} 个成就 · 已得 {{ overviewStats.earnedPoints }}/{{ overviewStats.totalPoints }} 点
-            </span>
+            <span class="hs-class-overview-pct-label">完成百分比</span>
           </div>
           <div class="hs-class-overview-actions">
             <button type="button" class="hs-btn hs-btn-ghost" @click="expandAllClasses">展开全部</button>
             <button type="button" class="hs-btn hs-btn-ghost" @click="collapseAllClasses">收起全部</button>
           </div>
         </div>
-        <p class="hs-class-overview-tip">默认按职业展开，点击职业标题即可折叠 / 展开该职业的成就明细。</p>
+        <div class="hs-overview-metrics">
+          <span class="hs-overview-metric">已完成 <b>{{ overviewCompletedCount }}</b> / {{ currentExpansionAchievements.length }} 个成就</span>
+          <span class="hs-overview-metric">成就点数 <b>{{ overviewStats.earnedPoints }}</b> / {{ overviewStats.totalPoints }} 点</span>
+          <span class="hs-overview-metric hs-overview-remain">剩余 <b>{{ expansionRemaining.achievements }}</b> 个成就</span>
+          <span class="hs-overview-metric hs-overview-remain">剩余成就点数 <b>{{ overviewStats.totalPoints - overviewStats.earnedPoints }}</b> 点</span>
+          <span v-if="expansionRemaining.countRemain > 0" class="hs-overview-metric hs-overview-remain">累计-次数 剩余 <b>{{ expansionRemaining.countRemain }}</b> 次</span>
+          <span v-if="expansionRemaining.pointRemain > 0" class="hs-overview-metric hs-overview-remain">累计-点数 剩余 <b>{{ expansionRemaining.pointRemain }}</b> 点</span>
+        </div>
       </div>
 
-      <!-- 进度条下方：剩余成就个数 / 剩余次数 / 剩余点数 -->
-      <div v-if="showClassOverview" class="hs-expansion-remaining">
-        <span class="hs-expansion-remaining-item">剩余 <b>{{ expansionRemaining.achievements }}</b> 个成就</span>
-        <span class="hs-expansion-remaining-sep">·</span>
-        <span class="hs-expansion-remaining-item">剩余次数 <b>{{ expansionRemaining.countRemain }}</b> 次</span>
-        <span class="hs-expansion-remaining-sep">·</span>
-        <span class="hs-expansion-remaining-item">剩余点数 <b>{{ expansionRemaining.pointRemain }}</b> 点</span>
+      <!-- 按版本浏览：仅展开/收起控制与成就总数（不含个人进度） -->
+      <div v-else-if="viewMode === 'expansion'" class="hs-class-overview hs-class-overview-browse">
+        <div class="hs-class-overview-head">
+          <span class="hs-class-overview-browse-count">共 <b>{{ currentExpansionAchievements.length }}</b> 个成就</span>
+          <div class="hs-class-overview-actions">
+            <button type="button" class="hs-btn hs-btn-ghost" @click="expandAllClasses">展开全部</button>
+            <button type="button" class="hs-btn hs-btn-ghost" @click="collapseAllClasses">收起全部</button>
+          </div>
+        </div>
       </div>
 
-      <!-- 进度条下方：共 X 个成就 + 版本描述 + 参考链接 -->
-      <section v-if="showClassOverview" class="hs-result-bar">
-        <span>共 {{ filteredAchievements.length.toLocaleString() }} 个成就</span>
+      <!-- 进度条下方：版本描述 + 营地攻略链接（按版本浏览 / 我的-按版本 通用） -->
+      <section v-if="isExpansionView" class="hs-result-bar">
         <span>
           {{ currentExpansion?.description }}
           <template v-if="currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0">
@@ -331,14 +396,12 @@
         :show-status-filter="viewMode === 'my'"
       />
 
-      <section v-if="!isClassView && !showClassOverview" class="hs-result-bar">
+      <section v-if="viewMode === 'class'" class="hs-result-bar">
         <span>共 {{ filteredAchievements.length.toLocaleString() }} 个成就</span>
-        <span v-if="myGroupBy === 'sprint'">按「接近完成 → 低投入 → 中等投入 → 长期目标」分组，始终遵循下方版本和职业筛选</span>
-        <span v-else>查看我的成就完成进度</span>
       </section>
 
       <!-- 导出（JSON 导出/导入暂隐藏，待启用） -->
-      <div class="hs-export-bar" v-if="viewMode === 'my'">
+      <div class="hs-export-bar" v-if="viewMode === 'my' && myGroupBy !== 'sprint'">
         <span class="hs-export-label">导出：</span>
         <button type="button" class="hs-btn hs-btn-ghost" :disabled="exporting" @click="exportExcel">
           {{ exporting ? '导出中…' : '导出 Excel' }}
@@ -352,7 +415,7 @@
       </div>
 
       <!-- 批量完成工具条（仅登录用户可见） -->
-      <div class="hs-batch-bar" v-if="viewMode === 'my' && user">
+      <div class="hs-batch-bar" v-if="viewMode === 'my' && user && myGroupBy !== 'sprint'">
         <template v-if="!batchMode">
           <button type="button" class="hs-btn hs-btn-ghost" @click="startBatch">
             <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
@@ -382,7 +445,6 @@
             :achievements="filteredByClass[heroClass]"
             :badge-style="getClassBadgeStyle(heroClass)"
             :class-style="getClassStyle(heroClass)"
-            :summary="classViewSummaries[heroClass]"
             @card-click="openCardModal"
           />
         </template>
@@ -444,34 +506,22 @@
         </template>
       </div>
 
-      <!-- 我的成就-冲刺推荐：统一筛选后按投入程度分组 -->
+      <!-- 我的成就-待完成清单：按 一次性 / 累计-次数 / 累计-点数 分组，默认折叠 -->
       <div v-else-if="myGroupBy === 'sprint'" class="hs-priority-wrap">
-        <div class="hs-sprint-filters">
-          <label class="hs-filter-field">
-            <span class="hs-filter-label">版本</span>
-            <select v-model="sprintVersionFilter" class="hs-filter-select">
-              <option value="all">全部版本</option>
-              <option v-for="v in versionOptions" :key="v.id" :value="v.id">{{ v.name }}</option>
-            </select>
-          </label>
-          <label class="hs-filter-field">
-            <span class="hs-filter-label">职业</span>
-            <select v-model="sprintClassFilter" class="hs-filter-select">
-              <option value="all">全部职业</option>
-              <option v-for="c in allClasses" :key="c" :value="c">{{ c }}</option>
-            </select>
-          </label>
-        </div>
-        <section v-if="sprintGroups.A.length" class="hs-priority-group hs-priority-group-a">
-          <div class="hs-priority-group-head">
-            <h3 class="hs-priority-group-title">
-              <span class="hs-priority-rank">A</span> 最接近完成 <small>{{ sprintGroups.A.length }} 个</small>
-            </h3>
-            <span class="hs-priority-group-tip">优先清掉，完成数涨最快</span>
-          </div>
-          <div class="hs-achievement-list hs-priority-list">
+        <section v-if="sprintGroups.oneTime.length" class="hs-priority-group hs-sprint-cat">
+          <button
+            type="button"
+            class="hs-sprint-cat-head"
+            :aria-expanded="!sprintSectionCollapsed.oneTime"
+            @click="toggleSprintSection('oneTime')"
+          >
+            <span class="hs-sprint-cat-caret" :class="{ open: !sprintSectionCollapsed.oneTime }">▶</span>
+            <span class="hs-sprint-cat-title">一次性成就</span>
+            <span class="hs-sprint-cat-count">{{ sprintGroups.oneTime.length }} 个</span>
+          </button>
+          <div v-show="!sprintSectionCollapsed.oneTime" class="hs-achievement-list hs-priority-list">
             <MyAchievementCard
-              v-for="ach in sprintGroups.A"
+              v-for="ach in sprintGroups.oneTime"
               :key="ach.id"
               :achievement="ach"
               :show-remaining="true"
@@ -481,16 +531,20 @@
           </div>
         </section>
 
-        <section v-if="sprintGroups.B.length" class="hs-priority-group hs-priority-group-b">
-          <div class="hs-priority-group-head">
-            <h3 class="hs-priority-group-title">
-              <span class="hs-priority-rank">B</span> 还差 ≤20 <small>{{ sprintGroups.B.length }} 个</small>
-            </h3>
-            <span class="hs-priority-group-tip">A 组清完后顺手做</span>
-          </div>
-          <div class="hs-achievement-list hs-priority-list">
+        <section v-if="sprintGroups.count.length" class="hs-priority-group hs-sprint-cat">
+          <button
+            type="button"
+            class="hs-sprint-cat-head"
+            :aria-expanded="!sprintSectionCollapsed.count"
+            @click="toggleSprintSection('count')"
+          >
+            <span class="hs-sprint-cat-caret" :class="{ open: !sprintSectionCollapsed.count }">▶</span>
+            <span class="hs-sprint-cat-title">累计-次数（剩余从低到高）</span>
+            <span class="hs-sprint-cat-count">{{ sprintGroups.count.length }} 个</span>
+          </button>
+          <div v-show="!sprintSectionCollapsed.count" class="hs-achievement-list hs-priority-list">
             <MyAchievementCard
-              v-for="ach in sprintGroups.B"
+              v-for="ach in sprintGroups.count"
               :key="ach.id"
               :achievement="ach"
               :show-remaining="true"
@@ -500,54 +554,20 @@
           </div>
         </section>
 
-        <section v-if="sprintGroups.C.length" class="hs-priority-group hs-priority-group-c">
-          <div class="hs-priority-group-head">
-            <h3 class="hs-priority-group-title">
-              <span class="hs-priority-rank">C</span> 还差 21–50 <small>{{ sprintGroups.C.length }} 个</small>
-            </h3>
-            <span class="hs-priority-group-tip">按兴致推进</span>
-          </div>
-          <div class="hs-achievement-list hs-priority-list">
+        <section v-if="sprintGroups.points.length" class="hs-priority-group hs-sprint-cat">
+          <button
+            type="button"
+            class="hs-sprint-cat-head"
+            :aria-expanded="!sprintSectionCollapsed.points"
+            @click="toggleSprintSection('points')"
+          >
+            <span class="hs-sprint-cat-caret" :class="{ open: !sprintSectionCollapsed.points }">▶</span>
+            <span class="hs-sprint-cat-title">累计-点数（剩余从低到高）</span>
+            <span class="hs-sprint-cat-count">{{ sprintGroups.points.length }} 个</span>
+          </button>
+          <div v-show="!sprintSectionCollapsed.points" class="hs-achievement-list hs-priority-list">
             <MyAchievementCard
-              v-for="ach in sprintGroups.C"
-              :key="ach.id"
-              :achievement="ach"
-              :show-remaining="true"
-              :editable="Boolean(user)"
-              @click="openCardModal"
-            />
-          </div>
-        </section>
-
-        <section v-if="sprintGroups.D.length" class="hs-priority-group hs-priority-group-d">
-          <div class="hs-priority-group-head">
-            <h3 class="hs-priority-group-title">
-              <span class="hs-priority-rank">D</span> 一次性剩余多阶段 <small>{{ sprintGroups.D.length }} 个</small>
-            </h3>
-            <span class="hs-priority-group-tip">需要多步推进，放最后</span>
-          </div>
-          <div class="hs-achievement-list hs-priority-list">
-            <MyAchievementCard
-              v-for="ach in sprintGroups.D"
-              :key="ach.id"
-              :achievement="ach"
-              :show-remaining="true"
-              :editable="Boolean(user)"
-              @click="openCardModal"
-            />
-          </div>
-        </section>
-
-        <section v-if="sprintGroups.E.length" class="hs-priority-group hs-priority-group-e">
-          <div class="hs-priority-group-head">
-            <h3 class="hs-priority-group-title">
-              <span class="hs-priority-rank">E</span> 累计还差 ≥51 <small>{{ sprintGroups.E.length }} 个</small>
-            </h3>
-            <span class="hs-priority-group-tip">需大量投入，慢慢磨</span>
-          </div>
-          <div class="hs-achievement-list hs-priority-list">
-            <MyAchievementCard
-              v-for="ach in sprintGroups.E"
+              v-for="ach in sprintGroups.points"
               :key="ach.id"
               :achievement="ach"
               :show-remaining="true"
@@ -558,7 +578,7 @@
         </section>
 
         <p v-if="!sprintAllList.length" class="hs-sprint-empty">
-          当前筛选范围内没有未完成的冲刺目标。
+          当前筛选范围内没有未完成的成就。
         </p>
       </div>
 
@@ -983,7 +1003,7 @@ const allAchievements = computed(() => {
 })
 
 // 「更多版本」（本次新增、无经验值）的成就：只在「按版本浏览 / 我的-按版本」中出现，
-// 不进入「按职业浏览 / 我的-按职业 / 冲刺推荐」，以免干扰推荐与按职业统计。
+// 不进入「按职业浏览 / 我的-按职业 / 待完成清单」，以免干扰推荐与按职业统计。
 const addedExpansionIdSet = new Set(addedExpansions.map((e) => e.id))
 const classSprintAchievements = computed(() =>
   allAchievements.value.filter((a) => !addedExpansionIdSet.has(a._expansionId))
@@ -1027,7 +1047,7 @@ const onClassTabClick = (cls) => {
 }
 const myViewSubLabel = computed(() => {
   const prefix = user.value ? '我的进度' : '全部成就'
-  if (myGroupBy.value === 'sprint') return `${prefix} - 冲刺推荐`
+  if (myGroupBy.value === 'sprint') return `${prefix} - 待完成清单`
   const scope = myGroupBy.value === 'expansion' ? currentExpansion.value?.name : currentClassName.value
   return `${prefix} - ${scope}`
 })
@@ -1058,9 +1078,13 @@ const collapseAllClasses = () => {
   for (const c of classOrder) classViewCollapsed[c] = true
 }
 
-// 仅在「按版本浏览 / 我的-按版本」时展示职业总览面板
-const showClassOverview = computed(
+// 是否为「按版本」视图（按版本浏览 / 我的-按版本），用于展示版本描述等通用信息
+const isExpansionView = computed(
   () => viewMode.value === 'expansion' || (viewMode.value === 'my' && myGroupBy.value === 'expansion')
+)
+// 仅在「我的-按版本」时展示职业总览面板（含个人完成度与剩余统计）
+const showClassOverview = computed(
+  () => viewMode.value === 'my' && myGroupBy.value === 'expansion'
 )
 
 // 每个职业的完成度总览（基于当前筛选结果）
@@ -1103,37 +1127,52 @@ const myAchievementsList = computed(() => {
   }
 })
 
-// 冲刺推荐视图只有这一套筛选状态，避免顶部标签和下拉框产生范围冲突。
+// 待完成清单视图只有这一套筛选状态，避免顶部标签和下拉框产生范围冲突。
 const sprintVersionFilter = ref('all')
 const sprintClassFilter = ref('all')
+// 指标筛选：按剩余的「一次性 / 累计-次数 / 累计-点数」过滤未完成成就。
+const sprintMetricFilter = ref('all')
+const sprintMetricOptions = [
+  { value: 'all', label: '全部指标' },
+  { value: '一次性', label: '剩余一次性' },
+  { value: '次数', label: '累计-次数 剩余' },
+  { value: '点数', label: '累计-点数 剩余' }
+]
 const versionOptions = computed(() =>
   expansions.filter((e) => !addedExpansionIdSet.has(e.id)).map((e) => ({ id: e.id, name: e.name }))
 )
 
-// 冲刺推荐分组：统一应用版本和职业范围，再按剩余投入分档。
+// 判断一条成就是否命中当前的指标筛选（一次性 / 次数 / 点数）。
+const matchSprintMetric = (ach) => {
+  if (sprintMetricFilter.value === 'all') return true
+  if (sprintMetricFilter.value === '一次性') return ach.type !== '累计'
+  if (sprintMetricFilter.value === '次数') return ach.type === '累计' && getMetric(ach) === 'count'
+  if (sprintMetricFilter.value === '点数') return ach.type === '累计' && getMetric(ach) === 'points'
+  return true
+}
+
+// 待完成清单分组折叠状态：三类默认折叠，点击标题展开。
+const sprintSectionCollapsed = reactive({ oneTime: true, count: true, points: true })
+const toggleSprintSection = (key) => {
+  sprintSectionCollapsed[key] = !sprintSectionCollapsed[key]
+}
+
+// 待完成清单分组：统一应用版本/职业/指标范围，再按 一次性 / 累计-次数 / 累计-点数 分类。
+// 累计两类按剩余从低到高排序（越接近完成越靠前）。
 const sprintGroups = computed(() => {
-  const A = [] // 一次即成（零成本）
-  const B = [] // 累计还差 ≤20（做几把就满）
-  const C = [] // 累计还差 21~50（中等投入）
-  const D = [] // 一次性剩多阶段（优先级最低）
-  const E = [] // 累计还差 ≥51（长期目标，最大投入）
+  const oneTime = [] // 一次性成就
+  const count = [] // 累计-次数
+  const points = [] // 累计-点数
 
   for (const ach of classSprintAchievements.value) {
     if (sprintVersionFilter.value !== 'all' && ach._expansionId !== sprintVersionFilter.value) continue
     if (sprintClassFilter.value !== 'all' && ach.heroClass !== sprintClassFilter.value) continue
+    if (!matchSprintMetric(ach)) continue
     const info = getProgressInfo(ach)
     if (info.completed) continue
-    if (ach.type === '累计') {
-      const rem = info.remainingCount
-      if (rem <= 1) A.push(ach)
-      else if (rem <= 20) B.push(ach)
-      else if (rem <= 50) C.push(ach)
-      else E.push(ach)
-    } else {
-      if (info.remainingCount === 1 && info.doneStages >= 1) A.push(ach)
-      else if (info.totalStages === 1 && info.doneStages === 0) A.push(ach)
-      else D.push(ach)
-    }
+    if (ach.type !== '累计') oneTime.push(ach)
+    else if (getMetric(ach) === 'points') points.push(ach)
+    else count.push(ach)
   }
 
   const sortByRemaining = (list) => {
@@ -1146,20 +1185,24 @@ const sprintGroups = computed(() => {
   }
 
   return {
-    A: sortByRemaining(A),
-    B: sortByRemaining(B),
-    C: sortByRemaining(C),
-    D: sortByRemaining(D),
-    E: sortByRemaining(E)
+    oneTime: sortByRemaining(oneTime),
+    count: sortByRemaining(count),
+    points: sortByRemaining(points)
   }
 })
 const sprintAllList = computed(() => [
-  ...sprintGroups.value.A,
-  ...sprintGroups.value.B,
-  ...sprintGroups.value.C,
-  ...sprintGroups.value.D,
-  ...sprintGroups.value.E
+  ...sprintGroups.value.oneTime,
+  ...sprintGroups.value.count,
+  ...sprintGroups.value.points
 ])
+
+// 当前冲刺筛选范围内的剩余汇总：未完成成就总数 + 各类型成就个数。
+const sprintRemainingTotals = computed(() => ({
+  total: sprintAllList.value.length,
+  oneTime: sprintGroups.value.oneTime.length,
+  countAch: sprintGroups.value.count.length,
+  pointAch: sprintGroups.value.points.length
+}))
 
 // 展示的成就列表
 // 有搜索关键词时，跨所有版本与职业全局搜索；否则只看当前范围
@@ -1290,15 +1333,23 @@ const metricTotals = computed(() => {
   }
   return { countRemain, pointRemain }
 })
-// 按版本视图：进度条下方的剩余总览（剩余成就个数 + 剩余次数 + 剩余点数），基于当前筛选范围
+// 按版本视图：总览面板的剩余统计（剩余成就个数 + 剩余次数 + 剩余点数）。
+// 基于当前版本全部成就，保证 已完成 + 剩余 = 总数，与总览面板其他数字一致。
 const expansionRemaining = computed(() => {
-  const list = filteredAchievements.value
-  const achievements = list.filter((a) => !isAchievementCompleted(a)).length
-  return {
-    achievements,
-    countRemain: metricTotals.value.countRemain,
-    pointRemain: metricTotals.value.pointRemain
+  let achievements = 0
+  let countRemain = 0
+  let pointRemain = 0
+  for (const ach of currentExpansionAchievements.value) {
+    if (isAchievementCompleted(ach)) continue
+    achievements += 1
+    if (ach.type !== '累计') continue
+    const count = getCount(ach) ?? 0
+    const lastQuota = ach.stages[ach.stages.length - 1].quota
+    const remaining = Math.max(0, lastQuota - count)
+    if (getMetric(ach) === 'points') pointRemain += remaining
+    else countRemain += remaining
   }
+  return { achievements, countRemain, pointRemain }
 })
 const metricTotalRemain = computed(() => metricTotals.value.countRemain + metricTotals.value.pointRemain)
 
@@ -1429,6 +1480,17 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
 </script>
 
 <style scoped>
+.hs-class-overview-browse-count {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--hs-text-soft);
+}
+.hs-class-overview-browse-count b {
+  color: var(--hs-text);
+  font-size: 17px;
+  font-weight: 700;
+}
+
 .hs-export-bar {
   display: flex;
   align-items: center;
