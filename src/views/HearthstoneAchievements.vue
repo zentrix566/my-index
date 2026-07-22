@@ -123,8 +123,8 @@
               :current-id="currentExpansionId"
               @switch="currentExpansionId = $event"
             />
-            <!-- 本次新增的版本：收进下拉，不与原有 9 个版本混排 -->
-            <div class="hs-more-versions" v-click-outside="closeMoreVersions">
+          <!-- 本次新增的版本：收进下拉，不与原有 9 个版本混排；我的成就-按版本下仅硬核模式可见 -->
+          <div v-if="showMoreVersions" class="hs-more-versions" v-click-outside="closeMoreVersions">
               <button
                 type="button"
                 class="hs-btn hs-btn-ghost hs-more-versions-toggle"
@@ -1099,6 +1099,21 @@ const scopeAchievements = computed(() =>
 )
 // 硬核模式下额外纳入统计的「更多版本」名称（用于硬核介绍）
 const hardcoreExtraNames = computed(() => addedExpansions.map((e) => e.name).join('、'))
+// 「更多版本」下拉的可见性：按版本浏览始终可见；我的成就-按版本下受硬核模式控制
+// （硬核关闭时仅核心 9 版本，避免「关掉硬核后仍停留在新增版本」的困惑）。
+const showMoreVersions = computed(() =>
+  viewMode.value === 'expansion' ||
+  (viewMode.value === 'my' && myGroupBy.value === 'expansion' && hardcore.value)
+)
+// 关闭硬核：若正停留在新增版本，切回首个核心版本并收起「更多版本」下拉
+watch(hardcore, (on) => {
+  if (!on) {
+    moreVersionsOpen.value = false
+    if (addedExpansionIdSet.has(currentExpansionId.value)) {
+      currentExpansionId.value = originalExpansions[0].id
+    }
+  }
+})
 
 // 状态
 const viewMode = ref('expansion')
