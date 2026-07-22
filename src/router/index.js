@@ -35,9 +35,10 @@ const routes = [
   { path: '/jiangyin', name: 'jiangyin', component: JiangyinBattle },
   { path: '/domino', name: 'domino', component: DominoFall },
   { path: '/hearthstone', name: 'hearthstone-achievements', component: HearthstoneAchievements, meta: { title: '炉石传说成就查看器 | Zentrix' } },
+  { path: '/hearthstone/changelog', name: 'hearthstone-changelog', component: Changelog, meta: { title: '炉石成就查看器 · 更新日志 | Zentrix' } },
   { path: '/stats', name: 'stats', component: Stats },
   { path: '/about', name: 'about', component: About },
-  { path: '/changelog', name: 'changelog', component: Changelog },
+  { path: '/changelog', redirect: '/hearthstone/changelog' },
   { path: '/login', name: 'login', component: Login }
 ]
 

@@ -3,7 +3,7 @@
     <div class="changelog-container">
       <header class="changelog-header">
         <h1>更新说明</h1>
-        <p class="changelog-sub">站点与炉石成就查看器的功能、数据更新记录（按时间倒序）</p>
+        <p class="changelog-sub">炉石传说成就查看器的功能与数据更新记录（按时间倒序）</p>
       </header>
 
       <ol class="changelog-list">

@@ -903,7 +903,7 @@ async function logoutAndRefresh() {
   clearProgress()
 }
 function goChangelog() {
-  router.push('/changelog')
+  router.push('/hearthstone/changelog')
 }
 
 // ============ 本地备份：导出 / 导入 ============
