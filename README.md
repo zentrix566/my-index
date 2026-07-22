@@ -27,6 +27,7 @@
 - 服务端密钥配置规范化：生产 `server/index.js` 新增 `.env` 兜底读取（仅当进程环境无对应变量时生效，k8s/进程注入优先）；`k8s/secret.yaml` 与 `deployment.yaml` 接线 `DEEPSEEK_API_KEY`（及可选 `AI_FIXED_DAILY`/`AI_FREE_DAILY`），真实值经 `kubectl create secret` 注入、不进仓库。
 - 更多版本（18 个 addedExpansions）的 `xpReward` 占位值清零（1316 个阶段），仅保留成就点数；卡片经验展示在 0 经验时隐藏。
 - 修复若干交互问题：自定义提问因发送守卫误判导致「输入后无反应」；切换版本/职业时页面弹回大标题（改为滚动到吸顶控制栏）；AI 入口位置调整至「我的成就」视图顶部并随作用域提示。
+- AI 建议改为**强制登录**才可使用：服务端 `GET/POST /api/ai-advisor*` 挂 `requireAuth`，未登录返回 401；前端入口仅登录后显示，并在登录失效时提示重新登录（避免匿名用户消耗服务端 DeepSeek 额度）。
 
 ### 2026-07-21
 

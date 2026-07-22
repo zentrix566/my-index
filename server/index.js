@@ -355,8 +355,9 @@ app.put('/api/achievements/progress', requireAuth, async (req, res) => {
 })
 
 // ========== AI 建议（实验功能，服务端持有 Key 与额度）==========
-// 每日额度：固定问答 AI_FIXED_DAILY 次 + 自由问答 AI_FREE_DAILY 次，按用户/IP + 日期 限流
-app.get('/api/ai-advisor/quota', async (req, res) => {
+// 强制登录：AI 消耗服务端 DeepSeek 额度，仅对登录用户开放，未登录返回 401。
+// 每日额度：固定问答 AI_FIXED_DAILY 次 + 自由问答 AI_FREE_DAILY 次，按用户 + 日期 限流。
+app.get('/api/ai-advisor/quota', requireAuth, async (req, res) => {
   try {
     const usage = await getAiUsage(getUserKey(req), todayKey())
     res.json({
@@ -370,7 +371,7 @@ app.get('/api/ai-advisor/quota', async (req, res) => {
   }
 })
 
-app.post('/api/ai-advisor', async (req, res) => {
+app.post('/api/ai-advisor', requireAuth, async (req, res) => {
   try {
     const { type, question } = req.body || {}
     if (type !== 'fixed' && type !== 'free') return res.status(400).json({ error: 'type 非法' })

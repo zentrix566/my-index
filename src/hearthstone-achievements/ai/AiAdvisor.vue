@@ -15,6 +15,8 @@ const messages = ref([]) // { role: 'user' | 'assistant', text }
 const input = ref('')
 const loading = ref(false)
 const error = ref('')
+// 登录失效标记：服务端对 AI 接口强制鉴权，401 时提示重新登录
+const needLogin = ref(false)
 // 服务端返回的实际作用域（用于向用户展示「当前 AI 读取了哪些版本」，验证硬核开关是否生效）
 const lastScope = ref(null)
 
@@ -38,6 +40,7 @@ onMounted(async () => {
   try {
     const resp = await fetch('/api/ai-advisor/quota', { credentials: 'include' })
     if (resp.ok) quota.value = await resp.json()
+    else if (resp.status === 401) needLogin.value = true
   } catch { /* 额度获取失败不阻断使用，后续请求会刷新 */ }
 })
 
@@ -75,6 +78,11 @@ async function ask(question, type) {
     if (data.quota) quota.value = data.quota
     // 记录实际作用域，向用户展示 AI 究竟读取了哪些版本（验证硬核开关）
     if (data.scope) lastScope.value = data.scope
+    if (resp.status === 401) {
+      needLogin.value = true
+      messages.value.pop()
+      throw new Error('登录已失效，请重新登录后使用 AI 建议')
+    }
     if (!resp.ok) {
       messages.value.pop()
       throw new Error(data.error || `请求失败（${resp.status}）`)
@@ -112,6 +120,11 @@ function clearChat() {
       <span class="ai-banner-sub">服务端运行 · 每天 5 次固定 + 1 次自由 · 可能随时下线</span>
     </div>
 
+    <!-- 未登录 / 登录失效提示（AI 接口服务端强制鉴权，401 时展示） -->
+    <div v-if="needLogin" class="ai-login-required">
+      🔒 AI 建议仅对<strong>登录用户</strong>开放。请先<a href="/login">登录</a>后使用。
+    </div>
+
     <!-- 作用域提示：明确 AI 当前读取的是「核心版本」还是「全部版本」，验证硬核开关是否生效 -->
     <div class="ai-scope" :class="lastScope && lastScope.hardcore ? 'ai-scope-all' : 'ai-scope-core'">
       <span class="ai-scope-dot"></span>
@@ -144,7 +157,7 @@ function clearChat() {
         :key="q"
         type="button"
         class="ai-fixed-btn"
-        :disabled="!canSendFixed"
+        :disabled="!canSendFixed || needLogin"
         @click="onFixed(q)"
       >{{ q }}</button>
     </div>
@@ -168,10 +181,10 @@ function clearChat() {
         class="ai-input"
         rows="2"
         placeholder="输入你自己的问题…（回车发送，Shift+Enter 换行）"
-        :disabled="loading || freeRemaining <= 0"
+        :disabled="loading || freeRemaining <= 0 || needLogin"
         @keydown.enter.exact.prevent="onSend"
       ></textarea>
-      <button type="button" class="ai-send" :disabled="!canSendFree" @click="onSend">发送</button>
+      <button type="button" class="ai-send" :disabled="!canSendFree || needLogin" @click="onSend">发送</button>
     </div>
   </div>
 </template>
@@ -203,6 +216,21 @@ function clearChat() {
   font-size: 11px;
   font-weight: 500;
   color: #8b5cf6;
+}
+.ai-login-required {
+  margin: 0;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: #b45309;
+  background: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: 8px;
+  line-height: 1.5;
+}
+.ai-login-required a {
+  color: #2563eb;
+  font-weight: 600;
+  text-decoration: underline;
 }
 .ai-scope {
   display: flex;

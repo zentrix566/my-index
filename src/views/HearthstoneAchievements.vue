@@ -182,8 +182,8 @@
 
       <!-- 我的成就模式：分组切换 + 统计面板 -->
       <template v-if="viewMode === 'my'">
-        <!-- AI 建议入口：仅「我的成就」视图，置于该视图顶部（切到此处即可见，免得滚到最底才发现） -->
-        <div v-if="AI_ADVISOR_ENABLED" class="hs-ai-entry">
+        <!-- AI 建议入口：仅「我的成就」视图，置于该视图顶部；需登录才可使用（服务端强制鉴权） -->
+        <div v-if="AI_ADVISOR_ENABLED && user" class="hs-ai-entry">
           <button type="button" class="hs-btn hs-btn-ghost hs-ai-btn" @click="openAi">
             <span aria-hidden="true">🤖</span> AI 成就建议（实验）
           </button>
