@@ -1123,9 +1123,9 @@ const metrics = [
 ]
 const statuses = ['未完成', '已完成']
 
-// 所有职业列表（保持炉石原顺序，不含双职业——双职业成就通过 dualClasses 分配到对应职业）
-const allClasses = getClassOrder().filter(c => c !== '双职业' && c !== '中立').concat(['中立'])
-const classOrder = getClassOrder()
+// 职业筛选与分组顺序随当前版本变化（部分版本如贫瘠之地在游戏内有专属职业顺序）
+const allClasses = computed(() => getClassOrder(currentExpansionId.value).filter(c => c !== '双职业' && c !== '中立').concat(['中立']))
+const classOrder = computed(() => getClassOrder(currentExpansionId.value))
 // 「游戏-综合」成就按 5 大分类展示（用户指定顺序），而非按职业（多为「中立」）平铺
 const ZONGHE_CATEGORIES = ['职业', '中立关键字', '随从类型', '法术派系', '特殊']
 const isZongheView = computed(() => currentExpansionId.value === 'zonghe')
@@ -1134,7 +1134,7 @@ const isZongheView = computed(() => currentExpansionId.value === 'zonghe')
 const classGroupOrder = computed(() => {
   if (isZongheView.value) return ZONGHE_CATEGORIES
   if (selectedClass.value !== 'all') return [selectedClass.value]
-  return classOrder
+  return classOrder.value
 })
 
 // 当前版本
@@ -1361,7 +1361,7 @@ const getAvailableClassesForList = (list) => {
       ach.dualClasses.forEach(c => classes.add(c))
     }
   }
-  return getClassOrder().filter((c) => classes.has(c))
+  return getClassOrder(currentExpansionId.value).filter((c) => classes.has(c))
 }
 
 const availableClassesExp = computed(() => getAvailableClassesForList(currentExpansionAchievements.value))

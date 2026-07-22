@@ -73,11 +73,22 @@ export function groupByClass(achievements) {
   return groups;
 }
 
+// 部分版本在游戏内的职业展示顺序与标准顺序不同，单独覆盖（键为版本 id）。
+// 仅列出该版本实际出现的职业即可，未列出的职业不会进入对应视图。
+const EXPANSION_CLASS_ORDER = {
+  // 贫瘠之地：游戏内职业顺序为 圣骑、德鲁伊、恶魔猎手、战士、术士、法师、盗贼、牧师、猎人、萨满、中立
+  barrens: ["圣骑士", "德鲁伊", "恶魔猎手", "战士", "术士", "法师", "潜行者", "牧师", "猎人", "萨满祭司", "中立"],
+};
+
 /**
  * 获取职业排序列表
+ * @param {string} [expansionId] - 版本 id，命中覆盖表时返回该版本专属顺序
  * @returns {Array} 职业按固定顺序排列
  */
-export function getClassOrder() {
+export function getClassOrder(expansionId) {
+  if (expansionId && EXPANSION_CLASS_ORDER[expansionId]) {
+    return EXPANSION_CLASS_ORDER[expansionId];
+  }
   return classOrderList;
 }
 
