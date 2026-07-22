@@ -14,6 +14,17 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+// 累计型成就中「点数型」判定正则（与前端 useAchievementProgress 的 getMetric 保持一致）
+const POINTS_PATTERN =
+  /点\s*(伤害|攻击力|攻击|护甲|生命值|生命|治疗|法力值?|荣誉点数)|造成[^，。；]*点|获得[^，。；]*点|吸取[^，。；]*点|消耗[^，。；]*点|总计[^，。；]*点|受到[^，。；]*点|抵消[^，。；]*点/
+
+function detectMetric(ach) {
+  if (ach.metric === 'count' || ach.metric === 'points') return ach.metric
+  if (ach.type !== '累计') return null
+  const isPoints = (ach.stages || []).some((s) => POINTS_PATTERN.test(s.description || ''))
+  return isPoints ? 'points' : 'count'
+}
 // 候选目录（按顺序查找第一个存在的）：
 //  1) 本地开发：server/ 同级的 ../src/hearthstone-achievements/data/achievements
 //  2) 生产镜像：Dockerfile 已将成就 JSON 复制到 server/achievements-data/
@@ -33,11 +44,16 @@ function scanDir(dir) {
       const version = exp.name || exp.id || ''
       for (const a of exp.achievements || []) {
         if (a && a.id) {
+          const stages = Array.isArray(a.stages) ? a.stages : []
           map[a.id] = {
             name: a.name || a.id,
             version,
+            expansionId: exp.id || '',
             heroClass: a.heroClass || '',
-            stageCount: Array.isArray(a.stages) ? a.stages.length : 0
+            type: a.type || '一次性',
+            metric: detectMetric(a),
+            stageCount: stages.length,
+            lastQuota: stages.length ? stages[stages.length - 1].quota : 0
           }
         }
       }

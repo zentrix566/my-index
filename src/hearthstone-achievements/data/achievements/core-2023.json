@@ -22,13 +22,13 @@
       "stages": [
         {
           "description": "在一局对战中使用3次考瓦斯·血棘。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 3
         },
         {
           "description": "在一局对战中使用5次考瓦斯·血棘。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
@@ -45,13 +45,13 @@
       "stages": [
         {
           "description": "对30个树人施放丛林之魂。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "对100个树人施放丛林之魂。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -68,13 +68,13 @@
       "stages": [
         {
           "description": "子弹上膛后使用30张法术牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "子弹上膛后使用100张法术牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -91,13 +91,13 @@
       "stages": [
         {
           "description": "使15个随从继承守护者艾格文的力量。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 15
         },
         {
           "description": "使50个随从继承守护者艾格文的力量。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -114,13 +114,13 @@
       "stages": [
         {
           "description": "使用清算消灭15个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 15
         },
         {
           "description": "使用清算消灭50个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -137,13 +137,13 @@
       "stages": [
         {
           "description": "在暗影形态下用你的英雄技能造成100点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "在暗影形态下用你的英雄技能造成300点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 300
         }
@@ -160,13 +160,13 @@
       "stages": [
         {
           "description": "使用梵妮莎·范克里夫复制的卡牌消灭对手。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 0
         },
         {
           "description": "使用梵妮莎·范克里夫复制的卡牌消灭对手3次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 3
         }
@@ -183,13 +183,13 @@
       "stages": [
         {
           "description": "触发无羁元素的效果30次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "触发无羁元素的效果100次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -206,13 +206,13 @@
       "stages": [
         {
           "description": "变为加拉克苏斯大王，攻击并消灭10个角色。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "变为加拉克苏斯大王，攻击并消灭25个角色。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         }
@@ -229,13 +229,13 @@
       "stages": [
         {
           "description": "打开5个战争储备箱并使用其中的物品。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 5
         },
         {
           "description": "打开20个战争储备箱并使用其中的物品。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         }
@@ -252,7 +252,7 @@
       "stages": [
         {
           "description": "被吵吵机器人消灭。",
-          "xpReward": 1,
+          "xpReward": 0,
           "points": 1,
           "quota": 0
         }
@@ -269,7 +269,7 @@
       "stages": [
         {
           "description": "用吵吵机器人消灭敌方英雄。",
-          "xpReward": 9,
+          "xpReward": 0,
           "points": 9,
           "quota": 0
         }
@@ -286,19 +286,19 @@
       "stages": [
         {
           "description": "从卵中孵化出5个蛛魔。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 5
         },
         {
           "description": "从卵中孵化出25个蛛魔。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "从卵中孵化出75个蛛魔。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 75
         }
@@ -315,19 +315,19 @@
       "stages": [
         {
           "description": "使用伦萨克大王强化10张随从牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使用伦萨克大王强化30张随从牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用伦萨克大王强化100张随从牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -344,19 +344,19 @@
       "stages": [
         {
           "description": "使用10张狮鹫年的传说龙牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使用30张狮鹫年的传说龙牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用100张狮鹫年的传说龙牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -373,25 +373,25 @@
       "stages": [
         {
           "description": "在你的起始套牌中加入永恒者诺兹多姆，赢得15场对战。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 15
         },
         {
           "description": "在你的起始套牌中加入永恒者诺兹多姆，赢得50场对战。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "在你的起始套牌中加入永恒者诺兹多姆，赢得150场对战。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 150
         },
         {
           "description": "在你的起始套牌中加入永恒者诺兹多姆，赢得500场对战。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 500
         }

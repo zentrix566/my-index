@@ -24,7 +24,7 @@
       "stages": [
         {
           "description": "在你的回合结束时，拥有20个法力水晶。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         }
@@ -43,7 +43,7 @@
       "stages": [
         {
           "description": "使用开路者触发16个不同的抉择效果。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 16
         }
@@ -64,19 +64,19 @@
       "stages": [
         {
           "description": "召唤30只霜狼宝宝。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "召唤60只霜狼宝宝。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 60
         },
         {
           "description": "召唤120只霜狼宝宝。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 120
         }
@@ -95,13 +95,13 @@
       "stages": [
         {
           "description": "使用暴烈枭兽造成200点伤害或恢复200点生命值。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 200
         },
         {
           "description": "使用暴烈枭兽造成400点伤害或恢复400点生命值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 400
         }
@@ -120,7 +120,7 @@
       "stages": [
         {
           "description": "在你的回合结束时，拥有雪人，雪怪和冰雪巨怪。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -137,7 +137,7 @@
       "stages": [
         {
           "description": "使用法师，用你的英雄技能一次性造成8点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         }
@@ -156,19 +156,19 @@
       "stages": [
         {
           "description": "使用冰血哨塔施放法力值消耗总计100点的法术。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用冰血哨塔施放法力值消耗总计200点的法术。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 200
         },
         {
           "description": "使用冰血哨塔施放法力值消耗总计300点的法术。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 300
         }
@@ -187,13 +187,13 @@
       "stages": [
         {
           "description": "使用监护者哈尔琳造成100点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用监护者哈尔琳造成200点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -212,7 +212,7 @@
       "stages": [
         {
           "description": "使用空军指挥官艾克曼在一回合中召唤5只野兽。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
@@ -231,7 +231,7 @@
       "stages": [
         {
           "description": "使用觅血者，在一次攻击中造成8点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         }
@@ -248,19 +248,19 @@
       "stages": [
         {
           "description": "触发75个猎人奥秘。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 75
         },
         {
           "description": "触发150个猎人奥秘。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 150
         },
         {
           "description": "触发250个猎人奥秘。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 250
         }
@@ -279,13 +279,13 @@
       "stages": [
         {
           "description": "使用宠物收集者召唤70只野兽。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 70
         },
         {
           "description": "使用宠物收集者召唤151只野兽。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 151
         }
@@ -304,7 +304,7 @@
       "stages": [
         {
           "description": "使用超脱召唤30个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -323,7 +323,7 @@
       "stages": [
         {
           "description": "使用祝福使随从获得200点攻击力。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -342,19 +342,19 @@
       "stages": [
         {
           "description": "使用虔诚祭司泽瑞拉触发50个亡语。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用虔诚祭司泽瑞拉触发100个亡语。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用虔诚祭司泽瑞拉触发200个亡语。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -374,13 +374,13 @@
       "stages": [
         {
           "description": "召唤第4代米达，纯净圣光。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 4
         },
         {
           "description": "召唤第7代米达，纯净圣光。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -399,7 +399,7 @@
       "stages": [
         {
           "description": "召唤60个双面间谍。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -419,7 +419,7 @@
       "stages": [
         {
           "description": "在你的回合结束时，拥有冷齿雪人和冰风雪人。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -438,19 +438,19 @@
       "stages": [
         {
           "description": "当你控制雪落墓地时使30个亡语随从死亡。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "当你控制雪落墓地时使60个亡语随从死亡。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 60
         },
         {
           "description": "当你控制雪落墓地时使120个亡语随从死亡。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 120
         }
@@ -469,13 +469,13 @@
       "stages": [
         {
           "description": "使用军情七处走私贩召唤一个法力值消耗为（10）的随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使用军情七处走私贩召唤一个法力值消耗为（10）的传说随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -494,7 +494,7 @@
       "stages": [
         {
           "description": "使10个随从参加同一场雪球大战。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -513,7 +513,7 @@
       "stages": [
         {
           "description": "使用布鲁坎和他的英雄技能唤起元素100次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -530,19 +530,19 @@
       "stages": [
         {
           "description": "使用萨满祭司冻结150个角色。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 150
         },
         {
           "description": "使用萨满祭司冻结300个角色。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 300
         },
         {
           "description": "使用萨满祭司冻结600个角色。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 600
         }
@@ -561,13 +561,13 @@
       "stages": [
         {
           "description": "使用别站在火里对单个随从造成8点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 8
         },
         {
           "description": "使用别站在火里对单个随从造成10点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -586,7 +586,7 @@
       "stages": [
         {
           "description": "使用血色骑士赛丹，在一次攻击中造成25点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         }
@@ -605,7 +605,7 @@
       "stages": [
         {
           "description": "使用亮铜之翼恢复150点生命值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 150
         }
@@ -624,19 +624,19 @@
       "stages": [
         {
           "description": "使用无法撼动之物防止100点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用无法撼动之物防止200点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 200
         },
         {
           "description": "使用无法撼动之物防止300点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 300
         }
@@ -655,13 +655,13 @@
       "stages": [
         {
           "description": "使用勇气之戒使随从获得+1/+1，25次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 1
         },
         {
           "description": "使用勇气之戒使随从获得+1/+1，75次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 1
         }
@@ -680,7 +680,7 @@
       "stages": [
         {
           "description": "使用可怕的憎恶荣誉消灭一个传说随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -699,7 +699,7 @@
       "stages": [
         {
           "description": "在被亵渎的墓园中牺牲100个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -720,19 +720,19 @@
       "stages": [
         {
           "description": "召唤50个恐惧小鬼。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "召唤100个恐惧小鬼。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "召唤200个恐惧小鬼。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -751,13 +751,13 @@
       "stages": [
         {
           "description": "使用痛苦诅咒，使你的对手受到84点疲劳伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 84
         },
         {
           "description": "使用痛苦诅咒，使你的对手受到180点疲劳伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 180
         }
@@ -776,7 +776,7 @@
       "stages": [
         {
           "description": "使用裂魔者库尔特鲁斯，在一回合中使用你的英雄技能7次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -795,7 +795,7 @@
       "stages": [
         {
           "description": "使用恐惧牢笼战刃荣誉消灭一个生命值大于或等于5点的随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
@@ -814,19 +814,19 @@
       "stages": [
         {
           "description": "使用清算咒符召唤10个恶魔。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使用清算咒符召唤20个恶魔。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "使用清算咒符召唤40个恶魔。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         }
@@ -845,13 +845,13 @@
       "stages": [
         {
           "description": "使用爪刃哨兵抽50张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用爪刃哨兵抽100张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -870,7 +870,7 @@
       "stages": [
         {
           "description": "使用无坚不摧之力将一个随从撞向敌方英雄，造成致命伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -889,7 +889,7 @@
       "stages": [
         {
           "description": "使用奔赴前线使随从牌的法力值消耗减少100点。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -908,19 +908,19 @@
       "stages": [
         {
           "description": "使用冰血要塞造成100点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用冰血要塞造成200点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 200
         },
         {
           "description": "使用冰血要塞造成400点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 400
         }
@@ -939,13 +939,13 @@
       "stages": [
         {
           "description": "猛力进攻20个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "猛力进攻40个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         }
@@ -964,79 +964,79 @@
       "stages": [
         {
           "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得40点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得120点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 120
         },
         {
           "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得300点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 300
         },
         {
           "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得560点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 560
         },
         {
           "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得960点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 960
         },
         {
           "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得1460点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 1460
         },
         {
           "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得2000点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 2000
         },
         {
           "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得2620点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 2620
         },
         {
           "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得3280点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 3280
         },
         {
           "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得4060点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 4060
         },
         {
           "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得4900点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 4900
         },
         {
           "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得5800点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 5800
         },
         {
           "description": "在你的套牌中加入范达尔·雷矛，完成对战并获得7200点荣誉点数。",
-          "xpReward": 30,
+          "xpReward": 0,
           "points": 30,
           "quota": 7200
         }
@@ -1055,79 +1055,79 @@
       "stages": [
         {
           "description": "在你的套牌中加入德雷克塔尔，完成对战并获得40点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "在你的套牌中加入德雷克塔尔，完成对战并获得120点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 120
         },
         {
           "description": "在你的套牌中加入德雷克塔尔，完成对战并获得300点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 300
         },
         {
           "description": "在你的套牌中加入德雷克塔尔，完成对战并获得560点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 560
         },
         {
           "description": "在你的套牌中加入德雷克塔尔，完成对战并获得960点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 960
         },
         {
           "description": "在你的套牌中加入德雷克塔尔，完成对战并获得1460点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 1460
         },
         {
           "description": "在你的套牌中加入德雷克塔尔，完成对战并获得2000点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 2000
         },
         {
           "description": "在你的套牌中加入德雷克塔尔，完成对战并获得2620点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 2620
         },
         {
           "description": "在你的套牌中加入德雷克塔尔，完成对战并获得3280点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 3280
         },
         {
           "description": "在你的套牌中加入德雷克塔尔，完成对战并获得4060点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 4060
         },
         {
           "description": "在你的套牌中加入德雷克塔尔，完成对战并获得4900点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 4900
         },
         {
           "description": "在你的套牌中加入德雷克塔尔，完成对战并获得5800点荣誉点数。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 5800
         },
         {
           "description": "在你的套牌中加入德雷克塔尔，完成对战并获得7200点荣誉点数。",
-          "xpReward": 30,
+          "xpReward": 0,
           "points": 30,
           "quota": 7200
         }
@@ -1144,19 +1144,19 @@
       "stages": [
         {
           "description": "触发50次荣誉消灭效果。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "触发100次荣誉消灭效果。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "触发200次荣誉消灭效果。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -1173,19 +1173,19 @@
       "stages": [
         {
           "description": "使用20张持续3回合的目标地点法术牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "使用40张持续3回合的目标地点法术牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "使用60张持续3回合的目标地点法术牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -1202,19 +1202,19 @@
       "stages": [
         {
           "description": "在使用英雄牌后赢得10场对战。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "在使用英雄牌后赢得20场对战。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "在使用英雄牌后赢得40场对战。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         }
@@ -1233,13 +1233,13 @@
       "stages": [
         {
           "description": "使用一张话痨奥术师，触发其效果5次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 5
         },
         {
           "description": "使用一张话痨奥术师，触发其效果14次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 14
         }
@@ -1258,7 +1258,7 @@
       "stages": [
         {
           "description": "对友方随从施放60个护甲碎片。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -1277,13 +1277,13 @@
       "stages": [
         {
           "description": "使用恐怖图腾赏金猎人消灭10个传说随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使用恐怖图腾赏金猎人消灭20个传说随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         }
@@ -1302,7 +1302,7 @@
       "stages": [
         {
           "description": "使用巨型猫头鹰消灭30个敌人。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -1321,7 +1321,7 @@
       "stages": [
         {
           "description": "同时控制7个深铁穴居人。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -1340,19 +1340,19 @@
       "stages": [
         {
           "description": "召唤血怒者科尔拉克10次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "召唤血怒者科尔拉克25次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "召唤血怒者科尔拉克50次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -1371,7 +1371,7 @@
       "stages": [
         {
           "description": "使用一张生命值为0的随从牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -1390,7 +1390,7 @@
       "stages": [
         {
           "description": "使用伏兵攻击并消灭15个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 15
         }
@@ -1409,7 +1409,7 @@
       "stages": [
         {
           "description": "使用憎恶军官吞食一个8/8或更大的随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         }
@@ -1428,7 +1428,7 @@
       "stages": [
         {
           "description": "使用一张12/12或更大的森林之王伊弗斯。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 12
         }
@@ -1449,13 +1449,13 @@
       "stages": [
         {
           "description": "使用奥妮克希亚雏龙攻击100次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用奥妮克希亚雏龙攻击200次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -1474,13 +1474,13 @@
       "stages": [
         {
           "description": "使用8张不同的卡扎库杉的宝藏牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 8
         },
         {
           "description": "使用16张不同的卡扎库杉的宝藏牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 16
         }
@@ -1500,7 +1500,7 @@
       "stages": [
         {
           "description": "在你的套牌中加入范达尔·雷矛或德雷克塔尔，完成对战并获得7200点荣誉点数。",
-          "xpReward": 30,
+          "xpReward": 0,
           "points": 30,
           "quota": 7200
         }
@@ -1517,7 +1517,7 @@
       "stages": [
         {
           "description": "赢得对战时拥有15点生命值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 15
         }
@@ -1536,7 +1536,7 @@
       "stages": [
         {
           "description": "使用狂乱角鹰兽攻击80次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 80
         }
@@ -1555,7 +1555,7 @@
       "stages": [
         {
           "description": "使用洛克霍拉的使者抽50张冰霜法术牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -1574,7 +1574,7 @@
       "stages": [
         {
           "description": "使用40张法力值消耗为（1）点的雷矛元帅。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         }
@@ -1593,7 +1593,7 @@
       "stages": [
         {
           "description": "触发雪盲鹰身人的战吼效果50次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -1612,7 +1612,7 @@
       "stages": [
         {
           "description": "使霜狼将领的法力值消耗减少150点。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 150
         }
@@ -1631,7 +1631,7 @@
       "stages": [
         {
           "description": "召唤100只群羊指挥官的作战山羊。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -1648,7 +1648,7 @@
       "stages": [
         {
           "description": "解开埋藏在奥特兰克的谜题。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 0
         }

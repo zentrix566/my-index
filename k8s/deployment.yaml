@@ -72,6 +72,17 @@ spec:
                 secretKeyRef:
                   name: zentrix-secrets
                   key: pg-pass
+            # AI 建议（实验功能）：DeepSeek Key 仅服务端使用，前端不接触
+            - name: DEEPSEEK_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: zentrix-secrets
+                  key: deepseek-api-key
+            # 每日额度（可选，缺省 5 次固定 + 1 次自由）
+            - name: AI_FIXED_DAILY
+              value: "5"
+            - name: AI_FREE_DAILY
+              value: "1"
           resources: {}
           # 数据层已迁移到 PostgreSQL（外部托管），不再有单文件数据库共享限制。
           # 常态保持 replicas:1；滚动发布时两个 Pod 会短暂重叠。

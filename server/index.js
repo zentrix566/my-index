@@ -12,9 +12,42 @@ import {
   getProgress,
   upsertProgress,
   getUserByUsername,
+  getAiUsage,
+  incrementAiUsage,
   transaction
 } from './db.js'
 import { getAchievementMeta, hasAchievementMeta } from './achievements-meta.js'
+import {
+  AI_FIXED_DAILY,
+  AI_FREE_DAILY,
+  buildAiContext,
+  callDeepSeek,
+  buildSystemPrompt,
+  todayKey
+} from './ai-advisor.js'
+
+// 生产兜底：若进程环境未注入密钥等变量，则尝试从项目根目录 .env 读取（缺失则静默跳过）。
+// 仅在对应变量尚不存在时才写入，确保 k8s / 进程注入的环境变量优先于 .env 文件。
+try {
+  const envPath = path.resolve(__dirname, '../.env')
+  if (fs.existsSync(envPath)) {
+    const envText = fs.readFileSync(envPath, 'utf8')
+    for (const raw of envText.split('\n')) {
+      const line = raw.trim()
+      if (!line || line.startsWith('#')) continue
+      const m = line.match(/^([\w.-]+)\s*=\s*(.*)$/)
+      if (!m) continue
+      const key = m[1]
+      let val = m[2].trim()
+      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
+        val = val.slice(1, -1)
+      }
+      if (process.env[key] === undefined) process.env[key] = val
+    }
+  }
+} catch {
+  /* 无 .env 或解析失败时跳过，不阻断启动 */
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const isProd = process.env.NODE_ENV === 'production'
@@ -216,6 +249,19 @@ app.get('/api/stats/hourly', async (req, res) => {
   }
 })
 
+// 客户端标识：登录用户用 userId，匿名用 IP（用于每日额度限流）
+function getClientIp(req) {
+  const ip = req.ip || req.socket.remoteAddress || ''
+  const realIp = (req.headers['x-forwarded-for'] || '').toString().split(',')[0].trim() ||
+    (req.headers['x-real-ip'] || '').toString() || ip
+  return realIp.startsWith('::ffff:') ? realIp.slice(7) : realIp
+}
+function getUserKey(req) {
+  const userId = getUserIdFromReq(req)
+  if (userId) return String(userId)
+  return `ip:${getClientIp(req)}`
+}
+
 // ========== 认证 API ==========
 app.use('/api/auth', authRouter)
 
@@ -304,6 +350,80 @@ app.put('/api/achievements/progress', requireAuth, async (req, res) => {
     res.status(isDatabaseError ? 500 : 400).json({
       error: isDatabaseError ? '进度保存失败，请稍后重试' : errorMessage
     })
+  }
+})
+
+// ========== AI 建议（实验功能，服务端持有 Key 与额度）==========
+// 每日额度：固定问答 AI_FIXED_DAILY 次 + 自由问答 AI_FREE_DAILY 次，按用户/IP + 日期 限流
+app.get('/api/ai-advisor/quota', async (req, res) => {
+  try {
+    const usage = await getAiUsage(getUserKey(req), todayKey())
+    res.json({
+      fixedUsed: usage.fixedCount,
+      fixedLimit: AI_FIXED_DAILY,
+      freeUsed: usage.freeCount,
+      freeLimit: AI_FREE_DAILY
+    })
+  } catch (err) {
+    res.status(500).json({ error: err.message || '查询额度失败' })
+  }
+})
+
+app.post('/api/ai-advisor', async (req, res) => {
+  try {
+    const { type, question } = req.body || {}
+    if (type !== 'fixed' && type !== 'free') return res.status(400).json({ error: 'type 非法' })
+    if (typeof question !== 'string' || !question.trim()) {
+      return res.status(400).json({ error: '问题不能为空' })
+    }
+    if (question.length > 500) return res.status(400).json({ error: '问题过长（最多 500 字）' })
+
+    const userKey = getUserKey(req)
+    const day = todayKey()
+    const usage = await getAiUsage(userKey, day)
+    const limit = type === 'fixed' ? AI_FIXED_DAILY : AI_FREE_DAILY
+    const used = type === 'fixed' ? usage.fixedCount : usage.freeCount
+    if (used >= limit) {
+      const label = type === 'fixed' ? `固定问答（${AI_FIXED_DAILY} 次/天）` : `自由提问（${AI_FREE_DAILY} 次/天）`
+      return res.status(429).json({
+        error: `今日${label}额度已用完，明天再来看看～`,
+        quota: {
+          fixedUsed: usage.fixedCount,
+          fixedLimit: AI_FIXED_DAILY,
+          freeUsed: usage.freeCount,
+          freeLimit: AI_FREE_DAILY
+        }
+      })
+    }
+
+    const userId = getUserIdFromReq(req)
+    const progress = userId ? await getProgress(userId) : {}
+    const effectiveHardcore = !!req.body?.hardcore
+    const context = buildAiContext(progress, { hardcore: effectiveHardcore })
+    if (!process.env.DEEPSEEK_API_KEY) {
+      return res.status(503).json({ error: 'AI 服务未配置（服务端缺少 DEEPSEEK_API_KEY）' })
+    }
+    const reply = await callDeepSeek(buildSystemPrompt(context), question)
+    const newUsage = await incrementAiUsage(userKey, day, type)
+    const versionCount = new Set(context.items.map((i) => i.version)).size
+    res.json({
+      ok: true,
+      reply,
+      scope: {
+        hardcore: effectiveHardcore,
+        remaining: context.remainingCount,
+        versions: versionCount
+      },
+      quota: {
+        fixedUsed: newUsage.fixedCount,
+        fixedLimit: AI_FIXED_DAILY,
+        freeUsed: newUsage.freeCount,
+        freeLimit: AI_FREE_DAILY
+      }
+    })
+  } catch (err) {
+    appLog('ERROR', `AI 建议失败: ${err.message}`)
+    res.status(500).json({ error: err.message || 'AI 请求失败' })
   }
 })
 

@@ -22,7 +22,7 @@
       "stages": [
         {
           "description": "召唤一个攻击力大于或等于30点的嗜血传令官。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 30
         }
@@ -39,7 +39,7 @@
       "stages": [
         {
           "description": "用演讲者吉德拉的法术迸发效果使其获得+10/+10。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 10
         }
@@ -56,7 +56,7 @@
       "stages": [
         {
           "description": "用动物保镖召唤两只法力值消耗大于（5）点的野兽。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 5
         }
@@ -73,7 +73,7 @@
       "stages": [
         {
           "description": "用一张幻觉药水将7张相同的随从复制置入你的手牌。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 7
         }
@@ -90,7 +90,7 @@
       "stages": [
         {
           "description": "使高阶修士奥露拉施放触发其法术迸发效果的传说法术。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 0
         }
@@ -107,7 +107,7 @@
       "stages": [
         {
           "description": "用教导主任加丁消灭一个挂掉的学生。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 0
         }
@@ -124,7 +124,7 @@
       "stages": [
         {
           "description": "用钢铁舞者召唤一个属性值与你的武器相同的随从。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 0
         }
@@ -141,7 +141,7 @@
       "stages": [
         {
           "description": "用莱斯·霜语单次造成10点伤害。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 10
         }
@@ -158,7 +158,7 @@
       "stages": [
         {
           "description": "在一回合中抽到10张灵魂残片。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 10
         }
@@ -175,7 +175,7 @@
       "stages": [
         {
           "description": "用仪式重槌召唤一个11/11的学员。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 11
         }
@@ -192,7 +192,7 @@
       "stages": [
         {
           "description": "教会同一只驯化的雷象15种不同的法术。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 15
         }

@@ -29,6 +29,7 @@ import uldum from './achievements/uldum.json'
 import riseOfShadows from './achievements/rise-of-shadows.json'
 import lichKing from './achievements/lich-king.json'
 import zonghe from './achievements/zonghe.json'
+import CORE_EXPANSION_IDS from './core-expansion-ids.js'
 
 // 版本列表（按发布时间从新到旧排列）
 export const expansions = [
@@ -66,17 +67,7 @@ export const expansions = [
  * 其余（含泰坦诸神及本次 17 个新本地化版本）为「之后新增」，收进「更多版本」下拉，
  * 与原有版本分开展示，避免主标签栏平铺 27 个混在一起。
  */
-const originalExpansionIds = new Set([
-  'violet-hold',
-  'cataclysm',
-  'caverns-of-time',
-  'ungoro',
-  'emerald-dream',
-  'deepdark',
-  'perils-in-paradise',
-  'whizbang',
-  'badlands'
-])
+const originalExpansionIds = new Set(CORE_EXPANSION_IDS)
 export const originalExpansions = expansions.filter((exp) => originalExpansionIds.has(exp.id))
 export const addedExpansions = expansions.filter((exp) => !originalExpansionIds.has(exp.id))
 

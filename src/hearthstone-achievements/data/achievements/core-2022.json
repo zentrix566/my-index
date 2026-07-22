@@ -22,13 +22,13 @@
       "stages": [
         {
           "description": "使用灵魂盛宴抽100张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用灵魂盛宴抽200张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -45,13 +45,13 @@
       "stages": [
         {
           "description": "使用大地之鳞获得50点护甲值。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用大地之鳞获得2563点护甲值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 2563
         }
@@ -68,13 +68,13 @@
       "stages": [
         {
           "description": "使用炎爆术消灭你的对手，完成10次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使用炎爆术消灭你的对手，完成30次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -91,13 +91,13 @@
       "stages": [
         {
           "description": "使用光耀之主拉格纳罗斯恢复150点生命值。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 150
         },
         {
           "description": "使用光耀之主拉格纳罗斯恢复300点生命值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 300
         }
@@ -114,13 +114,13 @@
       "stages": [
         {
           "description": "触发同一个达利乌斯·克罗雷的效果2次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 2
         },
         {
           "description": "触发同一个达利乌斯·克罗雷的效果4次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 4
         }
@@ -137,13 +137,13 @@
       "stages": [
         {
           "description": "使用200张“太阳裂片”莱拉创建的牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 200
         },
         {
           "description": "使用400张“太阳裂片”莱拉创建的牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 400
         }
@@ -160,13 +160,13 @@
       "stages": [
         {
           "description": "使用75张法力值消耗为（0）的猎人奥秘。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 75
         },
         {
           "description": "使用150张法力值消耗为（0）的猎人奥秘。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 150
         }
@@ -183,13 +183,13 @@
       "stages": [
         {
           "description": "使用受火舌图腾影响的随从攻击100次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用受火舌图腾影响的随从攻击200次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -206,13 +206,13 @@
       "stages": [
         {
           "description": "在你的回合结束时，手牌中有6张高阶祭司耶克里克。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 6
         },
         {
           "description": "在你的回合结束时，手牌中有10张高阶祭司耶克里克。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -229,13 +229,13 @@
       "stages": [
         {
           "description": "使用一张苔丝·格雷迈恩，重新使用4个不同职业的牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 4
         },
         {
           "description": "使用一张苔丝·格雷迈恩，重新使用9个不同职业的牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 9
         }
@@ -252,7 +252,7 @@
       "stages": [
         {
           "description": "受到75点湮灭的伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 75
         }
@@ -269,13 +269,13 @@
       "stages": [
         {
           "description": "用帕奇维克消灭50个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "用帕奇维克消灭100个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -292,13 +292,13 @@
       "stages": [
         {
           "description": "用霜之哀伤召唤15个法力值消耗大于或等于（5）点的随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 15
         },
         {
           "description": "用霜之哀伤召唤30个法力值消耗大于或等于（5）点的随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -315,13 +315,13 @@
       "stages": [
         {
           "description": "用玛洛加尔领主的一次战吼消耗15份残骸。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 15
         },
         {
           "description": "用玛洛加尔领主的一次战吼消耗30份残骸。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -338,7 +338,7 @@
       "stages": [
         {
           "description": "在一回合中抽到4个天灾谷物的谷物箱。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 4
         }
@@ -355,7 +355,7 @@
       "stages": [
         {
           "description": "使用死亡骑士，在一回合中施放五个或以上冰霜法术，完成5次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 5
         }
@@ -372,13 +372,13 @@
       "stages": [
         {
           "description": "用髓骨使御者消灭30个敌人。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "用髓骨使御者消灭60个敌人。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -395,13 +395,13 @@
       "stages": [
         {
           "description": "使用75张多头蛇年的探险者协会成员牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 75
         },
         {
           "description": "使用150张多头蛇年的探险者协会成员牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 150
         }
@@ -418,7 +418,7 @@
       "stages": [
         {
           "description": "使用一张雷诺·杰克逊恢复29点生命值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 29
         }
@@ -435,13 +435,13 @@
       "stages": [
         {
           "description": "使用狂野炎术师造成250点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 250
         },
         {
           "description": "使用狂野炎术师造成500点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 500
         }
@@ -458,13 +458,13 @@
       "stages": [
         {
           "description": "使用始生幼龙消灭100个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用始生幼龙消灭200个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 200
         }

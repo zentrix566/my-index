@@ -72,6 +72,14 @@ ALTER TABLE achievement_progress ADD COLUMN IF NOT EXISTS hero_class TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_achievement_progress_user ON achievement_progress(user_id);
 
+CREATE TABLE IF NOT EXISTS ai_advisor_usage (
+  user_key    TEXT NOT NULL,
+  day         TEXT NOT NULL,
+  fixed_count INT NOT NULL DEFAULT 0,
+  free_count  INT NOT NULL DEFAULT 0,
+  PRIMARY KEY (user_key, day)
+);
+
 CREATE TABLE IF NOT EXISTS schema_migrations (
   version    INT PRIMARY KEY,
   applied_at TIMESTAMPTZ NOT NULL DEFAULT now()
@@ -226,6 +234,43 @@ export async function transaction(fn) {
   } finally {
     client.release()
   }
+}
+
+// ========== AI 建议每日额度（按 用户/IP + 日期 限流）==========
+// user_key：登录用户用 userId，匿名用 `ip:<地址>`；day 为本地日期 YYYY-MM-DD
+const localAiUsage = new Map()
+
+export async function getAiUsage(userKey, day) {
+  if (isLocalDevMode) {
+    const row = localAiUsage.get(`${userKey}|${day}`)
+    return { fixedCount: row?.fixedCount || 0, freeCount: row?.freeCount || 0 }
+  }
+  const { rows } = await pool.query(
+    'SELECT fixed_count, free_count FROM ai_advisor_usage WHERE user_key = $1 AND day = $2',
+    [userKey, day]
+  )
+  const row = rows[0]
+  return { fixedCount: row?.fixed_count || 0, freeCount: row?.free_count || 0 }
+}
+
+// 累加当日某类型额度（fixed / free），返回更新后的值
+export async function incrementAiUsage(userKey, day, type) {
+  const col = type === 'free' ? 'free_count' : 'fixed_count'
+  if (isLocalDevMode) {
+    const key = `${userKey}|${day}`
+    const row = localAiUsage.get(key) || { fixedCount: 0, freeCount: 0 }
+    row[col === 'free_count' ? 'freeCount' : 'fixedCount'] += 1
+    localAiUsage.set(key, row)
+    return { fixedCount: row.fixedCount, freeCount: row.freeCount }
+  }
+  const { rows } = await pool.query(
+    `INSERT INTO ai_advisor_usage(user_key, day, ${col}) VALUES($1, $2, 1)
+     ON CONFLICT(user_key, day) DO UPDATE SET ${col} = ai_advisor_usage.${col} + 1
+     RETURNING fixed_count, free_count`,
+    [userKey, day]
+  )
+  const row = rows[0]
+  return { fixedCount: row.fixed_count || 0, freeCount: row.free_count || 0 }
 }
 
 export default pool

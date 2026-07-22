@@ -21,6 +21,7 @@
     "express-rate-limit": "^8.6.0",
     "ip2region": "^2.3.0",
     "jsonwebtoken": "^9.0.3",
+    "markdown-it": "^14.3.0",
     "pg": "^8.22.0",
     "vue": "^3.4.0",
     "vue-router": "^4.2.0",

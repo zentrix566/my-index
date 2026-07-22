@@ -44,3 +44,6 @@ const closeMenu = () => {
   isMenuOpen.value = false
 }
 </script>
+
+<style scoped>
+</style>

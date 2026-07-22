@@ -1127,6 +1127,41 @@ a.content-card:hover {
   box-shadow: 0 2px 6px rgba(44, 86, 105, 0.3);
 }
 
+/* 滚动时固定在顶部：视图切换 + 版本/职业选择 */
+.hs-sticky-controls {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding-top: 2px;
+  padding-bottom: 10px;
+  background: var(--hs-surface-overlay);
+  border-bottom: 1px solid var(--hs-border);
+  backdrop-filter: blur(6px);
+}
+
+/* AI 建议入口（「我的成就」视图底部） */
+.hs-ai-entry {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 14px 16px;
+  border: 1px dashed var(--hs-border);
+  border-radius: 12px;
+  background: var(--hs-surface-soft);
+}
+.hs-ai-entry .hs-ai-btn {
+  flex: 0 0 auto;
+  color: #7c3aed;
+  border-color: #ddd6fe;
+  background: #f5f3ff;
+}
+.hs-ai-entry .hs-ai-entry-tip {
+  font-size: 12.5px;
+  color: var(--hs-text-soft, #475569);
+}
+
 /* 介绍 + 登录态 */
 .hs-intro {
   display: flex;

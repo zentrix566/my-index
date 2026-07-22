@@ -24,7 +24,7 @@
       "stages": [
         {
           "description": "在一局对战中使用夜影花蕾召唤一个消耗（10）点法力值的随从并施放一个消耗（10）点法力值的法术。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -43,19 +43,19 @@
       "stages": [
         {
           "description": "使用灌木巨龙托匹奥的效果召唤50条雏龙。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用灌木巨龙托匹奥的效果召唤100条雏龙。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用灌木巨龙托匹奥的效果召唤200条雏龙。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -74,7 +74,7 @@
       "stages": [
         {
           "description": "使用树篱迷宫触发75个亡语。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 75
         }
@@ -93,13 +93,13 @@
       "stages": [
         {
           "description": "使用私法程序抽100张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         },
         {
           "description": "使用私法程序抽200张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -122,7 +122,7 @@
       "stages": [
         {
           "description": "在一局对战中触发15次不稳定的骷髅的亡语。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 15
         }
@@ -141,7 +141,7 @@
       "stages": [
         {
           "description": "使用豪宅管家俄里翁施放40个法师奥秘。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         }
@@ -160,19 +160,19 @@
       "stages": [
         {
           "description": "使用冰冻之触造成50点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用冰冻之触造成100点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用冰冻之触造成150点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 150
         }
@@ -191,13 +191,13 @@
       "stages": [
         {
           "description": "使用异议反制30个随从！",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         },
         {
           "description": "使用异议反制60个随从！",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -216,7 +216,7 @@
       "stages": [
         {
           "description": "使用猎手阿尔迪莫一次性召唤全部三个加尔贡伙伴。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -235,7 +235,7 @@
       "stages": [
         {
           "description": "使用石缚加尔贡消灭50个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -257,19 +257,19 @@
       "stages": [
         {
           "description": "召唤100个休眠的灵种。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "召唤200个休眠的灵种。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 200
         },
         {
           "description": "召唤300个休眠的灵种。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 300
         }
@@ -288,13 +288,13 @@
       "stages": [
         {
           "description": "用否决动议消灭敌方英雄。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         },
         {
           "description": "用否决动议消灭敌方英雄，完成3次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 3
         }
@@ -313,7 +313,7 @@
       "stages": [
         {
           "description": "使用盗用身份发现一个对手的英雄牌的1张复制。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 1
         }
@@ -332,7 +332,7 @@
       "stages": [
         {
           "description": "使用净场消灭75个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 75
         }
@@ -351,19 +351,19 @@
       "stages": [
         {
           "description": "使用炽燃圣光造成100点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用炽燃圣光造成200点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 200
         },
         {
           "description": "使用炽燃圣光造成300点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 300
         }
@@ -382,13 +382,13 @@
       "stages": [
         {
           "description": "使用控罪心灵密探将你对手的卡牌的20张复制置入你的手牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         },
         {
           "description": "使用控罪心灵密探将你对手的卡牌的40张复制置入你的手牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         }
@@ -407,7 +407,7 @@
       "stages": [
         {
           "description": "用通灵领主德拉卡装备一把攻击力为10的匕首。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -426,7 +426,7 @@
       "stages": [
         {
           "description": "绑架50个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -445,19 +445,19 @@
       "stages": [
         {
           "description": "使用罪碑坟场召唤50个幽灵。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用罪碑坟场召唤100个幽灵。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用罪碑坟场召唤150个幽灵。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 150
         }
@@ -476,13 +476,13 @@
       "stages": [
         {
           "description": "使用伪证施放25个奥秘。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         },
         {
           "description": "使用伪证施放50个奥秘。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -499,7 +499,7 @@
       "stages": [
         {
           "description": "控制满场的图腾。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -518,7 +518,7 @@
       "stages": [
         {
           "description": "使用瓦丝琪女男爵的效果召唤40个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         }
@@ -537,19 +537,19 @@
       "stages": [
         {
           "description": "使用淤泥之池变形50个友方随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用淤泥之池变形100个友方随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用淤泥之池变形150个友方随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 150
         }
@@ -568,13 +568,13 @@
       "stages": [
         {
           "description": "使用栽赃者使你的对手过载20个法力水晶。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         },
         {
           "description": "使用栽赃者使你的对手过载40个法力水晶。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         }
@@ -593,7 +593,7 @@
       "stages": [
         {
           "description": "使用传说邀请函邀请16个不同的传说随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 16
         }
@@ -612,7 +612,7 @@
       "stages": [
         {
           "description": "使用晋升将一个白银之手新兵晋升至10点或以上的攻击力。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -631,19 +631,19 @@
       "stages": [
         {
           "description": "使用圣洁鸣钟造成30点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用圣洁鸣钟造成60点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 60
         },
         {
           "description": "使用圣洁鸣钟造成120点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 120
         }
@@ -662,13 +662,13 @@
       "stages": [
         {
           "description": "使用集体诉讼律师将25个随从的属性值变为1/1。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         },
         {
           "description": "使用集体诉讼律师将50个随从的属性值变为1/1。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -687,7 +687,7 @@
       "stages": [
         {
           "description": "使用暗影华尔兹召唤50个影子。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -706,7 +706,7 @@
       "stages": [
         {
           "description": "使用一张灾祸降临抽7张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -725,19 +725,19 @@
       "stages": [
         {
           "description": "使用小鬼大王拉法姆召唤60个小鬼。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 60
         },
         {
           "description": "使用小鬼大王拉法姆召唤120个小鬼。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 120
         },
         {
           "description": "使用小鬼大王拉法姆召唤200个小鬼。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -756,13 +756,13 @@
       "stages": [
         {
           "description": "使用尸身保护令召唤3个传说随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 3
         },
         {
           "description": "使用尸身保护令召唤5个传说随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
@@ -781,7 +781,7 @@
       "stages": [
         {
           "description": "使用放大战刃抽30张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -800,7 +800,7 @@
       "stages": [
         {
           "description": "使用一张贪食的克里克西斯弃掉8张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         }
@@ -821,19 +821,19 @@
       "stages": [
         {
           "description": "施放25个圣物。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "施放50个圣物。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "施放100个圣物。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -852,13 +852,13 @@
       "stages": [
         {
           "description": "使用邪能之乱召唤25个恶魔。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         },
         {
           "description": "使用邪能之乱召唤50个恶魔。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -877,7 +877,7 @@
       "stages": [
         {
           "description": "使用一张心能提取者使随从获得+7/+7。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -896,7 +896,7 @@
       "stages": [
         {
           "description": "使用征服者战旗抽50张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -915,19 +915,19 @@
       "stages": [
         {
           "description": "使用活体利刃蕾茉妮雅造成50点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用活体利刃蕾茉妮雅造成100点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用活体利刃蕾茉妮雅造成200点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -946,13 +946,13 @@
       "stages": [
         {
           "description": "使用传唤出庭召唤随从并在同一回合将其消灭，完成15次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 15
         },
         {
           "description": "使用传唤出庭召唤随从并在同一回合将其消灭，完成30次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -971,19 +971,19 @@
       "stages": [
         {
           "description": "使用罪奔者消灭20个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "使用罪奔者消灭40个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "使用罪奔者消灭80个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 80
         }
@@ -1000,19 +1000,19 @@
       "stages": [
         {
           "description": "激活地标60次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 60
         },
         {
           "description": "激活地标120次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 120
         },
         {
           "description": "激活地标200次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -1029,19 +1029,19 @@
       "stages": [
         {
           "description": "使用50张已注能的牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用100张已注能的牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用200张已注能的牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -1060,13 +1060,13 @@
       "stages": [
         {
           "description": "使用饥饿的愚人抽45张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 45
         },
         {
           "description": "使用饥饿的愚人抽90张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 90
         }
@@ -1085,7 +1085,7 @@
       "stages": [
         {
           "description": "在你的回合结束时，拥有一个攻击力大于或等于20点的罪能魔像。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         }
@@ -1104,13 +1104,13 @@
       "stages": [
         {
           "description": "使用晚宴表演者召唤8个不同的随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         },
         {
           "description": "使用晚宴表演者召唤16个不同的随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 16
         }
@@ -1129,7 +1129,7 @@
       "stages": [
         {
           "description": "使用癫狂公爵西塔尔交换一张普通牌和一张传说牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -1148,7 +1148,7 @@
       "stages": [
         {
           "description": "使用蒸汽清洁器摧毁30张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -1167,19 +1167,19 @@
       "stages": [
         {
           "description": "使用德纳修斯大帝造成200点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 200
         },
         {
           "description": "使用德纳修斯大帝造成400点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 400
         },
         {
           "description": "使用德纳修斯大帝造成600点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 600
         }
@@ -1198,7 +1198,7 @@
       "stages": [
         {
           "description": "将诡异的画像变形成为10个不同职业的随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -1217,7 +1217,7 @@
       "stages": [
         {
           "description": "使用贪食的吞噬者的效果吞食25个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         }
@@ -1238,7 +1238,7 @@
       "stages": [
         {
           "description": "使用可疑的炼金师，可疑的海盗和可疑的侍应愚弄你的对手。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -1257,7 +1257,7 @@
       "stages": [
         {
           "description": "使用摩洛克·福尔摩斯完全猜中你对手的三张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -1276,13 +1276,13 @@
       "stages": [
         {
           "description": "使用被告希尔瓦娜斯获取10个随从的控制权。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         },
         {
           "description": "使用被告希尔瓦娜斯获取20个随从的控制权。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         }
@@ -1301,7 +1301,7 @@
       "stages": [
         {
           "description": "使用离躯之魂从你的牌库中发现30张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -1320,7 +1320,7 @@
       "stages": [
         {
           "description": "使用迷宫向导召唤30个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -1339,7 +1339,7 @@
       "stages": [
         {
           "description": "使用石裔干将造成160点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 160
         }
@@ -1356,7 +1356,7 @@
       "stages": [
         {
           "description": "解开埋藏在纳斯利亚堡的谜题。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 0
         }
@@ -1375,13 +1375,13 @@
       "stages": [
         {
           "description": "当冥界侍从在场时，25个友方随从死亡。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "当冥界侍从在场时，50个友方随从死亡。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         }

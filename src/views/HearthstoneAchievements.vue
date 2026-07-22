@@ -67,7 +67,8 @@
         </div>
       </section>
 
-      <!-- 视图模式切换 -->
+      <!-- 视图模式切换 + 版本/职业选择：滚动时固定在顶部 -->
+      <div class="hs-sticky-controls" ref="stickyRef">
       <div class="hs-view-switch" role="tablist" aria-label="浏览方式">
         <button
           :class="{ active: viewMode === 'expansion' }"
@@ -177,9 +178,22 @@
           </div>
         </div>
       </header>
+      </div>
 
       <!-- 我的成就模式：分组切换 + 统计面板 -->
       <template v-if="viewMode === 'my'">
+        <!-- AI 建议入口：仅「我的成就」视图，置于该视图顶部（切到此处即可见，免得滚到最底才发现） -->
+        <div v-if="AI_ADVISOR_ENABLED" class="hs-ai-entry">
+          <button type="button" class="hs-btn hs-btn-ghost hs-ai-btn" @click="openAi">
+            <span aria-hidden="true">🤖</span> AI 成就建议（实验）
+          </button>
+          <span class="hs-ai-entry-tip">
+            根据你未完成的成就，让 AI 推荐下一步该刷哪一块 · 每天 5 次固定 + 1 次自由提问
+            <template v-if="hardcore">（已开启硬核：覆盖全部 {{ expansions.length }} 个版本）</template>
+            <template v-else>（仅核心 {{ originalExpansions.length }} 个有经验版本）</template>
+          </span>
+        </div>
+
         <div v-if="!user" class="hs-example-banner">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
@@ -203,10 +217,26 @@
             :class="{ active: myGroupBy === 'sprint' }"
             type="button"
             @click="myGroupBy = 'sprint'"
-          >待完成清单</button>
-        </div>
+      >待完成清单</button>
+    </div>
 
-        <div v-if="progressLoading" class="hs-progress-status" role="status">正在加载成就进度…</div>
+    <!-- 硬核模式开关 + 介绍（仅「我的成就」） -->
+    <div v-if="viewMode === 'my'" class="hs-hardcore-bar">
+      <label class="hs-hardcore-toggle">
+        <input type="checkbox" v-model="hardcore" />
+        <span>硬核模式（统计全部成就，不止有经验的 9 个版本）</span>
+      </label>
+      <details v-if="hardcore" class="hs-hardcore-intro">
+        <summary>硬核成就说明</summary>
+        <p>
+          硬核模式会统计<strong>全部 {{ expansions.length }} 个版本</strong>的成就（含无经验的「更多版本」），
+          而非仅原有的 9 个有经验版本。额外纳入的版本：{{ hardcoreExtraNames }}。
+          开启后，完成度、待完成清单与各项剩余统计都将覆盖所有成就。
+        </p>
+      </details>
+    </div>
+
+    <div v-if="progressLoading" class="hs-progress-status" role="status">正在加载成就进度…</div>
         <div v-else-if="progressError" class="hs-progress-status hs-progress-error" role="alert">
           成就进度加载失败，当前显示的数据可能不是最新的。
           <button type="button" @click="reloadProgress">重试</button>
@@ -254,11 +284,11 @@
             通行证加成：
             <select v-model.number="passBonus" class="hs-pass-select">
               <option v-for="o in PASS_BONUS_OPTIONS" :key="o.value" :value="o.value">{{ o.label }}</option>
-            </select>
-          </label>
-        </div>
+        </select>
+      </label>
+    </div>
 
-        <div class="hs-batch-bar" v-if="viewMode === 'my' && user && myGroupBy === 'sprint'">
+    <div class="hs-batch-bar" v-if="viewMode === 'my' && user && myGroupBy === 'sprint'">
           <template v-if="!batchMode">
             <button type="button" class="hs-btn hs-btn-ghost" @click="startBatch">
               <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
@@ -473,7 +503,7 @@
           >
             <span class="hs-sprint-cat-caret" :class="{ open: !sprintSectionCollapsed.oneTime }">▶</span>
             <span class="hs-sprint-cat-title">一次性成就</span>
-            <span class="hs-sprint-cat-count">{{ sprintGroups.oneTime.length }} 个</span>
+            <span class="hs-sprint-cat-count">{{ sprintGroups.oneTime.length }} 个 · 剩余 {{ sprintOneTimeRemain }} 次</span>
           </button>
           <div v-show="!sprintSectionCollapsed.oneTime" class="hs-achievement-list hs-priority-list">
             <MyAchievementCard
@@ -589,8 +619,21 @@
             <p class="hs-celebrate-sub">{{ celebration.sub }}</p>
           </div>
         </div>
-      </transition>
-    </div>
+    </transition>
+  </div>
+
+    <!-- AI 成就建议弹窗（实验功能，独立模块，可随时下线） -->
+    <Teleport to="body">
+      <div v-if="showAi" class="ai-global-modal" @click.self="closeAi">
+        <div class="ai-global-modal-box" role="dialog" aria-modal="true" aria-label="AI 成就建议">
+          <div class="ai-global-modal-head">
+            <span class="ai-global-modal-title">🤖 AI 成就建议</span>
+            <button type="button" class="ai-global-close" aria-label="关闭" @click="closeAi">×</button>
+          </div>
+          <AiAdvisor :hardcore="hardcore" />
+        </div>
+      </div>
+    </Teleport>
   </section>
 </template>
 
@@ -611,9 +654,25 @@ import CardModal from '../hearthstone-achievements/components/CardModal.vue'
 import ScrollToTop from '../hearthstone-achievements/components/ScrollToTop.vue'
 import MyAchievementCard from '../hearthstone-achievements/components/MyAchievementCard.vue'
 import DeckDetailModal from '../hearthstone-achievements/components/DeckDetailModal.vue'
+import AiAdvisor from '../hearthstone-achievements/ai/AiAdvisor.vue'
+import { AI_ADVISOR_ENABLED } from '../hearthstone-achievements/ai/config.js'
 
 const { user, init: initAuth, logout } = useAuth()
 const router = useRouter()
+
+// AI 建议弹窗（实验功能，独立模块，可随时下线）
+const showAi = ref(false)
+const openAi = () => { showAi.value = true }
+const closeAi = () => { showAi.value = false }
+
+// 吸顶控制栏（视图切换 + 版本/职业选择）的引用：切换视图/版本时滚动到它，
+// 既能让内容从控制栏下方开始显示，又不会把页面弹回最顶、重新露出那个巨大的页面标题。
+const stickyRef = ref(null)
+function scrollToControls() {
+  if (!stickyRef.value) return
+  const top = stickyRef.value.getBoundingClientRect().top + window.scrollY
+  window.scrollTo({ top, behavior: 'smooth' })
+}
 
 // ============ 主题切换（明亮 / 暗色），默认明亮 ============
 const HS_THEME_KEY = 'hs-theme'
@@ -1031,6 +1090,16 @@ const classSprintAchievements = computed(() =>
   allAchievements.value.filter((a) => !addedExpansionIdSet.has(a._expansionId))
 )
 
+// 硬核模式：开启后「我的成就」统计与待完成清单覆盖全部版本（含无经验的「更多版本」），
+// 而非仅原有的 9 个有经验版本。硬核仅作用于「我的成就」视图。
+const hardcore = ref(false)
+// 硬核作用域：仅在「我的成就」且开启硬核时使用全部成就；其余情况维持原有 9 版本。
+const scopeAchievements = computed(() =>
+  hardcore.value && viewMode.value === 'my' ? allAchievements.value : classSprintAchievements.value
+)
+// 硬核模式下额外纳入统计的「更多版本」名称（用于硬核介绍）
+const hardcoreExtraNames = computed(() => addedExpansions.map((e) => e.name).join('、'))
+
 // 状态
 const viewMode = ref('expansion')
 const myGroupBy = ref('expansion') // 'expansion' | 'class' | 'sprint'
@@ -1152,14 +1221,14 @@ const classViewSummaries = computed(() => {
 // 我的成就 - 按版本：若选中的是「更多版本」里的新增版本，仅作浏览，不计入统计
 // （统计始终反映原有 9 个版本，避免新增版本污染「我的成就」完成度）。
 const isMyAddedVersion = computed(
-  () => viewMode.value === 'my' && myGroupBy.value === 'expansion' && addedExpansionIdSet.has(currentExpansionId.value)
+  () => viewMode.value === 'my' && myGroupBy.value === 'expansion' && !hardcore.value && addedExpansionIdSet.has(currentExpansionId.value)
 )
 // 总览面板作用范围：按版本=当前版本；按职业=当前职业；待完成清单=全部 9 版本成就
 const overviewScope = computed(() => {
   if (viewMode.value === 'my' && myGroupBy.value === 'expansion')
     return isMyAddedVersion.value ? classSprintAchievements.value : currentExpansionAchievements.value
   if (viewMode.value === 'my' && myGroupBy.value === 'class') return currentClassAchievements.value
-  if (viewMode.value === 'my' && myGroupBy.value === 'sprint') return classSprintAchievements.value
+  if (viewMode.value === 'my' && myGroupBy.value === 'sprint') return scopeAchievements.value
   return []
 })
 // 总览面板统计（完成度、点数、经验）
@@ -1168,9 +1237,10 @@ const overviewCompletedCount = computed(() =>
   overviewScope.value.filter((a) => isAchievementCompleted(a)).length
 )
 
-// 当前职业的成就（按职业浏览模式）
+// 当前职业的成就（按职业浏览 / 我的-按职业）：硬核下使用全部成就
 const currentClassAchievements = computed(() => {
-  return classSprintAchievements.value.filter((ach) => matchesClass(ach, currentClass.value))
+  const base = hardcore.value && viewMode.value === 'my' ? allAchievements.value : classSprintAchievements.value
+  return base.filter((ach) => matchesClass(ach, currentClass.value))
 })
 
 // 我的成就模式 - 当前范围的成就列表
@@ -1179,7 +1249,7 @@ const myAchievementsList = computed(() => {
   if (myGroupBy.value === 'expansion') {
     return currentExpansionAchievements.value
   } else {
-    return classSprintAchievements.value.filter((ach) => matchesClass(ach, currentClass.value))
+    return scopeAchievements.value.filter((ach) => matchesClass(ach, currentClass.value))
   }
 })
 
@@ -1195,7 +1265,10 @@ const sprintMetricOptions = [
   { value: '点数', label: '累计-点数 剩余' }
 ]
 const versionOptions = computed(() =>
-  expansions.filter((e) => !addedExpansionIdSet.has(e.id)).map((e) => ({ id: e.id, name: e.name }))
+  (hardcore.value && viewMode.value === 'my'
+    ? expansions
+    : expansions.filter((e) => !addedExpansionIdSet.has(e.id))
+  ).map((e) => ({ id: e.id, name: e.name }))
 )
 
 // 判断一条成就是否命中当前的指标筛选（一次性 / 次数 / 点数）。
@@ -1220,7 +1293,7 @@ const sprintGroups = computed(() => {
   const count = [] // 累计-次数
   const points = [] // 累计-点数
 
-  for (const ach of classSprintAchievements.value) {
+  for (const ach of scopeAchievements.value) {
     if (sprintVersionFilter.value !== 'all' && ach._expansionId !== sprintVersionFilter.value) continue
     if (sprintClassFilter.value !== 'all' && !matchesClass(ach, sprintClassFilter.value)) continue
     if (!matchSprintMetric(ach)) continue
@@ -1259,6 +1332,12 @@ const sprintRemainingTotals = computed(() => ({
   countAch: sprintGroups.value.count.length,
   pointAch: sprintGroups.value.points.length
 }))
+
+// 一次性成就还差的总阶段数（“次”），与顶部总览的「一次性成就还剩 X 次」口径一致，
+// 用于列表标题同时展示「N 个 · 剩余 X 次」，避免与总览数字产生歧义。
+const sprintOneTimeRemain = computed(() =>
+  sprintGroups.value.oneTime.reduce((sum, a) => sum + (getProgressInfo(a).remainingCount || 0), 0)
+)
 
 // 展示的成就列表
 // 有搜索关键词时，跨所有版本与职业全局搜索；否则只看当前范围
@@ -1395,19 +1474,32 @@ const metricTotals = computed(() => {
 // 总览面板剩余统计（基于 overviewScope，保证 已完成 + 剩余 = 总数）
 const overviewRemaining = computed(() => {
   let achievements = 0
-  let countRemain = 0
-  let pointRemain = 0
+  let countRemain = 0 // 累计-次数：还差的总次数
+  let pointRemain = 0 // 累计-点数：还差的总点数
+  let oneTimeRemain = 0 // 一次性：还差的总阶段数（“次”）
+  let cumCountAch = 0 // 累计-次数：还差的成就个数
+  let cumPointsAch = 0 // 累计-点数：还差的成就个数
   for (const ach of overviewScope.value) {
     if (isAchievementCompleted(ach)) continue
     achievements += 1
-    if (ach.type !== '累计') continue
-    const count = getCount(ach) ?? 0
-    const lastQuota = ach.stages[ach.stages.length - 1].quota
-    const remaining = Math.max(0, lastQuota - count)
-    if (getMetric(ach) === 'points') pointRemain += remaining
-    else countRemain += remaining
+    if (ach.type === '累计') {
+      const count = getCount(ach) ?? 0
+      const lastQuota = ach.stages[ach.stages.length - 1].quota
+      const remaining = Math.max(0, lastQuota - count)
+      if (getMetric(ach) === 'points') {
+        pointRemain += remaining
+        cumPointsAch += 1
+      } else {
+        countRemain += remaining
+        cumCountAch += 1
+      }
+    } else {
+      // 一次性成就：剩余 = 未勾选的阶段数（即还差几个子目标）
+      const info = getProgressInfo(ach)
+      oneTimeRemain += info.remainingCount
+    }
   }
-  return { achievements, countRemain, pointRemain }
+  return { achievements, countRemain, pointRemain, oneTimeRemain, cumCountAch, cumPointsAch }
 })
 // 总览面板说明：拆成两行、数字高亮（成就/累计 一行，经验/成就值 一行）
 // 数值均来源于本地统计（安全整数），故用 v-html 包裹 .hs-num 高亮
@@ -1418,18 +1510,21 @@ const overviewSummaryHtml = computed(() => {
   const totalAch = stats.totalAchievements
   const completedAch = stats.completedAchievements
   const remaining = totalAch - completedAch
-  const { countRemain, pointRemain } = overviewRemaining.value
+  const { countRemain, pointRemain, oneTimeRemain, cumCountAch, cumPointsAch } = overviewRemaining.value
   // 通行证经验加成：已获得/总经验均按 (1+加成) 放大（成就值不受加成影响）
   const earnedXp = Math.round(stats.earnedXp * (1 + passBonus.value))
   const totalXp = Math.round(stats.totalXp * (1 + passBonus.value))
   const remainXp = Math.max(0, totalXp - earnedXp)
   const remainPts = Math.max(0, stats.totalPoints - stats.earnedPoints)
   const n = (v) => `<b class="hs-num">${v}</b>`
-  // 累计剩余：次数为 0 / 点数为 0 时各自不显示
-  const cumParts = []
-  if (countRemain > 0) cumParts.push(`累计-次数还差 ${n(countRemain)} 次`)
-  if (pointRemain > 0) cumParts.push(`累计-点数还差 ${n(pointRemain)} 点`)
-  const cumClause = cumParts.length ? `剩余成就中，${cumParts.join('，')}。` : ''
+  // 剩余说明：各指标仅在 >0 时显示；先列「成就个数」再列「还差 次/点」
+  const remParts = []
+  if (oneTimeRemain > 0) remParts.push(`一次性成就还剩 ${n(oneTimeRemain)} 次`)
+  if (cumCountAch > 0) remParts.push(`累计-次数类成就个数还剩 ${n(cumCountAch)} 个`)
+  if (cumPointsAch > 0) remParts.push(`累计-点数类成就个数还剩 ${n(cumPointsAch)} 个`)
+  if (countRemain > 0) remParts.push(`累计-次数还差 ${n(countRemain)} 次`)
+  if (pointRemain > 0) remParts.push(`累计-点数还差 ${n(pointRemain)} 点`)
+  const cumClause = remParts.length ? `剩余成就中，${remParts.join('，')}。` : ''
   const line1 =
     `已完成 ${n(`${completedAch}/${totalAch}`)} 个成就，剩余 ${n(remaining)} 个成就；` + cumClause
   const line2 =
@@ -1490,7 +1585,8 @@ const resetFilters = () => {
 const resetViewState = ({ scroll = false } = {}) => {
   resetFilters()
   closeModal()
-  if (scroll) window.scrollTo({ top: 0, behavior: 'smooth' })
+  // 滚动到吸顶控制栏下方（而非页面最顶），避免大标题重新占满屏幕、内容被挤下去
+  if (scroll) scrollToControls()
 }
 
 // 切换视图时重置筛选
@@ -1803,5 +1899,106 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
 .hs-celebrate-fade-leave-to {
   opacity: 0;
   transform: translateX(-50%) translateY(-18px);
+}
+
+/* ============ 硬核模式开关 ============ */
+.hs-hardcore-bar {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin: 12px 0 4px;
+  padding: 10px 14px;
+  background: var(--hs-surface-overlay);
+  border: 1px solid var(--hs-border);
+  border-radius: 12px;
+}
+.hs-hardcore-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13.5px;
+  font-weight: 600;
+  color: var(--hs-text);
+  cursor: pointer;
+}
+.hs-hardcore-toggle input {
+  width: 16px;
+  height: 16px;
+  accent-color: #dc2626;
+  cursor: pointer;
+}
+.hs-hardcore-intro {
+  font-size: 12.5px;
+  color: var(--hs-text-soft);
+  line-height: 1.6;
+}
+.hs-hardcore-intro summary {
+  cursor: pointer;
+  font-weight: 600;
+  color: #dc2626;
+}
+.hs-hardcore-intro p {
+  margin: 8px 0 0;
+}
+.hs-hardcore-intro strong {
+  color: var(--hs-text);
+}
+
+/* ============ AI 建议（实验）入口 / 弹窗 ============ */
+.hs-ai-btn {
+  color: #7c3aed;
+  font-weight: 600;
+}
+.hs-ai-btn:hover {
+  background: #f5f3ff;
+}
+.ai-global-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(15, 23, 42, 0.45);
+}
+.ai-global-modal-box {
+  width: 100%;
+  max-width: 680px;
+  max-height: 86vh;
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
+  overflow: hidden;
+}
+.ai-global-modal-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e2e8f0;
+}
+.ai-global-modal-title {
+  font-size: 15px;
+  font-weight: 700;
+  color: #7c3aed;
+}
+.ai-global-close {
+  border: none;
+  background: none;
+  font-size: 24px;
+  line-height: 1;
+  color: #64748b;
+  cursor: pointer;
+  padding: 0 6px;
+}
+.ai-global-close:hover { color: #1e293b; }
+.ai-global-modal-box :deep(.ai-advisor) {
+  border: none;
+  border-radius: 0;
+  flex: 1 1 auto;
+  overflow-y: auto;
 }
 </style>

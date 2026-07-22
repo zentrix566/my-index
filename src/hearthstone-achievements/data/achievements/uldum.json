@@ -22,7 +22,7 @@
       "stages": [
         {
           "description": "施放蜂群来袭时没有蜜蜂攻击。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 0
         }
@@ -39,7 +39,7 @@
       "stages": [
         {
           "description": "在一局对战中召唤30只蝗虫。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 30
         }
@@ -56,7 +56,7 @@
       "stages": [
         {
           "description": "在施放4次尤格-萨隆的谜之匣后赢得一场对战。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 4
         }
@@ -73,7 +73,7 @@
       "stages": [
         {
           "description": "用一张鱼人为王召唤7个相同的鱼人。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 7
         }
@@ -90,7 +90,7 @@
       "stages": [
         {
           "description": "在你的回合结束时拥有7个具有30点或更高生命值的随从。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 7
         }
@@ -107,7 +107,7 @@
       "stages": [
         {
           "description": "在一回合中使用8张连环腿大师创建的连击牌。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 8
         }
@@ -124,7 +124,7 @@
       "stages": [
         {
           "description": "用一张地震术先消灭刚好5个随从，然后再消灭刚好2个随从。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 5
         }
@@ -141,7 +141,7 @@
       "stages": [
         {
           "description": "用裂隙屠夫同时消灭双方英雄。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 0
         }
@@ -158,7 +158,7 @@
       "stages": [
         {
           "description": "在使用侵入系统的同一回合完成该任务。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 0
         }
@@ -175,7 +175,7 @@
       "stages": [
         {
           "description": "用莱，至高守护者攻击敌方英雄。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 0
         }

@@ -173,7 +173,7 @@ const copyDeckCode = async (deck, event) => {
             {{ stage.description }}
           </span>
           <span class="hs-stage-rewards">
-            <span class="hs-stage-xp" :class="{ 'hs-reward-done': isStageCompleted(achievement, idx) }">
+            <span class="hs-stage-xp" v-if="stage.xpReward" :class="{ 'hs-reward-done': isStageCompleted(achievement, idx) }">
               <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="6"/><path d="M15.477 12.89 17 22l-5-3-5 3 1.523-9.11"/></svg>
               {{ stage.xpReward }}
             </span>

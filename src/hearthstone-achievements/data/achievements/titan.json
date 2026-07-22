@@ -24,7 +24,7 @@
       "stages": [
         {
           "description": "用一张生长古树将6个树人变形成为古树。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 6
         }
@@ -44,19 +44,19 @@
       "stages": [
         {
           "description": "使用25张由幼苗长成的成株法术牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "使用50张由幼苗长成的成株法术牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用100张由幼苗长成的成株法术牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -75,7 +75,7 @@
       "stages": [
         {
           "description": "用弗蕾亚复制40张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         }
@@ -94,13 +94,13 @@
       "stages": [
         {
           "description": "用禁忌之果获得70点攻击力或护甲值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 70
         },
         {
           "description": "用禁忌之果获得140点攻击力或护甲值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 140
         }
@@ -119,7 +119,7 @@
       "stages": [
         {
           "description": "用破链角斗士抽50张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -138,7 +138,7 @@
       "stages": [
         {
           "description": "用一张元素激励召唤7个始生涡流。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -157,19 +157,19 @@
       "stages": [
         {
           "description": "使用1个完全强化的诺甘农的技能。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 1
         },
         {
           "description": "使用2个完全强化的诺甘农的技能。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 2
         },
         {
           "description": "使用3个完全强化的诺甘农的技能。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 3
         }
@@ -188,13 +188,13 @@
       "stages": [
         {
           "description": "用腐化残渣造成100点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         },
         {
           "description": "用腐化残渣造成200点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -213,7 +213,7 @@
       "stages": [
         {
           "description": "使用50张被巨人之父霍迪尔祝福过的消耗（2）点或以下法力值的随从牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -232,7 +232,7 @@
       "stages": [
         {
           "description": "触发同一个神话观测者的效果5次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
@@ -251,19 +251,19 @@
       "stages": [
         {
           "description": "用虫外有虫对敌方英雄造成40点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "用虫外有虫对敌方英雄造成80点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 80
         },
         {
           "description": "用虫外有虫对敌方英雄造成120点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 120
         }
@@ -282,13 +282,13 @@
       "stages": [
         {
           "description": "用扭曲的霜翼龙召唤一只攻击力为8的奇美拉。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         },
         {
           "description": "用扭曲的霜翼龙召唤一只攻击力为12的奇美拉。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 12
         }
@@ -307,7 +307,7 @@
       "stages": [
         {
           "description": "使用一张具有7点攻击力的星界自动机。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -326,7 +326,7 @@
       "stages": [
         {
           "description": "用星辰排列使50张你手牌中的随从牌变形。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -345,19 +345,19 @@
       "stages": [
         {
           "description": "使用15张阿曼苏尔创建的传说随从牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 15
         },
         {
           "description": "使用30张阿曼苏尔创建的传说随从牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用60张阿曼苏尔创建的传说随从牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -376,13 +376,13 @@
       "stages": [
         {
           "description": "用影触克瓦迪尔的效果造成100点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         },
         {
           "description": "用影触克瓦迪尔的效果造成200点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -401,7 +401,7 @@
       "stages": [
         {
           "description": "在你没有其他手牌时使用换挡漂移。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -420,7 +420,7 @@
       "stages": [
         {
           "description": "使用全部6种米米尔隆的小工具。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 6
         }
@@ -439,19 +439,19 @@
       "stages": [
         {
           "description": "用焦油飞溅的效果对随从造成50点额外伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "用焦油飞溅的效果对随从造成100点额外伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "用焦油飞溅的效果对随从造成200点额外伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -470,13 +470,13 @@
       "stages": [
         {
           "description": "用迷你灭世者消灭25个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         },
         {
           "description": "用迷你灭世者消灭50个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -495,7 +495,7 @@
       "stages": [
         {
           "description": "使用一张法力值消耗为（0）的雷电崩鸣。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -514,7 +514,7 @@
       "stages": [
         {
           "description": "用雷霆之锤消灭敌方英雄。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -533,19 +533,19 @@
       "stages": [
         {
           "description": "用风暴之王托里姆抽25张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "用风暴之王托里姆抽50张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "用风暴之王托里姆抽100张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -564,13 +564,13 @@
       "stages": [
         {
           "description": "用电流导联的效果消灭25个敌方随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         },
         {
           "description": "用电流导联的效果消灭50个敌方随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -590,7 +590,7 @@
       "stages": [
         {
           "description": "召唤一个具有14点攻击力的土灵魔像。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 14
         }
@@ -609,7 +609,7 @@
       "stages": [
         {
           "description": "用一次提尔的战吼复活3个传说随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 3
         }
@@ -628,19 +628,19 @@
       "stages": [
         {
           "description": "用修理机器人X-21将20个机械移回你的手牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 21
         },
         {
           "description": "用修理机器人X-21将40个机械移回你的手牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 21
         },
         {
           "description": "用修理机器人X-21将60个机械移回你的手牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 21
         }
@@ -659,13 +659,13 @@
       "stages": [
         {
           "description": "用一张守护者的力量消灭5个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         },
         {
           "description": "用一张守护者的力量消灭10个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -684,7 +684,7 @@
       "stages": [
         {
           "description": "从意志熔炉中召唤一个攻击力大于或等于12的巨人。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 12
         }
@@ -703,7 +703,7 @@
       "stages": [
         {
           "description": "用一张致命诛灭消灭5个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
@@ -722,19 +722,19 @@
       "stages": [
         {
           "description": "召唤30个用萨格拉斯开向扭曲虚空的传送门创建的随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "召唤60个用萨格拉斯开向扭曲虚空的传送门创建的随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 60
         },
         {
           "description": "召唤120个用萨格拉斯开向扭曲虚空的传送门创建的随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 120
         }
@@ -753,13 +753,13 @@
       "stages": [
         {
           "description": "用狂乱侵蚀造成75点疲劳伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 75
         },
         {
           "description": "用狂乱侵蚀造成150点疲劳伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 150
         }
@@ -778,7 +778,7 @@
       "stages": [
         {
           "description": "使用25张兵主创建的卡牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         }
@@ -797,7 +797,7 @@
       "stages": [
         {
           "description": "用严寒冰封使你的对手过量抽取10张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -819,19 +819,19 @@
       "stages": [
         {
           "description": "将50张疫病牌洗入你对手的牌库。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "将100张疫病牌洗入你对手的牌库。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "将200张疫病牌洗入你对手的牌库。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -850,13 +850,13 @@
       "stages": [
         {
           "description": "用剧毒亡灵消灭25个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         },
         {
           "description": "用剧毒亡灵消灭50个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -875,7 +875,7 @@
       "stages": [
         {
           "description": "在同一个回合召唤并唤醒晶石雕像。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -894,7 +894,7 @@
       "stages": [
         {
           "description": "迫使40个敌方随从攻击神秘恐魔。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         }
@@ -913,19 +913,19 @@
       "stages": [
         {
           "description": "使用恶魔猎手抽40张具有抽到时施放的法术牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "使用恶魔猎手抽80张具有抽到时施放的法术牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 80
         },
         {
           "description": "使用恶魔猎手抽120张具有抽到时施放的法术牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 120
         }
@@ -944,13 +944,13 @@
       "stages": [
         {
           "description": "用摧心魔的一次战吼造成7点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         },
         {
           "description": "用摧心魔的一次战吼造成10点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -969,7 +969,7 @@
       "stages": [
         {
           "description": "用一张米诺陶牛头人获得20点护甲值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         }
@@ -988,7 +988,7 @@
       "stages": [
         {
           "description": "用火焰试炼使瓦格里获得+200/+200。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -1007,19 +1007,19 @@
       "stages": [
         {
           "description": "用卡兹格罗斯攻击并消灭25个敌方随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "用卡兹格罗斯攻击并消灭50个敌方随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "用卡兹格罗斯攻击并消灭100个敌方随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -1038,13 +1038,13 @@
       "stages": [
         {
           "description": "召唤维扎克斯将军40次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         },
         {
           "description": "召唤维扎克斯将军80次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 80
         }
@@ -1063,19 +1063,19 @@
       "stages": [
         {
           "description": "用锐目搜寻者抽25张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "用锐目搜寻者抽50张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "用锐目搜寻者抽75张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 75
         }
@@ -1092,19 +1092,19 @@
       "stages": [
         {
           "description": "锻造50张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "锻造100张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "锻造200张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -1121,19 +1121,19 @@
       "stages": [
         {
           "description": "使用40个泰坦技能。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "使用80个泰坦技能。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 80
         },
         {
           "description": "使用160个泰坦技能。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 160
         }
@@ -1153,13 +1153,13 @@
       "stages": [
         {
           "description": "使用4种不同的火花机器人。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 4
         },
         {
           "description": "使用全部8种不同的火花机器人。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         }
@@ -1178,7 +1178,7 @@
       "stages": [
         {
           "description": "召唤60个霍迪尔之子创建的冰霜霸主。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -1197,13 +1197,13 @@
       "stages": [
         {
           "description": "用符文供能魔像发现5个不同职业的武器。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         },
         {
           "description": "用符文供能魔像发现11个不同职业的武器。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 11
         }
@@ -1222,7 +1222,7 @@
       "stages": [
         {
           "description": "使用30张星空投影师创建的临时版随从牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -1241,7 +1241,7 @@
       "stages": [
         {
           "description": "在一局对战中触发机甲跳蛙的亡语10次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -1260,19 +1260,19 @@
       "stages": [
         {
           "description": "用尤格-萨隆的监狱消灭15个被选中的随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 15
         },
         {
           "description": "用尤格-萨隆的监狱消灭30个被选中的随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "用尤格-萨隆的监狱消灭60个被选中的随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -1291,7 +1291,7 @@
       "stages": [
         {
           "description": "使用30张迷时始祖幼龙创建的龙牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -1310,7 +1310,7 @@
       "stages": [
         {
           "description": "用远古图腾攻击25次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         }
@@ -1329,7 +1329,7 @@
       "stages": [
         {
           "description": "在一局对战中使用5张法力值消耗为（0）的风暴巨人。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
@@ -1348,7 +1348,7 @@
       "stages": [
         {
           "description": "用永恒之火伊格尼斯制造的自定义武器消灭敌方英雄。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -1367,13 +1367,13 @@
       "stages": [
         {
           "description": "通过混乱触须施放一个法力值消耗为（8）的法术。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         },
         {
           "description": "通过混乱触须施放一个法力值消耗为（10）的法术。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -1392,13 +1392,13 @@
       "stages": [
         {
           "description": "在你的起始套牌中加入暮光头领古加尔，赢得25场对战。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         },
         {
           "description": "在你的起始套牌中加入暮光头领古加尔，赢得50场对战。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }

@@ -22,13 +22,13 @@
       "stages": [
         {
           "description": "召唤40个暗月树人。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "召唤120个暗月树人。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 120
         }
@@ -45,7 +45,7 @@
       "stages": [
         {
           "description": "猜重量猜对10次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -62,7 +62,7 @@
       "stages": [
         {
           "description": "在一局对战中施放6个月蚀或日蚀。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 6
         }
@@ -79,19 +79,19 @@
       "stages": [
         {
           "description": "召唤20个格雷布。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "召唤100个格雷布。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "召唤200个格雷布。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -108,13 +108,13 @@
       "stages": [
         {
           "description": "吃掉10块法力饼干。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "吃掉30块法力饼干。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -131,7 +131,7 @@
       "stages": [
         {
           "description": "用克苏恩面具造成致命伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -148,7 +148,7 @@
       "stages": [
         {
           "description": "在你的回合结束时，拥有4个隐秘咒术师。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 4
         }
@@ -165,19 +165,19 @@
       "stages": [
         {
           "description": "使用塞格抽5张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 5
         },
         {
           "description": "使用塞格抽20张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "使用塞格抽50张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -194,13 +194,13 @@
       "stages": [
         {
           "description": "使用套索射击消灭20个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "使用套索射击消灭60个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -217,7 +217,7 @@
       "stages": [
         {
           "description": "在你的回合结束时，拥有三个相同的亡语随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -234,7 +234,7 @@
       "stages": [
         {
           "description": "向对手发射一个随从，造成致命伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -251,19 +251,19 @@
       "stages": [
         {
           "description": "使用暗月坦克造成50点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用暗月坦克造成150点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 150
         },
         {
           "description": "使用暗月坦克造成500点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 500
         }
@@ -280,13 +280,13 @@
       "stages": [
         {
           "description": "使用圣光战马的特效使随从获得30点生命值。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用圣光战马的特效使随从获得90点生命值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 90
         }
@@ -303,7 +303,7 @@
       "stages": [
         {
           "description": "召唤一个攻击力大于或等于10点的占卜机。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -320,7 +320,7 @@
       "stages": [
         {
           "description": "使用无名者一次偷取3个或以上的附加效果。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 3
         }
@@ -337,19 +337,19 @@
       "stages": [
         {
           "description": "使用牧师，消耗10点生命值来使用卡牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使用牧师，消耗30点生命值来使用卡牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用牧师，消耗100点生命值来使用卡牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -366,13 +366,13 @@
       "stages": [
         {
           "description": "使你的对手抽到10张香蕉。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使你的对手抽到30张香蕉。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -389,7 +389,7 @@
       "stages": [
         {
           "description": "使用暗影克隆召唤一个法力值消耗大于或等于（10）的随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -406,7 +406,7 @@
       "stages": [
         {
           "description": "使用一张大女皇夏柯扎拉抽5张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
@@ -423,19 +423,19 @@
       "stages": [
         {
           "description": "使用奖品掠夺者的连击效果造成10点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使用奖品掠夺者的连击效果造成30点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用奖品掠夺者的连击效果造成100点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -452,13 +452,13 @@
       "stages": [
         {
           "description": "触发20次大地崩陷。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "触发60次大地崩陷。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -475,7 +475,7 @@
       "stages": [
         {
           "description": "使用异变轮转一次变形14个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 14
         }
@@ -492,7 +492,7 @@
       "stages": [
         {
           "description": "在一回合中，用英雄攻击造成16点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 16
         }
@@ -509,19 +509,19 @@
       "stages": [
         {
           "description": "使用巨型图腾埃索尔强化10个图腾。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使用巨型图腾埃索尔强化30个图腾。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用巨型图腾埃索尔强化100个图腾。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -538,13 +538,13 @@
       "stages": [
         {
           "description": "使用吸血武器恢复60点生命值。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 60
         },
         {
           "description": "使用吸血武器恢复180点生命值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 180
         }
@@ -561,7 +561,7 @@
       "stages": [
         {
           "description": "使用大主教伊瑞尔恢复100点生命值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -578,7 +578,7 @@
       "stages": [
         {
           "description": "用古神在上造成致命伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -595,19 +595,19 @@
       "stages": [
         {
           "description": "使10个白银之手新兵获得圣盾。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使30个白银之手新兵获得圣盾。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使100个白银之手新兵获得圣盾。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -624,13 +624,13 @@
       "stages": [
         {
           "description": "用术士职业使用6张终极随从牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 6
         },
         {
           "description": "用术士职业使用18张终极随从牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 18
         }
@@ -647,7 +647,7 @@
       "stages": [
         {
           "description": "消耗1点法力值使用暗月兔子。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 1
         }
@@ -664,7 +664,7 @@
       "stages": [
         {
           "description": "使用免票入场抽两张恶魔牌，并使两张牌的法力值消耗减为（0）点。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -681,19 +681,19 @@
       "stages": [
         {
           "description": "使用连环灾难消灭5个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 5
         },
         {
           "description": "使用连环灾难消灭15个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 15
         },
         {
           "description": "使用连环灾难消灭50个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -710,13 +710,13 @@
       "stages": [
         {
           "description": "施放伊利达雷研习10次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "施放伊利达雷研习30次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -733,7 +733,7 @@
       "stages": [
         {
           "description": "在一个回合中，使用投掷利刃消灭5个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
@@ -750,7 +750,7 @@
       "stages": [
         {
           "description": "在你的回合结束时，拥有一个攻击力大于或等于10点的获救的流民。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -767,19 +767,19 @@
       "stages": [
         {
           "description": "使用伊格诺斯的效果造成10点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使用伊格诺斯的效果造成30点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用伊格诺斯的效果造成100点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -796,13 +796,13 @@
       "stages": [
         {
           "description": "当你拥有护甲值时，用你的英雄攻击10次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "当你拥有护甲值时，用你的英雄攻击30次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -819,7 +819,7 @@
       "stages": [
         {
           "description": "使用一张雷区挑战消灭5个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
@@ -836,7 +836,7 @@
       "stages": [
         {
           "description": "使用一张法力值消耗为（0）的帐篷摧毁者。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -853,19 +853,19 @@
       "stages": [
         {
           "description": "触发5次精英牛头人酋长，金属之神的鼓点独奏。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 5
         },
         {
           "description": "触发15次精英牛头人酋长，金属之神的鼓点独奏。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 15
         },
         {
           "description": "触发50次精英牛头人酋长，金属之神的鼓点独奏。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -882,13 +882,13 @@
       "stages": [
         {
           "description": "月牙在受到伤害后依然存活，累计10次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "月牙在受到伤害后依然存活，累计30次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -905,13 +905,13 @@
       "stages": [
         {
           "description": "使用窜逃的黑翼龙消灭10个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使用窜逃的黑翼龙消灭30个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -928,7 +928,7 @@
       "stages": [
         {
           "description": "在对手拥有全部生命值的情况下使用克苏恩，破碎之劫消灭对手。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -945,7 +945,7 @@
       "stages": [
         {
           "description": "使用恩佐斯，深渊之神一次复活6个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 6
         }
@@ -962,7 +962,7 @@
       "stages": [
         {
           "description": "在你的回合结束时，拥有满场的狂欢小丑。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -979,13 +979,13 @@
       "stages": [
         {
           "description": "使用一张攻击力大于或等于7点的恐怖增生体。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 7
         },
         {
           "description": "使用一张攻击力大于或等于15点的恐怖增生体。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 15
         }
@@ -1002,25 +1002,25 @@
       "stages": [
         {
           "description": "使用15张已腐蚀的牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 15
         },
         {
           "description": "使用50张已腐蚀的牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用150张已腐蚀的牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 150
         },
         {
           "description": "使用500张已腐蚀的牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 500
         }
@@ -1037,25 +1037,25 @@
       "stages": [
         {
           "description": "使用一张法力值消耗为（0）的已腐蚀牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 0
         },
         {
           "description": "使用法力值消耗为（0）的已腐蚀牌10次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 0
         },
         {
           "description": "使用法力值消耗为（0）的已腐蚀牌30次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 0
         },
         {
           "description": "使用法力值消耗为（0）的已腐蚀牌100次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -1072,13 +1072,13 @@
       "stages": [
         {
           "description": "转动尤格-萨隆的命运之轮。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 0
         },
         {
           "description": "转动尤格-萨隆的命运之轮来赢得对战。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -1095,13 +1095,13 @@
       "stages": [
         {
           "description": "从尤格-萨隆的命运之轮中获得3种不同的结果。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 3
         },
         {
           "description": "从尤格-萨隆的命运之轮中获得所有种类的结果。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -1118,19 +1118,19 @@
       "stages": [
         {
           "description": "使用暗月兔子消灭5个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 5
         },
         {
           "description": "使用暗月兔子消灭10个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使用暗月兔子消灭25个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         }

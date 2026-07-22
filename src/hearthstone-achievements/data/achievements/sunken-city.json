@@ -24,7 +24,7 @@
       "stages": [
         {
           "description": "使用异端纳迦海德拉召唤75个法力值消耗大于或等于（5）点的随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 75
         }
@@ -43,19 +43,19 @@
       "stages": [
         {
           "description": "使用妙手园丁复原100个法力水晶。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用妙手园丁复原200个法力水晶。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 200
         },
         {
           "description": "使用妙手园丁复原300个法力水晶。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 300
         }
@@ -74,7 +74,7 @@
       "stages": [
         {
           "description": "使用一张具有10点攻击力的底层掠食鱼。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -93,13 +93,13 @@
       "stages": [
         {
           "description": "使用月光射线造成30点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用月光射线造成60点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -118,7 +118,7 @@
       "stages": [
         {
           "description": "在一局对战中使用机械鲨鱼造成20点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         }
@@ -137,7 +137,7 @@
       "stages": [
         {
           "description": "使用海床传送口，减少75张机械牌的法力值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 75
         }
@@ -156,19 +156,19 @@
       "stages": [
         {
           "description": "使用指挥官西瓦拉将10张法术牌置入你的手牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "使用指挥官西瓦拉将30张法术牌置入你的手牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用指挥官西瓦拉将60张法术牌置入你的手牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -187,13 +187,13 @@
       "stages": [
         {
           "description": "使用2种不同形态的纳兹夏尔女士。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 2
         },
         {
           "description": "使用火焰，冰霜和奥术形态的纳兹夏尔女士。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -212,7 +212,7 @@
       "stages": [
         {
           "description": "使用双弓积骇纳迦的效果，额外施放法术25次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         }
@@ -231,7 +231,7 @@
       "stages": [
         {
           "description": "在一局对战中召唤12个海卓拉顿之头。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 12
         }
@@ -250,19 +250,19 @@
       "stages": [
         {
           "description": "使用剧毒法术消灭15个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 15
         },
         {
           "description": "使用剧毒法术消灭30个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用剧毒法术消灭60个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -281,13 +281,13 @@
       "stages": [
         {
           "description": "使用K9-0型机械狗召唤25个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 9
         },
         {
           "description": "使用K9-0型机械狗召唤50个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 9
         }
@@ -306,7 +306,7 @@
       "stages": [
         {
           "description": "使用一个湍流旋涡消灭12个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 12
         }
@@ -325,7 +325,7 @@
       "stages": [
         {
           "description": "使用深海低语造成100点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -344,19 +344,19 @@
       "stages": [
         {
           "description": "使用黑水巨鳗恢复50点生命值。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用黑水巨鳗恢复100点生命值。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用黑水巨鳗恢复200点生命值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -375,13 +375,13 @@
       "stages": [
         {
           "description": "使用缴械元素使敌人的卡牌法力值消耗增加20点。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "使用缴械元素使敌人的卡牌法力值消耗增加40点。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         }
@@ -400,7 +400,7 @@
       "stages": [
         {
           "description": "用鱼排斗士消灭敌方英雄。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -419,7 +419,7 @@
       "stages": [
         {
           "description": "使用海盗将领钩牙劫掠对手的物资25次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         }
@@ -438,19 +438,19 @@
       "stages": [
         {
           "description": "使用垂钓时光抽20张你的套牌之外的牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "使用垂钓时光抽40张你的套牌之外的牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "使用垂钓时光抽60张你的套牌之外的牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -469,13 +469,13 @@
       "stages": [
         {
           "description": "使用头等大奖，将2张法力值消耗相同的卡牌置入你的手牌，完成1次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 2
         },
         {
           "description": "使用头等大奖，将2张法力值消耗相同的卡牌置入你的手牌，完成3次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 2
         }
@@ -494,7 +494,7 @@
       "stages": [
         {
           "description": "使100个随从获得生物荧光。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -513,7 +513,7 @@
       "stages": [
         {
           "description": "拥有艾萨拉之辉时，在一个回合中施放火焰，冰霜和自然法术。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -534,19 +534,19 @@
       "stages": [
         {
           "description": "使用食人鱼集群造成75点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 75
         },
         {
           "description": "使用食人鱼集群造成150点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 150
         },
         {
           "description": "使用食人鱼集群造成300点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 300
         }
@@ -565,13 +565,13 @@
       "stages": [
         {
           "description": "使用迷潮挖掘者召唤鱼人的20个2/2的复制。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "使用迷潮挖掘者召唤鱼人的40个2/2的复制。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         }
@@ -590,7 +590,7 @@
       "stages": [
         {
           "description": "在一回合中使用神圣寿司卷恢复20点生命值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         }
@@ -609,7 +609,7 @@
       "stages": [
         {
           "description": "使用一张雷达探测抽5张机械牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
@@ -628,19 +628,19 @@
       "stages": [
         {
           "description": "在25个随从身上触发克托里·光刃的效果。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "在50个随从身上触发克托里·光刃的效果。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "在75个随从身上触发克托里·光刃的效果。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 75
         }
@@ -659,13 +659,13 @@
       "stages": [
         {
           "description": "使用战争前线召唤50个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用战争前线召唤100个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -684,7 +684,7 @@
       "stages": [
         {
           "description": "永久消灭老巨鳍体内的75个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 75
         }
@@ -703,7 +703,7 @@
       "stages": [
         {
           "description": "使用术士，使用一张具有10点攻击力的鱼人牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -725,19 +725,19 @@
       "stages": [
         {
           "description": "使用深渊诅咒造成50点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用深渊诅咒造成150点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 150
         },
         {
           "description": "使用深渊诅咒造成450点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 450
         }
@@ -756,13 +756,13 @@
       "stages": [
         {
           "description": "使用献祭烧掉30张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         },
         {
           "description": "使用献祭烧掉15张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 15
         }
@@ -781,7 +781,7 @@
       "stages": [
         {
           "description": "在一局对战中使用赛思诺女士攻击8次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         }
@@ -800,7 +800,7 @@
       "stages": [
         {
           "description": "使用恶魔猎手，在一个回合中用你的英雄消灭2个随从，完成30次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 2
         }
@@ -819,19 +819,19 @@
       "stages": [
         {
           "description": "使用恶魔猎手，使用30张法力值消耗降为0的法术牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用恶魔猎手，使用60张法力值消耗降为0的法术牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 60
         },
         {
           "description": "使用恶魔猎手，使用100张法力值消耗降为0的法术牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -850,13 +850,13 @@
       "stages": [
         {
           "description": "使用一张损毁神像造成50点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用一张损毁神像造成70点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 70
         }
@@ -876,7 +876,7 @@
       "stages": [
         {
           "description": "为奈利，超巨蛇颈龙组建一支法力值消耗大于或等于（14）点的船员团队。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 14
         }
@@ -895,7 +895,7 @@
       "stages": [
         {
           "description": "使用一张火焰熔铸抽7张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -914,19 +914,19 @@
       "stages": [
         {
           "description": "使用50张辛艾萨莉之火创建的随从牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "使用100张辛艾萨莉之火创建的随从牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "使用200张辛艾萨莉之火创建的随从牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -945,13 +945,13 @@
       "stages": [
         {
           "description": "使用战士，使用5张其他职业的巨型随从牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 5
         },
         {
           "description": "使用战士，使用10张其他职业的巨型随从牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -968,19 +968,19 @@
       "stages": [
         {
           "description": "召唤100个纳迦。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "召唤200个纳迦。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 200
         },
         {
           "description": "召唤300个纳迦。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 300
         }
@@ -999,19 +999,19 @@
       "stages": [
         {
           "description": "使用掩息海星沉默30个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "使用掩息海星沉默60个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 60
         },
         {
           "description": "使用掩息海星沉默120个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 120
         }
@@ -1028,19 +1028,19 @@
       "stages": [
         {
           "description": "探底50次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "探底100次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "探底200次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -1057,13 +1057,13 @@
       "stages": [
         {
           "description": "使用25张沉没的牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "使用50张沉没的牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -1082,7 +1082,7 @@
       "stages": [
         {
           "description": "使用野蛮的女巫，使手牌中的一张法术牌法力值消耗降低7点。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -1101,13 +1101,13 @@
       "stages": [
         {
           "description": "使用海中向导芬利爵士，将3张手牌和你的套牌之外的牌交换。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 3
         },
         {
           "description": "使用海中向导芬利爵士，将7张手牌和你的套牌之外的牌交换。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -1129,7 +1129,7 @@
       "stages": [
         {
           "description": "使用潜水随从攻击60次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -1148,7 +1148,7 @@
       "stages": [
         {
           "description": "使用剑圣奥卡尼反制法力值消耗大于或等于（5）点的随从牌和法术牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
@@ -1165,19 +1165,19 @@
       "stages": [
         {
           "description": "使用你的巨型随从或其附属物消灭40个敌人。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "使用你的巨型随从或其附属物消灭75个敌人。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 75
         },
         {
           "description": "使用你的巨型随从或其附属物消灭150个敌人。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 150
         }
@@ -1196,7 +1196,7 @@
       "stages": [
         {
           "description": "教会纳迦小学生16种不同的法术。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 16
         }
@@ -1215,7 +1215,7 @@
       "stages": [
         {
           "description": "使用海军水雷造成120点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 120
         }
@@ -1234,7 +1234,7 @@
       "stages": [
         {
           "description": "使用深海融合怪发现10个不同随从类型的随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -1253,7 +1253,7 @@
       "stages": [
         {
           "description": "使用全部4种艾萨拉女王的远古圣物。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 4
         }
@@ -1272,13 +1272,13 @@
       "stages": [
         {
           "description": "使用厄祖玛特的亡语一次消灭3个敌人。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 3
         },
         {
           "description": "使用厄祖玛特的亡语一次消灭6个敌人。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 6
         }
@@ -1300,13 +1300,13 @@
       "stages": [
         {
           "description": "触发25种纳迦使徒的战吼效果。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "触发50种纳迦使徒的战吼效果。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -1325,7 +1325,7 @@
       "stages": [
         {
           "description": "使用宝藏守卫抽30张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -1344,7 +1344,7 @@
       "stages": [
         {
           "description": "使用巫婆纳迦造成90点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 90
         }
@@ -1363,7 +1363,7 @@
       "stages": [
         {
           "description": "在你的回合结束时，拥有一个攻击力大于或等于7点的凶恶的滑矛纳迦。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -1382,7 +1382,7 @@
       "stages": [
         {
           "description": "用积雷母舰召唤75个机械。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 75
         }

@@ -2,7 +2,7 @@
   "id": "legend-festival",
   "name": "传奇音乐节",
   "description": "传奇音乐节成就数据（来自 ifindhs wiki）",
-  "updatedAt": "2026-07-20",
+  "updatedAt": "2026-07-22",
   "cardImageDir": "legend-festival",
   "referenceLinks": [
     {
@@ -24,7 +24,7 @@
       "stages": [
         {
           "description": "用一把实木手鼓召唤7棵古树。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -44,19 +44,19 @@
       "stages": [
         {
           "description": "触发自由之魂或潮流猎豹的效果100次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "触发自由之魂或潮流猎豹的效果200次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 200
         },
         {
           "description": "触发自由之魂或潮流猎豹的效果300次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 300
         }
@@ -75,7 +75,7 @@
       "stages": [
         {
           "description": "用沉静的吹笛人抽取或发现16张不同的野兽牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 16
         }
@@ -94,7 +94,7 @@
       "stages": [
         {
           "description": "用一把星界键盘召唤总计属性值大于或等于20/20的元素。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         }
@@ -113,7 +113,7 @@
       "stages": [
         {
           "description": "在一局对战中施放6次巅峰无限。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 6
         }
@@ -132,19 +132,19 @@
       "stages": [
         {
           "description": "用灯光表演发射100道灯光。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "用灯光表演发射200道灯光。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 200
         },
         {
           "description": "用灯光表演发射300道灯光。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 300
         }
@@ -163,7 +163,7 @@
       "stages": [
         {
           "description": "用丛林弹唱琴召唤一只法力值消耗为10的野兽。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -183,7 +183,7 @@
       "stages": [
         {
           "description": "把串上的香蕉喂给桶里的猴子，完成60次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -202,19 +202,19 @@
       "stages": [
         {
           "description": "用一张荆棘谷之心复活价值30点法力值的野兽。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "用一张荆棘谷之心复活价值40点法力值的野兽。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "用一张荆棘谷之心复活价值50点法力值的野兽。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -233,7 +233,7 @@
       "stages": [
         {
           "description": "让一场真爱永恒持续8个回合。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         }
@@ -252,7 +252,7 @@
       "stages": [
         {
           "description": "用粉丝俱乐部恢复150点生命值。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 150
         }
@@ -271,19 +271,19 @@
       "stages": [
         {
           "description": "用粉丝互动消灭20个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "用粉丝互动消灭40个随从。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "用粉丝互动消灭60个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -302,7 +302,7 @@
       "stages": [
         {
           "description": "用串烧磁带发现20张传说卡牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         }
@@ -321,7 +321,7 @@
       "stages": [
         {
           "description": "用你自己的麦克风消灭持有MC布林顿的麦克风的对手。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -340,19 +340,19 @@
       "stages": [
         {
           "description": "用B-Box拳手消灭15个敌人。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 15
         },
         {
           "description": "用B-Box拳手消灭30个敌人。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "用B-Box拳手消灭60个敌人。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -371,7 +371,7 @@
       "stages": [
         {
           "description": "连续在5个回合中均使用萨克斯独演者。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
@@ -390,7 +390,7 @@
       "stages": [
         {
           "description": "用一张聚集观众召唤3个传说随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 3
         }
@@ -409,19 +409,19 @@
       "stages": [
         {
           "description": "施放20个音乐狂欢创建的法术。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "施放40个音乐狂欢创建的法术。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "施放60个音乐狂欢创建的法术。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -440,7 +440,7 @@
       "stages": [
         {
           "description": "用迪斯科战槌使随从获得+80/+80。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 80
         }
@@ -459,7 +459,7 @@
       "stages": [
         {
           "description": "用领舞召唤一个攻击力大于或等于8点的随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         }
@@ -478,19 +478,19 @@
       "stages": [
         {
           "description": "用星光节律使你的英雄获得圣盾25次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "用星光节律使你的英雄获得圣盾50次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "用星光节律使你的英雄获得圣盾100次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -509,7 +509,7 @@
       "stages": [
         {
           "description": "在一局对战中演奏罪孽交响曲的全部7个乐章。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -528,7 +528,7 @@
       "stages": [
         {
           "description": "用绝望哀歌召唤价值150点法力值的恶魔。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 150
         }
@@ -547,19 +547,19 @@
       "stages": [
         {
           "description": "用邪弦竖琴防止50点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "用邪弦竖琴防止100点伤害。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "用邪弦竖琴防止200点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -578,7 +578,7 @@
       "stages": [
         {
           "description": "施放各项数据均在7点或以上的通灵最强音。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 7
         }
@@ -597,7 +597,7 @@
       "stages": [
         {
           "description": "用奥金利斧召唤一个10/10或更大的亡灵。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -616,19 +616,19 @@
       "stages": [
         {
           "description": "用死亡嘶吼使30个随从获得亡语。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 30
         },
         {
           "description": "用死亡嘶吼使60个随从获得亡语。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 60
         },
         {
           "description": "用死亡嘶吼使90个随从获得亡语。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 90
         }
@@ -647,7 +647,7 @@
       "stages": [
         {
           "description": "用一把战刃吉他抽8张或以上的牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         }
@@ -666,7 +666,7 @@
       "stages": [
         {
           "description": "使用一张10/10或更大的蛇啮鼓手。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         }
@@ -685,19 +685,19 @@
       "stages": [
         {
           "description": "用乐器杀手装备10把武器。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 10
         },
         {
           "description": "用乐器杀手装备20把武器。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 20
         },
         {
           "description": "用乐器杀手装备30把武器。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -716,7 +716,7 @@
       "stages": [
         {
           "description": "使用20张黑石摇滚强化过的法力值消耗（8）点或以上的随从牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         }
@@ -737,7 +737,7 @@
       "stages": [
         {
           "description": "在一局对战中演奏6次压轴乐句。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 6
         }
@@ -756,19 +756,19 @@
       "stages": [
         {
           "description": "用一张掌声雷动抽4张或以上的牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 4
         },
         {
           "description": "用一张掌声雷动抽5张或以上的牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 5
         },
         {
           "description": "用一张掌声雷动抽6张或以上的牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 6
         }
@@ -787,16 +787,20 @@
       "stages": [
         {
           "description": "在一局对战中用踏韵舞者丽萨消灭3个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 3
         },
         {
           "description": "在一局对战中用踏韵舞者丽萨消灭5个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
+      ],
+      "dualClasses": [
+        "恶魔猎手",
+        "潜行者"
       ]
     },
     {
@@ -812,16 +816,20 @@
       "stages": [
         {
           "description": "用一张星辰能量消灭3个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 3
         },
         {
           "description": "用一张星辰能量消灭5个随从。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 5
         }
+      ],
+      "dualClasses": [
+        "猎人",
+        "法师"
       ]
     },
     {
@@ -837,16 +845,20 @@
       "stages": [
         {
           "description": "用点唱机图腾召唤50个白银之手新兵。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         },
         {
           "description": "用点唱机图腾召唤100个白银之手新兵。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
+      ],
+      "dualClasses": [
+        "圣骑士",
+        "萨满祭司"
       ]
     },
     {
@@ -862,16 +874,20 @@
       "stages": [
         {
           "description": "施放突破邪火40次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 40
         },
         {
           "description": "施放突破邪火80次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 80
         }
+      ],
+      "dualClasses": [
+        "恶魔猎手",
+        "战士"
       ]
     },
     {
@@ -887,16 +903,20 @@
       "stages": [
         {
           "description": "用镂骨恶犬造成60点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         },
         {
           "description": "用镂骨恶犬造成120点伤害。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 120
         }
+      ],
+      "dualClasses": [
+        "死亡骑士",
+        "猎人"
       ]
     },
     {
@@ -912,16 +932,20 @@
       "stages": [
         {
           "description": "用漏斗蛋糕复原50个法力水晶。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         },
         {
           "description": "用漏斗蛋糕复原100个法力水晶。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
+      ],
+      "dualClasses": [
+        "德鲁伊",
+        "牧师"
       ]
     },
     {
@@ -937,16 +961,20 @@
       "stages": [
         {
           "description": "使用30张盗版海盗创建的卡牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         },
         {
           "description": "使用60张盗版海盗创建的卡牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
+      ],
+      "dualClasses": [
+        "牧师",
+        "潜行者"
       ]
     },
     {
@@ -962,16 +990,20 @@
       "stages": [
         {
           "description": "敌人攻击友方后台保镖30次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         },
         {
           "description": "敌人攻击友方后台保镖60次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
+      ],
+      "dualClasses": [
+        "战士",
+        "萨满祭司"
       ]
     },
     {
@@ -987,16 +1019,20 @@
       "stages": [
         {
           "description": "使用25张燃琴小鬼创建的其他职业的卡牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 25
         },
         {
           "description": "使用50张燃琴小鬼创建的其他职业的卡牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
+      ],
+      "dualClasses": [
+        "法师",
+        "术士"
       ]
     },
     {
@@ -1012,16 +1048,20 @@
       "stages": [
         {
           "description": "用末日枭兽带走你对手的10个法力水晶。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 10
         },
         {
           "description": "用末日枭兽带走你对手的20个法力水晶。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 20
         }
+      ],
+      "dualClasses": [
+        "德鲁伊",
+        "术士"
       ]
     },
     {
@@ -1037,16 +1077,20 @@
       "stages": [
         {
           "description": "召唤50个酷炫的食尸鬼。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         },
         {
           "description": "召唤100个酷炫的食尸鬼。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
+      ],
+      "dualClasses": [
+        "死亡骑士",
+        "圣骑士"
       ]
     },
     {
@@ -1060,19 +1104,19 @@
       "stages": [
         {
           "description": "触发50次压轴效果。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "触发100次压轴效果。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 100
         },
         {
           "description": "触发200次压轴效果。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 200
         }
@@ -1091,19 +1135,19 @@
       "stages": [
         {
           "description": "盗版之王托尼在场时抽25张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "盗版之王托尼在场时抽50张牌。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "盗版之王托尼在场时抽75张牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 75
         }
@@ -1122,19 +1166,19 @@
       "stages": [
         {
           "description": "用摇滚缝合怪攻击40次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "用摇滚缝合怪攻击80次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 80
         },
         {
           "description": "用摇滚缝合怪攻击120次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 120
         }
@@ -1153,13 +1197,13 @@
       "stages": [
         {
           "description": "在你和你的对手之间传递人潮冲浪者的亡语40次。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 40
         },
         {
           "description": "在你和你的对手之间传递人潮冲浪者的亡语80次。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 80
         }
@@ -1178,7 +1222,7 @@
       "stages": [
         {
           "description": "打破30个狼人场务的乐器箱。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 30
         }
@@ -1203,13 +1247,13 @@
       "stages": [
         {
           "description": "触发70种独演者的战吼效果。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 70
         },
         {
           "description": "触发140种独演者的战吼效果。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 140
         }
@@ -1228,7 +1272,7 @@
       "stages": [
         {
           "description": "用自由飞鸟消灭敌方英雄。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -1247,7 +1291,7 @@
       "stages": [
         {
           "description": "用幽灵写手发现60张法术牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 60
         }
@@ -1266,19 +1310,19 @@
       "stages": [
         {
           "description": "施放25个烟火技师创建的火焰法术。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 25
         },
         {
           "description": "施放50个烟火技师创建的火焰法术。",
-          "xpReward": 10,
+          "xpReward": 0,
           "points": 10,
           "quota": 50
         },
         {
           "description": "施放100个烟火技师创建的火焰法术。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 100
         }
@@ -1302,7 +1346,7 @@
       "stages": [
         {
           "description": "施放50个悦耳法术。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -1325,7 +1369,7 @@
       "stages": [
         {
           "description": "施放50个刺耳法术。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 50
         }
@@ -1344,7 +1388,7 @@
       "stages": [
         {
           "description": "从乐队经理精英牛头人酋长的乐队中发现16张不同的卡牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 16
         }
@@ -1364,7 +1408,7 @@
       "stages": [
         {
           "description": "用一张融合独奏团获得所有8种效果。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         }
@@ -1383,13 +1427,13 @@
       "stages": [
         {
           "description": "在精英牛头人歌王的摇滚对决中获胜。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         },
         {
           "description": "在精英牛头人歌王的摇滚对决中获胜并以此消灭敌方英雄。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 0
         }
@@ -1411,13 +1455,13 @@
       "stages": [
         {
           "description": "使用8个不同版本的混搭牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 8
         },
         {
           "description": "使用16个不同版本的混搭牌。",
-          "xpReward": 20,
+          "xpReward": 0,
           "points": 20,
           "quota": 16
         }

@@ -22,7 +22,7 @@
       "stages": [
         {
           "description": "在连续8个回合结束时处于恶魔变形状态。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 8
         }
@@ -39,7 +39,7 @@
       "stages": [
         {
           "description": "用一张真菌宝藏抽到（且不能弃掉）3张不是法术的牌。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 3
         }
@@ -56,7 +56,7 @@
       "stages": [
         {
           "description": "用拾荒者的智慧抽到一张裂蹄牛。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 0
         }
@@ -73,7 +73,7 @@
       "stages": [
         {
           "description": "用被禁锢的眼魔消灭其入场时看到的所有敌方随从。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 0
         }
@@ -90,7 +90,7 @@
       "stages": [
         {
           "description": "对同一个随从施放10张智慧圣契。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 10
         }
@@ -107,7 +107,7 @@
       "stages": [
         {
           "description": "在一回合中施放6次复苏。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 6
         }
@@ -124,7 +124,7 @@
       "stages": [
         {
           "description": "用一个终极阿卡玛攻击3次。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 3
         }
@@ -141,7 +141,7 @@
       "stages": [
         {
           "description": "用图腾映像召唤一个20点攻击力的图腾。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 20
         }
@@ -158,7 +158,7 @@
       "stages": [
         {
           "description": "使用术士，在第5回合之前就在一回合中消耗8点法力值。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 5
         }
@@ -175,7 +175,7 @@
       "stages": [
         {
           "description": "使战槌挑战者在与剧毒随从的战斗中存活下来。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 0
         }
@@ -192,7 +192,7 @@
       "stages": [
         {
           "description": "对一个莫尔葛工匠造成刚好1024点伤害。",
-          "xpReward": 100,
+          "xpReward": 0,
           "points": 100,
           "quota": 1024
         }
