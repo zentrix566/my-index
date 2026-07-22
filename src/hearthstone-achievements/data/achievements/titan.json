@@ -66,7 +66,7 @@
       "id": "titan-003",
       "name": "顶级致敬",
       "heroClass": "德鲁伊",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
         "自然守护者弗蕾亚"
@@ -110,7 +110,7 @@
       "id": "titan-005",
       "name": "生无可链",
       "heroClass": "法师",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
         "破链角斗士"
@@ -204,7 +204,7 @@
       "id": "titan-009",
       "name": "嚯，霍迪尔",
       "heroClass": "猎人",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
         "巨人之父霍迪尔"
@@ -217,13 +217,14 @@
           "points": 20,
           "quota": 50
         }
-      ]
+      ],
+      "metric": "count"
     },
     {
       "id": "titan-010",
       "name": "神化神话",
       "heroClass": "猎人",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
         "神话观测者"
@@ -273,7 +274,7 @@
       "id": "titan-012",
       "name": "奇美拉时代",
       "heroClass": "猎人",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "扭曲的霜翼龙"
@@ -317,7 +318,7 @@
       "id": "titan-014",
       "name": "百变星君",
       "heroClass": "牧师",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
         "星辰排列"
@@ -650,7 +651,7 @@
       "id": "titan-028",
       "name": "力量试炼",
       "heroClass": "圣骑士",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "守护者的力量"
@@ -769,7 +770,7 @@
       "id": "titan-033",
       "name": "我真的符了",
       "heroClass": "死亡骑士",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
         "兵主"
@@ -885,7 +886,7 @@
       "id": "titan-038",
       "name": "邪月狼嚎",
       "heroClass": "恶魔猎手",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
         "神秘恐魔"
@@ -935,7 +936,7 @@
       "id": "titan-040",
       "name": "心灵体操",
       "heroClass": "恶魔猎手",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "摧心魔"
@@ -979,7 +980,7 @@
       "id": "titan-042",
       "name": "信任崩塌",
       "heroClass": "战士",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
         "火焰试炼"
@@ -1169,7 +1170,7 @@
       "id": "titan-049",
       "name": "……巨人自有答案",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
         "霍迪尔之子"
@@ -1213,7 +1214,7 @@
       "id": "titan-051",
       "name": "通讯不稳",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
         "星空投影师"
@@ -1282,7 +1283,7 @@
       "id": "titan-054",
       "name": "时光迷航",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
         "迷时始祖幼龙"
@@ -1301,7 +1302,7 @@
       "id": "titan-055",
       "name": "最初的图腾",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
         "远古图腾"
@@ -1358,7 +1359,7 @@
       "id": "titan-058",
       "name": "缠乱触须",
       "heroClass": "中立",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "混乱触须"

@@ -1030,7 +1030,7 @@
       "id": "darkmoon-048",
       "name": "免费游戏",
       "heroClass": "中立",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],

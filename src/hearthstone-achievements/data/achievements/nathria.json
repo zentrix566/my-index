@@ -279,7 +279,7 @@
       "id": "nathria-012",
       "name": "藐视公堂",
       "heroClass": "猎人",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "否决动议"

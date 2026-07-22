@@ -460,7 +460,7 @@
       "id": "alterac-020",
       "name": "！",
       "heroClass": "潜行者",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "军情七处走私贩"
