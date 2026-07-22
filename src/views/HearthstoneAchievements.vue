@@ -242,36 +242,10 @@
           <button type="button" @click="reloadProgress">重试</button>
         </div>
 
-        <!-- 待完成清单：说明（两行、数字高亮），位于筛选栏上方 -->
+        <!-- 待完成清单：说明（两行、数字高亮），置于顶部；筛选栏移至底部内容之后 -->
         <div class="hs-stats-panel hs-sprint-stats" v-if="myGroupBy === 'sprint'">
           <p class="hs-overview-summary-text" v-html="overviewSummaryHtml.line1"></p>
           <p class="hs-overview-summary-text" v-html="overviewSummaryHtml.line2"></p>
-        </div>
-
-        <!-- 待完成清单：版本-职业-指标筛选 -->
-        <div v-if="viewMode === 'my' && myGroupBy === 'sprint'" class="hs-sprint-toolbar">
-          <div class="hs-sprint-filters">
-            <label class="hs-filter-field">
-              <span class="hs-filter-label">版本</span>
-              <select v-model="sprintVersionFilter" class="hs-filter-select">
-                <option value="all">全部版本</option>
-                <option v-for="v in versionOptions" :key="v.id" :value="v.id">{{ v.name }}</option>
-              </select>
-            </label>
-            <label class="hs-filter-field">
-              <span class="hs-filter-label">职业</span>
-              <select v-model="sprintClassFilter" class="hs-filter-select">
-                <option value="all">全部职业</option>
-                <option v-for="c in allClasses" :key="c" :value="c">{{ c }}</option>
-              </select>
-            </label>
-            <label class="hs-filter-field">
-              <span class="hs-filter-label">指标</span>
-              <select v-model="sprintMetricFilter" class="hs-filter-select">
-                <option v-for="m in sprintMetricOptions" :key="m.value" :value="m.value">{{ m.label }}</option>
-              </select>
-            </label>
-          </div>
         </div>
 
         <!-- 待完成清单：导出 / 批量完成，置于剩余统计下方 -->
@@ -569,6 +543,32 @@
         <p v-if="!sprintAllList.length" class="hs-sprint-empty">
           当前筛选范围内没有未完成的成就。
         </p>
+      </div>
+
+      <!-- 待完成清单：版本-职业-指标筛选（置于底部内容之后，先浏览清单再筛选） -->
+      <div v-if="viewMode === 'my' && myGroupBy === 'sprint'" class="hs-sprint-toolbar hs-sprint-toolbar-bottom">
+        <div class="hs-sprint-filters">
+          <label class="hs-filter-field">
+            <span class="hs-filter-label">版本</span>
+            <select v-model="sprintVersionFilter" class="hs-filter-select">
+              <option value="all">全部版本</option>
+              <option v-for="v in versionOptions" :key="v.id" :value="v.id">{{ v.name }}</option>
+            </select>
+          </label>
+          <label class="hs-filter-field">
+            <span class="hs-filter-label">职业</span>
+            <select v-model="sprintClassFilter" class="hs-filter-select">
+              <option value="all">全部职业</option>
+              <option v-for="c in allClasses" :key="c" :value="c">{{ c }}</option>
+            </select>
+          </label>
+          <label class="hs-filter-field">
+            <span class="hs-filter-label">指标</span>
+            <select v-model="sprintMetricFilter" class="hs-filter-select">
+              <option v-for="m in sprintMetricOptions" :key="m.value" :value="m.value">{{ m.label }}</option>
+            </select>
+          </label>
+        </div>
       </div>
 
       <div v-if="showEmpty && !(viewMode === 'my' && myGroupBy === 'sprint')" class="hs-empty-state">

@@ -2065,6 +2065,13 @@ a.content-card:hover {
   margin-top: 4px;
 }
 
+/* 待完成清单：筛选栏移至底部时，作为独立的底部控制区与上方清单分隔 */
+.hs-sprint-toolbar-bottom {
+  margin-top: 22px;
+  padding-top: 16px;
+  border-top: 1px solid rgba(107, 91, 79, 0.14);
+}
+
 .hs-sprint-remaining-summary {
   margin-top: 10px;
   padding: 10px 14px;
