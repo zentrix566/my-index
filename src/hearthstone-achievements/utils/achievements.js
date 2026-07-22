@@ -73,34 +73,36 @@ export function groupByClass(achievements) {
   return groups;
 }
 
-// 游戏内职业展示顺序（贫瘠之地及多数版本采用）：圣骑士、德鲁伊、恶魔猎手、战士、术士、法师、潜行者、牧师、猎人、萨满祭司、中立
-// 用户指定顺序（简称已展开为全称：圣骑→圣骑士、盗贼→潜行者、萨满→萨满祭司）
+// 游戏内职业展示顺序（多版本采用）。用户指定顺序，简称已展开为全称：圣骑→圣骑士、盗贼→潜行者、萨满→萨满祭司。
+// 泰坦诸神 / 传奇音乐节 / 巫妖王：死亡骑士排在术士之后、法师之前（游戏内顺序）。
+const GAME_CLASS_ORDER_WITH_DK = ["圣骑士", "德鲁伊", "恶魔猎手", "战士", "术士", "死亡骑士", "法师", "潜行者", "牧师", "猎人", "萨满祭司", "中立"];
+// 其余采用游戏内顺序但死亡骑士置于中立之前的版本（纳斯利亚堡 / 沉没之城 / 奥特兰克 / 暴风城 / 贫瘠之地 等无死亡骑士成就，兜底置末不渲染）。
 const GAME_CLASS_ORDER = ["圣骑士", "德鲁伊", "恶魔猎手", "战士", "术士", "法师", "潜行者", "牧师", "猎人", "萨满祭司", "中立"];
 
-// 部分版本在游戏内的职业展示顺序与全局标准顺序不同，单独覆盖（键为版本 id）。
-// 暗月马戏团等未列出的版本沿用全局标准顺序。
+// 各版本按职业浏览 / 我的-按职业视图的职业展示顺序覆盖表（键为版本 id）。
+// 未列出的版本（含暗月马戏团）沿用全局标准顺序 classOrderList。
 const EXPANSION_CLASS_ORDER = {
-  barrens: GAME_CLASS_ORDER,            // 贫瘠之地
-  stormwind: GAME_CLASS_ORDER,         // 暴风城
-  alterac: GAME_CLASS_ORDER,           // 奥特兰克
-  "sunken-city": GAME_CLASS_ORDER,     // 沉没之城
-  nathria: GAME_CLASS_ORDER,           // 纳斯利亚堡
-  "lich-king": GAME_CLASS_ORDER,       // 巫妖王
-  titan: GAME_CLASS_ORDER,             // 泰坦诸神
-  "legend-festival": GAME_CLASS_ORDER, // 传奇音乐节
-  badlands: GAME_CLASS_ORDER,          // 荒芜之地
-  whizbang: GAME_CLASS_ORDER,          // 威兹班
-  "violet-hold": GAME_CLASS_ORDER,     // 紫罗兰监狱
-  cataclysm: GAME_CLASS_ORDER,         // 大地的裂变
-  "caverns-of-time": GAME_CLASS_ORDER, // 穿越时间流
-  ungoro: GAME_CLASS_ORDER,            // 安戈洛龟途
-  "emerald-dream": GAME_CLASS_ORDER,   // 翡翠梦境
-  deepdark: GAME_CLASS_ORDER,          // 深暗领域
-  "perils-in-paradise": GAME_CLASS_ORDER, // 胜地历险记
+  // 死亡骑士在术士之后、法师之前
+  titan: GAME_CLASS_ORDER_WITH_DK,            // 泰坦诸神
+  "legend-festival": GAME_CLASS_ORDER_WITH_DK, // 传奇音乐节
+  "lich-king": GAME_CLASS_ORDER_WITH_DK,       // 巫妖王
+  // 无死亡骑士分组
+  nathria: GAME_CLASS_ORDER,                   // 纳斯利亚堡
+  "sunken-city": GAME_CLASS_ORDER,             // 沉没之城
+  alterac: GAME_CLASS_ORDER,                   // 奥特兰克
+  stormwind: GAME_CLASS_ORDER,                 // 暴风城
+  barrens: GAME_CLASS_ORDER,                   // 贫瘠之地
+  // 其余版本沿用通用游戏内顺序（死亡骑士兜底在中立之前）
+  badlands: GAME_CLASS_ORDER,                  // 荒芜之地
+  whizbang: GAME_CLASS_ORDER,                  // 威兹班
+  "violet-hold": GAME_CLASS_ORDER,             // 紫罗兰监狱
+  cataclysm: GAME_CLASS_ORDER,                 // 大地的裂变
+  "caverns-of-time": GAME_CLASS_ORDER,         // 穿越时间流
+  ungoro: GAME_CLASS_ORDER,                    // 安戈洛龟途
+  "emerald-dream": GAME_CLASS_ORDER,           // 翡翠梦境
+  deepdark: GAME_CLASS_ORDER,                  // 深暗领域
+  "perils-in-paradise": GAME_CLASS_ORDER,      // 胜地历险记
 };
-
-// 覆盖表只列了基础 11 职业 + 中立；死亡骑士在游戏内排在中立之前，
-// 含死亡骑士的版本将其补插到中立前，避免对应分组在按职业视图中丢失（不影响无此职业的版本）。
 
 /**
  * 获取职业排序列表
@@ -109,8 +111,10 @@ const EXPANSION_CLASS_ORDER = {
  */
 export function getClassOrder(expansionId) {
   if (expansionId && EXPANSION_CLASS_ORDER[expansionId]) {
-    const base = EXPANSION_CLASS_ORDER[expansionId]; // [基础 11 职业..., 中立]
+    const base = EXPANSION_CLASS_ORDER[expansionId]; // [基础职业..., 中立]，可能已含死亡骑士
     if (base.includes("死亡骑士")) return base;
+    // 覆盖表只列了基础职业 + 中立；死亡骑士在游戏内排在中立之前，
+    // 含死亡骑士的版本将其补插到中立前，避免对应分组在按职业视图中丢失（不影响无此职业的版本）。
     const idx = base.indexOf("中立");
     const order =
       idx >= 0
