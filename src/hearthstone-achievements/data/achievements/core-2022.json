@@ -107,7 +107,7 @@
       "id": "core-2022-005",
       "name": "哦，克罗雷先生",
       "heroClass": "战士",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],
@@ -199,7 +199,7 @@
       "id": "core-2022-009",
       "name": "弃牌？不了，谢谢",
       "heroClass": "术士",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],
@@ -222,7 +222,7 @@
       "id": "core-2022-010",
       "name": "全职高手",
       "heroClass": "潜行者",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],
@@ -231,7 +231,7 @@
           "description": "使用一张苔丝·格雷迈恩，重新使用4个不同职业的牌。",
           "xpReward": 0,
           "points": 10,
-          "quota": 4
+          "quota": 6
         },
         {
           "description": "使用一张苔丝·格雷迈恩，重新使用9个不同职业的牌。",
@@ -245,7 +245,9 @@
       "id": "core-2022-011",
       "name": "你为什么打自己？",
       "heroClass": "死亡骑士",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "points",
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],

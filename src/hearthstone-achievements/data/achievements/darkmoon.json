@@ -1088,7 +1088,7 @@
       "id": "darkmoon-050",
       "name": "灾难之轮",
       "heroClass": "中立",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],

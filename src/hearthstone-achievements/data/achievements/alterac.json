@@ -34,7 +34,9 @@
       "id": "alterac-002",
       "name": "抉择？全选！",
       "heroClass": "德鲁伊",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "开路者"
@@ -295,7 +297,9 @@
       "id": "alterac-013",
       "name": "救赎大军",
       "heroClass": "牧师",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "超脱"
@@ -314,7 +318,9 @@
       "id": "alterac-014",
       "name": "祝福你！",
       "heroClass": "牧师",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
         "祝福"
@@ -364,7 +370,7 @@
       "id": "alterac-016",
       "name": "未来耀眼，戴好墨镜",
       "heroClass": "牧师",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "米达",
@@ -390,7 +396,9 @@
       "id": "alterac-017",
       "name": "奥特兰克十大叛徒",
       "heroClass": "潜行者",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "双面间谍"
@@ -504,7 +512,9 @@
       "id": "alterac-022",
       "name": "元素雄起",
       "heroClass": "萨满祭司",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "元素使者布鲁坎"
@@ -552,7 +562,7 @@
       "id": "alterac-024",
       "name": "快跑呀，小姑娘",
       "heroClass": "萨满祭司",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "别站在火里！"
@@ -596,7 +606,9 @@
       "id": "alterac-026",
       "name": "大胆铜行",
       "heroClass": "圣骑士",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
         "亮铜之翼"
@@ -647,6 +659,8 @@
       "name": "至尊之戒",
       "heroClass": "圣骑士",
       "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "勇气之戒"
@@ -657,13 +671,13 @@
           "description": "使用勇气之戒使随从获得+1/+1，25次。",
           "xpReward": 0,
           "points": 10,
-          "quota": 1
+          "quota": 25
         },
         {
           "description": "使用勇气之戒使随从获得+1/+1，75次。",
           "xpReward": 0,
           "points": 20,
-          "quota": 1
+          "quota": 75
         }
       ]
     },
@@ -690,7 +704,9 @@
       "id": "alterac-030",
       "name": "不努力就去死",
       "heroClass": "术士",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "被亵渎的墓园"
@@ -880,7 +896,9 @@
       "id": "alterac-038",
       "name": "德雷克大叔需要你！",
       "heroClass": "战士",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
         "奔赴前线"
@@ -1224,7 +1242,7 @@
       "id": "alterac-046",
       "name": "团队杀戮",
       "heroClass": "中立",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "话痨奥术师"
@@ -1249,7 +1267,9 @@
       "id": "alterac-047",
       "name": "不要斯尼维尔",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "狗头人监工"
@@ -1293,7 +1313,9 @@
       "id": "alterac-049",
       "name": "大鸟",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "巨型猫头鹰"
@@ -1381,7 +1403,9 @@
       "id": "alterac-053",
       "name": "伏兵乐园",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "伏兵"
@@ -1465,7 +1489,7 @@
       "id": "alterac-057",
       "name": "暗金遗珍",
       "heroClass": "中立",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "卡扎库杉"
@@ -1527,7 +1551,9 @@
       "id": "alterac-060",
       "name": "振翅小鸟",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "狂乱角鹰兽"
@@ -1546,7 +1572,9 @@
       "id": "alterac-061",
       "name": "冰霜来啦",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "洛克霍拉的使者"
@@ -1565,7 +1593,9 @@
       "id": "alterac-062",
       "name": "一元猛将",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "雷矛元帅"
@@ -1584,7 +1614,9 @@
       "id": "alterac-063",
       "name": "雪盲战吼忙",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "雪盲鹰身人"
@@ -1603,7 +1635,9 @@
       "id": "alterac-064",
       "name": "节约标兵",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
         "霜狼将领"
@@ -1622,7 +1656,9 @@
       "id": "alterac-065",
       "name": "玛丽有只小羊羔",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "群羊指挥官"

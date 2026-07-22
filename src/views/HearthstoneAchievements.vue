@@ -1423,8 +1423,8 @@ const filterAchievements = (list) => {
 
 const filteredAchievements = computed(() => filterAchievements(displayAchievements.value))
 
-	// 按职业分组（按版本浏览 / 我的-按版本）
-const filteredByClass = computed(() => groupByClass(filteredAchievements.value))
+	// 按职业分组（按版本浏览 / 我的-按版本）：核心系列强制归入「中立」
+const filteredByClass = computed(() => groupByClass(filteredAchievements.value, { forceNeutralForCore: true }))
 
 // 我的成就-按职业分组：未完成排前面
 const myFilteredByClass = computed(() => {

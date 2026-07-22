@@ -107,7 +107,7 @@
       "id": "core-2021-005",
       "name": "上手，使用，损坏，维修",
       "heroClass": "战士",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],
