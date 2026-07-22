@@ -44,9 +44,11 @@ const classOrderList = [
 ];
 
 /**
- * 将成就按职业分组
- * 双职业成就若含 dualClasses 字段，则拆分到对应职业（双职业组不再出现）；
- * 若仅 heroClass="双职业" 但无 dualClasses（如新增版本未补全映射），则仍归入双职业组作兜底。
+ * 将成就按职业分组（用于「按版本浏览 / 我的-按版本」，还原游戏内布局）
+ * 双职业成就统一归入「双职业」分组，不拆分到每个职业——否则单个职业分组会混入
+ * 本不属于它的双职业成就（如穿越时间流的圣骑士会多出 2 条）。
+ * 中立多职业成就（带 classes 字段）仍留在「中立」分组。
+ * 按职业筛选时同样可做的成就由 matchesClass 命中，不依赖本函数拆分。
  * @param {Array} achievements - 成就列表
  * @returns {Object} 按职业分组的成就
  */
@@ -64,7 +66,8 @@ export function groupByClass(achievements) {
       continue;
     }
     if (achievement.dualClasses && achievement.dualClasses.length) {
-      for (const cls of achievement.dualClasses) pushTo(cls, achievement);
+      // 双职业成就统一归入「双职业」分组（游戏内原样），不再按 dualClasses 拆到各职业。
+      pushTo("双职业", achievement);
     } else {
       const heroClass = achievement.heroClass || "中立";
       pushTo(heroClass, achievement);
@@ -73,35 +76,38 @@ export function groupByClass(achievements) {
   return groups;
 }
 
-// 游戏内职业展示顺序（多版本采用）。用户指定顺序，简称已展开为全称：圣骑→圣骑士、盗贼→潜行者、萨满→萨满祭司。
-// 泰坦诸神 / 传奇音乐节 / 巫妖王：死亡骑士排在术士之后、法师之前（游戏内顺序）。
+// 游戏内职业展示顺序（用户指定，简称已展开为全称：圣骑→圣骑士、盗贼→潜行者、萨满→萨满祭司）。
+// 死亡骑士排在术士之后、法师之前；中立收尾；不含双职业分组（用于无双职业成就的版本）。
 const GAME_CLASS_ORDER_WITH_DK = ["圣骑士", "德鲁伊", "恶魔猎手", "战士", "术士", "死亡骑士", "法师", "潜行者", "牧师", "猎人", "萨满祭司", "中立"];
-// 其余采用游戏内顺序但死亡骑士置于中立之前的版本（纳斯利亚堡 / 沉没之城 / 奥特兰克 / 暴风城 / 贫瘠之地 等无死亡骑士成就，兜底置末不渲染）。
+// 同上，但含「双职业」分组且置于中立之前（用于穿越时间流、荒芜之地等带双职业成就的版本）。
+const GAME_CLASS_ORDER_WITH_DK_DUAL = ["圣骑士", "德鲁伊", "恶魔猎手", "战士", "术士", "死亡骑士", "法师", "潜行者", "牧师", "猎人", "萨满祭司", "双职业", "中立"];
+// 其余（纳斯利亚堡 / 沉没之城 / 奥特兰克 / 暴风城 / 贫瘠之地 等）沿用通用游戏内顺序（死亡骑士兜底在中立之前，无双职业）。
 const GAME_CLASS_ORDER = ["圣骑士", "德鲁伊", "恶魔猎手", "战士", "术士", "法师", "潜行者", "牧师", "猎人", "萨满祭司", "中立"];
 
-// 各版本按职业浏览 / 我的-按职业视图的职业展示顺序覆盖表（键为版本 id）。
+// 各版本「按版本浏览 / 我的-按版本」的职业展示顺序覆盖表（键为版本 id）。
 // 未列出的版本（含暗月马戏团）沿用全局标准顺序 classOrderList。
 const EXPANSION_CLASS_ORDER = {
-  // 死亡骑士在术士之后、法师之前
+  // 死亡骑士在术士之后、法师之前，无双职业分组
   titan: GAME_CLASS_ORDER_WITH_DK,            // 泰坦诸神
   "legend-festival": GAME_CLASS_ORDER_WITH_DK, // 传奇音乐节
   "lich-king": GAME_CLASS_ORDER_WITH_DK,       // 巫妖王
-  // 无死亡骑士分组
+  // 用户指定顺序：圣骑士→…→死亡骑士→…→中立（无双职业成就）
+  "violet-hold": GAME_CLASS_ORDER_WITH_DK,     // 紫罗兰监狱
+  cataclysm: GAME_CLASS_ORDER_WITH_DK,         // 大地的裂变
+  ungoro: GAME_CLASS_ORDER_WITH_DK,            // 安戈洛龟途
+  "emerald-dream": GAME_CLASS_ORDER_WITH_DK,   // 翡翠梦境
+  deepdark: GAME_CLASS_ORDER_WITH_DK,          // 深暗领域
+  "perils-in-paradise": GAME_CLASS_ORDER_WITH_DK, // 胜地历险记
+  whizbang: GAME_CLASS_ORDER_WITH_DK,          // 威兹班
+  // 用户指定顺序：同上 + 双职业分组（置于中立之前）
+  "caverns-of-time": GAME_CLASS_ORDER_WITH_DK_DUAL, // 穿越时间流
+  badlands: GAME_CLASS_ORDER_WITH_DK_DUAL,     // 荒芜之地
+  // 其余版本沿用通用游戏内顺序（死亡骑士兜底在中立之前）
   nathria: GAME_CLASS_ORDER,                   // 纳斯利亚堡
   "sunken-city": GAME_CLASS_ORDER,             // 沉没之城
   alterac: GAME_CLASS_ORDER,                   // 奥特兰克
   stormwind: GAME_CLASS_ORDER,                 // 暴风城
   barrens: GAME_CLASS_ORDER,                   // 贫瘠之地
-  // 其余版本沿用通用游戏内顺序（死亡骑士兜底在中立之前）
-  badlands: GAME_CLASS_ORDER,                  // 荒芜之地
-  whizbang: GAME_CLASS_ORDER,                  // 威兹班
-  "violet-hold": GAME_CLASS_ORDER,             // 紫罗兰监狱
-  cataclysm: GAME_CLASS_ORDER,                 // 大地的裂变
-  "caverns-of-time": GAME_CLASS_ORDER,         // 穿越时间流
-  ungoro: GAME_CLASS_ORDER,                    // 安戈洛龟途
-  "emerald-dream": GAME_CLASS_ORDER,           // 翡翠梦境
-  deepdark: GAME_CLASS_ORDER,                  // 深暗领域
-  "perils-in-paradise": GAME_CLASS_ORDER,      // 胜地历险记
 };
 
 /**
@@ -135,6 +141,7 @@ export function getClassOrder(expansionId) {
  */
 export function matchesClass(ach, cls) {
   if (ach.heroClass === cls) return true;
+  if (ach.classes && ach.classes.includes(cls)) return true;
   if (ach.dualClasses && ach.dualClasses.includes(cls)) return true;
   return false;
 }

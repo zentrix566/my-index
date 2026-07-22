@@ -1133,7 +1133,13 @@ const isZongheView = computed(() => currentExpansionId.value === 'zonghe')
 // 综合版本按 5 大分类排序；选中具体职业筛选时只渲染该职业分组；否则按原顺序。
 const classGroupOrder = computed(() => {
   if (isZongheView.value) return ZONGHE_CATEGORIES
-  if (selectedClass.value !== 'all') return [selectedClass.value]
+  if (selectedClass.value !== 'all') {
+    // 选中具体职业时，除该职业自身外，再补「中立」「双职业」两个分组：
+    // 「中立」承载游戏内归中立、但该职业同样可做的成就（如万物终结等）；
+    // 「双职业」承载该职业参与的双职业成就（按版本浏览默认它们不进各职业分组）。
+    // 与游戏内「按职业筛选才显示同样可做的」一致。selectedClass 本身为中立时不重复。
+    return selectedClass.value === '中立' ? ['中立', '双职业'] : [selectedClass.value, '中立', '双职业']
+  }
   return classOrder.value
 })
 

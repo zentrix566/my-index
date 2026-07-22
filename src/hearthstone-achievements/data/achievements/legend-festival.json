@@ -66,7 +66,8 @@
       "id": "legend-festival-003",
       "name": "荒野之息",
       "heroClass": "德鲁伊",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "沉静的吹笛人"
@@ -173,7 +174,8 @@
       "id": "legend-festival-008",
       "name": "投猿掷蕉",
       "heroClass": "猎人",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "一串香蕉",
@@ -193,7 +195,7 @@
       "id": "legend-festival-009",
       "name": "猛兽少年团",
       "heroClass": "猎人",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "荆棘谷之心"
@@ -243,7 +245,8 @@
       "id": "legend-festival-011",
       "name": "点赞评论加关注",
       "heroClass": "牧师",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
         "粉丝俱乐部"
@@ -431,7 +434,7 @@
       "id": "legend-festival-019",
       "name": "沉迷舞厅",
       "heroClass": "圣骑士",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
         "迪斯科战槌"
@@ -519,7 +522,8 @@
       "id": "legend-festival-023",
       "name": "急切哀乐",
       "heroClass": "术士",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
         "绝望哀歌"
@@ -778,7 +782,7 @@
       "id": "legend-festival-034",
       "name": "慢步突袭",
       "heroClass": "双职业",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "踏韵舞者丽萨"

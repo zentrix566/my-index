@@ -594,6 +594,7 @@
       "id": "ed-014",
       "name": "自然天性",
       "heroClass": "中立",
+      "classes": ["德鲁伊", "猎人", "法师", "圣骑士", "牧师", "萨满祭司"],
       "type": "累计",
       "difficulty": "易",
       "relatedCards": [],
@@ -622,6 +623,7 @@
       "id": "ed-015",
       "name": "暗夜恐怖",
       "heroClass": "中立",
+      "classes": ["死亡骑士", "恶魔猎手", "潜行者", "术士", "战士"],
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -651,6 +653,7 @@
       "id": "ed-027",
       "name": "烫手山芋",
       "heroClass": "中立",
+      "classes": ["法师", "圣骑士", "牧师"],
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [

@@ -666,6 +666,7 @@
       "id": "pr-027",
       "name": "假期目的地",
       "heroClass": "中立",
+      "classes": ["德鲁伊", "牧师", "萨满祭司"],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [

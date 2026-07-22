@@ -65,7 +65,8 @@
       "id": "nathria-003",
       "name": "白骨蕾蕾",
       "heroClass": "德鲁伊",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "树篱迷宫"
@@ -132,7 +133,8 @@
       "id": "nathria-006",
       "name": "魔堡迷踪",
       "heroClass": "法师",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "豪宅管家俄里翁"
@@ -226,7 +228,8 @@
       "id": "nathria-010",
       "name": "当心加尔贡",
       "heroClass": "猎人",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "石缚加尔贡"
@@ -279,7 +282,8 @@
       "id": "nathria-012",
       "name": "藐视公堂",
       "heroClass": "猎人",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "否决动议"
@@ -290,7 +294,7 @@
           "description": "用否决动议消灭敌方英雄。",
           "xpReward": 0,
           "points": 20,
-          "quota": 0
+          "quota": 1
         },
         {
           "description": "用否决动议消灭敌方英雄，完成3次。",
@@ -323,7 +327,8 @@
       "id": "nathria-014",
       "name": "错失看点",
       "heroClass": "牧师",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "净场"
@@ -417,7 +422,8 @@
       "id": "nathria-018",
       "name": "*闷声惊叫*",
       "heroClass": "潜行者",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "绑架"
@@ -509,7 +515,8 @@
       "id": "nathria-022",
       "name": "原始汤剂",
       "heroClass": "萨满祭司",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "瓦丝琪女男爵"
@@ -584,7 +591,8 @@
       "id": "nathria-025",
       "name": "重磅嘉宾",
       "heroClass": "圣骑士",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "女伯爵"
@@ -678,7 +686,8 @@
       "id": "nathria-029",
       "name": "双人成舞",
       "heroClass": "术士",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "暗影华尔兹"
@@ -772,7 +781,8 @@
       "id": "nathria-033",
       "name": "敏锐发现",
       "heroClass": "恶魔猎手",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "放大战刃"
@@ -887,7 +897,8 @@
       "id": "nathria-038",
       "name": "我来，我见，我征服",
       "heroClass": "战士",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "征服者战旗"
@@ -1139,7 +1150,8 @@
       "id": "nathria-048",
       "name": "干洗服务",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "蒸汽清洁器"
@@ -1208,7 +1220,8 @@
       "id": "nathria-051",
       "name": "早餐十六顿",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "贪食的吞噬者"
@@ -1292,7 +1305,8 @@
       "id": "nathria-055",
       "name": "离魂难忘",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "离躯之魂"
@@ -1311,7 +1325,8 @@
       "id": "nathria-056",
       "name": "需要地图吗？",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "迷宫向导"
@@ -1330,7 +1345,8 @@
       "id": "nathria-057",
       "name": "顽石军团，集合！",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "石裔干将"

@@ -421,6 +421,7 @@
       "id": "ct-017",
       "name": "万物终结",
       "heroClass": "中立",
+      "classes": ["死亡骑士", "恶魔猎手", "潜行者", "萨满祭司", "术士", "战士"],
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
@@ -446,6 +447,7 @@
       "id": "ct-018",
       "name": "胶水粘一切",
       "heroClass": "中立",
+      "classes": ["德鲁伊", "猎人", "法师", "圣骑士", "牧师"],
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -475,6 +477,7 @@
       "id": "ct-019",
       "name": "兆示……死亡之翼",
       "heroClass": "中立",
+      "classes": ["死亡骑士", "恶魔猎手", "潜行者", "萨满祭司", "术士", "战士"],
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
