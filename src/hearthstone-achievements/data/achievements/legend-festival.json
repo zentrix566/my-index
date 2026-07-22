@@ -296,7 +296,8 @@
       "id": "legend-festival-013",
       "name": "你的菜",
       "heroClass": "潜行者",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "串烧磁带"
@@ -711,7 +712,8 @@
       "id": "legend-festival-031",
       "name": "沃恩之恩",
       "heroClass": "战士",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "黑石摇滚"
@@ -1217,7 +1219,8 @@
       "id": "legend-festival-049",
       "name": "要是它没坏……",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "狼人场务"
@@ -1286,7 +1289,8 @@
       "id": "legend-festival-052",
       "name": "唱片合约",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "幽灵写手"
@@ -1336,7 +1340,8 @@
       "id": "legend-festival-054",
       "name": "悦耳乐音",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "悦耳流行歌",
@@ -1360,7 +1365,8 @@
       "id": "legend-festival-055",
       "name": "刺耳惨叫",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "悦耳流行歌",
@@ -1422,7 +1428,7 @@
       "id": "legend-festival-058",
       "name": "歌王酋长",
       "heroClass": "中立",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "精英牛头人歌王"

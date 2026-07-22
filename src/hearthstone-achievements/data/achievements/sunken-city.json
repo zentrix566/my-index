@@ -15,7 +15,8 @@
       "id": "sunken-city-001",
       "name": "个人迷信",
       "heroClass": "德鲁伊",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "异端纳迦海德拉"
@@ -85,6 +86,7 @@
       "name": "星月奇迹",
       "heroClass": "德鲁伊",
       "type": "累计",
+      "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
         "月光射线"
@@ -128,7 +130,8 @@
       "id": "sunken-city-006",
       "name": "伊妮机，出动！",
       "heroClass": "法师",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "海床传送口"
@@ -178,7 +181,7 @@
       "id": "sunken-city-008",
       "name": "纳兹夏尔还在异变！",
       "heroClass": "法师",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "纳兹夏尔女士"
@@ -195,7 +198,7 @@
           "description": "使用火焰，冰霜和奥术形态的纳兹夏尔女士。",
           "xpReward": 0,
           "points": 20,
-          "quota": 0
+          "quota": 3
         }
       ]
     },
@@ -203,7 +206,8 @@
       "id": "sunken-city-009",
       "name": "上下开弓",
       "heroClass": "猎人",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "双弓积骇纳迦"
@@ -316,7 +320,8 @@
       "id": "sunken-city-014",
       "name": "嘘……侍奉恩佐斯",
       "heroClass": "牧师",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
         "深海低语"
@@ -410,7 +415,8 @@
       "id": "sunken-city-018",
       "name": "把钱交出来！",
       "heroClass": "潜行者",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "海盗将领钩牙"
@@ -485,7 +491,8 @@
       "id": "sunken-city-021",
       "name": "月色之舞",
       "heroClass": "萨满祭司",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "生物荧光"
@@ -675,7 +682,8 @@
       "id": "sunken-city-029",
       "name": "一顿75道菜",
       "heroClass": "术士",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "老巨鳍"
@@ -791,7 +799,8 @@
       "id": "sunken-city-034",
       "name": "左右开攻",
       "heroClass": "恶魔猎手",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "多重打击"
@@ -841,7 +850,7 @@
       "id": "sunken-city-036",
       "name": "艾萨拉的神像",
       "heroClass": "恶魔猎手",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "损毁神像"
@@ -1092,7 +1101,7 @@
       "id": "sunken-city-046",
       "name": "颠倒旋转",
       "heroClass": "中立",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "海中向导芬利爵士"
@@ -1117,7 +1126,8 @@
       "id": "sunken-city-047",
       "name": "屏住呼吸",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "潜水俯冲鹈鹕",
@@ -1187,7 +1197,8 @@
       "id": "sunken-city-050",
       "name": "海洋大学",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "学校教师"
@@ -1206,7 +1217,8 @@
       "id": "sunken-city-051",
       "name": "扫雷专家",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
         "海军水雷"
@@ -1316,7 +1328,8 @@
       "id": "sunken-city-056",
       "name": "追猎宝藏",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "宝藏守卫"
@@ -1335,7 +1348,8 @@
       "id": "sunken-city-057",
       "name": "鱼昧童话",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
         "巫婆纳迦"
@@ -1373,7 +1387,8 @@
       "id": "sunken-city-059",
       "name": "机械都是我们的",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "积雷母舰"
