@@ -14,7 +14,7 @@
     {
       "id": "rise-of-shadows-001",
       "name": "绿地疯长",
-      "heroClass": "中立",
+      "heroClass": "德鲁伊",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -31,7 +31,7 @@
     {
       "id": "rise-of-shadows-002",
       "name": "while (true)循环",
-      "heroClass": "中立",
+      "heroClass": "猎人",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -48,7 +48,7 @@
     {
       "id": "rise-of-shadows-003",
       "name": "法术飓风！！",
-      "heroClass": "中立",
+      "heroClass": "法师",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -65,7 +65,7 @@
     {
       "id": "rise-of-shadows-004",
       "name": "柔者长存",
-      "heroClass": "中立",
+      "heroClass": "圣骑士",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -82,7 +82,7 @@
     {
       "id": "rise-of-shadows-005",
       "name": "重磅复活",
-      "heroClass": "中立",
+      "heroClass": "牧师",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -99,7 +99,7 @@
     {
       "id": "rise-of-shadows-006",
       "name": "弃子妙手",
-      "heroClass": "中立",
+      "heroClass": "潜行者",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -116,7 +116,7 @@
     {
       "id": "rise-of-shadows-007",
       "name": "反派独白",
-      "heroClass": "中立",
+      "heroClass": "萨满祭司",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -133,7 +133,7 @@
     {
       "id": "rise-of-shadows-008",
       "name": "是我抽到哒！",
-      "heroClass": "中立",
+      "heroClass": "术士",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -150,7 +150,7 @@
     {
       "id": "rise-of-shadows-009",
       "name": "砰砰殿堂！",
-      "heroClass": "中立",
+      "heroClass": "战士",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -167,7 +167,7 @@
     {
       "id": "rise-of-shadows-010",
       "name": "四头肌训练",
-      "heroClass": "中立",
+      "heroClass": "萨满祭司",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],

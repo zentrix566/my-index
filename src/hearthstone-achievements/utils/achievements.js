@@ -26,21 +26,21 @@ export const difficultyColors = {
   难: "#e53935",
 };
 
-// 职业展示顺序
+// 职业展示顺序（游戏内标准顺序：恶魔猎手、德鲁伊、猎人、法师、圣骑士、牧师、潜行者、萨满祭司、术士、战士、死亡骑士，中立收尾；双职业为合成分组置末）
 const classOrderList = [
-  "圣骑士",
-  "德鲁伊",
   "恶魔猎手",
-  "战士",
-  "术士",
-  "死亡骑士",
-  "法师",
-  "潜行者",
-  "牧师",
+  "德鲁伊",
   "猎人",
+  "法师",
+  "圣骑士",
+  "牧师",
+  "潜行者",
   "萨满祭司",
-  "双职业",
+  "术士",
+  "战士",
+  "死亡骑士",
   "中立",
+  "双职业",
 ];
 
 /**
@@ -57,6 +57,12 @@ export function groupByClass(achievements) {
     groups[cls].push(ach);
   };
   for (const achievement of achievements) {
+    // 综合类成就用显式 category 分组（职业 / 中立关键字 / 随从类型 / 法术派系 / 特殊），
+    // 不再按 heroClass（多为「中立」）平铺。其余版本无此字段，仍按职业分组。
+    if (achievement.category) {
+      pushTo(achievement.category, achievement);
+      continue;
+    }
     if (achievement.dualClasses && achievement.dualClasses.length) {
       for (const cls of achievement.dualClasses) pushTo(cls, achievement);
     } else {

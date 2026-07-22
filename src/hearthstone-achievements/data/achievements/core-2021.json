@@ -14,7 +14,7 @@
     {
       "id": "core-2021-001",
       "name": "嘲讽等于作弊",
-      "heroClass": "中立",
+      "heroClass": "战士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -37,7 +37,7 @@
     {
       "id": "core-2021-002",
       "name": "环保倡议",
-      "heroClass": "中立",
+      "heroClass": "德鲁伊",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -60,7 +60,7 @@
     {
       "id": "core-2021-003",
       "name": "奥术工艺",
-      "heroClass": "中立",
+      "heroClass": "法师",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -83,7 +83,7 @@
     {
       "id": "core-2021-004",
       "name": "污手马仔",
-      "heroClass": "中立",
+      "heroClass": "战士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -106,7 +106,7 @@
     {
       "id": "core-2021-005",
       "name": "上手，使用，损坏，维修",
-      "heroClass": "中立",
+      "heroClass": "战士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -129,7 +129,7 @@
     {
       "id": "core-2021-006",
       "name": "感谢治疗",
-      "heroClass": "中立",
+      "heroClass": "牧师",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -152,7 +152,7 @@
     {
       "id": "core-2021-007",
       "name": "鸟以群分",
-      "heroClass": "中立",
+      "heroClass": "猎人",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -175,7 +175,7 @@
     {
       "id": "core-2021-008",
       "name": "法力洼地",
-      "heroClass": "中立",
+      "heroClass": "术士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -198,7 +198,7 @@
     {
       "id": "core-2021-009",
       "name": "死吧，死吧！",
-      "heroClass": "中立",
+      "heroClass": "死亡骑士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -221,7 +221,7 @@
     {
       "id": "core-2021-010",
       "name": "举止可疑",
-      "heroClass": "中立",
+      "heroClass": "潜行者",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -244,7 +244,7 @@
     {
       "id": "core-2021-011",
       "name": "不含符文",
-      "heroClass": "中立",
+      "heroClass": "死亡骑士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],

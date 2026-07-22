@@ -69,7 +69,36 @@ export const expansions = [
  */
 const originalExpansionIds = new Set(CORE_EXPANSION_IDS)
 export const originalExpansions = expansions.filter((exp) => originalExpansionIds.has(exp.id))
-export const addedExpansions = expansions.filter((exp) => !originalExpansionIds.has(exp.id))
+
+/**
+ * 「更多版本」下拉展示顺序（用户指定，非单纯发布时间倒序）。
+ * 与 expansions 数组本身的顺序解耦：expansions 仍保持发布时间从新到旧（供其它视图使用），
+ * 仅「更多版本」下拉按此顺序呈现，首行即 泰坦诸神 + 传奇音乐节。
+ */
+export const ADDED_EXPANSION_ORDER = [
+  'titan', // 泰坦诸神
+  'legend-festival', // 传奇音乐节
+  'lich-king', // 巫妖王
+  'nathria', // 纳斯利亚堡
+  'sunken-city', // 沉没之城
+  'alterac', // 奥特兰克
+  'stormwind', // 暴风城
+  'barrens', // 贫瘠之地
+  'darkmoon', // 暗月马戏团
+  'scholomance', // 通灵学园
+  'outland', // 外域的灰烬
+  'dragons', // 巨龙降临
+  'uldum', // 奥丹姆奇兵
+  'rise-of-shadows', // 暗影崛起
+  'core-2021', // 核心（独狼年）
+  'core-2022', // 核心（多头蛇年）
+  'core-2023', // 核心（狮鹫年）
+  'zonghe' // 游戏-综合
+]
+const addedOrderMap = new Map(ADDED_EXPANSION_ORDER.map((id, i) => [id, i]))
+export const addedExpansions = expansions
+  .filter((exp) => !originalExpansionIds.has(exp.id))
+  .sort((a, b) => (addedOrderMap.get(a.id) ?? 999) - (addedOrderMap.get(b.id) ?? 999))
 
 /**
  * 按ID获取版本数据

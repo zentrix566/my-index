@@ -1126,9 +1126,13 @@ const statuses = ['未完成', '已完成']
 // 所有职业列表（保持炉石原顺序，不含双职业——双职业成就通过 dualClasses 分配到对应职业）
 const allClasses = getClassOrder().filter(c => c !== '双职业' && c !== '中立').concat(['中立'])
 const classOrder = getClassOrder()
+// 「游戏-综合」成就按 5 大分类展示（用户指定顺序），而非按职业（多为「中立」）平铺
+const ZONGHE_CATEGORIES = ['职业', '中立关键字', '随从类型', '法术派系', '特殊']
+const isZongheView = computed(() => currentExpansionId.value === 'zonghe')
 // 按职业分组视图（按版本浏览 / 我的-按版本）的渲染顺序：
-// 选中具体职业筛选时只渲染该职业分组；否则按原顺序（双职业组若为空则由 v-if 隐藏）
+// 综合版本按 5 大分类排序；选中具体职业筛选时只渲染该职业分组；否则按原顺序。
 const classGroupOrder = computed(() => {
+  if (isZongheView.value) return ZONGHE_CATEGORIES
   if (selectedClass.value !== 'all') return [selectedClass.value]
   return classOrder
 })
@@ -1158,35 +1162,35 @@ const currentExpansionAchievements = computed(() => {
 
 // 职业总览：按版本浏览/我的-按版本 默认展开各职业（用户嫌长可自行收起）
 const classViewCollapsed = reactive({})
-for (const c of classOrder) classViewCollapsed[c] = false
+for (const c of classGroupOrder.value) classViewCollapsed[c] = false
 // 按职业浏览/我的-按职业：按版本分组，默认展开
 const expViewCollapsed = reactive({})
 for (const exp of expansions) expViewCollapsed[exp.id] = false
 
 const resetClassViews = () => {
-  for (const c of classOrder) classViewCollapsed[c] = false
+  for (const c of classGroupOrder.value) classViewCollapsed[c] = false
   for (const exp of expansions) expViewCollapsed[exp.id] = false
 }
 
 const expandAllClasses = () => {
-  for (const c of classOrder) classViewCollapsed[c] = false
+  for (const c of classGroupOrder.value) classViewCollapsed[c] = false
 }
 const collapseAllClasses = () => {
-  for (const c of classOrder) classViewCollapsed[c] = true
+  for (const c of classGroupOrder.value) classViewCollapsed[c] = true
 }
 // 总览面板「展开/收起全部」：按当前视图切换 职业分组 或 版本分组 的折叠态
 const expandAllSections = () => {
   if (viewMode.value === 'my' && myGroupBy.value === 'class') {
     for (const exp of expansions) expViewCollapsed[exp.id] = false
   } else {
-    for (const c of classOrder) classViewCollapsed[c] = false
+    for (const c of classGroupOrder.value) classViewCollapsed[c] = false
   }
 }
 const collapseAllSections = () => {
   if (viewMode.value === 'my' && myGroupBy.value === 'class') {
     for (const exp of expansions) expViewCollapsed[exp.id] = true
   } else {
-    for (const c of classOrder) classViewCollapsed[c] = true
+    for (const c of classGroupOrder.value) classViewCollapsed[c] = true
   }
 }
 

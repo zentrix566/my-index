@@ -14,7 +14,7 @@
     {
       "id": "core-2022-001",
       "name": "食量极限",
-      "heroClass": "中立",
+      "heroClass": "术士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -37,7 +37,7 @@
     {
       "id": "core-2022-002",
       "name": "谁在挠痒痒？",
-      "heroClass": "中立",
+      "heroClass": "德鲁伊",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -60,7 +60,7 @@
     {
       "id": "core-2022-003",
       "name": "注意：致命灼热！",
-      "heroClass": "中立",
+      "heroClass": "法师",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -83,7 +83,7 @@
     {
       "id": "core-2022-004",
       "name": "友军火力",
-      "heroClass": "中立",
+      "heroClass": "圣骑士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -106,7 +106,7 @@
     {
       "id": "core-2022-005",
       "name": "哦，克罗雷先生",
-      "heroClass": "中立",
+      "heroClass": "战士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -129,7 +129,7 @@
     {
       "id": "core-2022-006",
       "name": "赞美太阳",
-      "heroClass": "中立",
+      "heroClass": "牧师",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -152,7 +152,7 @@
     {
       "id": "core-2022-007",
       "name": "一堆可怜的秘密",
-      "heroClass": "中立",
+      "heroClass": "猎人",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -175,7 +175,7 @@
     {
       "id": "core-2022-008",
       "name": "热辣滚烫",
-      "heroClass": "中立",
+      "heroClass": "萨满祭司",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -198,7 +198,7 @@
     {
       "id": "core-2022-009",
       "name": "弃牌？不了，谢谢",
-      "heroClass": "中立",
+      "heroClass": "术士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -221,7 +221,7 @@
     {
       "id": "core-2022-010",
       "name": "全职高手",
-      "heroClass": "中立",
+      "heroClass": "潜行者",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -244,7 +244,7 @@
     {
       "id": "core-2022-011",
       "name": "你为什么打自己？",
-      "heroClass": "中立",
+      "heroClass": "死亡骑士",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -261,7 +261,7 @@
     {
       "id": "core-2022-012",
       "name": "都缝好了",
-      "heroClass": "中立",
+      "heroClass": "战士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -284,7 +284,7 @@
     {
       "id": "core-2022-013",
       "name": "万物臣服",
-      "heroClass": "中立",
+      "heroClass": "死亡骑士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -307,7 +307,7 @@
     {
       "id": "core-2022-014",
       "name": "骨爆热肠",
-      "heroClass": "中立",
+      "heroClass": "死亡骑士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -330,7 +330,7 @@
     {
       "id": "core-2022-015",
       "name": "过期货物",
-      "heroClass": "中立",
+      "heroClass": "死亡骑士",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -347,7 +347,7 @@
     {
       "id": "core-2022-016",
       "name": "死亡冰封",
-      "heroClass": "中立",
+      "heroClass": "死亡骑士",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -364,7 +364,7 @@
     {
       "id": "core-2022-017",
       "name": "喂你骨劲",
-      "heroClass": "中立",
+      "heroClass": "死亡骑士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],

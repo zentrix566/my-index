@@ -14,7 +14,7 @@
     {
       "id": "uldum-001",
       "name": "蜂群来……了吗？",
-      "heroClass": "中立",
+      "heroClass": "德鲁伊",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -31,7 +31,7 @@
     {
       "id": "uldum-002",
       "name": "Bug无数",
-      "heroClass": "中立",
+      "heroClass": "猎人",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -48,7 +48,7 @@
     {
       "id": "uldum-003",
       "name": "匣中之谜",
-      "heroClass": "中立",
+      "heroClass": "法师",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -65,7 +65,7 @@
     {
       "id": "uldum-004",
       "name": "鱼人同而不和",
-      "heroClass": "中立",
+      "heroClass": "圣骑士",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -82,7 +82,7 @@
     {
       "id": "uldum-005",
       "name": "卫生团队",
-      "heroClass": "中立",
+      "heroClass": "战士",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -99,7 +99,7 @@
     {
       "id": "uldum-006",
       "name": "连击连连",
-      "heroClass": "中立",
+      "heroClass": "潜行者",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -116,7 +116,7 @@
     {
       "id": "uldum-007",
       "name": "反正不怪我",
-      "heroClass": "中立",
+      "heroClass": "萨满祭司",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -133,7 +133,7 @@
     {
       "id": "uldum-008",
       "name": "术士式停火",
-      "heroClass": "中立",
+      "heroClass": "术士",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -150,7 +150,7 @@
     {
       "id": "uldum-009",
       "name": "高效骇客",
-      "heroClass": "中立",
+      "heroClass": "战士",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
@@ -167,7 +167,7 @@
     {
       "id": "uldum-010",
       "name": "你看牌了吗？",
-      "heroClass": "中立",
+      "heroClass": "潜行者",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],

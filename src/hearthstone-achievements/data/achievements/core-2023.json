@@ -14,7 +14,7 @@
     {
       "id": "core-2023-001",
       "name": "流进流出",
-      "heroClass": "中立",
+      "heroClass": "恶魔猎手",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -37,7 +37,7 @@
     {
       "id": "core-2023-002",
       "name": "森林再生",
-      "heroClass": "中立",
+      "heroClass": "德鲁伊",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -60,7 +60,7 @@
     {
       "id": "core-2023-003",
       "name": "重装上膛",
-      "heroClass": "中立",
+      "heroClass": "猎人",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -83,7 +83,7 @@
     {
       "id": "core-2023-004",
       "name": "守护传承",
-      "heroClass": "中立",
+      "heroClass": "法师",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -106,7 +106,7 @@
     {
       "id": "core-2023-005",
       "name": "末日领主的末日",
-      "heroClass": "中立",
+      "heroClass": "圣骑士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -129,7 +129,7 @@
     {
       "id": "core-2023-006",
       "name": "令人头痛",
-      "heroClass": "中立",
+      "heroClass": "牧师",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -152,7 +152,7 @@
     {
       "id": "core-2023-007",
       "name": "我要那个！",
-      "heroClass": "中立",
+      "heroClass": "潜行者",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -175,7 +175,7 @@
     {
       "id": "core-2023-008",
       "name": "滑稽元素",
-      "heroClass": "中立",
+      "heroClass": "萨满祭司",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -198,7 +198,7 @@
     {
       "id": "core-2023-009",
       "name": "加拉克苏斯来面对你！",
-      "heroClass": "中立",
+      "heroClass": "术士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -221,7 +221,7 @@
     {
       "id": "core-2023-010",
       "name": "战利品箱！",
-      "heroClass": "中立",
+      "heroClass": "战士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],

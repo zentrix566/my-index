@@ -50,7 +50,8 @@
           "points": 20,
           "quota": 1500
         }
-      ]
+      ],
+      "category": "法术派系"
     },
     {
       "id": "zonghe-002",
@@ -91,7 +92,8 @@
           "points": 20,
           "quota": 1500
         }
-      ]
+      ],
+      "category": "法术派系"
     },
     {
       "id": "zonghe-003",
@@ -132,7 +134,8 @@
           "points": 20,
           "quota": 1500
         }
-      ]
+      ],
+      "category": "法术派系"
     },
     {
       "id": "zonghe-004",
@@ -173,7 +176,8 @@
           "points": 20,
           "quota": 1500
         }
-      ]
+      ],
+      "category": "法术派系"
     },
     {
       "id": "zonghe-005",
@@ -214,7 +218,8 @@
           "points": 20,
           "quota": 1500
         }
-      ]
+      ],
+      "category": "法术派系"
     },
     {
       "id": "zonghe-006",
@@ -255,7 +260,8 @@
           "points": 20,
           "quota": 1500
         }
-      ]
+      ],
+      "category": "法术派系"
     },
     {
       "id": "zonghe-007",
@@ -296,7 +302,8 @@
           "points": 20,
           "quota": 1500
         }
-      ]
+      ],
+      "category": "法术派系"
     },
     {
       "id": "zonghe-008",
@@ -337,7 +344,8 @@
           "points": 20,
           "quota": 1000
         }
-      ]
+      ],
+      "category": "随从类型"
     },
     {
       "id": "zonghe-009",
@@ -378,7 +386,8 @@
           "points": 20,
           "quota": 3000
         }
-      ]
+      ],
+      "category": "随从类型"
     },
     {
       "id": "zonghe-010",
@@ -419,7 +428,8 @@
           "points": 20,
           "quota": 1000
         }
-      ]
+      ],
+      "category": "随从类型"
     },
     {
       "id": "zonghe-011",
@@ -460,7 +470,8 @@
           "points": 20,
           "quota": 1000
         }
-      ]
+      ],
+      "category": "随从类型"
     },
     {
       "id": "zonghe-012",
@@ -501,7 +512,8 @@
           "points": 20,
           "quota": 1000
         }
-      ]
+      ],
+      "category": "随从类型"
     },
     {
       "id": "zonghe-013",
@@ -542,7 +554,8 @@
           "points": 20,
           "quota": 1000
         }
-      ]
+      ],
+      "category": "随从类型"
     },
     {
       "id": "zonghe-014",
@@ -583,7 +596,8 @@
           "points": 20,
           "quota": 1000
         }
-      ]
+      ],
+      "category": "随从类型"
     },
     {
       "id": "zonghe-015",
@@ -624,7 +638,8 @@
           "points": 20,
           "quota": 1000
         }
-      ]
+      ],
+      "category": "随从类型"
     },
     {
       "id": "zonghe-016",
@@ -665,7 +680,8 @@
           "points": 20,
           "quota": 1000
         }
-      ]
+      ],
+      "category": "随从类型"
     },
     {
       "id": "zonghe-017",
@@ -682,7 +698,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-018",
@@ -699,7 +716,8 @@
           "points": 10,
           "quota": 0
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-019",
@@ -716,7 +734,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-020",
@@ -733,7 +752,8 @@
           "points": 10,
           "quota": 1
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-021",
@@ -750,7 +770,8 @@
           "points": 10,
           "quota": 0
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-022",
@@ -767,7 +788,8 @@
           "points": 20,
           "quota": 20
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-023",
@@ -784,7 +806,8 @@
           "points": 10,
           "quota": 0
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-024",
@@ -801,7 +824,8 @@
           "points": 20,
           "quota": 1
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-025",
@@ -842,7 +866,8 @@
           "points": 20,
           "quota": 7
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-026",
@@ -883,7 +908,8 @@
           "points": 20,
           "quota": 250
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-027",
@@ -900,7 +926,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-028",
@@ -917,7 +944,8 @@
           "points": 100,
           "quota": 2
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-029",
@@ -934,7 +962,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-030",
@@ -951,7 +980,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-031",
@@ -968,7 +998,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "category": "特殊"
     },
     {
       "id": "zonghe-032",
@@ -1009,7 +1040,8 @@
           "points": 20,
           "quota": 2000
         }
-      ]
+      ],
+      "category": "职业"
     },
     {
       "id": "zonghe-033",
@@ -1050,7 +1082,8 @@
           "points": 20,
           "quota": 1500
         }
-      ]
+      ],
+      "category": "职业"
     },
     {
       "id": "zonghe-034",
@@ -1091,7 +1124,8 @@
           "points": 20,
           "quota": 10000
         }
-      ]
+      ],
+      "category": "职业"
     },
     {
       "id": "zonghe-035",
@@ -1132,7 +1166,8 @@
           "points": 20,
           "quota": 10000
         }
-      ]
+      ],
+      "category": "职业"
     },
     {
       "id": "zonghe-036",
@@ -1173,7 +1208,8 @@
           "points": 20,
           "quota": 2000
         }
-      ]
+      ],
+      "category": "职业"
     },
     {
       "id": "zonghe-037",
@@ -1214,7 +1250,8 @@
           "points": 20,
           "quota": 5000
         }
-      ]
+      ],
+      "category": "职业"
     },
     {
       "id": "zonghe-038",
@@ -1255,7 +1292,8 @@
           "points": 20,
           "quota": 2000
         }
-      ]
+      ],
+      "category": "职业"
     },
     {
       "id": "zonghe-039",
@@ -1296,7 +1334,8 @@
           "points": 20,
           "quota": 1500
         }
-      ]
+      ],
+      "category": "职业"
     },
     {
       "id": "zonghe-040",
@@ -1337,7 +1376,8 @@
           "points": 20,
           "quota": 15000
         }
-      ]
+      ],
+      "category": "职业"
     },
     {
       "id": "zonghe-041",
@@ -1378,11 +1418,12 @@
           "points": 20,
           "quota": 5000
         }
-      ]
+      ],
+      "category": "职业"
     },
     {
       "id": "zonghe-042",
-      "name": "残骸畜牧业",
+      "name": "尸体畜牧业",
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "中等",
@@ -1419,7 +1460,8 @@
           "points": 20,
           "quota": 6000
         }
-      ]
+      ],
+      "category": "职业"
     },
     {
       "id": "zonghe-043",
@@ -1460,7 +1502,8 @@
           "points": 20,
           "quota": 500
         }
-      ]
+      ],
+      "category": "中立关键字"
     },
     {
       "id": "zonghe-044",
@@ -1501,7 +1544,8 @@
           "points": 20,
           "quota": 500
         }
-      ]
+      ],
+      "category": "中立关键字"
     },
     {
       "id": "zonghe-045",
@@ -1542,7 +1586,8 @@
           "points": 20,
           "quota": 1000
         }
-      ]
+      ],
+      "category": "中立关键字"
     },
     {
       "id": "zonghe-046",
@@ -1583,7 +1628,8 @@
           "points": 20,
           "quota": 500
         }
-      ]
+      ],
+      "category": "中立关键字"
     },
     {
       "id": "zonghe-047",
@@ -1624,7 +1670,8 @@
           "points": 20,
           "quota": 1000
         }
-      ]
+      ],
+      "category": "中立关键字"
     },
     {
       "id": "zonghe-048",
@@ -1665,7 +1712,8 @@
           "points": 20,
           "quota": 500
         }
-      ]
+      ],
+      "category": "中立关键字"
     },
     {
       "id": "zonghe-049",
@@ -1706,7 +1754,8 @@
           "points": 20,
           "quota": 10000
         }
-      ]
+      ],
+      "category": "中立关键字"
     },
     {
       "id": "zonghe-050",
@@ -1747,7 +1796,8 @@
           "points": 20,
           "quota": 1500
         }
-      ]
+      ],
+      "category": "中立关键字"
     },
     {
       "id": "zonghe-051",
@@ -1788,7 +1838,8 @@
           "points": 20,
           "quota": 5000
         }
-      ]
+      ],
+      "category": "中立关键字"
     },
     {
       "id": "zonghe-052",
@@ -1829,7 +1880,8 @@
           "points": 20,
           "quota": 10000
         }
-      ]
+      ],
+      "category": "中立关键字"
     },
     {
       "id": "zonghe-053",
@@ -1870,7 +1922,8 @@
           "points": 20,
           "quota": 10000
         }
-      ]
+      ],
+      "category": "中立关键字"
     },
     {
       "id": "zonghe-054",
@@ -1911,7 +1964,8 @@
           "points": 20,
           "quota": 15000
         }
-      ]
+      ],
+      "category": "中立关键字"
     },
     {
       "id": "zonghe-055",
@@ -1952,7 +2006,8 @@
           "points": 20,
           "quota": 1000
         }
-      ]
+      ],
+      "category": "中立关键字"
     }
   ]
 }
