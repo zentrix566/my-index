@@ -44,10 +44,9 @@ const getDifficultyStyle = (difficulty) => ({
 // 已完成阶段显示满额（quota），避免「已完成却 0% 进度条」的显示矛盾
 const countValue = computed(() => getCount(props.achievement))
 const isCompleted = computed(() => isAchievementCompleted(props.achievement))
-// 累计成就恒显示进度条（即便 count=0 / 无进度记录也显示 0%），避免"无进度条"的观感断层
-const showCountProgress = computed(() =>
-  props.achievement.type === '累计' ? true : (countValue.value != null || isCompleted.value)
-)
+// 累计成就恒显示进度条（即便 count=0 / 无进度记录也显示 0%）；一次性成就以阶段勾选列表呈现，
+// 不显示「值/目标」式进度条（其阶段 quota 常為 0，会误显 0/0；且一次性完成只由勾选决定，读 count 无意义）
+const showCountProgress = computed(() => props.achievement.type === '累计')
 // 头部展示的累计值：未完成用真实 count；已完成用末阶段 quota（代表已达成的目标值）
 const headerCount = computed(() => {
   if (isCompleted.value) {

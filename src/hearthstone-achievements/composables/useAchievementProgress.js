@@ -79,10 +79,10 @@ export function useAchievementProgress(progressRef) {
   function isStageCompleted(achievement, stageIdx) {
     const ach = progress.value[achievement.id]
     if (!ach) return false
-    // 手动勾选
+    // 手动勾选（一次性成就的阶段布尔标记）
     if (ach.stages?.[String(stageIdx)]) return true
-    // 如果设定了 count，按 quota 判断
-    if (ach.count != null && achievement.stages?.[stageIdx]) {
+    // 累计成就：按 count 与 quota 判定（一次性成就的完成只由 stages 布尔标记决定，不读 count）
+    if (achievement.type === '累计' && ach.count != null && achievement.stages?.[stageIdx]) {
       return ach.count >= achievement.stages[stageIdx].quota
     }
     return false
