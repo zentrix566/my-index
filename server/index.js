@@ -26,6 +26,8 @@ import {
   todayKey
 } from './ai-advisor.js'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
 // 生产兜底：若进程环境未注入密钥等变量，则尝试从项目根目录 .env 读取（缺失则静默跳过）。
 // 仅在对应变量尚不存在时才写入，确保 k8s / 进程注入的环境变量优先于 .env 文件。
 try {
@@ -49,7 +51,6 @@ try {
   /* 无 .env 或解析失败时跳过，不阻断启动 */
 }
 
-const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const isProd = process.env.NODE_ENV === 'production'
 const PORT = Number(process.env.PORT) || (isProd ? 80 : 3000)
 const DIST_DIR = path.resolve(__dirname, '../dist')

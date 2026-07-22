@@ -38,6 +38,8 @@ COPY server/ ./server/
 # 成就定义 JSON：运行时 achievements-meta.js 需要扫描它来写中文名/版本/职业。
 # 线上镜像没有 src/，必须显式复制到 server/achievements-data/（meta 的第 2 候选路径）。
 COPY src/hearthstone-achievements/data/achievements ./server/achievements-data/
+# 硬核模式过滤用的核心版本 ID 列表（ai-advisor.js 在生产镜像里的第 1 候选路径）。
+COPY src/hearthstone-achievements/data/core-expansion-ids.js ./server/achievements-data/
 
 RUN mkdir -p /app/logs /app/data
 

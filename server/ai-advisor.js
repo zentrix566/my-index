@@ -5,8 +5,31 @@
  * - 每日额度：固定问答 AI_FIXED_DAILY 次 + 自由问答 AI_FREE_DAILY 次（按用户/IP + 日期 限流，由 db.js 落地）
  */
 import { getAllAchievementMeta } from './achievements-meta.js'
-import CORE_EXPANSION_IDS from '../src/hearthstone-achievements/data/core-expansion-ids.js'
+import fs from 'fs'
+import path from 'path'
+import { fileURLToPath, pathToFileURL } from 'url'
 
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+// core-expansion-ids.js 同时被前端（src/…）与服务端引用。生产镜像里没有 src/
+// （Dockerfile 仅复制 server/ + 成就 JSON），故优先从 server/achievements-data/
+// （Dockerfile 复制而来）加载，本地开发回退到 ../src/…。用候选路径动态 import，
+// 避免写死 ../src 导致生产 ERR_MODULE_NOT_FOUND 而 CrashLoop。
+async function loadCoreExpansionIds() {
+  const candidates = [
+    path.resolve(__dirname, 'achievements-data/core-expansion-ids.js'),
+    path.resolve(__dirname, '../src/hearthstone-achievements/data/core-expansion-ids.js')
+  ]
+  for (const p of candidates) {
+    if (fs.existsSync(p)) {
+      const mod = await import(pathToFileURL(p).href)
+      return mod.default
+    }
+  }
+  throw new Error('[ai-advisor] 找不到 core-expansion-ids.js，候选路径：' + candidates.join(' , '))
+}
+
+const CORE_EXPANSION_IDS = await loadCoreExpansionIds()
 const CORE_EXPANSION_SET = new Set(CORE_EXPANSION_IDS)
 
 // 每日额度（可用环境变量调整，默认 5 次固定 + 1 次自由）
