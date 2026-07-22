@@ -73,12 +73,34 @@ export function groupByClass(achievements) {
   return groups;
 }
 
-// 部分版本在游戏内的职业展示顺序与标准顺序不同，单独覆盖（键为版本 id）。
-// 仅列出该版本实际出现的职业即可，未列出的职业不会进入对应视图。
+// 游戏内职业展示顺序（贫瘠之地及多数版本采用）：圣骑士、德鲁伊、恶魔猎手、战士、术士、法师、潜行者、牧师、猎人、萨满祭司、中立
+// 用户指定顺序（简称已展开为全称：圣骑→圣骑士、盗贼→潜行者、萨满→萨满祭司）
+const GAME_CLASS_ORDER = ["圣骑士", "德鲁伊", "恶魔猎手", "战士", "术士", "法师", "潜行者", "牧师", "猎人", "萨满祭司", "中立"];
+
+// 部分版本在游戏内的职业展示顺序与全局标准顺序不同，单独覆盖（键为版本 id）。
+// 暗月马戏团等未列出的版本沿用全局标准顺序。
 const EXPANSION_CLASS_ORDER = {
-  // 贫瘠之地：游戏内职业顺序为 圣骑、德鲁伊、恶魔猎手、战士、术士、法师、盗贼、牧师、猎人、萨满、中立
-  barrens: ["圣骑士", "德鲁伊", "恶魔猎手", "战士", "术士", "法师", "潜行者", "牧师", "猎人", "萨满祭司", "中立"],
+  barrens: GAME_CLASS_ORDER,            // 贫瘠之地
+  stormwind: GAME_CLASS_ORDER,         // 暴风城
+  alterac: GAME_CLASS_ORDER,           // 奥特兰克
+  "sunken-city": GAME_CLASS_ORDER,     // 沉没之城
+  nathria: GAME_CLASS_ORDER,           // 纳斯利亚堡
+  "lich-king": GAME_CLASS_ORDER,       // 巫妖王
+  titan: GAME_CLASS_ORDER,             // 泰坦诸神
+  "legend-festival": GAME_CLASS_ORDER, // 传奇音乐节
+  badlands: GAME_CLASS_ORDER,          // 荒芜之地
+  whizbang: GAME_CLASS_ORDER,          // 威兹班
+  "violet-hold": GAME_CLASS_ORDER,     // 紫罗兰监狱
+  cataclysm: GAME_CLASS_ORDER,         // 大地的裂变
+  "caverns-of-time": GAME_CLASS_ORDER, // 穿越时间流
+  ungoro: GAME_CLASS_ORDER,            // 安戈洛龟途
+  "emerald-dream": GAME_CLASS_ORDER,   // 翡翠梦境
+  deepdark: GAME_CLASS_ORDER,          // 深暗领域
+  "perils-in-paradise": GAME_CLASS_ORDER, // 胜地历险记
 };
+
+// 覆盖表只列了基础 11 职业 + 中立；死亡骑士在游戏内排在中立之前，
+// 含死亡骑士的版本将其补插到中立前，避免对应分组在按职业视图中丢失（不影响无此职业的版本）。
 
 /**
  * 获取职业排序列表
@@ -87,7 +109,15 @@ const EXPANSION_CLASS_ORDER = {
  */
 export function getClassOrder(expansionId) {
   if (expansionId && EXPANSION_CLASS_ORDER[expansionId]) {
-    return EXPANSION_CLASS_ORDER[expansionId];
+    const base = EXPANSION_CLASS_ORDER[expansionId]; // [基础 11 职业..., 中立]
+    if (base.includes("死亡骑士")) return base;
+    const idx = base.indexOf("中立");
+    const order =
+      idx >= 0
+        ? [...base.slice(0, idx), "死亡骑士", ...base.slice(idx)]
+        : [...base, "死亡骑士"];
+    if (!order.includes("双职业")) order.push("双职业"); // 双职业合成分组兜底，置末
+    return order;
   }
   return classOrderList;
 }
