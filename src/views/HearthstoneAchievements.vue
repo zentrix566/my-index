@@ -470,9 +470,9 @@
         </template>
       </div>
 
-      <!-- 我的成就-按职业：按版本分组 -->
+      <!-- 我的成就-按职业：按版本分组，版本按剩余未完成数从低到高排序 -->
       <div v-else-if="myGroupBy === 'class'" class="hs-expansion-groups">
-        <template v-for="exp in expansions" :key="exp.id">
+        <template v-for="exp in myClassExpansionOrder" :key="exp.id">
           <ClassSection
             v-if="myFilteredByExpansion[exp.id] && myFilteredByExpansion[exp.id].length > 0"
             v-model:collapsed="expViewCollapsed[exp.id]"
@@ -1436,6 +1436,18 @@ const myFilteredByExpansion = computed(() => {
     }
   }
   return groups
+})
+
+// 我的成就-按职业视图：外层版本分组按「剩余未完成数」从低到高排序（与待完成清单一致）
+const myClassExpansionOrder = computed(() => {
+  return [...expansions]
+    .filter((exp) => myFilteredByExpansion.value[exp.id])
+    .sort((a, b) => {
+      const ra = myFilteredByExpansion.value[a.id].filter((x) => !isAchievementCompleted(x)).length
+      const rb = myFilteredByExpansion.value[b.id].filter((x) => !isAchievementCompleted(x)).length
+      if (ra !== rb) return ra - rb
+      return a.name.localeCompare(b.name, 'zh')
+    })
 })
 
 // 我的成就统计
