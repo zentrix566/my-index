@@ -37,6 +37,9 @@ k8s/cloudflared-deployment.yaml
 # 构建中间产物（验证用，可手动删除）
 dist-old/
 
+# 炉石卡牌图片：体积大，已改用 Git LFS 跟踪（见 .gitattributes），随仓库发布。
+# 不再忽略，但大文件走 LFS，不会撑大 git 历史。
+
 # SQLite 数据库（运行时数据，不入库；种子文件 server/seed/ 保留跟踪）
 data/app.db
 data/app.db-wal
