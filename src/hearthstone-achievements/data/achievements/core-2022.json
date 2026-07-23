@@ -14,7 +14,7 @@
     {
       "id": "core-2022-001",
       "name": "食量极限",
-      "heroClass": "术士",
+      "heroClass": "恶魔猎手",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -262,7 +262,7 @@
     {
       "id": "core-2022-012",
       "name": "都缝好了",
-      "heroClass": "战士",
+      "heroClass": "死亡骑士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],

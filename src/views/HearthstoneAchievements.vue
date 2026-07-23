@@ -166,6 +166,10 @@
                 </div>
               </div>
             </div>
+            <div v-if="showFabSectionToggles" class="hs-section-toggles">
+              <button type="button" class="hs-tiny-btn" @click="expandAllSections">展开全部</button>
+              <button type="button" class="hs-tiny-btn" @click="collapseAllSections">收起全部</button>
+            </div>
           </template>
           <!-- 按职业浏览：职业选择（我的成就模式下版本/职业选择移到子切换下方） -->
           <div
@@ -187,9 +191,8 @@
           </div>
         </div>
       </header>
-      </div>
 
-      <!-- 我的成就模式：分组切换 + 统计面板 -->
+      <!-- 我的成就模式：分组切换 + 统计面板（子切换/版本选择/操作行并入顶部吸顶块，滚动时整体固定） -->
       <template v-if="viewMode === 'my'">
         <div v-if="!user" class="hs-example-banner">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -199,7 +202,9 @@
           <button type="button" class="hs-link" @click="router.push('/login')">登录 / 注册</button>
           <span>后即可记录并保存你自己的完成进度。</span>
         </div>
+        <div class="hs-my-controls">
         <div class="hs-my-sub-switch">
+          <span class="hs-scope-chip" v-if="myScopeLabel">{{ myScopeLabel }}</span>
           <button
             :class="{ active: myGroupBy === 'expansion' }"
             type="button"
@@ -257,6 +262,10 @@
           </div>
         </div>
       </div>
+      <div v-if="showFabSectionToggles" class="hs-section-toggles">
+        <button type="button" class="hs-tiny-btn" @click="expandAllSections">展开全部</button>
+        <button type="button" class="hs-tiny-btn" @click="collapseAllSections">收起全部</button>
+      </div>
     </div>
     <!-- 按职业：职业选择（在子切换下方） -->
     <div
@@ -275,6 +284,10 @@
       >
         {{ cls }}
       </button>
+      <div v-if="showFabSectionToggles" class="hs-section-toggles">
+        <button type="button" class="hs-tiny-btn" @click="expandAllSections">展开全部</button>
+        <button type="button" class="hs-tiny-btn" @click="collapseAllSections">收起全部</button>
+      </div>
     </div>
 
     <!-- 统一操作行：攻略 / 硬核模式 / 导出 Excel / 批量完成（我的成就下仅此一行） -->
@@ -318,6 +331,7 @@
         </template>
       </template>
     </div>
+        </div>
 
     <div v-if="progressLoading" class="hs-progress-status" role="status">正在加载成就进度…</div>
         <div v-else-if="progressError" class="hs-progress-status hs-progress-error" role="alert">
@@ -332,6 +346,7 @@
         </div>
 
       </template>
+      </div>
 
       <!-- 我的成就-按版本/按职业：总览面板（完成度进度条 + 一句话说明，默认展开） -->
       <div v-if="showClassOverview" class="hs-class-overview">
@@ -612,12 +627,6 @@
       />
 
       <ScrollToTop />
-
-      <!-- 展开/收起全部：悬浮按钮（与 AI、回到顶部同风格），仅在有分组折叠需求的视图显示 -->
-      <div v-if="showFabSectionToggles" class="hs-fab-left">
-        <button type="button" class="hs-fab-mini" @click="expandAllSections">展开全部</button>
-        <button type="button" class="hs-fab-mini" @click="collapseAllSections">收起全部</button>
-      </div>
 
       <transition name="hs-toast-fade">
         <div v-if="toast.show" class="hs-toast" :class="toast.type" role="alert">
@@ -1213,11 +1222,12 @@ const currentClassName = computed(() => currentClass.value)
 const onClassTabClick = (cls) => {
   currentClass.value = cls
 }
-const myViewSubLabel = computed(() => {
-  const prefix = user.value ? '我的进度' : '全部成就'
-  if (myGroupBy.value === 'sprint') return `${prefix} - 待完成清单`
-  const scope = myGroupBy.value === 'expansion' ? currentExpansion.value?.name : currentClassName.value
-  return `${prefix} - ${scope}`
+const myViewSubLabel = computed(() => user.value ? '我的进度' : '全部成就')
+// 子切换左侧的版本/职业名芯片（替代原顶部冗长面包屑，仅显示版本号/职业名）
+const myScopeLabel = computed(() => {
+  if (myGroupBy.value === 'sprint') return ''
+  if (myGroupBy.value === 'class') return currentClassName.value
+  return currentExpansion.value?.name || ''
 })
 
 // 当前版本的成就

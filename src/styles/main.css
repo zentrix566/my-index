@@ -1847,7 +1847,7 @@ a.content-card:hover {
 .hs-class-overview-head {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   flex-wrap: wrap;
   gap: 10px;
 }
@@ -1938,34 +1938,51 @@ a.content-card:hover {
   background: rgba(251, 191, 36, 0.1);
 }
 
-/* 悬浮「展开全部 / 收起全部」按钮（左下角，与 AI、回到顶部同风格） */
-.hs-fab-left {
-  position: fixed;
-  left: 22px;
-  bottom: 22px;
-  z-index: 60;
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-.hs-fab-mini {
-  height: 40px;
-  padding: 0 16px;
-  border: 1px solid rgba(38, 43, 50, 0.16);
-  border-radius: 10px;
-  background: rgba(255, 255, 255, 0.92);
-  backdrop-filter: blur(8px);
-  color: #5c554d;
+/* 子切换左侧的版本/职业名芯片（替代原顶部冗长面包屑，仅显示版本号/职业名） */
+.hs-scope-chip {
+  display: inline-flex;
+  align-items: center;
+  align-self: center;
+  padding: 4px 13px;
+  margin-right: 4px;
+  border-radius: 999px;
   font-size: 13px;
+  font-weight: 700;
+  letter-spacing: .02em;
+  color: var(--hs-gold, #c9881f);
+  background: rgba(201, 136, 31, 0.12);
+  border: 1px solid rgba(201, 136, 31, 0.35);
+  white-space: nowrap;
+}
+
+/* 总览/浏览面板头部的「展开全部 / 收起全部」（与标题同行，左侧） */
+.hs-overview-toggles {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.hs-tiny-btn {
+  height: 30px;
+  padding: 0 14px;
+  border: 1px solid var(--hs-border);
+  border-radius: 8px;
+  background: var(--hs-surface);
+  color: var(--hs-text-soft);
+  font-size: 12.5px;
   font-weight: 600;
   cursor: pointer;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
-  transition: all 0.15s ease;
+  transition: all .15s ease;
 }
-.hs-fab-mini:hover {
-  background: #2c5669;
-  color: #fff;
-  transform: translateY(-2px);
+.hs-tiny-btn:hover {
+  color: var(--hs-text);
+  border-color: var(--hs-gold, #c9881f);
+  background: rgba(201, 136, 31, 0.1);
+}
+.hs-section-toggles {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 4px;
 }
 
 .hs-class-overview-pct-label {

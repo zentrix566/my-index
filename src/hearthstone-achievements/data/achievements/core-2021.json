@@ -83,7 +83,7 @@
     {
       "id": "core-2021-004",
       "name": "污手马仔",
-      "heroClass": "战士",
+      "heroClass": "圣骑士",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
@@ -175,7 +175,7 @@
     {
       "id": "core-2021-008",
       "name": "法力洼地",
-      "heroClass": "术士",
+      "heroClass": "萨满祭司",
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
