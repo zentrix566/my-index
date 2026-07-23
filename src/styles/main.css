@@ -1922,12 +1922,13 @@ a.content-card:hover {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  padding: 4px 10px;
+  height: 38px;
+  padding: 0 16px;
   border: 1px solid var(--hs-border);
   border-radius: 8px;
   background: var(--hs-surface);
   color: var(--hs-text-soft);
-  font-size: 12.5px;
+  font-size: 13px;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.15s ease;
@@ -1962,7 +1963,10 @@ a.content-card:hover {
   gap: 8px;
 }
 .hs-tiny-btn {
-  height: 30px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
   padding: 0 14px;
   border: 1px solid var(--hs-border);
   border-radius: 8px;
@@ -1980,9 +1984,14 @@ a.content-card:hover {
 }
 .hs-section-toggles {
   display: inline-flex;
-  align-items: center;
+  align-items: stretch;
   gap: 6px;
   margin-left: 4px;
+}
+/* 顶栏 / 我的成就子切换里的「展开全部·收起全部」拉伸到与左侧版本/职业选择器同高 */
+.hs-top-actions > .hs-section-toggles,
+.hs-my-sub-switch > .hs-section-toggles {
+  align-self: stretch;
 }
 
 .hs-class-overview-pct-label {
@@ -2732,9 +2741,18 @@ a.content-card:hover {
   display: flex;
   align-items: center;
   gap: 8px;
-  margin-bottom: 4px;
+  margin-bottom: 0;
   font-size: 13px;
   color: #666;
+}
+
+/* 顶栏内的子切换：去掉外边距，按钮高度与展开/收起（30px）对齐 */
+.hs-top-actions .hs-my-sub-switch {
+  margin-bottom: 0;
+}
+.hs-top-actions .hs-my-sub-switch button {
+  height: 30px;
+  box-sizing: border-box;
 }
 
 .hs-my-sub-label {
@@ -3738,6 +3756,44 @@ a.content-card:hover {
   display: grid;
   grid-template-columns: minmax(260px, 1fr) repeat(3, minmax(130px, 0.22fr));
   gap: 10px;
+  margin-top: 10px;
+}
+
+/* 筛选栏可折叠：搜索框常驻一行，点「筛选」展开/收起更多条件 */
+.hs-controls-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.hs-filter-control--search {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+.hs-filter-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  flex: 0 0 auto;
+  height: 44px;
+  padding: 0 14px;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 9px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--hs-text-soft);
+  background: var(--hs-inset-bg);
+  cursor: pointer;
+  transition: all .15s;
+}
+.hs-filter-toggle:hover {
+  border-color: var(--hs-link);
+  color: var(--hs-link);
+}
+.hs-filter-caret {
+  transition: transform .18s ease;
+}
+.hs-controls:not(.hs-controls--collapsed) .hs-filter-caret {
+  transform: rotate(180deg);
 }
 
 .hs-controls--with-status .hs-controls-grid {

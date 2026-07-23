@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from 'vue'
 defineProps({
   query: { type: String, default: '' },
   selectedClass: { type: String, default: 'all' },
@@ -24,26 +25,19 @@ const emit = defineEmits([
   'update:selectedStatus',
   'update:passBonus'
 ])
+
+// 筛选条件（职业/难度/指标/状态/通行证）默认收起，点「筛选」展开；搜索框常驻。
+const collapsed = ref(true)
 </script>
 
 <template>
   <section
     class="hs-controls"
-    :class="{ 'hs-controls--with-status': showStatusFilter }"
+    :class="{ 'hs-controls--with-status': showStatusFilter, 'hs-controls--collapsed': collapsed }"
     aria-label="筛选"
   >
-    <div class="hs-controls-title">
-      <span class="hs-controls-icon" aria-hidden="true">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M4 5h16"/><path d="M7 12h10"/><path d="M10 19h4"/>
-        </svg>
-      </span>
-      <span><strong>筛选成就</strong><small>缩小范围，更快找到目标</small></span>
-    </div>
-
-    <div class="hs-controls-grid">
+    <div class="hs-controls-head">
       <label class="hs-filter-control hs-filter-control--search">
-        <span class="hs-control-label">搜索</span>
         <span class="hs-search-box">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
@@ -51,12 +45,26 @@ const emit = defineEmits([
           <input
             :value="query"
             type="search"
-            placeholder="名称、描述或关联卡牌"
+            placeholder="搜索成就（名称 / 描述 / 关联卡牌）"
             @input="emit('update:query', $event.target.value)"
           />
         </span>
       </label>
 
+      <button
+        type="button"
+        class="hs-filter-toggle"
+        :aria-expanded="!collapsed"
+        @click="collapsed = !collapsed"
+      >
+        {{ collapsed ? '筛选' : '收起筛选' }}
+        <svg class="hs-filter-caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M6 9l6 6 6-6" />
+        </svg>
+      </button>
+    </div>
+
+    <div v-show="!collapsed" class="hs-controls-grid">
       <label v-if="!hideClassFilter" class="hs-filter-control hs-select-wrap">
         <span class="hs-control-label">职业</span>
         <select :value="selectedClass" @change="emit('update:selectedClass', $event.target.value)">

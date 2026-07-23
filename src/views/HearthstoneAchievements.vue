@@ -118,13 +118,48 @@
           <div>
             <h2>炉石成就</h2>
             <p>
-              <template v-if="viewMode === 'expansion'">{{ currentExpansion?.name }}</template>
-              <template v-else-if="viewMode === 'class'">{{ currentClassName }}</template>
+              <template v-if="viewMode === 'expansion'">{{ currentExpansion?.name }} · 共 {{ currentExpansionAchievements.length }} 个成就</template>
+              <template v-else-if="viewMode === 'class'">{{ currentClassName }} · 共 {{ filteredAchievements.length.toLocaleString() }} 个成就</template>
               <template v-else>{{ myViewSubLabel }}</template>
             </p>
           </div>
+          <button
+            v-if="viewMode === 'expansion' && currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0"
+            type="button"
+            class="hs-guide-btn hs-guide-btn-inline"
+            @click="openGuideLinks(currentExpansion.referenceLinks)"
+          >
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+            </svg>
+            攻略
+          </button>
         </div>
         <div class="hs-top-actions">
+          <!-- 我的成就：子切换（按版本/按职业/待完成清单）移入顶栏左侧，填充奖杯行空白；展开/收起为独立按钮（同按版本浏览） -->
+          <template v-if="viewMode === 'my'">
+            <div class="hs-my-sub-switch">
+              <button
+                :class="{ active: myGroupBy === 'expansion' }"
+                type="button"
+                @click="myGroupBy = 'expansion'"
+              >按版本</button>
+              <button
+                :class="{ active: myGroupBy === 'class' }"
+                type="button"
+                @click="myGroupBy = 'class'"
+              >按职业</button>
+              <button
+                :class="{ active: myGroupBy === 'sprint' }"
+                type="button"
+                @click="myGroupBy = 'sprint'"
+              >待完成清单</button>
+            </div>
+            <div v-if="showMySectionToggles" class="hs-section-toggles">
+              <button type="button" class="hs-tiny-btn" @click="expandAllSections">展开全部</button>
+              <button type="button" class="hs-tiny-btn" @click="collapseAllSections">收起全部</button>
+            </div>
+          </template>
           <!-- 按版本浏览：版本选择（我的成就模式下版本/职业选择移到子切换下方） -->
           <template v-if="viewMode === 'expansion'">
             <ExpansionTabs
@@ -132,8 +167,8 @@
               :current-id="currentExpansionId"
               @switch="currentExpansionId = $event"
             />
-          <!-- 本次新增的版本：收进下拉，不与原有 9 个版本混排；我的成就-按版本下仅硬核模式可见 -->
-          <div v-if="showMoreVersions" class="hs-more-versions" v-click-outside="closeMoreVersions">
+            <!-- 本次新增的版本：收进下拉，不与原有 9 个版本混排；我的成就-按版本下仅硬核模式可见 -->
+            <div v-if="showMoreVersions" class="hs-more-versions" v-click-outside="closeMoreVersions">
               <button
                 type="button"
                 class="hs-btn hs-btn-ghost hs-more-versions-toggle"
@@ -166,10 +201,6 @@
                 </div>
               </div>
             </div>
-            <div v-if="showFabSectionToggles" class="hs-section-toggles">
-              <button type="button" class="hs-tiny-btn" @click="expandAllSections">展开全部</button>
-              <button type="button" class="hs-tiny-btn" @click="collapseAllSections">收起全部</button>
-            </div>
           </template>
           <!-- 按职业浏览：职业选择（我的成就模式下版本/职业选择移到子切换下方） -->
           <div
@@ -189,6 +220,11 @@
               {{ cls }}
             </button>
           </div>
+          <!-- 展开全部 / 收起全部：三视图一致，紧跟版本 / 职业选择之后 -->
+          <div v-if="showFabSectionToggles" class="hs-section-toggles">
+            <button type="button" class="hs-tiny-btn" @click="expandAllSections">展开全部</button>
+            <button type="button" class="hs-tiny-btn" @click="collapseAllSections">收起全部</button>
+          </div>
         </div>
       </header>
 
@@ -203,26 +239,7 @@
           <span>后即可记录并保存你自己的完成进度。</span>
         </div>
         <div class="hs-my-controls">
-        <div class="hs-my-sub-switch">
-          <span class="hs-scope-chip" v-if="myScopeLabel">{{ myScopeLabel }}</span>
-          <button
-            :class="{ active: myGroupBy === 'expansion' }"
-            type="button"
-            @click="myGroupBy = 'expansion'"
-          >按版本</button>
-          <button
-            :class="{ active: myGroupBy === 'class' }"
-            type="button"
-            @click="myGroupBy = 'class'"
-          >按职业</button>
-          <button
-            :class="{ active: myGroupBy === 'sprint' }"
-            type="button"
-            @click="myGroupBy = 'sprint'"
-      >待完成清单</button>
-    </div>
-
-    <!-- 按版本：版本选择（在子切换下方）；硬核开启时含更多版本下拉 -->
+    <!-- 按版本：版本选择（在顶栏子切换下方）；硬核开启时含更多版本下拉 -->
     <div v-if="myGroupBy === 'expansion'" class="hs-my-selector">
       <ExpansionTabs
         :expansions="originalExpansions"
@@ -262,10 +279,6 @@
           </div>
         </div>
       </div>
-      <div v-if="showFabSectionToggles" class="hs-section-toggles">
-        <button type="button" class="hs-tiny-btn" @click="expandAllSections">展开全部</button>
-        <button type="button" class="hs-tiny-btn" @click="collapseAllSections">收起全部</button>
-      </div>
     </div>
     <!-- 按职业：职业选择（在子切换下方） -->
     <div
@@ -284,32 +297,29 @@
       >
         {{ cls }}
       </button>
-      <div v-if="showFabSectionToggles" class="hs-section-toggles">
-        <button type="button" class="hs-tiny-btn" @click="expandAllSections">展开全部</button>
-        <button type="button" class="hs-tiny-btn" @click="collapseAllSections">收起全部</button>
-      </div>
     </div>
 
-    <!-- 统一操作行：攻略 / 硬核模式 / 导出 Excel / 批量完成（我的成就下仅此一行） -->
+    <!-- 我的成就：搜索框上移到导出 Excel 之上 -->
+    <FilterBar
+      v-if="myGroupBy !== 'sprint'"
+      v-model:query="query"
+      v-model:selected-class="selectedClass"
+      v-model:selected-difficulty="selectedDifficulty"
+      v-model:selected-metric="selectedMetric"
+      v-model:selected-status="selectedStatus"
+      :available-classes="filterAvailableClasses"
+      :difficulties="difficulties"
+      :metrics="metrics"
+      :statuses="statuses"
+      :hide-class-filter="false"
+      :show-status-filter="true"
+      v-model:pass-bonus="passBonus"
+      :pass-bonus-options="PASS_BONUS_OPTIONS"
+      :show-pass-bonus="true"
+    />
+
+    <!-- 统一操作行：导出 Excel / 批量完成 / 攻略 / 硬核模式（ON/OFF 开关） -->
     <div class="hs-my-actions">
-      <button
-        v-if="myGroupBy === 'expansion' && currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0"
-        type="button"
-        class="hs-guide-btn"
-        @click="openGuideLinks(currentExpansion.referenceLinks)"
-      >
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-        </svg>
-        攻略
-      </button>
-      <button
-        type="button"
-        class="hs-tab-btn"
-        :class="{ active: hardcore }"
-        :title="'硬核模式：统计全部 ' + expansions.length + ' 个版本（含无经验的更多版本），而非仅核心 ' + originalExpansions.length + ' 个有经验版本。'"
-        @click="hardcore = !hardcore"
-      >硬核模式{{ hardcore ? '：开' : '' }}</button>
       <button type="button" class="hs-btn hs-btn-ghost" :disabled="exporting" @click="exportExcel">
         {{ exporting ? '导出中…' : '导出 Excel' }}
       </button>
@@ -330,6 +340,31 @@
           <button type="button" class="hs-btn hs-btn-ghost" @click="cancelBatch">取消</button>
         </template>
       </template>
+      <!-- 攻略：跟在导出/批量完成之后，高度与其余操作按钮一致 -->
+      <button
+        v-if="myGroupBy === 'expansion' && currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0"
+        type="button"
+        class="hs-guide-btn"
+        @click="openGuideLinks(currentExpansion.referenceLinks)"
+      >
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+        攻略
+      </button>
+      <!-- 硬核模式：ON/OFF 开关 -->
+      <button
+        type="button"
+        class="hs-toggle"
+        :class="{ on: hardcore }"
+        role="switch"
+        :aria-checked="hardcore"
+        :title="'硬核模式：统计全部 ' + expansions.length + ' 个版本（含无经验的更多版本），而非仅核心 ' + originalExpansions.length + ' 个有经验版本。'"
+        @click="hardcore = !hardcore"
+      >
+        <span class="hs-toggle-track"><span class="hs-toggle-thumb"></span></span>
+        <span class="hs-toggle-label">硬核模式{{ hardcore ? '：开' : '：关' }}</span>
+      </button>
     </div>
         </div>
 
@@ -366,30 +401,8 @@
         </div>
       </div>
 
-      <!-- 按版本浏览：仅展开/收起控制与成就总数（不含个人进度） -->
-      <div v-else-if="viewMode === 'expansion'" class="hs-class-overview hs-class-overview-browse">
-        <div class="hs-class-overview-head">
-          <span class="hs-class-overview-browse-count">共 <b>{{ currentExpansionAchievements.length }}</b> 个成就</span>
-        </div>
-      </div>
-
-      <!-- 进度条下方：版本描述 + 营地攻略链接（按版本浏览 / 我的-按版本 通用） -->
-      <section v-if="isExpansionView" class="hs-result-bar">
-        <span>
-          {{ currentExpansion?.description }}
-          <template v-if="viewMode === 'expansion' && currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0">
-            <button type="button" class="hs-guide-btn" @click="openGuideLinks(currentExpansion.referenceLinks)">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-              </svg>
-              攻略
-            </button>
-          </template>
-        </span>
-      </section>
-
       <FilterBar
-        v-if="!(viewMode === 'my' && myGroupBy === 'sprint')"
+        v-if="viewMode !== 'my'"
         v-model:query="query"
         v-model:selected-class="selectedClass"
         v-model:selected-difficulty="selectedDifficulty"
@@ -405,10 +418,6 @@
         :pass-bonus-options="PASS_BONUS_OPTIONS"
         :show-pass-bonus="viewMode === 'my'"
       />
-
-      <section v-if="viewMode === 'class'" class="hs-result-bar">
-        <span>共 {{ filteredAchievements.length.toLocaleString() }} 个成就</span>
-      </section>
 
       <!-- 导出 / 批量完成已合并到「我的成就」统一操作行（hs-my-actions） -->
 
@@ -567,38 +576,6 @@
         <p v-if="!sprintAllList.length" class="hs-sprint-empty">
           当前筛选范围内没有未完成的成就。
         </p>
-      </div>
-
-      <!-- 待完成清单：版本-职业-指标筛选（置于底部内容之后，先浏览清单再筛选） -->
-      <div v-if="viewMode === 'my' && myGroupBy === 'sprint'" class="hs-sprint-toolbar hs-sprint-toolbar-bottom">
-        <div class="hs-sprint-filters">
-          <label class="hs-filter-field">
-            <span class="hs-filter-label">版本</span>
-            <select v-model="sprintVersionFilter" class="hs-filter-select">
-              <option value="all">全部版本</option>
-              <option v-for="v in versionOptions" :key="v.id" :value="v.id">{{ v.name }}</option>
-            </select>
-          </label>
-          <label class="hs-filter-field">
-            <span class="hs-filter-label">职业</span>
-            <select v-model="sprintClassFilter" class="hs-filter-select">
-              <option value="all">全部职业</option>
-              <option v-for="c in allClasses" :key="c" :value="c">{{ c }}</option>
-            </select>
-          </label>
-          <label class="hs-filter-field">
-            <span class="hs-filter-label">指标</span>
-            <select v-model="sprintMetricFilter" class="hs-filter-select">
-              <option v-for="m in sprintMetricOptions" :key="m.value" :value="m.value">{{ m.label }}</option>
-            </select>
-          </label>
-          <label class="hs-filter-field">
-            <span class="hs-filter-label">通行证加成</span>
-            <select v-model.number="passBonus" class="hs-filter-select">
-              <option v-for="o in PASS_BONUS_OPTIONS" :key="o.value" :value="o.value">{{ o.label }}</option>
-            </select>
-          </label>
-        </div>
       </div>
 
       <div v-if="showEmpty && !(viewMode === 'my' && myGroupBy === 'sprint')" class="hs-empty-state">
@@ -1257,14 +1234,14 @@ const collapseAllClasses = () => {
 }
 // 总览面板「展开/收起全部」：按当前视图切换 职业分组 或 版本分组 的折叠态
 const expandAllSections = () => {
-  if (viewMode.value === 'my' && myGroupBy.value === 'class') {
+  if (viewMode.value === 'class' || (viewMode.value === 'my' && myGroupBy.value === 'class')) {
     for (const exp of expansions) expViewCollapsed[exp.id] = false
   } else {
     for (const c of classGroupOrder.value) classViewCollapsed[c] = false
   }
 }
 const collapseAllSections = () => {
-  if (viewMode.value === 'my' && myGroupBy.value === 'class') {
+  if (viewMode.value === 'class' || (viewMode.value === 'my' && myGroupBy.value === 'class')) {
     for (const exp of expansions) expViewCollapsed[exp.id] = true
   } else {
     for (const c of classGroupOrder.value) classViewCollapsed[c] = true
@@ -1279,9 +1256,13 @@ const isExpansionView = computed(
 const showClassOverview = computed(
   () => viewMode.value === 'my' && (myGroupBy.value === 'expansion' || myGroupBy.value === 'class')
 )
-// 悬浮「展开全部 / 收起全部」按钮的显示条件：总览面板（我的-按版本/按职业）或按版本浏览
+// 悬浮「展开全部 / 收起全部」按钮的显示条件：按版本浏览、按职业浏览（我的成就由 showMySectionToggles 独立控制）
 const showFabSectionToggles = computed(
-  () => showClassOverview.value || viewMode.value === 'expansion'
+  () => viewMode.value === 'expansion' || viewMode.value === 'class'
+)
+// 我的成就-按版本/按职业：展开全部/收起全部显示在子切换行后面
+const showMySectionToggles = computed(
+  () => viewMode.value === 'my' && (myGroupBy.value === 'expansion' || myGroupBy.value === 'class')
 )
 
 // 每个职业的完成度总览（基于当前筛选结果）
@@ -2015,5 +1996,94 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
   border-radius: 0;
   flex: 1 1 auto;
   overflow-y: auto;
+}
+
+/* ===== 本次布局调整新增样式 ===== */
+/* 标题行内联攻略按钮（按版本浏览，与版本名/成就数同一行） */
+.hs-guide-btn-inline {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  align-self: center;
+  height: auto;
+  margin-left: 6px;
+  padding: 6px 12px;
+  border: 1px solid rgba(21, 128, 61, 0.35);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #15803d;
+  background: rgba(21, 128, 61, 0.1);
+  cursor: pointer;
+  transition: all .15s;
+}
+.hs-guide-btn-inline:hover { background: rgba(21, 128, 61, 0.18); }
+
+/* 硬核模式 ON/OFF 开关 */
+.hs-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 0 0 auto;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  color: var(--hs-text-soft);
+  font-size: 13px;
+  font-weight: 600;
+}
+.hs-toggle-track {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  border-radius: 999px;
+  background: rgba(148, 163, 184, 0.4);
+  transition: background .18s ease;
+}
+.hs-toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
+  transition: transform .18s ease;
+}
+.hs-toggle.on .hs-toggle-track { background: #15803d; }
+.hs-toggle.on .hs-toggle-thumb { transform: translateX(18px); }
+.hs-toggle-label { white-space: nowrap; }
+
+/* 待完成清单：筛选栏上移到操作行下方 */
+.hs-sprint-toolbar-top {
+  margin-top: 12px;
+  padding: 12px 14px;
+  border: 1px solid var(--hs-border);
+  border-radius: 12px;
+  background: var(--hs-surface-overlay);
+}
+.hs-sprint-toolbar-top .hs-sprint-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+.hs-sprint-toolbar-top .hs-filter-field {
+  display: grid;
+  gap: 5px;
+}
+.hs-sprint-toolbar-top .hs-filter-label {
+  color: var(--hs-muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+.hs-sprint-toolbar-top .hs-filter-select {
+  height: 38px;
+  padding: 0 10px;
+  border: 1px solid rgba(148, 163, 184, 0.22);
+  border-radius: 8px;
+  color: var(--hs-text);
+  background: var(--hs-inset-bg);
 }
 </style>

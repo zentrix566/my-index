@@ -20,8 +20,20 @@ jobs:
       packages: write
 
     steps:
+      # 缓存 Git LFS 对象目录，避免每次部署都从 LFS 存储重新下载 93MB 真实图片。
+      # 首次构建会种下缓存，之后 git lfs fetch 命中缓存不再重复下载（省 LFS 带宽配额、提速）。
+      - name: Cache Git LFS objects
+        uses: actions/cache@v4
+        with:
+          path: ~/.cache/git-lfs
+          key: lfs-cache-${{ runner.os }}
+
       - name: Checkout code
         uses: actions/checkout@v4
+        with:
+          lfs: true
+        with:
+          lfs: true   # 必须拉取 Git LFS 真实文件，否则 public/hearthstone-cards 下是 LFS 指针文本，打包进镜像后图片无法显示
 
       # 1. 登录到 GitHub 镜像仓库 (GHCR)
       - name: Log in to GHCR
