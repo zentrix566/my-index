@@ -19,6 +19,11 @@ COPY favicon.svg ./
 COPY public/ ./public/
 COPY src/ ./src/
 
+# 卡牌图 OSS 基地址：构建时经 docker build-arg 传入（Vite 在 build 时把 import.meta.env.VITE_* 编译进产物）。
+# 必须在此处声明 ARG 并以 ENV 注入，否则 vite build 读不到 VITE_OSS_BASE，线上图片会回退失败。
+ARG VITE_OSS_BASE
+ENV VITE_OSS_BASE=$VITE_OSS_BASE
+
 RUN npm run build
 
 # 运行时（同样需要编译 better-sqlite3 原生模块）

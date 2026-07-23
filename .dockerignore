@@ -7,3 +7,5 @@ js
 life
 projects
 README.md
+# 炉石卡牌图已迁移到阿里云 OSS（VITE_OSS_BASE），不再打进镜像，减小体积、加快构建
+public/hearthstone-cards

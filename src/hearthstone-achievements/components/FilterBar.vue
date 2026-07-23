@@ -14,7 +14,8 @@ defineProps({
   showStatusFilter: { type: Boolean, default: false },
   passBonus: { type: Number, default: 0 },
   passBonusOptions: { type: Array, default: () => [] },
-  showPassBonus: { type: Boolean, default: false }
+  showPassBonus: { type: Boolean, default: false },
+  searchOnly: { type: Boolean, default: false }
 })
 
 const emit = defineEmits([
@@ -52,6 +53,7 @@ const collapsed = ref(true)
       </label>
 
       <button
+        v-if="!searchOnly"
         type="button"
         class="hs-filter-toggle"
         :aria-expanded="!collapsed"

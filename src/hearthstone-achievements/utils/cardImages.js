@@ -2,8 +2,18 @@
 // 数据由 scripts/generate-deck-card-manifest.mjs 根据 public/hearthstone-cards/wild 下的图片生成
 import cardImageManifest from '../data/deck-card-images.json' with { type: 'json' }
 
-/** Hearthstone CDN 基地址（zhCN 卡牌原画） */
+/** Hearthstone CDN 基地址（zhCN 卡牌原画，仅作最后兜底；当前已不可达，建议用 OSS） */
 export const CDN_BASE = 'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/zhcn'
+
+/** 阿里云 OSS 图片基地址（公开读）。在 .env 配置 VITE_OSS_BASE，如 https://bucket.oss-cn-beijing.aliyuncs.com
+ *  配置后前端优先从 OSS 加载卡牌图（不进 Docker 镜像、部署稳定、国内快）；未配置时回退本地 public。 */
+const OSS_BASE = (typeof import.meta !== 'undefined' && import.meta.env
+  ? (import.meta.env.VITE_OSS_BASE || '')
+  : ''
+).replace(/\/$/, '')
+
+/** 导出供 deckstring.js 等复用，避免重复读取环境变量 */
+export { OSS_BASE }
 
 /** 稀有度到统一标识的映射（兼容 deckstring.js 的中文稀有度与 cards_meta 的 rarity_id） */
 const RARITY_MAP = {
@@ -37,24 +47,26 @@ export function getLocalCardImages(name) {
 }
 
 /**
- * 获取卡牌完整图 URL（优先本地，缺失则回退 CDN）
+ * 获取卡牌完整图 URL（优先 OSS，其次本地 public，最后 CDN 兜底）
  * @param {string} name 卡牌中文名
  * @param {string} [cardId] 卡牌 slug id，用于 CDN 回退
  */
 export function getCardFullImage(name, cardId) {
   const local = cardImageManifest[name]
+  if (OSS_BASE && local && local.full) return `${OSS_BASE}${local.full}`
   if (local && local.full) return local.full
   if (cardId) return `${CDN_BASE}/${cardId}.png`
   return ''
 }
 
 /**
- * 获取卡牌缩略图 URL（优先本地，缺失则回退 CDN）
+ * 获取卡牌缩略图 URL（优先 OSS，其次本地 public，最后 CDN 兜底）
  * @param {string} name 卡牌中文名
  * @param {string} [cardId] 卡牌 slug id，用于 CDN 回退
  */
 export function getCardCropImage(name, cardId) {
   const local = cardImageManifest[name]
+  if (OSS_BASE && local && local.crop) return `${OSS_BASE}${local.crop}`
   if (local && local.crop) return local.crop
   if (cardId) return `${CDN_BASE}/${cardId}.png`
   return ''

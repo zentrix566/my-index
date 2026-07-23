@@ -299,9 +299,8 @@
       </button>
     </div>
 
-    <!-- 我的成就：搜索框上移到导出 Excel 之上 -->
+    <!-- 我的成就：搜索框上移到导出 Excel 之上（sprint 待完成清单用 searchOnly 只显示搜索框） -->
     <FilterBar
-      v-if="myGroupBy !== 'sprint'"
       v-model:query="query"
       v-model:selected-class="selectedClass"
       v-model:selected-difficulty="selectedDifficulty"
@@ -316,6 +315,7 @@
       v-model:pass-bonus="passBonus"
       :pass-bonus-options="PASS_BONUS_OPTIONS"
       :show-pass-bonus="true"
+      :search-only="myGroupBy === 'sprint'"
     />
 
     <!-- 统一操作行：导出 Excel / 批量完成 / 攻略 / 硬核模式（ON/OFF 开关） -->
@@ -1234,14 +1234,18 @@ const collapseAllClasses = () => {
 }
 // 总览面板「展开/收起全部」：按当前视图切换 职业分组 或 版本分组 的折叠态
 const expandAllSections = () => {
-  if (viewMode.value === 'class' || (viewMode.value === 'my' && myGroupBy.value === 'class')) {
+  if (viewMode.value === 'my' && myGroupBy.value === 'sprint') {
+    for (const k of Object.keys(sprintSectionCollapsed)) sprintSectionCollapsed[k] = false
+  } else if (viewMode.value === 'class' || (viewMode.value === 'my' && myGroupBy.value === 'class')) {
     for (const exp of expansions) expViewCollapsed[exp.id] = false
   } else {
     for (const c of classGroupOrder.value) classViewCollapsed[c] = false
   }
 }
 const collapseAllSections = () => {
-  if (viewMode.value === 'class' || (viewMode.value === 'my' && myGroupBy.value === 'class')) {
+  if (viewMode.value === 'my' && myGroupBy.value === 'sprint') {
+    for (const k of Object.keys(sprintSectionCollapsed)) sprintSectionCollapsed[k] = true
+  } else if (viewMode.value === 'class' || (viewMode.value === 'my' && myGroupBy.value === 'class')) {
     for (const exp of expansions) expViewCollapsed[exp.id] = true
   } else {
     for (const c of classGroupOrder.value) classViewCollapsed[c] = true
@@ -1260,9 +1264,9 @@ const showClassOverview = computed(
 const showFabSectionToggles = computed(
   () => viewMode.value === 'expansion' || viewMode.value === 'class'
 )
-// 我的成就-按版本/按职业：展开全部/收起全部显示在子切换行后面
+// 我的成就-按版本/按职业/待完成清单：展开全部/收起全部显示在子切换行后面
 const showMySectionToggles = computed(
-  () => viewMode.value === 'my' && (myGroupBy.value === 'expansion' || myGroupBy.value === 'class')
+  () => viewMode.value === 'my' && (myGroupBy.value === 'expansion' || myGroupBy.value === 'class' || myGroupBy.value === 'sprint')
 )
 
 // 每个职业的完成度总览（基于当前筛选结果）
@@ -1359,10 +1363,16 @@ const sprintGroups = computed(() => {
   const count = [] // 累计-次数
   const points = [] // 累计-点数
 
+  const text = query.value.trim().toLowerCase()
   for (const ach of scopeAchievements.value) {
     if (sprintVersionFilter.value !== 'all' && ach._expansionId !== sprintVersionFilter.value) continue
     if (sprintClassFilter.value !== 'all' && !matchesClass(ach, sprintClassFilter.value)) continue
     if (!matchSprintMetric(ach)) continue
+    // 搜索关键词：名称 / 职业 / 关联卡牌 / 阶段描述
+    if (text) {
+      const targets = [ach.name, getClassName(ach), ...(ach.relatedCards || []), ...ach.stages.map((s) => s.description)]
+      if (!targets.filter(Boolean).some((v) => String(v).toLowerCase().includes(text))) continue
+    }
     const info = getProgressInfo(ach)
     if (info.completed) continue
     if (ach.type !== '累计') oneTime.push(ach)

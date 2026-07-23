@@ -114,7 +114,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { decodeDeck } from '../utils/deckstring.js'
-import { getRarityClass, getCardFullImage, CDN_BASE } from '../utils/cardImages.js'
+import { getRarityClass, getCardFullImage, getLocalCardImages } from '../utils/cardImages.js'
 
 const props = defineProps({
   visible: { type: Boolean, default: false },
@@ -134,9 +134,10 @@ function selectCard(card) {
 }
 
 function onImgError(e, card) {
-  // 本地缩略图缺失时回退官方 CDN，确保部署后（即便本地图片未随仓库发布）也不破图
-  if (card && card.id && !String(e.target.src).startsWith('http')) {
-    e.target.src = `${CDN_BASE}/${card.id}.png`
+  // OSS 主图加载失败时，回退本地 public 路径（部署环境无本地图则最终隐藏）
+  const local = getLocalCardImages(card.name)
+  if (local && local.crop && String(e.target.src).startsWith('http')) {
+    e.target.src = local.crop
     e.target.onerror = null
     return
   }
@@ -144,9 +145,10 @@ function onImgError(e, card) {
 }
 
 function onDetailImgError(e) {
-  // 本地大图加载失败时，尝试 CDN 回退
-  if (selectedCard.value && selectedCard.value.id && !detailImage.value.startsWith('http')) {
-    detailImage.value = `${CDN_BASE}/${selectedCard.value.id}.png`
+  // OSS 大图加载失败时，回退本地 public 路径
+  const local = selectedCard.value && getLocalCardImages(selectedCard.value.name)
+  if (local && local.full && detailImage.value.startsWith('http')) {
+    detailImage.value = local.full
     return
   }
   e.target.style.display = 'none'

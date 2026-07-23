@@ -11,6 +11,9 @@ env:
   ALIYUN_REGISTRY: crpi-nfo20s3jyve6dt2s.cn-beijing.personal.cr.aliyuncs.com
   ALIYUN_REPO: zentrix-repo/devops
   IMAGE_NAME: ${{ github.repository }}
+  # 炉石卡牌图 OSS 基地址（公开读，非密钥）。需在本仓库 Settings → Secrets → Actions 配置 VITE_OSS_BASE，
+  # 如 https://<bucket>.oss-cn-beijing.aliyuncs.com （不带结尾斜杠）。CI 构建时注入，前端据此从 OSS 加载图。
+  VITE_OSS_BASE: ${{ secrets.VITE_OSS_BASE }}
 
 jobs:
   build-and-push:
@@ -20,40 +23,12 @@ jobs:
       packages: write
 
     steps:
-      # 缓存 Git LFS 对象目录，避免每次部署都从 LFS 存储重新下载 93MB 真实图片。
-      # key 包含 LFS 文件列表的 hash，当增删 LFS 文件时自动失效。
-      - name: Cache Git LFS objects
-        uses: actions/cache@v4
-        with:
-          path: ~/.cache/git-lfs
-          key: lfs-cache-${{ runner.os }}-${{ hashFiles('.gitattributes', '**/*.png') }}
-
+      # 卡牌图已迁移到阿里云 OSS（前端 VITE_OSS_BASE），不再依赖 Git LFS，
+      # 因此 checkout 不拉 LFS，省去拉取 93MB 指针/真实文件与校验步骤，构建更快更稳。
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          lfs: true
-
-      # 显式拉取 LFS 真实文件（checkout 的 lfs:true 不保证一定执行 pull，尤其在有缓存时）
-      - name: Pull LFS files
-        run: |
-          git lfs install
-          git lfs pull
-
-      # 校验：确认 public/hearthstone-cards 下的 png 是真实图片而非 LFS 指针文本（指针约 130 字节）
-      - name: Verify LFS images
-        run: |
-          echo "=== 抽检卡牌图片 ==="
-          SAMPLE=$(find public/hearthstone-cards -name "*.png" | head -3)
-          for f in $SAMPLE; do
-            SIZE=$(stat -c%s "$f")
-            echo "  $f → ${SIZE} bytes"
-            if [ "$SIZE" -lt 1000 ]; then
-              echo "::error::LFS 文件未正确拉取：$f 只有 ${SIZE} bytes（应为真实 PNG，>1KB）"
-              head -c 200 "$f"
-              exit 1
-            fi
-          done
-          echo "✓ LFS 图片校验通过"
+          lfs: false
 
       # 1. 登录到 GitHub 镜像仓库 (GHCR)
       - name: Log in to GHCR
@@ -84,6 +59,9 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
+          # 将 VITE_OSS_BASE 传进 Docker 构建容器，供 vite build 编译进产物（否则线上图片基地址为空）
+          build-args: |
+            VITE_OSS_BASE=${{ env.VITE_OSS_BASE }}
           # 同时指定两个仓库的标签
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
