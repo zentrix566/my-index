@@ -21,17 +21,39 @@ jobs:
 
     steps:
       # 缓存 Git LFS 对象目录，避免每次部署都从 LFS 存储重新下载 93MB 真实图片。
-      # 首次构建会种下缓存，之后 git lfs fetch 命中缓存不再重复下载（省 LFS 带宽配额、提速）。
+      # key 包含 LFS 文件列表的 hash，当增删 LFS 文件时自动失效。
       - name: Cache Git LFS objects
         uses: actions/cache@v4
         with:
           path: ~/.cache/git-lfs
-          key: lfs-cache-${{ runner.os }}
+          key: lfs-cache-${{ runner.os }}-${{ hashFiles('.gitattributes', '**/*.png') }}
 
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          lfs: true   # 必须拉取 Git LFS 真实文件，否则 public/hearthstone-cards 下是 LFS 指针文本，打包进镜像后图片无法显示
+          lfs: true
+
+      # 显式拉取 LFS 真实文件（checkout 的 lfs:true 不保证一定执行 pull，尤其在有缓存时）
+      - name: Pull LFS files
+        run: |
+          git lfs install
+          git lfs pull
+
+      # 校验：确认 public/hearthstone-cards 下的 png 是真实图片而非 LFS 指针文本（指针约 130 字节）
+      - name: Verify LFS images
+        run: |
+          echo "=== 抽检卡牌图片 ==="
+          SAMPLE=$(find public/hearthstone-cards -name "*.png" | head -3)
+          for f in $SAMPLE; do
+            SIZE=$(stat -c%s "$f")
+            echo "  $f → ${SIZE} bytes"
+            if [ "$SIZE" -lt 1000 ]; then
+              echo "::error::LFS 文件未正确拉取：$f 只有 ${SIZE} bytes（应为真实 PNG，>1KB）"
+              head -c 200 "$f"
+              exit 1
+            fi
+          done
+          echo "✓ LFS 图片校验通过"
 
       # 1. 登录到 GitHub 镜像仓库 (GHCR)
       - name: Log in to GHCR
@@ -50,12 +72,14 @@ jobs:
           username: ${{ secrets.ALIYUN_USERNAME }}
           password: ${{ secrets.ALIYUN_PASSWORD }}
 
-      # 3. 构建镜像并同时推送到两个仓库
+      # 3. 构建镜像并同时推送到两个仓库（启用 Docker 层缓存加速构建）
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
         with:
           context: .
           push: true
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
           # 同时指定两个仓库的标签
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
