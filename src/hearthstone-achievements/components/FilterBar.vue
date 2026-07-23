@@ -10,7 +10,10 @@ defineProps({
   selectedMetric: { type: String, default: 'all' },
   metrics: { type: Array, default: () => [] },
   hideClassFilter: { type: Boolean, default: false },
-  showStatusFilter: { type: Boolean, default: false }
+  showStatusFilter: { type: Boolean, default: false },
+  passBonus: { type: Number, default: 0 },
+  passBonusOptions: { type: Array, default: () => [] },
+  showPassBonus: { type: Boolean, default: false }
 })
 
 const emit = defineEmits([
@@ -18,7 +21,8 @@ const emit = defineEmits([
   'update:selectedClass',
   'update:selectedDifficulty',
   'update:selectedMetric',
-  'update:selectedStatus'
+  'update:selectedStatus',
+  'update:passBonus'
 ])
 </script>
 
@@ -82,6 +86,13 @@ const emit = defineEmits([
         <select :value="selectedStatus" @change="emit('update:selectedStatus', $event.target.value)">
           <option value="all">全部状态</option>
           <option v-for="s in statuses" :key="s" :value="s">{{ s }}</option>
+        </select>
+      </label>
+
+      <label v-if="showPassBonus" class="hs-filter-control hs-select-wrap">
+        <span class="hs-control-label">通行证加成</span>
+        <select :value="passBonus" @change="emit('update:passBonus', Number($event.target.value))">
+          <option v-for="o in passBonusOptions" :key="o.value" :value="o.value">{{ o.label }}</option>
         </select>
       </label>
     </div>

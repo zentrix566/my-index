@@ -1139,27 +1139,30 @@ a.content-card:hover {
   backdrop-filter: blur(6px);
 }
 
-/* AI 建议入口（「我的成就」视图底部） */
-.hs-ai-entry {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 24px;
-  padding: 14px 16px;
-  border: 1px dashed var(--hs-border);
-  border-radius: 12px;
-  background: var(--hs-surface-soft);
+/* AI 建议：悬浮按钮（固定在页面右下角，点击打开弹窗） */
+.hs-ai-fab {
+  position: fixed;
+  right: 22px;
+  bottom: 84px;
+  z-index: 60;
+  width: 52px;
+  height: 52px;
+  border: 0;
+  border-radius: 50%;
+  font-size: 24px;
+  line-height: 1;
+  color: #fff;
+  background: linear-gradient(135deg, #8b5cf6, #6d28d9);
+  box-shadow: 0 8px 22px rgba(109, 40, 217, 0.42);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
-.hs-ai-entry .hs-ai-btn {
-  flex: 0 0 auto;
-  color: #7c3aed;
-  border-color: #ddd6fe;
-  background: #f5f3ff;
+.hs-ai-fab:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 28px rgba(109, 40, 217, 0.5);
 }
-.hs-ai-entry .hs-ai-entry-tip {
-  font-size: 12.5px;
-  color: var(--hs-text-soft, #475569);
+.hs-ai-fab:active {
+  transform: translateY(0);
 }
 
 /* 介绍 + 登录态 */
@@ -1870,12 +1873,99 @@ a.content-card:hover {
 
 .hs-class-overview-actions {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
-.hs-class-overview-actions .hs-btn {
+/* 与顶部视图切换一致的 pill/tab 按钮样式（展开全部 / 收起全部 / 硬核模式等） */
+.hs-tab-btn {
+  height: 32px;
+  padding: 0 16px;
+  border: 1px solid rgba(38, 43, 50, 0.16);
+  border-radius: 8px;
+  background: #ece8df;
+  color: #5c554d;
+  white-space: nowrap;
+  font-weight: 500;
   font-size: 13px;
-  padding: 6px 12px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.hs-tab-btn:hover {
+  color: #2c5669;
+}
+.hs-tab-btn.active {
+  color: #fff;
+  background: #2c5669;
+  border-color: #2c5669;
+  box-shadow: 0 2px 6px rgba(44, 86, 105, 0.3);
+}
+
+/* 我的成就统一操作行：攻略 / 硬核 / 导出 / 批量完成 一行 */
+.hs-my-actions {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 12px 0 4px;
+}
+/* 我的成就：子切换下方的版本 / 职业选择容器 */
+.hs-my-selector {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 10px 0 2px;
+}
+
+/* 攻略按钮（替换原行内参考链接） */
+.hs-guide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border: 1px solid var(--hs-border);
+  border-radius: 8px;
+  background: var(--hs-surface);
+  color: var(--hs-text-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.hs-guide-btn:hover {
+  color: var(--hs-text);
+  border-color: var(--hs-gold);
+  background: rgba(251, 191, 36, 0.1);
+}
+
+/* 悬浮「展开全部 / 收起全部」按钮（左下角，与 AI、回到顶部同风格） */
+.hs-fab-left {
+  position: fixed;
+  left: 22px;
+  bottom: 22px;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.hs-fab-mini {
+  height: 40px;
+  padding: 0 16px;
+  border: 1px solid rgba(38, 43, 50, 0.16);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.92);
+  backdrop-filter: blur(8px);
+  color: #5c554d;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+  transition: all 0.15s ease;
+}
+.hs-fab-mini:hover {
+  background: #2c5669;
+  color: #fff;
+  transform: translateY(-2px);
 }
 
 .hs-class-overview-pct-label {
@@ -2593,8 +2683,8 @@ a.content-card:hover {
 /* 回到顶部按钮 */
 .hs-scroll-top {
   position: fixed;
-  right: 24px;
-  bottom: 32px;
+  right: 22px;
+  bottom: 22px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -3426,26 +3516,28 @@ a.content-card:hover {
   z-index: 1;
   display: grid;
   grid-column: 1 / -1;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 1px;
   overflow: hidden;
   border: 1px solid var(--hs-border);
-  border-radius: 13px;
+  border-radius: 11px;
   background: var(--hs-border);
+  max-width: 360px;
 }
 
 .hs-hero-metrics > div {
   display: flex;
   align-items: baseline;
-  gap: 9px;
-  padding: 13px 16px;
+  gap: 8px;
+  padding: 9px 14px;
   background: var(--hs-inset-bg);
 }
 
 .hs-hero-metrics strong {
   color: var(--hs-gold-soft);
   font-family: "SFMono-Regular", Consolas, monospace;
-  font-size: 19px;
+  font-size: 16px;
+  font-weight: 700;
 }
 
 .hs-hero-metrics span {

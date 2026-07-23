@@ -22,15 +22,24 @@ let progressGeneration = 0
 
 // 从服务器加载（按登录态返回对应用户进度；匿名为空）
 async function loadFromServer({ force = false } = {}) {
-  if (loading.value) return loadPromise
-  if (loaded.value && !force) return
+  // 非强制：已加载则跳过；有进行中的请求则复用它，避免重复拉取
+  if (!force) {
+    if (loaded.value) return
+    if (loading.value) return loadPromise
+  }
 
+  // 强制刷新（如保存进度后 reload）：递增 generation 作废任何进行中的旧请求，
+  // 保证拿到的是 PUT 之后的最新数据，而不是复用「PUT 之前发起」的旧请求结果（否则数字会回退）。
+  const generation = ++progressGeneration
   loading.value = true
   error.value = null
-  const generation = progressGeneration
   loadPromise = (async () => {
     try {
-      const resp = await fetch('/api/achievements/progress')
+      // no-store：禁用浏览器缓存，避免保存后仍读到缓存里的旧进度
+      const resp = await fetch('/api/achievements/progress', {
+        cache: 'no-store',
+        credentials: 'same-origin'
+      })
       if (!resp.ok) throw new Error(`Request failed with status ${resp.status}`)
 
       const data = await resp.json()
@@ -55,6 +64,14 @@ async function loadFromServer({ force = false } = {}) {
 }
 
 const reload = () => loadFromServer({ force: true })
+
+// 乐观更新：把已成功保存到服务端的进度立即合并进本地响应式状态，
+// 使「待完成清单」等统计即时刷新，不依赖随后 GET 的时序或缓存。
+// entries 形如 { [achId]: { stages, count } }，与 PUT 请求体的 progress 同构。
+const applyLocalProgress = (entries) => {
+  if (!entries || typeof entries !== 'object') return
+  progressData.value = { ...progressData.value, ...entries }
+}
 
 // 退出登录时立即清空内存中的用户进度，并阻止较早的请求回写旧用户数据。
 const clear = () => {
@@ -266,6 +283,7 @@ export function useAchievementProgress(progressRef) {
     error,
     reload,
     clear,
+    applyLocalProgress,
     isStageCompleted,
     isAchievementCompleted,
     getStats,

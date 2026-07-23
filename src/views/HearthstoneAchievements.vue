@@ -63,9 +63,18 @@
         <div class="hs-hero-metrics" aria-label="数据概览">
           <div><strong>{{ allAchievements.length }}</strong><span>收录成就</span></div>
           <div><strong>{{ expansions.length }}</strong><span>游戏版本</span></div>
-          <div><strong>{{ allClasses.length }}</strong><span>职业分类</span></div>
         </div>
       </section>
+
+      <!-- AI 成就建议：悬浮按钮（仅登录 + 我的成就视图），点击打开弹窗 -->
+      <button
+        v-if="AI_ADVISOR_ENABLED && user && viewMode === 'my'"
+        type="button"
+        class="hs-ai-fab"
+        title="AI 成就建议（实验）"
+        aria-label="打开 AI 成就建议"
+        @click="openAi"
+      >🤖</button>
 
       <!-- 视图模式切换 + 版本/职业选择：滚动时固定在顶部 -->
       <div class="hs-sticky-controls" ref="stickyRef">
@@ -116,8 +125,8 @@
           </div>
         </div>
         <div class="hs-top-actions">
-          <!-- 按版本/我的(按版本)：版本选择 -->
-          <template v-if="viewMode === 'expansion' || (viewMode === 'my' && myGroupBy === 'expansion')">
+          <!-- 按版本浏览：版本选择（我的成就模式下版本/职业选择移到子切换下方） -->
+          <template v-if="viewMode === 'expansion'">
             <ExpansionTabs
               :expansions="originalExpansions"
               :current-id="currentExpansionId"
@@ -158,9 +167,9 @@
               </div>
             </div>
           </template>
-          <!-- 按职业/我的(按职业)：职业选择；待完成清单使用视图内的统一筛选器 -->
+          <!-- 按职业浏览：职业选择（我的成就模式下版本/职业选择移到子切换下方） -->
           <div
-            v-else-if="viewMode === 'class' || (viewMode === 'my' && myGroupBy === 'class')"
+            v-else-if="viewMode === 'class'"
             class="hs-expansion-tabs"
             role="tablist"
             aria-label="选择职业"
@@ -182,18 +191,6 @@
 
       <!-- 我的成就模式：分组切换 + 统计面板 -->
       <template v-if="viewMode === 'my'">
-        <!-- AI 建议入口：仅「我的成就」视图，置于该视图顶部；需登录才可使用（服务端强制鉴权） -->
-        <div v-if="AI_ADVISOR_ENABLED && user" class="hs-ai-entry">
-          <button type="button" class="hs-btn hs-btn-ghost hs-ai-btn" @click="openAi">
-            <span aria-hidden="true">🤖</span> AI 成就建议（实验）
-          </button>
-          <span class="hs-ai-entry-tip">
-            根据你未完成的成就，让 AI 推荐下一步该刷哪一块 · 每天 5 次固定 + 1 次自由提问
-            <template v-if="hardcore">（已开启硬核：覆盖全部 {{ expansions.length }} 个版本）</template>
-            <template v-else>（仅核心 {{ originalExpansions.length }} 个有经验版本）</template>
-          </span>
-        </div>
-
         <div v-if="!user" class="hs-example-banner">
           <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
@@ -220,20 +217,106 @@
       >待完成清单</button>
     </div>
 
-    <!-- 硬核模式开关 + 介绍（仅「我的成就」） -->
-    <div v-if="viewMode === 'my'" class="hs-hardcore-bar">
-      <label class="hs-hardcore-toggle">
-        <input type="checkbox" v-model="hardcore" />
-        <span>硬核模式（统计全部成就，不止有经验的 9 个版本）</span>
-      </label>
-      <details v-if="hardcore" class="hs-hardcore-intro">
-        <summary>硬核成就说明</summary>
-        <p>
-          硬核模式会统计<strong>全部 {{ expansions.length }} 个版本</strong>的成就（含无经验的「更多版本」），
-          而非仅原有的 9 个有经验版本。额外纳入的版本：{{ hardcoreExtraNames }}。
-          开启后，完成度、待完成清单与各项剩余统计都将覆盖所有成就。
-        </p>
-      </details>
+    <!-- 按版本：版本选择（在子切换下方）；硬核开启时含更多版本下拉 -->
+    <div v-if="myGroupBy === 'expansion'" class="hs-my-selector">
+      <ExpansionTabs
+        :expansions="originalExpansions"
+        :current-id="currentExpansionId"
+        @switch="currentExpansionId = $event"
+      />
+      <div v-if="showMoreVersions" class="hs-more-versions" v-click-outside="closeMoreVersions">
+        <button
+          type="button"
+          class="hs-btn hs-btn-ghost hs-more-versions-toggle"
+          :class="{ active: moreVersionsOpen || addedExpansions.some((e) => e.id === currentExpansionId) }"
+          :title="`本次新增的 ${addedExpansions.length} 个版本`"
+          @click="toggleMoreVersions"
+        >
+          更多版本
+          <span class="hs-more-versions-count">{{ addedExpansions.length }}</span>
+          <svg class="hs-more-versions-caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M6 9l6 6 6-6" />
+          </svg>
+        </button>
+        <div v-if="moreVersionsOpen" class="hs-more-versions-panel" role="menu">
+          <p class="hs-more-versions-tip">本次新增的版本（已本地化成就数据）</p>
+          <div class="hs-more-versions-grid">
+            <button
+              v-for="exp in addedExpansions"
+              :key="exp.id"
+              type="button"
+              class="hs-more-versions-item"
+              :class="{ active: currentExpansionId === exp.id }"
+              @click="selectAdded(exp.id)"
+            >
+              <span>{{ exp.name }}</span>
+              <svg v-if="currentExpansionId === exp.id" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M20 6L9 17l-5-5" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- 按职业：职业选择（在子切换下方） -->
+    <div
+      v-else-if="myGroupBy === 'class'"
+      class="hs-my-selector hs-expansion-tabs"
+      role="tablist"
+      aria-label="选择职业"
+    >
+      <button
+        v-for="cls in allClasses"
+        :key="cls"
+        :class="{ active: currentClass === cls }"
+        type="button"
+        role="tab"
+        @click="onClassTabClick(cls)"
+      >
+        {{ cls }}
+      </button>
+    </div>
+
+    <!-- 统一操作行：攻略 / 硬核模式 / 导出 Excel / 批量完成（我的成就下仅此一行） -->
+    <div class="hs-my-actions">
+      <button
+        v-if="myGroupBy === 'expansion' && currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0"
+        type="button"
+        class="hs-guide-btn"
+        @click="openGuideLinks(currentExpansion.referenceLinks)"
+      >
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+        </svg>
+        攻略
+      </button>
+      <button
+        type="button"
+        class="hs-tab-btn"
+        :class="{ active: hardcore }"
+        :title="'硬核模式：统计全部 ' + expansions.length + ' 个版本（含无经验的更多版本），而非仅核心 ' + originalExpansions.length + ' 个有经验版本。'"
+        @click="hardcore = !hardcore"
+      >硬核模式{{ hardcore ? '：开' : '' }}</button>
+      <button type="button" class="hs-btn hs-btn-ghost" :disabled="exporting" @click="exportExcel">
+        {{ exporting ? '导出中…' : '导出 Excel' }}
+      </button>
+      <template v-if="user">
+        <template v-if="!batchMode">
+          <button type="button" class="hs-btn hs-btn-ghost" @click="startBatch">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
+            批量完成
+          </button>
+        </template>
+        <template v-else>
+          <span class="hs-batch-count">已选 <b>{{ selectedAchIds.length }}</b> 个</span>
+          <button type="button" class="hs-btn hs-btn-ghost" @click="selectAllVisible">全选</button>
+          <button type="button" class="hs-btn hs-btn-ghost" @click="clearSelection">清除</button>
+          <button type="button" class="hs-btn hs-btn-primary" :disabled="selectedAchIds.length === 0 || savingProgress" @click="batchComplete">
+            {{ savingProgress ? '保存中…' : '完成选中 (' + selectedAchIds.length + ')' }}
+          </button>
+          <button type="button" class="hs-btn hs-btn-ghost" @click="cancelBatch">取消</button>
+        </template>
+      </template>
     </div>
 
     <div v-if="progressLoading" class="hs-progress-status" role="status">正在加载成就进度…</div>
@@ -248,49 +331,12 @@
           <p class="hs-overview-summary-text" v-html="overviewSummaryHtml.line2"></p>
         </div>
 
-        <!-- 待完成清单：导出 / 批量完成，置于剩余统计下方 -->
-        <div class="hs-export-bar" v-if="viewMode === 'my' && myGroupBy === 'sprint'">
-          <span class="hs-export-label">导出：</span>
-          <button type="button" class="hs-btn hs-btn-ghost" :disabled="exporting" @click="exportExcel">
-            {{ exporting ? '导出中…' : '导出 Excel' }}
-          </button>
-          <label class="hs-pass">
-            通行证加成：
-            <select v-model.number="passBonus" class="hs-pass-select">
-              <option v-for="o in PASS_BONUS_OPTIONS" :key="o.value" :value="o.value">{{ o.label }}</option>
-        </select>
-      </label>
-    </div>
-
-    <div class="hs-batch-bar" v-if="viewMode === 'my' && user && myGroupBy === 'sprint'">
-          <template v-if="!batchMode">
-            <button type="button" class="hs-btn hs-btn-ghost" @click="startBatch">
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-              批量完成
-            </button>
-            <span class="hs-batch-hint">勾选多个成就后一次性标记完成，省去逐个点击</span>
-          </template>
-          <template v-else>
-            <span class="hs-batch-count">已选 <b>{{ selectedAchIds.length }}</b> 个</span>
-            <button type="button" class="hs-btn hs-btn-ghost" @click="selectAllVisible">全选当前范围</button>
-            <button type="button" class="hs-btn hs-btn-ghost" @click="clearSelection">清除</button>
-            <button type="button" class="hs-btn hs-btn-primary" :disabled="selectedAchIds.length === 0 || savingProgress" @click="batchComplete">
-              {{ savingProgress ? '保存中…' : '完成选中 (' + selectedAchIds.length + ')' }}
-            </button>
-            <button type="button" class="hs-btn hs-btn-ghost" @click="cancelBatch">取消</button>
-          </template>
-        </div>
-
       </template>
 
       <!-- 我的成就-按版本/按职业：总览面板（完成度进度条 + 一句话说明，默认展开） -->
       <div v-if="showClassOverview" class="hs-class-overview">
         <div class="hs-class-overview-head">
           <span class="hs-class-overview-head-title">完成进度</span>
-          <div class="hs-class-overview-actions">
-            <button type="button" class="hs-btn hs-btn-ghost" @click="expandAllSections">展开全部</button>
-            <button type="button" class="hs-btn hs-btn-ghost" @click="collapseAllSections">收起全部</button>
-          </div>
         </div>
         <p v-if="isMyAddedVersion" class="hs-overview-note">
           当前浏览的是「更多版本」中的新增版本，仅用于查看成就，<strong>不计入「我的成就」统计</strong>（下方进度始终反映原有 9 个版本）。
@@ -309,10 +355,6 @@
       <div v-else-if="viewMode === 'expansion'" class="hs-class-overview hs-class-overview-browse">
         <div class="hs-class-overview-head">
           <span class="hs-class-overview-browse-count">共 <b>{{ currentExpansionAchievements.length }}</b> 个成就</span>
-          <div class="hs-class-overview-actions">
-            <button type="button" class="hs-btn hs-btn-ghost" @click="expandAllClasses">展开全部</button>
-            <button type="button" class="hs-btn hs-btn-ghost" @click="collapseAllClasses">收起全部</button>
-          </div>
         </div>
       </div>
 
@@ -320,17 +362,13 @@
       <section v-if="isExpansionView" class="hs-result-bar">
         <span>
           {{ currentExpansion?.description }}
-          <template v-if="currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0">
-            <span class="hs-ref-links">
-              <template v-for="(link, idx) in currentExpansion.referenceLinks" :key="link.url">
-                <a :href="link.url" target="_blank" rel="noopener noreferrer" class="hs-ref-link">
-                  <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                    <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-                  </svg>
-                  {{ link.name }}
-                </a>
-              </template>
-            </span>
+          <template v-if="viewMode === 'expansion' && currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0">
+            <button type="button" class="hs-guide-btn" @click="openGuideLinks(currentExpansion.referenceLinks)">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
+              攻略
+            </button>
           </template>
         </span>
       </section>
@@ -348,45 +386,16 @@
         :statuses="statuses"
         :hide-class-filter="viewMode === 'class'"
         :show-status-filter="viewMode === 'my'"
+        v-model:pass-bonus="passBonus"
+        :pass-bonus-options="PASS_BONUS_OPTIONS"
+        :show-pass-bonus="viewMode === 'my'"
       />
 
       <section v-if="viewMode === 'class'" class="hs-result-bar">
         <span>共 {{ filteredAchievements.length.toLocaleString() }} 个成就</span>
       </section>
 
-      <!-- 导出（JSON 导出/导入暂隐藏，待启用） -->
-      <div class="hs-export-bar" v-if="viewMode === 'my' && myGroupBy !== 'sprint'">
-        <span class="hs-export-label">导出：</span>
-        <button type="button" class="hs-btn hs-btn-ghost" :disabled="exporting" @click="exportExcel">
-          {{ exporting ? '导出中…' : '导出 Excel' }}
-        </button>
-        <label class="hs-pass">
-          通行证加成：
-          <select v-model.number="passBonus" class="hs-pass-select">
-            <option v-for="o in PASS_BONUS_OPTIONS" :key="o.value" :value="o.value">{{ o.label }}</option>
-          </select>
-        </label>
-      </div>
-
-      <!-- 批量完成工具条（仅登录用户可见） -->
-      <div class="hs-batch-bar" v-if="viewMode === 'my' && user && myGroupBy !== 'sprint'">
-        <template v-if="!batchMode">
-          <button type="button" class="hs-btn hs-btn-ghost" @click="startBatch">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-            批量完成
-          </button>
-          <span class="hs-batch-hint">勾选多个成就后一次性标记完成，省去逐个点击</span>
-        </template>
-        <template v-else>
-          <span class="hs-batch-count">已选 <b>{{ selectedAchIds.length }}</b> 个</span>
-          <button type="button" class="hs-btn hs-btn-ghost" @click="selectAllVisible">全选当前范围</button>
-          <button type="button" class="hs-btn hs-btn-ghost" @click="clearSelection">清除</button>
-          <button type="button" class="hs-btn hs-btn-primary" :disabled="selectedAchIds.length === 0 || savingProgress" @click="batchComplete">
-            {{ savingProgress ? '保存中…' : '完成选中 (' + selectedAchIds.length + ')' }}
-          </button>
-          <button type="button" class="hs-btn hs-btn-ghost" @click="cancelBatch">取消</button>
-        </template>
-      </div>
+      <!-- 导出 / 批量完成已合并到「我的成就」统一操作行（hs-my-actions） -->
 
 
       <!-- 按版本浏览：按职业分组 -->
@@ -568,6 +577,12 @@
               <option v-for="m in sprintMetricOptions" :key="m.value" :value="m.value">{{ m.label }}</option>
             </select>
           </label>
+          <label class="hs-filter-field">
+            <span class="hs-filter-label">通行证加成</span>
+            <select v-model.number="passBonus" class="hs-filter-select">
+              <option v-for="o in PASS_BONUS_OPTIONS" :key="o.value" :value="o.value">{{ o.label }}</option>
+            </select>
+          </label>
         </div>
       </div>
 
@@ -597,6 +612,12 @@
       />
 
       <ScrollToTop />
+
+      <!-- 展开/收起全部：悬浮按钮（与 AI、回到顶部同风格），仅在有分组折叠需求的视图显示 -->
+      <div v-if="showFabSectionToggles" class="hs-fab-left">
+        <button type="button" class="hs-fab-mini" @click="expandAllSections">展开全部</button>
+        <button type="button" class="hs-fab-mini" @click="collapseAllSections">收起全部</button>
+      </div>
 
       <transition name="hs-toast-fade">
         <div v-if="toast.show" class="hs-toast" :class="toast.type" role="alert">
@@ -730,7 +751,8 @@ const {
   loading: progressLoading,
   error: progressError,
   reload: reloadProgress,
-  clear: clearProgress
+  clear: clearProgress,
+  applyLocalProgress
 } = useAchievementProgress(displayProgress)
 
 // 初始化：加载认证态
@@ -807,6 +829,8 @@ async function saveProgress(payload) {
       const result = await resp.json().catch(() => ({}))
       throw new Error(result.error || '保存失败')
     }
+    // 乐观更新：先把本次保存合并进本地状态，保证统计即时刷新；再拉服务端对齐
+    applyLocalProgress({ [payload.id]: { stages: payload.stages, count: payload.count } })
     await reloadProgress()
     const nowCompleted = ach ? isAchievementCompleted(ach) : false
     // 仅在「从未完成 → 完成」这一刻弹出庆祝，避免重复保存已完成的成就时打扰
@@ -887,6 +911,8 @@ async function batchComplete() {
       const e = await resp.json().catch(() => ({}))
       throw new Error(e.error || '保存失败')
     }
+    // 乐观更新：批量完成先合并进本地状态，统计即时刷新；再拉服务端对齐
+    applyLocalProgress(progress)
     await reloadProgress()
     showToast('success', `已完成 ${Object.keys(progress).length} 个成就`)
     selectedAchIds.value = []
@@ -1042,6 +1068,8 @@ async function onImportFile(e) {
         body: JSON.stringify({ progress })
       })
       if (!resp.ok) throw new Error('导入失败（' + resp.status + '）')
+      // 乐观更新：导入的进度先合并进本地状态，统计即时刷新；再拉服务端对齐
+      applyLocalProgress(progress)
       await reloadProgress()
       showToast('success', '进度导入成功')
     } catch (err) {
@@ -1240,6 +1268,10 @@ const isExpansionView = computed(
 // 仅在「我的-按版本 / 我的-按职业」时展示总览面板（含完成度进度条与剩余统计一句话说明）
 const showClassOverview = computed(
   () => viewMode.value === 'my' && (myGroupBy.value === 'expansion' || myGroupBy.value === 'class')
+)
+// 悬浮「展开全部 / 收起全部」按钮的显示条件：总览面板（我的-按版本/按职业）或按版本浏览
+const showFabSectionToggles = computed(
+  () => showClassOverview.value || viewMode.value === 'expansion'
 )
 
 // 每个职业的完成度总览（基于当前筛选结果）
@@ -1699,6 +1731,14 @@ const openDeckDetail = (deck) => {
   deckDetailVisible.value = true
 }
 
+// 攻略按钮：在新标签打开当前扩展包的参考链接（营地攻略等）
+const openGuideLinks = (links) => {
+  if (!links || !links.length) return
+  for (const link of links) {
+    if (link && link.url) window.open(link.url, '_blank', 'noopener,noreferrer')
+  }
+}
+
 const getClassStyle = (heroClass) => ({
   '--hs-class-color': classColors[heroClass] || '#8b7355'
 })
@@ -1746,54 +1786,6 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
   color: #a9791f;
 }
 
-.hs-export-bar {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin: 12px 0 4px;
-  padding: 12px 14px;
-  background: var(--hs-surface-overlay);
-  border: 1px solid var(--hs-border);
-  border-radius: 12px;
-}
-.hs-export-label {
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--hs-text-soft);
-}
-.hs-export-hint {
-  font-size: 12px;
-  color: var(--hs-muted);
-}
-.hs-pass {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-left: auto;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--hs-text-soft);
-}
-.hs-pass-select {
-  min-height: 44px;
-  padding: 6px 30px 6px 10px;
-  font-size: 13px;
-  border: 1px solid var(--hs-border);
-  border-radius: 9px;
-  background: var(--hs-inset-bg);
-  color: var(--hs-text);
-  cursor: pointer;
-}
-.hs-pass-select option {
-  color: #0f172a;
-  background: #fff;
-}
-.hs-pass-select:focus {
-  outline: 3px solid rgba(251, 191, 36, 0.45);
-  outline-offset: 2px;
-  border-color: #fbbf24;
-}
 .hs-xp-line {
   margin-top: 2px;
 }
@@ -1955,49 +1947,6 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
 .hs-celebrate-fade-leave-to {
   opacity: 0;
   transform: translateX(-50%) translateY(-18px);
-}
-
-/* ============ 硬核模式开关 ============ */
-.hs-hardcore-bar {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  margin: 12px 0 4px;
-  padding: 10px 14px;
-  background: var(--hs-surface-overlay);
-  border: 1px solid var(--hs-border);
-  border-radius: 12px;
-}
-.hs-hardcore-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  font-size: 13.5px;
-  font-weight: 600;
-  color: var(--hs-text);
-  cursor: pointer;
-}
-.hs-hardcore-toggle input {
-  width: 16px;
-  height: 16px;
-  accent-color: #dc2626;
-  cursor: pointer;
-}
-.hs-hardcore-intro {
-  font-size: 12.5px;
-  color: var(--hs-text-soft);
-  line-height: 1.6;
-}
-.hs-hardcore-intro summary {
-  cursor: pointer;
-  font-weight: 600;
-  color: #dc2626;
-}
-.hs-hardcore-intro p {
-  margin: 8px 0 0;
-}
-.hs-hardcore-intro strong {
-  color: var(--hs-text);
 }
 
 /* ============ AI 建议（实验）入口 / 弹窗 ============ */
