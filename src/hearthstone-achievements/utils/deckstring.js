@@ -10,6 +10,7 @@
 // 将 dbfId 解析为中文牌名与英雄职业，无需联网。
 
 import cardNameData from '../data/dbfid-cardnames.json' with { type: 'json' }
+import { getLocalCardImages, normalizeRarity } from './cardImages.js'
 const { cards: cardNames, heroClasses } = cardNameData
 
 // 极端情况（JSON 未覆盖的双职业英雄等）兜底，取自在用推荐卡组码实测推导
@@ -61,8 +62,22 @@ function getCardInfo(dbfId) {
 }
 
 /**
- * 解码卡组码为结构化数据（含中文牌名、费用、类型等）
- * @returns {{ valid:boolean, heroClass:string, heroes:number[], cards:Array<{dbfId:number,count:number,name:string,cost:number,type:string,cardClass:string,rarity:string,id:string}>, total:number }}
+ * 为卡牌补充本地图片路径与标准化稀有度
+ * @param {{name:string, id:string, rarity:string}} card
+ * @returns {{cropImage?:string, fullImage?:string, rarityKey:string}}
+ */
+function enrichCardImages(card) {
+  const local = getLocalCardImages(card.name)
+  return {
+    cropImage: local?.crop || '',
+    fullImage: local?.full || '',
+    rarityKey: normalizeRarity(card.rarity)
+  }
+}
+
+/**
+ * 解码卡组码为结构化数据（含中文牌名、费用、类型、稀有度、本地图片路径等）
+ * @returns {{ valid:boolean, heroClass:string, heroes:number[], cards:Array<{dbfId:number,count:number,name:string,cost:number,type:string,cardClass:string,rarity:string,id:string,rarityKey:string,cropImage:string,fullImage:string}>, total:number }}
  */
 export function decodeDeck(code) {
   try {
@@ -91,7 +106,10 @@ export function decodeDeck(code) {
       multis.push({ dbfId: d.value, count: c.value })
     }
 
-    const resolve = (dbfId, count) => ({ ...getCardInfo(dbfId), dbfId, count })
+    const resolve = (dbfId, count) => {
+      const base = getCardInfo(dbfId)
+      return { ...base, ...enrichCardImages(base), dbfId, count }
+    }
 
     const cards = [
       ...singles.map((dbfId) => resolve(dbfId, 1)),

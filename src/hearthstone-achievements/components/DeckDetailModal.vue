@@ -12,46 +12,85 @@
         <p v-if="decoded.valid" class="ddm-meta">共 {{ decoded.total }} 张</p>
       </div>
 
-      <!-- 卡牌列表（旅法师营地风格：费用宝石 + 类型图标 + 牌名 + 卡牌画 + 数量） -->
-      <div v-if="decoded.valid && decoded.cards.length" class="ddm-cards">
-        <ul class="ddm-card-list">
-          <li v-for="(c, idx) in decoded.cards" :key="c.dbfId + '-' + c.count + '-' + idx"
+      <!-- 卡牌列表 + 详情预览（旅法师营地风格） -->
+      <div v-if="decoded.valid && decoded.cards.length" class="ddm-body">
+        <div class="ddm-cards">
+          <ul class="ddm-card-list">
+            <li
+              v-for="(c, idx) in decoded.cards"
+              :key="c.dbfId + '-' + c.count + '-' + idx"
               class="ddm-card-row"
-              :title="c.name + ' · ' + (c.cost ?? '?') + '费' + (c.rarity ? ' · ' + c.rarity : '')">
-            <!-- 费用宝石（六边形，按职业着色） -->
-            <span class="ddm-cost-gem" :class="'ddm-cost-' + (c.cardClass || 'neutral')">
-              <svg class="ddm-cost-svg" viewBox="0 0 28 32"><polygon points="14,0 27.5,8 27.5,24 14,32 0.5,24 0.5,8"/></svg>
-              <span class="ddm-cost-num">{{ c.cost ?? '?' }}</span>
-            </span>
-            <!-- 类型图标 -->
-            <span class="ddm-type-icon" :class="'ddm-type-' + (c.type || '').toLowerCase()" :aria-label="c.type || ''">
-              <template v-if="c.type === 'MINION' || !c.type">
-                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 2a2 2 0 00-2 2v7a2 2 0 002 2h10a2 2 0 002-2V4a2 2 0 00-2-2H3zm1 9V5l4 3-4 3z"/></svg>
-              </template>
-              <template v-else-if="c.type === 'SPELL'">
-                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.5 1 2 4 2 7v3c0 2.5 2 4.5 4 5.5L8 17l2-1.5c2-1 4-3 4-5.5V7c0-3-2.5-6-6-6zm0 2c2.5 0 4 2 4 4.5V10c0 1.5-1.5 3-3 4-1.5-1-3-2.5-3-4V7.5C4 5 5.5 3 8 3z"/></svg>
-              </template>
-              <template v-else-if="c.type === 'WEAPON'">
-                <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.5 2.5L11 5 11 8 5 14 2 14 2 11 8 5 11 5 13.5 2.5zM12 4L6 10"/></svg>
-              </template>
-            </span>
-            <!-- 牌名 -->
-            <span class="ddm-card-name-wrap">
-              <span class="ddm-card-name">{{ c.name }}</span>
-            </span>
-            <!-- 卡牌原画缩略图（从 HearthstoneCDN 加载） -->
+              :class="{ 'ddm-card-active': selectedCard && selectedCard.dbfId === c.dbfId }"
+              :title="c.name + ' · ' + (c.cost ?? '?') + '费' + (c.rarity ? ' · ' + c.rarity : '')"
+              @click="selectCard(c)"
+            >
+              <!-- 费用宝石（六边形，按职业着色） -->
+              <span class="ddm-cost-gem" :class="'ddm-cost-' + (c.cardClass || 'neutral')">
+                <svg class="ddm-cost-svg" viewBox="0 0 28 32"><polygon points="14,0 27.5,8 27.5,24 14,32 0.5,24 0.5,8"/></svg>
+                <span class="ddm-cost-num">{{ c.cost ?? '?' }}</span>
+              </span>
+              <!-- 类型图标 -->
+              <span class="ddm-type-icon" :class="'ddm-type-' + (c.type || '').toLowerCase()" :aria-label="c.type || ''">
+                <template v-if="c.type === 'MINION' || !c.type">
+                  <svg viewBox="0 0 16 16" fill="currentColor"><path d="M3 2a2 2 0 00-2 2v7a2 2 0 002 2h10a2 2 0 002-2V4a2 2 0 00-2-2H3zm1 9V5l4 3-4 3z"/></svg>
+                </template>
+                <template v-else-if="c.type === 'SPELL'">
+                  <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1C4.5 1 2 4 2 7v3c0 2.5 2 4.5 4 5.5L8 17l2-1.5c2-1 4-3 4-5.5V7c0-3-2.5-6-6-6zm0 2c2.5 0 4 2 4 4.5V10c0 1.5-1.5 3-3 4-1.5-1-3-2.5-3-4V7.5C4 5 5.5 3 8 3z"/></svg>
+                </template>
+                <template v-else-if="c.type === 'WEAPON'">
+                  <svg viewBox="0 0 16 16" fill="currentColor"><path d="M13.5 2.5L11 5 11 8 5 14 2 14 2 11 8 5 11 5 13.5 2.5zM12 4L6 10"/></svg>
+                </template>
+                <template v-else-if="c.type === 'HERO'">
+                  <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 100 14A7 7 0 008 1zm0 2a5 5 0 110 10A5 5 0 018 3z"/></svg>
+                </template>
+                <template v-else-if="c.type === 'LOCATION'">
+                  <svg viewBox="0 0 16 16" fill="currentColor"><path d="M2 12h12V5l-6-3-6 3v7zm6-8 4 2v5H4V6l4-2z"/></svg>
+                </template>
+              </span>
+              <!-- 牌名（按稀有度着色） -->
+              <span class="ddm-card-name-wrap">
+                <span class="ddm-card-name" :class="getRarityClass(c.rarity)">{{ c.name }}</span>
+              </span>
+              <!-- 卡牌缩略图 -->
+              <img
+                v-if="c.cropImage"
+                :src="c.cropImage"
+                :alt="c.name"
+                class="ddm-card-art"
+                loading="lazy"
+                @error="onImgError($event, c)"
+              />
+              <span v-else class="ddm-card-art ddm-art-placeholder"></span>
+              <!-- 数量 -->
+              <span class="ddm-count">{{ c.count }}</span>
+            </li>
+          </ul>
+        </div>
+
+        <!-- 卡牌详情面板 -->
+        <div class="ddm-detail">
+          <div v-if="selectedCard" class="ddm-detail-card">
             <img
-              v-if="c.id"
-              :src="cardImageUrl(c.id)"
-              :alt="c.name"
-              class="ddm-card-art"
-              loading="lazy"
-              @error="onImgError($event)"
+              v-if="detailImage"
+              :src="detailImage"
+              :alt="selectedCard.name"
+              class="ddm-detail-image"
+              loading="eager"
+              @error="onDetailImgError($event)"
             />
-            <!-- 数量 -->
-            <span class="ddm-count">{{ c.count }}</span>
-          </li>
-        </ul>
+            <div v-else class="ddm-detail-placeholder">
+              <p>暂无「{{ selectedCard.name }}」的大图</p>
+            </div>
+            <p class="ddm-detail-name" :class="getRarityClass(selectedCard.rarity)">{{ selectedCard.name }}</p>
+          </div>
+          <div v-else class="ddm-detail-hint">
+            <p>点击左侧卡牌查看详情</p>
+          </div>
+        </div>
+      </div>
+
+      <div v-else-if="!decoded.valid" class="ddm-empty">
+        <p>卡组码解析失败，请检查代码是否完整。</p>
       </div>
 
       <!-- 卡组介绍 -->
@@ -73,8 +112,9 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { decodeDeck } from '../utils/deckstring.js'
+import { getRarityClass, getCardFullImage, CDN_BASE } from '../utils/cardImages.js'
 
 const props = defineProps({
   visible: { type: Boolean, default: false },
@@ -82,18 +122,33 @@ const props = defineProps({
 })
 const emit = defineEmits(['close'])
 
-/** Hearthstone CDN 基地址（zhCN 卡牌原画） */
-const CDN_BASE = 'https://d15f34w2p8l1cc.cloudfront.net/hearthstone/zhcn'
-
-function cardImageUrl(id) {
-  return `${CDN_BASE}/${id}.png`
-}
-
 const decoded = computed(() => (props.deck ? decodeDeck(props.deck.code) : { valid: false, heroClass: '未知', total: 0, cards: [] }))
 const displayClass = computed(() => (props.deck && props.deck.heroClass) || decoded.value.heroClass)
 const copied = ref(false)
+const selectedCard = ref(null)
+const detailImage = ref('')
 
-function onImgError(e) {
+function selectCard(card) {
+  selectedCard.value = card
+  detailImage.value = getCardFullImage(card.name, card.id)
+}
+
+function onImgError(e, card) {
+  // 本地缩略图缺失时回退官方 CDN，确保部署后（即便本地图片未随仓库发布）也不破图
+  if (card && card.id && !String(e.target.src).startsWith('http')) {
+    e.target.src = `${CDN_BASE}/${card.id}.png`
+    e.target.onerror = null
+    return
+  }
+  e.target.style.display = 'none'
+}
+
+function onDetailImgError(e) {
+  // 本地大图加载失败时，尝试 CDN 回退
+  if (selectedCard.value && selectedCard.value.id && !detailImage.value.startsWith('http')) {
+    detailImage.value = `${CDN_BASE}/${selectedCard.value.id}.png`
+    return
+  }
   e.target.style.display = 'none'
 }
 
@@ -112,13 +167,24 @@ async function copy() {
   copied.value = true
   setTimeout(() => (copied.value = false), 2000)
 }
+
+// 弹窗打开时默认选中第一张有图的卡牌
+watch(() => props.visible, (show) => {
+  if (show && decoded.value.cards.length) {
+    const first = decoded.value.cards.find(c => c.fullImage) || decoded.value.cards[0]
+    selectCard(first)
+  } else if (!show) {
+    selectedCard.value = null
+    detailImage.value = ''
+  }
+})
 </script>
 
 <style scoped>
 .ddm-overlay {
   position: fixed;
   inset: 0;
-  background: rgba(2, 6, 23, 0.82);
+  background: rgba(15, 23, 42, 0.55);
   backdrop-filter: blur(10px);
   display: flex;
   align-items: center;
@@ -129,13 +195,13 @@ async function copy() {
 .ddm-modal {
   position: relative;
   width: 100%;
-  max-width: 720px;
+  max-width: 960px;
   padding: 28px 30px 24px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  border: 1px solid var(--hs-border);
   border-radius: 20px;
-  color: #e2e8f0;
-  background: linear-gradient(165deg, #132233 0%, #0c1826 100%);
-  box-shadow: 0 32px 96px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(255,255,255,0.06);
+  color: var(--hs-text);
+  background: var(--hs-surface-raised);
+  box-shadow: var(--hs-shadow-strong);
   max-height: 88vh;
   overflow-y: auto;
 }
@@ -147,14 +213,14 @@ async function copy() {
   place-items: center;
   width: 40px;
   height: 40px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--hs-border);
   border-radius: 10px;
-  color: #94a3b8;
-  background: rgba(255, 255, 255, 0.04);
+  color: var(--hs-muted);
+  background: var(--hs-surface-soft);
   cursor: pointer;
   transition: all .18s;
 }
-.ddm-close:hover { color: #fff; background: rgba(255, 255, 255, 0.1); }
+.ddm-close:hover { color: var(--hs-text); background: var(--hs-surface-overlay); }
 
 /* ── 顶部信息区 ── */
 .ddm-header { margin-bottom: 16px; }
@@ -168,16 +234,23 @@ async function copy() {
   background: linear-gradient(135deg, #e65100, #f57c00);
   color: #fff;
 }
-.ddm-title { margin: 8px 0 2px; color: #f8fafc; font-size: 22px; font-weight: 700; }
-.ddm-meta { margin: 0; color: #94a3b8; font-size: 13px; }
+.ddm-title { margin: 8px 0 2px; color: var(--hs-text); font-size: 22px; font-weight: 700; }
+.ddm-meta { margin: 0; color: var(--hs-muted); font-size: 13px; }
+
+/* ── 主体：列表 + 详情 ── */
+.ddm-body {
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 20px;
+  margin-bottom: 18px;
+}
 
 /* ── 卡牌列表（旅法师营地风格）── */
 .ddm-cards {
-  margin-bottom: 18px;
   padding: 12px;
   border-radius: 14px;
-  background: rgba(0, 0, 0, 0.25);
-  border: 1px solid rgba(148, 163, 184, 0.12);
+  background: var(--hs-inset-bg);
+  border: 1px solid var(--hs-border);
 }
 .ddm-card-list {
   list-style: none;
@@ -196,9 +269,11 @@ async function copy() {
   border-radius: 8px;
   font-size: 13px;
   line-height: 1;
+  cursor: pointer;
   transition: background .12s;
 }
-.ddm-card-row:hover { background: rgba(255, 255, 255, 0.06); }
+.ddm-card-row:hover { background: var(--hs-surface-soft); }
+.ddm-card-row.ddm-card-active { background: var(--hs-surface-overlay); }
 
 /* 费用宝石（六边形） */
 .ddm-cost-gem {
@@ -217,7 +292,7 @@ async function copy() {
   height: 100%;
 }
 .ddm-cost-svg polygon {
-  stroke: rgba(255,255,255,.35);
+  stroke: var(--hs-border);
   stroke-width: 0.8;
 }
 /* 各职业费用宝石颜色 */
@@ -254,7 +329,7 @@ async function copy() {
 }
 .ddm-type-icon svg { width: 100%; height: 100%; }
 
-/* 牌名 */
+/* 牌名（按稀有度着色） */
 .ddm-card-name-wrap {
   flex: 1 1 auto;
   min-width: 0;
@@ -265,22 +340,29 @@ async function copy() {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  font-weight: 500;
+  font-weight: 600;
   letter-spacing: .02em;
 }
+.ddm-rarity-common   { color: var(--hs-text); }  /* 白卡：跟随主题（亮色=黑字，暗色=白字） */
+.ddm-rarity-rare     { color: #2563eb; }
+.ddm-rarity-epic     { color: #9333ea; }
+.ddm-rarity-legendary{ color: #f97316; }
 
-/* 卡牌原画缩略图 */
+/* 卡牌缩略图 */
 .ddm-card-art {
   flex: 0 0 auto;
   width: 64px;
   height: 22px;
   object-fit: cover;
   border-radius: 4px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  opacity: .85;
+  border: 1px solid var(--hs-border);
+  opacity: .9;
   transition: opacity .15s;
 }
 .ddm-card-row:hover .ddm-card-art { opacity: 1; }
+.ddm-art-placeholder {
+  background: var(--hs-surface-soft);
+}
 
 /* 数量 */
 .ddm-count {
@@ -295,31 +377,78 @@ async function copy() {
   font-size: 14px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
-  color: #ffd54f;
-  background: rgba(255, 213, 79, 0.12);
-  border: 1px solid rgba(255, 213, 79, 0.25);
+  color: var(--hs-gold);
+  background: rgba(217, 119, 6, 0.12);
+  border: 1px solid rgba(217, 119, 6, 0.25);
 }
+
+/* ── 卡牌详情面板 ── */
+.ddm-detail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 360px;
+  padding: 16px;
+  border-radius: 14px;
+  background: var(--hs-inset-bg);
+  border: 1px solid var(--hs-border);
+}
+.ddm-detail-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+.ddm-detail-image {
+  width: 100%;
+  max-width: 260px;
+  border-radius: 12px;
+  box-shadow: var(--hs-shadow-strong);
+}
+.ddm-detail-name {
+  margin: 14px 0 0;
+  font-size: 15px;
+  font-weight: 700;
+  text-align: center;
+}
+.ddm-detail-hint,
+.ddm-detail-placeholder {
+  color: var(--hs-muted);
+  font-size: 13px;
+  text-align: center;
+}
+.ddm-detail-placeholder p { margin: 0; }
 
 /* ── 卡组介绍 ── */
 .ddm-intro {
   margin-bottom: 18px;
   padding: 14px 16px;
   border-radius: 12px;
-  background: rgba(2, 6, 23, 0.3);
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  background: var(--hs-surface-soft);
+  border: 1px solid var(--hs-border);
 }
 .ddm-intro-label {
   margin: 0 0 6px;
-  color: #cbd5e1;
+  color: var(--hs-text-soft);
   font-size: 12px;
   font-weight: 700;
 }
 .ddm-intro-text {
   margin: 0;
-  color: #94a3b8;
+  color: var(--hs-muted);
   font-size: 13px;
   line-height: 1.7;
   white-space: pre-line;
+}
+
+/* ── 空状态 ── */
+.ddm-empty {
+  margin-bottom: 18px;
+  padding: 24px;
+  border-radius: 12px;
+  color: var(--hs-muted);
+  text-align: center;
+  background: var(--hs-surface-soft);
 }
 
 /* ── 操作栏 ── */
@@ -332,7 +461,7 @@ async function copy() {
   padding: 0 18px;
   border: 1px solid rgba(74, 222, 128, 0.4);
   border-radius: 10px;
-  color: #4ade80;
+  color: #16a34a;
   background: rgba(74, 222, 128, 0.08);
   font-size: 13.5px;
   font-weight: 600;
@@ -340,18 +469,27 @@ async function copy() {
   transition: all .15s;
 }
 .ddm-copy-btn:hover { background: rgba(74, 222, 128, 0.16); border-color: rgba(74, 222, 128, 0.6); }
-.ddm-copied { color: #fff; background: #4ade80; border-color: #4ade80; }
-.ddm-hint { margin: 8px 0 0; color: #64748b; font-size: 12px; }
+.ddm-copied { color: #fff; background: #16a34a; border-color: #16a34a; }
+.ddm-hint { margin: 8px 0 0; color: var(--hs-muted); font-size: 12px; }
 
 /* focus */
 .ddm-close:focus-visible,
-.ddm-copy-btn:focus-visible {
-  outline: 3px solid rgba(251, 191, 36, 0.5);
+.ddm-copy-btn:focus-visible,
+.ddm-card-row:focus-visible {
+  outline: 3px solid var(--hs-focus);
   outline-offset: 2px;
 }
 
-@media (max-width: 640px) {
+
+/* 暗色主题：稀有度文字在深色表面提亮，保证对比度 */
+.hs-page[data-hs-theme="dark"] .ddm-rarity-rare { color: #60a5fa; }
+.hs-page[data-hs-theme="dark"] .ddm-rarity-epic { color: #c084fc; }
+.hs-page[data-hs-theme="dark"] .ddm-rarity-legendary { color: #fb923c; }
+@media (max-width: 760px) {
   .ddm-modal { padding: 22px 16px 18px; max-width: calc(100vw - 32px); }
+  .ddm-body { grid-template-columns: 1fr; }
+  .ddm-detail { min-height: auto; order: -1; }
+  .ddm-detail-image { max-width: 220px; }
   .ddm-card-list { grid-template-columns: 1fr; }
   .ddm-card-art { width: 56px; height: 20px; }
 }
