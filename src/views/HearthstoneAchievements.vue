@@ -642,7 +642,7 @@ import { computed, ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
 import { expansions, originalExpansions, addedExpansions } from '../hearthstone-achievements/data/expansions.js'
-import { classColors, getClassOrder, groupByClass, matchesClass, getClassName } from '../hearthstone-achievements/utils/achievements.js'
+import { classColors, getClassOrder, groupByClass, matchesClass, getClassName, CORE_EXPANSION_IDS } from '../hearthstone-achievements/utils/achievements.js'
 import { useAchievementProgress } from '../hearthstone-achievements/composables/useAchievementProgress.js'
 import { useAuth } from '../auth/useAuth.js'
 import EditProgressModal from '../hearthstone-achievements/components/EditProgressModal.vue'
@@ -1147,6 +1147,8 @@ const isZongheView = computed(() => currentExpansionId.value === 'zonghe')
 // 按职业分组视图（按版本浏览 / 我的-按版本）的渲染顺序：
 // - 含 category 字段的扩展包（游戏-综合 / 5 个旧扩展包）按 category 聚合展示，
 //   不受职业筛选影响（职业筛选仍作用于组内成就）；游戏-综合用固定的 5 大分类顺序。
+// - 核心系列（独狼年/多头蛇年/狮鹫年）：合并为「职业」「中立」两大栏，不拆成具体职业；
+//   只有「按职业浏览 / 我的-按职业」才按真实职业区分。
 // - 其余版本：选中具体职业筛选时只渲染该职业分组（+中立/双职业），否则按职业原顺序。
 const classGroupOrder = computed(() => {
   const exp = currentExpansion.value
@@ -1159,6 +1161,10 @@ const classGroupOrder = computed(() => {
       if (a.category && !seen.includes(a.category)) seen.push(a.category)
     }
     return seen
+  }
+  // 核心系列按版本视图：合并为「职业」「中立」两大栏
+  if (exp && CORE_EXPANSION_IDS.has(exp.id)) {
+    return ['职业', '中立']
   }
   if (selectedClass.value !== 'all') {
     // 选中具体职业时，除该职业自身外，再补「中立」「双职业」两个分组：
@@ -1435,14 +1441,13 @@ const filterAchievements = (list) => {
 
 const filteredAchievements = computed(() => filterAchievements(displayAchievements.value))
 
-	// 按职业分组（按版本浏览 / 我的-按版本）：核心系列也按真实职业 + 中立展示（与游戏内一致），
-	// 不再强制归入「中立」。groupByClass 内部仍按 category 优先（游戏-综合按 5 大分类），
-	// 双职业成就统一归入「双职业」分组。
-const filteredByClass = computed(() => groupByClass(filteredAchievements.value, { forceNeutralForCore: false }))
+	// 按职业分组（按版本浏览 / 我的-按版本）：核心系列合并为「职业」「中立」两大栏（coreUmbrella），
+	// 其余版本按真实职业分组。groupByClass 内部仍按 category 优先（游戏-综合按 5 大分类）。
+const filteredByClass = computed(() => groupByClass(filteredAchievements.value, { coreUmbrella: true }))
 
-// 我的成就-按职业分组：未完成排前面
+// 我的成就-按版本分组：与按版本浏览一致（核心合并为职业/中立），未完成排前面
 const myFilteredByClass = computed(() => {
-  const groups = groupByClass(filteredAchievements.value)
+  const groups = groupByClass(filteredAchievements.value, { coreUmbrella: true })
   for (const cls in groups) {
     groups[cls] = [...groups[cls]].sort((a, b) => {
       return (isAchievementCompleted(a) ? 1 : 0) - (isAchievementCompleted(b) ? 1 : 0)

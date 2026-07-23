@@ -16,6 +16,7 @@ export const classColors = {
   猎人: "#3d8b3d",
   萨满祭司: "#4a90a0",
   双职业: "#c87c2d",
+  职业: "#c08a3e",
   中立: "#8b7355",
 };
 
@@ -43,9 +44,9 @@ const classOrderList = [
   "双职业",
 ];
 
-// 核心系列版本（独狼年 / 多头蛇年 / 狮鹫年）：按版本视图统一归入「中立」分组，
-// 不在按版本视图里按各自职业拆分；只有「按职业浏览 / 我的-按职业」才按真实职业归类。
-const CORE_EXPANSION_IDS = new Set(["core-2021", "core-2022", "core-2023"]);
+// 核心系列版本（独狼年 / 多头蛇年 / 狮鹫年）：按版本视图合并为「职业」「中立」两大栏，
+// 不拆成具体职业；只有「按职业浏览 / 我的-按职业」才按真实职业归类。
+export const CORE_EXPANSION_IDS = new Set(["core-2021", "core-2022", "core-2023"]);
 
 /**
  * 将成就按职业分组（用于「按版本浏览 / 我的-按版本」，还原游戏内布局）
@@ -53,14 +54,16 @@ const CORE_EXPANSION_IDS = new Set(["core-2021", "core-2022", "core-2023"]);
  * 本不属于它的双职业成就（如穿越时间流的圣骑士会多出 2 条）。
  * 中立多职业成就（带 classes 字段）仍留在「中立」分组。
  * 按职业筛选时同样可做的成就由 matchesClass 命中，不依赖本函数拆分。
- * 核心系列在「按版本」视图下强制归入「中立」（forceNeutralForCore=true），
- * 避免把独狼年/多头蛇年/狮鹫年按各自职业拆散；按职业视图不传此标志，保持按真实职业分组。
+ * 核心系列（独狼年/多头蛇年/狮鹫年）在「按版本」视图下合并为「职业」「中立」两大栏
+ * （coreUmbrella=true），不拆成具体职业；按职业视图不传此标志，保持按真实职业分组。
  * @param {Array} achievements - 成就列表
- * @param {Object} [options] - { forceNeutralForCore?: boolean } 仅按版本视图传 true
+ * @param {Object} [options] - { forceNeutralForCore?: boolean, coreUmbrella?: boolean }
+ *   - forceNeutralForCore: 旧语义，核心系列全部归入「中立」（已基本不用）。
+ *   - coreUmbrella: 核心系列在按版本视图合并为「职业」「中立」两大栏。
  * @returns {Object} 按职业分组的成就
  */
 export function groupByClass(achievements, options = {}) {
-  const { forceNeutralForCore = false } = options;
+  const { forceNeutralForCore = false, coreUmbrella = false } = options;
   const groups = {};
   const pushTo = (cls, ach) => {
     if (!groups[cls]) groups[cls] = [];
@@ -73,12 +76,19 @@ export function groupByClass(achievements, options = {}) {
       pushTo(achievement.category, achievement);
       continue;
     }
+    const isCore = CORE_EXPANSION_IDS.has(achievement._expansionId);
+    if (coreUmbrella && isCore) {
+      // 核心系列按版本视图：所有具体职业（含双职业成就）合并为「职业」大栏，中立单独成栏，
+      // 还原游戏内「核心系列按版本浏览只分职业/中立两大栏」的布局。
+      const cls = achievement.heroClass === "中立" ? "中立" : "职业";
+      pushTo(cls, achievement);
+      continue;
+    }
     if (achievement.dualClasses && achievement.dualClasses.length) {
       // 双职业成就统一归入「双职业」分组（游戏内原样），不再按 dualClasses 拆到各职业。
       pushTo("双职业", achievement);
     } else {
-      const isCore = forceNeutralForCore && CORE_EXPANSION_IDS.has(achievement._expansionId);
-      const heroClass = isCore ? "中立" : (achievement.heroClass || "中立");
+      const heroClass = forceNeutralForCore && isCore ? "中立" : (achievement.heroClass || "中立");
       pushTo(heroClass, achievement);
     }
   }
