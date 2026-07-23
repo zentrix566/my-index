@@ -31,8 +31,6 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
         with:
-          lfs: true
-        with:
           lfs: true   # 必须拉取 Git LFS 真实文件，否则 public/hearthstone-cards 下是 LFS 指针文本，打包进镜像后图片无法显示
 
       # 1. 登录到 GitHub 镜像仓库 (GHCR)
