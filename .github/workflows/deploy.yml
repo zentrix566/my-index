@@ -72,6 +72,10 @@ jobs:
           username: ${{ secrets.ALIYUN_USERNAME }}
           password: ${{ secrets.ALIYUN_PASSWORD }}
 
+      # 启用 Docker Buildx（使用 docker-container 驱动，支持 gha 缓存导出）
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
       # 3. 构建镜像并同时推送到两个仓库（启用 Docker 层缓存加速构建）
       - name: Build and push Docker image
         uses: docker/build-push-action@v5
