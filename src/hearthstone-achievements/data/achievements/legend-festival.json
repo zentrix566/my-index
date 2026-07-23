@@ -12,25 +12,6 @@
   ],
   "achievements": [
     {
-      "id": "legend-festival-001",
-      "name": "木有余票",
-      "heroClass": "德鲁伊",
-      "type": "一次性",
-      "difficulty": "中等",
-      "relatedCards": [
-        "实木手鼓"
-      ],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "用一把实木手鼓召唤7棵古树。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 7
-        }
-      ]
-    },
-    {
       "id": "legend-festival-002",
       "name": "百般变化",
       "heroClass": "德鲁伊",
@@ -83,21 +64,21 @@
       ]
     },
     {
-      "id": "legend-festival-004",
-      "name": "调整波形",
-      "heroClass": "法师",
+      "id": "legend-festival-001",
+      "name": "木有余票",
+      "heroClass": "德鲁伊",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
-        "星界键盘"
+        "实木手鼓"
       ],
       "recommendedDecks": [],
       "stages": [
         {
-          "description": "用一把星界键盘召唤总计属性值大于或等于20/20的元素。",
+          "description": "用一把实木手鼓召唤7棵古树。",
           "xpReward": 0,
           "points": 20,
-          "quota": 20
+          "quota": 7
         }
       ]
     },
@@ -117,6 +98,25 @@
           "xpReward": 0,
           "points": 20,
           "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "legend-festival-004",
+      "name": "调整波形",
+      "heroClass": "法师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "星界键盘"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一把星界键盘召唤总计属性值大于或等于20/20的元素。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 20
         }
       ]
     },
@@ -152,25 +152,6 @@
       ]
     },
     {
-      "id": "legend-festival-007",
-      "name": "丛林强音",
-      "heroClass": "猎人",
-      "type": "一次性",
-      "difficulty": "中等",
-      "relatedCards": [
-        "丛林弹唱琴"
-      ],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "用丛林弹唱琴召唤一只法力值消耗为10的野兽。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 10
-        }
-      ]
-    },
-    {
       "id": "legend-festival-008",
       "name": "投猿掷蕉",
       "heroClass": "猎人",
@@ -188,6 +169,25 @@
           "xpReward": 0,
           "points": 20,
           "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "legend-festival-007",
+      "name": "丛林强音",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "丛林弹唱琴"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用丛林弹唱琴召唤一只法力值消耗为10的野兽。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 10
         }
       ]
     },
@@ -293,6 +293,37 @@
       ]
     },
     {
+      "id": "legend-festival-015",
+      "name": "动一次打一次",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "B-Box拳手"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用B-Box拳手消灭15个敌人。",
+          "xpReward": 0,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "用B-Box拳手消灭30个敌人。",
+          "xpReward": 0,
+          "points": 10,
+          "quota": 30
+        },
+        {
+          "description": "用B-Box拳手消灭60个敌人。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
       "id": "legend-festival-013",
       "name": "你的菜",
       "heroClass": "潜行者",
@@ -332,37 +363,6 @@
       ]
     },
     {
-      "id": "legend-festival-015",
-      "name": "动一次打一次",
-      "heroClass": "潜行者",
-      "type": "累计",
-      "difficulty": "中等",
-      "relatedCards": [
-        "B-Box拳手"
-      ],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "用B-Box拳手消灭15个敌人。",
-          "xpReward": 0,
-          "points": 10,
-          "quota": 15
-        },
-        {
-          "description": "用B-Box拳手消灭30个敌人。",
-          "xpReward": 0,
-          "points": 10,
-          "quota": 30
-        },
-        {
-          "description": "用B-Box拳手消灭60个敌人。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 60
-        }
-      ]
-    },
-    {
       "id": "legend-festival-016",
       "name": "鳞续音阶",
       "heroClass": "萨满祭司",
@@ -378,25 +378,6 @@
           "xpReward": 0,
           "points": 20,
           "quota": 5
-        }
-      ]
-    },
-    {
-      "id": "legend-festival-017",
-      "name": "巨星云集",
-      "heroClass": "萨满祭司",
-      "type": "一次性",
-      "difficulty": "中等",
-      "relatedCards": [
-        "聚集观众"
-      ],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "用一张聚集观众召唤3个传说随从。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 3
         }
       ]
     },
@@ -432,21 +413,21 @@
       ]
     },
     {
-      "id": "legend-festival-019",
-      "name": "沉迷舞厅",
-      "heroClass": "圣骑士",
-      "type": "累计",
+      "id": "legend-festival-017",
+      "name": "巨星云集",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
-        "迪斯科战槌"
+        "聚集观众"
       ],
       "recommendedDecks": [],
       "stages": [
         {
-          "description": "用迪斯科战槌使随从获得+80/+80。",
+          "description": "用一张聚集观众召唤3个传说随从。",
           "xpReward": 0,
           "points": 20,
-          "quota": 80
+          "quota": 3
         }
       ]
     },
@@ -497,6 +478,25 @@
           "xpReward": 0,
           "points": 20,
           "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "legend-festival-019",
+      "name": "沉迷舞厅",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "迪斯科战槌"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用迪斯科战槌使随从获得+80/+80。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 80
         }
       ]
     },
@@ -753,7 +753,7 @@
       "id": "legend-festival-033",
       "name": "如痴如狂",
       "heroClass": "战士",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "掌声雷动"
@@ -813,7 +813,7 @@
       "id": "legend-festival-035",
       "name": "坠星",
       "heroClass": "双职业",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
         "星辰能量"
@@ -1389,7 +1389,8 @@
       "id": "legend-festival-056",
       "name": "艾星达人",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "乐队经理精英牛头人酋长"

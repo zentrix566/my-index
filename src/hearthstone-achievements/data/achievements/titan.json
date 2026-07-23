@@ -412,7 +412,8 @@
       "id": "titan-018",
       "name": "工具齐备",
       "heroClass": "潜行者",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "天才米米尔隆"
@@ -578,6 +579,31 @@
       ]
     },
     {
+      "id": "titan-028",
+      "name": "力量试炼",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "守护者的力量"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张守护者的力量消灭5个随从。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 5
+        },
+        {
+          "description": "用一张守护者的力量消灭10个随从。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    },
+    {
       "id": "titan-025",
       "name": "非凡石像",
       "heroClass": "圣骑士",
@@ -594,25 +620,6 @@
           "xpReward": 0,
           "points": 20,
           "quota": 14
-        }
-      ]
-    },
-    {
-      "id": "titan-026",
-      "name": "传说不朽",
-      "heroClass": "圣骑士",
-      "type": "一次性",
-      "difficulty": "中等",
-      "relatedCards": [
-        "提尔"
-      ],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "用一次提尔的战吼复活3个传说随从。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 3
         }
       ]
     },
@@ -648,27 +655,21 @@
       ]
     },
     {
-      "id": "titan-028",
-      "name": "力量试炼",
+      "id": "titan-026",
+      "name": "传说不朽",
       "heroClass": "圣骑士",
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
-        "守护者的力量"
+        "提尔"
       ],
       "recommendedDecks": [],
       "stages": [
         {
-          "description": "用一张守护者的力量消灭5个随从。",
+          "description": "用一次提尔的战吼复活3个传说随从。",
           "xpReward": 0,
           "points": 20,
-          "quota": 5
-        },
-        {
-          "description": "用一张守护者的力量消灭10个随从。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 10
+          "quota": 3
         }
       ]
     },
@@ -789,7 +790,8 @@
       "id": "titan-034",
       "name": "冰冷难持",
       "heroClass": "死亡骑士",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "严寒冰封"
@@ -958,21 +960,27 @@
       ]
     },
     {
-      "id": "titan-041",
-      "name": "老哞深锻",
+      "id": "titan-044",
+      "name": "无限鬼故事",
       "heroClass": "战士",
-      "type": "一次性",
+      "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
-        "米诺陶牛头人"
+        "维扎克斯将军"
       ],
       "recommendedDecks": [],
       "stages": [
         {
-          "description": "用一张米诺陶牛头人获得20点护甲值。",
+          "description": "召唤维扎克斯将军40次。",
           "xpReward": 0,
           "points": 20,
-          "quota": 20
+          "quota": 40
+        },
+        {
+          "description": "召唤维扎克斯将军80次。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 80
         }
       ]
     },
@@ -1027,27 +1035,21 @@
       ]
     },
     {
-      "id": "titan-044",
-      "name": "无限鬼故事",
+      "id": "titan-041",
+      "name": "老哞深锻",
       "heroClass": "战士",
-      "type": "累计",
+      "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
-        "维扎克斯将军"
+        "米诺陶牛头人"
       ],
       "recommendedDecks": [],
       "stages": [
         {
-          "description": "召唤维扎克斯将军40次。",
+          "description": "用一张米诺陶牛头人获得20点护甲值。",
           "xpReward": 0,
           "points": 20,
-          "quota": 40
-        },
-        {
-          "description": "召唤维扎克斯将军80次。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 80
+          "quota": 20
         }
       ]
     },

@@ -1145,9 +1145,21 @@ const classOrder = computed(() => getClassOrder(currentExpansionId.value))
 const ZONGHE_CATEGORIES = ['职业', '中立关键字', '随从类型', '法术派系', '特殊']
 const isZongheView = computed(() => currentExpansionId.value === 'zonghe')
 // 按职业分组视图（按版本浏览 / 我的-按版本）的渲染顺序：
-// 综合版本按 5 大分类排序；选中具体职业筛选时只渲染该职业分组；否则按原顺序。
+// - 含 category 字段的扩展包（游戏-综合 / 5 个旧扩展包）按 category 聚合展示，
+//   不受职业筛选影响（职业筛选仍作用于组内成就）；游戏-综合用固定的 5 大分类顺序。
+// - 其余版本：选中具体职业筛选时只渲染该职业分组（+中立/双职业），否则按职业原顺序。
 const classGroupOrder = computed(() => {
-  if (isZongheView.value) return ZONGHE_CATEGORIES
+  const exp = currentExpansion.value
+  if (exp && exp.achievements.some((a) => a.category)) {
+    if (isZongheView.value) return ZONGHE_CATEGORIES
+    // 5 个旧扩展包（通灵学院/外域的灰烬/巨龙降临/奥丹姆骑兵/暗影崛起）：
+    // 按版本浏览统一归入「光辉事迹」单一分组（数据已给所有成就打 category=光辉事迹）。
+    const seen = []
+    for (const a of exp.achievements) {
+      if (a.category && !seen.includes(a.category)) seen.push(a.category)
+    }
+    return seen
+  }
   if (selectedClass.value !== 'all') {
     // 选中具体职业时，除该职业自身外，再补「中立」「双职业」两个分组：
     // 「中立」承载游戏内归中立、但该职业同样可做的成就（如万物终结等）；
@@ -1423,8 +1435,10 @@ const filterAchievements = (list) => {
 
 const filteredAchievements = computed(() => filterAchievements(displayAchievements.value))
 
-	// 按职业分组（按版本浏览 / 我的-按版本）：核心系列强制归入「中立」
-const filteredByClass = computed(() => groupByClass(filteredAchievements.value, { forceNeutralForCore: true }))
+	// 按职业分组（按版本浏览 / 我的-按版本）：核心系列也按真实职业 + 中立展示（与游戏内一致），
+	// 不再强制归入「中立」。groupByClass 内部仍按 category 优先（游戏-综合按 5 大分类），
+	// 双职业成就统一归入「双职业」分组。
+const filteredByClass = computed(() => groupByClass(filteredAchievements.value, { forceNeutralForCore: false }))
 
 // 我的成就-按职业分组：未完成排前面
 const myFilteredByClass = computed(() => {

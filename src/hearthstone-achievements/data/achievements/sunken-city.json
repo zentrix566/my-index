@@ -298,41 +298,27 @@
       ]
     },
     {
-      "id": "sunken-city-013",
-      "name": "山不转水转",
-      "heroClass": "牧师",
-      "type": "一次性",
-      "difficulty": "中等",
-      "relatedCards": [
-        "湍流旋涡"
-      ],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "使用一个湍流旋涡消灭12个随从。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 12
-        }
-      ]
-    },
-    {
-      "id": "sunken-city-014",
-      "name": "嘘……侍奉恩佐斯",
+      "id": "sunken-city-016",
+      "name": "起泡，冲洗，再一遍",
       "heroClass": "牧师",
       "type": "累计",
-      "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
-        "深海低语"
+        "缴械元素"
       ],
       "recommendedDecks": [],
       "stages": [
         {
-          "description": "使用深海低语造成100点伤害。",
+          "description": "使用缴械元素使敌人的卡牌法力值消耗增加20点。",
+          "xpReward": 0,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用缴械元素使敌人的卡牌法力值消耗增加40点。",
           "xpReward": 0,
           "points": 20,
-          "quota": 100
+          "quota": 40
         }
       ]
     },
@@ -368,27 +354,41 @@
       ]
     },
     {
-      "id": "sunken-city-016",
-      "name": "起泡，冲洗，再一遍",
+      "id": "sunken-city-014",
+      "name": "嘘……侍奉恩佐斯",
       "heroClass": "牧师",
       "type": "累计",
+      "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
-        "缴械元素"
+        "深海低语"
       ],
       "recommendedDecks": [],
       "stages": [
         {
-          "description": "使用缴械元素使敌人的卡牌法力值消耗增加20点。",
-          "xpReward": 0,
-          "points": 10,
-          "quota": 20
-        },
-        {
-          "description": "使用缴械元素使敌人的卡牌法力值消耗增加40点。",
+          "description": "使用深海低语造成100点伤害。",
           "xpReward": 0,
           "points": 20,
-          "quota": 40
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "sunken-city-013",
+      "name": "山不转水转",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "湍流旋涡"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一个湍流旋涡消灭12个随从。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 12
         }
       ]
     },
@@ -467,7 +467,6 @@
       "name": "好牌两对",
       "heroClass": "潜行者",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
@@ -1239,7 +1238,8 @@
       "id": "sunken-city-052",
       "name": "怪怪水族馆",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "深海融合怪"

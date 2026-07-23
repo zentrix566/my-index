@@ -35,7 +35,6 @@
       "name": "抉择？全选！",
       "heroClass": "德鲁伊",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
@@ -294,48 +293,6 @@
       ]
     },
     {
-      "id": "alterac-013",
-      "name": "救赎大军",
-      "heroClass": "牧师",
-      "type": "累计",
-
-      "metric": "count",
-      "difficulty": "中等",
-      "relatedCards": [
-        "超脱"
-      ],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "使用超脱召唤30个随从。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 30
-        }
-      ]
-    },
-    {
-      "id": "alterac-014",
-      "name": "祝福你！",
-      "heroClass": "牧师",
-      "type": "累计",
-
-      "metric": "points",
-      "difficulty": "中等",
-      "relatedCards": [
-        "祝福"
-      ],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "使用祝福使随从获得200点攻击力。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 200
-        }
-      ]
-    },
-    {
       "id": "alterac-015",
       "name": "我会记住你",
       "heroClass": "牧师",
@@ -367,6 +324,46 @@
       ]
     },
     {
+      "id": "alterac-014",
+      "name": "祝福你！",
+      "heroClass": "牧师",
+      "type": "累计",
+      "metric": "points",
+      "difficulty": "中等",
+      "relatedCards": [
+        "祝福"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用祝福使随从获得200点攻击力。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 200
+        }
+      ]
+    },
+    {
+      "id": "alterac-013",
+      "name": "救赎大军",
+      "heroClass": "牧师",
+      "type": "累计",
+      "metric": "count",
+      "difficulty": "中等",
+      "relatedCards": [
+        "超脱"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用超脱召唤30个随从。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
       "id": "alterac-016",
       "name": "未来耀眼，戴好墨镜",
       "heroClass": "牧师",
@@ -389,47 +386,6 @@
           "xpReward": 0,
           "points": 20,
           "quota": 7
-        }
-      ]
-    },
-    {
-      "id": "alterac-017",
-      "name": "奥特兰克十大叛徒",
-      "heroClass": "潜行者",
-      "type": "累计",
-
-      "metric": "count",
-      "difficulty": "中等",
-      "relatedCards": [
-        "双面间谍"
-      ],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "召唤60个双面间谍。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 60
-        }
-      ]
-    },
-    {
-      "id": "alterac-018",
-      "name": "远房表亲",
-      "heroClass": "潜行者",
-      "type": "一次性",
-      "difficulty": "中等",
-      "relatedCards": [
-        "冷齿雪人",
-        "冰风雪人"
-      ],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "在你的回合结束时，拥有冷齿雪人和冰风雪人。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 0
         }
       ]
     },
@@ -465,6 +421,26 @@
       ]
     },
     {
+      "id": "alterac-017",
+      "name": "奥特兰克十大叛徒",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "metric": "count",
+      "difficulty": "中等",
+      "relatedCards": [
+        "双面间谍"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤60个双面间谍。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 60
+        }
+      ]
+    },
+    {
       "id": "alterac-020",
       "name": "！",
       "heroClass": "潜行者",
@@ -486,6 +462,26 @@
           "xpReward": 0,
           "points": 20,
           "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "alterac-018",
+      "name": "远房表亲",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "冷齿雪人",
+        "冰风雪人"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在你的回合结束时，拥有冷齿雪人和冰风雪人。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 0
         }
       ]
     },
@@ -513,7 +509,6 @@
       "name": "元素雄起",
       "heroClass": "萨满祭司",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
@@ -607,7 +602,6 @@
       "name": "大胆铜行",
       "heroClass": "圣骑士",
       "type": "累计",
-
       "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
@@ -659,7 +653,6 @@
       "name": "至尊之戒",
       "heroClass": "圣骑士",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
@@ -678,46 +671,6 @@
           "xpReward": 0,
           "points": 20,
           "quota": 75
-        }
-      ]
-    },
-    {
-      "id": "alterac-029",
-      "name": "都过来！",
-      "heroClass": "术士",
-      "type": "一次性",
-      "difficulty": "中等",
-      "relatedCards": [
-        "可怕的憎恶"
-      ],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "使用可怕的憎恶荣誉消灭一个传说随从。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 0
-        }
-      ]
-    },
-    {
-      "id": "alterac-030",
-      "name": "不努力就去死",
-      "heroClass": "术士",
-      "type": "累计",
-
-      "metric": "count",
-      "difficulty": "中等",
-      "relatedCards": [
-        "被亵渎的墓园"
-      ],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "在被亵渎的墓园中牺牲100个随从。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 100
         }
       ]
     },
@@ -776,6 +729,45 @@
           "xpReward": 0,
           "points": 20,
           "quota": 180
+        }
+      ]
+    },
+    {
+      "id": "alterac-030",
+      "name": "不努力就去死",
+      "heroClass": "术士",
+      "type": "累计",
+      "metric": "count",
+      "difficulty": "中等",
+      "relatedCards": [
+        "被亵渎的墓园"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在被亵渎的墓园中牺牲100个随从。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "alterac-029",
+      "name": "都过来！",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "可怕的憎恶"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用可怕的憎恶荣誉消灭一个传说随从。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 0
         }
       ]
     },
@@ -897,7 +889,6 @@
       "name": "德雷克大叔需要你！",
       "heroClass": "战士",
       "type": "累计",
-
       "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
@@ -1268,7 +1259,6 @@
       "name": "不要斯尼维尔",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
@@ -1314,7 +1304,6 @@
       "name": "大鸟",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
@@ -1404,7 +1393,6 @@
       "name": "伏兵乐园",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
@@ -1552,7 +1540,6 @@
       "name": "振翅小鸟",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
@@ -1573,7 +1560,6 @@
       "name": "冰霜来啦",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
@@ -1594,7 +1580,6 @@
       "name": "一元猛将",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
@@ -1615,7 +1600,6 @@
       "name": "雪盲战吼忙",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
@@ -1636,7 +1620,6 @@
       "name": "节约标兵",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "points",
       "difficulty": "中等",
       "relatedCards": [
@@ -1657,7 +1640,6 @@
       "name": "玛丽有只小羊羔",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [

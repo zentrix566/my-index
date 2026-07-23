@@ -246,7 +246,6 @@
       "name": "你为什么打自己？",
       "heroClass": "死亡骑士",
       "type": "累计",
-
       "metric": "points",
       "difficulty": "中等",
       "relatedCards": [],
@@ -288,6 +287,7 @@
       "name": "万物臣服",
       "heroClass": "死亡骑士",
       "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],

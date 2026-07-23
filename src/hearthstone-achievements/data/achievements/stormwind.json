@@ -12,27 +12,11 @@
   ],
   "achievements": [
     {
-      "id": "stormwind-001",
-      "name": "洗刷刷",
-      "heroClass": "德鲁伊",
-      "type": "一次性",
-      "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "使用德鲁伊，触发75张抽到时施放的法术牌效果。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 75
-        }
-      ]
-    },
-    {
       "id": "stormwind-002",
       "name": "润物无声",
       "heroClass": "德鲁伊",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],
@@ -94,6 +78,23 @@
           "xpReward": 0,
           "points": 20,
           "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "stormwind-001",
+      "name": "洗刷刷",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用德鲁伊，触发75张抽到时施放的法术牌效果。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 75
         }
       ]
     },
@@ -187,7 +188,8 @@
       "id": "stormwind-009",
       "name": "招募：卫生督察",
       "heroClass": "猎人",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],
@@ -463,7 +465,6 @@
       "name": "小小传说",
       "heroClass": "萨满祭司",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
@@ -534,7 +535,6 @@
       "name": "光之暗面",
       "heroClass": "圣骑士",
       "type": "累计",
-
       "metric": "points",
       "difficulty": "中等",
       "relatedCards": [],
@@ -639,7 +639,6 @@
       "name": "简单附魔",
       "heroClass": "术士",
       "type": "累计",
-
       "metric": "points",
       "difficulty": "中等",
       "relatedCards": [],
@@ -727,7 +726,6 @@
       "name": "屡禁不止",
       "heroClass": "恶魔猎手",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
@@ -815,7 +813,6 @@
       "name": "为什么欺负我？",
       "heroClass": "战士",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
@@ -996,7 +993,6 @@
       "name": "反抗我就送你见霍格",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "points",
       "difficulty": "中等",
       "relatedCards": [],
@@ -1055,7 +1051,6 @@
       "name": "为舞者投币",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
@@ -1103,7 +1098,6 @@
       "name": "公会银行",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
@@ -1173,7 +1167,6 @@
       "name": "没带就是没有",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
@@ -1192,7 +1185,6 @@
       "name": "黄油管够",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "points",
       "difficulty": "中等",
       "relatedCards": [],
@@ -1211,7 +1203,6 @@
       "name": "刀剑摧蛇",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
@@ -1230,7 +1221,6 @@
       "name": "内部线人",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
@@ -1249,7 +1239,6 @@
       "name": "直达不停",
       "heroClass": "中立",
       "type": "累计",
-
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],

@@ -588,26 +588,6 @@
       ]
     },
     {
-      "id": "nathria-025",
-      "name": "重磅嘉宾",
-      "heroClass": "圣骑士",
-      "type": "累计",
-      "metric": "count",
-      "difficulty": "中等",
-      "relatedCards": [
-        "女伯爵"
-      ],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "使用传说邀请函邀请16个不同的传说随从。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 16
-        }
-      ]
-    },
-    {
       "id": "nathria-026",
       "name": "火速晋升",
       "heroClass": "圣骑士",
@@ -654,6 +634,26 @@
           "xpReward": 0,
           "points": 20,
           "quota": 120
+        }
+      ]
+    },
+    {
+      "id": "nathria-025",
+      "name": "重磅嘉宾",
+      "heroClass": "圣骑士",
+      "type": "累计",
+      "metric": "count",
+      "difficulty": "中等",
+      "relatedCards": [
+        "女伯爵"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用传说邀请函邀请16个不同的传说随从。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 16
         }
       ]
     },
@@ -1201,7 +1201,8 @@
       "id": "nathria-050",
       "name": "模仿游戏",
       "heroClass": "中立",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
         "诡异的画像"

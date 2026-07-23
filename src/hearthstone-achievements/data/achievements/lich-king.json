@@ -291,20 +291,25 @@
       ]
     },
     {
-      "id": "lich-king-014",
-      "name": "视力满分",
+      "id": "lich-king-016",
+      "name": "大脑营养",
       "heroClass": "牧师",
       "type": "累计",
-      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],
       "stages": [
         {
-          "description": "从黑暗幻象中发现10张不同的暗影法术牌。",
+          "description": "用野蛮残食恢复50点生命值。",
           "xpReward": 0,
           "points": 20,
-          "quota": 10
+          "quota": 50
+        },
+        {
+          "description": "用野蛮残食恢复100点生命值。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 100
         }
       ]
     },
@@ -338,25 +343,38 @@
       ]
     },
     {
-      "id": "lich-king-016",
-      "name": "大脑营养",
+      "id": "lich-king-014",
+      "name": "视力满分",
       "heroClass": "牧师",
       "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],
       "stages": [
         {
-          "description": "用野蛮残食恢复50点生命值。",
+          "description": "从黑暗幻象中发现10张不同的暗影法术牌。",
           "xpReward": 0,
           "points": 20,
-          "quota": 50
-        },
+          "quota": 10
+        }
+      ]
+    },
+    {
+      "id": "lich-king-018",
+      "name": "摇，不要搅",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "metric": "count",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
         {
-          "description": "用野蛮残食恢复100点生命值。",
+          "description": "使用15张不同的调好的药剂。",
           "xpReward": 0,
           "points": 20,
-          "quota": 100
+          "quota": 15
         }
       ]
     },
@@ -379,20 +397,25 @@
       ]
     },
     {
-      "id": "lich-king-018",
-      "name": "摇，不要搅",
+      "id": "lich-king-020",
+      "name": "它活了！！",
       "heroClass": "潜行者",
       "type": "累计",
-      "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],
       "stages": [
         {
-          "description": "使用15张不同的调好的药剂。",
+          "description": "使用完美的缝合造物，完成10次。",
           "xpReward": 0,
           "points": 20,
-          "quota": 15
+          "quota": 10
+        },
+        {
+          "description": "使用完美的缝合造物，完成20次。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 20
         }
       ]
     },
@@ -422,46 +445,6 @@
           "xpReward": 0,
           "points": 20,
           "quota": 50
-        }
-      ]
-    },
-    {
-      "id": "lich-king-020",
-      "name": "它活了！！",
-      "heroClass": "潜行者",
-      "type": "累计",
-      "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "使用完美的缝合造物，完成10次。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 10
-        },
-        {
-          "description": "使用完美的缝合造物，完成20次。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 20
-        }
-      ]
-    },
-    {
-      "id": "lich-king-021",
-      "name": "灭世鱼人",
-      "heroClass": "萨满祭司",
-      "type": "一次性",
-      "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "用一张腐鳃使6个随从获得亡语。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 6
         }
       ]
     },
@@ -513,6 +496,23 @@
       ]
     },
     {
+      "id": "lich-king-021",
+      "name": "灭世鱼人",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张腐鳃使6个随从获得亡语。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
       "id": "lich-king-024",
       "name": "荣耀之火",
       "heroClass": "萨满祭司",
@@ -539,9 +539,12 @@
       "id": "lich-king-025",
       "name": "你的血，行！",
       "heroClass": "圣骑士",
-      "type": "一次性",
+      "type": "累计",
+      "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "鲜血远征军"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -727,23 +730,6 @@
       ]
     },
     {
-      "id": "lich-king-034",
-      "name": "离别礼物",
-      "heroClass": "死亡骑士",
-      "type": "一次性",
-      "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "在一局对战中用死亡侍僧抽10张牌。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 10
-        }
-      ]
-    },
-    {
       "id": "lich-king-035",
       "name": "凋零孀蛛",
       "heroClass": "死亡骑士",
@@ -769,6 +755,23 @@
           "xpReward": 0,
           "points": 20,
           "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "lich-king-034",
+      "name": "离别礼物",
+      "heroClass": "死亡骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "在一局对战中用死亡侍僧抽10张牌。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 10
         }
       ]
     },
@@ -900,24 +903,6 @@
       ]
     },
     {
-      "id": "lich-king-042",
-      "name": "破法之道",
-      "heroClass": "战士",
-      "type": "累计",
-      "metric": "count",
-      "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
-      "stages": [
-        {
-          "description": "用搅局破法者使你的对手弃掉50张法术牌。",
-          "xpReward": 0,
-          "points": 20,
-          "quota": 50
-        }
-      ]
-    },
-    {
       "id": "lich-king-043",
       "name": "死灰复燃",
       "heroClass": "战士",
@@ -943,6 +928,24 @@
           "xpReward": 0,
           "points": 20,
           "quota": 80
+        }
+      ]
+    },
+    {
+      "id": "lich-king-042",
+      "name": "破法之道",
+      "heroClass": "战士",
+      "type": "累计",
+      "metric": "count",
+      "difficulty": "中等",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用搅局破法者使你的对手弃掉50张法术牌。",
+          "xpReward": 0,
+          "points": 20,
+          "quota": 50
         }
       ]
     },
