@@ -68,10 +68,15 @@ jobs:
           build-args: |
             VITE_OSS_BASE=${{ env.VITE_OSS_BASE }}
             OSS_ORIGIN=${{ env.OSS_ORIGIN }}
-          # 同时指定两个仓库的标签
+          # 同时指定两个仓库的标签。
+          # 关键：除 :latest 外，额外打一个唯一的 :sha-<commit> 标签。
+          # 否则 deployment 用 :latest + imagePullPolicy:IfNotPresent 时，节点会缓存旧镜像层，
+          # `kubectl rollout restart` 只重启 Pod 不重新拉取，导致新代码永远不上线（本次 404 的根因）。
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:sha-${{ github.sha }}
             ${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_REPO }}:latest
+            ${{ env.ALIYUN_REGISTRY }}/${{ env.ALIYUN_REPO }}:sha-${{ github.sha }}
 
   deploy:
     needs: build-and-push
@@ -85,9 +90,14 @@ jobs:
           username: ${{ secrets.SSH_USER }}
           key: ${{ secrets.SSH_KEY }}
           port: ${{ secrets.SSH_PORT }}
-          script: |            
-            # 1. 触发重启 (确保服务器已经配置了拉取阿里云镜像的凭证)
-            kubectl rollout restart deployment zentrix-lab
-            
+          script: |
+            # 1. 用本次 commit 的 SHA 标签强制更新 deployment 的 image 字段。
+            #    仅 `rollout restart` 不够：若 deployment 用 :latest + IfNotPresent，
+            #    节点会缓存旧镜像层，重启不重新拉取，新代码永不上线。
+            #    改成唯一的 :sha-<commit> 标签后 image 字段变化，K8s 必拉新镜像。
+            CUR=$(kubectl get deployment zentrix-lab -o jsonpath='{.spec.template.spec.containers[0].image}')
+            NEW=$(echo "$CUR" | sed "s#:.*#:sha-${{ github.sha }}#")
+            kubectl set image deployment zentrix-lab "*=$NEW"
+
             # 2. 检查状态
             kubectl rollout status deployment zentrix-lab --timeout=5m
