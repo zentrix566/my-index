@@ -3,6 +3,15 @@
 export const changelog = [
   {
     date: '2026-07-24',
+    title: '炉石成就查看器：关联卡牌回退 wild 图库（更多版本也能看图）',
+    changes: [
+      '关联卡牌图片增加 wild 图库兜底：此前「更多版本（addedExpansions）」等关联的卡牌未单独上传到 `related/` 目录，详情里只显示「暂无图」；现在 `attachCards` 为每张关联卡附加 `imageFallback`（取自 `deck-card-images.json`，即 `/hearthstone-cards/wild/...` 相对路径），弹窗/编辑/卡片列表优先用 `related/`，加载失败或缺失时自动回退到 wild 同名图，让这些卡也能被关联、看到图。',
+      '兜底图同样走本站相对路径、经服务端反代强制 `Content-Disposition: inline`，不会复发「右键自动下载」问题（刻意不走 `OSS_BASE` 直链）。',
+      '卡片列表的「（暂无图）」提示与「可点击查看大图」判定同步改为「related 与 wild 兜底都没有图」才显示/才不可点，让仅有 wild 图的卡也能点开大图。'
+    ]
+  },
+  {
+    date: '2026-07-24',
     title: '炉石成就查看器：卡组详情图床迁移 OSS、旅法师营地风格重做与导出增强',
     changes: [
       '卡牌图床迁移阿里云 OSS：`.env` 的 `VITE_OSS_BASE` 留空，前端统一用相对路径 `/hearthstone-cards/...`，图片地址以本站域名（zentrix566.top）开头；服务端 `server/index.js` 新增 `/hearthstone-cards/*` 反向代理到 `OSS_ORIGIN`（真实源站），并强制 `Content-Disposition: inline` + `image/png`，浏览器只与本站通信、服务器到服务器取图，域名无需在阿里云备案，右键「在新标签打开图片」直接查看不下载。',

@@ -6,6 +6,13 @@ defineProps({
 })
 
 const emit = defineEmits(['close'])
+
+// related 图加载失败时回退到 wild 兜底图（_cardFailed 仅在该卡同时拥有两者时置位）
+const onCardError = (card) => {
+  if (card.image && card.imageFallback) card._cardFailed = true
+}
+const cardSrc = (card) => (card._cardFailed ? card.imageFallback : (card.image || card.imageFallback))
+const hasImage = (card) => Boolean(card.image || card.imageFallback)
 </script>
 
 <template>
@@ -17,7 +24,7 @@ const emit = defineEmits(['close'])
       <h3 id="hs-card-modal-title" class="hs-modal-title">{{ title }}</h3>
       <div class="hs-modal-cards">
         <div v-for="card in cards" :key="card.name" class="hs-modal-card-item">
-          <img v-if="card.image" :src="card.image" :alt="card.name" />
+          <img v-if="hasImage(card)" :src="cardSrc(card)" :alt="card.name" @error="onCardError(card)" />
           <p v-else class="hs-no-image">暂无「{{ card.name }}」的图片</p>
           <p class="hs-card-name-label">{{ card.name }}</p>
         </div>

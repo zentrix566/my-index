@@ -45,6 +45,21 @@ export function getLocalCardImages(name) {
 }
 
 /**
+ * 取卡牌在 wild 图库的「相对路径」（full 优先，回退 crop）。
+ * 注意：故意不走 OSS_BASE，返回形如 /hearthstone-cards/wild/full/名_id.png 的相对路径，
+ * 由站点反代（server/index.js）强制 Content-Disposition: inline。
+ * 用于「关联卡牌」图在 related 目录缺失时的兜底——例如更多版本（addedExpansions）
+ * 的关联卡未单独上传到 related，但 wild 图库里已有同名图。
+ * @param {string} name 卡牌中文名
+ * @returns {string|null}
+ */
+export function getWildCardImage(name) {
+  const local = cardImageManifest[name]
+  if (!local) return null
+  return local.full || local.crop || null
+}
+
+/**
  * 获取卡牌完整图 URL（优先 OSS，其次本地 public，最后 CDN 兜底）
  * @param {string} name 卡牌中文名
  * @param {string} [cardId] 卡牌 slug id，用于 CDN 回退

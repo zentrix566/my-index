@@ -15,7 +15,7 @@
         <p class="epm-cards-label">关联卡牌</p>
         <div class="epm-cards-grid">
           <div v-for="card in achievement.cards" :key="card.name" class="epm-card-item">
-            <img v-if="card.image" :src="card.image" :alt="card.name" class="epm-card-img" />
+            <img v-if="hasImage(card)" :src="cardSrc(card)" :alt="card.name" class="epm-card-img" @error="onCardError(card)" />
             <p v-else class="epm-card-noimg">暂无「{{ card.name }}」的图片</p>
             <p class="epm-card-name">{{ card.name }}</p>
           </div>
@@ -83,6 +83,12 @@ const maxQuota = computed(() => {
 const hasCards = computed(
   () => Array.isArray(props.achievement?.cards) && props.achievement.cards.length > 0
 )
+// related 图加载失败时回退到 wild 兜底图
+const onCardError = (card) => {
+  if (card.image && card.imageFallback) card._cardFailed = true
+}
+const cardSrc = (card) => (card._cardFailed ? card.imageFallback : (card.image || card.imageFallback))
+const hasImage = (card) => Boolean(card.image || card.imageFallback)
 const draftStages = ref({})
 const draftCount = ref(0)
 

@@ -655,6 +655,7 @@ import { expansions, originalExpansions, addedExpansions } from '../hearthstone-
 import { classColors, getClassOrder, groupByClass, matchesClass, getClassName, CORE_EXPANSION_IDS } from '../hearthstone-achievements/utils/achievements.js'
 import { useAchievementProgress } from '../hearthstone-achievements/composables/useAchievementProgress.js'
 import { useAuth } from '../auth/useAuth.js'
+import { getWildCardImage } from '../hearthstone-achievements/utils/cardImages.js'
 import EditProgressModal from '../hearthstone-achievements/components/EditProgressModal.vue'
 
 import ExpansionTabs from '../hearthstone-achievements/components/ExpansionTabs.vue'
@@ -1074,6 +1075,8 @@ async function onImportFile(e) {
 // Content-Disposition: inline（见 server/index.js），这样右键「在新标签打开图片」直接查看而非下载。
 // 此前用 OSS_BASE 直链会绕过反代，OSS 默认不带回显头，浏览器按附件处理导致自动下载。
 // 上传命令：OSS_SOURCE_DIR=src/hearthstone-achievements/assets/cards OSS_PREFIX=hearthstone-cards/related node scripts/upload-to-oss.mjs
+// 兜底：related 目录缺失（如更多版本 addedExpansions 未单独上传）时，回退到 wild 图库同名图
+// （getWildCardImage 返回相对路径 /hearthstone-cards/wild/...，同样经反代强制 inline）。
 const RELATED_CARDS_OSS_PREFIX = 'hearthstone-cards/related'
 
 const getCardImageUrl = (cardName, imageDir) => {
@@ -1086,7 +1089,8 @@ const attachCards = (ach, exp) => ({
   ...ach,
   cards: (ach.relatedCards || []).map((name) => ({
     name,
-    image: getCardImageUrl(name, exp.cardImageDir)
+    image: getCardImageUrl(name, exp.cardImageDir),
+    imageFallback: getWildCardImage(name)
   })),
   _expansionId: exp.id,
   _expansionName: exp.name
@@ -1716,8 +1720,8 @@ const openCardModal = (achievement) => {
     return
   }
   // 浏览模式 / 我的成就（未登录仅查看）：展示关联卡牌图片，编辑需登录。
-  // 图片 URL 已在构建期解析（eager glob），点击即同步可用，弹窗立即出现。
-  if (!achievement.cards || !achievement.cards.some((card) => card.image)) return
+  // 有 related 图或 wild 兜底图即可弹窗。
+  if (!achievement.cards || !achievement.cards.some((card) => card.image || card.imageFallback)) return
   modalTitle.value = achievement.name
   modalCards.value = achievement.cards.map((card) => ({ ...card }))
   modalVisible.value = true
