@@ -7,7 +7,8 @@ export const changelog = [
     changes: [
       '关联卡牌图片增加 wild 图库兜底：此前「更多版本（addedExpansions）」等关联的卡牌未单独上传到 `related/` 目录，详情里只显示「暂无图」；现在 `attachCards` 为每张关联卡附加 `imageFallback`（取自 `deck-card-images.json`，即 `/hearthstone-cards/wild/...` 相对路径），弹窗/编辑/卡片列表优先用 `related/`，加载失败或缺失时自动回退到 wild 同名图，让这些卡也能被关联、看到图。',
       '兜底图同样走本站相对路径、经服务端反代强制 `Content-Disposition: inline`，不会复发「右键自动下载」问题（刻意不走 `OSS_BASE` 直链）。',
-      '卡片列表的「（暂无图）」提示与「可点击查看大图」判定同步改为「related 与 wild 兜底都没有图」才显示/才不可点，让仅有 wild 图的卡也能点开大图。'
+      '卡片列表的「（暂无图）」提示与「可点击查看大图」判定同步改为「related 与 wild 兜底都没有图」才显示/才不可点，让仅有 wild 图的卡也能点开大图。',
+      '补齐更多版本缺失的关联原画：wild 图库仅覆盖 744 张唯一卡，更多版本关联卡共 345 张中只有 63 张能在 wild 查到回退图，其余 282 张 wild 里没有对应图。现为这 282 张（其中 2 张卡名不在本地卡库、跳过，实际 280 张）从 HearthstoneJSON 官方图源（art.hearthstonejson.com/v1/tiles/<id>.png）按卡名+dbfId 抓取卡面原画，并经 `scripts/upload-to-oss.mjs related` 增量上传到 `hearthstone-cards/related/<版本dir>/<卡名>.png`（沿用既有反代与 inline 策略）。上传走增量模式，已存在的图自动跳过、不重复上传。'
     ]
   },
   {
