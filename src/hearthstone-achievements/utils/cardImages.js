@@ -1,17 +1,10 @@
 // 卡组卡牌本地图片查询工具
-// 数据由 scripts/generate-deck-card-manifest.mjs 根据 public/hearthstone-cards/wild 下的图片生成
+// 数据由 scripts/generate-deck-card-manifest.mjs 根据本地完整卡牌图源生成
 import cardImageManifest from '../data/deck-card-images.json' with { type: 'json' }
 
-/** 阿里云 OSS 图片基地址（公开读）。在 .env 配置 VITE_OSS_BASE，如 https://bucket.oss-cn-beijing.aliyuncs.com
- *  配置后前端优先从 OSS 加载卡牌图（不进 Docker 镜像、部署稳定、国内快）；未配置时用相对路径
- *  /hearthstone-cards/...，由站点服务端（生产）或 vite（本地）反向代理到 OSS——全程不访问本地图片。 */
-const OSS_BASE = (typeof import.meta !== 'undefined' && import.meta.env
-  ? (import.meta.env.VITE_OSS_BASE || '')
-  : ''
-).replace(/\/$/, '')
-
-/** 导出供 deckstring.js 等复用，避免重复读取环境变量 */
-export { OSS_BASE }
+/** 卡牌原画统一托管在阿里云 OSS 的 hearthstone-cards/wild/{crop,full}/<卡名>_<id>.png。
+ *  前端只拼本站相对路径 /hearthstone-cards/wild/...，由服务端（server/index.js）反向代理到 OSS——
+ *  全程以本站域名开头、强制 Content-Disposition: inline（右键新标签直接查看、不下载），不拼 OSS 直链。 */
 
 /** 稀有度到统一标识的映射（兼容 deckstring.js 的中文稀有度与 cards_meta 的 rarity_id） */
 const RARITY_MAP = {
@@ -46,10 +39,9 @@ export function getLocalCardImages(name) {
 
 /**
  * 取卡牌在 wild 图库的「相对路径」（full 优先，回退 crop）。
- * 注意：故意不走 OSS_BASE，返回形如 /hearthstone-cards/wild/full/名_id.png 的相对路径，
+ * 返回形如 /hearthstone-cards/wild/full/名_id.png 的本站相对路径，
  * 由站点反代（server/index.js）强制 Content-Disposition: inline。
- * 用于「关联卡牌」图在 related 目录缺失时的兜底——例如更多版本（addedExpansions）
- * 的关联卡未单独上传到 related，但 wild 图库里已有同名图。
+ * 所有卡牌原画都集中在 wild/full，按卡牌中文名查表即可，无需区分 related 目录。
  * @param {string} name 卡牌中文名
  * @returns {string|null}
  */
@@ -59,28 +51,35 @@ export function getWildCardImage(name) {
   return local.full || local.crop || null
 }
 
-/**
- * 获取卡牌完整图 URL（优先 OSS，其次本地 public，最后 CDN 兜底）
- * @param {string} name 卡牌中文名
- * @param {string} [cardId] 卡牌 slug id，用于 CDN 回退
- */
-export function getCardFullImage(name, cardId) {
+/** 仅取 wild/full 相对路径（成就关联卡主图优先用 full）。 */
+export function getWildCardFull(name) {
   const local = cardImageManifest[name]
-  if (OSS_BASE && local && local.full) return `${OSS_BASE}${local.full}`
-  if (local && local.full) return local.full
-  return ''
+  return local?.full || null
+}
+/** 仅取 wild/crop 相对路径（full 缺失时回退缩略图作兜底）。 */
+export function getWildCardCrop(name) {
+  const local = cardImageManifest[name]
+  return local?.crop || null
 }
 
 /**
- * 获取卡牌缩略图 URL（优先 OSS，其次相对路径经代理到 OSS；不回退本地/CDN）
+ * 获取卡牌完整图 URL（始终返回本站相对路径，经反代到 OSS、带本站域名、强制 inline）
+ * @param {string} name 卡牌中文名
+ * @param {string} [cardId] 预留参数（历史兼容），当前未使用
+ */
+export function getCardFullImage(name, cardId) {
+  const local = cardImageManifest[name]
+  return local?.full || ''
+}
+
+/**
+ * 获取卡牌缩略图 URL（始终返回本站相对路径，经反代到 OSS、带本站域名、强制 inline）
  * @param {string} name 卡牌中文名
  * @param {string} [cardId] 预留参数（历史兼容），当前未使用
  */
 export function getCardCropImage(name, cardId) {
   const local = cardImageManifest[name]
-  if (OSS_BASE && local && local.crop) return `${OSS_BASE}${local.crop}`
-  if (local && local.crop) return local.crop
-  return ''
+  return local?.crop || ''
 }
 
 /**

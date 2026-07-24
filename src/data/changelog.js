@@ -3,6 +3,16 @@
 export const changelog = [
   {
     date: '2026-07-24',
+    title: '炉石成就查看器：卡牌图统一走 wild/full，弃用 related 目录',
+    changes: [
+      '卡牌图彻底统一：关联卡牌与卡组卡共用 `hearthstone-cards/wild/{full,crop}/<卡名>_<id>.png` 一套路径，不再单独维护 `related/` 目录——所有原画都集中在 OSS 的 wild/full 下，便于管理。成就关联卡主图优先 `full`，缺失时回退 `crop` 缩略图。',
+      '重建卡图清单 `deck-card-images.json`：数据源改为本地完整卡库（`E:/github/my-heartstone/hearthstone_cards/wild`，含全部卡牌的 crop/full 与 `cards_meta.json`），条目由 744 扩到 5959，覆盖全部成就关联卡（590 张唯一卡仅 13 张特殊/衍生物无图，显示「暂无图」）与任意卡组卡。',
+      '卡组详情/缩略图同样改为本站相对路径、经服务端反代到 OSS，不再拼接 OSS 直链（`OSS_BASE` 直链逻辑已移除）：现在所有卡牌图地址都以本站域名（zentrix566.top）开头，右键「在新标签打开图片」直接查看不下载。',
+      '`scripts/generate-deck-card-manifest.mjs` 改为读取本地完整卡库（可用 `CARD_IMG_SOURCE` 环境变量覆盖），`scripts/upload-to-oss.mjs` 不再需要 related 模式（上传时统一针对 wild 源目录即可）。'
+    ]
+  },
+  {
+    date: '2026-07-24',
     title: '炉石成就查看器：关联卡牌回退 wild 图库（更多版本也能看图）',
     changes: [
       '关联卡牌图片增加 wild 图库兜底：此前「更多版本（addedExpansions）」等关联的卡牌未单独上传到 `related/` 目录，详情里只显示「暂无图」；现在 `attachCards` 为每张关联卡附加 `imageFallback`（取自 `deck-card-images.json`，即 `/hearthstone-cards/wild/...` 相对路径），弹窗/编辑/卡片列表优先用 `related/`，加载失败或缺失时自动回退到 wild 同名图，让这些卡也能被关联、看到图。',

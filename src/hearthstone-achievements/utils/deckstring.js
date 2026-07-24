@@ -10,7 +10,7 @@
 // 将 dbfId 解析为中文牌名与英雄职业，无需联网。
 
 import cardNameData from '../data/dbfid-cardnames.json' with { type: 'json' }
-import { getLocalCardImages, normalizeRarity, OSS_BASE } from './cardImages.js'
+import { getLocalCardImages, normalizeRarity } from './cardImages.js'
 const { cards: cardNames, heroClasses } = cardNameData
 
 // 极端情况（JSON 未覆盖的双职业英雄等）兜底，取自在用推荐卡组码实测推导
@@ -68,12 +68,10 @@ function getCardInfo(dbfId) {
  */
 function enrichCardImages(card) {
   const local = getLocalCardImages(card.name)
-  const crop = local?.crop || ''
-  const full = local?.full || ''
-  // 配置了 OSS 时优先返回 OSS 绝对 URL（部署环境无本地图也能显示）
+  // 始终返回本站相对路径（经反代到 OSS、带本站域名、强制 inline），不拼 OSS 直链
   return {
-    cropImage: OSS_BASE && crop ? `${OSS_BASE}${crop}` : crop,
-    fullImage: OSS_BASE && full ? `${OSS_BASE}${full}` : full,
+    cropImage: local?.crop || '',
+    fullImage: local?.full || '',
     rarityKey: normalizeRarity(card.rarity)
   }
 }

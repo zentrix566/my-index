@@ -655,7 +655,7 @@ import { expansions, originalExpansions, addedExpansions } from '../hearthstone-
 import { classColors, getClassOrder, groupByClass, matchesClass, getClassName, CORE_EXPANSION_IDS } from '../hearthstone-achievements/utils/achievements.js'
 import { useAchievementProgress } from '../hearthstone-achievements/composables/useAchievementProgress.js'
 import { useAuth } from '../auth/useAuth.js'
-import { getWildCardImage } from '../hearthstone-achievements/utils/cardImages.js'
+import { getWildCardFull, getWildCardCrop } from '../hearthstone-achievements/utils/cardImages.js'
 import EditProgressModal from '../hearthstone-achievements/components/EditProgressModal.vue'
 
 import ExpansionTabs from '../hearthstone-achievements/components/ExpansionTabs.vue'
@@ -1071,26 +1071,20 @@ async function onImportFile(e) {
   reader.readAsText(file)
 }
 
-// 关联卡牌图统一走本站相对路径 /hearthstone-cards/related/...，由服务端反代到 OSS 并强制
-// Content-Disposition: inline（见 server/index.js），这样右键「在新标签打开图片」直接查看而非下载。
-// 此前用 OSS_BASE 直链会绕过反代，OSS 默认不带回显头，浏览器按附件处理导致自动下载。
-// 上传命令：OSS_SOURCE_DIR=src/hearthstone-achievements/assets/cards OSS_PREFIX=hearthstone-cards/related node scripts/upload-to-oss.mjs
-// 兜底：related 目录缺失（如更多版本 addedExpansions 未单独上传）时，回退到 wild 图库同名图
-// （getWildCardImage 返回相对路径 /hearthstone-cards/wild/...，同样经反代强制 inline）。
-const RELATED_CARDS_OSS_PREFIX = 'hearthstone-cards/related'
-
-const getCardImageUrl = (cardName, imageDir) => {
-  if (!cardName) return null
-  return `/${RELATED_CARDS_OSS_PREFIX}/${encodeURIComponent(imageDir)}/${encodeURIComponent(cardName)}.png`
-}
+// 关联卡牌图统一走本站相对路径 /hearthstone-cards/wild/{full,crop}/<卡名>_<id>.png，
+// 与卡组卡图同源（都在阿里云 OSS 的 hearthstone-cards/wild 下），由服务端反代到 OSS 并强制
+// Content-Disposition: inline（见 server/index.js），右键「在新标签打开图片」直接查看而非下载。
+// 不再单独维护 related 目录——所有卡牌原画都集中在 wild/full，便于管理。
+// 主图优先 full，缺失时由 imageFallback（crop 缩略图）兜底。
+// 兜底：部分特殊卡（如衍生物/更名卡）在图库无对应原画，返回 null，前端显示「（暂无图）」。
 
 // 给成就附加卡牌图片和版本信息（图片 URL 同步可用）
 const attachCards = (ach, exp) => ({
   ...ach,
   cards: (ach.relatedCards || []).map((name) => ({
     name,
-    image: getCardImageUrl(name, exp.cardImageDir),
-    imageFallback: getWildCardImage(name)
+    image: getWildCardFull(name),
+    imageFallback: getWildCardCrop(name)
   })),
   _expansionId: exp.id,
   _expansionName: exp.name

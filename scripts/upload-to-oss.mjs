@@ -4,11 +4,13 @@
  *
  * 背景：
  *   卡牌图原先走 Git LFS 打进 Docker 镜像，线上因 LFS 指针 / CloudFront 不可达而破图。
- *   现改为托管到 OSS，前端用 VITE_OSS_BASE 直接引用 OSS URL，部署稳定、国内快、镜像更瘦。
+ *   现改为托管到 OSS，前端统一用相对路径 /hearthstone-cards/wild/{crop,full}/...，
+ *   由服务端（server/index.js）反代到 OSS 并强制 Content-Disposition: inline（带本站域名、不下载）。
  *
- * 图片来源：原始目录 E:\github\my-heartstone\hearthstone_cards（结构 wild/crop、wild/full）
- *   应用真正用到的图片由 manifest 决定：src/hearthstone-achievements/data/deck-card-images.json
- *   每张图的 OSS key 必须与应用请求路径一致：hearthstone-cards/wild/{crop,full}/<卡名>_<id>.png
+ * 所有卡牌原画统一放在 OSS 的 hearthstone-cards/wild/{crop,full}/<卡名>_<id>.png，
+ * 不再区分 related 目录。应用用到的图片由 manifest 决定：
+ *   src/hearthstone-achievements/data/deck-card-images.json
+ * 每张图的 OSS key 必须与应用请求路径一致。
  *
  * 用法（在 my-index 仓库根目录执行）：
  *   1. npm install ali-oss                 # 首次（ali-oss 已在 package.json 中）
@@ -17,21 +19,19 @@
  *        OSS_REGION=cn-beijing
  *        OSS_ACCESS_KEY_ID=你的AK
  *        OSS_ACCESS_KEY_SECRET=你的SK
- *        OSS_USE_MANIFEST=1     # 卡组图只传 manifest 引用的约 1486 张；置 0 则整目录全传
+ *        OSS_USE_MANIFEST=1     # 只传 manifest 引用的图片；置 0 则整目录全传
  *        OSS_SKIP_EXISTING=1    # 默认开启：上传前先查 OSS 是否已有该图，已有则跳过，避免重复上传/覆盖；置 0 强制全量重传
  *        OSS_CHECK_CONCURRENCY=20  # 查 OSS 存在性的并发数（默认 20）
  *   3. 试运行（只数文件、不真传，确认路径无误）：
  *        OSS_DRY_RUN=1 node scripts/upload-to-oss.mjs
- *        OSS_DRY_RUN=1 node scripts/upload-to-oss.mjs related
  *   4. 正式上传：
- *        node scripts/upload-to-oss.mjs            # 卡组图 → hearthstone-cards/wild/...
- *        node scripts/upload-to-oss.mjs related    # 关联成就卡图 → hearthstone-cards/related/...
+ *        node scripts/upload-to-oss.mjs            # 卡组图/关联卡图 → hearthstone-cards/wild/...
  *   脚本会自动读取 .env，无需手动 export 或 --env-file。
  *
  * 上传后：
  *   本地原始目录  E:/.../hearthstone_cards/wild/crop/X.png
  *     → OSS key  hearthstone-cards/wild/crop/X.png
- *     → 前端 .env  VITE_OSS_BASE=https://<bucket>.oss-cn-<region>.aliyuncs.com
+ *     → 前端经服务端反代（/hearthstone-cards/* → OSS_ORIGIN）访问
  */
 import { readdir, stat } from 'node:fs/promises'
 import { readFileSync, existsSync } from 'node:fs'
@@ -60,19 +60,12 @@ const bucket = process.env.OSS_BUCKET
 const region = process.env.OSS_REGION || 'cn-beijing'
 const accessKeyId = process.env.OSS_ACCESS_KEY_ID
 const accessKeySecret = process.env.OSS_ACCESS_KEY_SECRET
-// 子命令：node scripts/upload-to-oss.mjs [related]
-//   related → 上传「关联成就卡图」(src/hearthstone-achievements/assets/cards)，前缀 hearthstone-cards/related
-//   缺省    → 上传「卡组图」(OSS_SOURCE_DIR，默认 my-heartstone/hearthstone_cards)，前缀 hearthstone-cards
-const RELATED = process.argv[2] === 'related'
-// OSS key 前缀：必须与应用请求的路径一致
-const prefix = (process.env.OSS_PREFIX || (RELATED ? 'hearthstone-cards/related' : 'hearthstone-cards')).replace(/^\/+|\/+$/g, '')
-// 原始图片根目录
-const SRC_DIR = RELATED
-  ? resolve(repoRoot, 'src/hearthstone-achievements/assets/cards')
-  : resolve(process.env.OSS_SOURCE_DIR || 'E:/github/my-heartstone/hearthstone_cards')
-// 是否只传 manifest 引用的图片（默认否 = 整目录全传；设 1 则只传应用用到的约 1486 张，省空间更快）
-// 注意：related 模式固定为整目录上传。
-const useManifest = !RELATED && process.env.OSS_USE_MANIFEST === '1'
+// OSS key 前缀：必须与应用请求的路径一致（统一为 hearthstone-cards）
+const prefix = (process.env.OSS_PREFIX || 'hearthstone-cards').replace(/^\/+|\/+$/g, '')
+// 原始图片根目录（完整卡库：wild/crop、wild/full）
+const SRC_DIR = resolve(process.env.OSS_SOURCE_DIR || 'E:/github/my-heartstone/hearthstone_cards')
+// 是否只传 manifest 引用的图片（默认否 = 整目录全传；设 1 则只传应用用到的图片，省空间更快）
+const useManifest = process.env.OSS_USE_MANIFEST === '1'
 
 if (!bucket || !accessKeyId || !accessKeySecret) {
   console.error('缺少环境变量：OSS_BUCKET / OSS_ACCESS_KEY_ID / OSS_ACCESS_KEY_SECRET')
