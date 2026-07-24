@@ -654,7 +654,6 @@ import * as XLSX from 'xlsx'
 import { expansions, originalExpansions, addedExpansions } from '../hearthstone-achievements/data/expansions.js'
 import { classColors, getClassOrder, groupByClass, matchesClass, getClassName, CORE_EXPANSION_IDS } from '../hearthstone-achievements/utils/achievements.js'
 import { useAchievementProgress } from '../hearthstone-achievements/composables/useAchievementProgress.js'
-import { OSS_BASE } from '../hearthstone-achievements/utils/cardImages.js'
 import { useAuth } from '../auth/useAuth.js'
 import EditProgressModal from '../hearthstone-achievements/components/EditProgressModal.vue'
 
@@ -1071,13 +1070,15 @@ async function onImportFile(e) {
   reader.readAsText(file)
 }
 
-// 关联卡牌图仅走 OSS（已移除本地图片与本地 glob 回退）：未配置 OSS_BASE 时返回 null（显示「暂无图」）。
+// 关联卡牌图统一走本站相对路径 /hearthstone-cards/related/...，由服务端反代到 OSS 并强制
+// Content-Disposition: inline（见 server/index.js），这样右键「在新标签打开图片」直接查看而非下载。
+// 此前用 OSS_BASE 直链会绕过反代，OSS 默认不带回显头，浏览器按附件处理导致自动下载。
 // 上传命令：OSS_SOURCE_DIR=src/hearthstone-achievements/assets/cards OSS_PREFIX=hearthstone-cards/related node scripts/upload-to-oss.mjs
 const RELATED_CARDS_OSS_PREFIX = 'hearthstone-cards/related'
 
 const getCardImageUrl = (cardName, imageDir) => {
-  if (!OSS_BASE) return null
-  return `${OSS_BASE}/${RELATED_CARDS_OSS_PREFIX}/${encodeURIComponent(imageDir)}/${encodeURIComponent(cardName)}.png`
+  if (!cardName) return null
+  return `/${RELATED_CARDS_OSS_PREFIX}/${encodeURIComponent(imageDir)}/${encodeURIComponent(cardName)}.png`
 }
 
 // 给成就附加卡牌图片和版本信息（图片 URL 同步可用）

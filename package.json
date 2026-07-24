@@ -10,7 +10,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "server": "node server/index.js",
-    "start": "NODE_ENV=production node server/index.js"
+    "start": "NODE_ENV=production node server/index.js",
+    "upload:oss": "node scripts/upload-to-oss.mjs",
+    "upload:oss:related": "node scripts/upload-to-oss.mjs related"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",

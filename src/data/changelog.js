@@ -14,7 +14,8 @@ export const changelog = [
       '导出卡组图片（原生 Canvas，无第三方依赖）：每行顺序为 法力值 | 卡牌名称 | 拉长缩略图 | 卡牌数量；缩略图统一宽度并左侧压暗渐变以保证文字可读；头部右上方显示法力曲线；同步显示普通造价与全金造价；数量块灰底白字。',
       '卡组详情操作栏（复制代码 / 导出图片）置于卡组名旁边，宽屏左右并排、窄屏（≤760px）自动堆叠。',
       '`dbfid-cardnames.json` 数据扩充：重建为全量卡牌库（21451 张，原 8107 张），补全卡组码中衍生/变身 token 卡（如半兽人迦罗娜的「莱恩国王」「弑君者」），修复解码后显示 `#dbfId` 的问题；费用/类型/稀有度均取自本地库。',
-      '新增教学脚本 `scripts/decode-deck.mjs` / `scripts/base64-to-binary.mjs` / `scripts/refresh-card-names.mjs`：逐步演示卡组码 base64→二进制→deckstring 协议解析→中文牌表，以及全量重建卡牌元数据。'
+      '新增教学脚本 `scripts/decode-deck.mjs` / `scripts/base64-to-binary.mjs` / `scripts/refresh-card-names.mjs`：逐步演示卡组码 base64→二进制→deckstring 协议解析→中文牌表，以及全量重建卡牌元数据。',
+      '修复关联卡牌「查看详情」弹窗中图片右键「在新标签打开图片」被浏览器当作附件自动下载的问题：关联卡牌图此前直接拼接 `OSS_BASE` 的 OSS 直链、绕过本站反代；改为返回本站相对路径 `/hearthstone-cards/related/...`，与卡组大图一致经服务端反代强制 `Content-Disposition: inline`，右键直接查看不下载。'
     ]
   },
   {
