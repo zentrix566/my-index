@@ -5,6 +5,9 @@ import fs from 'fs'
 import os from 'node:os'
 import crypto from 'node:crypto'
 import { fileURLToPath } from 'url'
+// 本地 `npm run dev` 直接 `node server/index.js` 启动时，.env 不会被自动加载；
+// 这里补一次（生产 Docker 镜像里无 .env，loadEnvFile 抛错被静默跳过，安全）。
+try { process.loadEnvFile('.env') } catch { /* 无 .env 时跳过 */ }
 import { writeLog, appLog, cleanOldLogs, getStats, getTopPages, getGeoDistribution, getRecentVisits, getHourlyTrend } from './logger.js'
 import { lookup } from './geoip.js'
 import cookieParser from 'cookie-parser'

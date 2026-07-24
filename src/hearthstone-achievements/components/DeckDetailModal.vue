@@ -649,11 +649,11 @@ async function exportImage() {
   box-shadow: 0 2px 10px rgba(0,0,0,.18);
 }
 
-/* 右侧缩略图（<img>，lazy 加载：视口外的卡片不抢占并发连接） */
+/* 缩略图铺满整行，右侧完整展示；左侧由渐变遮罩压暗，保证文字可读 */
 .ddm-card-thumb {
   position: absolute;
-  top: 0; right: 0; bottom: 0;
-  width: 56%;
+  inset: 0;
+  width: 100%;
   height: 100%;
   object-fit: cover;
   object-position: right center;
