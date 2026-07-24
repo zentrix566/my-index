@@ -3,10 +3,11 @@
 export const changelog = [
   {
     date: '2026-07-24',
-    title: '修复卡牌图反代 404/502：OSS_ORIGIN 路径归一化',
+    title: '修复卡牌图反代 404：根治中文路径双重 URL 编码 + 部署缓存',
     changes: [
-      '根治线上 `/hearthstone-cards/*` 反代 404/502：GitHub Secret `VITE_OSS_BASE`（复用为 `OSS_ORIGIN`）若误配成带 `/hearthstone-cards` 后缀，代理拼出的目标 URL 会出现路径重复（`/hearthstone-cards/hearthstone-cards/...`），OSS 上不存在而 404。服务端 `server/index.js` 现对 `OSS_ORIGIN` 做归一化——去掉结尾斜杠，并剥掉末尾多余的 `/hearthstone-cards`，保证无论 secret 值是否带后缀，target 都拼成正确的 `https://<bucket>.oss-<region>.aliyuncs.com/hearthstone-cards/wild/...`。',
-      '前提确认：OSS bucket `my-hearthstone-20260723` 已设为公共读（否则匿名访问 403），且卡牌原画已全部上传到 `hearthstone-cards/wild/{crop,full}/` 路径（11892 张，含全部成就关联卡与任意卡组卡）。'
+      '线上 `/hearthstone-cards/*` 反代对含中文的卡牌图一直 404/502 的真因：浏览器/Cloudflare 传来的 `req.path` 已是 URL 编码（如 `%E4%BC%8A...`），服务端又对它做了一次 `encodeURI`，`%` 被二次编码成 `%25`，OSS 收不到正确 key → 404。现已改为直接拼接 `OSS_ORIGIN + req.path`，不再二次编码，中文卡牌图正常返回（含 `Content-Disposition: inline`，右键新标签直接查看不下载）。',
+      '部署侧配套修复：deployment 原用 `:latest` 标签 + `imagePullPolicy: IfNotPresent`，节点缓存旧镜像层，`kubectl rollout restart` 仅重启 Pod 不重新拉取，导致上述修复一直不上线。现 CI 每次 push 额外打唯一 `:sha-<commit>` 标签，并在部署时 `kubectl set image` 强制 image 字段变化，K8s 必拉新镜像。',
+      '前提确认：OSS bucket `my-hearthstone-20260723` 已设为公共读（否则匿名访问 403），且卡牌原画已全部上传到 `hearthstone-cards/wild/{crop,full}/` 路径（11892 张 crop+full，含全部成就关联卡与任意卡组卡）。`server/index.js` 另对 `OSS_ORIGIN` 做防御性归一化（去尾斜杠、剥末尾多余 `/hearthstone-cards`），以防 secret 误配带后缀。'
     ]
   },
   {
