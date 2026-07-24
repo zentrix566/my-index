@@ -40,10 +40,11 @@
                 v-for="(c, idx) in leftCards"
                 :key="c.dbfId + '-' + c.count + '-L' + idx"
                 class="ddm-card-row"
-                :style="rowStyle(c)"
                 :title="c.name + ' · ' + (c.cost ?? '?') + '费 · ' + (c.rarity || '') + '（点击看大图）'"
                 @click="openLightbox(c)"
               >
+                <span class="ddm-card-fade" aria-hidden="true"></span>
+                <img v-if="c.cropImage" class="ddm-card-thumb" :src="c.cropImage" :alt="c.name" loading="lazy" decoding="async">
                 <span class="ddm-crystal">
                   <svg class="ddm-crystal-svg" viewBox="0 0 24 26" aria-hidden="true">
                     <polygon points="12,1 22,7 22,19 12,25 2,19 2,7" />
@@ -62,10 +63,11 @@
                 v-for="(c, idx) in rightCards"
                 :key="c.dbfId + '-' + c.count + '-R' + idx"
                 class="ddm-card-row"
-                :style="rowStyle(c)"
                 :title="c.name + ' · ' + (c.cost ?? '?') + '费 · ' + (c.rarity || '') + '（点击看大图）'"
                 @click="openLightbox(c)"
               >
+                <span class="ddm-card-fade" aria-hidden="true"></span>
+                <img v-if="c.cropImage" class="ddm-card-thumb" :src="c.cropImage" :alt="c.name" loading="lazy" decoding="async">
                 <span class="ddm-crystal">
                   <svg class="ddm-crystal-svg" viewBox="0 0 24 26" aria-hidden="true">
                     <polygon points="12,1 22,7 22,19 12,25 2,19 2,7" />
@@ -198,18 +200,6 @@ const emit = defineEmits(['close'])
 const decoded = computed(() => (props.deck ? decodeDeck(props.deck.code) : { valid: false, heroClass: '未知', total: 0, cards: [] }))
 const displayClass = computed(() => (props.deck && props.deck.heroClass) || decoded.value.heroClass)
 const copied = ref(false)
-
-// ── 卡牌行样式：左侧渐变（保证牌名可读）→ 右侧卡牌缩略图 ──
-// 用 background-image 展示缩略图（而非 <img>），彻底规避加载失败时 @error 反复触发的死循环。
-function rowStyle(c) {
-  if (!c.cropImage) return {}
-  return {
-    backgroundImage: `linear-gradient(90deg, var(--hs-inset-bg) 0%, var(--hs-inset-bg) 46%, rgba(0,0,0,0) 100%), url("${c.cropImage}")`,
-    backgroundSize: 'auto, cover',
-    backgroundPosition: 'left center, right center',
-    backgroundRepeat: 'no-repeat'
-  }
-}
 
 // ── 概览：平均法力、总造价 ──
 const avgCost = computed(() => {
@@ -657,6 +647,33 @@ async function exportImage() {
 .ddm-card-row:hover {
   transform: translateY(-1px);
   box-shadow: 0 2px 10px rgba(0,0,0,.18);
+}
+
+/* 右侧缩略图（<img>，lazy 加载：视口外的卡片不抢占并发连接） */
+.ddm-card-thumb {
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 56%;
+  height: 100%;
+  object-fit: cover;
+  object-position: right center;
+  pointer-events: none;
+  z-index: 0;
+}
+/* 左侧压暗渐变：保证水晶、牌名清晰可读（仿旅法师营地） */
+.ddm-card-fade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, var(--hs-inset-bg) 0%, var(--hs-inset-bg) 46%, rgba(0,0,0,0) 100%);
+  pointer-events: none;
+  z-index: 1;
+}
+/* 文字层位于遮罩之上 */
+.ddm-card-row > .ddm-crystal,
+.ddm-card-row > .ddm-card-name,
+.ddm-card-row > .ddm-count {
+  position: relative;
+  z-index: 2;
 }
 
 /* 法力水晶 */

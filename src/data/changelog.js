@@ -3,6 +3,15 @@
 export const changelog = [
   {
     date: '2026-07-24',
+    title: '炉石卡组详情：缩略图加载加速（反代三级缓存 + 懒加载）',
+    changes: [
+      '卡组详情点开后约 30 张缩略图之前要等 3 秒多：浏览器对同源并发限约 6 个，而服务端反代每次都回源阿里云 OSS，30 张要分多波、累计数秒。',
+      '服务端 `server/index.js` 的 `/hearthstone-cards/*` 反代新增三级缓存：内存(LRU，约 800 张) → 磁盘(tmp，跨重启/多实例) → 回源 OSS。同一张图只回源一次，之后（同会话重开、不同卡组共用的同名牌）直接命中缓存，毫秒级返回；并加并发去重避免惊群。每张回源图额外打 `X-Cache: MISS/HIT` 响应头，便于在浏览器 Network 面板核验。',
+      '卡组详情每行缩略图由 CSS `background-image` 改为 `<img loading="lazy" decoding="async">` + 左侧压暗渐变遮罩（视觉不变），视口外的卡片不再抢占那 6 个并发连接，可见的缩略图更快出现。'
+    ]
+  },
+  {
+    date: '2026-07-24',
     title: '修复卡牌图反代 404：根治中文路径双重 URL 编码 + 部署缓存',
     changes: [
       '线上 `/hearthstone-cards/*` 反代对含中文的卡牌图一直 404/502 的真因：浏览器/Cloudflare 传来的 `req.path` 已是 URL 编码（如 `%E4%BC%8A...`），服务端又对它做了一次 `encodeURI`，`%` 被二次编码成 `%25`，OSS 收不到正确 key → 404。现已改为直接拼接 `OSS_ORIGIN + req.path`，不再二次编码，中文卡牌图正常返回（含 `Content-Disposition: inline`，右键新标签直接查看不下载）。',

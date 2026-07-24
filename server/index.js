@@ -2,7 +2,8 @@ import express from 'express'
 import compression from 'compression'
 import path from 'path'
 import fs from 'fs'
-import { Readable } from 'node:stream'
+import os from 'node:os'
+import crypto from 'node:crypto'
 import { fileURLToPath } from 'url'
 import { writeLog, appLog, cleanOldLogs, getStats, getTopPages, getGeoDistribution, getRecentVisits, getHourlyTrend } from './logger.js'
 import { lookup } from './geoip.js'
@@ -450,31 +451,93 @@ const OSS_ORIGIN = (process.env.OSS_ORIGIN || '')
   .replace(/\/+$/, '')
   .replace(/\/hearthstone-cards$/, '')
 
+// 卡牌图代理缓存：内存(LRU) → 磁盘(tmp) → OSS 三级。
+// 缘由：详情页一次渲染约 30 张缩略图，浏览器对同源并发限 ~6，若每次都回源 OSS 会分多波、累计数秒。
+// 加缓存后：同一张图只回源一次，后续（同会话重开、不同卡组共用的同名牌）直接命中缓存，毫秒级返回。
+const CARD_CACHE_DIR = path.join(os.tmpdir(), 'zentrix-hs-cards')
+const fsp = fs.promises                       // 异步文件操作（import fs from 'fs' 拿到的是回调风格 API）
+const memCardCache = new Map()          // reqPath -> { buf, contentType, contentLength }
+const MEM_CARD_CACHE_MAX = 800
+const cardInflight = new Map()         // target -> Promise，避免并发重复回源（惊群效应）
+
+function memCardGet(key) {
+  const v = memCardCache.get(key)
+  if (v) { memCardCache.delete(key); memCardCache.set(key, v) } // 移到末尾 = LRU
+  return v
+}
+function memCardSet(key, v) {
+  if (memCardCache.size >= MEM_CARD_CACHE_MAX) {
+    const oldest = memCardCache.keys().next().value
+    if (oldest) memCardCache.delete(oldest)
+  }
+  memCardCache.set(key, v)
+}
+// 用 URL 路径的哈希作磁盘文件名：既规避中文/特殊字符非法路径，又杜绝不同图映射到同一文件。
+function cardDiskFile(reqPath) {
+  const hash = crypto.createHash('sha1').update(reqPath).digest('hex')
+  return path.join(CARD_CACHE_DIR, hash)
+}
+async function fetchCardFromOSS(target, reqPath) {
+  if (cardInflight.has(target)) return cardInflight.get(target)
+  const p = (async () => {
+    const upstream = await fetch(target)
+    if (!upstream.ok || !upstream.body) {
+      const e = new Error('upstream ' + upstream.status)
+      e.status = upstream.status === 404 ? 404 : 502
+      throw e
+    }
+    const buf = Buffer.from(await upstream.arrayBuffer())
+    const contentType = upstream.headers.get('content-type') || 'image/png'
+    const data = { buf, contentType, contentLength: buf.length }
+    memCardSet(reqPath, data)
+    // 磁盘缓存（尽力而为：k8s 临时盘 / 本地 tmp 均可写；失败不阻断，退回纯内存缓存）
+    try {
+      const dp = cardDiskFile(reqPath)
+      await fsp.mkdir(CARD_CACHE_DIR, { recursive: true })
+      await fsp.writeFile(dp + '.bin', buf)
+      await fsp.writeFile(dp + '.ct', contentType)
+    } catch { /* 磁盘不可写时忽略 */ }
+    return data
+  })()
+  cardInflight.set(target, p)
+  try { return await p } finally { cardInflight.delete(target) }
+}
+function sendCard(res, data, hit) {
+  res.setHeader('Content-Type', data.contentType)
+  res.setHeader('Content-Disposition', 'inline')
+  res.setHeader('Cache-Control', 'public, max-age=31536000, immutable')
+  res.setHeader('Content-Length', data.contentLength)
+  res.setHeader('X-Cache', hit ? 'HIT' : 'MISS')
+  res.end(data.buf)
+}
+
 app.get('/hearthstone-cards/*', async (req, res) => {
   if (!OSS_ORIGIN) return res.status(404).end()
   // 路径安全：拒绝目录穿越
   if (req.path.includes('..')) return res.status(400).end()
 
-  // req.path 已是合法 URL 编码路径（浏览器/Cloudflare 传来即为 %E4%BC%8A 这类编码），
-  // 切勿再 encodeURI——否则 % 会被二次编码成 %25，OSS 收不到正确 key → 404。
-  // 直接拼接即可：OSS_ORIGIN（无尾斜杠） + req.path（以 / 开头，已编码）。
+  // 1) 内存缓存
+  const mem = memCardGet(req.path)
+  if (mem) return sendCard(res, mem, true)
+
+  // 2) 磁盘缓存（跨重启 / 多实例共享）
+  try {
+    const dp = cardDiskFile(req.path)
+    const buf = await fsp.readFile(dp + '.bin')
+    const contentType = (await fsp.readFile(dp + '.ct', 'utf8').catch(() => 'image/png'))
+    const data = { buf, contentType, contentLength: buf.length }
+    memCardSet(req.path, data)
+    return sendCard(res, data, true)
+  } catch { /* 未命中，回源 */ }
+
+  // 3) 回源 OSS（req.path 已是合法 URL 编码路径，切勿再 encodeURI 否则 % 二次编码 → 404）
   const target = OSS_ORIGIN + req.path
   try {
-    const upstream = await fetch(target)
-    if (!upstream.ok || !upstream.body) {
-      return res.status(upstream.status === 404 ? 404 : 502).end()
-    }
-    const contentType = upstream.headers.get('content-type') || 'image/png'
-    res.setHeader('Content-Type', contentType)
-    // 关键：inline 让浏览器直接渲染，不触发下载
-    res.setHeader('Content-Disposition', 'inline')
-    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable')
-    const len = upstream.headers.get('content-length')
-    if (len) res.setHeader('Content-Length', len)
-    Readable.fromWeb(upstream.body).pipe(res)
+    const data = await fetchCardFromOSS(target, req.path)
+    return sendCard(res, data, false)
   } catch (err) {
     appLog('ERROR', `卡牌图代理失败: ${target} -> ${err.message}`)
-    res.status(502).end()
+    return res.status(err.status === 404 ? 404 : 502).end()
   }
 })
 
