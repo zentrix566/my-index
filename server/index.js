@@ -2,6 +2,7 @@ import express from 'express'
 import compression from 'compression'
 import path from 'path'
 import fs from 'fs'
+import { Readable } from 'node:stream'
 import { fileURLToPath } from 'url'
 import { writeLog, appLog, cleanOldLogs, getStats, getTopPages, getGeoDistribution, getRecentVisits, getHourlyTrend } from './logger.js'
 import { lookup } from './geoip.js'
@@ -434,6 +435,38 @@ app.post('/api/ai-advisor', requireAuth, async (req, res) => {
 // 健康检查
 app.get('/health', (req, res) => {
   res.type('text/plain').send('OK\n')
+})
+
+// ========== 炉石卡牌图反向代理 ==========
+// 将本站的 /hearthstone-cards/* 反向代理到阿里云 OSS 源站（OSS_ORIGIN）。
+// 目的：1) 图片以本站域名开头，无需给 OSS 绑自定义域名/备案；
+//       2) 强制 Content-Disposition: inline，右键「在新标签打开图片」直接查看而非下载。
+const OSS_ORIGIN = (process.env.OSS_ORIGIN || '').replace(/\/$/, '')
+
+app.get('/hearthstone-cards/*', async (req, res) => {
+  if (!OSS_ORIGIN) return res.status(404).end()
+  // 路径安全：拒绝目录穿越
+  if (req.path.includes('..')) return res.status(400).end()
+
+  // req.path 已被 express 解码为明文（含中文），重新编码为合法 URL（保留 / 分隔符）
+  const target = OSS_ORIGIN + encodeURI(req.path)
+  try {
+    const upstream = await fetch(target)
+    if (!upstream.ok || !upstream.body) {
+      return res.status(upstream.status === 404 ? 404 : 502).end()
+    }
+    const contentType = upstream.headers.get('content-type') || 'image/png'
+    res.setHeader('Content-Type', contentType)
+    // 关键：inline 让浏览器直接渲染，不触发下载
+    res.setHeader('Content-Disposition', 'inline')
+    res.setHeader('Cache-Control', 'public, max-age=31536000, immutable')
+    const len = upstream.headers.get('content-length')
+    if (len) res.setHeader('Content-Length', len)
+    Readable.fromWeb(upstream.body).pipe(res)
+  } catch (err) {
+    appLog('ERROR', `卡牌图代理失败: ${target} -> ${err.message}`)
+    res.status(502).end()
+  }
 })
 
 // 静态资源（带长期缓存）

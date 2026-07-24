@@ -317,7 +317,12 @@
       :show-pass-bonus="true"
       :search-only="myGroupBy === 'sprint'"
     />
+        </div>
+      </template>
+      </div>
 
+      <!-- 我的成就：操作行 / 进度状态 / 待完成清单统计 —— 不吸顶，随页面正常滚动，保住内容可视区域 -->
+      <template v-if="viewMode === 'my'">
     <!-- 统一操作行：导出 Excel / 批量完成 / 攻略 / 硬核模式（ON/OFF 开关） -->
     <div class="hs-my-actions">
       <button type="button" class="hs-btn hs-btn-ghost" :disabled="exporting" @click="exportExcel">
@@ -366,7 +371,6 @@
         <span class="hs-toggle-label">硬核模式{{ hardcore ? '：开' : '：关' }}</span>
       </button>
     </div>
-        </div>
 
     <div v-if="progressLoading" class="hs-progress-status" role="status">正在加载成就进度…</div>
         <div v-else-if="progressError" class="hs-progress-status hs-progress-error" role="alert">
@@ -381,7 +385,6 @@
         </div>
 
       </template>
-      </div>
 
       <!-- 我的成就-按版本/按职业：总览面板（完成度进度条 + 一句话说明，默认展开） -->
       <div v-if="showClassOverview" class="hs-class-overview">
@@ -651,6 +654,7 @@ import * as XLSX from 'xlsx'
 import { expansions, originalExpansions, addedExpansions } from '../hearthstone-achievements/data/expansions.js'
 import { classColors, getClassOrder, groupByClass, matchesClass, getClassName, CORE_EXPANSION_IDS } from '../hearthstone-achievements/utils/achievements.js'
 import { useAchievementProgress } from '../hearthstone-achievements/composables/useAchievementProgress.js'
+import { OSS_BASE } from '../hearthstone-achievements/utils/cardImages.js'
 import { useAuth } from '../auth/useAuth.js'
 import EditProgressModal from '../hearthstone-achievements/components/EditProgressModal.vue'
 
@@ -1067,12 +1071,13 @@ async function onImportFile(e) {
   reader.readAsText(file)
 }
 
-// 卡牌图片：构建期即解析出 URL（eager glob），点击卡片时同步可用，消除打开弹窗的等待。
-const cardImageMap = import.meta.glob('../hearthstone-achievements/assets/cards/**/*.png', { eager: true, import: 'default' })
+// 关联卡牌图仅走 OSS（已移除本地图片与本地 glob 回退）：未配置 OSS_BASE 时返回 null（显示「暂无图」）。
+// 上传命令：OSS_SOURCE_DIR=src/hearthstone-achievements/assets/cards OSS_PREFIX=hearthstone-cards/related node scripts/upload-to-oss.mjs
+const RELATED_CARDS_OSS_PREFIX = 'hearthstone-cards/related'
 
 const getCardImageUrl = (cardName, imageDir) => {
-  const path = `../hearthstone-achievements/assets/cards/${imageDir}/${cardName}.png`
-  return cardImageMap[path] || null
+  if (!OSS_BASE) return null
+  return `${OSS_BASE}/${RELATED_CARDS_OSS_PREFIX}/${encodeURIComponent(imageDir)}/${encodeURIComponent(cardName)}.png`
 }
 
 // 给成就附加卡牌图片和版本信息（图片 URL 同步可用）

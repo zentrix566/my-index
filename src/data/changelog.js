@@ -2,6 +2,22 @@
 // 按时间倒序排列，最新条目在最前。新增更新时往上插即可。
 export const changelog = [
   {
+    date: '2026-07-24',
+    title: '炉石成就查看器：卡组详情图床迁移 OSS、旅法师营地风格重做与导出增强',
+    changes: [
+      '卡牌图床迁移阿里云 OSS：`.env` 的 `VITE_OSS_BASE` 留空，前端统一用相对路径 `/hearthstone-cards/...`，图片地址以本站域名（zentrix566.top）开头；服务端 `server/index.js` 新增 `/hearthstone-cards/*` 反向代理到 `OSS_ORIGIN`（真实源站），并强制 `Content-Disposition: inline` + `image/png`，浏览器只与本站通信、服务器到服务器取图，域名无需在阿里云备案，右键「在新标签打开图片」直接查看不下载。',
+      '修复 `.env` 中 OSS region 占位符 `<region>` 未替换导致 OSS 域名无效、图片全部回退本地的 bug；同步更新 `.env.example` 新增 `OSS_ORIGIN` 与本地 dev 代理配置 `vite.config.js`。',
+      '删除本地卡图访问关系：`cardImages.js` 移除已失效的 CDN(cloudfront) 兜底；`HearthstoneAchievements.vue` 移除 `import.meta.glob` 本地打包与 `return local` 回退，关联成就卡图仅走 OSS（未配图源时显示「暂无图」）；253 张本地 png 从版本库移除。',
+      '修复卡组详情图片 `onImgError` 反复给同一 `src` 赋值触发的无限循环卡死（改为 `broken` 标志直接隐藏图片）。',
+      '卡组详情重做为旅法师营地风格：法力水晶（按费用着色）→ 卡名（稀有度着色：白/蓝/紫/橙）→ 渐变缩略图 → 数量块（灰底白字，避免与签名金色混淆）；卡牌列表按法力费用升序、分两列展示，每列各自从小到大。',
+      '新增法力分布图、卡牌类型饼图（随从/法术/武器/地标等，数据源为本地 `dbfid-cardnames.json` 的 type 字段，全程不联网）、造价统计与显示（普通 40/稀有 100/史诗 400/传说 1600 尘，金卡翻倍：全金合计独立显示于顶部 meta 与造价面板）。',
+      '导出卡组图片（原生 Canvas，无第三方依赖）：每行顺序为 法力值 | 卡牌名称 | 拉长缩略图 | 卡牌数量；缩略图统一宽度并左侧压暗渐变以保证文字可读；头部右上方显示法力曲线；同步显示普通造价与全金造价；数量块灰底白字。',
+      '卡组详情操作栏（复制代码 / 导出图片）置于卡组名旁边，宽屏左右并排、窄屏（≤760px）自动堆叠。',
+      '`dbfid-cardnames.json` 数据扩充：重建为全量卡牌库（21451 张，原 8107 张），补全卡组码中衍生/变身 token 卡（如半兽人迦罗娜的「莱恩国王」「弑君者」），修复解码后显示 `#dbfId` 的问题；费用/类型/稀有度均取自本地库。',
+      '新增教学脚本 `scripts/decode-deck.mjs` / `scripts/base64-to-binary.mjs` / `scripts/refresh-card-names.mjs`：逐步演示卡组码 base64→二进制→deckstring 协议解析→中文牌表，以及全量重建卡牌元数据。'
+    ]
+  },
+  {
     date: '2026-07-23',
     title: '炉石成就查看器：浏览 / 我的成就布局整理与部署修复',
     changes: [
