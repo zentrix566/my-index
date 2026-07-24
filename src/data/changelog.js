@@ -3,6 +3,14 @@
 export const changelog = [
   {
     date: '2026-07-24',
+    title: '修复卡牌图反代 404/502：OSS_ORIGIN 路径归一化',
+    changes: [
+      '根治线上 `/hearthstone-cards/*` 反代 404/502：GitHub Secret `VITE_OSS_BASE`（复用为 `OSS_ORIGIN`）若误配成带 `/hearthstone-cards` 后缀，代理拼出的目标 URL 会出现路径重复（`/hearthstone-cards/hearthstone-cards/...`），OSS 上不存在而 404。服务端 `server/index.js` 现对 `OSS_ORIGIN` 做归一化——去掉结尾斜杠，并剥掉末尾多余的 `/hearthstone-cards`，保证无论 secret 值是否带后缀，target 都拼成正确的 `https://<bucket>.oss-<region>.aliyuncs.com/hearthstone-cards/wild/...`。',
+      '前提确认：OSS bucket `my-hearthstone-20260723` 已设为公共读（否则匿名访问 403），且卡牌原画已全部上传到 `hearthstone-cards/wild/{crop,full}/` 路径（11892 张，含全部成就关联卡与任意卡组卡）。'
+    ]
+  },
+  {
+    date: '2026-07-24',
     title: '炉石成就查看器：卡牌图统一走 wild/full，弃用 related 目录',
     changes: [
       '卡牌图彻底统一：关联卡牌与卡组卡共用 `hearthstone-cards/wild/{full,crop}/<卡名>_<id>.png` 一套路径，不再单独维护 `related/` 目录——所有原画都集中在 OSS 的 wild/full 下，便于管理。成就关联卡主图优先 `full`，缺失时回退 `crop` 缩略图。',

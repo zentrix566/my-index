@@ -441,7 +441,14 @@ app.get('/health', (req, res) => {
 // 将本站的 /hearthstone-cards/* 反向代理到阿里云 OSS 源站（OSS_ORIGIN）。
 // 目的：1) 图片以本站域名开头，无需给 OSS 绑自定义域名/备案；
 //       2) 强制 Content-Disposition: inline，右键「在新标签打开图片」直接查看而非下载。
-const OSS_ORIGIN = (process.env.OSS_ORIGIN || '').replace(/\/$/, '')
+// 归一化：去掉结尾斜杠；并防止 secret 误配成带 /hearthstone-cards 后缀导致路径重复。
+// 例：VITE_OSS_BASE 配成 https://bucket.oss-xx.aliyuncs.com/hearthstone-cards，
+// 而 req.path 已以 /hearthstone-cards 开头，拼出来会变成
+// /hearthstone-cards/hearthstone-cards/wild/... → OSS 上不存在 → 404。
+// 这里把末尾多余的 /hearthstone-cards 剥掉，保证 target 拼出来路径正确。
+const OSS_ORIGIN = (process.env.OSS_ORIGIN || '')
+  .replace(/\/+$/, '')
+  .replace(/\/hearthstone-cards$/, '')
 
 app.get('/hearthstone-cards/*', async (req, res) => {
   if (!OSS_ORIGIN) return res.status(404).end()
