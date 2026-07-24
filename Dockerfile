@@ -52,5 +52,10 @@ ENV NODE_ENV=production
 ENV PORT=80
 ENV LOG_DIR=/app/logs
 
+# 炉石卡牌图服务端反代的真实 OSS 源站。CI 通过 build-args 注入，
+# 容器运行时 server/index.js 据此把 /hearthstone-cards/* 代理到 OSS 并强制 inline。
+ARG OSS_ORIGIN
+ENV OSS_ORIGIN=${OSS_ORIGIN}
+
 EXPOSE 80
 CMD ["node", "server/index.js"]

@@ -1,6 +1,7 @@
 # 所有以点(.)开头的目录都不提交（隐藏目录，如 .workbuddy/.vscode/.idea/.zcode/.build-tmp 等）
-# 注：.git 目录由 git 自身管理，不受此规则影响
+# 注：.git 目录由 git 自身管理，不受此规则影响；.github 必须提交以启用 CI。
 **/.*/
+!.github/
 
 # DevOps Actions directory
 devops-actions/

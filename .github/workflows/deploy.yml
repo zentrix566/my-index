@@ -14,6 +14,9 @@ env:
   # 炉石卡牌图 OSS 基地址（公开读，非密钥）。需在本仓库 Settings → Secrets → Actions 配置 VITE_OSS_BASE，
   # 如 https://<bucket>.oss-cn-beijing.aliyuncs.com （不带结尾斜杠）。CI 构建时注入，前端据此从 OSS 加载图。
   VITE_OSS_BASE: ${{ secrets.VITE_OSS_BASE }}
+  # 服务端反向代理的真实 OSS 源站（公开读，非密钥）。server/index.js 把 /hearthstone-cards/* 代理到这里，
+  # 让图片以本站域名开头并强制 Content-Disposition: inline（右键新标签直接查看）。
+  OSS_ORIGIN: ${{ secrets.OSS_ORIGIN }}
 
 jobs:
   build-and-push:
@@ -59,9 +62,11 @@ jobs:
           push: true
           cache-from: type=gha
           cache-to: type=gha,mode=max
-          # 将 VITE_OSS_BASE 传进 Docker 构建容器，供 vite build 编译进产物（否则线上图片基地址为空）
+          # 将 VITE_OSS_BASE / OSS_ORIGIN 传进 Docker 构建容器：
+          # VITE_OSS_BASE 供 vite build 编译进产物；OSS_ORIGIN 供服务端运行时反向代理 /hearthstone-cards/*。
           build-args: |
             VITE_OSS_BASE=${{ env.VITE_OSS_BASE }}
+            OSS_ORIGIN=${{ env.OSS_ORIGIN }}
           # 同时指定两个仓库的标签
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
