@@ -22,7 +22,7 @@
 
 ### 2026-07-24
 
-- 修复生产环境 `/hearthstone-cards/*` 反向代理 404：CI/CD 现在会把 `OSS_ORIGIN` 作为 Docker build-arg 传入并写入容器环境变量，服务端代理据此从 OSS 拉取图片；此前仅前端 `VITE_OSS_BASE` 被传入，导致关联卡图等走相对路径的请求全部 404。
+- 修复生产环境 `/hearthstone-cards/*` 反向代理 404：CI/CD 现在会把 `OSS_ORIGIN` 作为 Docker build-arg 传入并写入容器环境变量（`deploy.yml` 中直接复用已有的 `VITE_OSS_BASE` secret 值，无需新建 secret），服务端代理据此从 OSS 拉取图片；此前仅前端 `VITE_OSS_BASE` 被传入，导致关联卡图等走相对路径的请求全部 404。
 
 ### 2026-07-23
 

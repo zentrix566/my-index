@@ -16,7 +16,8 @@ env:
   VITE_OSS_BASE: ${{ secrets.VITE_OSS_BASE }}
   # 服务端反向代理的真实 OSS 源站（公开读，非密钥）。server/index.js 把 /hearthstone-cards/* 代理到这里，
   # 让图片以本站域名开头并强制 Content-Disposition: inline（右键新标签直接查看）。
-  OSS_ORIGIN: ${{ secrets.OSS_ORIGIN }}
+  # 复用已有的 VITE_OSS_BASE secret（其值即 OSS 源站地址，昨天已配置），无需新建 secret。
+  OSS_ORIGIN: ${{ secrets.VITE_OSS_BASE }}
 
 jobs:
   build-and-push:
