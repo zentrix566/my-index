@@ -457,6 +457,9 @@ app.get('/hearthstone-cards/*', async (req, res) => {
 
   // req.path 已被 express 解码为明文（含中文），重新编码为合法 URL（保留 / 分隔符）
   const target = OSS_ORIGIN + encodeURI(req.path)
+  // [DEBUG] 临时诊断线上 OSS_ORIGIN 实际值与拼接结果，定位 404 根因后移除
+  res.setHeader('X-Debug-Origin', OSS_ORIGIN)
+  res.setHeader('X-Debug-Target', target)
   try {
     const upstream = await fetch(target)
     if (!upstream.ok || !upstream.body) {
