@@ -455,8 +455,10 @@ app.get('/hearthstone-cards/*', async (req, res) => {
   // 路径安全：拒绝目录穿越
   if (req.path.includes('..')) return res.status(400).end()
 
-  // req.path 已被 express 解码为明文（含中文），重新编码为合法 URL（保留 / 分隔符）
-  const target = OSS_ORIGIN + encodeURI(req.path)
+  // req.path 已是合法 URL 编码路径（浏览器/Cloudflare 传来即为 %E4%BC%8A 这类编码），
+  // 切勿再 encodeURI——否则 % 会被二次编码成 %25，OSS 收不到正确 key → 404。
+  // 直接拼接即可：OSS_ORIGIN（无尾斜杠） + req.path（以 / 开头，已编码）。
+  const target = OSS_ORIGIN + req.path
   // [DEBUG] 临时诊断线上 OSS_ORIGIN 实际值与拼接结果，定位 404 根因后移除
   res.setHeader('X-Debug-Origin', OSS_ORIGIN)
   res.setHeader('X-Debug-Target', target)
