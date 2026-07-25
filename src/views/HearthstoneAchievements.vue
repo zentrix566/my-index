@@ -162,6 +162,19 @@
             <div v-if="showMySectionToggles" class="hs-section-toggles">
               <button type="button" class="hs-tiny-btn" @click="expandAllSections">展开全部</button>
               <button type="button" class="hs-tiny-btn" @click="collapseAllSections">收起全部</button>
+              <!-- 硬核模式：ON/OFF 开关（置于展开/收起之后，吸顶始终可见，免去滚动到操作行去开关） -->
+              <button
+                type="button"
+                class="hs-toggle"
+                :class="{ on: hardcore }"
+                role="switch"
+                :aria-checked="hardcore"
+                :title="'硬核模式：统计全部 ' + expansions.length + ' 个版本（含无经验的更多版本），而非仅核心 ' + originalExpansions.length + ' 个有经验版本。'"
+                @click="hardcore = !hardcore"
+              >
+                <span class="hs-toggle-track"><span class="hs-toggle-thumb"></span></span>
+                <span class="hs-toggle-label">硬核模式{{ hardcore ? '：开' : '：关' }}</span>
+              </button>
             </div>
           </template>
           <!-- 按版本浏览：版本选择（我的成就模式下版本/职业选择移到子切换下方） -->
@@ -360,19 +373,6 @@
           <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
         </svg>
         攻略
-      </button>
-      <!-- 硬核模式：ON/OFF 开关 -->
-      <button
-        type="button"
-        class="hs-toggle"
-        :class="{ on: hardcore }"
-        role="switch"
-        :aria-checked="hardcore"
-        :title="'硬核模式：统计全部 ' + expansions.length + ' 个版本（含无经验的更多版本），而非仅核心 ' + originalExpansions.length + ' 个有经验版本。'"
-        @click="hardcore = !hardcore"
-      >
-        <span class="hs-toggle-track"><span class="hs-toggle-thumb"></span></span>
-        <span class="hs-toggle-label">硬核模式{{ hardcore ? '：开' : '：关' }}</span>
       </button>
     </div>
 
