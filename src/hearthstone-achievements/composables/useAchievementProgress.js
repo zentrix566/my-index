@@ -96,9 +96,9 @@ export function useAchievementProgress(progressRef) {
   function isStageCompleted(achievement, stageIdx) {
     const ach = progress.value[achievement.id]
     if (!ach) return false
-    // trackClasses 成就：完成度由「已发现职业数」（count）与各阶段 quota 决定，
+    // trackClasses / trackItems 成就：完成度由「已发现项数」（count）与各阶段 quota 决定，
     // 不读 stages 布尔标记（一次性成就也适用，如「变化成 N 个不同职业的随从」）。
-    if (achievement.trackClasses) {
+    if (achievement.trackClasses || achievement.trackItems) {
       const stage = achievement.stages?.[stageIdx]
       if (!stage) return false
       return (ach.count || 0) >= stage.quota

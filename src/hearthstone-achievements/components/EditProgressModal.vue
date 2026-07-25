@@ -16,26 +16,27 @@
         <CardGallery :cards="achievement.cards" />
       </div>
 
-      <!-- 收集类成就：记录已发现的职业（如「变化成 N 个不同职业的随从」），勾选即进度 -->
+      <!-- 收集类成就：记录已发现的职业 / 已使用的战利品，勾选即进度 -->
       <div v-if="isTrack" class="epm-classes">
-        <p class="epm-classes-label">已发现的职业（点击勾选，便于知道还差哪些）</p>
+        <p class="epm-classes-label">{{ trackLabel }}</p>
         <div class="epm-class-grid">
           <button
-            v-for="cls in TRACK_CLASSES"
-            :key="cls"
+            v-for="item in trackList"
+            :key="item"
             type="button"
             class="epm-class-chip"
-            :class="{ active: draftDiscovered.includes(cls) }"
-            :style="draftDiscovered.includes(cls) ? trackStyle(cls) : {}"
-            :aria-pressed="draftDiscovered.includes(cls)"
-            @click="toggleClass(cls)"
+            :class="{ active: draftDiscovered.includes(item), 'has-detail': !!itemDetail(item) }"
+            :style="draftDiscovered.includes(item) ? trackItemStyle(item) : {}"
+            :aria-pressed="draftDiscovered.includes(item)"
+            @click="toggleClass(item)"
           >
             <span class="epm-class-check" aria-hidden="true">✓</span>
-            <span class="epm-class-text">{{ cls }}</span>
+            <span class="epm-class-text">{{ item }}</span>
+            <span v-if="itemDetail(item)" class="epm-chip-tooltip">{{ itemDetail(item) }}</span>
           </button>
         </div>
         <p class="epm-quota-hint">
-          已发现 <b>{{ draftDiscovered.length }}</b> 个职业 ·
+          已{{ trackVerb }} <b>{{ draftDiscovered.length }}</b> 个{{ trackUnit }} ·
           各阶段目标：{{ achievement.stages.map((s) => s.quota).join(' / ') }}
         </p>
       </div>
@@ -93,8 +94,27 @@ const { progress, getUnit } = useAchievementProgress()
 
 // 收集类成就（记录已发现职业）可用的 11 个职业
 const TRACK_CLASSES = ['战士', '猎人', '德鲁伊', '法师', '圣骑士', '牧师', '潜行者', '萨满祭司', '术士', '恶魔猎手', '死亡骑士']
-const isTrack = computed(() => !!props.achievement?.trackClasses)
+const isTrackClasses = computed(() => !!props.achievement?.trackClasses)
+const isTrackItems = computed(() => !!props.achievement?.trackItems)
+const isTrack = computed(() => isTrackClasses.value || isTrackItems.value)
 const draftDiscovered = ref([])
+
+// trackItems 模式：已勾选的排前面，方便查看还差哪些
+const sortedTrackItems = computed(() => {
+  const items = props.achievement?.trackItems || []
+  const checked = items.filter((item) => draftDiscovered.value.includes(item))
+  const unchecked = items.filter((item) => !draftDiscovered.value.includes(item))
+  return [...checked, ...unchecked]
+})
+
+// 统一渲染列表：trackItems 用排序后的列表，trackClasses 用固定职业列表
+const trackList = computed(() => (isTrackItems.value ? sortedTrackItems.value : TRACK_CLASSES))
+const trackLabel = computed(() =>
+  isTrackItems.value ? '已使用的战利品（点击勾选，已勾选排在前面）' : '已发现的职业（点击勾选，便于知道还差哪些）'
+)
+const trackUnit = computed(() => (isTrackItems.value ? '战利品' : '职业'))
+const trackVerb = computed(() => (isTrackItems.value ? '使用' : '发现'))
+
 function classColor(cls) {
   return classColors[cls] || '#999999'
 }
@@ -103,9 +123,9 @@ function toggleClass(cls) {
   if (i >= 0) draftDiscovered.value.splice(i, 1)
   else draftDiscovered.value.push(cls)
 }
-// 选中态内联样式：彩色描边 + 同色淡背景 + 外发光，让勾选一目了然
-function trackStyle(cls) {
-  const c = classColor(cls)
+// 选中态内联样式：trackClasses 用职业色彩，trackItems 用统一的翡翠绿
+function trackItemStyle(cls) {
+  const c = isTrackClasses.value ? classColor(cls) : '#22c55e'
   return {
     '--c': c,
     borderColor: c,
@@ -113,6 +133,10 @@ function trackStyle(cls) {
     background: c + '24',
     boxShadow: `0 0 0 3px ${c}1f, 0 2px 10px rgba(0,0,0,0.22)`
   }
+}
+// trackItems 模式：从 trackItemDetails 映射取战利品效果描述（hover tooltip 用）
+function itemDetail(item) {
+  return props.achievement?.trackItemDetails?.[item] || ''
 }
 
 // 累计成就的度量单位（次 / 点），用于编辑弹窗标签
@@ -379,6 +403,37 @@ function save() {
 }
 /* 未选中时隐藏对勾，靠边框/文字提示可点击 */
 .epm-class-chip:not(.active) .epm-class-check { display: none; }
+
+/* trackItems hover tooltip：显示战利品效果详情 */
+.epm-class-chip.has-detail { position: relative; }
+.epm-chip-tooltip {
+  position: absolute;
+  bottom: calc(100% + 8px);
+  left: 50%;
+  transform: translateX(-50%);
+  width: max-content;
+  max-width: 280px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #e2e8f0;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 1.5;
+  white-space: normal;
+  text-align: center;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.3);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity .15s;
+  z-index: 100;
+}
+.epm-class-chip.has-detail:hover .epm-chip-tooltip { opacity: 1; }
+/* 底部芯片 tooltip 往下弹，避免被弹窗顶部截断 */
+.epm-class-chip.has-detail:nth-last-child(-n+4):hover .epm-chip-tooltip {
+  bottom: auto;
+  top: calc(100% + 8px);
+}
 
 /* UI Pro Max：与炉石仪表盘统一的深色表单界面。 */
 .epm-overlay {
