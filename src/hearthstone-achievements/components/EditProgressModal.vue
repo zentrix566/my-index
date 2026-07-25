@@ -10,16 +10,10 @@
       <p class="epm-meta">{{ achievement?.dualClasses ? achievement.dualClasses.join(' / ') : achievement?.heroClass }} · {{ achievement?.difficulty }} · {{ achievement?.type }}</p>
       <p v-if="achievement?.description" class="epm-desc">{{ achievement.description }}</p>
 
-      <!-- 关联卡牌（与浏览卡牌弹窗一致） -->
+      <!-- 关联卡牌（与浏览卡牌弹窗共用 CardGallery，展示 / 交互完全一致） -->
       <div v-if="hasCards" class="epm-cards">
         <p class="epm-cards-label">关联卡牌</p>
-        <div class="epm-cards-grid">
-          <div v-for="card in achievement.cards" :key="card.name" class="epm-card-item">
-            <img v-if="hasImage(card)" :src="cardSrc(card)" :alt="card.name" class="epm-card-img" @error="onCardError(card)" />
-            <p v-else class="epm-card-noimg">暂无「{{ card.name }}」的图片</p>
-            <p class="epm-card-name">{{ card.name }}</p>
-          </div>
-        </div>
+        <CardGallery :cards="achievement.cards" />
       </div>
 
       <!-- 一次性：阶段勾选 -->
@@ -60,6 +54,7 @@
 
 <script setup>
 import { ref, watch, computed } from 'vue'
+import CardGallery from './CardGallery.vue'
 import { useAchievementProgress } from '../composables/useAchievementProgress.js'
 
 const props = defineProps({
@@ -79,16 +74,10 @@ const maxQuota = computed(() => {
   if (!stages || stages.length === 0) return 0
   return stages[stages.length - 1].quota
 })
-// 关联卡牌：有 relatedCards 时显示图片区域
+// 关联卡牌：有 relatedCards 时显示图片区域（展示交给 CardGallery 组件）
 const hasCards = computed(
   () => Array.isArray(props.achievement?.cards) && props.achievement.cards.length > 0
 )
-// related 图加载失败时回退到 wild 兜底图
-const onCardError = (card) => {
-  if (card.image && card.imageFallback) card._cardFailed = true
-}
-const cardSrc = (card) => (card._cardFailed ? card.imageFallback : (card.image || card.imageFallback))
-const hasImage = (card) => Boolean(card.image || card.imageFallback)
 const draftStages = ref({})
 const draftCount = ref(0)
 
@@ -140,7 +129,8 @@ function save() {
   position: relative;
   width: 100%;
   max-width: 600px;
-  background: #fff;
+  background: var(--hs-modal-bg);
+  border: 1px solid var(--hs-modal-border);
   border-radius: 14px;
   padding: 28px 26px;
   box-shadow: 0 20px 60px rgba(0, 0, 0, 0.25);
@@ -263,34 +253,7 @@ function save() {
   font-weight: 700;
   color: #4b5563;
 }
-.epm-cards-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(164px, 1fr));
-  gap: 14px;
-  justify-items: center;
-}
-.epm-card-item {
-  text-align: center;
-}
-.epm-card-img {
-  width: 100%;
-  max-width: 220px;
-  border-radius: 8px;
-  display: block;
-}
-.epm-card-noimg {
-  margin: 0 0 6px;
-  padding: 18px 8px;
-  font-size: 12px;
-  color: #9ca3af;
-  background: #f3f4f6;
-  border-radius: 8px;
-}
-.epm-card-name {
-  margin: 6px 0 0;
-  font-size: 12px;
-  color: #4b5563;
-}
+/* 关联卡牌的网格布局与点击放大由 CardGallery 组件统一提供，此处不再重复定义 */
 .epm-cancel,
 .epm-save {
   height: 40px;
@@ -366,9 +329,6 @@ function save() {
 .epm-count-label,
 .epm-quota-hint { color: #94a3b8; }
 .epm-cards-label { color: #cbd5e1; }
-.epm-card-name { color: #94a3b8; }
-.epm-card-noimg { color: #64748b; background: rgba(2, 6, 23, 0.3); border: 1px solid rgba(148, 163, 184, 0.18); }
-.epm-card-img { border: 1px solid rgba(148, 163, 184, 0.2); }
 .epm-count-control button,
 .epm-count-control input {
   height: 46px;

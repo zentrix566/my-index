@@ -649,7 +649,8 @@ async function exportImage() {
   box-shadow: 0 2px 10px rgba(0,0,0,.18);
 }
 
-/* 缩略图铺满整行，右侧完整展示；左侧由渐变遮罩压暗，保证文字可读 */
+/* 缩略图铺满整行，右侧完整展示；左侧由固定暖浅色压暗（两主题一致），
+   加上文字阴影保证水晶/牌名在亮色卡图上仍可读。 */
 .ddm-card-thumb {
   position: absolute;
   inset: 0;
@@ -660,11 +661,15 @@ async function exportImage() {
   pointer-events: none;
   z-index: 0;
 }
-/* 左侧压暗渐变：保证水晶、牌名清晰可读（仿旅法师营地） */
+/* 左侧压暗：固定暖浅色 + 半透明白，两主题视觉一致；
+   36% 起渐变到透明，让卡图右侧 64% 完整可见。 */
 .ddm-card-fade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg, var(--hs-inset-bg) 0%, var(--hs-inset-bg) 46%, rgba(0,0,0,0) 100%);
+  background: linear-gradient(90deg,
+    rgba(245, 235, 215, 0.96) 0%,
+    rgba(245, 235, 215, 0.92) 36%,
+    rgba(255, 255, 255, 0) 60%);
   pointer-events: none;
   z-index: 1;
 }
@@ -708,7 +713,7 @@ async function exportImage() {
   text-overflow: ellipsis;
   font-weight: 700;
   letter-spacing: .02em;
-  text-shadow: 0 1px 3px var(--hs-inset-bg), 0 0 2px var(--hs-inset-bg);
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 1px rgba(0, 0, 0, 0.9);
 }
 .ddm-rarity-common   { color: var(--hs-text); }
 .ddm-rarity-rare     { color: #2563eb; }

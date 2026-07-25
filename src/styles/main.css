@@ -2627,7 +2627,8 @@ a.content-card:hover {
 
 .hs-modal {
   position: relative;
-  background: #fff;
+  background: var(--hs-modal-bg);
+  border: 1px solid var(--hs-modal-border);
   border-radius: 12px;
   padding: 24px;
   max-width: 90vw;
@@ -2664,47 +2665,7 @@ a.content-card:hover {
   color: #20262d;
 }
 
-.hs-modal-cards {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 18px;
-  justify-content: center;
-}
-
-.hs-modal-card-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-}
-
-.hs-modal-card-item img {
-  display: block;
-  max-width: 320px;
-  width: 100%;
-  height: auto;
-  border-radius: 10px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.2);
-}
-
-.hs-no-image {
-  width: 320px;
-  height: 440px;
-  display: grid;
-  place-items: center;
-  border: 2px dashed #ccc;
-  border-radius: 10px;
-  color: #999;
-  font-size: 13px;
-  margin: 0;
-}
-
-.hs-card-name-label {
-  margin: 0;
-  font-size: 13px;
-  color: #555;
-  font-weight: 500;
-}
+/* 关联卡牌网格已迁移至 CardGallery 组件（components/CardGallery.vue），浏览/我的成就两处弹窗共用 */
 
 /* 回到顶部按钮 */
 .hs-scroll-top {
@@ -3363,6 +3324,9 @@ a.content-card:hover {
   --hs-shadow-strong: 0 16px 42px rgba(28, 39, 60, 0.1);
   --hs-shadow-hover: 0 14px 36px rgba(28, 39, 60, 0.1);
   --hs-surface-gradient-end: rgba(255, 255, 255, 0.85);
+  /* 弹窗底色（两主题共用，关联卡牌/卡组详情弹窗都靠它） */
+  --hs-modal-bg: #e6d4a8;
+  --hs-modal-border: #a8956b;
   padding-top: 48px;
   color: var(--hs-text);
   background:
@@ -3402,6 +3366,9 @@ a.content-card:hover {
   --hs-shadow-strong: 0 16px 42px rgba(2, 6, 23, 0.28);
   --hs-shadow-hover: 0 14px 36px rgba(2, 6, 23, 0.26);
   --hs-surface-gradient-end: rgba(15, 31, 43, 0.78);
+  /* 弹窗底色：深色主题下用更亮的蓝绿，弹窗在背景上更突出 */
+  --hs-modal-bg: #132938;
+  --hs-modal-border: rgba(255, 255, 255, 0.12);
   color: var(--hs-text);
   background:
     radial-gradient(circle at 7% 2%, rgba(21, 128, 61, 0.23), transparent 28%),
@@ -4336,10 +4303,10 @@ a.content-card:hover {
 }
 
 .hs-modal {
-  border: 1px solid var(--hs-border);
+  border: 1px solid var(--hs-modal-border);
   border-radius: 18px;
   color: var(--hs-text);
-  background: var(--hs-surface);
+  background: var(--hs-modal-bg);
 }
 
 .hs-modal-close {

@@ -160,6 +160,26 @@ docker run -d -p 8080:80 my-index
 └── README.md
 ```
 
+## 炉石传说卡牌图片来源（重要）
+
+成就「关联卡牌」与卡组详情里的卡牌原画 / 缩略图**不存放在本仓库**，统一托管在阿里云 OSS。仓库内只保留一张「名字 → OSS 路径」的映射 JSON。务必先看本节，再动卡图相关逻辑。
+
+- **OSS 位置**：bucket `my-hearthstone-20260723`，区域 `cn-beijing`，公开读（public-read）。
+- **OSS 路径结构**：`hearthstone-cards/wild/{crop,full}/<卡名>_<dbfId>.png`
+  - `crop` = 缩略图（列表/弹窗用）；`full` = 原画大图（点开看大图用）。
+- **前端访问方式**：一律走本站相对路径 `/hearthstone-cards/wild/...`（以本站域名开头，无需在阿里云备案），由后端反代到 OSS 并强制 `Content-Disposition: inline`（右键新标签直接看、不下载）。
+  - 生产：`server/index.js` 反代（读环境变量 `OSS_ORIGIN`）。
+  - 本地开发：`vite.config.js` 直接反代（读 `.env` 的 `OSS_ORIGIN` / `VITE_OSS_BASE`）。**本地若图全 404，几乎都是没配 `OSS_ORIGIN` 或 node 服务未在配好后重启**（`.env` 仅在进程启动时读一次）。
+- **仓库内映射文件**：`src/hearthstone-achievements/data/deck-card-images.json`
+  - 键 = 卡牌中文名，值 = `{ crop, full, rarityId }`（均为相对路径）。
+  - 前端按成就 `relatedCards` / 卡组解码出的卡名去查这张表得到 OSS 路径。**清单里的 key 是卡牌全名**（如 `奈瑟匹拉，蒙难古灵`），若 `relatedCards` 只写了简称（如 `奈瑟匹拉`）就查不到 → 显示「暂无图」，需把简称改全名。
+- **本地原始图来源（不在仓库）**：`E:/github/my-heartstone/hearthstone_cards/wild/{crop,full}` —— 本机炉石卡牌图集（HearthstoneJSON / 游戏资源提取），仅本地生成 manifest 与上传用，**不要提交进仓库**。
+- **维护脚本**（`scripts/`）：
+  - `generate-deck-card-manifest.mjs`：扫本地原始目录生成 `deck-card-images.json`（可用 `CARD_IMG_SOURCE` 覆盖源目录）。
+  - `upload-to-oss.mjs`：把本地图上传到 OSS。支持 `OSS_USE_MANIFEST=1`（只传 manifest 引用的图，省空间）、`OSS_DRY_RUN=1`（试运行只数文件）、`OSS_SKIP_EXISTING=1`（默认，已有则跳过）。需在 `.env` 配 `OSS_BUCKET / OSS_REGION / OSS_ACCESS_KEY_ID / OSS_ACCESS_KEY_SECRET`。
+- **已清除的旧本地图**：`src/hearthstone-achievements/assets/cards/`（9 个扩展包子目录、约 221 个 PNG，Git LFS 时代残留，未被任何代码 import）已从仓库删除，全部改走 OSS。新增/补全卡图请走「本地原始目录 → 上传 OSS → 更新 manifest」流程，**不要**再把 PNG 丢回 `assets/cards`。
+- **缺图回退**：清单里没有对应卡（衍生物 / 更名卡 / 特殊卡）时，前端显示「暂无图」占位，不会崩。
+
 ## 联系 / 作者
 
 - GitHub: [@zentrix566](https://github.com/zentrix566)

@@ -8,6 +8,13 @@ export const vueApps = [
     tags: ['炉石传说', '成就', '卡牌']
   },
   {
+    to: '/hearthstone/deck',
+    title: '炉石卡组码解析',
+    kicker: '游戏 · 工具',
+    summary: '粘贴游戏内复制的卡组码，立即查看卡组构成、法力曲线、合成造价，并支持导出卡组图片。',
+    tags: ['炉石传说', '卡组', '工具']
+  },
+  {
     to: '/crazy-people',
     title: '疯狂的人',
     kicker: '互动 · 小游戏',
