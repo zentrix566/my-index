@@ -99,18 +99,15 @@ const isTrackItems = computed(() => !!props.achievement?.trackItems)
 const isTrack = computed(() => isTrackClasses.value || isTrackItems.value)
 const draftDiscovered = ref([])
 
-// trackItems 模式：已勾选的排前面，方便查看还差哪些
-const sortedTrackItems = computed(() => {
-  const items = props.achievement?.trackItems || []
-  const checked = items.filter((item) => draftDiscovered.value.includes(item))
-  const unchecked = items.filter((item) => !draftDiscovered.value.includes(item))
+// 收集类成就：已勾选的排前面，方便查看还差哪些（trackItems 与 trackClasses 通用）
+const trackList = computed(() => {
+  const base = isTrackItems.value ? (props.achievement?.trackItems || []) : TRACK_CLASSES
+  const checked = base.filter((item) => draftDiscovered.value.includes(item))
+  const unchecked = base.filter((item) => !draftDiscovered.value.includes(item))
   return [...checked, ...unchecked]
 })
-
-// 统一渲染列表：trackItems 用排序后的列表，trackClasses 用固定职业列表
-const trackList = computed(() => (isTrackItems.value ? sortedTrackItems.value : TRACK_CLASSES))
 const trackLabel = computed(() =>
-  isTrackItems.value ? '已使用的战利品（点击勾选，已勾选排在前面）' : '已发现的职业（点击勾选，便于知道还差哪些）'
+  isTrackItems.value ? '已使用的战利品（点击勾选，已勾选排在前面）' : '已发现的职业（点击勾选，已勾选排在前面）'
 )
 const trackUnit = computed(() => (isTrackItems.value ? '战利品' : '职业'))
 const trackVerb = computed(() => (isTrackItems.value ? '使用' : '发现'))
