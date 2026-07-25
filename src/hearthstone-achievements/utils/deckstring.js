@@ -1,5 +1,5 @@
-// 炉石传说卡组码（deckstring）解码工具
-// 卡组码是 base64 编码的字节流，标准结构（Blizzard deckstring 规范）：
+// 炉石传说卡组代码（deckstring）解码工具
+// 卡组代码是 base64 编码的字节流，标准结构（Blizzard deckstring 规范）：
 //   [保留字节(1B, 固定 0)] [版本(1B, 固定 1)] [format(varint)] [heroCount(varint)]
 //   [hero dbfId(varint)...] [x1Count(varint)] [card dbfId(varint)...]              // 各 1 张
 //   [x2Count(varint)] [card dbfId(varint)...]             // 各 2 张
@@ -13,7 +13,7 @@ import cardNameData from '../data/dbfid-cardnames.json' with { type: 'json' }
 import { getLocalCardImages, normalizeRarity } from './cardImages.js'
 const { cards: cardNames, heroClasses } = cardNameData
 
-// 极端情况（JSON 未覆盖的双职业英雄等）兜底，取自在用推荐卡组码实测推导
+// 极端情况（JSON 未覆盖的双职业英雄等）兜底，取自在用推荐卡组代码实测推导
 const HERO_CLASS_FALLBACK = {
   71723: '法师',
   82519: '法师',
@@ -77,7 +77,7 @@ function enrichCardImages(card) {
 }
 
 /**
- * 解码卡组码为结构化数据（含中文牌名、费用、类型、稀有度、本地图片路径等）
+ * 解码卡组代码为结构化数据（含中文牌名、费用、类型、稀有度、本地图片路径等）
  * @returns {{ valid:boolean, heroClass:string, heroes:number[], cards:Array<{dbfId:number,count:number,name:string,cost:number,type:string,cardClass:string,rarity:string,id:string,rarityKey:string,cropImage:string,fullImage:string}>, total:number }}
  */
 export function decodeDeck(code) {

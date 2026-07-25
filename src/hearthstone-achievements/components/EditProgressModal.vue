@@ -26,9 +26,13 @@
             type="button"
             class="epm-class-chip"
             :class="{ active: draftDiscovered.includes(cls) }"
-            :style="draftDiscovered.includes(cls) ? { borderColor: classColor(cls), color: classColor(cls), background: classColor(cls) + '22' } : {}"
+            :style="draftDiscovered.includes(cls) ? trackStyle(cls) : {}"
+            :aria-pressed="draftDiscovered.includes(cls)"
             @click="toggleClass(cls)"
-          >{{ cls }}</button>
+          >
+            <span class="epm-class-check" aria-hidden="true">✓</span>
+            <span class="epm-class-text">{{ cls }}</span>
+          </button>
         </div>
         <p class="epm-quota-hint">
           已发现 <b>{{ draftDiscovered.length }}</b> 个职业 ·
@@ -98,6 +102,17 @@ function toggleClass(cls) {
   const i = draftDiscovered.value.indexOf(cls)
   if (i >= 0) draftDiscovered.value.splice(i, 1)
   else draftDiscovered.value.push(cls)
+}
+// 选中态内联样式：彩色描边 + 同色淡背景 + 外发光，让勾选一目了然
+function trackStyle(cls) {
+  const c = classColor(cls)
+  return {
+    '--c': c,
+    borderColor: c,
+    color: c,
+    background: c + '24',
+    boxShadow: `0 0 0 3px ${c}1f, 0 2px 10px rgba(0,0,0,0.22)`
+  }
 }
 
 // 累计成就的度量单位（次 / 点），用于编辑弹窗标签
@@ -324,20 +339,46 @@ function save() {
 
 /* 收集类成就：已发现职业勾选 */
 .epm-classes { margin-bottom: 20px; }
-.epm-classes-label { margin: 0 0 10px; font-size: 13px; font-weight: 700; color: #4b5563; }
-.epm-class-grid { display: flex; flex-wrap: wrap; gap: 8px; }
-.epm-class-chip {
-  padding: 8px 14px;
-  border: 1px solid #d1d5db;
-  border-radius: 999px;
-  background: #f9fafb;
-  color: #6b7280;
+.epm-classes-label {
+  margin: 0 0 12px;
   font-size: 13px;
-  cursor: pointer;
-  transition: all .15s;
+  font-weight: 800;
+  color: #4b5563;
+  letter-spacing: .01em;
 }
-.epm-class-chip.active { font-weight: 700; }
-.epm-class-chip:hover { border-color: #9ca3af; }
+.epm-class-grid { display: flex; flex-wrap: wrap; gap: 9px; }
+.epm-class-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 9px 16px;
+  border: 2px solid #cbd5e1;
+  border-radius: 10px;
+  background: #f9fafb;
+  color: #374151;
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .12s, box-shadow .12s, background .12s, border-color .12s, color .12s;
+}
+.epm-class-chip:hover { border-color: #94a3b8; background: #f1f5f9; transform: translateY(-1px); }
+.epm-class-chip.active { font-weight: 800; }
+.epm-class-text { line-height: 1; }
+.epm-class-check {
+  display: inline-grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--c, #22c55e);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 900;
+  line-height: 1;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, .25);
+}
+/* 未选中时隐藏对勾，靠边框/文字提示可点击 */
+.epm-class-chip:not(.active) .epm-class-check { display: none; }
 
 /* UI Pro Max：与炉石仪表盘统一的深色表单界面。 */
 .epm-overlay {
@@ -420,12 +461,13 @@ function save() {
   outline-offset: 2px;
 }
 /* 收集类成就：深色主题下职业芯片 */
+.epm-classes-label { color: #cbd5e1; }
 .epm-class-chip {
-  border-color: rgba(148, 163, 184, 0.28);
-  color: #cbd5e1;
-  background: rgba(2, 6, 23, 0.3);
+  border-color: rgba(148, 163, 184, 0.42);
+  color: #e2e8f0;
+  background: rgba(2, 6, 23, 0.35);
 }
-.epm-class-chip:hover { border-color: rgba(148, 163, 184, 0.6); }
+.epm-class-chip:hover { border-color: rgba(148, 163, 184, 0.72); background: rgba(2, 6, 23, 0.5); }
 @media (max-width: 520px) {
   .epm-modal { padding: 24px 18px; border-radius: 15px; }
   .epm-actions > * { flex: 1; }

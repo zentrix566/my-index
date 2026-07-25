@@ -152,7 +152,7 @@
       </div>
 
       <div v-else-if="!decoded.valid" class="ddm-empty">
-        <p>卡组码解析失败，请检查代码是否完整。</p>
+        <p>卡组代码解析失败，请检查代码是否完整。</p>
       </div>
 
       <!-- 卡组介绍 -->
@@ -316,7 +316,7 @@ watch(() => props.visible, (show) => {
 })
 onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 
-// ── 复制卡组码 ──
+// ── 复制卡组代码 ──
 async function copy() {
   if (!props.deck) return
   try {

@@ -10,8 +10,8 @@
               返回炉石成就
             </router-link>
             <p class="dcv-eyebrow"><span class="hs-live-dot" aria-hidden="true"></span> Deck Code Tool</p>
-            <h1>炉石卡组码解析</h1>
-            <p class="dcv-sub">粘贴游戏内复制的卡组码，立即查看卡组构成、法力曲线、合成造价，并可导出卡组图片。</p>
+            <h1>炉石卡组代码解析</h1>
+            <p class="dcv-sub">粘贴游戏内复制的卡组代码，立即查看卡组构成、法力曲线、合成造价，并可导出卡组图片。</p>
           </div>
           <button
             type="button"
@@ -43,7 +43,7 @@
             @input="clearError"
           />
 
-          <label class="dcv-label" for="dcv-code">卡组码</label>
+          <label class="dcv-label" for="dcv-code">卡组代码</label>
           <textarea
             id="dcv-code"
             ref="codeEl"
@@ -51,7 +51,7 @@
             class="dcv-textarea"
             spellcheck="false"
             autocomplete="off"
-            placeholder="在此粘贴卡组码，例如：AAECAf7gBgL/lwbO8QYO9eMEh/YEmMQFhY4G/7oGkMsG/eYGwOgGn/EGrPEGwvEG4/EGqPcG//cGAAA="
+            placeholder="在此粘贴卡组代码，例如：AAECAf7gBgL/lwbO8QYO9eMEh/YEmMQFhY4G/7oGkMsG/eYGwOgGn/EGrPEGwvEG4/EGqPcG//cGAAA="
             @input="clearError"
             @paste="onPaste"
           ></textarea>
@@ -59,7 +59,7 @@
           <div class="dcv-actions">
             <button type="button" class="dcv-btn dcv-primary" @click="analyze">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-4"/><path d="M12 14V4"/><path d="m8 8 4-4 4 4"/></svg>
-              解析卡组码
+              解析卡组代码
             </button>
             <button type="button" class="dcv-btn dcv-ghost" @click="pasteFromClipboard">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -77,11 +77,11 @@
 
         <!-- 使用提示 -->
         <div class="dcv-tips">
-          <h4>如何获取卡组码</h4>
+          <h4>如何获取卡组代码</h4>
           <ol>
             <li>游戏中打开一副卡组，点击「复制」按钮即可获得分享码；</li>
-            <li>或在炉石盒子、旅法师营地等站点复制他人分享的卡组码；</li>
-            <li>把整段代码粘贴到上方文本框，点击「解析卡组码」（直接 Ctrl/⌘+V 粘贴也会自动解析）。</li>
+            <li>或在炉石盒子、旅法师营地等站点复制他人分享的卡组代码；</li>
+            <li>把整段代码粘贴到上方文本框，点击「解析卡组代码」（直接 Ctrl/⌘+V 粘贴也会自动解析）。</li>
           </ol>
         </div>
 
@@ -129,13 +129,13 @@ function clearError() {
 function analyze() {
   const raw = (code.value || '').trim()
   if (!raw) {
-    error.value = '请先粘贴卡组码。'
+    error.value = '请先粘贴卡组代码。'
     hint.value = ''
     return
   }
   const decoded = decodeDeck(raw)
   if (!decoded.valid) {
-    error.value = '卡组码无法解析，请确认代码完整、未被截断，且不含多余空格或换行。'
+    error.value = '卡组代码无法解析，请确认代码完整、未被截断，且不含多余空格或换行。'
     hint.value = ''
     return
   }
@@ -144,7 +144,7 @@ function analyze() {
   const name = deckName.value.trim() || `${decoded.heroClass}卡组`
   deckData.value = { code: raw, name, heroClass: decoded.heroClass, deckIntro: '' }
   modalVisible.value = true
-  // 把当前卡组码写进 URL，便于分享/深链（不新增历史记录）
+  // 把当前卡组代码写进 URL，便于分享/深链（不新增历史记录）
   if (route.query.code !== raw) {
     router.replace({ query: { ...route.query, code: raw } }).catch(() => {})
   }
@@ -170,7 +170,7 @@ async function pasteFromClipboard() {
       error.value = '剪贴板为空，请手动粘贴（Ctrl/⌘+V）。'
     }
   } catch {
-    error.value = '浏览器阻止了剪贴板读取，请直接把卡组码粘贴到文本框（Ctrl/⌘+V）。'
+    error.value = '浏览器阻止了剪贴板读取，请直接把卡组代码粘贴到文本框（Ctrl/⌘+V）。'
   }
 }
 
