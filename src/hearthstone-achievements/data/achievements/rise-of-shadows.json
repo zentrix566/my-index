@@ -8,6 +8,10 @@
     {
       "name": "暗影崛起 wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E6%9A%97%E5%BD%B1%E5%B4%9B%E8%B5%B7"
+    },
+    {
+      "name": "旅法师营地：暗影崛起全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5488439"
     }
   ],
   "achievements": [
@@ -18,8 +22,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "森林的援助"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "绿地疯长",
+          "code": "AAEBAc6LBQTqugOJiwSgoAaxwQYNX+QI05wD6LoDlc0D8NQDieADr4AEsKUEmqAG88oGouIG9+UGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在一个回合中用森林的援助召唤10个树人。",
@@ -36,7 +47,9 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "湮灭战车"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -54,8 +67,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "法力飓风"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "法术飓风！！",
+          "code": "AAEBAYHPBg6sAbQEvAiEuwKfmwP/nQP0qwPxrwOu9wOQlgWCogWxoAbEogbnqQYIwAHIhwPimwOF5APU6gOKjQSBvwaG5gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用一张法力飓风的战吼将10张法术牌置入你的手牌。",
@@ -73,7 +93,12 @@
       "category": "光辉事迹",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "柔者长存",
+          "code": "AAEBAdK+BQLdCvbWAw6zAbds/68CwP0C+ZMDhpwDns0Dy80Dz9EDktQEwOIEjZYFi+wFtZ4GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使一个法力值消耗为（0）的友方随从加入决斗并存活下来。",
@@ -90,8 +115,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "群体复活"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "重磅复活",
+          "code": "AAEBAdG+BQAP+hHqvwLRwQKZmwPXzgPi3gP73wOtigSNsgTgpAXt9wWjnQaXoAaaoAaAuAYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用一张群体复活召唤总计法力值消耗60点的随从。",
@@ -108,8 +140,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "战略转移"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "弃子妙手",
+          "code": "AAEBAdW+BQLMoAWxwQYO/MECx5sD5dED/tsD/u4DofQDvYAE9p8E958Et7MEv/cF7p4GracGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张战略转移消灭6个随从。",
@@ -126,8 +165,19 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "哈加莎的阴谋"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "反派独白 卡组1",
+          "code": "AAEBAdOLBQAPshTexAL2/QKtkQPWnQPj7gP09gO23ATe6QWzjQaFjgbOnAacngakpwamwAYAAA=="
+        },
+        {
+          "name": "反派独白 卡组2",
+          "code": "AAEBAda+BQaFF/GWA/KWA/34A8GsBJqSBQzslgON5APb7QOU/APCgASqnwTjnwS7oASnkAW+nAbOwAbQwAYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用一张哈加莎的阴谋造成100点伤害。",
@@ -144,8 +194,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "情势反转"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "是我抽到哒！",
+          "code": "AAEBAZT9BgTamwOoigSXoASxwQYNswG3bN7EAvLQAs/RA+HkA/T2A8aABKGgBIvsBc6cBs+eBqOgBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "施放情势反转，且反转结束时拥有的手牌数为开始时的两倍。",
@@ -162,8 +219,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "砰砰博士"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "砰砰殿堂！",
+          "code": "AAEBAbyRBQieELj2ApL4ApuUA8C5A/bWA5OoBvrJBguO7QOIoASMtwSO1ASlpQXr0AWFggaLlAafngbsqQbzygYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时，场上有4个不同版本的砰砰博士。",
@@ -180,8 +244,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "暴走旋风"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "四头肌训练",
+          "code": "AAEBAdOLBQKQgwaxwQYOM5rLAqadA5XNA/DUA+PuA4XUBLONBsOPBs6cBpyeBqSnBuCoBqbABgAA"
+        }
+      ],
       "stages": [
         {
           "description": "用一个暴走旋风在一回合中攻击4次。",

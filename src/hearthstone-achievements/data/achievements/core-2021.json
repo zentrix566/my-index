@@ -8,6 +8,10 @@
     {
       "name": "核心（独狼年） wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E6%A0%B8%E5%BF%83%EF%BC%88%E7%8B%AC%E7%8B%BC%E5%B9%B4%EF%BC%89"
+    },
+    {
+      "name": "旅法师营地：独狼年核心全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5473941"
     }
   ],
   "achievements": [
@@ -17,8 +21,15 @@
       "heroClass": "战士",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "凯恩·日怒"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "嘲讽等于作弊",
+          "code": "AAECAdKLBQSoigSongb8wAaXygYNgJ8Er6AE9MMFnJoG7p4G17gG1sAG2MAG38AG9sAGrcUGmMsG9eUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在凯恩·日怒的效果影响下用40个友方角色攻击。",
@@ -41,7 +52,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "环保倡议",
+          "code": "AAEBAc6LBQKJiwSy3QQO/QLtA9/7AtOcA/ytA/+tA5bRA5bgA4zkA/nfBeH9BbWaBqyeBsnQBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "召唤250个树人。",
@@ -63,8 +79,15 @@
       "heroClass": "法师",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "奥术工匠"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "奥术工艺",
+          "code": "AAEBAdeEBQAPwAGJDpbkAsG4A+XRA4XkA9HsA6ajBeDDBez2BdD4BfGABoieBsvQBobmBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "用奥术工匠获得120点护甲值。",
@@ -86,8 +109,15 @@
       "heroClass": "圣骑士",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "污手街供货商"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "污手马仔",
+          "code": "AAEBAdK+BQLlsASW1AQO+AeavAL3vALZ/gLD+QOcoASB4gS5/gXjgAbvmwbOnAbLnwbt5gab8gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用污手街供货商强化150张随从牌。",
@@ -109,8 +139,15 @@
       "heroClass": "战士",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "掷弹机器人"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "上手，使用，损坏，维修",
+          "code": "AAEBAbyRBQTAuQOMtwSHoAb6yQYNnvsC1p0Dju0D+YwE+owEiKAEiaAEjtQEi5QG7KkG1boGjr8G88oGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一个掷弹机器人的战吼消灭3个随从。",
@@ -133,7 +170,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "感谢治疗",
+          "code": "AAECAdG+BQLPxgWknQYOougDy6AEucQFyMYFu8cFx8cFoukF7fcF+/gFyPoF6ZgGpp0GlqAGxagGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "触发200次过量治疗效果。",
@@ -155,8 +197,15 @@
       "heroClass": "猎人",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "宝石鹦鹉"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "鸟以群分",
+          "code": "AAEBAda+BQAPicMCisMC39ICyfgCqZ8E458E5J8Ema0E6vIFvpwG6qUG3LgGzsAG/uUGguYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用40张宝石鹦鹉创建的野兽牌。",
@@ -178,8 +227,15 @@
       "heroClass": "萨满祭司",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "深渊魔物"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "法力洼地",
+          "code": "AAEBAdOLBQTN9AL21gOx2QSzjQYNshT7qgLapQOq3gOcoAT6tASG1ASq2QSS3wSQgwbvmwbOnAacngYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使深渊魔物的法力值消耗减少60点。",
@@ -202,7 +258,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "死吧，死吧！",
+          "code": "AAEBAZT9BgAP58sC2psD1p0DrbYDv7kDrMsD184DzdIDld4Dg/sDxYAE56AEpZIF8KkGlbMGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用亵渎消灭150个随从。",
@@ -225,7 +286,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "举止可疑",
+          "code": "AAEBAdW+BQL7igTMoAUOxAHQ4wLZ4wLf4wLMuQPOuQPl0wPk3QOC5APc2gTe2gTf2gT37QS2tQYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "触发150个潜行者奥秘。",
@@ -247,8 +313,15 @@
       "heroClass": "死亡骑士",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "符文熔铸"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "不含符文",
+          "code": "AAEBAf7gBgKPzgPU5QYO4eQD9PYDoaAEh/YEk4EF6v8F6/8FkIMG65gGzpwGqLgGwr4G7+YGpPQGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用符文熔铸抽30张武器牌。",
@@ -271,7 +344,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "异性相吸",
+          "code": "AAEBAdK+BQSggAOftwO5+gW5pAYNlA+f9QLW/gLX/gKywQTa0wTZ0AWO9QWG/gW5/gWG/wXLngbMsAYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用100张具有磁力的随从牌。",
@@ -294,7 +372,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "自动爆破",
+          "code": "AAEBAbyRBQSeEJuUA+WwBPrJBg2alAOrtgPAuQOMtwSO1ASh+wWfngaIoAaDogaUqAbsqQbVugbzygYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用砰砰机器人造成50点伤害。",

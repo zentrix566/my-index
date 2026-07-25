@@ -8,6 +8,10 @@
     {
       "name": "泰坦诸神 wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E6%B3%B0%E5%9D%A6%E8%AF%B8%E7%A5%9E"
+    },
+    {
+      "name": "旅法师营地：泰坦诸神全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5461437"
     }
   ],
   "achievements": [
@@ -40,7 +44,16 @@
         "雪莲幼苗",
         "林木幼苗"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "园林生机 卡组1",
+          "code": "AAECAc6LBQSXoASf8wXd+gXx+gUN/d8FsPoF2/oF65gGzpwG76kGh7EGlLEG2bEG1boG88oGouIG9+UGAAA="
+        },
+        {
+          "name": "园林生机 卡组2",
+          "code": "AAECAc6LBQAPrp8E+d8FzuQFoukFsPoF8foFtZoGrJ4G76kG2bEGw7oG88oGydAGouIG9+UGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用25张由幼苗长成的成株法术牌。",
@@ -71,7 +84,12 @@
       "relatedCards": [
         "自然守护者弗蕾亚"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "顶级致敬",
+          "code": "AAECAc6LBQSoigSW1ATd+gWgoAYNnKAEu5UGvJUG75sG15wG2pwGmqAG76kGh7EGw7oG1boG88oGouIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用弗蕾亚复制40张牌。",
@@ -90,7 +108,12 @@
       "relatedCards": [
         "禁忌之果"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "美味诱惑",
+          "code": "AAEBAc6LBQSJiwSf8wXd+gXBlQYNX+QIh84C6LoDsKUEwd8Eu5UGvpkG15wG2pwGiaEGh7EG88oGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用禁忌之果获得70点攻击力或护甲值。",
@@ -115,7 +138,12 @@
       "relatedCards": [
         "破链角斗士"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "生无可链",
+          "code": "AAECAdeEBQL3mwbBnwYOlrcF8sQFsf4F3/4F1JUG75sG8ZsGmJ0Gsp4G054GzKIG4qYGtKcG7eYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用破链角斗士抽50张牌。",
@@ -134,7 +162,12 @@
       "relatedCards": [
         "元素激励"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "品味彩虹",
+          "code": "AAECAdeEBQLr9AXjzwYOre0F7PYF3vgFv/4F2P4FpP8FhY4Gg5UG8psGsp4GtqcGy9AGltYGhuYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张元素激励召唤7个始生涡流。",
@@ -153,7 +186,12 @@
       "relatedCards": [
         "诺甘农"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "我的终极形态",
+          "code": "AAECAdeEBQSf1ASH9QXM4Qb14gYN4MMFuMUF8YAGkIMGhY4GzpwGxKIG4KgGhr8G6ckG7ckG78kGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用1个完全强化的诺甘农的技能。",
@@ -184,7 +222,12 @@
       "relatedCards": [
         "腐化残渣"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "黏液时间",
+          "code": "AAECAdeEBQL3mwbBnwYOlrcF8sQFsf4F3/4F1JUG75sG8ZsGmJ0Gsp4G054GzKIG4qYGtKcG7eYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用腐化残渣造成100点伤害。",
@@ -209,7 +252,12 @@
       "relatedCards": [
         "巨人之父霍迪尔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "嚯，霍迪尔",
+          "code": "AAECAda+BQKW1ASAggYO458E5J8EnKAE6OgF3+0F6vIFyPYFkIMG75sGzpwG4KgGzsAG0MAGguYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用50张被巨人之父霍迪尔祝福过的消耗（2）点或以下法力值的随从牌。",
@@ -229,7 +277,16 @@
       "relatedCards": [
         "神话观测者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "神化神话 卡组1",
+          "code": "AAECAda+BQK6zgaD5gYOqZ8E458E5J8E3+0F6vIFl/YFyPYF0vgFzpwG6qUG8aUG3LgGzsAGguYGAAA="
+        },
+        {
+          "name": "神化神话 卡组2",
+          "code": "AAECAdOLBQKXoASN9QUO+Z8ExNAFze4FyvgFy/gFh/sFzpwGrZ0GnJ4Gn54GqKcG66kGw74GqMAGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "触发同一个神话观测者的效果5次。",
@@ -248,7 +305,12 @@
       "relatedCards": [
         "虫外有虫"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "巨虫在后",
+          "code": "AAECAda+BQLqygWC5gYOqZ8E458E5J8E3+0F6vIF5PUFmfYF0vgF/ZQGvpwG6KUG6qUG8aUGzsAGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用虫外有虫对敌方英雄造成40点伤害。",
@@ -279,7 +341,12 @@
       "relatedCards": [
         "扭曲的霜翼龙"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "奇美拉时代",
+          "code": "AAECAda+BQLX+QWOwQYOqZ8E5PUF0vgFy44GgJUGvpwG6qUG8aUGi78Gjr8GzsAG98kGuOEGvOEGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用扭曲的霜翼龙召唤一只攻击力为8的奇美拉。",
@@ -304,7 +371,12 @@
       "relatedCards": [
         "星界自动机"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "水星逆行",
+          "code": "AAECAdG+BQSW1ATPxgWv/wWknQYNrYoEhJ8EnKAEu8cFoukFpvEF7fcF44AG75sGo50Gl6AGmqAGmcAGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张具有7点攻击力的星界自动机。",
@@ -323,7 +395,12 @@
       "relatedCards": [
         "星辰排列"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "百变星君",
+          "code": "AAECAdG+BQKW1ATM4QYOrYoEzMQF2voFuf4FzP8Fzf8F65gGw5wGzpwGy58Gn6cGl8oG7eYGm/IGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用星辰排列使50张你手牌中的随从牌变形。",
@@ -342,7 +419,12 @@
       "relatedCards": [
         "阿曼苏尔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "众神之父的烦恼",
+          "code": "AAECAdG+BQK5xAXP9gUOougDrYoEhJ8Eu8QFu8cFoukF7fcF+/gFw5wGo50GmqAG4KgGmcAGzNUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用15张阿曼苏尔创建的传说随从牌。",
@@ -373,7 +455,12 @@
       "relatedCards": [
         "影触克瓦迪尔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "暗中治疗",
+          "code": "AAEBAdG+BQAP5QTSCuq/AtHBApmpA+m+A9fOA+LeA/vfA4f3A62KBKSRBaLpBe33BfWYBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "用影触克瓦迪尔的效果造成100点伤害。",
@@ -398,7 +485,16 @@
       "relatedCards": [
         "换挡漂移"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "油门踩死 卡组1",
+          "code": "AAECAdW+BQAPkZ8Ekp8Eq58E9p8E958EuMUF2dAFi+wFv/cFyPsFz54G054G6ckGjNYGyfQGAAA="
+        },
+        {
+          "name": "油门踩死 卡组2",
+          "code": "AAECAdW+BQKRnwSKqAYO9p8E958E38MFuMUF4NAFv/cFyPsFyJQGs6kGtrUG6ckGjNYGpeEGkeYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在你没有其他手牌时使用换挡漂移。",
@@ -418,7 +514,12 @@
       "relatedCards": [
         "天才米米尔隆"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "工具齐备",
+          "code": "AAECAdW+BQLuwwW29gUO9p8E958E38MFuMUF2dAFv/cF5voFyPsFofwFuf4FyJQGwJoG7p4GtrUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用全部6种米米尔隆的小工具。",
@@ -468,7 +569,12 @@
       "relatedCards": [
         "迷你灭世者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "他还是个孩子",
+          "code": "AAECAdW+BQLuwwW29gUO9p8E958E38MFuMUF2dAFv/cF5voFyPsFofwFyJQGt5kGwJoG7p4GtrUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用迷你灭世者消灭25个随从。",
@@ -512,7 +618,12 @@
       "relatedCards": [
         "雷霆之锤"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "失格者死",
+          "code": "AAECAdOLBQaN9QXHpAbUpQb8wAa6zgal0wYM5eQFh/sFwfsFs40Gw48GnJ4GqKcG06cG66kGnLgG1sAG0dAGAAED87MGx6QG9rMGx6QG6N4Gx6QGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用雷霆之锤消灭敌方英雄。",
@@ -531,7 +642,12 @@
       "relatedCards": [
         "风暴之王托里姆"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "艾泽拉斯最强英雄",
+          "code": "AAEBAdOLBQSLzgKF1ASN9QXC+QUNutICnv0C8NQD+uwD4+4D9PYD8IUE3JIExNAFs40G7JUGzpwG5p4GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用风暴之王托里姆抽25张牌。",
@@ -562,7 +678,12 @@
       "relatedCards": [
         "电流导联"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "雷人事实",
+          "code": "AAECAdOLBQAP5eQF3ukFs40GhY4G6ZUG7JUG65gGzpwGnJ4GnZ4Gz54Gy58GpKcGpsAG0dAGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用电流导联的效果消灭25个敌方随从。",
@@ -587,7 +708,12 @@
       "relatedCards": [
         "守护者的力量"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "力量试炼",
+          "code": "AAEBAdK+BQT21gOoigTSuQbDvwYN1p0DzvkDnJ8EwOIEkIMGjpUGkqAGhqMG6qkG6ckG7ckGjNYGpeEGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张守护者的力量消灭5个随从。",
@@ -613,7 +739,12 @@
         "石心之王",
         "阿米图斯的信徒"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "非凡石像",
+          "code": "AAECAdK+BQSW1ASL/gXSuQal4QYNnKAEuMUF7ukFiv4FwoIGvI8G75sGzpwGtZ4G6qkG6ckG7ckG78kGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "召唤一个具有14点攻击力的土灵魔像。",
@@ -632,7 +763,12 @@
       "relatedCards": [
         "修理机器人X-21"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "为什么不是22？",
+          "code": "AAEBAdK+BQKftwPLngYOlA+6vQKf9QLW/gLX/gKnywPa0wSO9QWG/gWI/gW5/gWG/wWdogbMsAYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用修理机器人X-21将20个机械移回你的手牌。",
@@ -663,7 +799,12 @@
       "relatedCards": [
         "提尔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "传说不朽",
+          "code": "AAEBAdK+BQSUmgODoQOT0AOL/gUN/PwCtJsD7/YDi40EnJ8E7p8EwOIEjZYF1oAGlpYGtZ4GkqAG6qkGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一次提尔的战吼复活3个传说随从。",
@@ -682,7 +823,12 @@
       "relatedCards": [
         "意志熔炉"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "巨人呢喃",
+          "code": "AAECAZT9BgS4igSs6QXo/wXu5gYN56AE9MYFyOsF1/oF5v8FpqgG8KkGlbMGibUGp8oGk8sG3uYG4uYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "从意志熔炉中召唤一个攻击力大于或等于12的巨人。",
@@ -701,7 +847,12 @@
       "relatedCards": [
         "致死灭杀"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "打包团灭",
+          "code": "AAEBAZT9BgLamwPFgAQO58sC1p0D66wDv7kD6b4DrMsDzdIDld4Dg/sD56AE+vkF8KkGlbMG4uYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张致命诛灭消灭5个随从。",
@@ -720,7 +871,12 @@
       "relatedCards": [
         "灭世泰坦萨格拉斯"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "虚空不言，弃",
+          "code": "AAEBAZT9BgKm+wXi5gYOowHamwOdqQOttgO/uQOsywPN0gOD+wPFgASPnwTnoATI6wXwqQaVswYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "召唤30个用萨格拉斯开向扭曲虚空的传送门创建的随从。",
@@ -751,7 +907,12 @@
       "relatedCards": [
         "狂乱侵蚀"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "封膜疯魔",
+          "code": "AAECAZT9BgSs0QWAngaVswaUygYNx8IFyMIF3cIF5sUF9MYF9fgFhY4GiZkGhJ4GoqAGo6AGmrMGwr4GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用狂乱侵蚀造成75点疲劳伤害。",
@@ -776,7 +937,16 @@
       "relatedCards": [
         "兵主"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "我真的符了 卡组1",
+          "code": "AAECAf7gBgaoigTt/wWkwAaowAbHyQaWywYM9eMEh/YEyoMG0IMG9YwG85EGkqAG/roG/7oGv74Gw74GpsAGAAA="
+        },
+        {
+          "name": "我真的符了 卡组2",
+          "code": "AAECAf7gBgSC+AWkwAaowAaWywYN9eMEh/YEiPYEtIAF6v8F+4AGkqAG/roG/7oGv74Gw74GpsAG3eUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用25张兵主创建的卡牌。",
@@ -818,7 +988,12 @@
         "兵主之杖",
         "海拉"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "超级传播者",
+          "code": "AAECAf7gBgKoigST+wUOnKAE9eMEh/YEtIAF9fcFgvgF6/8F+4AG75sGzpwGkqAG/7oGkMsG4OUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "将50张疫病牌洗入你对手的牌库。",
@@ -849,7 +1024,12 @@
       "relatedCards": [
         "秽病行尸"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "社交灵距离",
+          "code": "AAECAf7gBgSC+AWkwAaowAaWywYN9eMEkOQEh/YEl5UGkqAGurEG/roG/7oGv74Gw74GpsAGlM8G3eUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用剧毒亡灵消灭25个随从。",
@@ -874,7 +1054,12 @@
       "relatedCards": [
         "晶石雕像"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "温室一夜",
+          "code": "AAECAdKLBQK0oAT8wAYOtp8Es6AEuMUFsvUF4fgF4/gFw/kFj5AGnJoGzpwG7J4G7p4G7akG38AGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在同一个回合召唤并唤醒晶石雕像。",
@@ -893,7 +1078,12 @@
       "relatedCards": [
         "神秘恐魔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "邪月狼嚎",
+          "code": "AAEBAdKLBQKnjQSq3QQO1p0DztIDivcDtp8E8rEEvsoEr94EsN4EquIEheUE4fgFpYEGnJoG7J4GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "迫使40个敌方随从攻击神秘恐魔。",
@@ -912,7 +1102,12 @@
       "relatedCards": [
         "符文装饰"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "阿古尼特快递",
+          "code": "AAEBAdKLBQq5sgKWigP21gOm7wO1igSnjQT++AXBlAbawQbh6wYK24kDoaED78kDzPkDg58E5KQE8rEE16wF7p4G9eUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用恶魔猎手抽40张具有抽到时施放的法术牌。",
@@ -943,7 +1138,12 @@
       "relatedCards": [
         "摧心魔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "心灵体操",
+          "code": "AAEBAdKLBQL39gPtqQYO1tED+dUD2d4D9fYDivcDtp8EtKAE8rEE9ZwF4fgFnJoGnZoGmp4G7p4GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用摧心魔的一次战吼造成7点伤害。",
@@ -968,7 +1168,12 @@
       "relatedCards": [
         "维扎克斯将军"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "无限鬼故事",
+          "code": "AAECAbyRBQaIoASs0QWQ+wWGlAa6wQb6yQYMjtQE8M0F6tAFofsFipQGi5QGnJ4Gh6AG7KkG0rAG1boG88oGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "召唤维扎克斯将军40次。",
@@ -993,7 +1198,12 @@
       "relatedCards": [
         "火焰试炼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "信任崩塌",
+          "code": "AAECAbyRBQLLxAXG8wUOoaAErcMFuMUF5eQFkPsFl/sFofsFpPsF65gGzpwGnJ4Gz54Gv6IG5OYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用火焰试炼使瓦格里获得+200/+200。",
@@ -1012,7 +1222,12 @@
       "relatedCards": [
         "卡兹格罗斯"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "神圣干涉",
+          "code": "AAECAbyRBQSs0QXG8wWxwQb6yQYNiKAEjtQE4NAF69AFkPsFofsFhYIG4KgG7KkGw7oG1boG88oGouIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用卡兹格罗斯攻击并消灭25个敌方随从。",
@@ -1043,7 +1258,12 @@
       "relatedCards": [
         "米诺陶牛头人"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "老哞深锻",
+          "code": "AAECAbyRBQKQ+wX6yQYOiKAEjtQE69AF9PIFnPYFjvsFhYIGn54G7KkGi78G98kG88oGvOEGouIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张米诺陶牛头人获得20点护甲值。",
@@ -1062,7 +1282,12 @@
       "relatedCards": [
         "锐目搜寻者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "它怎么在那儿？",
+          "code": "AAEBAdW+BQLMoAXBoQUOgBKvkQPn3QO9gAT2nwT3nwS3swTfwwW/9wWk+gXI+wXIlAbungatpwYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用锐目搜寻者抽25张牌。",
@@ -1091,7 +1316,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "抡锤时间！",
+          "code": "AAEBAc6LBQKJiwSaoAYO5Aie0gK/8gKvgASuwASC4AXb+gW++wW9/AW+mQbvqQbzygai4gb35QYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "锻造50张牌。",
@@ -1120,7 +1350,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "早登神界",
+          "code": "AAEBAZT9BgL21gOTywYO2psD66wDrbYDv7kDrMsD184DzdIDld4Dg/sDxYAE56AEyOsFy/YFlbMGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用40个泰坦技能。",
@@ -1152,7 +1387,12 @@
         "无人机拆解器",
         "废料回收"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "奥杜尔假日灯光秀",
+          "code": "AAECAdW+BQLuwwW29gUO9p8E958E38MFuMUF2dAFv/cF5voFyPsFofwFuf4FyJQGzpwG7p4GracGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用4种不同的火花机器人。",
@@ -1192,11 +1432,17 @@
       "name": "杖剑弓全都有！",
       "heroClass": "中立",
       "type": "累计",
+      "trackClasses": true,
       "difficulty": "中等",
       "relatedCards": [
         "符文供能魔像"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "杖剑弓全都有！",
+          "code": "AAECAdW+BQLuwwWKqAYO9p8E958E38MFuMUFv/cFpvoFyPsFhY4GyJQGzpwG7p4GtrUGwr4GjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用符文供能魔像发现5个不同职业的武器。",
@@ -1221,7 +1467,12 @@
       "relatedCards": [
         "星空投影师"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "通讯不稳",
+          "code": "AAECAdW+BQLuwwXCvgYO9p8E958E38MFuMUFv/cF5voFyPsF44AGyJQGzpwGz54G7p4GracGtrUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用30张星空投影师创建的临时版随从牌。",
@@ -1259,7 +1510,12 @@
       "relatedCards": [
         "尤格-萨隆的监狱"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "审判之日",
+          "code": "AAECAf7gBgL++AWWywYO9eMEh/YEtIAFgvgFkqAG/roG/7oGw74Gkb8GpMAGpsAGqMAGh+IG3eUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用尤格-萨隆的监狱消灭15个被选中的随从。",
@@ -1290,7 +1546,12 @@
       "relatedCards": [
         "迷时始祖幼龙"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "时光迷航",
+          "code": "AAECAc6LBQAPrp8Ep/oF2/oF15wG2JwGl6AGmqAGoKAG76kG2bEGw7oG1boG88oGouIG9+UGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用30张迷时始祖幼龙创建的龙牌。",
@@ -1309,7 +1570,12 @@
       "relatedCards": [
         "远古图腾"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "最初的图腾",
+          "code": "AAEBAdOLBQLf4QOx2QQOvgayFPaqAp2jA9qlA5a5A7LBBIbUBKrZBKL6BbONBsOPBpyeBsGeBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "用远古图腾攻击25次。",
@@ -1328,7 +1594,12 @@
       "relatedCards": [
         "风暴巨人"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "和谐共熔",
+          "code": "AAEBAc6LBQKJiwSaoAYO5Aie0gK/8gKvgASuwASC4AXb+gW++wW9/AW+mQbvqQbzygai4gb35QYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中使用5张法力值消耗为（0）的风暴巨人。",
@@ -1347,7 +1618,12 @@
       "relatedCards": [
         "永恒之火伊格尼斯"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "专属武器",
+          "code": "AAECAbyRBQiIoASs0QWl9gWQ+wXYgQbHpAa6wQb6yQYLjtQE8M0F6tAFofsFi5QGnJ4Gn54Gh6AG7KkG1boG88oGAAED9bMGx6QG97MGx6QG6N4Gx6QGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用永恒之火伊格尼斯制造的自定义武器消灭敌方英雄。",
@@ -1366,7 +1642,16 @@
       "relatedCards": [
         "混乱触须"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "缠乱触须 卡组1",
+          "code": "AAECAdOLBQKplQaopQYOhdQEze4Fs40GnZUGpZUG65UGrZ0GnJ4GpKcGqKcG66kGw74GpMAGpsAGAAA="
+        },
+        {
+          "name": "缠乱触须 卡组2",
+          "code": "AAEBAdG+BQAP5QT6EdHBAuaIA6ylA5O6A9fOA/vfA4f3A4yBBK2KBKSRBbvHBe33BYb/BQAA"
+        }
+      ],
       "stages": [
         {
           "description": "通过混乱触须施放一个法力值消耗为（8）的法术。",
@@ -1391,7 +1676,12 @@
       "relatedCards": [
         "暮光头领古加尔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "古神在肩",
+          "code": "AAECAdeEBQzv0wTz8gWH9QXg9QXRmwbHpAa6pwaHvwa6wQbjzwb14gbJ6AYO6MUF8YAGkIMGhY4G9JsGzpwG0J4GtqcGxboGhr8G6ckG7ckG78kGpeEGAAED9bMGx6QG97MGx6QG6N4Gx6QGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在你的起始套牌中加入暮光头领古加尔，赢得25场对战。",

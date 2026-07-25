@@ -8,6 +8,10 @@
     {
       "name": "奥特兰克 wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E5%A5%A5%E7%89%B9%E5%85%B0%E5%85%8B"
+    },
+    {
+      "name": "旅法师营地：奥特兰克全成就攻略",
+      "url": "http://iyingdi.com/tz/post/5159127"
     }
   ],
   "achievements": [
@@ -20,7 +24,12 @@
       "relatedCards": [
         "野性之心古夫"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "法力大牛",
+          "code": "AAEBAe2/BATguwKb6AKPzgOJiwQNVooO4RWgzQKHzgKe0gKP9gKpogPcogPougPuugPw1APanwQA"
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时，拥有20个法力水晶。",
@@ -117,7 +126,12 @@
       "relatedCards": [
         "堆塑雪人"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "你想不想堆个雪怪？",
+          "code": "AAECAauwBASuugOSywPNzgP0/AMNwbgDx84D99EDheQD1OoD0OwD0ewDp/cDrvcDqIEEio0E/J4E9aIEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时，拥有雪人，雪怪和冰雪巨怪。",
@@ -153,7 +167,12 @@
       "relatedCards": [
         "冰血哨塔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "尤格以你为傲",
+          "code": "AAECAauwBASE5AOgigSikgT/ogQN3sQDpNEDutUDkuQDlugDufEDp/cDsfcDyfkDn5IE/p4E+6IEvKQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用冰血哨塔施放法力值消耗总计100点的法术。",
@@ -209,7 +228,12 @@
       "relatedCards": [
         "空军指挥官艾克曼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "天降暴龙王",
+          "code": "AAECAa/XAwb21gPl7wPK+wOoigThnwTaowQM97sDhOIDlugDqIEEqZ8Eqp8E458E5J8EvaAE16ME5aQEma0EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用空军指挥官艾克曼在一回合中召唤5只野兽。",
@@ -228,7 +252,12 @@
       "relatedCards": [
         "觅血者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "逐血而来",
+          "code": "AAECAa/XAwLl7wPXowQOpLkDhOIDkugDlPwDqIEE9o8EqZ8Eqp8E458E5J8EnKAEz6AE46QEma0EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用觅血者，在一次攻击中造成8点伤害。",
@@ -301,7 +330,12 @@
       "relatedCards": [
         "虔诚祭司泽瑞拉"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "我会记住你",
+          "code": "AAECAZ/HAgbUugPOvgPd9gOoigToiwTypAQMk7oD++MDlugDoegDmOoDzfIDhvcDyfkDjIEEr5EEoaAEiKMEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用虔诚祭司泽瑞拉触发50个亡语。",
@@ -353,7 +387,12 @@
       "relatedCards": [
         "超脱"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "救赎大军",
+          "code": "AAECAZ/HAgbUugPOvgPd9gOoigToiwTypAQMk7oD++MDlugDoegDmOoDzfIDhvcDyfkDjIEEr5EEoaAEiKMEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用超脱召唤30个随从。",
@@ -397,7 +436,16 @@
       "relatedCards": [
         "雪落墓地"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "大闹墓地 卡组1",
+          "code": "AAEBAZurBAbEAcnCAprLAvuKBPafBNWgBAz1uwLw5gLOuQOqywPn3QOu6wP+7gPT8wOh9AO9gAT3nwT8pQQA"
+        },
+        {
+          "name": "大闹墓地 卡组2",
+          "code": "AAEBAZurBAKFF/uKBA7EAfW7AvDmAs65A6rLA+fdA67rA/7uA6H0A72ABKWNBPafBPefBPylBAA="
+        }
+      ],
       "stages": [
         {
           "description": "当你控制雪落墓地时使30个亡语随从死亡。",
@@ -429,7 +477,16 @@
       "relatedCards": [
         "双面间谍"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "奥特兰克十大叛徒 卡组1",
+          "code": "AAECAZurBATD4QOX5wOh+QP7igQNqssDpNED5dED590D890DvoAE9p8EnKAE7qAEuqQEu6QE+6UE7KcEAA=="
+        },
+        {
+          "name": "奥特兰克十大叛徒 卡组2",
+          "code": "AAEBAZurBARaxAG6igT7igQN9bsCt64DzrkDqssDx84D590DrusD/u4DofQDvYAEkZ8E9p8E958EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "召唤60个双面间谍。",
@@ -448,7 +505,32 @@
       "relatedCards": [
         "军情七处走私贩"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "！ 卡组1",
+          "code": "AAECAe2/BAKJiwSUpQQOm84DieAD0eEDiuQDrIAEr4AEiY0EkY0E2p8EzaQEz6QE2qQE46QEuL4EAA=="
+        },
+        {
+          "name": "！ 卡组2",
+          "code": "AAEBAe2/BAAPxAboFZdouZQD3KID/60D+bUDm84DieAD0eEDrIAEr4AEh40EnKAEsKUEAA=="
+        },
+        {
+          "name": "！ 卡组3",
+          "code": "AAECAcn1AgTI4QOtkQSwkQSXoAQNv7kDvb4D7NEDzdIDld4DiO8Dg/sDxYAEsZ8E56AE4qIE26ME+LUEAA=="
+        },
+        {
+          "name": "！ 卡组4",
+          "code": "AAEBAauwBAAPywTP8gK0/AKkhwOthwPNiQOItgObzQPNzgPl0QP30QPT7APW7APAoATNpAQA"
+        },
+        {
+          "name": "！ 卡组5",
+          "code": "AAEBAZ/HAgS1uwKwugPLzQOEowQN5QTRCvIM6r8C0cEC6NACk7oDm7oD4t4DmOsDr5EEiaMEiqMEAA=="
+        },
+        {
+          "name": "！ 卡组6",
+          "code": "AAEBAa/XAwSG0wKY8AKnggOP4wMNrgb3DfixAt/SAp+lA/uvA6S5A+jhA/LhA6mNBKuNBOSfBJmtBAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用军情七处走私贩召唤一个法力值消耗为（10）的随从。",
@@ -493,7 +575,12 @@
       "relatedCards": [
         "雪球大战"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "雪球效应",
+          "code": "AAECAZu1AwbhzAOczgP21gPI4QOG+gPDkQQM27gD3b4Dzc4D9PYD04AEqIEEp5EEuZEElZIE3JIE25QE4KQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使10个随从参加同一场雪球大战。",
@@ -513,7 +600,12 @@
       "relatedCards": [
         "元素使者布鲁坎"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "元素雄起",
+          "code": "AAECAZu1AwbhzAOczgP21gOG+gOoigTDkQQM27gDzc4D9PYD04AEqIEEwIoEmI4Ep5EEsZEE+ZEElZIE3JIEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用布鲁坎和他的英雄技能唤起元素100次。",
@@ -530,7 +622,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "放寒假",
+          "code": "AAECAZu1AwbhzAOczgP21gOG+gPCkQTDkQQM9PYD04AEwIoEmI4Ep5EEsZEEuZEE+ZEElZIE3JIE25QEnKAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用萨满祭司冻结150个角色。",
@@ -586,7 +683,12 @@
       "relatedCards": [
         "血色骑士赛丹"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "非棕非红，唯有血色",
+          "code": "AAECAZ3DAwb76AOi+APZ+QOqigTgiwTquAQMysEDv9EDzOsDh/QDiPQD8PYD8/YDqvgDtoAEyaAE1qAE+aQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用血色骑士赛丹，在一次攻击中造成25点伤害。",
@@ -606,7 +708,12 @@
       "relatedCards": [
         "亮铜之翼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "大胆铜行",
+          "code": "AAEBAZ3DAwTOhwO0mwPgiwT4pAQN+gGE/AL8/ALPhgPshgOKmgPKwQOL+AOLjQScnwTunwT0pAT1pAQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用亮铜之翼恢复150点生命值。",
@@ -625,7 +732,12 @@
       "relatedCards": [
         "光铸凯瑞尔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "你还不配",
+          "code": "AAECAZ3DAwSPzgP21gOoigTgiwQNysED+t4DmOoDzOsD7/YD8PYDi/gDwPkDi40EmZ8EnZ8E9KQE+aQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用无法撼动之物防止100点伤害。",
@@ -684,7 +796,16 @@
         "恐惧巫妖塔姆辛",
         "小鬼侵染"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "吓不倒它的 卡组1",
+          "code": "AAECAcn1AgT21gPFgASoigSwkQQNvb4DrMsD184D7NEDzdIDld4D+OMDg/sDoY0E56AE4qIE26ME+LUEAA=="
+        },
+        {
+          "name": "吓不倒它的 卡组2",
+          "code": "AAECAcn1AgT21gPFgASoigSwkQQNvb4DrMsD184D7NEDzdIDld4D+OMDg/sDoY0E56AE4qIE26ME+LUEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "召唤50个恐惧小鬼。",
@@ -779,7 +900,12 @@
       "relatedCards": [
         "裂魔者库尔特鲁斯"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "猛击怒火按钮",
+          "code": "AAECAc7WAwT21gO/7QOoigSHiwQNyd0Dyt0D8+MDkOQDu+0DvO0D/e0D9PYDqZEEgJ8EyZ8E1p8E5bYEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用裂魔者库尔特鲁斯，在一回合中使用你的英雄技能7次。",
@@ -798,7 +924,12 @@
       "relatedCards": [
         "恐惧牢笼战刃"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "……摔得就越狠",
+          "code": "AAECAc7WAwLaxgOHiwQO2cYDxd0Dz90D8+MDkOQDwvEDhI0EgJ8Egp8Etp8EyZ8Es6AEtKAE4KQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用恐惧牢笼战刃荣誉消灭一个生命值大于或等于5点的随从。",
@@ -817,7 +948,12 @@
       "relatedCards": [
         "清算咒符"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "恶魔清算",
+          "code": "AAECAc7WAwL21gOoigQOmb0D2cYD9N8D8+MDlugDoO4DjPcDyYAEqZEEtJIE+JQEgp8Ez6QE46QEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用清算咒符召唤10个恶魔。",
@@ -873,7 +1009,12 @@
       "relatedCards": [
         "勇气战将洛卡拉"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "后果如何……？",
+          "code": "AAECAYwWBpPQA/bWA47vA5j2A7+ABLyKBAy13gP+5wPV8QOV9gOW9gOX9gPP+wOcgQSmgQSmigStoASvoAQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用无坚不摧之力将一个随从撞向敌方英雄，造成致命伤害。",
@@ -1148,7 +1289,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "势如破竹",
+          "code": "AAEBAe2/BAb74QKb6AKPzgPI4QOJiwSUpQQMQFbEBooOh84CntICv/ICm84D8NQDieADr4AEsKUEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "触发50次荣誉消灭效果。",
@@ -1177,7 +1323,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "山丘之王",
+          "code": "AAECAe2/BAKm4QP86AMO174D3r4Dks0DudIDjOQD9+gDuewDiPQDyfUD9PYDgfcDhPcD1qAEuL4EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用20张持续3回合的目标地点法术牌。",
@@ -1206,7 +1357,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "英雄之路",
+          "code": "AAECAe2/BASm4QPK4wP86AOJiwQN174D3r4Dks0DudIDjOQD9+gDuewDiPQDyfUD9PYDgfcDhPcD1qAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在使用英雄牌后赢得10场对战。",
@@ -1237,7 +1393,12 @@
       "relatedCards": [
         "话痨奥术师"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "团队杀戮",
+          "code": "AAECAcn1AgTs0QPV6AOljQTooAQNv7kDvb4DrMsD184DzdIDld4DiO8Dg/sDsZ8EgqAE56AE86IE26MEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张话痨奥术师，触发其效果5次。",
@@ -1263,7 +1424,12 @@
       "relatedCards": [
         "狗头人监工"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "不要斯尼维尔",
+          "code": "AAECAcn1AgAPv7kDvb4DrMsD184DzdIDld4D+OMDg/sDsZ8EgqAEg6AE56AE86IE26ME4KQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "对友方随从施放60个护甲碎片。",
@@ -1282,7 +1448,12 @@
       "relatedCards": [
         "恐怖图腾赏金猎人"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "悬赏1600尘",
+          "code": "AAECAcn1AgSPzgPI4QOxnwTjpAQNv7kDvb4DrMsD184D7NEDzdIDld4D+OMDgfsDg/sDxYAE56AE26MEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用恐怖图腾赏金猎人消灭10个传说随从。",
@@ -1308,7 +1479,12 @@
       "relatedCards": [
         "巨型猫头鹰"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "大鸟",
+          "code": "AAECAcn1AgAPv7kDvb4DrMsD184DzdIDld4D+OMDg/sD15IEsZ8EgqAEg6AE56AE86IE26MEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用巨型猫头鹰消灭30个敌人。",
@@ -1327,7 +1503,12 @@
       "relatedCards": [
         "深铁穴居人"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "深铁困境",
+          "code": "AAECAZ/HAgKw4QPBnwQOk7oDlroDp8sD184D4t4D+98Dm+sDnusDrYoEr5EEhZ8EiaMEiqME4aQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "同时控制7个深铁穴居人。",
@@ -1346,7 +1527,12 @@
       "relatedCards": [
         "血怒者科尔拉克"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "永生不灭",
+          "code": "AAECAZ/HAgSWugPIvgPoiwTypAQNk7oDp8sD184D4t4D+98D+OMDmesDnusDhvcDh/cDrYoEhZ8EiqMEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "召唤血怒者科尔拉克10次。",
@@ -1377,7 +1563,12 @@
       "relatedCards": [
         "反射工程师"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "反射失败",
+          "code": "AAECAcn1AgKk7wPr8AQOv7kDvb4DrMsD184D7NEDzdIDld4DiO8Dg/sDsZ8EgqAE56AE86IE26MEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张生命值为0的随从牌。",
@@ -1397,7 +1588,12 @@
       "relatedCards": [
         "伏兵"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "伏兵乐园",
+          "code": "AAECAZ/HAgKPzgOb6wMOk7oDlroDp8sD4t4D+98D+OMDmesDnusDhvcDh/cDrYoEr44EhZ8EiqMEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用伏兵攻击并消灭15个随从。",
@@ -1416,7 +1612,12 @@
       "relatedCards": [
         "憎恶军官"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "肚肚饱饱",
+          "code": "AAECAZ/HAgKPzgPkpAQOk7oDlroDp8sD4t4D+98D+OMDmOsDmesDnusDhvcDh/cDrYoEhZ8EiqMEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用憎恶军官吞食一个8/8或更大的随从。",
@@ -1435,7 +1636,12 @@
       "relatedCards": [
         "森林之王伊弗斯"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "树木，为自己代言",
+          "code": "AAECAZ/HAgSWugPIvgOPzgPxpAQNk7oDp8sD184D4t4D+98D+OMDmesDnusDhvcDh/cDrYoEhZ8EiqMEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张12/12或更大的森林之王伊弗斯。",
@@ -1507,7 +1713,12 @@
         "德雷克塔尔",
         "范达尔·雷矛"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "战场大师",
+          "code": "AAECAYwWBJPQA47vA5j2A7+ABA331AO13gP+5wOS6APV8QOV9gOW9gOX9gPP+wOcgQSmigStoASvoAQA"
+        }
+      ],
       "stages": [
         {
           "description": "在你的套牌中加入范达尔·雷矛或德雷克塔尔，完成对战并获得7200点荣誉点数。",
@@ -1524,7 +1735,12 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "精华凝结",
+          "code": "AAEBAcn1AgLFBLCRBA6/uQO9vgOsywPXzgPN0gOV3gP44wOD+wPFgASxnwTnoATiogTbowT4tQQA"
+        }
+      ],
       "stages": [
         {
           "description": "赢得对战时拥有15点生命值。",
@@ -1544,7 +1760,12 @@
       "relatedCards": [
         "狂乱角鹰兽"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "振翅小鸟",
+          "code": "AAECAZ/HAgKPzgOb6wMOk7oDlroDp8sD4t4D+98D+OMDmesDnusDhvcDh/cDrYoEkY0EhZ8EiqMEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用狂乱角鹰兽攻击80次。",
@@ -1564,7 +1785,12 @@
       "relatedCards": [
         "洛克霍拉的使者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "冰霜来啦",
+          "code": "AAECAauwBAAPx84Dzc4D5dED99EDh+QD1OoDiO0DwIoEmI4E/J4E5p8E6J8EnKAEw6AE9aIEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用洛克霍拉的使者抽50张冰霜法术牌。",
@@ -1584,7 +1810,16 @@
       "relatedCards": [
         "雷矛元帅"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "一元猛将 卡组1",
+          "code": "AAECAYwWAA+13gOW6AOV9gP09gORjQShjQSvjgTXkgSUlQSflQSIoAT8ogTfpATgpATjpAQA"
+        },
+        {
+          "name": "一元猛将 卡组2",
+          "code": "AAECAcn1AgAPvb4DrMsD184DzdIDld4D+OMDg/sDj58EsZ8EgqAEg6AE56AE86IE26ME36QEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用40张法力值消耗为（1）点的雷矛元帅。",
@@ -1604,7 +1839,12 @@
       "relatedCards": [
         "雪盲鹰身人"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "雪盲战吼忙",
+          "code": "AAECAauwBAAPx84Dzc4D5dED99EDh+QD1OoDiO0DwIoEmI4E/J4E5p8E6J8EnKAEw6AE9aIEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "触发雪盲鹰身人的战吼效果50次。",
@@ -1624,7 +1864,12 @@
       "relatedCards": [
         "霜狼将领"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "节约标兵",
+          "code": "AAECAcn1AgAPv7kDvb4DrMsD184DzdIDld4D+OMDg/sDsZ8EgqAEg6AE56AE86IE26ME3qQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使霜狼将领的法力值消耗减少150点。",
@@ -1644,7 +1889,12 @@
       "relatedCards": [
         "群羊指挥官"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "玛丽有只小羊羔",
+          "code": "AAECAZ/HAgKPzgPBnwQOk7oDlroDp8sD184D4t4D+98Dm+sDnusDrYoEoY0Er5EEhZ8EiaMEiqMEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "召唤100只群羊指挥官的作战山羊。",

@@ -8,6 +8,10 @@
     {
       "name": "暴风城 wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E6%9A%B4%E9%A3%8E%E5%9F%8E"
+    },
+    {
+      "name": "旅法师营地：暴风城全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5095416"
     }
   ],
   "achievements": [
@@ -36,7 +40,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "亮出锐爪",
+          "code": "AAEBAe2/BALmBdaZAw7BBJoI3BWXaPzNAoTmAvmtA+W6A+a6A5vOA6LhA4rkA7igBLmgBAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用德鲁伊，使你的英雄获得150点攻击力。",
@@ -88,7 +97,12 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "洗刷刷",
+          "code": "AAEBAe2/BAiu0gL1/ALanQP4oQP2rQP9tgPn8AOunwQLVsQGv/IC9YADhpoD45sDyKID3KID2akDm84D2p8EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用德鲁伊，触发75张抽到时施放的法术牌效果。",
@@ -121,7 +135,9 @@
       "heroClass": "法师",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "火球术"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -138,7 +154,9 @@
       "heroClass": "法师",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "星空墨水套装"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -167,7 +185,9 @@
       "heroClass": "法师",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "奥术溢爆"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -209,7 +229,12 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "你到底有多少箭？",
+          "code": "AAEBAa/XAwa5DccP1hGFuAKggAOP4wMMigGcAoAH1ROczQLTzQLd0gKL4QLP8gKbzQOpnwShoAQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用猎人，在一回合中用你的英雄技能造成12点伤害。",
@@ -254,7 +279,9 @@
       "heroClass": "猎人",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "巨型鹦鹉"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -294,7 +321,10 @@
       "heroClass": "牧师",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "泽瑞拉",
+        "雷象坐骑"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -312,7 +342,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "追随黑暗",
+          "code": "AAECAZ/HAgLIvgPOvgMOk7oDm7oD3swD184D4t4D+98DyuED++MDlugDmOsDm+sDrYoEhZ8E56IEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用牧师，用你的英雄技能造成45点伤害。",
@@ -363,7 +398,9 @@
       "heroClass": "潜行者",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "变装大师"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -426,7 +463,9 @@
       "heroClass": "潜行者",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "海盗谈判"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -449,7 +488,9 @@
       "heroClass": "萨满祭司",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "强行透支"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -467,7 +508,9 @@
       "type": "累计",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "小巧玩具"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -513,7 +556,9 @@
       "heroClass": "萨满祭司",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "吸盘钩手"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -538,7 +583,12 @@
       "metric": "points",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "光之暗面",
+          "code": "AAEBAZ3DAwaVvAK8vQKO0wLr9wL9+wKR7AMMs7sC97wC99AC/vMC2f4C3f4C0IoD5IoDoKEDkK4Dv9EDyaAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用圣骑士卡牌吸血恢复300点生命值。",
@@ -555,7 +605,12 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "全员集合",
+          "code": "AAEBAZ3DAwLehgOR7AMO7Q+zuwKVvAL3vAKnvgK35wLZ/gLd/gKE3gPM6wPn7AOuigShnwTHoAQA"
+        }
+      ],
       "stages": [
         {
           "description": "召唤一个拥有5点攻击力的白银之手新兵。",
@@ -572,7 +627,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "圣盾易碎",
+          "code": "AAECAZ3DAwb8uAP21gOH3gOR7AP77AOoigQM3r4Dp8sDkdADytEDot4Dx+ED8ukDyvEDlaAEyaAEyqAE1qAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用圣盾防止伤害40次。",
@@ -600,7 +660,9 @@
       "heroClass": "圣骑士",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "分赃专员"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -623,7 +685,9 @@
       "heroClass": "术士",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "恐惧战马"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -641,7 +705,9 @@
       "type": "累计",
       "metric": "points",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "符文秘银杖"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -687,7 +753,9 @@
       "heroClass": "术士",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "邪恶船运"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -710,7 +778,9 @@
       "heroClass": "恶魔猎手",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "雄狮之怒"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -728,7 +798,9 @@
       "type": "累计",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "固执的商贩"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -774,7 +846,9 @@
       "heroClass": "恶魔猎手",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "试炼场"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -816,7 +890,12 @@
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "为什么欺负我？",
+          "code": "AAEBAYwWBvYCgg6iEMLOAqCAA4/OAwzGwgLn4QLq5wL15wKz/ALdrQO0tgO4uQO8uQPS0QPe7AOIoAQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用战士，从你的牌库中召唤50个随从。",
@@ -833,7 +912,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "我的海盗生活",
+          "code": "AAEBAYwWAt6tA8C5Aw7UBe4GgrACiLAC3oIDz4kD3a0D6LAD6bADtd4D1fEDpooEraAEr6AEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用战士，用海盗攻击125次。",
@@ -861,7 +945,9 @@
       "heroClass": "战士",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "铁匠锤"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -913,7 +999,9 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "劳累的驮骡"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -995,7 +1083,9 @@
       "type": "累计",
       "metric": "points",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "闪金镇豺狼人"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1036,7 +1126,12 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "可爱巨龙",
+          "code": "AAECAcn1AgLQ4QOooAQOv7kDyLkDvb4D184D7NEDzdIDztIDjecD1+0D9O0DiO8Die8DsZ8E56AEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张法力值消耗为（0）的传说龙牌。",
@@ -1054,7 +1149,12 @@
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "为舞者投币",
+          "code": "AAEBAZurBAaSlwPjtAPLwAOPzgP21gPX+QMMzhXz0wLGiQOznwO2rgO5rgP+rgOqrwPOrwORnwT2nwTqoAQA"
+        }
+      ],
       "stages": [
         {
           "description": "将100个幸运币置入任意玩家的手牌。",
@@ -1100,7 +1200,9 @@
       "type": "累计",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "热情的柜员"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1117,7 +1219,9 @@
       "heroClass": "中立",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "瓦里安，暴风城国王"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1151,7 +1255,9 @@
       "heroClass": "中立",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "顽固的嫌疑人"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1169,7 +1275,9 @@
       "type": "累计",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "熊猫人进口商"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1187,7 +1295,9 @@
       "type": "累计",
       "metric": "points",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "香料面包师"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1205,7 +1315,9 @@
       "type": "累计",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "锈烂蝰蛇"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1223,7 +1335,9 @@
       "type": "累计",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "被困的女巫"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1281,7 +1395,9 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "多系施法者"
+      ],
       "recommendedDecks": [],
       "stages": [
         {

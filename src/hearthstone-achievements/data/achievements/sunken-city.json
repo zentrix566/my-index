@@ -8,6 +8,10 @@
     {
       "name": "沉没之城 wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E6%B2%89%E6%B2%A1%E4%B9%8B%E5%9F%8E"
+    },
+    {
+      "name": "旅法师营地：沉没之城全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5185217"
     }
   ],
   "achievements": [
@@ -21,7 +25,12 @@
       "relatedCards": [
         "异端纳迦海德拉"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "个人迷信",
+          "code": "AAECAc6LBQSoigSJiwTxvwSY1AQNpPYDr4AEiZ8Erp8E2p8EsKUEz6wE9r0E+b0E/70E8L8ErsAEssEEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用异端纳迦海德拉召唤75个法力值消耗大于或等于（5）点的随从。",
@@ -40,7 +49,12 @@
       "relatedCards": [
         "妙手园丁"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "妙手若拙",
+          "code": "AAECAc6LBQTA7AOJiwSW1ASY1AQNpPYDr4AEiZ8Erp8E2p8Ez6wE+b0E/70E8L8ErsAEssEEgNQE2qEFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用妙手园丁复原100个法力水晶。",
@@ -71,7 +85,12 @@
       "relatedCards": [
         "底层掠食鱼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "从底层出发",
+          "code": "AAECAc6LBQaJiwStswSQtQTxvwSW1ASY1AQMtuwDr4AE2p8EsKUEz6wEqbME+b0E+r0E/70ErsAEgNQE2qEFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张具有10点攻击力的底层掠食鱼。",
@@ -116,7 +135,16 @@
       "relatedCards": [
         "机械鲨鱼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "鲨鱼饵，吼哈 卡组1",
+          "code": "AAECAauwBAKpgQShsQQO0uwDw/kDx4oE1qAEiLAEkrUE4bUEybcEyrcE3bkE47kEssEE2NkElKQFAA=="
+        },
+        {
+          "name": "鲨鱼饵，吼哈 卡组2",
+          "code": "AAECAauwBAbn9wOoigT6rASW1ASY1ASp3gQM1OoD1uwDp/cDrvcDv/kD0PkDio0En5IEhLIEh7cE4bkEssEEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中使用机械鲨鱼造成20点伤害。",
@@ -136,7 +164,12 @@
       "relatedCards": [
         "海床传送口"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "伊妮机，出动！",
+          "code": "AAECAauwBAKpgQShsQQO0uwDw/kDx4oE1qAEiLAEkrUE4bUEybcEyrcE3bkE47kEssEE2NkElKQFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用海床传送口，减少75张机械牌的法力值。",
@@ -212,7 +245,16 @@
       "relatedCards": [
         "双弓积骇纳迦"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "上下开弓 卡组1",
+          "code": "AAECAa/XAwLl7wP9+AMO2+0D9/gDqZ8Eqp8E458Eu6AEwawEnbAEhLIEwbkEssEEgckEhMkEjNQEAA=="
+        },
+        {
+          "name": "上下开弓 卡组2",
+          "code": "AAECAa/XAwKZrQTnuQQO6ukD8OwD9PYDw4AEqIEEpY0Eq40EqZ8Eqp8E458E5J8Eu6AE2KMEv6wEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用双弓积骇纳迦的效果，额外施放法术25次。",
@@ -250,7 +292,12 @@
       "relatedCards": [
         "海胆尖刺"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "逐渐成瘾",
+          "code": "AAECAa/XAwLl7wP9+AMO2+0D9/gDqZ8Eqp8E458Eu6AEwawEnbAEhLIEwbkEssEEgckEhMkEjNQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用剧毒法术消灭15个随从。",
@@ -331,7 +378,12 @@
       "relatedCards": [
         "黑水巨鳗"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "黏黏有鱼",
+          "code": "AAECAZ/HAgrd9gPI+QOoigToiwTBnwTWrASotgTz0wSW1ASY1AQKzfIDh/cDiPcDoPcDrYoEiKMEyKwE9NME9dMEhqQFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用黑水巨鳗恢复50点生命值。",
@@ -363,7 +415,12 @@
       "relatedCards": [
         "深海低语"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "嘘……侍奉恩佐斯",
+          "code": "AAECAZ/HAgTU7QPoiwTBnwSotgQNmesD6O8Dh/cDjIEErYoEiqME1KwEorYEo7YEpLYEuLYEvtwE9vEEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用深海低语造成100点伤害。",
@@ -382,7 +439,12 @@
       "relatedCards": [
         "湍流旋涡"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "山不转水转",
+          "code": "AAEBAZ/HAgTanQP21gOoigShtgQN5QTqvwLRwQKXhwPWnQOZqQOTugPi3gP73wOH9wOKowSitgSjtgQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用一个湍流旋涡消灭12个随从。",
@@ -401,7 +463,12 @@
       "relatedCards": [
         "鱼排斗士"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "食食物者",
+          "code": "AAECAZurBAi9gAS/gATtgASoigT7igSvtgSW1ASY1AQL9p8E7qAEqbMEr7MEt7MEssEEiskE/dMEmNsEmtsEjKQFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用鱼排斗士消灭敌方英雄。",
@@ -421,7 +488,12 @@
       "relatedCards": [
         "海盗将领钩牙"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "把钱交出来！",
+          "code": "AAECAZurBAi9gAS/gATtgASoigT7igSvtgSW1ASY1AQL9p8E7qAEqbMEr7MEt7MEssEEiskE/dMEmNsEmtsEjKQFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用海盗将领钩牙劫掠对手的物资25次。",
@@ -440,7 +512,12 @@
       "relatedCards": [
         "垂钓时光"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "钓鱼小游戏",
+          "code": "AAECAZurBBap6wOq6wOs6wP/7gPT8wO+gASRnwSSnwSUnwSVnwSWnwT0nwT3nwS6pAT8pQTspwT5rAT9rASvswSZtgSbyQSY1AQErusD/u4DofQDyfkDAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用垂钓时光抽20张你的套牌之外的牌。",
@@ -498,7 +575,12 @@
       "relatedCards": [
         "生物荧光"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "月色之舞",
+          "code": "AAECAZu1AwT09gOW1ASY1ATwrgUNlugD+rQE/LQE4LUE4rUEvLYEvbYEircEssEEhtQEmdsE8t0El6QFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使100个随从获得生物荧光。",
@@ -517,7 +599,12 @@
       "relatedCards": [
         "艾萨拉之辉"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "冰冷热水",
+          "code": "AAECAZu1AwTj7gOG+gPDkQTntQQN04AEqIEEuZEE+ZEElZIE3JIE25QE+Z8E/LQE4LUEvLYEh9QEmdsEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "拥有艾萨拉之辉时，在一个回合中施放火焰，冰霜和自然法术。",
@@ -538,7 +625,12 @@
         "鱼群聚集",
         "食人鱼偷猎者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "吞食狂热",
+          "code": "AAECAZu1AwT09gOW1ASY1ATwrgUNlugD+rQE/LQE4LUE4rUEvLYEvbYEircEssEEhtQEmdsE8t0El6QFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用食人鱼集群造成75点伤害。",
@@ -594,7 +686,12 @@
       "relatedCards": [
         "神圣寿司卷"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "就酱吧",
+          "code": "AAECAZ3DAwbgiwSwsgSW1ASY1ATa2QSh4gQMi40E0KwEj7AEsbAEjbUEh7cElrcE3rkE6rkE0L0E2r0EktQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一回合中使用神圣寿司卷恢复20点生命值。",
@@ -613,7 +710,16 @@
       "relatedCards": [
         "雷达探测"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "雷达扫描 卡组1",
+          "code": "AAEBAZ3DAwKpgQSwsgQO6g/HigTVoATWoASIsASStQThtQTeuQTjuQTUvQSywQTa0wTa2QSUpAUA"
+        },
+        {
+          "name": "雷达扫描 卡组2",
+          "code": "AAECAZ3DAwbgiwSwsgSW1ASY1ATa2QSh4gQMi40E0KwEj7AEsbAEjbUEh7cElrcE3rkE6rkE0L0E2r0EktQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张雷达探测抽5张机械牌。",
@@ -689,7 +795,12 @@
       "relatedCards": [
         "老巨鳍"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "一顿75道菜",
+          "code": "AAECAcn1AgrX7QPy7QPQ+QOoigSwkQTmvQT1xwSW1ASY1ASb1AQKvfEDg/sDsZ8EnKAE56AE26MEhLIE/rQE3L0E4r0EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "永久消灭老巨鳍体内的75个随从。",
@@ -708,7 +819,16 @@
       "relatedCards": [
         "鱼饵桶"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "锋利鳞片 卡组1",
+          "code": "AAEBAcn1AgAPv7kDx7kDvb4DrMsD184DztIDld4D8d4D9N8D1+0Dg/sDxYAEsZ8E56AE26MEAA=="
+        },
+        {
+          "name": "锋利鳞片 卡组2",
+          "code": "AAECAcn1AgrX7QPy7QPQ+QOoigSwkQTmvQT1xwSW1ASY1ASb1AQKvfEDg/sDsZ8EnKAE56AE26MEhLIE/rQE3L0E4r0EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用术士，使用一张具有10点攻击力的鱼人牌。",
@@ -786,7 +906,12 @@
       "relatedCards": [
         "赛丝诺女士"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "躲不过赛思诺",
+          "code": "AAECAc7WAwTIgAT7vwSW1ASY1AQN6+8DwvEDifcDivcDjPcDgp8Etp8EtKAEjrAEhLIEh7cEmLoEssEEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中使用赛思诺女士攻击8次。",
@@ -806,7 +931,12 @@
       "relatedCards": [
         "多重打击"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "左右开攻",
+          "code": "AAEBAc7WAwTj1AP21gOoigSHiwQNxLwD2cYDxd0D8+MD/e0DwvED9PYDivcDmfkDgp8Etp8E7KAEjrAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用恶魔猎手，在一个回合中用你的英雄消灭2个随从，完成30次。",
@@ -825,7 +955,12 @@
       "relatedCards": [
         "捕掠"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "代价……全无",
+          "code": "AAEBAc7WAwTM0gP39gOL9wOW1AQN1tED3dMDutUD+dUD2d4D8+MD/e0DivcDmfkDv/kDrKAEtKAEmLoEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用恶魔猎手，使用30张法力值消耗降为0的法术牌。",
@@ -881,7 +1016,12 @@
       "relatedCards": [
         "奈利，超巨蛇颈龙"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "盗贼之海",
+          "code": "AAECAZurBAT7igSbyQSW1ASY1AQNqusD/u4DofQDvYAElZ8Elp8E9p8E958EuqQE+awEt7MEmbYEmtsEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "为奈利，超巨蛇颈龙组建一支法力值消耗大于或等于（14）点的船员团队。",
@@ -900,7 +1040,12 @@
       "relatedCards": [
         "火焰熔铸"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "熔火之城",
+          "code": "AAECAYwWBNXxA5j2A4qgBOWwBA3+5wOV9gOW9gOX9gPP+wOcgQSmigSvoASpswSLtwSQtwS4twSywQQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用一张火焰熔铸抽7张牌。",
@@ -919,7 +1064,12 @@
       "relatedCards": [
         "辛艾萨莉之火"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "热水澡",
+          "code": "AAECAYwWBsb1A+f3A9D5A7aKBLyKBKeNBAyO7QOP7QO/+QP4gASbgQT5jAT6jASIoASQtwS4twSO1ASQ1AQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用50张辛艾萨莉之火创建的随从牌。",
@@ -973,7 +1123,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "艾萨拉大军",
+          "code": "AAECAc7WAwL7vwSW1AQOlbAEmbAE7bEE8bEEhLIEiLIEjbIEh7cElrcEyLcE+b8EwMAEssEEk6QFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "召唤100个纳迦。",
@@ -1004,7 +1159,12 @@
       "relatedCards": [
         "掩息海星"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "无视",
+          "code": "AAEBAcn1AgLN0gOY1AQO58sC3IYD2psD1p0DrbYDv7kDrMsD184Dld4Dg/sDxYAEsZ8E56AEjbUEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用掩息海星沉默30个随从。",
@@ -1033,7 +1193,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "海底拾贝",
+          "code": "AAECAcn1AgAPlOgDtZ8EoqAEq6AE9LEE1bIEqbMErbMEvrQEgLUE470EssEEnMcE7tME/tgEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "探底50次。",
@@ -1062,7 +1227,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "大海深处",
+          "code": "AAEBAcn1AgAP58sC2psD66wDrbYDv7kDvb4DrMsD184DzdIDld4Dk+QDg/sD56AEvrQEgLUEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用25张沉没的牌。",
@@ -1087,7 +1257,16 @@
       "relatedCards": [
         "野蛮的女巫"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "魔武双修 卡组1",
+          "code": "AAECAZurBALn9wP7igQO/u4D0/MDofQD6/YD9PYDv/kD0PkDvYAE/awEmbAEhLIEqbMEt7MEmtsEAA=="
+        },
+        {
+          "name": "魔武双修 卡组2",
+          "code": "AAECAa/XAwLl7wP9+AMO2+0D9/gDqZ8Eqp8E458Eu6AEwawElbAEnbAEhLIEwbkEssEEhMkEjNQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用野蛮的女巫，使手牌中的一张法术牌法力值消耗降低7点。",
@@ -1106,7 +1285,12 @@
       "relatedCards": [
         "海中向导芬利爵士"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "颠倒旋转",
+          "code": "AAECAYwWBNXxA5j2A4qgBOWwBA3+5wOV9gOW9gOX9gPP+wOcgQSmigSvoASpswSLtwSQtwS4twSywQQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用海中向导芬利爵士，将3张手牌和你的套牌之外的牌交换。",
@@ -1135,7 +1319,12 @@
         "堡礁行者",
         "潜水跳板船员"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "屏住呼吸",
+          "code": "AAEBAcn1AgAP58sC2psDrbYDv7kDrMsD184DzdIDld4Dg/sDxYAEsZ8E56AEj7AEsbAE6rkEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用潜水随从攻击60次。",
@@ -1154,7 +1343,12 @@
       "relatedCards": [
         "剑圣奥卡尼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "剑刀，石头，布！",
+          "code": "AAEBAe2/BAr6Dt4Wm+gCw+oC2p0Dj84DyOEDzvkDiYsEx7IECofOAp7SAr/yAui6A/DUA4ngA4rgA6+ABNqfBLClBAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用剑圣奥卡尼反制法力值消耗大于或等于（5）点的随从牌和法术牌。",
@@ -1171,7 +1365,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "深海水怪",
+          "code": "AAECAcn1Agby7QOoigSwkQT1xwSW1ASY1AQM1+0DvfEDgfsDg/sDxYAEnKAE56AE26ME1bIEgLUEssEE/tgEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用你的巨型随从或其附属物消灭40个敌人。",
@@ -1203,7 +1402,12 @@
       "relatedCards": [
         "学校教师"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "海洋大学",
+          "code": "AAECAa/XAwTc6gP9+AOW1ASY1AQN2+0D9/gDqZ8Eqp8E458Eu6AEwawEnbAEhLIElrcEssEEhMkEjNQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "教会纳迦小学生16种不同的法术。",
@@ -1223,7 +1427,12 @@
       "relatedCards": [
         "海军水雷"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "扫雷专家",
+          "code": "AAECAZ3DAwKR7APgiwQOzOsD8PYDt4AEi40Emp8E9KQE+aQE0KwE1awEiLAE0L0E2r0EktQE2tkEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用海军水雷造成120点伤害。",
@@ -1243,7 +1452,12 @@
       "relatedCards": [
         "深海融合怪"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "怪怪水族馆",
+          "code": "AAECAZ/HAgAPmesDh/cDiPcDjIEErYoEhZ8E26AEiqMEyKwEobYEorYEo7YEssEE9vEEhqQFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用深海融合怪发现10个不同随从类型的随从。",
@@ -1262,7 +1476,12 @@
       "relatedCards": [
         "艾萨拉女王"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "失落的圣物",
+          "code": "AAEBAcn1AgKW1ASY1AQO/RHnywLamwOttgO/uQOsywPXzgPN0gOV3gOD+wPFgASxnwTnoATbowQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用全部4种艾萨拉女王的远古圣物。",
@@ -1335,7 +1554,12 @@
       "relatedCards": [
         "宝藏守卫"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "追猎宝藏",
+          "code": "AAEBAZ/HAgLZrAPoiwQO6r8C0cEC5cwCqeIC4+kCl4cD8qwDp8sD4t4D+98DjIEErYoEh7cE9vEEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用宝藏守卫抽30张牌。",
@@ -1374,7 +1598,12 @@
       "relatedCards": [
         "凶恶的滑矛纳迦"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "七相拳",
+          "code": "AAECAZ3DAwKi+APgiwQOzOsD8PYDi40Emp8E+aQE0KwE1awEhLIEiLIEh7cE0L0E2r0EktQE2tkEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时，拥有一个攻击力大于或等于7点的凶恶的滑矛纳迦。",
@@ -1394,7 +1623,12 @@
       "relatedCards": [
         "积雷母舰"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "机械都是我们的",
+          "code": "AAEBAZ/HAgLZrAPoiwQO6r8C0cEC5cwCqeIC4+kCl4cD8qwDp8sD4t4D+98DjIEErYoE47kE9vEEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用积雷母舰召唤75个机械。",

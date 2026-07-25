@@ -16,8 +16,28 @@
         <CardGallery :cards="achievement.cards" />
       </div>
 
+      <!-- 收集类成就：记录已发现的职业（如「变化成 N 个不同职业的随从」），勾选即进度 -->
+      <div v-if="isTrack" class="epm-classes">
+        <p class="epm-classes-label">已发现的职业（点击勾选，便于知道还差哪些）</p>
+        <div class="epm-class-grid">
+          <button
+            v-for="cls in TRACK_CLASSES"
+            :key="cls"
+            type="button"
+            class="epm-class-chip"
+            :class="{ active: draftDiscovered.includes(cls) }"
+            :style="draftDiscovered.includes(cls) ? { borderColor: classColor(cls), color: classColor(cls), background: classColor(cls) + '22' } : {}"
+            @click="toggleClass(cls)"
+          >{{ cls }}</button>
+        </div>
+        <p class="epm-quota-hint">
+          已发现 <b>{{ draftDiscovered.length }}</b> 个职业 ·
+          各阶段目标：{{ achievement.stages.map((s) => s.quota).join(' / ') }}
+        </p>
+      </div>
+
       <!-- 一次性：阶段勾选 -->
-      <div v-if="achievement?.type === '一次性'" class="epm-stages">
+      <div v-else-if="achievement?.type === '一次性'" class="epm-stages">
         <label v-for="(stage, i) in achievement.stages" :key="i" class="epm-stage">
           <input type="checkbox" v-model="draftStages[i]" />
           <span>
@@ -28,7 +48,7 @@
       </div>
 
       <!-- 累计：count 输入 -->
-      <div v-else-if="achievement" class="epm-cumulative">
+      <div v-else class="epm-cumulative">
         <label class="epm-count-label" for="epm-count">当前累计（{{ countUnit }}）</label>
         <div class="epm-count-control">
           <button type="button" :aria-label="`减少一${countUnit}`" @click="dec">−</button>
@@ -56,6 +76,7 @@
 import { ref, watch, computed } from 'vue'
 import CardGallery from './CardGallery.vue'
 import { useAchievementProgress } from '../composables/useAchievementProgress.js'
+import { classColors } from '../utils/achievements.js'
 
 const props = defineProps({
   visible: Boolean,
@@ -65,6 +86,19 @@ const props = defineProps({
 const emit = defineEmits(['close', 'save'])
 
 const { progress, getUnit } = useAchievementProgress()
+
+// 收集类成就（记录已发现职业）可用的 11 个职业
+const TRACK_CLASSES = ['战士', '猎人', '德鲁伊', '法师', '圣骑士', '牧师', '潜行者', '萨满祭司', '术士', '恶魔猎手', '死亡骑士']
+const isTrack = computed(() => !!props.achievement?.trackClasses)
+const draftDiscovered = ref([])
+function classColor(cls) {
+  return classColors[cls] || '#999999'
+}
+function toggleClass(cls) {
+  const i = draftDiscovered.value.indexOf(cls)
+  if (i >= 0) draftDiscovered.value.splice(i, 1)
+  else draftDiscovered.value.push(cls)
+}
 
 // 累计成就的度量单位（次 / 点），用于编辑弹窗标签
 const countUnit = computed(() => getUnit(props.achievement))
@@ -89,6 +123,7 @@ watch(
       const p = progress.value[props.achievement.id] || {}
       draftCount.value = p.count || 0
       draftStages.value = { ...(p.stages || {}) }
+      draftDiscovered.value = Array.isArray(p.stages?._discovered) ? p.stages._discovered.slice() : []
     }
   },
   { immediate: true }
@@ -106,6 +141,15 @@ function setMax() {
 
 function save() {
   if (!props.achievement || props.saving) return
+  // 收集类成就：进度 = 已勾选的职业列表，count 同步为职业数
+  if (isTrack.value) {
+    emit('save', {
+      id: props.achievement.id,
+      stages: { _discovered: draftDiscovered.value.slice() },
+      count: draftDiscovered.value.length
+    })
+    return
+  }
   emit('save', {
     id: props.achievement.id,
     stages: { ...draftStages.value },
@@ -278,6 +322,23 @@ function save() {
   cursor: not-allowed;
 }
 
+/* 收集类成就：已发现职业勾选 */
+.epm-classes { margin-bottom: 20px; }
+.epm-classes-label { margin: 0 0 10px; font-size: 13px; font-weight: 700; color: #4b5563; }
+.epm-class-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+.epm-class-chip {
+  padding: 8px 14px;
+  border: 1px solid #d1d5db;
+  border-radius: 999px;
+  background: #f9fafb;
+  color: #6b7280;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all .15s;
+}
+.epm-class-chip.active { font-weight: 700; }
+.epm-class-chip:hover { border-color: #9ca3af; }
+
 /* UI Pro Max：与炉石仪表盘统一的深色表单界面。 */
 .epm-overlay {
   background: rgba(2, 6, 23, 0.78);
@@ -358,6 +419,13 @@ function save() {
   outline: 3px solid rgba(251, 191, 36, 0.55);
   outline-offset: 2px;
 }
+/* 收集类成就：深色主题下职业芯片 */
+.epm-class-chip {
+  border-color: rgba(148, 163, 184, 0.28);
+  color: #cbd5e1;
+  background: rgba(2, 6, 23, 0.3);
+}
+.epm-class-chip:hover { border-color: rgba(148, 163, 184, 0.6); }
 @media (max-width: 520px) {
   .epm-modal { padding: 24px 18px; border-radius: 15px; }
   .epm-actions > * { flex: 1; }

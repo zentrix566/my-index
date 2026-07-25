@@ -8,6 +8,10 @@
     {
       "name": "外域的灰烬 wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E5%A4%96%E5%9F%9F%E7%9A%84%E7%81%B0%E7%83%AC"
+    },
+    {
+      "name": "旅法师营地：外域的灰烬全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5490837"
     }
   ],
   "achievements": [
@@ -18,8 +22,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "恶魔变形"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "万年折磨",
+          "code": "AAEBAdKLBQTIgASU1ASq3QT3wwUN2cYDjPcD8rEEvsoEwMoEr94EsN4EquIEheUE8OwFj5AG7p4G7akGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在连续8个回合结束时处于恶魔变形状态。",
@@ -36,8 +47,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "真菌宝藏"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "真菌过敏",
+          "code": "AAEBAc6LBQaZ0wKb6AL21gOJiwT++AWvqAYM5AjlugObzgPw1AOJ4AOvgASunwTW3gSt4QWaoAbvqQbzygYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用一张真菌宝藏抽到（且不能弃掉）3张不是法术的牌。",
@@ -54,8 +72,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "拾荒者的智慧"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "深层智慧",
+          "code": "AAEBAda+BQLGiQPjnwQO39ICp/cC/7oD+7sDqZ8E5J8Ema0EmbAEp5AF6vIF6qUG8aUG0MAGguYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用拾荒者的智慧抽到一张裂蹄牛。",
@@ -72,7 +97,9 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "被禁锢的眼魔"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -90,8 +117,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "智慧圣契"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "必读书目",
+          "code": "AAEBAdK+BQTj4wKh4gSN/gWI5gYNs8EC2f4CrrAD/bgD67kD7LkDzOsD8PYDgeIEwOIEvI8G+JQGkqAGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "对同一个随从施放10张智慧圣契。",
@@ -109,7 +143,12 @@
       "category": "光辉事迹",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "记忆复苏",
+          "code": "AAEBAdG+BQKlCaSdBg7lBNHBAuqMA5O6A8vNA9fOA/vfA5nrA4f3A62KBISfBKK2BO33BfGpBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "在一回合中施放6次复苏。",
@@ -126,8 +165,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "阿卡玛"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "终极攻击",
+          "code": "AAEBAdW+BQTSuQPH+QO6pATMoAUNqssD590D/u4D0/MDofQDvYAE958Et7MEv/cFyJQGracGtrUGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一个终极阿卡玛攻击3次。",
@@ -144,8 +190,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "图腾映像"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "摩天图腾",
+          "code": "AAEBAdOLBQSBBN/hA++iBailBg2yFPuqAt6CA52jA5a5A/TfA7LBBN7pBbONBs6cBpyeBqSnBtHQBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "用图腾映像召唤一个20点攻击力的图腾。",
@@ -163,7 +216,12 @@
       "category": "光辉事迹",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "不止是微痛",
+          "code": "AAEBAZT9BgKPggOE+wMO58sC8tAC7awDuLYDy7kD184DzvkDhKAEkIMGxJ4Go6AGxKIGw7gG4uYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用术士，在第5回合之前就在一回合中消耗8点法力值。",
@@ -180,8 +238,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "战槌挑战者"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "操纵比赛",
+          "code": "AAEBAbyRBQT38wKGqAO7uQOfngYNwLkDju0DhqAEiKAEjLcEpaUF69AFtPgFtfgFhYIGh6AG7KkGjr8GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使战槌挑战者在与剧毒随从的战斗中存活下来。",
@@ -198,8 +263,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "莫尔葛工匠"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "规整伤害",
+          "code": "AAEBAdW+BQjpvgPl0QP7igT2nwS3swTMoAXg0AWKqAYLxAHf4wL+7gP3nwS6pATI+wW9ngatpwazqQa2tQbpyQYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "对一个莫尔葛工匠造成刚好1024点伤害。",

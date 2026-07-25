@@ -8,6 +8,10 @@
     {
       "name": "纳斯利亚堡 wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E7%BA%B3%E6%96%AF%E5%88%A9%E4%BA%9A%E5%A0%A1"
+    },
+    {
+      "name": "旅法师营地：纳斯利亚堡全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5207563"
     }
   ],
   "achievements": [
@@ -20,7 +24,12 @@
       "relatedCards": [
         "夜影花蕾"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "花朵力量",
+          "code": "AAECAc6LBQaJiwSlrQTlsAS/zgT/0wTv3gQMr4AEiZ8Erp8E2p8EvaUEyqwE+t0E1t4Ewd8EreUErO0E2qEFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中使用夜影花蕾召唤一个消耗（10）点法力值的随从并施放一个消耗（10）点法力值的法术。",
@@ -71,7 +80,12 @@
       "relatedCards": [
         "树篱迷宫"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "白骨蕾蕾",
+          "code": "AAECAc6LBQAPtewD4e4D9PYDgfcDhPcD0vkDr4AErp8EoaAE1aAErsAEgNQEgdQE+uIEjaQFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用树篱迷宫触发75个亡语。",
@@ -119,7 +133,12 @@
         "死神之躯",
         "天定之灾克尔苏加德"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "可怕骷髅",
+          "code": "AAECAdeEBQid7gOn9wOgigSoigSY1ASp3gS65AS+8AQL0OwDrvcDqIEEoZIE/J4E2tAE5NAE294E+uwEgpMFhJMFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中触发15次不稳定的骷髅的亡语。",
@@ -139,7 +158,12 @@
       "relatedCards": [
         "豪宅管家俄里翁"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "魔堡迷踪",
+          "code": "AAECAdeEBQau9wOoigSXoASW1ATK3gS95AQM0OwDwfAD9PYD/J4E558E6J8ExqAEkt8ErOUE/uwEhJMF26EFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用豪宅管家俄里翁施放40个法师奥秘。",
@@ -158,7 +182,20 @@
       "relatedCards": [
         "冰冻之触"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "循环不畅 卡组1",
+          "code": "AAEBAdeEBQTAAYvnA9HsA6f3Aw2JDr+kA+m+A83OA+XRA/fRA5HhA4fkA4qNBJ3UBNveBIKTBYSTBQA="
+        },
+        {
+          "name": "循环不畅 卡组2",
+          "code": "AAECAd75AwSu6wOh9AOgoAT23QQNq+sD/u4D0/MD6/YDvYAEkZ8E958Et7ME49ME3NoE9N0E9d0EwYMFAA=="
+        },
+        {
+          "name": "循环不畅 卡组3",
+          "code": "AAECAd75AwLd2gT+7AQOqusD/u4DofQD9PYD0vkDvYAE9p8E958Et7ME3NoE39oE9N0E9d0EwYMFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用冰冻之触造成50点伤害。",
@@ -214,7 +251,12 @@
       "relatedCards": [
         "猎手阿尔迪莫"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "猎手之友",
+          "code": "AAEBAdGLBQiYqQP21gOoigSrjQTjnwS+4wTQ5ATT5AQL39ICos4D5J8Ema0E5NAEweMEzOQE0uQE1OQEvPAE+PAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用猎手阿尔迪莫一次性召唤全部三个加尔贡伙伴。",
@@ -234,7 +276,12 @@
       "relatedCards": [
         "石缚加尔贡"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "当心加尔贡",
+          "code": "AAECAdGLBQTDgASW1ASY1ATT5AQN6ukD8OwDlPwDqZ8EvaAE16MEwKwEg8gEvOMEzOQE0OQE0uQE1OQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用石缚加尔贡消灭50个随从。",
@@ -256,7 +303,12 @@
         "雄鹿冲锋",
         "艾拉隆"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "什么？他们不是植物？",
+          "code": "AAECAdGLBQTbkQSW1ASY1ATT5AQNlugDlPwDvaAE16MElrcEg8gEgckEhMkEjNQEzOQE0OQE0uQE1OQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "召唤100个休眠的灵种。",
@@ -313,7 +365,12 @@
       "relatedCards": [
         "盗用身份"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "我就是强化版的你",
+          "code": "AAECAdCLBQTd9gPoiwSY1AS42QQNnusDh/cDrYoEhZ8EiqMEyKwEorYEktEE+dsEuNwEutwE9vEEhoMFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用盗用身份发现一个对手的英雄牌的1张复制。",
@@ -333,7 +390,12 @@
       "relatedCards": [
         "净场"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "错失看点",
+          "code": "AAEBAdCLBQLmiAPanQMO5QTRwQKXhwPWnQOTugPLzQPXzgPi3gP73wOH9wOtigSKowSitgS63AQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用净场消灭75个随从。",
@@ -447,7 +509,16 @@
       "relatedCards": [
         "罪碑坟场"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "地穴传说 卡组1",
+          "code": "AAECAd75AwLd2gT+7AQOqusD/u4DofQD9PYD0vkDvYAE9p8E958Et7ME3NoE39oE9N0E9d0EwYMFAA=="
+        },
+        {
+          "name": "地穴传说 卡组2",
+          "code": "AAEBAdCLBQKC9wLz0wQO+ALlBNEK0cEC6b4D4t4D+98DmOsDrYoEhKME9dME+dsEutwEhoMFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用罪碑坟场召唤50个幽灵。",
@@ -521,7 +592,16 @@
       "relatedCards": [
         "瓦丝琪女男爵"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "原始汤剂 卡组1",
+          "code": "AAECAdOLBQSG+gPp0ASW1AS52QQN4/YD9PYDxvkDlZIE3JIEhLIE4LUEh7cEr9kEtdkE/NsEvPAE+PAEAA=="
+        },
+        {
+          "name": "原始汤剂 卡组2",
+          "code": "AAEBAdOLBQLw1APf4QMOvgayFNHmAp2jA9qlA5a5A5bRA6bRA9ySBP+fBPq0BOC1BLLBBIbUBAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用瓦丝琪女男爵的效果召唤40个随从。",
@@ -540,7 +620,12 @@
       "relatedCards": [
         "淤泥之池"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "逃离泥渊",
+          "code": "AAECAdOLBQSG+gPp0ASW1AS52QQN4/YD9PYDxvkDlZIE3JIEhLIE4LUEh7cEr9kEtdkE/NsEvPAE+PAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用淤泥之池变形50个友方随从。",
@@ -615,7 +700,12 @@
       "relatedCards": [
         "圣洁鸣钟"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "圣钟为谁而鸣",
+          "code": "AAECAcqLBQSR7APgiwSXoASwsgQNzOsD8PYD9PYDi/gDoaAE+aQE0KwE1awE4tMEgOIEgeIEheIEueQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用圣洁鸣钟造成30点伤害。",
@@ -647,7 +737,16 @@
       "relatedCards": [
         "女伯爵"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "重磅嘉宾 卡组1",
+          "code": "AAECAcqLBQaR7APgiwSwsgTTvQSB4gSG4gQMzOsD8PYDi/gD7p8E0KwE0L0E4tMEgOIEheIEzOIEueQEjIMFAA=="
+        },
+        {
+          "name": "重磅嘉宾 卡组2",
+          "code": "AAECAc6LBQaoigSJiwSywQSW1ASY1ATv3gQMr4AEiZ8Erp8E2p8EnKAEz6wE/70EgNQEgdQE1t4Ewd8E2qEFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用传说邀请函邀请16个不同的传说随从。",
@@ -730,7 +829,12 @@
       "relatedCards": [
         "小鬼大王拉法姆"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "鬼神壮举",
+          "code": "AAEBAcyLBQSwkQSW1ASY1ASb5AQN58sCnakDrbYDv7kDvb4D184Dld4Dg/sDxYAEnKAE5qAE56AE/9kEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用小鬼大王拉法姆召唤60个小鬼。",
@@ -787,7 +891,12 @@
       "relatedCards": [
         "放大战刃"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "敏锐发现",
+          "code": "AAECAdKLBQKg7gOt4gQO6+8DwvED9PYDivcD9fgDgp8Etp8Es6AEtKAE26AEm9QEpeIEq+IExuIEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用放大战刃抽30张牌。",
@@ -806,7 +915,12 @@
       "relatedCards": [
         "贪食的克里克西斯"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "破坏成性",
+          "code": "AAECAdKLBQKoigSt4gQO/e0DiPQD9PYDivcDyIAEoY0Etp8E1p8EoaAEs6AEtKAE8rEEh7cEwMoEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张贪食的克里克西斯弃掉8张牌。",
@@ -883,7 +997,12 @@
       "relatedCards": [
         "心能提取者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "罪恶之城",
+          "code": "AAEBAbyRBQKLtwSI3wQOkAOd8ALcqQOktgPAuQO63gOO7QOY7QP5jASIoASO1ATw2wS+4gSJgwUA"
+        }
+      ],
       "stages": [
         {
           "description": "使用一张心能提取者使随从获得+7/+7。",
@@ -903,7 +1022,16 @@
       "relatedCards": [
         "征服者战旗"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "我来，我见，我征服 卡组1",
+          "code": "AAECAbyRBQjY+QOpgQS1igS8igTvpASlrQS/zgSs7QQL3uwDxvkD5KQEjbIElrcEsMcE884Ep9QE8NsE0+UEyu0EAA=="
+        },
+        {
+          "name": "我来，我见，我征服 卡组2",
+          "code": "AAECAcyLBQKoigSb5AQO9O0D9PYD/foD//oDxYAEqZEEhKAE5qAE4qIE+tME/9kEgNoEgdoEq+oEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用征服者战旗抽50张牌。",
@@ -922,7 +1050,12 @@
       "relatedCards": [
         "活体利刃蕾茉妮雅"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "活死刃之夜",
+          "code": "AAECAbyRBQKoigSI3wQOju0DmO0D1fEDlfYD+IAE+YwEiKAE06wEi7cE5NAEjtQEntQEvuIEiYMFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用活体利刃蕾茉妮雅造成50点伤害。",
@@ -978,7 +1111,12 @@
       "relatedCards": [
         "罪奔者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "老无所依的布兰契",
+          "code": "AAEBAdG+BQAP+hHRwQKp4gKTugPXzgPi3gP73wOH9wOMgQStigSKowTIrAT52wT82wSGgwUA"
+        }
+      ],
       "stages": [
         {
           "description": "使用罪奔者消灭20个随从。",
@@ -1067,7 +1205,12 @@
       "relatedCards": [
         "饥饿的愚人"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "住手！这是注能时间！",
+          "code": "AAEBAcyLBQKW1ASY1AQO58sC2psDv7kDvb4Dld4Dk+QD9O0Dg/sDxYAEsZ8E5qAE56AE4qIEvPAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用饥饿的愚人抽45张牌。",
@@ -1092,7 +1235,12 @@
       "relatedCards": [
         "罪能魔像"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "全能武装",
+          "code": "AAEBAcqLBQa8vQK36QKggAOR7AOi+AOoigQMRuoPs7sClbwC97wC3f4CysED8PYDyaAE1awE2r0EuPAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时，拥有一个攻击力大于或等于20点的罪能魔像。",
@@ -1111,7 +1259,12 @@
       "relatedCards": [
         "晚宴表演者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "噩耗使者",
+          "code": "AAECAdKLBQzg5QP16AO++QOoigSqigSRjQSnjQSsoASPsASk1ASq1ATH7QQJoO4DivcDgZ8Etp8EtKAE7KAE8rEEvsoE+PAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用晚宴表演者召唤8个不同的随从。",
@@ -1136,7 +1289,12 @@
       "relatedCards": [
         "癫狂公爵西塔尔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "喂他们吃漏斗蛋糕！",
+          "code": "AAECAdCLBQTd9gPoiwSY1AS42QQNmesDnusDh/cDrYoEhZ8EiqMEyKwEorYE+dsEuNwEutwE9vEEhoMFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用癫狂公爵西塔尔交换一张普通牌和一张传说牌。",
@@ -1156,7 +1314,12 @@
       "relatedCards": [
         "蒸汽清洁器"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "干洗服务",
+          "code": "AAECAc6LBQTW+QOUpQTlsASX7wQSyfUD0fYD9PYDgfcDhPcDrIAEr4AEsIAErp8EsKUEjbUEh7cE6rkErsAEm9QEs90E/+EE+PAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用蒸汽清洁器摧毁30张牌。",
@@ -1175,7 +1338,12 @@
       "relatedCards": [
         "德纳修斯大帝"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "吾王万岁",
+          "code": "AAECAc6LBQiJiwSlrQTp0ASW1ASY1ATv3gSX7wS+8AQQgfcDrIAEr4AEsIAEiZ8Erp8E2p8EsKUEz6wE9r0E/70ErsAE1t4Ewd8E4O0E2qEFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用德纳修斯大帝造成200点伤害。",
@@ -1203,11 +1371,17 @@
       "heroClass": "中立",
       "type": "累计",
       "metric": "count",
+      "trackClasses": true,
       "difficulty": "中等",
       "relatedCards": [
         "诡异的画像"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "模仿游戏",
+          "code": "AAECAdOLBQSG+gPp0ASW1AS52QQN4/YD9PYDxvkDlZIE3JIEhLIE4LUEh7cEqNkEr9kEtdkEvPAE+PAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "将诡异的画像变形成为10个不同职业的随从。",
@@ -1227,7 +1401,12 @@
       "relatedCards": [
         "贪食的吞噬者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "早餐十六顿",
+          "code": "AAEBAcyLBQLanQPXzgMO58sC2psDv7kDvb4Dld4Dk+QD9O0Dg/sDxYAEsZ8E5qAE56AE4qIE4O0EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用贪食的吞噬者的效果吞食25个随从。",
@@ -1248,7 +1427,20 @@
         "可疑的海盗",
         "可疑的侍应"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "经典失误之一 卡组1",
+          "code": "AAECAbyRBQSoigSHtwSY1AS42QQNju0DlfYD9PYD+IAE+YwEhqAEiKAEoaAE06wEi7cEhtEEjtQE8NsEAA=="
+        },
+        {
+          "name": "经典失误之一 卡组2",
+          "code": "AAECAdCLBQTd9gPoiwSY1AS42QQNnusDh/cDrYoEhZ8EiqMEyKwEorYEktEE+dsEuNwEutwE9vEEhoMFAA=="
+        },
+        {
+          "name": "经典失误之一 卡组3",
+          "code": "AAECAdeEBQKoigS42QQO1OoD0OwD1uwD9PYDrvcDqIEEio0E/J4E6J8EoaAExqAEh7cE2tAEyt4EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用可疑的炼金师，可疑的海盗和可疑的侍应愚弄你的对手。",
@@ -1267,7 +1459,12 @@
       "relatedCards": [
         "摩洛克·福尔摩斯"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "这是基本元素，亲爱的华生",
+          "code": "AAECAd75AwSXoASW1ASY1AS/8AQN/u4DofQD9PYD9p8E958EoaAEt7ME3NoE3doE3toE39oE9N0E9d0EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用摩洛克·福尔摩斯完全猜中你对手的三张牌。",
@@ -1312,7 +1509,12 @@
       "relatedCards": [
         "离躯之魂"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "离魂难忘",
+          "code": "AAEBAcyLBQAP58sC2psDv7kDvb4DrMsD184DzdIDld4Dk+QDg/sDxYAEsZ8E56AE5NAEq+oEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用离躯之魂从你的牌库中发现30张牌。",
@@ -1332,7 +1534,12 @@
       "relatedCards": [
         "迷宫向导"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "需要地图吗？",
+          "code": "AAEBAcyLBQKW1ASY1AQO58sC2psDnakDv7kDvb4DrMsD184Dld4Dk+QDg/sDxYAEsZ8E56AEs90EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用迷宫向导召唤30个随从。",
@@ -1352,7 +1559,12 @@
       "relatedCards": [
         "石裔干将"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "顽石军团，集合！",
+          "code": "AAEBAcyLBQAP58sC2psDrbYDv7kDvb4DrMsD184DzdIDld4Dk+QDg/sDxYAEsZ8E56AErO0EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用石裔干将造成160点伤害。",

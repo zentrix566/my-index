@@ -22,7 +22,16 @@
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "轻量读物 卡组1",
+          "code": "AAEBAdK+BQTj4wKN/gXSuQaI5gYN2f4CyrgD/bgD67kD7LkDgeIEuMUF7ckG7d8GkuAGpeEGnOgGn+gGAAA="
+        },
+        {
+          "name": "轻量读物 卡组2",
+          "code": "AAEBAc6LBQL21gOJiwQO5AiJ4AOK4AOvgASwgASwpQTB3wT9jQbzygaL3AaZ3Qat4gag4wbk6gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用75张法力值消耗为（0）的圣契。",
@@ -130,7 +139,12 @@
       "type": "一次性",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "同心同德（莱尼）",
+          "code": "AAEBAdKLBQLsoAT3wwUO8rEEvsoE5OQF4fgF4/gFnJoG7p4Gw7AG4+MG0eUGouoGvuoG5OoG0f4GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用一个包含4名乘务员的乘务组。",
@@ -186,7 +200,12 @@
       "relatedCards": [
         "不屈的守备官"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "你服了吗？",
+          "code": "AAEBAbyRBQK+4gbC4gYOhqAEiKAEjtQE69AFnPYFtPgFofsFhYIGn54Gh6AG7KkGi78G98kGvOEGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张不屈的守备官的战吼使你的英雄获得+10攻击力。",
@@ -242,7 +261,12 @@
       "relatedCards": [
         "治疗石"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "不是疗石是炉石",
+          "code": "AAEBAZT9BgAP+v4C66wDv7kDld4Dk+QDxYAEhKAE56AEyOsFxJ4GxKIG8KkGnLMGw7gGyeQGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张治疗石恢复8点生命值。",
@@ -298,7 +322,12 @@
       "relatedCards": [
         "深暗八爪怪"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "重要抓手",
+          "code": "AAECAf7gBgaoigST+wW9sQa9vga6wQaw6wYMh/YEgvgFh44GyZEGlJUGkqAGu7EG/7oGz7wGtNMGmOEG2OUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用深暗八爪怪的效果摧毁100张牌。",
@@ -354,7 +383,12 @@
       "relatedCards": [
         "袖珍次元"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "空间意识",
+          "code": "AAEBAdeEBQLlsAT14gYOwAHV4QKhkgS4xQXoxQXe+AWQgwbrmAbymwbOnAbPngbpyQbw5Qbk6gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "施放25个袖珍次元创建的法术。",
@@ -408,7 +442,12 @@
       "type": "一次性",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "垃圾汇集",
+          "code": "AAEBAdW+BQT7igTMoAWl4Qbt5wYNxAHT8wP3nwSJ0gShkwXIlAa2tQbpyQae3AbI5Qaa5gbs5wbk6gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "发射一艘具有4个不同职业组件的星舰。",
@@ -465,7 +504,12 @@
       "relatedCards": [
         "克乌雷，圣光领域"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "神圣船说！",
+          "code": "AAEBAdG+BQLLoAT64QYO5QTSCuqMA5O6A+LeA/vfA5nrA4f3A4WfBIqjBKK2BPnbBO33BfPhBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "在一回合中触发克乌雷，圣光领域的效果4次。",
@@ -519,7 +563,12 @@
       "relatedCards": [
         "异星虫卵"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "异形克敌",
+          "code": "AAEBAda+BQLHD9y4Bg6czQLf0gLylgOeywOU/AOpnwTknwSZrQTw6AXq8gW+nAbOwAaT4gaC5gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用异星虫卵召唤出的野兽攻击40次。",
@@ -578,7 +627,12 @@
         "陨石风暴",
         "极紫外破坏者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "渐次灭绝",
+          "code": "AAECAdOLBQa1igSangaopQbUpQat4Qah4gYMs40GhY4Gw48GpKcGzsAG0MAGl+EGmOEGmOIG+OIG5OoGjfgGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用小行星造成250点伤害。",
@@ -606,7 +660,11 @@
       "recommendedDecks": [
         {
           "name": "营地推荐卡组",
-          "code": "AAEBAAdOLBQThqAOW1ATR0Ab23QYNxpkDlZIE46AEs40Gw48Gz54Gy58Gi9wGtPEG2PEG7PEGu/QGyPkGAAA="
+          "code": "AAEBAdOLBQThqAOW1ATR0Ab23QYNxpkDlZIE46AEs40Gw48Gz54Gy58Gi9wGtPEG2PEG7PEGu/QGyPkGAAA="
+        },
+        {
+          "name": "克骨铭心 卡组2",
+          "code": "AAEBAbyRBQSW1AT6yQb23Qav8QYNiKAEjtQE75sG7KkG1boG88oGi9wGouIGtPEG2PEG6fEGu/QGvPQGAAA="
         }
       ],
       "stages": [
@@ -634,7 +692,12 @@
       "relatedCards": [
         "无界空宇"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "三位数！",
+          "code": "AAEBAZT9BgStEL+5A+6hBqrqBg3amwPWnQOdqQOttgOsywPN0gOV3gOD+wPFgAScoATnoATI6wWVswYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用无界空宇消灭100个随从。",
@@ -651,7 +714,12 @@
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "迸发风味",
+          "code": "AAECAdW+BQSRnwTllQa2tQar6gYN9p8E958E2sMF38MFv/cF5voFuYYGyJQG7p4GracGwKgG7qkGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "触发75次法术迸发效果。",
@@ -674,7 +742,12 @@
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "纳鲁钦选",
+          "code": "AAEBAf7gBgL15wKvwwUOm8sC3oIDv5gDtLYD9N8DssEEh/YElaoF6oAGmJUG65gGltMG5t8G9O0GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "召唤100个德莱尼。",
@@ -703,7 +776,12 @@
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "仍需装配",
+          "code": "AAEBAf7gBgSoigSs0QW6wQb23QYNh/YEzpwGkqAGu7EG/7oGkMsGi9wGnNwGpdwGnuIGoOIG5uUG6+oGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "发射星舰所用的组件总计达到50个。",
@@ -729,7 +807,12 @@
       "id": "dd-027",
       "name": "当女王好难",
       "heroClass": "中立",
-      "classes": ["死亡骑士", "恶魔猎手", "猎人", "术士"],
+      "classes": [
+        "死亡骑士",
+        "恶魔猎手",
+        "猎人",
+        "术士"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
@@ -759,14 +842,19 @@
       "id": "dd-028",
       "name": "建造更多水晶塔",
       "heroClass": "中立",
-      "classes": ["德鲁伊", "法师", "牧师", "潜行者"],
+      "classes": [
+        "德鲁伊",
+        "法师",
+        "牧师",
+        "潜行者"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
       "recommendedDecks": [
         {
           "name": "营地推荐卡组",
-          "code": "AAEBAAdG+BQLPxgWT9AYO+hHRwQKXhwOTugPi3gOMgQStigSL5gaL9AaM9AaQ9AaY9Aaz9AbK+AYAAA="
+          "code": "AAEBAdG+BQLPxgWT9AYO+hHRwQKXhwOTugPi3gOMgQStigSL5gaL9AaM9AaQ9AaY9Aaz9AbK+AYAAA=="
         }
       ],
       "stages": [
@@ -789,7 +877,11 @@
       "id": "dd-029",
       "name": "大舰巨炮",
       "heroClass": "中立",
-      "classes": ["战士", "圣骑士", "萨满祭司"],
+      "classes": [
+        "战士",
+        "圣骑士",
+        "萨满祭司"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],

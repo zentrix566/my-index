@@ -8,6 +8,10 @@
     {
       "name": "贫瘠之地 wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E8%B4%AB%E7%98%A0%E4%B9%8B%E5%9C%B0"
+    },
+    {
+      "name": "旅法师营地：贫瘠之地全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/2369171"
     }
   ],
   "achievements": [
@@ -19,7 +23,12 @@
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "藤蔓起舞",
+          "code": "AAEBAeSiBAT+AcmcA/ihA+q6Aw1WxAa5lAPIogPcogP/rQOMrgPlugPmugPsugObzgO61QPanwQA"
+        }
+      ],
       "stages": [
         {
           "description": "在一个回合中施放5个德鲁伊自然法术，完成25次。",
@@ -36,7 +45,12 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "终极上限",
+          "code": "AAECAZICBPO7A4rgA7WKBN6fBA3ougObzgO60APw1AOJ4AOk4QPR4QPA7APe7AOJnwSunwTanwTYoAQA"
+        }
+      ],
       "stages": [
         {
           "description": "在一个回合中使用5张原本法力值消耗（8）点或以上的牌。",
@@ -52,7 +66,9 @@
       "heroClass": "德鲁伊",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "腐烂的普雷莫尔"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -106,7 +122,16 @@
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "冰爆连击 卡组1",
+          "code": "AAECAaXDAwAP1r4D3sQDx84Dzc4DpNED99EDhuQDh+QD1OoD0OwDiO0DwfAD/54E5p8Ew6AEAA=="
+        },
+        {
+          "name": "冰爆连击 卡组2",
+          "code": "AAECAaXDAwaNuwPZ0QP66APY7AOoigTBoAQMm80DpNED5dEDlugD9+gD+egD0OwD0+wD1uwD/J4EwKAExKAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "消灭50个被冻结的随从。",
@@ -122,8 +147,15 @@
       "heroClass": "法师",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "清凉的泉水"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "贫瘠水源",
+          "code": "AAECAaXDAwKPzgOU0QMOwbgDjLkDgb8D4MwDx84Dzc4D+90D694D0OwD0ewD/J4E/Z4E/p4E6J8EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一个回合中使用清凉的泉水复原8个法力水晶。",
@@ -192,7 +224,12 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "族群出击",
+          "code": "AAECAa/XAwK50gOoigQOnssDgtADudADjeQDj+QDn+wD2+0DqZ8Eqp8E458E5J8E5Z8EuqAEu6AEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一个回合中召唤6只迅捷土狼。",
@@ -208,8 +245,19 @@
       "heroClass": "猎人",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "赤鳞迅猛龙"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "有龙父必有龙子 卡组1",
+          "code": "AAECAa/XAwAP/7oD4c4Dk9EDjeQD6ukD2+oDn+wD8OwD2+0DqZ8Eqp8E458E5J8EuqAEu6AEAA=="
+        },
+        {
+          "name": "有龙父必有龙子 卡组2",
+          "code": "AAECAa/XAwKDuQOi7AMO9roD/7oD4c4DhuID8ekD2+oDmuwDlO4DqZ8E5J8Eu6AEvKAEvqAEv6AEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "触发第5代赤鳞迅猛龙的暴怒效果。",
@@ -225,7 +273,9 @@
       "heroClass": "猎人",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "塔维什·雷矛"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -295,8 +345,19 @@
       "type": "累计",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "塞瑞娜·血羽"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "献血之后 卡组1",
+          "code": "AAECAa0GAt7MA5/rAw6TugOvugPLzQPXzgPi3gP73wP44wOb6wOe6wOtigSEnwSFnwTBnwTnogQA"
+        },
+        {
+          "name": "献血之后 卡组2",
+          "code": "AAECAaIHAA/OuQOqywOfzQOk0QPV1APn3QOo6wOr6wOu6wORnwSSnwSUnwT2nwT3nwTqoAQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用塞瑞娜·血羽攻击并消灭被偷取属性值的随从，完成5次。",
@@ -341,7 +402,9 @@
       "heroClass": "牧师",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "除奇致胜"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -365,8 +428,15 @@
       "type": "累计",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "偷师学艺"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "盗用身份非儿戏",
+          "code": "AAECAaIHAA+5uAPOuQPPuQOqywOfzQOk0QPl0QP+0QPn3QP36AOo6wOu6wORnwT2nwT3nwQA"
+        }
+      ],
       "stages": [
         {
           "description": "偷师学艺习得10种不同的英雄技能。",
@@ -382,8 +452,27 @@
       "heroClass": "潜行者",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "猪牙匕首"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "别碰刀刃 卡组1",
+          "code": "AAECAYO6AgSB5AOs6wOv6wP2nwQNzrkDqssDpNED5dED/tED99QD590DqesDresDrusDkZ8Ekp8E958EAA=="
+        },
+        {
+          "name": "别碰刀刃 卡组2",
+          "code": "AAECAZu1AwL03wOo7gMOybgDh9QDtuEDkeQDk+gDlOgDs+gD3ewD3+wDlfADtZ8EoqAEq6AEurQEAA=="
+        },
+        {
+          "name": "别碰刀刃 卡组3",
+          "code": "AAECAZu1AwLi7AOXoAQO27gDk7kDpssDk80Dzc4DrtIDp94Dh+QDieQD6ucDlegD2ewD+Z8E/Z8EAA=="
+        },
+        {
+          "name": "别碰刀刃 卡组4",
+          "code": "AAECAZu1AwAPk80Dy9ED9NsDqt4D8t4D9N8DjOEDh+QD4OwDre4DlPAD/J8EzqAE2qAE46AEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "为猪牙匕首淬上4种不同的药膏。",
@@ -428,7 +517,9 @@
       "heroClass": "潜行者",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "潜伏帷幕"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -515,7 +606,9 @@
       "heroClass": "萨满祭司",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "永恒之火"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -540,7 +633,12 @@
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "神术圣侍",
+          "code": "AAECAZ3DAwTKuAOEwQPb7gOoigQN/bgD6rkD67kD7LkDysEDp8sDns0Dn80Dg94DzOsDzusDz+sDyKAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一个回合中施放5个圣骑士神圣法术，完成15次。",
@@ -557,7 +655,16 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "你知我知 卡组1",
+          "code": "AAEBAZ3DAwKUmgP21gMOjAHoAc4D6g+mFYu9Atn+AuyGA8rBA5XNA5/NA5LkA+qfBMmgBAA="
+        },
+        {
+          "name": "你知我知 卡组2",
+          "code": "AAECAa0GBMi+A86+A57rA9TtAw2TugObugOvugOnywPezAPXzgPi3gP73wPK4QP44wP74wOtigSFnwQA"
+        }
+      ],
       "stages": [
         {
           "description": "在一个回合中触发5个圣骑士奥秘。",
@@ -573,8 +680,15 @@
       "heroClass": "圣骑士",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "动员布道"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "盛装布道",
+          "code": "AAECAZ3DAwLV6AOR7AMOx7gDyLgD3b4Dk80DkegDlugD+egDzOsD5+wDyvEDtZ8EyaAE0aAE2aAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用动员布道强化60个随从。",
@@ -602,7 +716,9 @@
       "heroClass": "圣骑士",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "小队集合"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -625,8 +741,15 @@
       "heroClass": "术士",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "火焰祭坛"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "卡牌火狱",
+          "code": "AAECAcn1AhzWuQOuugPUugPrvgPtvgPuvwO1yQOzzAPn0QOK0gP21gPO4QP24wOV5APg5QP66AP86APy7QPz7QPn8AOoigSqigSXoASYoASjoASooASpoATSoAQB6+0DAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张火焰祭坛摧毁3张传说卡牌。",
@@ -661,7 +784,16 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "小鬼不嫌多 卡组1",
+          "code": "AAEBAcn1AgLjtAPxvwMOngerkQPWnQOdqQPorAPqrAPrrAP+rgOqrwPTrwOttgOsywOV3gP44wMA"
+        },
+        {
+          "name": "小鬼不嫌多 卡组2",
+          "code": "AAEBAcn1AgLrowPy7QMOowGSB9qWA9qbA7ulA622A6zLA+zRA7rVA/jjA7GfBIKgBIOgBOegBAA="
+        }
+      ],
       "stages": [
         {
           "description": "召唤25个小鬼。",
@@ -714,7 +846,20 @@
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "内有亡灵 卡组1",
+          "code": "AAECAea5AwTUugP66AO/7QOoigQN2cYD4c4Dyd0D8+MD9+gD+egDmOoDmeoDu+0DvO0D/e0Dtp8EtKAEAA=="
+        },
+        {
+          "name": "内有亡灵 卡组2",
+          "code": "AAECAbn5AwL56AP86AMO2cYDk80D3dMD8+MDkegDlugD9+gD7+kD/eoD/e0D6+8DwvEDtp8EtKAEAA=="
+        },
+        {
+          "name": "内有亡灵 卡组3",
+          "code": "AAECAeSiBALC7AOoigQO5roD7LoD7roD174Dm84D9NsDieAD0eEDmOoDrewDuewDku4Dh58EoaAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用恶魔猎手，在未使用对应随从牌的情况下召唤50个亡语随从。",
@@ -731,7 +876,9 @@
       "type": "累计",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "库尔特鲁斯·陨烬"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -777,7 +924,9 @@
       "heroClass": "恶魔猎手",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "污心拷问者"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -800,8 +949,15 @@
       "heroClass": "战士",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "重装上阵"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "锻炼伙伴",
+          "code": "AAECAZfDAwLAuQOq7gMO3L4D9sID4swDk80D99QDwd4D/+cDlugD7+kDju0Dmu0D1fEDhqAEiKAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用重装上阵生成你手牌中同一张手牌的第4张复制。",
@@ -817,8 +973,15 @@
       "heroClass": "战士",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "仇怨累积"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "超级累积",
+          "code": "AAECAZfDAwKT0APA3gMOwLkD6b4D4swD3c0Dz9ED99QDtd4Dut4Dwd4Dju0Dj+0D1fEDhqAE26AEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张仇怨累积获得14点护甲值。",
@@ -835,7 +998,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "还能再来",
+          "code": "AAECAZfDAwTAuQPA3gOqigSGoAQNuLkDu7kDnLsD4swD99QDtd4Dtt4Dut4Dju0Dlu0DmO0DtJ8Eh6AEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用战士，在你的回合中使10个友方随从受到伤害并存活。",
@@ -887,7 +1055,16 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "人生就像高速路 卡组1",
+          "code": "AAECAZ/HAgLIvgPnogQOk7oD184DtNED4t4D+98D+OMDmOsDm+sDnOsDnusDrYoEhJ8EhZ8EwZ8EAA=="
+        },
+        {
+          "name": "人生就像高速路 卡组2",
+          "code": "AAECAZfDAwiT0APA3gPB3gPI4QOP7QPV8QOyigSJoAQLwLkD9sID4swD99QDtd4Dut4D1egDju0DrZ8EtJ8EhqAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在10个回合开始时，控制任意车队。",
@@ -996,7 +1173,9 @@
       "heroClass": "中立",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "满意的奴隶主"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1013,7 +1192,9 @@
       "heroClass": "中立",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "曼科里克"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1036,8 +1217,15 @@
       "heroClass": "中立",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "部落特工"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "泄密特工",
+          "code": "AAECAaIHBPvEA8PhA8jhA6vrAw25uAPMuQPOuQPPuQPQuQOk0QO61QPk3QPn3QPu8QORnwT2nwT3nwQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用一张部落特工复制5个奥秘。",
@@ -1053,8 +1241,15 @@
       "heroClass": "中立",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "暗影猎手沃金"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "等价交换",
+          "code": "AAECAcn1AgS1uQPzuwPg5QPboAQNvb4DrMsDzdIDztIDld4Dxt4D+OMDk+QD9O0Dj58EsZ8EgqAE56AEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用暗影猎手沃金将一个法力值消耗为（0）的随从和一个法力值消耗为（10）的随从交换。",
@@ -1116,7 +1311,9 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "火刃侍僧"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1133,7 +1330,9 @@
       "heroClass": "中立",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "始生保护者"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1150,7 +1349,9 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "放猪牧人"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1167,7 +1368,9 @@
       "heroClass": "中立",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "剧毒魔蝎"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1207,7 +1410,9 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "吞噬者穆坦努斯"
+      ],
       "recommendedDecks": [],
       "stages": [
         {

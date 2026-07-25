@@ -37,6 +37,12 @@
           "points": 20,
           "quota": 200
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "愿望成真",
+          "code": "AAEBAdK+BQLM6wPSuQYO8gvZ/gL9uAPruQPi0wT1nAW4xQWZjgbBtgbt3waS4Aac6Aaf6AbLqQcAAA=="
+        }
       ]
     },
     {
@@ -60,6 +66,12 @@
           "xpReward": 400,
           "points": 20,
           "quota": 10
+        }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "授知以渔",
+          "code": "AAEBAc6LBQaFF8PqAvbWA4mLBJ/zBZqgBgxf6LoDieADr4AEz6wErsAEiaEG76kG88oGoIEHqq8Hua8HAAA="
         }
       ]
     },
@@ -85,6 +97,12 @@
           "points": 20,
           "quota": 80
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "超长待机",
+          "code": "AAEBAdKLBQiFF5WSBf3EBZG/BoqqB5KqB5OqB6exBwv3wwP96gO+ygSJkgWQkgXw7AWkgQbsngbe/wa0lwe/sQcAAQPD6gL9xAX21gP9xAWRvwb9xAUAAA=="
+        }
       ]
     },
     {
@@ -106,6 +124,12 @@
           "xpReward": 400,
           "points": 20,
           "quota": 60
+        }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "你们还不满意吗？",
+          "code": "AAEBAbyRBQAPvsMCm/MC1p0DwLkD99QDju0D+YwEhqAEiKAEjLYEjtQE69AFjr8G6qcH/K8HAAA="
         }
       ]
     },
@@ -133,6 +157,12 @@
           "points": 20,
           "quota": 180
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "时间酷刑",
+          "code": "AAEBAZT9BgKAngaErgcOiNIC9YAD2psD184DutUDld4Dg/sD56AE7qEGk8sGyeQGoq0HpK0Hpa0HAAA="
+        }
       ]
     },
     {
@@ -156,6 +186,12 @@
           "xpReward": 400,
           "points": 20,
           "quota": 80
+        }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "恩泽，还是灾厄",
+          "code": "AAEBAf7gBgaFF8PqArOVB/eqB/uqB/yqBwy61QP09gOHtwSH9gSQgwbrmAbvmwbOnAa5sQbCvgbk5Qbk6gYAAA=="
         }
       ]
     },
@@ -181,6 +217,12 @@
           "points": 20,
           "quota": 4
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "侏儒特训日",
+          "code": "AAEBAauwBAL4mwa9pwcOiQ650QK/pAP0qwPl0QPR7AOn9wOu9wOKjQTs9gXQ+AXlpgaBvwaa9AYAAA=="
+        }
       ]
     },
     {
@@ -204,6 +246,12 @@
           "xpReward": 400,
           "points": 20,
           "quota": 30
+        }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "重要时刻",
+          "code": "AAEBAfahBwz21gPypATMoAWs0QWn0wap9QbmkweGqAeHqAeIqAezsAeBsQcJ9YADutUD65gGmp4Gx7AGwr4GltYG5OoG3a8HAAA="
         }
       ]
     },
@@ -229,6 +277,12 @@
           "points": 20,
           "quota": 15
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "免费洗车",
+          "code": "AAEBAdG+BQTPxgWZwAbemweCrQcN6r8C0cEC8qwDk7oD4t4DrYoEhZ8EorYE9vEEhoMF+/gFwrYG4K0HAAA="
+        }
       ]
     },
     {
@@ -252,6 +306,12 @@
           "xpReward": 400,
           "points": 20,
           "quota": 60
+        }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "开镜视角",
+          "code": "AAEBAda+BQb9+APi4waZpweapwebpwezvQcM080C9YADutUD8OwDkIMG65gGzpwGwr4GtOEGleIG5OoGkKcHAAA="
         }
       ]
     },
@@ -278,13 +338,22 @@
           "points": 20,
           "quota": 100
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "自然锤炼",
+          "code": "AAEBAdOLBQTD6gKq3gPi7APC9gMNrZED6b4D4+4D1vUDs40G65gGzpwGnJ4GpKcGiuIG5OoGkqQH76oHAAA="
+        }
       ]
     },
     {
       "id": "cot-012",
       "name": "灌注2：末世之战",
       "heroClass": "双职业",
-      "dualClasses": ["死亡骑士", "潜行者"],
+      "dualClasses": [
+        "死亡骑士",
+        "潜行者"
+      ],
       "type": "一次性",
       "difficulty": "难",
       "relatedCards": [],
@@ -301,13 +370,17 @@
           "points": 20,
           "quota": 8
         }
-      ]
+      ],
+      "recommendedDecks": []
     },
     {
       "id": "cot-013",
       "name": "脱骨连击",
       "heroClass": "双职业",
-      "dualClasses": ["潜行者", "萨满祭司"],
+      "dualClasses": [
+        "潜行者",
+        "萨满祭司"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -326,13 +399,22 @@
           "points": 20,
           "quota": 60
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "脱骨连击",
+          "code": "AAEBAfahBwTHmwPMoAWp9QbysgcNr5ED/u4D9p8E958EndQE38MFyJQGtrUG1voG94EH67IHmrMHurMHAAA="
+        }
       ]
     },
     {
       "id": "cot-014",
       "name": "完四大吉",
       "heroClass": "双职业",
-      "dualClasses": ["牧师", "萨满祭司"],
+      "dualClasses": [
+        "牧师",
+        "萨满祭司"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -351,13 +433,22 @@
           "points": 20,
           "quota": 88
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "完四大吉",
+          "code": "AAEBAdOLBQLhqAPfoQYOxpkD1p0D+aUDlZIE8egFs40G65gGnJ4Gwr4G0dAGltYG5OoG57IH67IHAAA="
+        }
       ]
     },
     {
       "id": "cot-015",
       "name": "无用无为",
       "heroClass": "双职业",
-      "dualClasses": ["法师", "牧师"],
+      "dualClasses": [
+        "法师",
+        "牧师"
+      ],
       "type": "一次性",
       "difficulty": "难",
       "relatedCards": [
@@ -376,13 +467,22 @@
           "points": 20,
           "quota": 8
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "无用无为",
+          "code": "AAEBAdG+BQAPpQnQ/gLqjAOwkQOTugPi3gP73wOFnwSEowT52wTt9wWZwAbSrwetsQflsgcAAA=="
+        }
       ]
     },
     {
       "id": "cot-016",
       "name": "深受打冻",
       "heroClass": "双职业",
-      "dualClasses": ["法师", "战士"],
+      "dualClasses": [
+        "法师",
+        "战士"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -401,13 +501,26 @@
           "points": 20,
           "quota": 60
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "深受打冻 卡组1",
+          "code": "AAEBAbyRBQAPwK8Cm/MC9PUC99QDjtQE69AFn54G7KkG6qcHt60H/K8Hj7EH0LIH2LIH7bIHAAA="
+        },
+        {
+          "name": "深受打冻 卡组2",
+          "code": "AAEBAfahBwTHmwPMoAWp9QbysgcNr5ED/u4D9p8E958EndQE38MFyJQGtrUG1voG94EH67IHmrMHurMHAAA="
+        }
       ]
     },
     {
       "id": "cot-017",
       "name": "死不死随你",
       "heroClass": "双职业",
-      "dualClasses": ["术士", "战士"],
+      "dualClasses": [
+        "术士",
+        "战士"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -426,13 +539,22 @@
           "points": 20,
           "quota": 80
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "死不死随你",
+          "code": "AAEBAZT9BgaFF8PqAvLtA4fqBPWYB8eyBwz09gO4xQX0xgWQgwbrmAbOnAajoAaaswbCvgbk6gaSpAfQsgcAAA=="
+        }
       ]
     },
     {
       "id": "cot-018",
       "name": "空爪之时",
       "heroClass": "双职业",
-      "dualClasses": ["猎人", "术士"],
+      "dualClasses": [
+        "猎人",
+        "术士"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -451,13 +573,22 @@
           "points": 20,
           "quota": 50
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "空爪之时",
+          "code": "AAEBAda+BQKRvAKVqgUO39IC6LADqZ8E458E5J8EwawEma0E6vIF3LgGsesGsYcHr5IHkKcHxrIHAAA="
+        }
       ]
     },
     {
       "id": "cot-019",
       "name": "黑暗时间线",
       "heroClass": "双职业",
-      "dualClasses": ["猎人", "圣骑士"],
+      "dualClasses": [
+        "猎人",
+        "圣骑士"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -476,13 +607,22 @@
           "points": 20,
           "quota": 60
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "黑暗时间线",
+          "code": "AAEBAda+BQKFF/+6Aw7RFN/SApT8A8OABKmfBOOfBOSfBJmtBOryBeqlBty4Bs7ABsGyB8ayBwAA"
+        }
       ]
     },
     {
       "id": "cot-020",
       "name": "1刻千金",
       "heroClass": "双职业",
-      "dualClasses": ["德鲁伊", "圣骑士"],
+      "dualClasses": [
+        "德鲁伊",
+        "圣骑士"
+      ],
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [
@@ -501,13 +641,17 @@
           "points": 20,
           "quota": 200
         }
-      ]
+      ],
+      "recommendedDecks": []
     },
     {
       "id": "cot-021",
       "name": "顽强生存",
       "heroClass": "双职业",
-      "dualClasses": ["德鲁伊", "恶魔猎手"],
+      "dualClasses": [
+        "德鲁伊",
+        "恶魔猎手"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -526,13 +670,22 @@
           "points": 20,
           "quota": 60
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "顽强生存",
+          "code": "AAEBAc6LBQbkCNUTnb0CmdMCiYsEn/MFDF+vgATPrASuwATW3gSj6QWJoQbvqQbzygbggQeqrweSsgcAAA=="
+        }
       ]
     },
     {
       "id": "cot-022",
       "name": "英雄之影",
       "heroClass": "双职业",
-      "dualClasses": ["死亡骑士", "恶魔猎手"],
+      "dualClasses": [
+        "死亡骑士",
+        "恶魔猎手"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -550,6 +703,12 @@
           "xpReward": 200,
           "points": 20,
           "quota": 90
+        }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "英雄之影",
+          "code": "AAEBAdKLBQbD6gKHtwSkkgXvmAf6rQfysgcMndQEj6UFuMUFkIMGj5AG65gGzpwGwr4GltYG5OoGkqQH5LEHAAA="
         }
       ]
     },
@@ -575,6 +734,12 @@
           "points": 20,
           "quota": 80
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "扫荡击碎",
+          "code": "AAEBAbyRBQAPwK8Cm/MC9PUC99QDjtQE69AFn54G7KkG6qcHt60H/K8Hj7EH0LIH2LIH7bIHAAA="
+        }
       ]
     },
     {
@@ -599,6 +764,12 @@
           "points": 20,
           "quota": 60
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "穿越克罗米",
+          "code": "AAEBAdG+BQLPxgXysgcO+hHRwQLmiAPyrAOTugPXzgPi3gP73wOtigSEnwS7xwXt9wWsrQfksgcAAA=="
+        }
       ]
     },
     {
@@ -614,6 +785,12 @@
           "xpReward": 800,
           "points": 20,
           "quota": 1
+        }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "另类剧毒",
+          "code": "AAEBAZT9BgKVswbKqwcO58sC66wDrbYDv7kDrMsD184DzdIDg/sDxYAE56AE+vkF2JgG7qEGk8sGAAA="
         }
       ]
     },
@@ -636,6 +813,12 @@
           "xpReward": 400,
           "points": 20,
           "quota": 150
+        }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "还记得我吗？",
+          "code": "AAECAbyRBQHzsgYAAAA="
         }
       ]
     },
@@ -665,6 +848,12 @@
           "points": 20,
           "quota": 150
         }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "Ctrl + Z",
+          "code": "AAEBAdG+BQKTugPGrgcOtxfqvwLRwQLo0ALmiAPXzgPi3gP73wPI+QOGgwW7xwXt9wWSpAf2pwcAAA=="
+        }
       ]
     },
     {
@@ -692,6 +881,12 @@
           "xpReward": 800,
           "points": 20,
           "quota": 100
+        }
+      ],
+      "recommendedDecks": [
+        {
+          "name": "传世奇闻",
+          "code": "AAEBAdKLBQiRvAL51QPltgSongb8wAaKqgeSqgeTqgcL+w/psAPyyQOl4gSr4gSVqgX8qAbYwAb2wAatxQax6wYAAA=="
         }
       ]
     }

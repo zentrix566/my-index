@@ -21,7 +21,16 @@
         "沙滩排槌",
         "救生光环"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "圣光“避”护？ 卡组1",
+          "code": "AAECAdK+BQLSuQbCvgYOyaAEuMUFkIMGvI8G+JQGzpwGz54GprMGw78Gyr8GzL8Gzr8G7ckGpeEGAAA="
+        },
+        {
+          "name": "圣光“避”护？ 卡组2",
+          "code": "AAECAc6LBQreoATExwX9jQaplQbBlQagoAbHpAaxwQa6wQaL4gYKrp8EoukFmqAG76kG2bEGw7oG0MoG88oGouIG++UGAAED9bMGx6QG97MGx6QG6N4Gx6QGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用50张防晒霜。",
@@ -46,7 +55,12 @@
       "relatedCards": [
         "信任背摔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "团队加油！！",
+          "code": "AAECAdK+BQLSuQbM4QYOyaAEn9QEuMUFkIMGhY4G65gGzpwGz54G054Gw78G6ckG7ckGpeEG/OEGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用10张信任背摔创建的随从牌。",
@@ -96,7 +110,12 @@
       "relatedCards": [
         "蛮熊搬家"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "闲居德鲁伊",
+          "code": "AAECAbyRBQKGoAT6yQYOiKAEjtQEnPYFl/sFofsFnJ4G7KkGwr4Gi78Gjr8G98kG88oGwuEGouIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张蛮熊搬家创建的8/8或更大的熊。",
@@ -119,7 +138,12 @@
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "带头冲锋",
+          "code": "AAECAdKLBQKvoAT8wAYO5OQFhY4Gj5AG7p4G/KgG17gGkb8G1sAG2MAG38AG9sAGrcUGl8oGh+IGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用恶魔猎手，召唤250个具有冲锋的海盗。",
@@ -144,7 +168,16 @@
       "relatedCards": [
         "精魂商贩"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "极速送达 卡组1",
+          "code": "AAECAdKLBQSW1ATIjwb8wAaxwQYNs6AEuMUFuf4FkIMGhY4Gj5AG65gGz54GvrAGwrAGzLEGqrgGsOEGAAA="
+        },
+        {
+          "name": "极速送达 卡组2",
+          "code": "AAEBAbyRBQAPvsMCiIcD1p0DwLkDhqAEiKAEjtQEuMUFl/sFhYIGzpwGnJ4G7KkGjr8Gv+EGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用15张法力值消耗被精魂商贩的效果减为（0）点的随从牌。",
@@ -169,7 +202,12 @@
       "relatedCards": [
         "黑麦切割者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "培根，生菜，胜利！",
+          "code": "AAECAbyRBQKJvwb6yQYOjtQEkNQEuMUF2dAFi+wFovoFhYIGz54G7KkGobgGw7oG1boG88oGj88GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张内含4个随从的三明治。",
@@ -219,7 +257,12 @@
       "relatedCards": [
         "弃明投暗"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "改正归邪",
+          "code": "AAECAZT9BgKhoATkmAYOre0FnfYFuf4FkIMGhY4GkY4GlZcGl5cGmJcGz54Gy58GmrMGn8oG7eYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用50张弃明投暗创建的牌。",
@@ -244,7 +287,16 @@
       "relatedCards": [
         "最后期限"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "生死时刻 卡组1",
+          "code": "AAECAZT9BgLkmAap4QYOn9QEre0F9fgFuf4FkIMGhY4GkY4G65gGz54Gy58Go6AGmrMGp+EG7eYGAAA="
+        },
+        {
+          "name": "生死时刻 卡组2",
+          "code": "AAECAf7gBgqT+wXt/wX/lwbRmwakwAaowAaQywaWywa6zgbM4QYKh/YEtIAFgvgFhY4GkqAG/7oGv74Gx8kG/8kG2+UGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用最后期限消灭15个随从。",
@@ -294,7 +346,12 @@
       "relatedCards": [
         "无限滞留"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "到了没有？",
+          "code": "AAEBAf7gBgKXoASWywYO1p0DtIAF6v8F65gGzpwGz54G054G/roGpsAGjsoG1uUG1+UG3eUG9O0GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用无限滞留消灭100个随从。",
@@ -319,7 +376,12 @@
       "relatedCards": [
         "冲浪章鱼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "风头浪尖",
+          "code": "AAECAdeEBQSH9QWHvwbjzwb14gYNuMUFkIMGhY4G9JsGzpwG0J4GtqcGxboG6ckG7ckG78kGysoGvM4GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用冲浪章鱼的效果施放总计法力值消耗50点的法术。",
@@ -344,7 +406,12 @@
       "relatedCards": [
         "失火"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "就这样吧",
+          "code": "AAECAdeEBQAPq58E4MMF6MUFxscF2dAFi+wF3vgFkIMG65gGzpwGmJ0Gz54G0J4G054Gy+EGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用25张被失火的效果点燃的卡牌。",
@@ -369,7 +436,16 @@
       "relatedCards": [
         "财宝猎人尤朵拉"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "好货上手 卡组1",
+          "code": "AAECAdW+BQbQlAaOlgaKqAazqQaxwQaX1wYM9p8E958E38MF6PoFyoMGyJQGyZQGlaAGiagGtrUG88kGkeYGAAA="
+        },
+        {
+          "name": "好货上手 卡组2",
+          "code": "AAECAdG+BQSoigTPxgXZwQaM5gYNrYoEhJ8Eu8cFoukF7fcF+/gFi5UGpp0GmqAG8akGmcAGkMEGgeIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用8件财宝猎人尤朵拉找到的不同的战利品。",
@@ -394,7 +470,12 @@
       "relatedCards": [
         "旅社谍战"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "分享即是关爱",
+          "code": "AAECAdW+BQAP958EuMUFv/cFkIMGuYYGyJQG65gGzpwG2aIGs6kGtrUG6ckG8skGouEGpeEGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用50张旅社谍战创建的牌。",
@@ -444,7 +525,12 @@
       "relatedCards": [
         "影随员工"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "熟能生巧",
+          "code": "AAEBAdG+BQKspQPPxgUO+hHRwQKTugPXzgPi3gOH9wOtigSkkQW7xwWi6QXt9wWZwAaQwQaC4gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "召唤30个影随员工。",
@@ -469,7 +555,16 @@
       "relatedCards": [
         "死亡翻滚"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "招摇翻滚 卡组1",
+          "code": "AAEBAda+BQL95Qb+5QYO1p0Dw4AE5J8EkaAEma0E6vIFyvYFiJ4G6qUGzsAG0MAGt8EGt+EGguYGAAA="
+        },
+        {
+          "name": "招摇翻滚 卡组2",
+          "code": "AAECAf7gBgaoigT9xAWkwAaowAaWywaA4gYMh/YEtIAF6v8FkIMG65gGzpwGkqAGu7EGxr4GpsAG1uUG3eUGAAEBpNMG/cQFAcO+Bv3EBQA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张死亡翻滚消灭3个随从。",
@@ -494,7 +589,12 @@
       "relatedCards": [
         "摇钱金牛"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "专业大牛",
+          "code": "AAECAda+BQKL1ga44QYOqZ8E5J8E6OgF3+0F6vIF5PUF0vgF344GvpwG6qUGzsAGt+EG/uUGguYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "通过摇钱金牛获取25张幸运币。",
@@ -544,7 +644,12 @@
       "relatedCards": [
         "饮水图腾"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "时刻补水",
+          "code": "AAEBAdOLBQAPvgbRE52jA5a5A9ySBLy2BOmjBbjFBd7pBbONBsOPBsGeBqinBtHQBqvhBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "用饮水图腾使你的随从获得+25/+25",
@@ -569,7 +674,12 @@
       "relatedCards": [
         "八爪按摩机"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "8适得很！",
+          "code": "AAEBAdG+BQT4AtfOA4mjBLvHBQ3lBNEK0cEC2MEClc0DrYoEhKMEpLYEoukF7fcF8akGmcAG3sEGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用八爪按摩机造成888点伤害。",
@@ -586,7 +696,12 @@
       "type": "一次性",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "来去自如",
+          "code": "AAECAf7gBgakwAaowAaQywaWywa6zgbM4QYMtIAFgvgFhY4GkqAG/7oGv74Gkb8Gx8kG/8kGmMsGh+IG3eUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在使用地标的同一回合重新开启该地标50次。",
@@ -611,7 +726,12 @@
       "relatedCards": [
         "饮品侍者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "干杯！",
+          "code": "AAECAc6LBQKluwaxzgYOrp8EoukF2/oF/Y0G76kGlLEG2bEG1boGwr4Ggb8G88oGltYGy+EG9+UGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用100张饮品法术牌。",
@@ -640,7 +760,12 @@
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "珍奇热带游",
+          "code": "AAECAdKLBQLHpAbEuAYOr6AE6Z4G7p4G7Z8G/KgG17gG17oG1sAG2MAG38AG9sAGkMEG1cEGrcUGAAED87MGx6QG9rMGx6QG6N4Gx6QGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在套牌中加入游客，赢得25场对战。",
@@ -666,7 +791,11 @@
       "id": "pr-027",
       "name": "假期目的地",
       "heroClass": "中立",
-      "classes": ["德鲁伊", "牧师", "萨满祭司"],
+      "classes": [
+        "德鲁伊",
+        "牧师",
+        "萨满祭司"
+      ],
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [
@@ -674,7 +803,12 @@
         "冰冠堡垒宣传单",
         "安戈洛宣传单"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "假期目的地",
+          "code": "AAECAbyRBQK4xQX6yQYOiKAEkNQEkPsFl/sFofsFhYIG65gGnJ4G7KkG1boGwr4Gjr8G88oGouIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用40张宣传单。",
@@ -699,7 +833,12 @@
       "relatedCards": [
         "梦想策划师杰弗里斯"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "计划（可能）完美",
+          "code": "AAECAdW+BQLuwwXM4QYO9p8E958E38MFv/cFuYYGyJQG7p4G2aIGracGtrUG6ckG8skG88kGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用25张杰弗里斯的旅行路线创建的牌。",

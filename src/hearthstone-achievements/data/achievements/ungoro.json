@@ -22,7 +22,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "你这鱼人",
+          "code": "AAEBAdK+BQaEF/y4A+WwBK/DBeH0BvSqBwzTqgKzwQKH1AOU6AOywQT7qAaW0waW1ga35gagjAeIrQevsAcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用圣骑士，在连续5个回合中召唤鱼人。",
@@ -47,7 +52,12 @@
       "relatedCards": [
         "英雄欢迎仪式"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "全伙在此",
+          "code": "AAEBAdK+BQTD6gLD0QPSuQbdlAcN8PYDuMUFkIMG65gGzpwGwr4Gw78G6ckGltYGpeEG5OoGwI8H4Z4HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用英雄欢迎仪式召唤5个不同的传说随从。",
@@ -72,7 +82,12 @@
       "relatedCards": [
         "震地雷龙"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "震地之躯",
+          "code": "AAEBAc6LBQKJiwTp7QYOX+i6A5vOA4ngA6+ABK7ABNv6BdicBpqgBomhBu+pBq3iBpCXB9meBwAA"
+        }
+      ],
       "stages": [
         {
           "description": "用震地雷龙使随从获得75/75的属性值。",
@@ -98,7 +113,12 @@
         "待哺群雏",
         "啸天龙蛋"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "嗷嗷待哺",
+          "code": "AAEBAc6LBQaJ4AOJiwTV3QTd+gWluwb1mAcM7LoDm84Dr4AErsAE+uIEt5gFiaEG76kGsc4GouIGkpcHmZcHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "召唤30只啸天龙宝宝。",
@@ -123,7 +143,12 @@
       "relatedCards": [
         "盛宴之角"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "伶俐猛龙",
+          "code": "AAEBAdKLBQKkkgXvmAcOs6AEj6UF16wFuMUFkIMGj5AG65gG75sGzpwG7p4Gwr4GltYG5OoG550HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用贪婪的迅猛龙攻击15次。",
@@ -148,7 +173,12 @@
       "relatedCards": [
         "烟雾熏蒸"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "防控虫害",
+          "code": "AAEBAdKLBQL39gOogAYO1p0DwMoEoM4En9QE16wFuMUF7f0F65gGvrAGwr4GltYG5OoGpYgHtZcHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用烟雾熏蒸消灭25个随从。",
@@ -173,7 +203,12 @@
       "relatedCards": [
         "伟岸的德拉克雷斯"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "萌友暴龙",
+          "code": "AAEBAbyRBQTD6gKo4AX6yQaEnQcNwK8C1p0D4swDwd4DiKAEjtQE69AFi5QGn54G7KkGjr8G88oGouIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用伟岸的德拉克雷斯消灭15个随从。",
@@ -198,7 +233,12 @@
       "relatedCards": [
         "拉特维厄斯，城市之眼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "安戈洛传奇",
+          "code": "AAEBAbyRBQiFF53HApPQA+WwBI6/BvrJBqn1BtSXBwuIoASO1ASk+gWh+wWFggaLlAacngbsqQbVugbzygbVpgcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用5张拉特维厄斯，城市之眼创建的不同的任务奖励牌。",
@@ -223,7 +263,12 @@
       "relatedCards": [
         "绝息剑龙"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "摒弃呼吸",
+          "code": "AAEBAZT9BgKX0wKGnQcO58sC66wDv7kDrMsD184DzdIDztIDld4Dg/sD56AEnMEGk8sG4uYG4Z0HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用绝息剑龙造成50点伤害。",
@@ -246,7 +291,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "趋邪进化",
+          "code": "AAEBAZT9BgaX0wL21gPxkQTduQbF5Qap9QYMj8cC58sC/aQDnakD184DztIDyPkD8KkGlbMGk8sGlcsG7acHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "召唤50只邪能野兽。",
@@ -271,7 +321,12 @@
       "relatedCards": [
         "空角恐角龙"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "爱的代价",
+          "code": "AAEBAf7gBgTD6gL21gPjgAbtnwcN1p0D97sDyPkDh/YEkqAG+6gGubEG5OUGwOgG3esG4/EGopcHnp4HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用空角恐角龙消灭25个敌方随从。",
@@ -294,7 +349,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "它还（算）活着",
+          "code": "AAEBAda+BQLJwQbi4wYOyfgC654DyPkDlPwDw4AEqZ8E458E0uQE8/IF5PUFvpwGzsAGltMGh/gGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "召唤50只亡灵野兽。",
@@ -319,7 +379,12 @@
       "relatedCards": [
         "绵羊面具"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "暗羊术：咩",
+          "code": "AAEBAauwBAKTgQSnmwcOmuQC97gDuJgFkIMG65gGzpwGx7AGwr4G28EGltYG5OoGnOsGn5YH+54HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "对攻击力大于或等于5点的随从施放绵羊面具，总计10次。",
@@ -344,7 +409,12 @@
       "relatedCards": [
         "泰坦考据学家欧斯克"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "考据历史",
+          "code": "AAEBAauwBAjAAcPqAsb4Ar2ZA/22A/bWA6n1BsSZBwuVD7nRAr+kA/SrA+XRA6f3A5ygBK/EBe+bBoG/BrHOBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "用泰坦考据学家施放5个不同的泰坦技能。",
@@ -365,11 +435,21 @@
       "name": "洞中魔镜",
       "heroClass": "潜行者",
       "type": "一次性",
+      "trackClasses": true,
       "difficulty": "难",
       "relatedCards": [
         "米尔雷斯，晶化镜甲龙"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "洞中魔镜 卡组1",
+          "code": "AAECAfahBwLM/gbRnQcOkZ8E958E2aIGracGiagGtrUG6ckG8skGvOUGkIMHv4cHwZcH1J0HtJ4HAAA="
+        },
+        {
+          "name": "洞中魔镜 卡组2",
+          "code": "AAEBAfahBwTNA/uKBLjZBNGdBw23rgPn3QP+7gORnwT2nwT3nwS6pAT13QTfoAXIlAaVoAatpwaQgwcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用变化成5个不同职业的随从的米尔雷斯，晶化镜甲龙。",
@@ -394,7 +474,12 @@
       "relatedCards": [
         "审讯"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "忍者始祖龟",
+          "code": "AAEBAfahBwidxwK77wLSuQOm7wTMoAXHpAaXuAbmkwcLp/cC4PoC9YADr5ED65gGltMGltYGtOYG5OoGxIEHu5cHAAED8LMGx6QG8bMGx6QG6N4Gx6QGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用潜行者，将75个忍者洗入你的牌库。",
@@ -419,7 +504,12 @@
       "relatedCards": [
         "巨鳗面具"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "海底远光",
+          "code": "AAEBAdG+BQSdxwKm7wTPxgWZwAYN0cEC8qwDk7oDlroD4t4D+98Dh/cDrYoEhoMFmqAGltMG+Z4H0q8HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用戴着巨鳗面具的随从恢复30点生命值。",
@@ -444,7 +534,12 @@
       "relatedCards": [
         "寻求平衡"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "万物平衡",
+          "code": "AAEBAdG+BQL52wSolgcO0cECl4cDk7oD184D4t4Dh/cDrYoEiqMEorYEo50Gpp0GmcAGxZQH0q8HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用1张索利托斯。",
@@ -467,7 +562,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "猛兽无双",
+          "code": "AAEBAda+BQLJwQbi4wYOyfgC654DyPkDlPwDw4AEqZ8E458E0uQE5PUFvpwGzsAGltMGh/gG35YHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用猎人，使用100张攻击力为奇数的野兽牌。",
@@ -492,7 +592,12 @@
       "relatedCards": [
         "魔暴龙面具"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "克敌之王",
+          "code": "AAEBAda+BQSE4gPbkQTvggevkgcN39IC49ICqZ8E458E5J8Ema0Ep5AF3+0F6vIF3LgGltMGi9YGiJ0HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用戴着魔暴龙面具的随从消灭敌方英雄。",
@@ -517,7 +622,12 @@
       "relatedCards": [
         "炽烈烬火"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "同归于烬",
+          "code": "AAEBAdK+BQLi0wTSuQYO2McC2f4C/bgD67kD070E9ZwFuMUFmY4G9ZUG7d8GkuAGnOgGn+gGzpsHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用炽烈烬火造成100点伤害。",
@@ -542,7 +652,16 @@
       "relatedCards": [
         "冰脊剑龙"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "寒芒在背 卡组1",
+          "code": "AAEBAdOLBQLw1AOopwYOM5fHAtySBLy2BIXUBIahBemjBfTyBcOPBqSnBuupBoriBuaWB+WdBwAA"
+        },
+        {
+          "name": "寒芒在背 卡组2",
+          "code": "AAEBAZT9BgaX0wLMqQaUygaK4gaGnQfXnQcM+NACzdIDld4D1+0Dj58E56AEwJIF7v0F7qEGlbMGk8sGqYgHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用冰脊剑龙造成50点伤害。",
@@ -592,7 +711,12 @@
       "relatedCards": [
         "导航员伊莉斯"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "高级导航",
+          "code": "AAEBAdG+BQiFF+jQApDTApeHA4akBan1BoKYB4utBwvqvwLRwQLmiAOTugPXzgPi3gP73wOtigS7xwXt9wWXoAYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用导航员伊莉斯制造25个自定义的地标。",
@@ -611,7 +735,12 @@
       "relatedCards": [
         "蚀解软泥怪"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "光盘行动",
+          "code": "AAEBAdK+BQLWgAbSuQYO2McC2f4C/bgD67kD070E4tMEuMUFmY4G9ZUG7d8GkuAGnOgGn+gG7JsHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用蚀解软泥怪创建的骸骨使随从获得+25/+25。",
@@ -634,7 +763,12 @@
       "type": "累计",
       "difficulty": "易",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "生猛恐龙",
+          "code": "AAEBAdG+BQKtigTPxgUOtxfqvwLRwQLo0ALmiAOTugPXzgPi3gP73wPI+QOGgwW7xwXt9wWTuAYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用20张法力值消耗大于或等于（5）点的野兽牌。",
@@ -657,7 +791,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "冒险征程",
+          "code": "AAEBAdK+BQT8uAPVsgTh9AbdlAcN3hTSFpupA8i4A8j5A53UBNSeBpbTBrfmBoeVB6GXB72ZB+ubBwAA"
+        }
+      ],
       "stages": [
         {
           "description": "完成10个安戈洛龟途的任务。",
@@ -686,7 +825,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "亲如一家",
+          "code": "AAEBAdG+BQAPtxfqvwLRwQLo0AL1gAPmiAOTugPXzgPi3gP73wPI+QOGgwW7xwXt9wX2pwcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "触发50次延系效果。",

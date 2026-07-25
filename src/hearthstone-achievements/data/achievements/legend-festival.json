@@ -8,6 +8,10 @@
     {
       "name": "传奇音乐节 wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E4%BC%A0%E5%A5%87%E9%9F%B3%E4%B9%90%E8%8A%82"
+    },
+    {
+      "name": "旅法师营地：传奇音乐节全成就攻略",
+      "url": "http://iyingdi.com/tz/post/5473197"
     }
   ],
   "achievements": [
@@ -21,7 +25,12 @@
         "自由之魂",
         "潮流猎豹"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "百般变化",
+          "code": "AAEBAc6LBQKFF5bUBA5fntICm84DieADyfUDr4AEsKUErsAEt5gFiuAFqeAFiaEG88oGouIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "触发自由之魂或潮流猎豹的效果100次。",
@@ -53,7 +62,12 @@
       "relatedCards": [
         "沉静的吹笛人"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "荒野之息",
+          "code": "AAECAc6LBQKW1ATF4QYO/N8FiuAFqeAF2/oF8foFy58G76kG2bEG1boG88oGx9AGouIG9+UG/OUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用沉静的吹笛人抽取或发现16张不同的野兽牌。",
@@ -72,7 +86,12 @@
       "relatedCards": [
         "实木手鼓"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "木有余票",
+          "code": "AAECAc6LBQaf8wWplQbBlQbRmwbuuAa6wQYMuMUF/d8FreEFzoAG+ZcG2JwGmqAGoKAG76kG1boG88oGouIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一把实木手鼓召唤7棵古树。",
@@ -91,7 +110,12 @@
       "relatedCards": [
         "巅峰无限"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "循环复沓",
+          "code": "AAECAdeEBQTR+AXjzwal4Qb14gYN8dMEuMUF8/IF0PgF3vgFhY4GzpwGz54G6ckG7ckG78kGsc4GhuYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中施放6次巅峰无限。",
@@ -110,7 +134,12 @@
       "relatedCards": [
         "星界键盘"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "调整波形",
+          "code": "AAECAdeEBQKzwQb14gYO/p4En9QEgMIFuMUF6MUF3vgF3/gFhY4G9JsGzpwGz54GtKcG6ckG7ckGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一把星界键盘召唤总计属性值大于或等于20/20的元素。",
@@ -129,7 +158,12 @@
       "relatedCards": [
         "灯光表演"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "致命激光",
+          "code": "AAECAdeEBQTQ+AXjzwal4Qb14gYNpsMF4MMFuMUFkIMG65gG8psGzpwGz54G054Gwr4G6ckG7ckG78kGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用灯光表演发射100道灯光。",
@@ -162,7 +196,12 @@
         "一串香蕉",
         "一桶欢猢"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "投猿掷蕉",
+          "code": "AAECAda+BQLX+QWC5gYOqZ8E458E5J8E6OgF3+0F6vIF5PUF0vgF/PgFzpwG8aUG3LgGwr4GjtYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "把串上的香蕉喂给桶里的猴子，完成60次。",
@@ -181,7 +220,12 @@
       "relatedCards": [
         "丛林弹唱琴"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "丛林强音",
+          "code": "AAECAda+BQAPqZ8EuMUF58oF6vIF5PUFyPYF0vgFy44Gzo4GvpwG6qUG8aUG8qUG6KkG3LgGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用丛林弹唱琴召唤一只法力值消耗为10的野兽。",
@@ -200,7 +244,12 @@
       "relatedCards": [
         "荆棘谷之心"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "猛兽少年团",
+          "code": "AAEBAda+BQz4CJzNAuHjArbqAp78ApuKA6S5A5LjA9uRBN+iBdP4BfajBgmpnwTjnwTknwTXowSZrQSupAXExwXq8gWC5gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用一张荆棘谷之心复活价值30点法力值的野兽。",
@@ -231,7 +280,12 @@
       "relatedCards": [
         "真爱永恒"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "我心永恒",
+          "code": "AAECAdG+BQTPxgXIxwW6zgbM4QYNougDrYoEl6QFucQFuMUF1c4Fre0FkIMGhY4GmJcGw5wGzpwG7+YGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "让一场真爱永恒持续8个回合。",
@@ -251,7 +305,12 @@
       "relatedCards": [
         "粉丝俱乐部"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "点赞评论加关注",
+          "code": "AAECAdG+BQSW1ATMxgXkmAaknQYNougDn9QEodQEmKQFucQFuMUFoukF+/gFkIMG6ZgGzpwGj6MGkb8GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用粉丝俱乐部恢复150点生命值。",
@@ -270,7 +329,12 @@
       "relatedCards": [
         "争宠互撕"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "你嫉妒吗？",
+          "code": "AAECAdG+BQKknQbZwQYOougDrYoEvp8Ev8QF+/gF2voF65gGw5wGzpwG8ZwGz54G054G6qgG3PMGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用粉丝互动消灭20个随从。",
@@ -301,7 +365,12 @@
       "relatedCards": [
         "B-Box拳手"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "动一次打一次",
+          "code": "AAECAdW+BQLQlAaKqAYO9p8E958EwcMF38MFv/cF5voFyPsFofwFyoMG0IMGyJQGyZQGtrUG6ckGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用B-Box拳手消灭15个敌人。",
@@ -333,7 +402,12 @@
       "relatedCards": [
         "串烧磁带"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "你的菜",
+          "code": "AAECAdW+BQLQlAaKqAYO9p8E958E18MF38MFv/cFyPsFofwFyoMG0IMGyJQGyZQGypQGtrUG6ckGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用串烧磁带发现20张传说卡牌。",
@@ -352,7 +426,12 @@
       "relatedCards": [
         "MC布林顿"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "史诗饶舌对决",
+          "code": "AAECAdW+BQTrwwXQlAa1mQaKqAYN9p8E958E38MFyPsFofwFyoMG0IMGyJQGyZQGvZ4GtrUG6ckGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用你自己的麦克风消灭持有MC布林顿的麦克风的对手。",
@@ -371,7 +450,12 @@
       "relatedCards": [
         "萨克斯独演者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "鳞续音阶",
+          "code": "AAEBAdOLBQKW1ASA4gYOvBSLzgLwhQTckgT5nwScoAS8tgTpowXD0AXvmwbmnganpQakpwbrqQYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "连续在5个回合中均使用萨克斯独演者。",
@@ -390,7 +474,12 @@
       "relatedCards": [
         "音乐狂欢"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "*大笑狂歌*",
+          "code": "AAECAdOLBQAP9NAF5eQF3ukFuf4Fs40GhY4G7JUG65gGzpwGnJ4Gz54Gy58GpKcGpsAG0dAGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "施放20个音乐狂欢创建的法术。",
@@ -421,7 +510,12 @@
       "relatedCards": [
         "聚集观众"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "巨星云集",
+          "code": "AAECAdOLBQAPr9EF5eQF3ukFuf4Fs40GhY4G7JUG65gGzpwGnJ4Gz54Gy58GpKcGpsAG0dAGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张聚集观众召唤3个传说随从。",
@@ -440,7 +534,12 @@
       "relatedCards": [
         "领舞"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "舞蹈女王",
+          "code": "AAEBAdK+BQTmrgKusAPtnwSvkwUN3hS0mwOcnwTunwT2pAT4pASB4gSrkwW9xgWSoAbqqQbUuAbOvwYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用领舞召唤一个攻击力大于或等于8点的随从。",
@@ -459,7 +558,12 @@
       "relatedCards": [
         "星光节律"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "坚守信仰",
+          "code": "AAECAdK+BQLBxgXkmAYOyaAEl6QFyMcFre0FkIMGvI8G65gG75sGzpwGz54Gy58Gwr4Gwb8Gj88GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用星光节律使你的英雄获得圣盾25次。",
@@ -490,7 +594,12 @@
       "relatedCards": [
         "迪斯科战槌"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "沉迷舞厅",
+          "code": "AAECAdK+BQLkmAbM4QYOyaAEkaQFwMQFuMUFnfYF2voFuf4FkIMGkY4GzpwGtJ4Gn6cGl8oG7eYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用迪斯科战槌使随从获得+80/+80。",
@@ -509,7 +618,12 @@
       "relatedCards": [
         "罪孽交响曲"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "罪孽连章",
+          "code": "AAEBAZT9BgKT5AP5xgUOrRDamwOttgO/uQPXzgPN0gOV3gOD+wPFgATnoATI6wWk+gXwqQaVswYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中演奏罪孽交响曲的全部7个乐章。",
@@ -529,7 +643,12 @@
       "relatedCards": [
         "绝望哀歌"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "急切哀乐",
+          "code": "AAECAZT9BgKm+wWAngYOga0F8cYFwvgF9fgFpPoFlZcGl5cG65gGzpwGz54Gy58Go6AGlrMGmrMGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用绝望哀歌召唤价值150点法力值的恶魔。",
@@ -548,7 +667,12 @@
       "relatedCards": [
         "邪弦竖琴"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "殒命弦歌",
+          "code": "AAECAZT9BgL5xgWAngYOx8IFyMIF3cIFuMUF5sUF9MYF9fgFhY4GiZkGhJ4GoqAGo6AGlbMGwr4GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用邪弦竖琴防止50点伤害。",
@@ -579,7 +703,12 @@
       "relatedCards": [
         "通灵最强音"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "符文全能",
+          "code": "AAECAf7gBgj8+QXt/wWLkgb/lwakwAaowAaWywa6zgYLh/YEhY4GlJUGgJgGkqAG/7oGv74Gw74G/8kGkMsG2OUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "施放各项数据均在7点或以上的通灵最强音。",
@@ -598,7 +727,12 @@
       "relatedCards": [
         "奥金利斧"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "头号粉尸",
+          "code": "AAECAf7gBgKT+wWLkgYO9OME9eMEseYEs/cE8cIFuMUF4MgFj+QFgvgFtvkF6akGubEG/7oG2OUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用奥金利斧召唤一个10/10或更大的亡灵。",
@@ -617,7 +751,12 @@
       "relatedCards": [
         "死亡嘶吼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "死亡之墙",
+          "code": "AAECAf7gBgTLpQX/lwbBsQbIyQYNh/YE88gFhY4G65gGzpwGkZ4GkqAGkrgG/7oGrsoGkMsGltYGquEGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用死亡嘶吼使30个随从获得亡语。",
@@ -648,7 +787,12 @@
       "relatedCards": [
         "战刃吉他"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "急促八度",
+          "code": "AAECAdKLBQLCsAb8wAYO0fcDs6AEtKAE7KAEpMMF9MMFuMUFjukFi+wF4fgFz54G054G38AG9OUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一把战刃吉他抽8张或以上的牌。",
@@ -667,7 +811,12 @@
       "relatedCards": [
         "蛇啮鼓手"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "穿心频率",
+          "code": "AAECAdKLBQL3wwX8wAYOgJ8Etp8E8MMF9MMFuMUF8OwF6/UF4fgF4/gFnJoGzpwG7p4G1sAG9uUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张10/10或更大的蛇啮鼓手。",
@@ -686,7 +835,12 @@
       "relatedCards": [
         "乐器杀手"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "酷毙了！",
+          "code": "AAECAdKLBQL3wwX4wAYOg58Etp8E16wFycIFuMUF8OwFsvUF4fgF4/gFnJoG6Z4G7p4G7akG1sAGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用乐器杀手装备10把武器。",
@@ -718,7 +872,12 @@
       "relatedCards": [
         "黑石摇滚"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "沃恩之恩",
+          "code": "AAECAbyRBQi2xAX9xAXm5AXG8wWGlAa6wQbB4Qbl5gYLn9QEp9QE1sYF5eQFsOkFjvsFkPsFl/sFr5kGy58G+ckGAAEB7KkG/cQFAYigBP3EBQA="
+        }
+      ],
       "stages": [
         {
           "description": "使用20张黑石摇滚强化过的法力值消耗（8）点或以上的随从牌。",
@@ -739,7 +898,12 @@
         "副歌乐句",
         "过渡乐句"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "返场！返场！",
+          "code": "AAECAbyRBQKXoASW1AQOl6QFyMcF6tAF69AF7NAFl/sFofsFkIMG65gGzpwGnJ4Gwr4Gj88G7+YGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中演奏6次压轴乐句。",
@@ -758,7 +922,12 @@
       "relatedCards": [
         "掌声雷动"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "如痴如狂",
+          "code": "AAEBAbyRBQqzAY0Qt2zerQPP0QOvwwXwzQWL7AWi+gWW0wYK+YwEhqAEiKAEjtQElaoFtNEFhYIGh6AG7KkGjr8GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张掌声雷动抽4张或以上的牌。",
@@ -789,7 +958,12 @@
       "relatedCards": [
         "踏韵舞者丽萨"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "慢步突袭",
+          "code": "AAECAdW+BQLTsgXS5AUOkZ8E9p8E958E38MFv/cFyYAGyJQGtZkGvZ4G7p4G2aIGracGtrUGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中用踏韵舞者丽萨消灭3个随从。",
@@ -818,7 +992,12 @@
       "relatedCards": [
         "星辰能量"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "坠星",
+          "code": "AAEBAda+BQL21gPcuAYO39IC4eMC1p0DqZ8E5J8Ema0E3+0F6vIF8/IFy44G8aUGzsAG0MAGguYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张星辰能量消灭3个随从。",
@@ -847,7 +1026,12 @@
       "relatedCards": [
         "点唱机图腾"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "白银之手新曲",
+          "code": "AAEBAdOLBQK8tgSx2QQOlAOdowOWuQP9nwSq2QTpowXl5AXx6AXe6QXDjwbBngbmngaopwbrqQYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用点唱机图腾召唤50个白银之手新兵。",
@@ -876,7 +1060,12 @@
       "relatedCards": [
         "突破邪火"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "双手拍动",
+          "code": "AAECAbyRBQKW1ASs0QUOl6QFuMUFyMcF5OQF5eQFkPsFl/sFofsFkIMG65gGzpwGnJ4Gz54Gy58GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "施放突破邪火40次。",
@@ -905,7 +1094,12 @@
       "relatedCards": [
         "镂骨恶犬"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "凶恶走狗",
+          "code": "AAECAda+BQLxpQaOwQYOqZ8Ej+QF6vIF5PUFmfYF0vgFy44GvpwG6qUG8qUGi78GzsAG98kGvOEGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用镂骨恶犬造成60点伤害。",
@@ -934,7 +1128,12 @@
       "relatedCards": [
         "漏斗蛋糕"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "提神美味",
+          "code": "AAECAdG+BQKknQbZwQYOougDrYoEucQFuMUFoukFi+wF7fcF+/gF6ZgG65gGzpwGlqAGwrYGwr4GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用漏斗蛋糕复原50个法力水晶。",
@@ -963,7 +1162,12 @@
       "relatedCards": [
         "盗版海盗"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "“原创”作品",
+          "code": "AAECAdW+BQKtpwaxwQYO9p8E958EnKAE38MF0ewFv/cFkIMGyJQG75sGzpwGtrUG6ckGjNYGkeYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用30张盗版海盗创建的卡牌。",
@@ -992,7 +1196,12 @@
       "relatedCards": [
         "后台保镖"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "不动如蟾",
+          "code": "AAEBAbyRBQKW1ATr0AUO1p0DwLkD97sDz94Dju0DxvUDjLcEjtQE5eQFofsFnJ4GkagG7KkGjr8GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "敌人攻击友方后台保镖30次。",
@@ -1021,7 +1230,12 @@
       "relatedCards": [
         "燃琴小鬼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "即兴音鬼",
+          "code": "AAEBAZT9BgAPrRDamwOttgO/uQOsywPXzgPN0gOV3gOD+wPFgATnoASE5QXI6wXwqQaVswYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用25张燃琴小鬼创建的其他职业的卡牌。",
@@ -1050,7 +1264,12 @@
       "relatedCards": [
         "末日枭兽"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "法力消瘦",
+          "code": "AAECAc6LBQSf8wXBlQagoAaxwQYN/d8FzoAGu5UG15wG2JwG2pwG6qgG76kGh7EG2bEGw7oG1boG88oGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用末日枭兽带走你对手的10个法力水晶。",
@@ -1079,7 +1298,12 @@
       "relatedCards": [
         "酷炫的食尸鬼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "时尚食尸鬼",
+          "code": "AAECAf7gBgaW1ASUlQakwAaowAbJwQaWywYMnKAEh/YE4NAFkOQFmJUG75sGkqAGv74Gw74GiuIG4OUG/eYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "召唤50个酷炫的食尸鬼。",
@@ -1106,7 +1330,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "闭幕演出",
+          "code": "AAECAbyRBQKW1ASs0QUOl6QFuMUFyMcF5OQF5eQFkPsFl/sFofsFkIMG65gGzpwGnJ4Gz54Gy58GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "触发50次压轴效果。",
@@ -1137,7 +1366,12 @@
       "relatedCards": [
         "盗版之王托尼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "偷牌可耻，盗版亦然",
+          "code": "AAEBAdKLBQqWigO1igSHiwSnjQTdkwSq3QTN0AWogAbJsAa6wQYK78kDzPkD8rEEr94EsN4EquIEheUE4fgFpYEGzLEGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "盗版之王托尼在场时抽25张牌。",
@@ -1168,7 +1402,12 @@
       "relatedCards": [
         "摇滚缝合怪"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "不得不挤",
+          "code": "AAEBAZT9BgKsywOnjQQO2psD1p0DrbYDv7kD184DzdIDld4Dg/sDxYAE56AE1sYFyOsF8KkGlbMGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用摇滚缝合怪攻击40次。",
@@ -1199,7 +1438,12 @@
       "relatedCards": [
         "人潮冲浪者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "潮头翻滚",
+          "code": "AAEBAdG+BQKspQOKowQO+hHRwQLmiAOTugPXzgPi3gP73wOH9wOMgQStigT52wSkkQXT0AXt9wUAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在你和你的对手之间传递人潮冲浪者的亡语40次。",
@@ -1250,7 +1494,12 @@
         "牛铃独演者",
         "萨克斯独演者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "目光汇聚",
+          "code": "AAEBAZT9BgAP2psDrbYDv7kDrMsD184DzdIDld4Dg/sDxYAE56AEga0F7c0FyOsF8KkGlbMGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "触发70种独演者的战吼效果。",
@@ -1275,7 +1524,12 @@
       "relatedCards": [
         "自由飞鸟"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "你自找的！",
+          "code": "AAECAdK+BQbm5AXI+AXTqQbRvwbm5gbJ9AYMyaAEy8QFuMUF2MYF3MYFrekFuf4F+JUGtJ4G0J4G0KkG0akGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用自由飞鸟消灭敌方英雄。",
@@ -1295,7 +1549,12 @@
       "relatedCards": [
         "幽灵写手"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "唱片合约",
+          "code": "AAEBAZT9BgAPrRDamwOttgO/uQOsywPXzgPN0gOV3gOD+wPFgATnoATIxwXI6wXwqQaVswYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用幽灵写手发现60张法术牌。",
@@ -1314,7 +1573,12 @@
       "relatedCards": [
         "烟火技师"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "业余歌手，专业火力",
+          "code": "AAEBAdG+BQKspQOKowQO5QT6EdHBAuaIA5O6A9fOA+LeA/vfA4f3A62KBPnbBMvQBaLpBe33BQAA"
+        }
+      ],
       "stages": [
         {
           "description": "施放25个烟火技师创建的火焰法术。",
@@ -1351,7 +1615,12 @@
         "悦耳嘻哈",
         "音乐节保安"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "悦耳乐音",
+          "code": "AAECAdG+BQAPougDrYoEq58EucQFu8QFuMUFre0F65gGw5wGzpwGz54G054Gy58GlqAG3PMGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "施放50个悦耳法术。",
@@ -1395,7 +1664,12 @@
       "relatedCards": [
         "乐队经理精英牛头人酋长"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "艾星达人",
+          "code": "AAECAdW+BQLuwwX9xAUOkZ8E9p8E958E38MFv/cF5voFyPsFyJQG7p4G2aIGracGiagGtrUGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "从乐队经理精英牛头人酋长的乐队中发现16张不同的卡牌。",
@@ -1415,7 +1689,12 @@
         "融合独奏团",
         "派对动物"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "混搭艺人",
+          "code": "AAEBAbyRBQqzAY0Qt2zerQPP0QOvwwXwzQWL7AWi+gWW0wYK+YwEhqAEiKAEjtQElaoFtNEFhYIGh6AG7KkGjr8GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张融合独奏团获得所有8种效果。",
@@ -1462,7 +1741,12 @@
         "混搭音叉",
         "混搭狂想曲"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "花样混搭",
+          "code": "AAEBAZT9BgAPrRDamwOttgO/uQOsywPXzgPN0gOV3gOD+wPFgATnoAT3ygXI6wXwqQaVswYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用8个不同版本的混搭牌。",

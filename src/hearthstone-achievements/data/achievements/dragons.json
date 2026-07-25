@@ -8,6 +8,10 @@
     {
       "name": "巨龙降临 wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E5%B7%A8%E9%BE%99%E9%99%8D%E4%B8%B4"
+    },
+    {
+      "name": "旅法师营地：巨龙降临全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5490473"
     }
   ],
   "achievements": [
@@ -18,8 +22,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "梦境吐息"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "真·梦境成真",
+          "code": "AAEBAc6LBQSPzgP21gPW+QOHtwQN3sQCjK4D9PYDsIAEsKUEn9QEwd8EzpwGz54Gx7AGpLsGouIGm/IGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在手牌中没有龙牌时用梦境吐息抽到龙牌，在一局对战中完成2次。",
@@ -32,12 +43,23 @@
     {
       "id": "dragons-002",
       "name": "美好路径，再次扫清",
-      "heroClass": "德鲁伊",
+      "heroClass": "猎人",
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "扫清道路"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "美好路径，再次扫清 卡组1",
+          "code": "AAEBAda+BQL9+AOW1AQO9uwCuvYCoIUD5KQDjq0D+K8D2KMEqqQFy8QFuMUFzI4G75sGzpwG5OoGAAA="
+        },
+        {
+          "name": "美好路径，再次扫清 卡组2",
+          "code": "AAEBAbyRBQTfrQO1+AWxwQb6yQYNggjAuQP5jASIoASO1AS24wTr0AWLlAbgqAbsqQbVugbzygai4gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用扫清道路召唤出的4/4的狮鹫完成扫清道路。",
@@ -54,8 +76,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "齐恩瓦拉"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "5尺5寸雪",
+          "code": "AAEBAdeEBQL4rAP21gMOtASEuwLIhwOfmwPzrwPl0QOF5APU6gOu9wP0/APyxAWYnQayngaBvwYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时，场上有6个齐恩瓦拉的冰雪元素。",
@@ -72,8 +101,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "庇护"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "感谢庇护",
+          "code": "AAEBAdK+BQK09gPSuQYOrrADzOsD9PYDyaAEyu0EuMUF3NAFzpwGtJ4Gwb8G6ckG7ckGpeEG5OoGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使庇护召唤的随从在一回合中不受伤害。",
@@ -90,8 +126,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "拉祖尔的信使"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "专业预测",
+          "code": "AAEBAdG+BQAP5QTRwQLmiAPnrAOTugPLzQPXzgPi3gP73wOH9wOtigS7xwXt9wWLlQbxqQYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中用拉祖尔的信使猜中3次。",
@@ -108,8 +151,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "蜡烛巨龙"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "魔术蜡烛",
+          "code": "AAEBAdW+BQSvkQPArgPT8wPMoAUN5dED590D/u4DvYAE9p8E958EoZMF38MFv/cFpPoFyJQGracGtrUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中召唤12条蜡烛巨龙。",
@@ -126,8 +176,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "尼索格"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "尼玩蛋了",
+          "code": "AAEBAdOLBQbN9AKdowPwrQOx2QT9xAWN9QUMshT7qgKU7wKCnQPapQP6tASG1ASq2QS95QSzjQbDjwacngYAAQGTCf3EBQAA"
+        }
+      ],
       "stages": [
         {
           "description": "用尼索格的风暴龙卵消灭敌方英雄。",
@@ -145,7 +202,12 @@
       "category": "光辉事迹",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "手牌极限！",
+          "code": "AAEBAZT9BgLwrAOUygYOrbYDv7kDrMsDzdIDk+QDg/sDxYAE56AEpZIF9MYFyOsF8KkGlbMGw7gGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用术士，在连续4个回合结束时拥有10张以上的手牌。",
@@ -162,7 +224,9 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "疯狂巨龙死亡之翼"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -176,12 +240,19 @@
     {
       "id": "dragons-010",
       "name": "真的好多鸦",
-      "heroClass": "猎人",
+      "heroClass": "中立",
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "恐惧渡鸦"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "真的好多鸦",
+          "code": "AAEBAda+BQTHD/KWA9ejBP3EBQ2czQLrngOWsQP2ugOU/AOpnwTjnwTknwSZrQTq8gXopQbOwAb+5QYAAQABuwX9xAUA"
+        }
+      ],
       "stages": [
         {
           "description": "在召唤8只或以上的恐惧渡鸦后赢得对战。",

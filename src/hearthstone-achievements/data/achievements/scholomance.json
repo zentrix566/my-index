@@ -8,6 +8,10 @@
     {
       "name": "通灵学园 wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E9%80%9A%E7%81%B5%E5%AD%A6%E5%9B%AD"
+    },
+    {
+      "name": "旅法师营地：通灵学园全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5489932"
     }
   ],
   "achievements": [
@@ -18,8 +22,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "嗜血传令官"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "万能献血者",
+          "code": "AAEBAdKLBQayigSnjQSlrQSq3QT3wwWogAYM2cYD1M0DyNID8rEEvsoEr94EquIEheUE8OwF7p4G7akG9uUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "召唤一个攻击力大于或等于30点的嗜血传令官。",
@@ -36,8 +47,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "演讲者吉德拉"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "请勿高声！",
+          "code": "AAEBAc6LBQL1zgOJiwQO5AivogPougO60AOJ4AOvgASwgASwpQSuwASaoAbvqQbzygai4gb35QYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用演讲者吉德拉的法术迸发效果使其获得+10/+10。",
@@ -54,8 +72,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "动物保镖"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "内有恶犬",
+          "code": "AAEBAc6LBQKJiwTuuAYO0g/55gL7/gKT0QOp1ATB3wTrowW7lQa8lQbanAbqqAaHsQapsQai4gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用动物保镖召唤两只法力值消耗大于（5）点的野兽。",
@@ -72,8 +97,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "幻觉药水"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "假想好友",
+          "code": "AAEBAdW+BQLMoAWxwQYO/MECx5sD5dED/tsD/u4DofQDvYAE9p8E958Et7MEv/cF7p4GracGjNYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张幻觉药水将7张相同的随从复制置入你的手牌。",
@@ -90,8 +122,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "高阶修士奥露拉"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "随我朗读",
+          "code": "AAEBAdG+BQTRwQLD0QOoigTPxgUN8gyh/gL7zgO70QPh5AOi6AP09gOj9wOf1AS5xAW4xQXOnAbXugYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使高阶修士奥露拉施放触发其法术迸发效果的传说法术。",
@@ -108,8 +147,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "教导主任加丁"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "永不录取",
+          "code": "AAEBAZT9Bga/uQPXzgPP0QPn0QP/2QTvmwYMnakD66wDrMsDzdIDld4Dk+QDg/sDxYAE56AEkIMG8KkGlbMGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用教导主任加丁消灭一个挂掉的学生。",
@@ -126,8 +172,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "钢铁舞者"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "刀叉相配",
+          "code": "AAEBAdW+BQSFF8ygBe7DBbHBBg31uwKL0APl0QPn3QP+7gOh9AO9gAT2nwT3nwS3swTfwwWtpwaM1gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用钢铁舞者召唤一个属性值与你的武器相同的随从。",
@@ -144,8 +197,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "莱斯·霜语"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "语声鼎沸",
+          "code": "AAEBAYHPBgLQzgOR4QMOwAHLBPSrA5XNA5GgBJ2gBKajBez2BdD4BYOVBtOVBvKbBoieBobmBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "用莱斯·霜语单次造成10点伤害。",
@@ -163,7 +223,16 @@
       "category": "光辉事迹",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "塑造灵魂 卡组1",
+          "code": "AAEBAZT9BgKPggPwrAMO8tACnakDrMsDzNIDzdIDztIDk+QDg/sDxYAE56AEpZIFzpwGo6AG8KkGAAA="
+        },
+        {
+          "name": "塑造灵魂 卡组2",
+          "code": "AAEBAbyRBQS49gL21gOFggb6yQYNp84CwLkDkNADiKAEjtQE69AFi5QG7KkGw7oG1boGwr4G88oGouIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在一回合中抽到10张灵魂残片。",
@@ -180,7 +249,9 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "仪式重槌"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -199,8 +270,15 @@
       "category": "光辉事迹",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "驯化的雷象"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "雷象不会遗忘",
+          "code": "AAEBAdeEBQ6sAbQEvAiEuwKfmwP/nQP0qwPxrwPU6gOu9wOQlgXs9gWxoAbnqQYIwAHIhwPimwPBuAO61QOF5AOBvwaG5gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "教会同一只驯化的雷象15种不同的法术。",

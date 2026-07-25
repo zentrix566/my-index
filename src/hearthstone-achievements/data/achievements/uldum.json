@@ -8,6 +8,10 @@
     {
       "name": "奥丹姆奇兵 wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E5%A5%A5%E4%B8%B9%E5%A7%86%E5%A5%87%E5%85%B5"
+    },
+    {
+      "name": "旅法师营地：奥丹姆奇兵全成就攻略",
+      "url": "http://iyingdi.com/tz/post/5490103"
     }
   ],
   "achievements": [
@@ -18,8 +22,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "蜂群来袭"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "蜂群来……了吗？",
+          "code": "AAEBAc6LBQKJiwSRtAYO5AivogPougOJ4AOvgASwpQSuwATW3gSaoAbvqQbZsQbzygai4gb35QYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "施放蜂群来袭时没有蜜蜂攻击。",
@@ -37,7 +48,12 @@
       "category": "光辉事迹",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "Bug无数",
+          "code": "AAEBAda+BQSKwwKbhQP9+APi4wYN080C5KQDi6kDmKkD9PYDzvkDuMUFkIMG65gGzpwGwr4GleIG5OoGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中召唤30只蝗虫。",
@@ -54,8 +70,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "尤格-萨隆的谜之匣"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "匣中之谜",
+          "code": "AAEBAdeEBQbY7APo9wOgigT/ogSHvwb14gYM1eECwqEDiLYD0+wDuMUF6MUF65gGzpwGwr4G6ckG7ckG5OoGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在施放4次尤格-萨隆的谜之匣后赢得一场对战。",
@@ -72,8 +95,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "鱼人为王"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "鱼人同而不和",
+          "code": "AAEBAdK+BQTZ/gLv9gPBxgWW0wYN/PwCz4YDm6kDyPkDi40E7p8EktQEgeIEwOIEtZ4GhqMG6qkG1LgGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张鱼人为王召唤7个相同的鱼人。",
@@ -91,7 +121,16 @@
       "category": "光辉事迹",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "卫生团队 卡组1",
+          "code": "AAEBAdG+BQbWnQOppQPXzgOH9wOkkQWZwAYM5QTRCtHBAtjBAsvNA+LeA/vfA62KBKS2BKLpBe33BfGpBgAA"
+        },
+        {
+          "name": "卫生团队 卡组2",
+          "code": "AAEBAda+BQiFF9bsApuFA/7bA++iBZqiBo7BBuLjBgupnwTjnwTknwSZrQTq8gW+nAaLvwbOwAbQwAb3yQaV4gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时拥有7个具有30点或更高生命值的随从。",
@@ -108,8 +147,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "连环腿大师"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "连击连连",
+          "code": "AAEBAdW+BQL1uwL7igQOxAH7ogPn3QPr9gPO+QO3swT0wQW4xQWQgwaNlgatpwbAqAa2tQaM1gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一回合中使用8张连环腿大师创建的连击牌。",
@@ -126,8 +172,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "地震术"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "反正不怪我",
+          "code": "AAEBAdOLBQKyFKrZBA63bIvOApCnA/DUA+PuA9ySBOmjBcOPBuyVBs6cBtSeBqelBqSnBqbABgAA"
+        }
+      ],
       "stages": [
         {
           "description": "用一张地震术先消灭刚好5个随从，然后再消灭刚好2个随从。",
@@ -144,8 +197,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "裂隙屠夫"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "术士式停火",
+          "code": "AAEBAZT9BgAP8tAC/6QDg/sDhKAEiLAEzuQFzvoFxJ4Go6AGnLMGnrgGw7gGp8oGk8sG8OYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用裂隙屠夫同时消灭双方英雄。",
@@ -162,8 +222,15 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "侵入系统"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "高效骇客",
+          "code": "AAEBAbyRBQT3qAP21gO1+AX6yQYNiIcD1p0DwLkD99QDiKAEjLcEjtQEpaUFi5QG7KkG1boG88oGouIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在使用侵入系统的同一回合完成该任务。",
@@ -181,7 +248,12 @@
       "category": "光辉事迹",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "你看牌了吗？",
+          "code": "AAEBAbyRBR7YAsMWkvgC/KMDk6gDwLkDk9ADju0DqIoE+YwEiKAEnKAEjtQEkNQEltQEpaUF/cQFtPgFofsFi5QG75sGn54Gh6AG7KkG0LAGw7oG1boG+skG88oGouIGAAABA5OoA/3EBbK4Bv3EBcnBBv3EBQAA"
+        }
+      ],
       "stages": [
         {
           "description": "用莱，至高守护者攻击敌方英雄。",

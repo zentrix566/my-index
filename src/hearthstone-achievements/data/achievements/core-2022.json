@@ -8,6 +8,10 @@
     {
       "name": "核心（多头蛇年） wiki",
       "url": "https://wiki.ifindhs.com/index.php?title=%E6%88%90%E5%B0%B1/%E6%B8%B8%E6%88%8F-%E6%A0%B8%E5%BF%83%EF%BC%88%E5%A4%9A%E5%A4%B4%E8%9B%87%E5%B9%B4%EF%BC%89"
+    },
+    {
+      "name": "旅法师营地：多头蛇年核心全成就攻略",
+      "url": "https://iyingdi.com/tz/post/5184046"
     }
   ],
   "achievements": [
@@ -17,8 +21,15 @@
       "heroClass": "恶魔猎手",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "灵魂盛宴"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "食量极限",
+          "code": "AAECAc7WAwbF3QPH3QOV6AOHiwSXoASEsAQM2cYD3dMDutUDyt0D8+MDifcDjPcDpY0Eg58Etp8E1p8E7KAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用灵魂盛宴抽100张牌。",
@@ -40,8 +51,15 @@
       "heroClass": "德鲁伊",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "大地之鳞"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "谁在挠痒痒？",
+          "code": "AAEBAc6LBQSY0gLwiQPWmQOJiwQNig6gzQKe0gKE5gK/8gKP9gKvogPlugOJ4AOK4APU6AOvgATaoQUA"
+        }
+      ],
       "stages": [
         {
           "description": "使用大地之鳞获得50点护甲值。",
@@ -63,7 +81,9 @@
       "heroClass": "法师",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "炎爆术"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -86,8 +106,15 @@
       "heroClass": "圣骑士",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "光耀之主拉格纳罗斯"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "友军火力",
+          "code": "AAEBAZ3DAwiFF8PqAv37As6HA72ZA6fLA+CLBJKkBQuMAYu9Avz8AsD9AuyGA7SbA8rBA87rA/D2A4v4A/mkBAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用光耀之主拉格纳罗斯恢复150点生命值。",
@@ -109,8 +136,15 @@
       "heroClass": "战士",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "达利乌斯·克罗雷"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "哦，克罗雷先生",
+          "code": "AAEBAYwWBM3vAvbWA+f3A6iKBA3UCL7DAsC5A/e7A+LMA5HQA8HeA47tA8X1A8b1A/iABIagBNOsBAA="
+        }
+      ],
       "stages": [
         {
           "description": "触发同一个达利乌斯·克罗雷的效果2次。",
@@ -132,8 +166,15 @@
       "heroClass": "牧师",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "“太阳裂片”莱拉"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "赞美太阳",
+          "code": "AAEBAZ/HAgK+yAKC9wIO5QTRwQLYwQLmiAOTugOnywPXzgPi3gP73wPK4QOH9wOtigSKowTIrAQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用200张“太阳裂片”莱拉创建的牌。",
@@ -156,7 +197,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "一堆可怜的秘密",
+          "code": "AAEBAa/XAwSY8AL21gOoigTinwQNrgb4sQLEtALf0gKfpQOkuQP09gOrjQSpnwTjnwTknwS/rASZrQQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用75张法力值消耗为（0）的猎人奥秘。",
@@ -178,8 +224,19 @@
       "heroClass": "萨满祭司",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "火舌图腾"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "热辣滚烫 卡组1",
+          "code": "AAEBAZu1AwaXxwLD6gK1mAPf4QOo7gOyigQMsga+BvAHkcECi84CnaMD3LgDlrkD4cwD8NQD3JIE/58EAA=="
+        },
+        {
+          "name": "热辣滚烫 卡组2",
+          "code": "AAECAc7WAwbF3QPH3QOV6AOHiwSXoASEsAQM2cYD3dMDutUDyt0D8+MDifcDjPcDpY0Eg58Etp8E1p8E7KAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用受火舌图腾影响的随从攻击100次。",
@@ -201,8 +258,19 @@
       "heroClass": "术士",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "高阶祭司耶克里克"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "弃牌？不了，谢谢 卡组1",
+          "code": "AAEBAcn1AgTO6QKPggPwhgPbowQNzge8tgLnywLy0ALShgOvjQP9pAO2uQOsywOV3gOT5AOD+wPFgAQA"
+        },
+        {
+          "name": "弃牌？不了，谢谢 卡组2",
+          "code": "AAEDAauwBATUlgS1oQTXogTZogQN4ZUE4pUE5JUE5pUE55UE86AE9KAEsaEE1aEEkaIElaIEl6IExaMEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时，手牌中有6张高阶祭司耶克里克。",
@@ -224,8 +292,15 @@
       "heroClass": "潜行者",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "苔丝·格雷迈恩"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "全职高手",
+          "code": "AAEBAZurBAS9jAOk0QOE5AOLpAUNkJcDqJgD+5oDqqgDragDt64DqssD590D9p8E7qAEuqQE+6UE+awEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张苔丝·格雷迈恩，重新使用4个不同职业的牌。",
@@ -265,7 +340,9 @@
       "heroClass": "死亡骑士",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "帕奇维克"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -289,7 +366,9 @@
       "type": "累计",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "霜之哀伤"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -312,7 +391,9 @@
       "heroClass": "死亡骑士",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "玛洛加尔领主"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -335,7 +416,9 @@
       "heroClass": "死亡骑士",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "天灾谷物"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -369,7 +452,9 @@
       "heroClass": "死亡骑士",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "髓骨使御者"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -393,7 +478,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "精英协会",
+          "code": "AAEBAcn1AgSEF4UXw+oCvZkDDefLAp2pA622A7+5A6zLA9fOA83SA5XeA5PkA4P7A8WABOegBNujBAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用75张多头蛇年的探险者协会成员牌。",
@@ -415,7 +505,9 @@
       "heroClass": "中立",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "雷诺·杰克逊"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -432,8 +524,15 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "狂野炎术师"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "外焦里嫩",
+          "code": "AAEBAZ/HAgK+yAKJowQO5QT2B9EK0cECk7oDp8sD184D4t4D+98DyuEDmOsDrYoEiqMEyKwEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用狂野炎术师造成250点伤害。",
@@ -455,8 +554,19 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
-      "recommendedDecks": [],
+      "relatedCards": [
+        "始生幼龙"
+      ],
+      "recommendedDecks": [
+        {
+          "name": "曾曾曾祖龙 卡组1",
+          "code": "AAEBAcn1AgTanQO9vgP44wOwkQQNyccC58sC1p0D66wDrbYDv7kDrMsDld4Dg/sDxYAEsZ8E56AE26MEAA=="
+        },
+        {
+          "name": "曾曾曾祖龙 卡组2",
+          "code": "AAEBAZ3DAx76Ae0Pwxa4xwLt0gL8/ALA/QLPhgPshgPOhwO0mwOWrAOWtgP7uAPKwQOezQPLzQOD3gP63gP34wPO6wPw9gOL+AOV+QO3gASLjQScnwSdnwTunwTVrAQAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用始生幼龙消灭100个随从。",

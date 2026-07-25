@@ -336,6 +336,13 @@ app.put('/api/achievements/progress', requireAuth, async (req, res) => {
         }
         const { stageCount } = getAchievementMeta(achId)
         for (const [stageKey, v] of Object.entries(stages)) {
+          // 元数据键：_discovered 记录「已发现职业」数组（用于收集类成就），跳过数字编号校验
+          if (stageKey === '_discovered') {
+            if (!Array.isArray(v) || !v.every((x) => typeof x === 'string')) {
+              throw new Error(`非法 _discovered: ${achId}`)
+            }
+            continue
+          }
           if (!/^(0|[1-9]\d*)$/.test(stageKey) || Number(stageKey) >= stageCount) {
             throw new Error(`非法 stage 编号: ${achId}/${stageKey}`)
           }

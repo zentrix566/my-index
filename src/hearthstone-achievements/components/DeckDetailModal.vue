@@ -609,11 +609,11 @@ async function exportImage() {
   margin-bottom: 18px;
 }
 
-/* ── 卡牌列表（旅法师营地风格）── */
+/* ── 卡牌列表（清爽双列 + 右侧小卡图条）── */
 .ddm-cards {
-  padding: 10px;
-  border-radius: 14px;
-  background: var(--hs-inset-bg);
+  padding: 12px;
+  border-radius: 16px;
+  background: var(--hs-surface-soft);
   border: 1px solid var(--hs-border);
 }
 .ddm-card-list {
@@ -622,35 +622,36 @@ async function exportImage() {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 4px;
 }
 .ddm-card-cols {
   display: grid;
   grid-template-columns: 1fr 1fr;
-  gap: 0 14px;
+  gap: 0 12px;
 }
 .ddm-card-row {
   position: relative;
   display: flex;
   align-items: center;
   gap: 8px;
-  height: 34px;
-  padding: 0 6px 0 4px;
-  border-radius: 7px;
-  font-size: 13px;
+  height: 38px;
+  padding: 0 4px 0 6px;
+  border-radius: 8px;
+  font-size: 13.5px;
   line-height: 1;
   cursor: pointer;
   overflow: hidden;
-  background-color: var(--hs-inset-bg);
-  transition: transform .1s, box-shadow .12s;
+  background: var(--hs-surface-raised);
+  border: 1px solid transparent;
+  transition: transform .1s, box-shadow .12s, border-color .12s;
 }
 .ddm-card-row:hover {
   transform: translateY(-1px);
-  box-shadow: 0 2px 10px rgba(0,0,0,.18);
+  box-shadow: 0 3px 10px rgba(0,0,0,.12);
+  border-color: var(--hs-border);
 }
 
-/* 缩略图铺满整行，右侧完整展示；左侧由固定暖浅色压暗（两主题一致），
-   加上文字阴影保证水晶/牌名在亮色卡图上仍可读。 */
+/* 缩略图铺满整行，右侧完整展示卡图；左侧由主题色渐变淡入，文字浮于其上（无左右分栏的硬边界） */
 .ddm-card-thumb {
   position: absolute;
   inset: 0;
@@ -661,17 +662,16 @@ async function exportImage() {
   pointer-events: none;
   z-index: 0;
 }
-/* 左侧压暗：固定暖浅色 + 半透明白，两主题视觉一致；
-   36% 起渐变到透明，让卡图右侧 64% 完整可见。 */
+/* 左侧压暗/压亮渐变：用主题色变量填满左段再淡出，两主题视觉一致、无硬边界 */
 .ddm-card-fade {
   position: absolute;
   inset: 0;
-  background: linear-gradient(90deg,
-    rgba(245, 235, 215, 0.96) 0%,
-    rgba(245, 235, 215, 0.92) 36%,
-    rgba(255, 255, 255, 0) 60%);
-  pointer-events: none;
   z-index: 1;
+  pointer-events: none;
+  background: linear-gradient(90deg,
+    var(--hs-surface-raised) 0%,
+    var(--hs-surface-raised) 24%,
+    transparent 56%);
 }
 /* 文字层位于遮罩之上 */
 .ddm-card-row > .ddm-crystal,
@@ -712,43 +712,43 @@ async function exportImage() {
   overflow: hidden;
   text-overflow: ellipsis;
   font-weight: 700;
-  letter-spacing: .02em;
-  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.85), 0 0 1px rgba(0, 0, 0, 0.9);
+  letter-spacing: .01em;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.45);
 }
 .ddm-rarity-common   { color: var(--hs-text); }
 .ddm-rarity-rare     { color: #2563eb; }
 .ddm-rarity-epic     { color: #9333ea; }
 .ddm-rarity-legendary{ color: #f97316; }
 
-/* 数量 */
+/* 数量徽章 */
 .ddm-count {
   flex: 0 0 auto;
-  min-width: 22px;
-  height: 22px;
-  padding: 0 6px;
+  width: 24px;
+  height: 24px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border-radius: 6px;
-  font-size: 14px;
+  border-radius: 50%;
+  font-size: 13px;
   font-weight: 800;
   font-variant-numeric: tabular-nums;
   color: #fff;
-  background: #475569;
-  border: 1px solid #64748b;
+  background: #94a3b8;
+  border: 1px solid transparent;
+  box-shadow: 0 1px 3px rgba(0,0,0,.3);
 }
-.ddm-count-leg { color: #fbbf24; background: rgba(251,191,36,.14); border-color: rgba(251,191,36,.4); }
+.ddm-count-leg { color: #fbbf24; background: rgba(251,191,36,.22); border-color: rgba(251,191,36,.5); }
 
 /* ── 统计面板 ── */
 .ddm-stats { display: flex; flex-direction: column; gap: 14px; }
 .ddm-panel {
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: var(--hs-inset-bg);
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: var(--hs-surface-soft);
   border: 1px solid var(--hs-border);
 }
 .ddm-panel-title {
-  margin: 0 0 10px;
+  margin: 0 0 12px;
   font-size: 12px;
   font-weight: 700;
   color: var(--hs-text-soft);
@@ -760,33 +760,34 @@ async function exportImage() {
   display: grid;
   grid-template-columns: repeat(8, 1fr);
   align-items: end;
-  gap: 4px;
-  height: 96px;
+  gap: 5px;
+  height: 100px;
 }
 .ddm-curve-col { display: flex; flex-direction: column; align-items: center; justify-content: flex-end; height: 100%; }
-.ddm-curve-val { font-size: 10px; font-weight: 700; color: var(--hs-muted); height: 12px; }
+.ddm-curve-val { font-size: 10px; font-weight: 800; color: var(--hs-text); height: 14px; }
 .ddm-curve-bar {
   width: 100%;
   min-height: 2px;
-  border-radius: 3px 3px 0 0;
-  background: linear-gradient(180deg, #4c9be8, #2f7fd1);
+  border-radius: 4px 4px 0 0;
+  background: linear-gradient(180deg, #60a5fa, #2f7fd1);
+  opacity: .92;
 }
-.ddm-curve-label { margin-top: 4px; font-size: 10px; font-weight: 600; color: var(--hs-muted); }
+.ddm-curve-label { margin-top: 5px; font-size: 10px; font-weight: 600; color: var(--hs-muted); }
 
 /* 饼图 */
-.ddm-pie-wrap { display: flex; align-items: center; gap: 12px; }
-.ddm-pie { flex: 0 0 auto; width: 108px; height: 108px; transform: none; }
-.ddm-pie-center-num { fill: var(--hs-text); font-size: 22px; font-weight: 800; text-anchor: middle; }
+.ddm-pie-wrap { display: flex; align-items: center; gap: 14px; }
+.ddm-pie { flex: 0 0 auto; width: 112px; height: 112px; transform: none; }
+.ddm-pie-center-num { fill: var(--hs-text); font-size: 24px; font-weight: 800; text-anchor: middle; }
 .ddm-pie-center-txt { fill: var(--hs-muted); font-size: 11px; text-anchor: middle; }
-.ddm-pie-legend { flex: 1 1 auto; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 5px; }
-.ddm-pie-legend li { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--hs-text-soft); }
+.ddm-pie-legend { flex: 1 1 auto; list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+.ddm-pie-legend li { display: flex; align-items: center; gap: 7px; font-size: 12px; color: var(--hs-text-soft); }
 .ddm-legend-dot { width: 10px; height: 10px; border-radius: 3px; flex: 0 0 auto; }
 .ddm-legend-label { flex: 1 1 auto; }
 .ddm-legend-num { font-weight: 700; color: var(--hs-text); font-variant-numeric: tabular-nums; }
 
 /* 造价明细 */
-.ddm-dust-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
-.ddm-dust-list li { display: flex; align-items: center; gap: 6px; font-size: 12.5px; }
+.ddm-dust-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 7px; }
+.ddm-dust-list li { display: flex; align-items: center; gap: 7px; font-size: 12.5px; }
 .ddm-dust-dot { width: 9px; height: 9px; border-radius: 2px; flex: 0 0 auto; }
 .ddm-dust-dot.ddm-rarity-common { background: #9ca3af; }
 .ddm-dust-dot.ddm-rarity-rare { background: #2563eb; }
