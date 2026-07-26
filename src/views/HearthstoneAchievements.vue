@@ -823,9 +823,8 @@ async function saveProgress(payload) {
       const result = await resp.json().catch(() => ({}))
       throw new Error(result.error || '保存失败')
     }
-    // 乐观更新：先把本次保存合并进本地状态，保证统计即时刷新；再拉服务端对齐
+    // 乐观更新：本次保存已成功落库，合并进本地状态即可，无需再整份拉取服务端进度（避免大体积回拉 + 全量重算卡顿）
     applyLocalProgress({ [payload.id]: { stages: payload.stages, count: payload.count } })
-    await reloadProgress()
     const nowCompleted = ach ? isAchievementCompleted(ach) : false
     // 仅在「从未完成 → 完成」这一刻弹出庆祝，避免重复保存已完成的成就时打扰
     if (!wasCompleted && nowCompleted) showAchievementCelebration(ach)
@@ -905,9 +904,8 @@ async function batchComplete() {
       const e = await resp.json().catch(() => ({}))
       throw new Error(e.error || '保存失败')
     }
-    // 乐观更新：批量完成先合并进本地状态，统计即时刷新；再拉服务端对齐
+    // 乐观更新：批量完成已成功落库，合并进本地状态即可，无需再整份拉取服务端进度
     applyLocalProgress(progress)
-    await reloadProgress()
     showToast('success', `已完成 ${Object.keys(progress).length} 个成就`)
     selectedAchIds.value = []
     batchMode.value = false
@@ -1062,9 +1060,8 @@ async function onImportFile(e) {
         body: JSON.stringify({ progress })
       })
       if (!resp.ok) throw new Error('导入失败（' + resp.status + '）')
-      // 乐观更新：导入的进度先合并进本地状态，统计即时刷新；再拉服务端对齐
+      // 乐观更新：导入进度已成功落库，合并进本地状态即可，无需再整份拉取服务端进度
       applyLocalProgress(progress)
-      await reloadProgress()
       showToast('success', '进度导入成功')
     } catch (err) {
       showToast('error', '导入失败：' + (err.message || err))
