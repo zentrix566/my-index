@@ -1464,7 +1464,9 @@ const filterAchievements = (list) => {
         if (getMetric(ach) !== selectedMetric.value) return false
       }
     }
-    if (viewMode.value === 'my' && selectedStatus.value !== 'all') {
+    // 搜索模式下忽略状态筛选：用户想「找到某个成就」而非「只看某状态的成就」，
+    // 否则在「我的成就」视图默认「未完成」时会把已完成的成就从搜索结果里藏掉
+    if (!text && viewMode.value === 'my' && selectedStatus.value !== 'all') {
       const completed = isAchievementCompleted(ach)
       if (selectedStatus.value === '已完成' && !completed) return false
       if (selectedStatus.value === '未完成' && completed) return false
