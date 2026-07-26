@@ -46,12 +46,8 @@ const toggleCollapse = () => {
           <span class="hs-class-summary-text" :class="{ 'is-done': summary.remaining === 0 }">
             {{ summary.remaining === 0 ? '已完成 ' + summary.completed + '/' + summary.total : '已完成 ' + summary.completed + '/' + summary.total + '，剩余 ' + summary.remaining + ' 个' }}
           </span>
-          <span class="hs-class-summary-bar">
-            <span class="hs-class-summary-fill" :style="{ width: summary.percent + '%' }"></span>
-          </span>
           <span class="hs-class-summary-pct">{{ summary.percent }}%</span>
         </span>
-        <span class="hs-class-count">{{ achievements.length }} 个</span>
         <span class="hs-collapse-arrow">{{ collapsed ? '▶' : '▼' }}</span>
       </span>
     </header>

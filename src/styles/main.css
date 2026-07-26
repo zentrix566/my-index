@@ -1711,12 +1711,6 @@ a.content-card:hover {
   font-size: 16px;
 }
 
-.hs-class-count {
-  font-size: 13px;
-  opacity: 0.9;
-  font-weight: 400;
-}
-
 .hs-collapse-arrow {
   font-size: 12px;
   opacity: 0.7;
@@ -1736,24 +1730,8 @@ a.content-card:hover {
   font-weight: 600;
   font-size: 12px;
   line-height: 1;
-  color: var(--hs-gold);
+  color: #fff;
   white-space: nowrap;
-}
-
-.hs-class-summary-bar {
-  width: 64px;
-  height: 6px;
-  border-radius: 3px;
-  background: var(--hs-border);
-  overflow: hidden;
-}
-
-.hs-class-summary-fill {
-  display: block;
-  height: 100%;
-  background: var(--hs-gold-soft);
-  border-radius: 3px;
-  transition: width 0.2s ease;
 }
 
 .hs-class-summary-pct {
@@ -1764,7 +1742,7 @@ a.content-card:hover {
 
 /* 职业/版本分组头部：剩余成就数（融入行内文字，不抢眼） */
 .hs-class-header .hs-class-summary-text.is-done {
-  color: var(--hs-primary-bright);
+  color: #b9f6ca;
 }
 
 /* 批量完成工具条 */
@@ -3995,11 +3973,6 @@ a.content-card:hover {
   transform: translateY(-1px);
 }
 
-.hs-class-summary-bar {
-  height: 7px;
-  background: var(--hs-inset-bg);
-}
-
 .hs-achievement-list {
   grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
   gap: 12px;
@@ -4459,10 +4432,6 @@ a.content-card:hover {
 
   .hs-class-header-right {
     gap: 7px;
-  }
-
-  .hs-class-summary-bar {
-    display: none;
   }
 }
 
