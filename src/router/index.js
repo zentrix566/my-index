@@ -1,21 +1,24 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import Home from '../views/Home.vue'
-import Projects from '../views/Projects.vue'
-import ProjectDetail from '../views/ProjectDetail.vue'
-import VueApps from '../views/VueApps.vue'
-import IntervalTraining from '../views/IntervalTraining.vue'
-import Countdown from '../views/Countdown.vue'
-import AIOpsConsole from '../views/AIOpsConsole.vue'
-import CrazyPeople from '../crazy-people/CrazyPeople.vue'
-import WorldCupKick from '../views/WorldCupKick.vue'
-import JiangyinBattle from '../views/JiangyinBattle.vue'
-import DominoFall from '../views/DominoFall.vue'
-import HearthstoneAchievements from '../views/HearthstoneAchievements.vue'
-import DeckCodeViewer from '../views/DeckCodeViewer.vue'
-import About from '../views/About.vue'
-import Stats from '../views/Stats.vue'
-import Login from '../views/Login.vue'
-import Changelog from '../views/Changelog.vue'
+
+// 路由级懒加载：每个页面单独成 chunk，首屏只加载当前路由所需的代码，
+// 避免炉石等大型页面把整包（4.8MB）拖进首页/关于页等轻量页面。
+const Home = () => import('../views/Home.vue')
+const Projects = () => import('../views/Projects.vue')
+const ProjectDetail = () => import('../views/ProjectDetail.vue')
+const VueApps = () => import('../views/VueApps.vue')
+const IntervalTraining = () => import('../views/IntervalTraining.vue')
+const Countdown = () => import('../views/Countdown.vue')
+const AIOpsConsole = () => import('../views/AIOpsConsole.vue')
+const CrazyPeople = () => import('../crazy-people/CrazyPeople.vue')
+const WorldCupKick = () => import('../views/WorldCupKick.vue')
+const JiangyinBattle = () => import('../views/JiangyinBattle.vue')
+const DominoFall = () => import('../views/DominoFall.vue')
+const HearthstoneAchievements = () => import('../views/HearthstoneAchievements.vue')
+const DeckCodeViewer = () => import('../views/DeckCodeViewer.vue')
+const About = () => import('../views/About.vue')
+const Stats = () => import('../views/Stats.vue')
+const Login = () => import('../views/Login.vue')
+const Changelog = () => import('../views/Changelog.vue')
 
 const routes = [
   { path: '/', name: 'home', component: Home },

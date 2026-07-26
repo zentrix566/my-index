@@ -1734,12 +1734,6 @@ a.content-card:hover {
   white-space: nowrap;
 }
 
-.hs-class-summary-pct {
-  white-space: nowrap;
-  min-width: 34px;
-  text-align: right;
-}
-
 /* 职业/版本分组头部：剩余成就数（融入行内文字，不抢眼） */
 .hs-class-header .hs-class-summary-text.is-done {
   color: #b9f6ca;

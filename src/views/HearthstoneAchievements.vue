@@ -455,6 +455,7 @@
             :achievements="filteredByExpansion[exp.id]"
             :badge-style="getExpansionBadgeStyle()"
             :class-style="getExpansionStyle()"
+            :summary="expViewSummaries[exp.id]"
             @card-click="openCardModal"
             @deck-click="openDeckDetail"
           />
@@ -494,6 +495,7 @@
             :achievements="myFilteredByExpansion[exp.id]"
             :badge-style="getExpansionBadgeStyle()"
             :class-style="getExpansionStyle()"
+            :summary="expViewSummaries[exp.id]"
             :use-my-card="true"
             :show-remaining="true"
             :editable="Boolean(user)"
@@ -671,6 +673,7 @@ import MyAchievementCard from '../hearthstone-achievements/components/MyAchievem
 import DeckDetailModal from '../hearthstone-achievements/components/DeckDetailModal.vue'
 import AiAdvisor from '../hearthstone-achievements/ai/AiAdvisor.vue'
 import { AI_ADVISOR_ENABLED } from '../hearthstone-achievements/ai/config.js'
+import { downloadBlob, nextTodoText, buildExportRows } from '../hearthstone-achievements/utils/achievementExport.js'
 
 const { user, init: initAuth, logout } = useAuth()
 const router = useRouter()
@@ -928,58 +931,6 @@ function goChangelog() {
 const exporting = ref(false)
 const fileInput = ref(null)
 
-// 生成「下一步要做的事」文字描述（用于导出的可读性进度）
-function nextTodoText(ach) {
-  if (isAchievementCompleted(ach)) return '已完成'
-  const stages = ach.stages || []
-  if (ach.type === '累计') {
-    const count = getCount(ach) ?? 0
-    const next = stages.find(s => count < (s.quota || 0))
-    const quota = next ? next.quota : (stages[stages.length - 1]?.quota || 0)
-    const remain = Math.max(0, quota - count)
-    const desc = (next && next.description) || '累计目标'
-    const unit = getUnit(ach)
-    return remain > 0 ? `累计 ${count}/${quota}：${desc}（剩余 ${remain} ${unit}）` : '待完成'
-  }
-  for (let i = 0; i < stages.length; i++) {
-    if (!isStageCompleted(ach, i)) {
-      const desc = stages[i].description || `阶段${i + 1}`
-      return `下一步：阶段${i + 1} ${desc}`.replace(/\s+$/, '')
-    }
-  }
-  return '待完成'
-}
-
-// 构建导出用的「每行一个成就」表格数据（面向游戏爱好者精简版）
-function buildExportRows() {
-  const rows = []
-  for (const ach of allAchievements.value) {
-    const completed = isAchievementCompleted(ach)
-    rows.push({
-      '版本': ach._expansionName,
-      '职业': getClassName(ach),
-      '成就名称': ach.name,
-      '成就详情': (ach.stages || []).map((s, i) => `阶段${i + 1}：${s.description || ''}`).join(' | '),
-      '目前进度': completed ? '已完成' : nextTodoText(ach),
-      '类型': ach.type === '累计' ? `累计·${getUnit(ach) === '点' ? '点数' : '次数'}` : ach.type,
-      '难度': ach.difficulty,
-      '经验值': Math.round(getAchievementXp(ach) * (1 + passBonus.value)),
-      '成就值': (ach.stages || []).reduce((s, st) => s + (st.points || 0), 0)
-    })
-  }
-  return rows
-}
-
-function downloadBlob(blob, filename) {
-  const url = URL.createObjectURL(blob)
-  const a = document.createElement('a')
-  a.href = url
-  a.download = filename
-  document.body.appendChild(a)
-  a.click()
-  document.body.removeChild(a)
-  URL.revokeObjectURL(url)
-}
 
 // 导出 JSON：含可再导入的 progress 与统计摘要
 function exportJson() {
@@ -1017,7 +968,7 @@ function exportJson() {
 async function exportExcel() {
   exporting.value = true
   try {
-    const rows = buildExportRows()
+    const rows = buildExportRows(allAchievements.value, passBonus.value)
     const wb = XLSX.utils.book_new()
     const ws = XLSX.utils.json_to_sheet(rows)
     ws['!cols'] = [
@@ -1286,9 +1237,22 @@ const classViewSummaries = computed(() => {
     map[c] = {
       total,
       completed,
-      remaining,
-      percent: total > 0 ? Math.round((completed / total) * 100) : 0
+      remaining
     }
+  }
+  return map
+})
+
+// 我的成就 - 按职业：按版本分组的总览数据（与 classViewSummaries 结构一致，去掉冗余的百分比）
+const expViewSummaries = computed(() => {
+  const groups = viewMode.value === 'my' && myGroupBy.value === 'class' ? myFilteredByExpansion.value : filteredByExpansion.value
+  const map = {}
+  for (const id in groups) {
+    const achievements = groups[id]
+    const completed = achievements.filter((achievement) => isAchievementCompleted(achievement)).length
+    const total = achievements.length
+    const remaining = total - completed
+    map[id] = { total, completed, remaining }
   }
   return map
 })

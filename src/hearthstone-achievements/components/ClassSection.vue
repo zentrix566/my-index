@@ -13,7 +13,7 @@ const props = defineProps({
   showRemaining: { type: Boolean, default: false },
   // 折叠状态由父组件控制（v-model:collapsed），默认展开
   collapsed: { type: Boolean, default: false },
-  // 收起态头部展示的总览数据：{ total, completed, percent }
+  // 收起态头部展示的总览数据：{ total, completed, remaining }
   summary: { type: Object, default: null },
   // 批量完成模式：开启时卡片显示勾选框
   selectMode: { type: Boolean, default: false },
@@ -46,7 +46,6 @@ const toggleCollapse = () => {
           <span class="hs-class-summary-text" :class="{ 'is-done': summary.remaining === 0 }">
             {{ summary.remaining === 0 ? '已完成 ' + summary.completed + '/' + summary.total : '已完成 ' + summary.completed + '/' + summary.total + '，剩余 ' + summary.remaining + ' 个' }}
           </span>
-          <span class="hs-class-summary-pct">{{ summary.percent }}%</span>
         </span>
         <span class="hs-collapse-arrow">{{ collapsed ? '▶' : '▼' }}</span>
       </span>
