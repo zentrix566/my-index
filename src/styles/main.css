@@ -1758,21 +1758,17 @@ a.content-card:hover {
   text-align: right;
 }
 
-/* 职业/版本分组头部：剩余成就数醒目标识 */
-.hs-class-remaining {
-  font-weight: 700;
+/* 职业/版本分组头部：剩余成就数（融入行内文字，不抢眼） */
+.hs-class-header .hs-class-remaining {
+  font-weight: 600;
   font-size: 12px;
   line-height: 1;
-  padding: 3px 9px;
-  border-radius: 999px;
-  color: #fff;
-  background: var(--hs-gold);
+  color: var(--hs-gold);
   white-space: nowrap;
-  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.16);
 }
 
-.hs-class-remaining.is-done {
-  background: var(--hs-primary-bright);
+.hs-class-header .hs-class-remaining.is-done {
+  color: var(--hs-primary-bright);
 }
 
 /* 批量完成工具条 */
