@@ -1732,7 +1732,11 @@ a.content-card:hover {
   opacity: 0.95;
 }
 
-.hs-class-summary-num {
+.hs-class-summary-text {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 1;
+  color: var(--hs-gold);
   white-space: nowrap;
 }
 
@@ -1759,15 +1763,7 @@ a.content-card:hover {
 }
 
 /* 职业/版本分组头部：剩余成就数（融入行内文字，不抢眼） */
-.hs-class-header .hs-class-remaining {
-  font-weight: 600;
-  font-size: 12px;
-  line-height: 1;
-  color: var(--hs-gold);
-  white-space: nowrap;
-}
-
-.hs-class-header .hs-class-remaining.is-done {
+.hs-class-header .hs-class-summary-text.is-done {
   color: var(--hs-primary-bright);
 }
 

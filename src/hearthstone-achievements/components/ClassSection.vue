@@ -43,10 +43,9 @@ const toggleCollapse = () => {
       <span class="hs-class-name">{{ heroClass }}</span>
       <span class="hs-class-header-right">
         <span v-if="summary" class="hs-class-summary">
-          <span class="hs-class-remaining" :class="{ 'is-done': summary.remaining === 0 }">
-            {{ summary.remaining === 0 ? '已完成' : '剩 ' + summary.remaining + ' 个' }}
+          <span class="hs-class-summary-text" :class="{ 'is-done': summary.remaining === 0 }">
+            {{ summary.remaining === 0 ? '已完成 ' + summary.completed + '/' + summary.total : '已完成 ' + summary.completed + '/' + summary.total + '，剩余 ' + summary.remaining + ' 个' }}
           </span>
-          <span class="hs-class-summary-num">{{ summary.completed }}/{{ summary.total }}</span>
           <span class="hs-class-summary-bar">
             <span class="hs-class-summary-fill" :style="{ width: summary.percent + '%' }"></span>
           </span>
