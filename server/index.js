@@ -283,12 +283,12 @@ app.get('/api/achievements/progress', async (req, res) => {
       return res.json({})
     }
     const data = await getProgress(userId)
-    const payload = JSON.stringify(data)
     const entryCount = Object.keys(data).length
-    appLog('PROGRESS', `GET user=${userId} 条目=${entryCount} 原始=${(payload.length / 1024).toFixed(1)}KB`)
+    const rawSize = Buffer.byteLength(JSON.stringify(data))
+    appLog('PROGRESS', `GET user=${userId} 条目=${entryCount} 原始=${(rawSize / 1024).toFixed(1)}KB`)
     res.set('X-Progress-Count', String(entryCount))
-    res.set('X-Progress-Size', String(payload.length))
-    res.send(payload)
+    res.set('X-Progress-Size', String(rawSize))
+    res.json(data)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
@@ -312,9 +312,7 @@ app.get('/api/achievements/example', async (req, res) => {
 })
 
 // 保存当前登录用户的进度（upsert）。
-// 支持两种格式：
-//   旧格式：{ stages: {"0":true,"1":false}, count:N }
-//   精简格式：{ s:[0,1], c:N } （传输体积更小，推荐）
+// 进度格式：{ stages: {"0":true,"1":false}, count:N }
 // 性能：单条保存免去 BEGIN/COMMIT（单条 upsert 本身原子），多条用 UNNEST 批量 upsert
 // 把 N 次数据库往返降为 1 次，显著缩短高网络延迟下的保存耗时。
 app.put('/api/achievements/progress', requireAuth, async (req, res) => {
@@ -350,51 +348,32 @@ app.put('/api/achievements/progress', requireAuth, async (req, res) => {
       setCost()
       return res.status(400).json({ error: `进度格式错误: ${achId}` })
     }
-    // 兼容精简格式 { s:[indices], c:N } 与旧格式 { stages:{}, count:N }
-    const isCompact = Array.isArray(prog.s) && typeof prog.c === 'number'
-    const count = isCompact ? prog.c : prog.count
-    if (typeof count !== 'number' || !Number.isSafeInteger(count) || count < 0) {
+    if (typeof prog.count !== 'number' || !Number.isSafeInteger(prog.count) || prog.count < 0) {
       setCost()
       return res.status(400).json({ error: `非法 count: ${achId}` })
     }
-
-    let stages
-    if (isCompact) {
-      // 精简格式校验：s 必须是非负整数数组
-      const { stageCount } = getAchievementMeta(achId)
-      for (const idx of prog.s) {
-        if (!Number.isSafeInteger(idx) || idx < 0 || idx >= stageCount) {
+    const count = prog.count
+    const stages = prog.stages
+    if (!stages || typeof stages !== 'object' || Array.isArray(stages)) {
+      setCost()
+      return res.status(400).json({ error: `非法 stages: ${achId}` })
+    }
+    const { stageCount } = getAchievementMeta(achId)
+    for (const [stageKey, v] of Object.entries(stages)) {
+      if (stageKey === '_discovered') {
+        if (!Array.isArray(v) || !v.every((x) => typeof x === 'string')) {
           setCost()
-          return res.status(400).json({ error: `非法阶段索引: ${achId}/${idx}` })
+          return res.status(400).json({ error: `非法 _discovered: ${achId}` })
         }
+        continue
       }
-      // 展开为旧格式对象存入数据库
-      stages = {}
-      for (const idx of prog.s) stages[String(idx)] = true
-    } else {
-      // 旧格式校验（原有逻辑不变）
-      stages = prog.stages
-      if (!stages || typeof stages !== 'object' || Array.isArray(stages)) {
+      if (!/^(0|[1-9]\d*)$/.test(stageKey) || Number(stageKey) >= stageCount) {
         setCost()
-        return res.status(400).json({ error: `非法 stages: ${achId}` })
+        return res.status(400).json({ error: `非法 stage 编号: ${achId}/${stageKey}` })
       }
-      const { stageCount } = getAchievementMeta(achId)
-      for (const [stageKey, v] of Object.entries(stages)) {
-        if (stageKey === '_discovered') {
-          if (!Array.isArray(v) || !v.every((x) => typeof x === 'string')) {
-            setCost()
-            return res.status(400).json({ error: `非法 _discovered: ${achId}` })
-          }
-          continue
-        }
-        if (!/^(0|[1-9]\d*)$/.test(stageKey) || Number(stageKey) >= stageCount) {
-          setCost()
-          return res.status(400).json({ error: `非法 stage 编号: ${achId}/${stageKey}` })
-        }
-        if (typeof v !== 'boolean') {
-          setCost()
-          return res.status(400).json({ error: `非法 stage 值: ${achId}` })
-        }
+      if (typeof v !== 'boolean') {
+        setCost()
+        return res.status(400).json({ error: `非法 stage 值: ${achId}` })
       }
     }
     const meta = getAchievementMeta(achId)

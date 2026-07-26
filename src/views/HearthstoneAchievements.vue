@@ -806,42 +806,25 @@ function confettiStyle(n) {
   }
 }
 
-// 将旧格式 { stages: {"0":true,"1":false}, count:N } 转为精简传输格式 { s:[0,1], c:N }
-// 含 _discovered 的收集类成就保留旧格式（极少见，不值得增加复杂度）
-function toCompactProgress(stages, count) {
-  // 收集类成就保留原格式
-  if (stages && typeof stages === 'object' && !Array.isArray(stages) && stages._discovered) {
-    return { stages: { ...stages }, count: count || 0 }
-  }
-  const s = []
-  if (stages && typeof stages === 'object' && !Array.isArray(stages)) {
-    for (const key of Object.keys(stages)) {
-      if (stages[key]) s.push(Number(key))
-    }
-    s.sort((a, b) => a - b)
-  }
-  return { s, c: count || 0 }
-}
-
 async function saveProgress(payload) {
   if (savingProgress.value) return
   const ach = allAchievements.value.find((a) => a.id === payload.id)
   const wasCompleted = ach ? isAchievementCompleted(ach) : false
   savingProgress.value = true
   try {
-    // 转为精简传输格式 { s:[已完成索引], c:count }
-    const compact = toCompactProgress(payload.stages, payload.count)
     const resp = await fetch('/api/achievements/progress', {
       method: 'PUT',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ progress: { [payload.id]: compact } })
+      body: JSON.stringify({
+        progress: { [payload.id]: { stages: payload.stages, count: payload.count } }
+      })
     })
     if (!resp.ok) {
       const result = await resp.json().catch(() => ({}))
       throw new Error(result.error || '保存失败')
     }
     // 乐观更新：本次保存已成功落库，合并进本地状态即可，无需再整份拉取服务端进度（避免大体积回拉 + 全量重算卡顿）
-    applyLocalProgress({ [payload.id]: compact })
+    applyLocalProgress({ [payload.id]: { stages: payload.stages, count: payload.count } })
     const nowCompleted = ach ? isAchievementCompleted(ach) : false
     // 仅在「从未完成 → 完成」这一刻弹出庆祝，避免重复保存已完成的成就时打扰
     if (!wasCompleted && nowCompleted) showAchievementCelebration(ach)
@@ -903,10 +886,10 @@ async function batchComplete() {
     for (const id of ids) {
       const ach = allAchievements.value.find((a) => a.id === id)
       if (!ach || !ach.stages || ach.stages.length === 0) continue
-      // 精简格式：s 为全部阶段索引（批量完成 = 所有阶段都完成）
-      const s = ach.stages.map((_, i) => i)
-      const c = ach.stages[ach.stages.length - 1].quota
-      progress[id] = { s, c }
+      const stages = {}
+      ach.stages.forEach((_, i) => (stages[i] = true))
+      const count = ach.stages[ach.stages.length - 1].quota
+      progress[id] = { stages, count }
     }
     if (Object.keys(progress).length === 0) {
       showToast('error', '没有可完成的成就')
@@ -1069,13 +1052,8 @@ async function onImportFile(e) {
   reader.onload = async () => {
     try {
       const parsed = JSON.parse(reader.result)
-      const raw = parsed.progress && typeof parsed.progress === 'object' ? parsed.progress : parsed
-      if (!raw || typeof raw !== 'object') throw new Error('文件格式不正确')
-      // 统一转为精简传输格式（兼容旧格式导入文件）
-      const progress = {}
-      for (const [id, prog] of Object.entries(raw)) {
-        progress[id] = toCompactProgress(prog.stages, prog.count)
-      }
+      const progress = parsed.progress && typeof parsed.progress === 'object' ? parsed.progress : parsed
+      if (!progress || typeof progress !== 'object') throw new Error('文件格式不正确')
       const resp = await fetch('/api/achievements/progress', {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },

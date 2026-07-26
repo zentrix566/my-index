@@ -92,44 +92,24 @@ export function useAchievementProgress(progressRef) {
 
   /**
    * 判断某阶段是否已完成
-   * 兼容两种格式：
-   *   旧格式：{ stages: {"0":true,"1":false}, count:N }
-   *   精简格式：{ s:[0,1], c:N } （s 为已完成阶段索引数组）
-   *
-   * 关键规则：累计/收集类成就必须用 count 与 quota 判定，
-   * 不能用 s 数组（s 只记录显式勾选的阶段索引，累计成就靠 count 推算）。
+   * 进度格式：{ stages: {"0":true,"1":false}, count:N }
    */
   function isStageCompleted(achievement, stageIdx) {
     const ach = progress.value[achievement.id]
     if (!ach) return false
-
-    // 收集类成就（trackClasses / trackItems）：完成度由「已发现项数」（count）与各阶段 quota 决定
+    // trackClasses / trackItems 成就：完成度由「已发现项数」（count）与各阶段 quota 决定，
+    // 不读 stages 布尔标记（一次性成就也适用，如「变化成 N 个不同职业的随从」）。
     if (achievement.trackClasses || achievement.trackItems) {
       const stage = achievement.stages?.[stageIdx]
       if (!stage) return false
-      return ((ach.c ?? ach.count) || 0) >= stage.quota
+      return (ach.count || 0) >= stage.quota
     }
-
-    // 累计成就：必须用 count 与 quota 判定（不能用 s 数组，s 只记录显式标记的阶段）
-    if (achievement.type === '累计') {
-      const count = ach.c ?? ach.count
-      if (count != null && achievement.stages?.[stageIdx]) {
-        return count >= achievement.stages[stageIdx].quota
-      }
-      // 无 count 时降级到 s 数组检查（兜底）
-      if (Array.isArray(ach.s)) {
-        return ach.s.includes(stageIdx)
-      }
-      return false
-    }
-
-    // 一次性成就：精简格式 { s:[已完成的阶段索引] }
-    if (Array.isArray(ach.s)) {
-      return ach.s.includes(stageIdx)
-    }
-
-    // 一次性成就：旧格式 { stages:{"0":true,...} }
+    // 手动勾选（一次性成就的阶段布尔标记）
     if (ach.stages?.[String(stageIdx)]) return true
+    // 累计成就：按 count 与 quota 判定（一次性成就的完成只由 stages 布尔标记决定，不读 count）
+    if (achievement.type === '累计' && ach.count != null && achievement.stages?.[stageIdx]) {
+      return ach.count >= achievement.stages[stageIdx].quota
+    }
     return false
   }
 
@@ -138,8 +118,8 @@ export function useAchievementProgress(progressRef) {
    */
   function getCount(achievement) {
     const ach = progress.value[achievement.id]
-    if (!ach) return null
-    return ach.c ?? ach.count ?? null
+    if (!ach || ach.count == null) return null
+    return ach.count
   }
 
   /**
