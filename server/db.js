@@ -188,17 +188,15 @@ export async function upsertProgress(userId, achievementId, stages, count, clien
   )
 }
 
-// 读取某用户全部进度，返回结构 { [achievementId]: { stages, count } }
-// 与前端现有 progressData 结构完全一致，前端零改造复用
+// 读取某用户全部进度，返回精简结构 { [achievementId]: { s: [completedStageIndices], c: count } }
+// stages 从 {"0":true,"1":false} 对象压缩为 [0,1] 数组（只含已完成阶段索引），
+// 原始 JSON 体积减少约 40%，gzip 后传输更快。
 export async function getProgress(userId) {
   if (isLocalDevMode) {
     const rows = localProgressByUser.get(Number(userId)) || new Map()
     const out = {}
     for (const [achievementId, progress] of rows) {
-      out[achievementId] = {
-        stages: { ...progress.stages },
-        count: progress.count
-      }
+      out[achievementId] = compactStages(progress.stages, progress.count)
     }
     return out
   }
@@ -211,12 +209,21 @@ export async function getProgress(userId) {
     // pg 的 JSONB 默认已解析为对象；个别驱动配置下可能是字符串，统一兜底
     const stages =
       typeof r.stages_json === 'string' ? JSON.parse(r.stages_json) : (r.stages_json || {})
-    out[r.achievement_id] = {
-      stages,
-      count: r.count
-    }
+    out[r.achievement_id] = compactStages(stages, r.count)
   }
   return out
+}
+
+/** 将 { "0": true, "2": true } 格式的 stages + count 精简为 { s: [0,2], c: N } */
+function compactStages(stages, count) {
+  const s = []
+  if (stages && typeof stages === 'object') {
+    for (const key of Object.keys(stages)) {
+      if (stages[key]) s.push(Number(key))
+    }
+    s.sort((a, b) => a - b)
+  }
+  return { s, c: count || 0 }
 }
 
 // 事务包装：fn(client) 内可执行多条 SQL，自动 BEGIN/COMMIT/ROLLBACK

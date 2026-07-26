@@ -92,17 +92,28 @@ export function useAchievementProgress(progressRef) {
 
   /**
    * 判断某阶段是否已完成
+   * 兼容两种格式：
+   *   旧格式：{ stages: {"0":true,"1":false}, count:N }
+   *   精简格式：{ s:[0,1], c:N } （s 为已完成阶段索引数组）
    */
   function isStageCompleted(achievement, stageIdx) {
     const ach = progress.value[achievement.id]
     if (!ach) return false
+
     // trackClasses / trackItems 成就：完成度由「已发现项数」（count）与各阶段 quota 决定，
     // 不读 stages 布尔标记（一次性成就也适用，如「变化成 N 个不同职业的随从」）。
     if (achievement.trackClasses || achievement.trackItems) {
       const stage = achievement.stages?.[stageIdx]
       if (!stage) return false
-      return (ach.count || 0) >= stage.quota
+      return ((ach.c ?? ach.count) || 0) >= stage.quota
     }
+
+    // 精简格式 { s:[indices], c:N }
+    if (Array.isArray(ach.s)) {
+      return ach.s.includes(stageIdx)
+    }
+
+    // 旧格式 { stages:{"0":true,...}, count:N }
     // 手动勾选（一次性成就的阶段布尔标记）
     if (ach.stages?.[String(stageIdx)]) return true
     // 累计成就：按 count 与 quota 判定（一次性成就的完成只由 stages 布尔标记决定，不读 count）
@@ -117,8 +128,8 @@ export function useAchievementProgress(progressRef) {
    */
   function getCount(achievement) {
     const ach = progress.value[achievement.id]
-    if (!ach || ach.count == null) return null
-    return ach.count
+    if (!ach) return null
+    return ach.c ?? ach.count ?? null
   }
 
   /**

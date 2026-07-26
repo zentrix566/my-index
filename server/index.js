@@ -282,8 +282,12 @@ app.get('/api/achievements/progress', async (req, res) => {
       return res.json({})
     }
     const data = await getProgress(userId)
-    appLog('PROGRESS', `GET user=${userId} 条目=${Object.keys(data).length}`)
-    res.json(data)
+    const payload = JSON.stringify(data)
+    const entryCount = Object.keys(data).length
+    appLog('PROGRESS', `GET user=${userId} 条目=${entryCount} 原始=${(payload.length / 1024).toFixed(1)}KB`)
+    res.set('X-Progress-Count', String(entryCount))
+    res.set('X-Progress-Size', String(payload.length))
+    res.send(payload)
   } catch (err) {
     res.status(500).json({ error: err.message })
   }
@@ -307,6 +311,9 @@ app.get('/api/achievements/example', async (req, res) => {
 })
 
 // 保存当前登录用户的进度（整份草稿 upsert，事务保证原子）
+// 支持两种格式：
+//   旧格式：{ stages: {"0":true,"1":false}, count:N }
+//   精简格式：{ s:[0,1], c:N } （传输体积更小，推荐）
 app.put('/api/achievements/progress', requireAuth, async (req, res) => {
   const progress = req.body && req.body.progress
   if (!progress || typeof progress !== 'object') {
@@ -326,27 +333,45 @@ app.put('/api/achievements/progress', requireAuth, async (req, res) => {
           throw new Error(`未知成就 ID: ${achId}`)
         }
         if (!prog || typeof prog !== 'object') throw new Error(`进度格式错误: ${achId}`)
-        if (typeof prog.count !== 'number' || !Number.isSafeInteger(prog.count) || prog.count < 0) {
+
+        // 兼容精简格式 { s:[indices], c:N } 与旧格式 { stages:{}, count:N }
+        const isCompact = Array.isArray(prog.s) && typeof prog.c === 'number'
+        const count = isCompact ? prog.c : prog.count
+        if (typeof count !== 'number' || !Number.isSafeInteger(count) || count < 0) {
           throw new Error(`非法 count: ${achId}`)
         }
-        const count = prog.count
-        const stages = prog.stages
-        if (!stages || typeof stages !== 'object' || Array.isArray(stages)) {
-          throw new Error(`非法 stages: ${achId}`)
-        }
-        const { stageCount } = getAchievementMeta(achId)
-        for (const [stageKey, v] of Object.entries(stages)) {
-          // 元数据键：_discovered 记录「已发现职业」数组（用于收集类成就），跳过数字编号校验
-          if (stageKey === '_discovered') {
-            if (!Array.isArray(v) || !v.every((x) => typeof x === 'string')) {
-              throw new Error(`非法 _discovered: ${achId}`)
+
+        let stages
+        if (isCompact) {
+          // 精简格式校验：s 必须是非负整数数组
+          const { stageCount } = getAchievementMeta(achId)
+          for (const idx of prog.s) {
+            if (!Number.isSafeInteger(idx) || idx < 0 || idx >= stageCount) {
+              throw new Error(`非法阶段索引: ${achId}/${idx}`)
             }
-            continue
           }
-          if (!/^(0|[1-9]\d*)$/.test(stageKey) || Number(stageKey) >= stageCount) {
-            throw new Error(`非法 stage 编号: ${achId}/${stageKey}`)
+          // 展开为旧格式对象存入数据库
+          stages = {}
+          for (const idx of prog.s) stages[String(idx)] = true
+        } else {
+          // 旧格式校验（原有逻辑不变）
+          stages = prog.stages
+          if (!stages || typeof stages !== 'object' || Array.isArray(stages)) {
+            throw new Error(`非法 stages: ${achId}`)
           }
-          if (typeof v !== 'boolean') throw new Error(`非法 stage 值: ${achId}`)
+          const { stageCount } = getAchievementMeta(achId)
+          for (const [stageKey, v] of Object.entries(stages)) {
+            if (stageKey === '_discovered') {
+              if (!Array.isArray(v) || !v.every((x) => typeof x === 'string')) {
+                throw new Error(`非法 _discovered: ${achId}`)
+              }
+              continue
+            }
+            if (!/^(0|[1-9]\d*)$/.test(stageKey) || Number(stageKey) >= stageCount) {
+              throw new Error(`非法 stage 编号: ${achId}/${stageKey}`)
+            }
+            if (typeof v !== 'boolean') throw new Error(`非法 stage 值: ${achId}`)
+          }
         }
         await upsertProgress(req.userId, achId, stages, count, client)
       }
