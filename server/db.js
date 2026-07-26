@@ -188,6 +188,48 @@ export async function upsertProgress(userId, achievementId, stages, count, clien
   )
 }
 
+// 批量 upsert 进度：用 UNNEST 把 N 条插入合并为单条 SQL，将 N 次数据库往返降为 1 次。
+// 与单条 upsertProgress 语义一致（ON CONFLICT 更新同列），仅减少往返次数，高网络延迟下收益明显。
+// entries: [{ achievementId, stages, count, name, version, heroClass }]
+export async function bulkUpsertProgress(userId, entries, client) {
+  if (!entries || entries.length === 0) return
+  if (isLocalDevMode) {
+    for (const e of entries) {
+      await upsertProgress(userId, e.achievementId, e.stages, e.count, client)
+    }
+    return
+  }
+  const achievementIds = []
+  const stagesArr = []
+  const counts = []
+  const names = []
+  const versions = []
+  const heroClasses = []
+  for (const e of entries) {
+    achievementIds.push(e.achievementId)
+    stagesArr.push(JSON.stringify(e.stages || {}))
+    counts.push(e.count || 0)
+    names.push(e.name)
+    versions.push(e.version)
+    heroClasses.push(e.heroClass)
+  }
+  const q = client || pool
+  await q.query(
+    `INSERT INTO achievement_progress (user_id, achievement_id, stages_json, count, achievement_name, version, hero_class, updated_at)
+     SELECT $1, u.achievement_id, u.stages_json::jsonb, u.count, u.achievement_name, u.version, u.hero_class, now()
+     FROM UNNEST($2::text[], $3::text[], $4::int[], $5::text[], $6::text[], $7::text[])
+       AS u(achievement_id, stages_json, count, achievement_name, version, hero_class)
+     ON CONFLICT (user_id, achievement_id) DO UPDATE SET
+       stages_json = EXCLUDED.stages_json,
+       count = EXCLUDED.count,
+       achievement_name = EXCLUDED.achievement_name,
+       version = EXCLUDED.version,
+       hero_class = EXCLUDED.hero_class,
+       updated_at = now()`,
+    [userId, achievementIds, stagesArr, counts, names, versions, heroClasses]
+  )
+}
+
 // 读取某用户全部进度，返回精简结构 { [achievementId]: { s: [completedStageIndices], c: count } }
 // stages 从 {"0":true,"1":false} 对象压缩为 [0,1] 数组（只含已完成阶段索引），
 // 原始 JSON 体积减少约 40%，gzip 后传输更快。

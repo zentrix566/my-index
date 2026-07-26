@@ -16,6 +16,7 @@ import {
   closeDatabase,
   getProgress,
   upsertProgress,
+  bulkUpsertProgress,
   getUserByUsername,
   getAiUsage,
   incrementAiUsage,
@@ -310,81 +311,125 @@ app.get('/api/achievements/example', async (req, res) => {
   }
 })
 
-// 保存当前登录用户的进度（整份草稿 upsert，事务保证原子）
+// 保存当前登录用户的进度（upsert）。
 // 支持两种格式：
 //   旧格式：{ stages: {"0":true,"1":false}, count:N }
 //   精简格式：{ s:[0,1], c:N } （传输体积更小，推荐）
+// 性能：单条保存免去 BEGIN/COMMIT（单条 upsert 本身原子），多条用 UNNEST 批量 upsert
+// 把 N 次数据库往返降为 1 次，显著缩短高网络延迟下的保存耗时。
 app.put('/api/achievements/progress', requireAuth, async (req, res) => {
+  const t0 = Date.now()
   const progress = req.body && req.body.progress
+  const setCost = () => res.set('X-Save-Time-Ms', String(Date.now() - t0))
   if (!progress || typeof progress !== 'object') {
+    setCost()
     return res.status(400).json({ error: 'progress 格式错误' })
   }
   const entries = Object.entries(progress)
-  if (entries.length === 0) return res.status(400).json({ error: '没有要保存的进度' })
-  if (entries.length > 2000) return res.status(400).json({ error: '进度条目过多' })
+  if (entries.length === 0) {
+    setCost()
+    return res.status(400).json({ error: '没有要保存的进度' })
+  }
+  if (entries.length > 2000) {
+    setCost()
+    return res.status(400).json({ error: '进度条目过多' })
+  }
+
+  // 1) 纯内存校验 + 规整（不碰数据库），校验失败直接 400 返回
+  const payload = []
+  for (const [achId, prog] of entries) {
+    if (typeof achId !== 'string' || !/^[a-z0-9_-]+$/i.test(achId)) {
+      setCost()
+      return res.status(400).json({ error: `非法成就 ID: ${achId}` })
+    }
+    if (!hasAchievementMeta(achId)) {
+      setCost()
+      return res.status(400).json({ error: `未知成就 ID: ${achId}` })
+    }
+    if (!prog || typeof prog !== 'object') {
+      setCost()
+      return res.status(400).json({ error: `进度格式错误: ${achId}` })
+    }
+    // 兼容精简格式 { s:[indices], c:N } 与旧格式 { stages:{}, count:N }
+    const isCompact = Array.isArray(prog.s) && typeof prog.c === 'number'
+    const count = isCompact ? prog.c : prog.count
+    if (typeof count !== 'number' || !Number.isSafeInteger(count) || count < 0) {
+      setCost()
+      return res.status(400).json({ error: `非法 count: ${achId}` })
+    }
+
+    let stages
+    if (isCompact) {
+      // 精简格式校验：s 必须是非负整数数组
+      const { stageCount } = getAchievementMeta(achId)
+      for (const idx of prog.s) {
+        if (!Number.isSafeInteger(idx) || idx < 0 || idx >= stageCount) {
+          setCost()
+          return res.status(400).json({ error: `非法阶段索引: ${achId}/${idx}` })
+        }
+      }
+      // 展开为旧格式对象存入数据库
+      stages = {}
+      for (const idx of prog.s) stages[String(idx)] = true
+    } else {
+      // 旧格式校验（原有逻辑不变）
+      stages = prog.stages
+      if (!stages || typeof stages !== 'object' || Array.isArray(stages)) {
+        setCost()
+        return res.status(400).json({ error: `非法 stages: ${achId}` })
+      }
+      const { stageCount } = getAchievementMeta(achId)
+      for (const [stageKey, v] of Object.entries(stages)) {
+        if (stageKey === '_discovered') {
+          if (!Array.isArray(v) || !v.every((x) => typeof x === 'string')) {
+            setCost()
+            return res.status(400).json({ error: `非法 _discovered: ${achId}` })
+          }
+          continue
+        }
+        if (!/^(0|[1-9]\d*)$/.test(stageKey) || Number(stageKey) >= stageCount) {
+          setCost()
+          return res.status(400).json({ error: `非法 stage 编号: ${achId}/${stageKey}` })
+        }
+        if (typeof v !== 'boolean') {
+          setCost()
+          return res.status(400).json({ error: `非法 stage 值: ${achId}` })
+        }
+      }
+    }
+    const meta = getAchievementMeta(achId)
+    payload.push({
+      achievementId: achId,
+      count,
+      stages,
+      name: meta.name,
+      version: meta.version,
+      heroClass: meta.heroClass
+    })
+  }
 
   try {
-    await transaction(async (client) => {
-      for (const [achId, prog] of entries) {
-        if (typeof achId !== 'string' || !/^[a-z0-9_-]+$/i.test(achId)) {
-          throw new Error(`非法成就 ID: ${achId}`)
-        }
-        if (!hasAchievementMeta(achId)) {
-          throw new Error(`未知成就 ID: ${achId}`)
-        }
-        if (!prog || typeof prog !== 'object') throw new Error(`进度格式错误: ${achId}`)
-
-        // 兼容精简格式 { s:[indices], c:N } 与旧格式 { stages:{}, count:N }
-        const isCompact = Array.isArray(prog.s) && typeof prog.c === 'number'
-        const count = isCompact ? prog.c : prog.count
-        if (typeof count !== 'number' || !Number.isSafeInteger(count) || count < 0) {
-          throw new Error(`非法 count: ${achId}`)
-        }
-
-        let stages
-        if (isCompact) {
-          // 精简格式校验：s 必须是非负整数数组
-          const { stageCount } = getAchievementMeta(achId)
-          for (const idx of prog.s) {
-            if (!Number.isSafeInteger(idx) || idx < 0 || idx >= stageCount) {
-              throw new Error(`非法阶段索引: ${achId}/${idx}`)
-            }
-          }
-          // 展开为旧格式对象存入数据库
-          stages = {}
-          for (const idx of prog.s) stages[String(idx)] = true
-        } else {
-          // 旧格式校验（原有逻辑不变）
-          stages = prog.stages
-          if (!stages || typeof stages !== 'object' || Array.isArray(stages)) {
-            throw new Error(`非法 stages: ${achId}`)
-          }
-          const { stageCount } = getAchievementMeta(achId)
-          for (const [stageKey, v] of Object.entries(stages)) {
-            if (stageKey === '_discovered') {
-              if (!Array.isArray(v) || !v.every((x) => typeof x === 'string')) {
-                throw new Error(`非法 _discovered: ${achId}`)
-              }
-              continue
-            }
-            if (!/^(0|[1-9]\d*)$/.test(stageKey) || Number(stageKey) >= stageCount) {
-              throw new Error(`非法 stage 编号: ${achId}/${stageKey}`)
-            }
-            if (typeof v !== 'boolean') throw new Error(`非法 stage 值: ${achId}`)
-          }
-        }
-        await upsertProgress(req.userId, achId, stages, count, client)
-      }
-    })
-    const achievementIds = entries.map(([achievementId]) => achievementId)
+    if (payload.length === 1) {
+      // 单条保存：单条 upsert 本身即原子，省去 BEGIN/COMMIT 两次数据库往返
+      const p = payload[0]
+      await upsertProgress(req.userId, p.achievementId, p.stages, p.count)
+    } else {
+      // 多条保存：单次 UNNEST 批量 upsert（事务保证原子），N 条查询 → 1 条查询
+      await transaction(async (client) => {
+        await bulkUpsertProgress(req.userId, payload, client)
+      })
+    }
+    const achievementIds = payload.map((p) => p.achievementId)
     const loggedIds = achievementIds.slice(0, 20).join(',')
     const omitted = achievementIds.length > 20 ? `,另有${achievementIds.length - 20}条` : ''
-    appLog('PROGRESS', `PUT user=${req.userId} 保存=${entries.length} 条 ids=${loggedIds}${omitted}`)
-    res.json({ ok: true, saved: entries.length })
+    appLog('PROGRESS', `PUT user=${req.userId} 保存=${payload.length} 条 ids=${loggedIds}${omitted} 耗时=${Date.now() - t0}ms`)
+    setCost()
+    res.json({ ok: true, saved: payload.length })
   } catch (err) {
     const errorMessage = String(err?.message || 'unknown').replace(/[\r\n]+/g, ' ')
     const isDatabaseError = Boolean(err?.code)
     appLog('ERROR', `进度保存失败: user=${req.userId}, error=${errorMessage}`)
+    setCost()
     res.status(isDatabaseError ? 500 : 400).json({
       error: isDatabaseError ? '进度保存失败，请稍后重试' : errorMessage
     })
