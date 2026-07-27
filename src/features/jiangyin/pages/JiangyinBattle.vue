@@ -256,7 +256,7 @@ const popupStyle = computed(() => ({
   box-shadow: var(--shadow-card);
 }
 
-/* 古风地图底图：把图片放到 public/jiangyin-map.png 即可生效 */
+/* 古风地图底图：图片已迁至 OSS，经 /site-assets/jiangyin-map.webp 由服务端反代加载 */
 .map-bg {
   position: absolute;
   inset: 0;

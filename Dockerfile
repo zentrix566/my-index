@@ -16,7 +16,6 @@ RUN npm ci
 
 COPY index.html vite.config.js ./
 COPY favicon.svg ./
-COPY public/ ./public/
 COPY src/ ./src/
 
 # 卡牌图 OSS 基地址：构建时经 docker build-arg 传入（Vite 在 build 时把 import.meta.env.VITE_* 编译进产物）。
