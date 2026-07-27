@@ -17,8 +17,8 @@
         </button>
         <ul class="nav-links" :class="{ active: isMenuOpen }">
           <li><RouterLink to="/" @click="closeMenu">首页</RouterLink></li>
-          <li><RouterLink to="/projects" @click="closeMenu">项目</RouterLink></li>
-          <li><RouterLink to="/vue-apps" @click="closeMenu">Vue 项目</RouterLink></li>
+          <li><RouterLink to="/projects" @click="closeMenu">工作项目</RouterLink></li>
+          <li><RouterLink to="/vue-apps" @click="closeMenu">个人项目</RouterLink></li>
           <li><RouterLink to="/about" @click="closeMenu">关于</RouterLink></li>
         </ul>
       </nav>

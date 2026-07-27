@@ -1,13 +1,13 @@
 # Zentrix 个人索引
 
-这是一个 Vue/Vite 个人索引站，围绕两条线索组织：**运维/AIOps 项目** 和 **我自己写的 Vue 项目**。首页给出精简概览，可分别进入「项目」和「Vue 项目」两个板块。
+这是一个 Vue/Vite 个人索引站，围绕两条线索组织：**工作项目** 和 **个人项目**。首页给出精简概览，可分别进入"工作项目"和"个人项目"两个板块。
 
 生产环境由 Node.js 服务同时提供 Vue 构建产物和后端 API，用户、登录状态与成就进度存储在 PostgreSQL；Kubernetes 采用单常驻副本、发布时临时扩容一个 Pod 的滚动更新策略。
 
 ## 当前内容
 
-- **项目**：AIOps MCP Analyzer、OpsAgentAI、CI/CD 流水线实践。
-- **Vue 项目**（`/vue-apps`）：把自己写的小页面/小工具收拢成卡片索引，点卡片直接进入：
+- **工作项目**：EdgeCompute Lab、AIOps MCP Analyzer、OpsAgentAI、CI/CD 流水线实践。
+- **个人项目**（`/vue-apps`）：把自己写的小页面/小工具收拢成卡片索引，点卡片直接进入：
   - AIOps 智能运维控制台（`/aiops`）：告警筛选、根因分析、MCP 证据与 AI 助手演示。
   - 400 米间歇训练（`/interval-training`）：配速趋势图、评级、日历与导入导出。
   - 人生倒计时（`/countdown`）：按生日与性别估算 35 岁斩杀线、退休与预期寿命。

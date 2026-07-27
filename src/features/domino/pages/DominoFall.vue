@@ -222,7 +222,7 @@ onBeforeUnmount(() => {
 <template>
   <main class="domino">
     <header class="top">
-      <RouterLink to="/vue-apps" class="back">← 返回 Vue 项目</RouterLink>
+      <RouterLink to="/vue-apps" class="back">← 返回个人项目</RouterLink>
       <h1>多米诺骨牌 · 沿路线连锁倒下</h1>
       <p class="subtitle">在下面区域按住鼠标画一条路线，松手生成骨牌，再点「推倒」。</p>
     </header>

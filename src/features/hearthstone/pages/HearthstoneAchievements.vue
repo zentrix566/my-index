@@ -127,17 +127,27 @@
               <template v-else>{{ myViewSubLabel }}</template>
             </p>
           </div>
-          <button
+          <details
             v-if="viewMode === 'expansion' && currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0"
-            type="button"
-            class="hs-guide-btn hs-guide-btn-inline"
-            @click="openGuideLinks(currentExpansion.referenceLinks)"
+            class="hs-guide-dropdown hs-guide-dropdown-inline"
           >
-            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-            </svg>
-            攻略
-          </button>
+            <summary class="hs-guide-btn-inline">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+              </svg>
+              攻略
+            </summary>
+            <div class="hs-guide-menu">
+              <a
+                v-for="link in currentExpansion.referenceLinks"
+                :key="link.url"
+                :href="link.url"
+                target="_blank"
+                rel="noopener noreferrer"
+                class="hs-guide-menu-item"
+              >{{ link.name }}</a>
+            </div>
+          </details>
         </div>
         <div class="hs-top-actions">
           <!-- 我的成就：子切换（按版本/按职业/待完成清单）移入顶栏左侧，填充奖杯行空白；展开/收起为独立按钮（同按版本浏览） -->
@@ -362,18 +372,28 @@
           <button type="button" class="hs-btn hs-btn-ghost" @click="cancelBatch">取消</button>
         </template>
       </template>
-      <!-- 攻略：跟在导出/批量完成之后，高度与其余操作按钮一致 -->
-      <button
+      <!-- 攻略：跟在导出/批量完成之后；下拉展示各攻略标题，点击在新标签打开 -->
+      <details
         v-if="myGroupBy === 'expansion' && currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0"
-        type="button"
-        class="hs-guide-btn"
-        @click="openGuideLinks(currentExpansion.referenceLinks)"
+        class="hs-guide-dropdown"
       >
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-        </svg>
-        攻略
-      </button>
+        <summary class="hs-guide-btn">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
+          </svg>
+          攻略
+        </summary>
+        <div class="hs-guide-menu">
+          <a
+            v-for="link in currentExpansion.referenceLinks"
+            :key="link.url"
+            :href="link.url"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="hs-guide-menu-item"
+          >{{ link.name }}</a>
+        </div>
+      </details>
     </div>
 
     <div v-if="progressLoading" class="hs-progress-status" role="status">正在加载成就进度…</div>
@@ -1683,13 +1703,6 @@ const openDeckDetail = (deck) => {
   deckDetailVisible.value = true
 }
 
-// 攻略按钮：在新标签打开当前扩展包的参考链接（营地攻略等）
-const openGuideLinks = (links) => {
-  if (!links || !links.length) return
-  for (const link of links) {
-    if (link && link.url) window.open(link.url, '_blank', 'noopener,noreferrer')
-  }
-}
 
 const getClassStyle = (heroClass) => ({
   '--hs-class-color': classColors[heroClass] || '#8b7355'
@@ -1961,6 +1974,7 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
 
 /* ===== 本次布局调整新增样式 ===== */
 /* 标题行内联攻略按钮（按版本浏览，与版本名/成就数同一行） */
+/* 攻略：标题行内联按钮（summary，去掉默认三角箭头） */
 .hs-guide-btn-inline {
   display: inline-flex;
   align-items: center;
@@ -1976,9 +1990,63 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
   color: #15803d;
   background: rgba(21, 128, 61, 0.1);
   cursor: pointer;
+  list-style: none;
   transition: all .15s;
 }
+.hs-guide-btn-inline::-webkit-details-marker { display: none; }
 .hs-guide-btn-inline:hover { background: rgba(21, 128, 61, 0.18); }
+
+/* 攻略：动作行按钮（summary） */
+.hs-guide-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: auto;
+  padding: 8px 14px;
+  border: 1px solid rgba(21, 128, 61, 0.35);
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #15803d;
+  background: rgba(21, 128, 61, 0.1);
+  cursor: pointer;
+  list-style: none;
+  transition: all .15s;
+}
+.hs-guide-btn::-webkit-details-marker { display: none; }
+.hs-guide-btn:hover { background: rgba(21, 128, 61, 0.18); }
+
+/* 攻略：下拉容器与菜单（列出各攻略标题，点击在新标签打开） */
+.hs-guide-dropdown { position: relative; display: inline-block; }
+.hs-guide-dropdown[open] > summary { background: rgba(21, 128, 61, 0.18); }
+.hs-guide-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 30;
+  min-width: 260px;
+  max-width: 320px;
+  padding: 6px;
+  background: #ffffff;
+  border: 1px solid rgba(21, 128, 61, 0.25);
+  border-radius: 10px;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.hs-guide-menu-item {
+  display: block;
+  padding: 8px 10px;
+  border-radius: 7px;
+  font-size: 13px;
+  line-height: 1.4;
+  color: #1f2937;
+  text-decoration: none;
+  background: transparent;
+  transition: background .12s, color .12s;
+}
+.hs-guide-menu-item:hover { background: rgba(21, 128, 61, 0.12); color: #15803d; }
 
 /* 硬核模式 ON/OFF 开关 */
 .hs-toggle {

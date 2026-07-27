@@ -1,4 +1,4 @@
-// 我自己做的 Vue 项目索引：新增页面只需在这里追加一项
+// 我自己做的个人项目索引：新增页面只需在这里追加一项
 export const vueApps = [
   {
     to: '/hearthstone',

@@ -1,7 +1,74 @@
 export const projects = [
   {
+    slug: 'edge-compute-lab',
+    category: '边缘计算',
+    group: '工作项目',
+    title: 'EdgeCompute Lab',
+    summary: '基于 Terraform、Ansible、K3s 与 Prometheus 的边缘算力节点自动化交付、监控与故障恢复实验平台。',
+    tags: ['Terraform', 'Ansible', 'K3s', 'Prometheus', '边缘计算'],
+    overview: '模拟企业在多个边缘站点部署计算节点的场景，覆盖从虚拟机创建、系统初始化、集群纳管、应用部署、统一监控到故障恢复的完整生命周期，用于验证边缘节点管理与自动化交付方案。',
+    highlights: [
+      '使用 Terraform 参数化创建边缘虚拟节点、NAT 网络与磁盘，重复执行保持幂等。',
+      '使用 Ansible 完成 Linux 安全基线、SSH 加固、配置漂移检测与 K3s 集群部署。',
+      '使用 K3s 构建轻量边缘容器集群，验证节点标签、污点与亲和性调度。',
+      '使用 Prometheus / Grafana / Alertmanager 建立主机、容器、存储统一监控与分级告警。',
+      '通过节点失联、磁盘容量、Pod 重启等可重复故障演练固化恢复闭环。'
+    ],
+    stack: ['Terraform', 'KVM/libvirt', 'Ansible', 'K3s', 'Prometheus', 'Grafana', 'Alertmanager'],
+    flow: [
+      {
+        step: 1,
+        title: '资源编排',
+        tool: 'Terraform + KVM/libvirt',
+        desc: '用声明式配置创建三台边缘虚拟节点、NAT 网络与系统盘，支持重复执行且保持幂等。',
+        points: ['参数化 CPU、内存、磁盘与 IP', 'cloud-init 注入运维用户与 SSH 公钥', '第二次 plan 无预期变更即幂等']
+      },
+      {
+        step: 2,
+        title: '系统初始化',
+        tool: 'Ansible',
+        desc: '完成 Linux 安全基线、SSH 加固、时间同步、软件源与监控 Agent 部署。',
+        points: ['禁止 root 远程登录与密码登录', '配置文件句柄与日志轮转', '安装 node-exporter 采集主机指标']
+      },
+      {
+        step: 3,
+        title: '集群纳管',
+        tool: 'K3s',
+        desc: '自动安装一主两从轻量边缘容器集群，验证节点标签、污点与亲和性调度。',
+        points: ['安全传递集群 Token 并自动加入 Worker', '设置 site、compute-type 等节点标签', '为专用计算节点添加污点实现调度隔离']
+      },
+      {
+        step: 4,
+        title: '应用部署',
+        tool: 'Kubernetes',
+        desc: '部署带健康检查与资源限制的示例应用，覆盖滚动发布与中断保护。',
+        points: ['startup / readiness / liveness 三类探针', 'CPU/内存 requests 与 limits', 'PodDisruptionBudget 保护可用性']
+      },
+      {
+        step: 5,
+        title: '统一监控',
+        tool: 'Prometheus / Grafana',
+        desc: '建立主机、容器、存储统一监控与分级告警，覆盖常见故障信号。',
+        points: ['NodeDown、高 CPU、磁盘容量等告警规则', 'Alertmanager 分级与恢复通知', 'Grafana 主机与集群可视化面板']
+      }
+    ],
+    recovery: {
+      title: '故障恢复闭环',
+      desc: '通过可重复演练，把"故障 → 发现 → 定位 → 恢复 → 验证"固化成标准运维动作。',
+      steps: [
+        { title: '故障注入', desc: '停止节点、写满测试盘或部署错误版本，模拟真实异常。' },
+        { title: '告警发现', desc: 'Prometheus 触发 Firing，Alertmanager 推送至通知渠道。' },
+        { title: '定位诊断', desc: '结合监控指标与 MCP 工具快速定位根因。' },
+        { title: '恢复处置', desc: 'Terraform 重建节点 / Ansible 修复漂移 / 回滚错误版本。' },
+        { title: '验证闭环', desc: '节点回到 Ready，告警转为 Resolved，演练记录归档。' }
+      ]
+    },
+    links: {}
+  },
+  {
     slug: 'aiops-mcp-analyzer',
     category: 'Linux 诊断',
+    group: '工作项目',
     title: 'AIOps MCP Analyzer',
     summary: '基于 MCP 工具补查、规则分析与 DeepSeek 归因的轻量级 Linux 运维诊断应用。',
     tags: ['AIOps', 'MCP', 'FastAPI', 'DeepSeek'],
@@ -39,6 +106,7 @@ export const projects = [
   {
     slug: 'opsagentai',
     category: 'CI/CD 诊断',
+    group: '工作项目',
     title: 'OpsAgentAI',
     summary: '围绕 Dify、RAG 和飞书机器人的流水线失败日志智能诊断实践。',
     tags: ['DevOps', 'RAG', 'Dify', 'Feishu'],
@@ -69,6 +137,7 @@ export const projects = [
   {
     slug: 'cicd-architecture',
     category: '发布架构',
+    group: '工作项目',
     title: 'CI/CD 流水线实践',
     summary: '整理 GitHub Actions、Jenkins 与 Kubernetes 发布模式的 DevOps 实践项目。',
     tags: ['CI/CD', 'Jenkins', 'Kubernetes', 'GitHub Actions'],

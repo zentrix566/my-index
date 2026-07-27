@@ -107,7 +107,7 @@ const trackList = computed(() => {
   return [...checked, ...unchecked]
 })
 const trackLabel = computed(() =>
-  isTrackItems.value ? '已使用的战利品（点击勾选，已勾选排在前面）' : '已发现的职业（点击勾选，已勾选排在前面）'
+  isTrackItems.value ? '已使用的战利品' : '已发现的职业'
 )
 const trackUnit = computed(() => (isTrackItems.value ? '战利品' : '职业'))
 const trackVerb = computed(() => (isTrackItems.value ? '使用' : '发现'))

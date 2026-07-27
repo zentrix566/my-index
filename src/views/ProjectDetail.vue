@@ -3,7 +3,10 @@
     <div class="container narrow-container" v-if="project">
       <RouterLink class="back-link" to="/projects">返回项目列表</RouterLink>
       <div class="detail-header">
-        <p class="eyebrow">{{ project.category }}</p>
+        <p class="eyebrow">
+          <span class="eyebrow-group" v-if="project.group">{{ project.group }}</span>
+          <span class="eyebrow-sep" v-if="project.group">·</span>{{ project.category }}
+        </p>
         <h1>{{ project.title }}</h1>
         <p>{{ project.summary }}</p>
         <div class="tag-row">
@@ -29,6 +32,26 @@
         <p>{{ project.overview }}</p>
       </section>
 
+      <section v-if="project.flow?.length" class="dashboard-panel">
+        <h2>交付流程</h2>
+        <p>边缘节点从创建到纳管、上线、监控的完整生命周期，每一步都可重复执行、可验证。</p>
+        <div class="flow-timeline">
+          <div class="flow-step" v-for="stage in project.flow" :key="stage.step">
+            <div class="flow-node">{{ stage.step }}</div>
+            <div class="flow-body">
+              <div class="flow-title-row">
+                <h3>{{ stage.title }}</h3>
+                <span class="flow-tool">{{ stage.tool }}</span>
+              </div>
+              <p class="flow-desc">{{ stage.desc }}</p>
+              <ul class="flow-points" v-if="stage.points?.length">
+                <li v-for="point in stage.points" :key="point">{{ point }}</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       <section class="dashboard-panel">
         <h2>实践重点</h2>
         <ul class="feature-list">
@@ -41,6 +64,22 @@
         <div class="tag-row">
           <span v-for="item in project.stack" :key="item">{{ item }}</span>
         </div>
+      </section>
+
+      <section v-if="project.recovery?.steps?.length" class="dashboard-panel">
+        <h2>{{ project.recovery.title || '故障恢复闭环' }}</h2>
+        <p v-if="project.recovery.desc">{{ project.recovery.desc }}</p>
+        <div class="recovery-chain">
+          <template v-for="(step, idx) in project.recovery.steps" :key="step.title">
+            <div class="recovery-step">
+              <span class="r-index">STEP {{ idx + 1 }}</span>
+              <h4>{{ step.title }}</h4>
+              <p>{{ step.desc }}</p>
+            </div>
+            <span v-if="idx < project.recovery.steps.length - 1" class="recovery-connector">→</span>
+          </template>
+        </div>
+        <p class="recovery-loop-note">↻ 演练可重复执行，从"故障注入"到"验证闭环"形成持续验证的运维闭环。</p>
       </section>
 
       <section v-if="project.links?.articles?.length" class="dashboard-panel">
@@ -134,3 +173,14 @@ const primaryLinks = computed(() => {
   ].filter(Boolean)
 })
 </script>
+
+<style scoped>
+.eyebrow-group {
+  color: var(--primary, #2563eb);
+  font-weight: 800;
+}
+.eyebrow-sep {
+  margin: 0 6px;
+  opacity: 0.45;
+}
+</style>

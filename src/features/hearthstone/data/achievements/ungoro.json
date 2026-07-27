@@ -434,7 +434,7 @@
       "id": "ungoro-021",
       "name": "洞中魔镜",
       "heroClass": "潜行者",
-      "type": "一次性",
+      "type": "累计",
       "trackClasses": true,
       "difficulty": "难",
       "relatedCards": [

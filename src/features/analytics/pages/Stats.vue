@@ -162,7 +162,7 @@ const maxHourly = computed(() => {
 const ROUTE_NAMES = {
   '/': '首页',
   '/projects': '项目列表',
-  '/vue-apps': 'Vue 项目',
+  '/vue-apps': '个人项目',
   '/interval-training': '间歇训练数据看板',
   '/countdown': '人生倒计时',
   '/aiops': 'AIOps 智能运维控制台',
