@@ -915,18 +915,19 @@ onUnmounted(() => {
 }
 
 .topbar {
-  min-height: 74px;
-  display: grid;
-  grid-template-columns: 210px 210px minmax(260px, 360px) minmax(310px, 380px) minmax(420px, 1fr);
+  min-height: 64px;
+  display: flex;
   align-items: center;
-  gap: 14px;
-  padding: 10px 16px;
+  gap: 20px;
+  padding: 8px 20px;
   border-bottom: 1px solid var(--line);
   background: color-mix(in srgb, var(--panel) 92%, transparent);
-  box-shadow: 0 8px 30px rgba(18, 38, 77, 0.06);
+  box-shadow: 0 4px 20px rgba(18, 38, 77, 0.05);
   position: sticky;
   top: 0;
   z-index: 10;
+  overflow-x: auto;
+  flex-wrap: nowrap;
 }
 
 .brand-block,
@@ -941,19 +942,21 @@ onUnmounted(() => {
 }
 
 .brand-block {
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
+  flex-shrink: 0;
 }
 
 .brand-mark {
-  width: 34px;
-  height: 34px;
-  border-radius: 8px;
+  width: 30px;
+  height: 30px;
+  border-radius: 7px;
   display: grid;
   place-items: center;
   background: linear-gradient(145deg, #15233d, #0c101a);
   color: #53f0c1;
   font-weight: 800;
+  font-size: 13px;
   box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
 }
 
@@ -964,31 +967,35 @@ onUnmounted(() => {
 }
 
 .brand-title {
-  font-size: 18px;
-  font-weight: 800;
+  font-size: 15px;
+  font-weight: 700;
+  line-height: 1.2;
 }
 
 .brand-subtitle {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
+  line-height: 1.2;
 }
 
 .module-tabs {
-  height: 44px;
-  gap: 6px;
+  height: 40px;
+  gap: 4px;
+  flex-shrink: 0;
 }
 
 .tab-button {
-  height: 38px;
+  height: 34px;
   border: 0;
   border-bottom: 2px solid transparent;
   background: transparent;
   color: var(--muted);
-  padding: 0 12px;
+  padding: 0 10px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
   gap: 6px;
+  font-size: 13px;
 }
 
 .tab-button.active {
@@ -998,38 +1005,40 @@ onUnmounted(() => {
 }
 
 .tab-button strong {
-  min-width: 20px;
-  height: 20px;
+  min-width: 18px;
+  height: 18px;
   border-radius: 999px;
   display: grid;
   place-items: center;
   background: #ffe6eb;
   color: #ef476f;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .system-picker {
-  gap: 8px;
+  gap: 6px;
   min-width: 0;
+  flex-shrink: 0;
 }
 
 .system-picker label {
   flex: 0 0 auto;
-  min-width: 32px;
+  min-width: 28px;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 12px;
   white-space: nowrap;
 }
 
 select {
-  height: 36px;
+  height: 32px;
   min-width: 0;
   border: 1px solid var(--line);
   border-radius: 6px;
   background: var(--panel-soft);
   color: var(--text);
-  padding: 0 34px 0 10px;
+  padding: 0 30px 0 8px;
   outline: none;
+  font-size: 13px;
 }
 
 select:focus,
@@ -1044,13 +1053,14 @@ textarea:focus {
 
 .alert-summary {
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .alert-stat,
 .health-stat {
-  width: 58px;
-  min-height: 46px;
+  width: 52px;
+  min-height: 40px;
   display: grid;
   place-items: center;
   align-content: center;
@@ -1060,14 +1070,14 @@ textarea:focus {
 .alert-stat strong,
 .health-stat strong {
   line-height: 1;
-  font-size: 22px;
+  font-size: 18px;
 }
 
 .alert-stat span,
 .health-stat span {
-  margin-top: 4px;
+  margin-top: 2px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .is-red strong,
@@ -1096,31 +1106,32 @@ textarea:focus {
 
 .right-tools {
   justify-content: flex-end;
-  gap: 10px;
+  gap: 8px;
   min-width: 0;
+  margin-left: auto;
 }
 
 .clock-block {
   display: grid;
-  gap: 2px;
+  gap: 1px;
   text-align: right;
   white-space: nowrap;
 }
 
 .clock-block span {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .clock-block strong {
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .theme-select {
-  gap: 6px;
-  min-width: 148px;
-  height: 36px;
-  padding: 0 8px;
+  gap: 4px;
+  min-width: 140px;
+  height: 32px;
+  padding: 0 6px;
   border: 1px solid var(--line);
   border-radius: 6px;
   background: var(--panel-soft);
@@ -1128,27 +1139,28 @@ textarea:focus {
 
 .theme-select span {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .theme-select select {
-  height: 30px;
-  width: 90px;
+  height: 26px;
+  width: 82px;
   border: 0;
   background: transparent;
   padding-left: 0;
+  font-size: 12px;
 }
 
 .ai-status {
-  height: 30px;
+  height: 28px;
   display: grid;
   place-items: center;
-  padding: 0 9px;
+  padding: 0 8px;
   border-radius: 6px;
   background: #fff3d6;
   color: #a15c00;
   white-space: nowrap;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
 }
 
@@ -1158,20 +1170,21 @@ textarea:focus {
 }
 
 .user-panel {
-  gap: 8px;
-  min-width: 118px;
+  gap: 6px;
+  min-width: 100px;
   justify-content: flex-end;
 }
 
 .avatar {
-  width: 34px;
-  height: 34px;
+  width: 30px;
+  height: 30px;
   border-radius: 50%;
   display: grid;
   place-items: center;
   background: var(--primary);
   color: #fff;
   font-weight: 800;
+  font-size: 12px;
 }
 
 .user-panel span,
@@ -1181,19 +1194,19 @@ textarea:focus {
 }
 
 .user-panel span {
-  font-weight: 800;
-  font-size: 14px;
+  font-weight: 700;
+  font-size: 13px;
 }
 
 .user-panel strong {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 11px;
 }
 
 .workspace-preview {
   display: grid;
   grid-template-columns: 310px minmax(420px, 1fr) 360px;
-  min-height: calc(100vh - 74px);
+  min-height: calc(100vh - 64px);
 }
 
 .alarm-list {
@@ -1260,7 +1273,7 @@ textarea:focus {
 }
 
 .alarm-scroll {
-  max-height: calc(100vh - 174px);
+  max-height: calc(100vh - 164px);
   overflow: auto;
 }
 
@@ -2042,23 +2055,29 @@ textarea {
 
 @media (max-width: 1480px) {
   .topbar {
-    grid-template-columns: 200px 190px minmax(240px, 1fr) minmax(310px, 380px);
+    gap: 14px;
+    padding: 8px 14px;
   }
 
-  .right-tools {
-    grid-column: 1 / -1;
-    justify-content: flex-start;
+  .alert-summary {
+    gap: 6px;
+  }
+
+  .alert-stat,
+  .health-stat {
+    width: 48px;
   }
 }
 
 @media (max-width: 1180px) {
   .topbar {
-    grid-template-columns: 1fr 1fr;
+    flex-wrap: wrap;
+    gap: 10px;
   }
 
   .alert-summary,
   .right-tools {
-    grid-column: 1 / -1;
+    flex: 1 1 auto;
     justify-content: flex-start;
     flex-wrap: wrap;
   }
@@ -2081,7 +2100,9 @@ textarea {
 
 @media (max-width: 760px) {
   .topbar {
-    grid-template-columns: 1fr;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
   }
 
   .module-tabs,
