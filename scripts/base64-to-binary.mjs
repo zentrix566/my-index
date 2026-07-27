@@ -194,7 +194,7 @@ let cardNames = null
 let heroClasses = null
 try {
   const p = fileURLToPath(
-    new URL('../src/hearthstone-achievements/data/dbfid-cardnames.json', import.meta.url)
+    new URL('../src/features/hearthstone/data/dbfid-cardnames.json', import.meta.url)
   )
   const data = JSON.parse(readFileSync(p, 'utf8'))
   cardNames = data.cards || {}

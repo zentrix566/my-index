@@ -8,7 +8,7 @@ import { RouterLink } from 'vue-router'
  * - 每条箭头任意位置可点击，弹出对应历史事件
  *
  * 坐标系采用 1000 × 900 的 viewBox，与示意图比例一致；
- * 真实底图请放到 public/jiangyin-map.png（缺图时使用纯色衬底，箭头依然可用）。
+ * 真实底图托管在 OSS，前端经服务端反代以 /site-assets/jiangyin-map.webp 引用（缺图时使用纯色衬底，箭头依然可用）。
  */
 
 // 路径与事件数据：path 用 SVG path 语法
@@ -98,7 +98,7 @@ const popupStyle = computed(() => ({
     </header>
 
     <div class="map-wrap" ref="wrapRef" @click.self="close">
-      <!-- 底图：放置 public/jiangyin-map.png；缺图时使用衬底色 -->
+      <!-- 底图：经服务端反代引用 /site-assets/jiangyin-map.webp；缺图时使用衬底色 -->
       <div class="map-bg" />
 
       <svg
@@ -265,7 +265,7 @@ const popupStyle = computed(() => ({
     radial-gradient(circle at 75% 25%, #d6e2cd 0%, transparent 50%),
     radial-gradient(circle at 50% 70%, #f1e6cb 0%, transparent 60%),
     linear-gradient(180deg, #e6efde 0%, #efe6cf 60%, #e6dfc6 100%);
-  background-image: url('/jiangyin-map.png'), none;
+  background-image: url('/site-assets/jiangyin-map.webp'), none;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

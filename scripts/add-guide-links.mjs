@@ -1,5 +1,5 @@
 import fs from 'fs'
-const DIR = 'src/hearthstone-achievements/data/achievements'
+const DIR = 'src/features/hearthstone/data/achievements'
 
 // iyingdi 速战速决 全成就攻略页（已通过 WebSearch 核实存在且含 <aside> 卡组码）
 const GUIDES = {

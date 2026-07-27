@@ -18,7 +18,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 async function loadCoreExpansionIds() {
   const candidates = [
     path.resolve(__dirname, 'achievements-data/core-expansion-ids.js'),
-    path.resolve(__dirname, '../src/hearthstone-achievements/data/core-expansion-ids.js')
+    path.resolve(__dirname, '../src/features/hearthstone/data/core-expansion-ids.js')
   ]
   for (const p of candidates) {
     if (fs.existsSync(p)) {

@@ -1,6 +1,6 @@
 /**
  * 成就元数据加载器（服务端用）
- * 用 fs 扫描 src/hearthstone-achievements/data/achievements/*.json，
+ * 用 fs 扫描 src/features/hearthstone/data/achievements/*.json，
  * 构建 成就ID -> { name, version, heroClass } 映射。
  *   name      成就中文名（如「嘿！吼！我们登场喽！」）
  *   version   所属版本中文名（如「荒芜之地」，取自扩展文件的 name 字段）
@@ -26,12 +26,12 @@ function detectMetric(ach) {
   return isPoints ? 'points' : 'count'
 }
 // 候选目录（按顺序查找第一个存在的）：
-//  1) 本地开发：server/ 同级的 ../src/hearthstone-achievements/data/achievements
+//  1) 本地开发：server/ 同级的 ../src/features/hearthstone/data/achievements
 //  2) 生产镜像：Dockerfile 已将成就 JSON 复制到 server/achievements-data/
 // 关键：线上运行时镜像里没有 src/，必须用第 2 个路径，否则 META 为空、
 //      getAchievementMeta 回退成编号，保存时会把中文名覆盖成编号。
 const ACHIEVEMENTS_DIRS = [
-  path.resolve(__dirname, '../src/hearthstone-achievements/data/achievements'),
+  path.resolve(__dirname, '../src/features/hearthstone/data/achievements'),
   path.resolve(__dirname, 'achievements-data')
 ]
 

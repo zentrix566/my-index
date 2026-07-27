@@ -2,7 +2,7 @@
 const fs = require('fs')
 const path = require('path')
 
-const file = path.resolve(__dirname, '../src/hearthstone-achievements/components/DeckDetailModal.vue')
+const file = path.resolve(__dirname, '../src/features/hearthstone/components/DeckDetailModal.vue')
 let s = fs.readFileSync(file, 'utf8')
 const before = s
 

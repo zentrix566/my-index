@@ -9,7 +9,7 @@
  *
  * 所有卡牌原画统一放在 OSS 的 hearthstone-cards/wild/{crop,full}/<卡名>_<id>.png，
  * 不再区分 related 目录。应用用到的图片由 manifest 决定：
- *   src/hearthstone-achievements/data/deck-card-images.json
+ *   src/features/hearthstone/data/deck-card-images.json
  * 每张图的 OSS key 必须与应用请求路径一致。
  *
  * 用法（在 my-index 仓库根目录执行）：
@@ -114,7 +114,7 @@ async function existsInOss(key) {
 async function collectTargets() {
   // 模式 A：只传 manifest 引用的图片（精确、省空间）
   if (useManifest) {
-    const manifestPath = join(repoRoot, 'src/hearthstone-achievements/data/deck-card-images.json')
+    const manifestPath = join(repoRoot, 'src/features/hearthstone/data/deck-card-images.json')
     const manifest = JSON.parse(await import('node:fs/promises').then((m) => m.readFile(manifestPath, 'utf8')))
     const targets = []
     const seen = new Set()

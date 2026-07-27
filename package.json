@@ -8,6 +8,9 @@
     "dev:frontend": "vite",
     "dev:server": "node server/index.js",
     "build": "vite build",
+    "check:syntax": "node scripts/check-syntax.mjs",
+    "test": "node --test",
+    "check": "npm run check:syntax && npm test && npm run build",
     "preview": "vite preview",
     "server": "node server/index.js",
     "start": "NODE_ENV=production node server/index.js",
@@ -16,7 +19,6 @@
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
-    "better-sqlite3": "^12.11.1",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.7",
     "express": "^4.19.2",
@@ -32,6 +34,7 @@
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.7",
     "ali-oss": "^6.23.0",
+    "better-sqlite3": "^12.11.1",
     "concurrently": "^10.0.3",
     "vite": "^8.0.16"
   }

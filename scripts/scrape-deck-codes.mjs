@@ -5,7 +5,7 @@ import https from 'https'
 const NODE = 'C:/Users/admin/.workbuddy/binaries/node/versions/22.22.2/node.exe'
 void NODE
 
-const DIR = 'src/hearthstone-achievements/data/achievements'
+const DIR = 'src/features/hearthstone/data/achievements'
 const VERSIONS = {
   'caverns-of-time': 'caverns-of-time.json',
   'cataclysm': 'cataclysm.json',

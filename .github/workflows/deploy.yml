@@ -34,6 +34,17 @@ jobs:
         with:
           lfs: false
 
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .nvmrc
+          cache: npm
+
+      - name: Run quality checks
+        run: |
+          npm ci
+          npm run check
+
       # 1. 登录到 GitHub 镜像仓库 (GHCR)
       - name: Log in to GHCR
         uses: docker/login-action@v3

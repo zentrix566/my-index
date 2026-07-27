@@ -1,9 +1,16 @@
 <template>
   <div class="app-shell">
+    <a class="skip-link" href="#main-content">跳到主要内容</a>
     <header class="site-header">
       <nav class="nav-container" aria-label="主导航">
         <RouterLink class="logo" to="/">Zentrix Index</RouterLink>
-        <button class="menu-toggle" type="button" aria-label="展开导航" :aria-expanded="isMenuOpen" @click="toggleMenu">
+        <button
+          class="menu-toggle"
+          type="button"
+          :aria-label="isMenuOpen ? '收起导航' : '展开导航'"
+          :aria-expanded="isMenuOpen"
+          @click="toggleMenu"
+        >
           <span></span>
           <span></span>
           <span></span>
@@ -17,7 +24,7 @@
       </nav>
     </header>
 
-    <main>
+    <main id="main-content" tabindex="-1">
       <RouterView />
     </main>
 
@@ -31,7 +38,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
+import { onBeforeUnmount, onMounted, ref } from 'vue'
 
 const year = new Date().getFullYear()
 const isMenuOpen = ref(false)
@@ -43,6 +50,13 @@ const toggleMenu = () => {
 const closeMenu = () => {
   isMenuOpen.value = false
 }
+
+const handleKeydown = (event) => {
+  if (event.key === 'Escape') closeMenu()
+}
+
+onMounted(() => window.addEventListener('keydown', handleKeydown))
+onBeforeUnmount(() => window.removeEventListener('keydown', handleKeydown))
 </script>
 
 <style scoped>

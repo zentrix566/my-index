@@ -1,5 +1,5 @@
 // 全站关联卡牌批量补全
-// 遍历 src/hearthstone-achievements/data/achievements/*.json，
+// 遍历 src/features/hearthstone/data/achievements/*.json，
 // 凡是 relatedCards 为空的成就，从「成就描述 + 各阶段描述」里提取卡名，
 // 匹配 deck-card-images.json（OSS 图清单）的卡名 key，能匹配上的自动补上。
 // 用法：
@@ -10,8 +10,8 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const dataDir = path.resolve(__dirname, '../src/hearthstone-achievements/data/achievements')
-const manifestPath = path.resolve(__dirname, '../src/hearthstone-achievements/data/deck-card-images.json')
+const dataDir = path.resolve(__dirname, '../src/features/hearthstone/data/achievements')
+const manifestPath = path.resolve(__dirname, '../src/features/hearthstone/data/deck-card-images.json')
 
 const DRY_RUN = process.argv.includes('--dry')
 const MIN_LEN = 3

@@ -607,6 +607,7 @@
       />
 
       <DeckDetailModal
+        v-if="deckDetailVisible"
         :visible="deckDetailVisible"
         :deck="deckDetailData"
         @close="deckDetailVisible = false"
@@ -646,7 +647,7 @@
             <span class="ai-global-modal-title">🤖 AI 成就建议</span>
             <button type="button" class="ai-global-close" aria-label="关闭" @click="closeAi">×</button>
           </div>
-          <AiAdvisor :hardcore="hardcore" />
+          <AiAdvisor v-if="showAi" :hardcore="hardcore" />
         </div>
       </div>
     </Teleport>
@@ -654,26 +655,32 @@
 </template>
 
 <script setup>
-import { computed, ref, reactive, watch } from 'vue'
+import { computed, defineAsyncComponent, ref, reactive, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import * as XLSX from 'xlsx'
-import { expansions, originalExpansions, addedExpansions } from '../hearthstone-achievements/data/expansions.js'
-import { classColors, getClassOrder, groupByClass, matchesClass, getClassName, CORE_EXPANSION_IDS } from '../hearthstone-achievements/utils/achievements.js'
-import { useAchievementProgress } from '../hearthstone-achievements/composables/useAchievementProgress.js'
-import { useAuth } from '../auth/useAuth.js'
-import { getWildCardFull, getWildCardCrop } from '../hearthstone-achievements/utils/cardImages.js'
-import EditProgressModal from '../hearthstone-achievements/components/EditProgressModal.vue'
+import { expansions, originalExpansions, addedExpansions } from '../data/expansions.js'
+import { classColors, getClassOrder, groupByClass, matchesClass, getClassName, CORE_EXPANSION_IDS } from '../utils/achievements.js'
+import { useAchievementProgress } from '../composables/useAchievementProgress.js'
+import { useAuth } from '../../../auth/useAuth.js'
+import { getWildCardFull, getWildCardCrop } from '../utils/cardImages.js'
+import EditProgressModal from '../components/EditProgressModal.vue'
 
-import ExpansionTabs from '../hearthstone-achievements/components/ExpansionTabs.vue'
-import FilterBar from '../hearthstone-achievements/components/FilterBar.vue'
-import ClassSection from '../hearthstone-achievements/components/ClassSection.vue'
-import CardModal from '../hearthstone-achievements/components/CardModal.vue'
-import ScrollToTop from '../hearthstone-achievements/components/ScrollToTop.vue'
-import MyAchievementCard from '../hearthstone-achievements/components/MyAchievementCard.vue'
-import DeckDetailModal from '../hearthstone-achievements/components/DeckDetailModal.vue'
-import AiAdvisor from '../hearthstone-achievements/ai/AiAdvisor.vue'
-import { AI_ADVISOR_ENABLED } from '../hearthstone-achievements/ai/config.js'
-import { downloadBlob, nextTodoText, buildExportRows } from '../hearthstone-achievements/utils/achievementExport.js'
+import ExpansionTabs from '../components/ExpansionTabs.vue'
+import FilterBar from '../components/FilterBar.vue'
+import ClassSection from '../components/ClassSection.vue'
+import CardModal from '../components/CardModal.vue'
+import ScrollToTop from '../components/ScrollToTop.vue'
+import MyAchievementCard from '../components/MyAchievementCard.vue'
+import { AI_ADVISOR_ENABLED } from '../ai/config.js'
+import { downloadBlob, nextTodoText, buildExportRows } from '../utils/achievementExport.js'
+import { saveAchievementProgress } from '../api/progress.js'
+import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
+
+const DeckDetailModal = defineAsyncComponent(
+  () => import('../components/DeckDetailModal.vue')
+)
+const AiAdvisor = defineAsyncComponent(
+  () => import('../ai/AiAdvisor.vue')
+)
 
 const { user, init: initAuth, logout } = useAuth()
 const router = useRouter()
@@ -693,14 +700,7 @@ function scrollToControls() {
 }
 
 // ============ 主题切换（明亮 / 暗色），默认明亮 ============
-const HS_THEME_KEY = 'hs-theme'
-const hsTheme = ref(localStorage.getItem(HS_THEME_KEY) === 'dark' ? 'dark' : 'light')
-watch(hsTheme, (t) => {
-  localStorage.setItem(HS_THEME_KEY, t)
-}, { immediate: true })
-function toggleTheme() {
-  hsTheme.value = hsTheme.value === 'dark' ? 'light' : 'dark'
-}
+const { hsTheme, toggleTheme } = useHearthstoneTheme()
 // 作者邮箱
 const AUTHOR_EMAIL = '1987247500@qq.com'
 function contactAuthor() {
@@ -815,17 +815,9 @@ async function saveProgress(payload) {
   const wasCompleted = ach ? isAchievementCompleted(ach) : false
   savingProgress.value = true
   try {
-    const resp = await fetch('/api/achievements/progress', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        progress: { [payload.id]: { stages: payload.stages, count: payload.count } }
-      })
+    await saveAchievementProgress({
+      [payload.id]: { stages: payload.stages, count: payload.count }
     })
-    if (!resp.ok) {
-      const result = await resp.json().catch(() => ({}))
-      throw new Error(result.error || '保存失败')
-    }
     // 乐观更新：本次保存已成功落库，合并进本地状态即可，无需再整份拉取服务端进度（避免大体积回拉 + 全量重算卡顿）
     applyLocalProgress({ [payload.id]: { stages: payload.stages, count: payload.count } })
     const nowCompleted = ach ? isAchievementCompleted(ach) : false
@@ -898,15 +890,7 @@ async function batchComplete() {
       showToast('error', '没有可完成的成就')
       return
     }
-    const resp = await fetch('/api/achievements/progress', {
-      method: 'PUT',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ progress })
-    })
-    if (!resp.ok) {
-      const e = await resp.json().catch(() => ({}))
-      throw new Error(e.error || '保存失败')
-    }
+    await saveAchievementProgress(progress)
     // 乐观更新：批量完成已成功落库，合并进本地状态即可，无需再整份拉取服务端进度
     applyLocalProgress(progress)
     showToast('success', `已完成 ${Object.keys(progress).length} 个成就`)
@@ -968,6 +952,7 @@ function exportJson() {
 async function exportExcel() {
   exporting.value = true
   try {
+    const XLSX = await import('xlsx')
     const rows = buildExportRows(allAchievements.value, passBonus.value)
     const wb = XLSX.utils.book_new()
     const ws = XLSX.utils.json_to_sheet(rows)
@@ -1005,12 +990,7 @@ async function onImportFile(e) {
       const parsed = JSON.parse(reader.result)
       const progress = parsed.progress && typeof parsed.progress === 'object' ? parsed.progress : parsed
       if (!progress || typeof progress !== 'object') throw new Error('文件格式不正确')
-      const resp = await fetch('/api/achievements/progress', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ progress })
-      })
-      if (!resp.ok) throw new Error('导入失败（' + resp.status + '）')
+      await saveAchievementProgress(progress)
       // 乐观更新：导入进度已成功落库，合并进本地状态即可，无需再整份拉取服务端进度
       applyLocalProgress(progress)
       showToast('success', '进度导入成功')

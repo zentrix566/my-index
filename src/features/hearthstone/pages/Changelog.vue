@@ -3,7 +3,7 @@
     <div class="changelog-container">
       <header class="changelog-header">
         <h1>更新说明</h1>
-        <p class="changelog-sub">炉石传说成就查看器的功能与数据更新记录（按时间倒序）</p>
+        <p class="changelog-sub">站点各功能与数据的更新记录（按时间倒序）</p>
       </header>
 
       <ol class="changelog-list">
@@ -14,9 +14,9 @@
         >
           <div class="changelog-meta">
             <span class="changelog-date">{{ entry.date }}</span>
-            <h2 class="changelog-title changelog-link" role="button" tabindex="0" @click="goDetail" @keyup.enter="goDetail">{{ entry.title }}</h2>
+            <h2 class="changelog-title changelog-link" role="button" tabindex="0" @click="goDetail(entry)" @keyup.enter="goDetail(entry)">{{ entry.title }}</h2>
           </div>
-          <button type="button" class="changelog-detail-link" @click="goDetail">查看炉石成就查看器 →</button>
+          <button type="button" class="changelog-detail-link" @click="goDetail(entry)">查看对应功能 →</button>
           <ul class="changelog-changes">
             <li v-for="(c, i) in entry.changes" :key="i">{{ c }}</li>
           </ul>
@@ -28,11 +28,11 @@
 
 <script setup>
 import { useRouter } from 'vue-router'
-import { changelog } from '../data/changelog.js'
+import { changelog } from '../../../data/changelog.js'
 
 const router = useRouter()
-function goDetail() {
-  router.push('/hearthstone')
+function goDetail(entry) {
+  router.push(entry?.route || '/hearthstone')
 }
 </script>
 

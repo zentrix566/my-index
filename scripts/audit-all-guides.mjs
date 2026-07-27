@@ -1,5 +1,5 @@
 import fs from 'fs'
-const DIR = 'src/hearthstone-achievements/data/achievements'
+const DIR = 'src/features/hearthstone/data/achievements'
 const files = {
   'violet-hold': 'violet-hold.json',
   'cataclysm': 'cataclysm.json',

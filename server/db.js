@@ -1,5 +1,5 @@
 /**
- * PostgreSQL 数据层（node-postgres / pg）
+ * 统一数据层：生产使用 PostgreSQL，本地验证使用 SQLite。
  * - 存储层隔离：业务代码只调用本文件导出的干净接口，不碰 SQL
  * - 连接参数来自环境变量（默认值适合常见托管 PG）：
  *     PG_HOST      必填（如 rds.xxx.aliyuncs.com）
@@ -11,17 +11,26 @@
  * - 业务接口均为 async（pg 基于回调/Promise），调用点需 await
  */
 import pg from 'pg'
+import path from 'node:path'
 import { getAchievementMeta } from './achievements-meta.js'
 
 const { Pool } = pg
 const isLocalDevMode =
   process.env.NODE_ENV !== 'production' && process.env.LOCAL_DEV_MODE === 'true'
 
-// 显式开启的本地验证模式：数据只存在当前 Node 进程中，重启即清空。
-const localUsersById = new Map()
-const localUserIdsByName = new Map()
-const localProgressByUser = new Map()
-let localNextUserId = 1
+let localStorePromise
+
+async function getLocalStore() {
+  if (!localStorePromise) {
+    const filePath = path.resolve(
+      process.env.LOCAL_SQLITE_PATH || path.join('data', 'app.local.db')
+    )
+    localStorePromise = import('./db/local-sqlite.js').then(
+      ({ createLocalSqliteStore }) => createLocalSqliteStore(filePath)
+    )
+  }
+  return localStorePromise
+}
 
 const pool = new Pool({
   host: process.env.PG_HOST,
@@ -41,6 +50,11 @@ let poolClosed = false
 export async function closeDatabase() {
   if (poolClosed) return
   poolClosed = true
+  if (isLocalDevMode) {
+    const localStore = await getLocalStore()
+    localStore.close()
+    return
+  }
   await pool.end()
 }
 
@@ -88,7 +102,10 @@ CREATE TABLE IF NOT EXISTS schema_migrations (
 
 let schemaReady = false
 export async function ensureSchema() {
-  if (isLocalDevMode) return
+  if (isLocalDevMode) {
+    await getLocalStore()
+    return
+  }
   if (schemaReady) return
   await pool.query(SCHEMA_SQL)
   schemaReady = true
@@ -102,8 +119,7 @@ ensureSchema().catch((e) => console.error('[db] 建表失败:', e))
 // 按用户名查用户（含 password_hash，仅内部鉴权用）
 export async function getUserByUsername(username) {
   if (isLocalDevMode) {
-    const id = localUserIdsByName.get(username)
-    return id ? { ...localUsersById.get(id) } : null
+    return (await getLocalStore()).getUserByUsername(username)
   }
   const { rows } = await pool.query('SELECT * FROM users WHERE username = $1', [username])
   return rows[0] || null
@@ -112,10 +128,7 @@ export async function getUserByUsername(username) {
 // 按 id 查用户（对外脱敏，不含 password_hash）
 export async function getUserById(id) {
   if (isLocalDevMode) {
-    const user = localUsersById.get(Number(id))
-    if (!user) return null
-    const { password_hash: _passwordHash, ...safeUser } = user
-    return { ...safeUser }
+    return (await getLocalStore()).getUserById(id)
   }
   const { rows } = await pool.query(
     'SELECT id, username, created_at FROM users WHERE id = $1',
@@ -127,21 +140,7 @@ export async function getUserById(id) {
 // 创建用户，返回新 id
 export async function createUser(username, passwordHash) {
   if (isLocalDevMode) {
-    if (localUserIdsByName.has(username)) {
-      const error = new Error('用户名已存在')
-      error.code = '23505'
-      throw error
-    }
-    const id = localNextUserId++
-    const user = {
-      id,
-      username,
-      password_hash: passwordHash,
-      created_at: new Date().toISOString()
-    }
-    localUsersById.set(id, user)
-    localUserIdsByName.set(username, id)
-    return id
+    return (await getLocalStore()).createUser(username, passwordHash)
   }
   const { rows } = await pool.query(
     'INSERT INTO users(username, password_hash) VALUES($1, $2) RETURNING id',
@@ -155,18 +154,14 @@ export async function createUser(username, passwordHash) {
 export async function upsertProgress(userId, achievementId, stages, count, client) {
   const meta = getAchievementMeta(achievementId)
   if (isLocalDevMode) {
-    const normalizedUserId = Number(userId)
-    const userProgress = localProgressByUser.get(normalizedUserId) || new Map()
-    userProgress.set(achievementId, {
-      stages: { ...(stages || {}) },
-      count: count || 0,
-      achievement_name: meta.name,
+    return (await getLocalStore()).upsertProgress(userId, {
+      achievementId,
+      stages,
+      count,
+      name: meta.name,
       version: meta.version,
-      hero_class: meta.heroClass,
-      updated_at: new Date().toISOString()
+      heroClass: meta.heroClass
     })
-    localProgressByUser.set(normalizedUserId, userProgress)
-    return
   }
   const q = client || pool
   await q.query(
@@ -194,10 +189,7 @@ export async function upsertProgress(userId, achievementId, stages, count, clien
 export async function bulkUpsertProgress(userId, entries, client) {
   if (!entries || entries.length === 0) return
   if (isLocalDevMode) {
-    for (const e of entries) {
-      await upsertProgress(userId, e.achievementId, e.stages, e.count, client)
-    }
-    return
+    return (await getLocalStore()).bulkUpsertProgress(userId, entries)
   }
   const achievementIds = []
   const stagesArr = []
@@ -234,15 +226,7 @@ export async function bulkUpsertProgress(userId, entries, client) {
 // 与前端现有 progressData 结构完全一致，前端零改造复用
 export async function getProgress(userId) {
   if (isLocalDevMode) {
-    const rows = localProgressByUser.get(Number(userId)) || new Map()
-    const out = {}
-    for (const [achievementId, progress] of rows) {
-      out[achievementId] = {
-        stages: { ...progress.stages },
-        count: progress.count
-      }
-    }
-    return out
+    return (await getLocalStore()).getProgress(userId)
   }
   const { rows } = await pool.query(
     'SELECT achievement_id, stages_json, count FROM achievement_progress WHERE user_id = $1',
@@ -280,12 +264,9 @@ export async function transaction(fn) {
 
 // ========== AI 建议每日额度（按 用户/IP + 日期 限流）==========
 // user_key：登录用户用 userId，匿名用 `ip:<地址>`；day 为本地日期 YYYY-MM-DD
-const localAiUsage = new Map()
-
 export async function getAiUsage(userKey, day) {
   if (isLocalDevMode) {
-    const row = localAiUsage.get(`${userKey}|${day}`)
-    return { fixedCount: row?.fixedCount || 0, freeCount: row?.freeCount || 0 }
+    return (await getLocalStore()).getAiUsage(userKey, day)
   }
   const { rows } = await pool.query(
     'SELECT fixed_count, free_count FROM ai_advisor_usage WHERE user_key = $1 AND day = $2',
@@ -299,11 +280,7 @@ export async function getAiUsage(userKey, day) {
 export async function incrementAiUsage(userKey, day, type) {
   const col = type === 'free' ? 'free_count' : 'fixed_count'
   if (isLocalDevMode) {
-    const key = `${userKey}|${day}`
-    const row = localAiUsage.get(key) || { fixedCount: 0, freeCount: 0 }
-    row[col === 'free_count' ? 'freeCount' : 'fixedCount'] += 1
-    localAiUsage.set(key, row)
-    return { fixedCount: row.fixedCount, freeCount: row.freeCount }
+    return (await getLocalStore()).incrementAiUsage(userKey, day, type)
   }
   const { rows } = await pool.query(
     `INSERT INTO ai_advisor_usage(user_key, day, ${col}) VALUES($1, $2, 1)

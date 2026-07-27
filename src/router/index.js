@@ -1,4 +1,17 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import {
+  loadAIOpsPage,
+  loadCountdownPage,
+  loadCrazyPeoplePage,
+  loadDeckCodeViewerPage,
+  loadDominoPage,
+  loadHearthstoneAchievementsPage,
+  loadHearthstoneChangelogPage,
+  loadIntervalTrainingPage,
+  loadJiangyinPage,
+  loadStatsPage,
+  loadWorldCupPage
+} from '../features/index.js'
 
 // 路由级懒加载：每个页面单独成 chunk，首屏只加载当前路由所需的代码，
 // 避免炉石等大型页面把整包（4.8MB）拖进首页/关于页等轻量页面。
@@ -6,19 +19,8 @@ const Home = () => import('../views/Home.vue')
 const Projects = () => import('../views/Projects.vue')
 const ProjectDetail = () => import('../views/ProjectDetail.vue')
 const VueApps = () => import('../views/VueApps.vue')
-const IntervalTraining = () => import('../views/IntervalTraining.vue')
-const Countdown = () => import('../views/Countdown.vue')
-const AIOpsConsole = () => import('../views/AIOpsConsole.vue')
-const CrazyPeople = () => import('../crazy-people/CrazyPeople.vue')
-const WorldCupKick = () => import('../views/WorldCupKick.vue')
-const JiangyinBattle = () => import('../views/JiangyinBattle.vue')
-const DominoFall = () => import('../views/DominoFall.vue')
-const HearthstoneAchievements = () => import('../views/HearthstoneAchievements.vue')
-const DeckCodeViewer = () => import('../views/DeckCodeViewer.vue')
 const About = () => import('../views/About.vue')
-const Stats = () => import('../views/Stats.vue')
 const Login = () => import('../views/Login.vue')
-const Changelog = () => import('../views/Changelog.vue')
 
 const routes = [
   { path: '/', name: 'home', component: Home },
@@ -30,18 +32,18 @@ const routes = [
   { path: '/projects/:slug', name: 'project-detail', component: ProjectDetail },
   { path: '/vue-apps', name: 'vue-apps', component: VueApps },
   { path: '/life/interval-training.html', redirect: '/interval-training' },
-  { path: '/interval-training', name: 'interval-training', component: IntervalTraining },
+  { path: '/interval-training', name: 'interval-training', component: loadIntervalTrainingPage },
   { path: '/lab', redirect: '/countdown' },
-  { path: '/countdown', name: 'countdown', component: Countdown },
-  { path: '/aiops', name: 'aiops', component: AIOpsConsole },
-  { path: '/crazy-people', name: 'crazy-people', component: CrazyPeople },
-  { path: '/worldcup', name: 'worldcup', component: WorldCupKick },
-  { path: '/jiangyin', name: 'jiangyin', component: JiangyinBattle },
-  { path: '/domino', name: 'domino', component: DominoFall },
-  { path: '/hearthstone', name: 'hearthstone-achievements', component: HearthstoneAchievements, meta: { title: '炉石传说成就查看器 | Zentrix' } },
-  { path: '/hearthstone/deck', name: 'hearthstone-deck', component: DeckCodeViewer, meta: { title: '炉石卡组代码解析 | Zentrix' } },
-  { path: '/hearthstone/changelog', name: 'hearthstone-changelog', component: Changelog, meta: { title: '炉石成就查看器 · 更新日志 | Zentrix' } },
-  { path: '/stats', name: 'stats', component: Stats },
+  { path: '/countdown', name: 'countdown', component: loadCountdownPage },
+  { path: '/aiops', name: 'aiops', component: loadAIOpsPage },
+  { path: '/crazy-people', name: 'crazy-people', component: loadCrazyPeoplePage },
+  { path: '/worldcup', name: 'worldcup', component: loadWorldCupPage },
+  { path: '/jiangyin', name: 'jiangyin', component: loadJiangyinPage },
+  { path: '/domino', name: 'domino', component: loadDominoPage },
+  { path: '/hearthstone', name: 'hearthstone-achievements', component: loadHearthstoneAchievementsPage, meta: { title: '炉石传说成就查看器 | Zentrix' } },
+  { path: '/hearthstone/deck', name: 'hearthstone-deck', component: loadDeckCodeViewerPage, meta: { title: '炉石卡组代码解析 | Zentrix' } },
+  { path: '/hearthstone/changelog', name: 'hearthstone-changelog', component: loadHearthstoneChangelogPage, meta: { title: '更新日志 | Zentrix' } },
+  { path: '/stats', name: 'stats', component: loadStatsPage },
   { path: '/about', name: 'about', component: About },
   { path: '/changelog', redirect: '/hearthstone/changelog' },
   { path: '/login', name: 'login', component: Login }

@@ -15,6 +15,10 @@ export default defineConfig(({ mode }) => {
     },
     '/hearthstone-cards': ossOrigin
       ? { target: ossOrigin, changeOrigin: true }
+      : { target: 'http://localhost:3000', changeOrigin: true },
+    // 站点静态资源（如江阴地图底图）：与卡牌图同一条数据路径，仅代理落点不同
+    '/site-assets': ossOrigin
+      ? { target: ossOrigin, changeOrigin: true }
       : { target: 'http://localhost:3000', changeOrigin: true }
   }
 

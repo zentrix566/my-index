@@ -5,7 +5,24 @@
       <h1>访问统计</h1>
       <p class="section-desc">本页面展示站点实时访问数据，包括访问量、独立访客、热门页面和访问来源。</p>
 
-      <div v-if="loading" class="stats-loading">加载中...</div>
+      <div v-if="loading" class="stats-loading" role="status">正在验证权限并加载统计...</div>
+
+      <div v-else-if="accessError" class="stats-access-card" role="alert">
+        <div class="stats-access-icon" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="11" width="18" height="10" rx="2"/>
+            <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
+          </svg>
+        </div>
+        <div>
+          <h2>{{ accessError.status === 401 ? '需要登录' : '没有查看权限' }}</h2>
+          <p>{{ accessError.message }}</p>
+          <RouterLink v-if="accessError.status === 401" class="btn btn-primary" to="/login">
+            前往登录
+          </RouterLink>
+          <RouterLink v-else class="btn btn-secondary" to="/">返回首页</RouterLink>
+        </div>
+      </div>
 
       <template v-else-if="overview">
         <!-- 最近访问（放在最前面） -->
@@ -127,9 +144,10 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
 
 const loading = ref(true)
+const accessError = ref(null)
 const overview = ref(null)
 const topPages = ref([])
 const geoDist = ref([])
@@ -235,29 +253,49 @@ function compareText(today, yesterday) {
 
 async function loadData() {
   loading.value = true
+  accessError.value = null
   try {
-    const [ov, tp, gd, rv, hr] = await Promise.all([
-      fetch('/api/stats/overview').then(r => r.json()),
-      fetch('/api/stats/pages?days=7').then(r => r.json()),
-      fetch('/api/stats/geo?days=7').then(r => r.json()),
-      fetch('/api/stats/recent?limit=30').then(r => r.json()),
-      fetch('/api/stats/hourly').then(r => r.json())
+    const responses = await Promise.all([
+      fetch('/api/stats/overview'),
+      fetch('/api/stats/pages?days=7'),
+      fetch('/api/stats/geo?days=7'),
+      fetch('/api/stats/recent?limit=30'),
+      fetch('/api/stats/hourly')
     ])
+    const failed = responses.find((response) => !response.ok)
+    if (failed) {
+      const data = await failed.json().catch(() => ({}))
+      const error = new Error(data.error || '统计数据加载失败')
+      error.status = failed.status
+      throw error
+    }
+    const [ov, tp, gd, rv, hr] = await Promise.all(
+      responses.map((response) => response.json())
+    )
     overview.value = ov
     topPages.value = tp
     geoDist.value = gd
     recentVisits.value = rv
     hourly.value = hr
   } catch (e) {
-    console.error('加载统计数据失败:', e)
+    if (e.status === 401 || e.status === 403) {
+      accessError.value = { status: e.status, message: e.message }
+    } else {
+      console.error('加载统计数据失败:', e)
+    }
   } finally {
     loading.value = false
   }
 }
 
+let refreshTimer
 onMounted(() => {
   loadData()
   // 每 30 秒自动刷新
-  setInterval(loadData, 30000)
+  refreshTimer = window.setInterval(loadData, 30000)
+})
+
+onBeforeUnmount(() => {
+  window.clearInterval(refreshTimer)
 })
 </script>

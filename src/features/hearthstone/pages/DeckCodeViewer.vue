@@ -57,9 +57,9 @@
           ></textarea>
 
           <div class="dcv-actions">
-            <button type="button" class="dcv-btn dcv-primary" @click="analyze">
+            <button type="button" class="dcv-btn dcv-primary" :disabled="analyzing" @click="analyze">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 11H5a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-6a2 2 0 0 0-2-2h-4"/><path d="M12 14V4"/><path d="m8 8 4-4 4 4"/></svg>
-              解析卡组代码
+              {{ analyzing ? '正在加载卡牌数据库...' : '解析卡组代码' }}
             </button>
             <button type="button" class="dcv-btn dcv-ghost" @click="pasteFromClipboard">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
@@ -87,6 +87,7 @@
 
         <!-- 复用现成的卡组详情弹窗 -->
         <DeckDetailModal
+          v-if="modalVisible"
           :visible="modalVisible"
           :deck="deckData"
           @close="modalVisible = false"
@@ -97,17 +98,14 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
+import { defineAsyncComponent, ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import DeckDetailModal from '../hearthstone-achievements/components/DeckDetailModal.vue'
-import { decodeDeck } from '../hearthstone-achievements/utils/deckstring.js'
+import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 
-const HS_THEME_KEY = 'hs-theme'
-const hsTheme = ref(localStorage.getItem(HS_THEME_KEY) === 'dark' ? 'dark' : 'light')
-function toggleTheme() {
-  hsTheme.value = hsTheme.value === 'dark' ? 'light' : 'dark'
-  try { localStorage.setItem(HS_THEME_KEY, hsTheme.value) } catch {}
-}
+const DeckDetailModal = defineAsyncComponent(
+  () => import('../components/DeckDetailModal.vue')
+)
+const { hsTheme, toggleTheme } = useHearthstoneTheme()
 
 const route = useRoute()
 const router = useRouter()
@@ -116,6 +114,7 @@ const code = ref('')
 const deckName = ref('')
 const error = ref('')
 const hint = ref('')
+const analyzing = ref(false)
 const modalVisible = ref(false)
 const deckData = ref(null)
 const codeEl = ref(null)
@@ -126,27 +125,45 @@ function clearError() {
   error.value = ''
 }
 
-function analyze() {
+let deckDecoderPromise
+function getDeckDecoder() {
+  if (!deckDecoderPromise) {
+    deckDecoderPromise = import('../utils/deckstring.js')
+  }
+  return deckDecoderPromise
+}
+
+async function analyze() {
+  if (analyzing.value) return
   const raw = (code.value || '').trim()
   if (!raw) {
     error.value = '请先粘贴卡组代码。'
     hint.value = ''
     return
   }
-  const decoded = decodeDeck(raw)
-  if (!decoded.valid) {
-    error.value = '卡组代码无法解析，请确认代码完整、未被截断，且不含多余空格或换行。'
+  analyzing.value = true
+  try {
+    const { decodeDeck } = await getDeckDecoder()
+    const decoded = decodeDeck(raw)
+    if (!decoded.valid) {
+      error.value = '卡组代码无法解析，请确认代码完整、未被截断，且不含多余空格或换行。'
+      hint.value = ''
+      return
+    }
+    error.value = ''
+    hint.value = `已识别为「${decoded.heroClass}」卡组，共 ${decoded.total} 张，点击下方卡片可查看大图。`
+    const name = deckName.value.trim() || `${decoded.heroClass}卡组`
+    deckData.value = { code: raw, name, heroClass: decoded.heroClass, deckIntro: '' }
+    modalVisible.value = true
+    // 把当前卡组代码写进 URL，便于分享/深链（不新增历史记录）
+    if (route.query.code !== raw) {
+      router.replace({ query: { ...route.query, code: raw } }).catch(() => {})
+    }
+  } catch {
+    error.value = '卡牌数据库加载失败，请刷新页面后重试。'
     hint.value = ''
-    return
-  }
-  error.value = ''
-  hint.value = `已识别为「${decoded.heroClass}」卡组，共 ${decoded.total} 张，点击下方卡片可查看大图。`
-  const name = deckName.value.trim() || `${decoded.heroClass}卡组`
-  deckData.value = { code: raw, name, heroClass: decoded.heroClass, deckIntro: '' }
-  modalVisible.value = true
-  // 把当前卡组代码写进 URL，便于分享/深链（不新增历史记录）
-  if (route.query.code !== raw) {
-    router.replace({ query: { ...route.query, code: raw } }).catch(() => {})
+  } finally {
+    analyzing.value = false
   }
 }
 

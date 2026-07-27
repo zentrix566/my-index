@@ -2,10 +2,10 @@
 import { copyFile, mkdir, readdir, readFile } from 'node:fs/promises'
 import { join, dirname, basename } from 'node:path'
 import { fileURLToPath } from 'node:url'
-import { decodeDeck } from '../src/hearthstone-achievements/utils/deckstring.js'
+import { decodeDeck } from '../src/features/hearthstone/utils/deckstring.js'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const ACH_DIR = join(__dirname, '../src/hearthstone-achievements/data/achievements')
+const ACH_DIR = join(__dirname, '../src/features/hearthstone/data/achievements')
 const SRC_DIR = join(__dirname, '../..', 'my-heartstone/hearthstone_cards/wild')
 const DST_DIR = join(__dirname, '../public/hearthstone-cards/wild')
 

@@ -20,7 +20,7 @@ import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
-const namesPath = resolve(__dirname, '../src/hearthstone-achievements/data/dbfid-cardnames.json')
+const namesPath = resolve(__dirname, '../src/features/hearthstone/data/dbfid-cardnames.json')
 const { cards: cardNames, heroClasses } = JSON.parse(readFileSync(namesPath, 'utf8'))
 
 // 内置示例：badlands.json「劫掠骑」推荐卡组码（无参数时使用）
@@ -132,5 +132,5 @@ if (traceEnabled) {
 console.log('\n====== 对应关系从哪来 ======')
 console.log('dbfId → 卡名的映射来自 HearthstoneJSON 的中文卡牌库：')
 console.log('  https://api.hearthstonejson.com/v1/latest/zhCN/cards.collectible.json')
-console.log('本项目已把它精简缓存为 src/hearthstone-achievements/data/dbfid-cardnames.json，')
+console.log('本项目已把它精简缓存为 src/features/hearthstone/data/dbfid-cardnames.json，')
 console.log('前端 utils/deckstring.js 用同样的算法在浏览器里解码（无需联网）。')

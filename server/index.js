@@ -8,10 +8,11 @@ import { fileURLToPath } from 'url'
 // 本地 `npm run dev` 直接 `node server/index.js` 启动时，.env 不会被自动加载；
 // 这里补一次（生产 Docker 镜像里无 .env，loadEnvFile 抛错被静默跳过，安全）。
 try { process.loadEnvFile('.env') } catch { /* 无 .env 时跳过 */ }
-import { writeLog, appLog, cleanOldLogs, getStats, getTopPages, getGeoDistribution, getRecentVisits, getHourlyTrend } from './logger.js'
+import { writeLog, appLog, cleanOldLogs } from './logger.js'
 import { lookup } from './geoip.js'
 import cookieParser from 'cookie-parser'
 import authRouter, { requireAuth, getUserIdFromReq } from './auth.js'
+import statsRouter from './routes/stats.js'
 import {
   closeDatabase,
   getProgress,
@@ -206,55 +207,8 @@ app.post('/api/track', (req, res) => {
   res.status(204).end()
 })
 
-// ========== Stats API ==========
-
-app.get('/api/stats/overview', async (req, res) => {
-  try {
-    const stats = await getStats()
-    res.json(stats)
-  } catch (err) {
-    res.status(500).json({ error: err.message })
-  }
-})
-
-app.get('/api/stats/pages', async (req, res) => {
-  try {
-    const days = Math.min(parseInt(req.query.days) || 7, 30)
-    const data = await getTopPages(days)
-    res.json(data)
-  } catch (err) {
-    res.status(500).json({ error: err.message })
-  }
-})
-
-app.get('/api/stats/geo', async (req, res) => {
-  try {
-    const days = Math.min(parseInt(req.query.days) || 7, 30)
-    const data = await getGeoDistribution(days)
-    res.json(data)
-  } catch (err) {
-    res.status(500).json({ error: err.message })
-  }
-})
-
-app.get('/api/stats/recent', async (req, res) => {
-  try {
-    const limit = Math.min(parseInt(req.query.limit) || 50, 200)
-    const data = await getRecentVisits(limit)
-    res.json(data)
-  } catch (err) {
-    res.status(500).json({ error: err.message })
-  }
-})
-
-app.get('/api/stats/hourly', async (req, res) => {
-  try {
-    const data = await getHourlyTrend()
-    res.json(data)
-  } catch (err) {
-    res.status(500).json({ error: err.message })
-  }
-})
+// ========== Stats API（仅 owner）==========
+app.use('/api/stats', statsRouter)
 
 // 客户端标识：登录用户用 userId，匿名用 IP（用于每日额度限流）
 function getClientIp(req) {
@@ -570,35 +524,44 @@ function sendCard(res, data, hit) {
   res.end(data.buf)
 }
 
-app.get('/hearthstone-cards/*', async (req, res) => {
+// 通用 OSS 反代处理函数：把 /hearthstone-cards/*（卡牌图）与 /site-assets/*（站点静态资源，
+// 如江阴地图底图）两类路径统一反代到 OSS_ORIGIN 并强制 inline。OSS 对象 key 与请求路径一致。
+// target 用 req.originalUrl（含查询串）而非 req.path，便于后续对 /site-assets 走 OSS 图片处理；
+// 卡牌图无查询串，originalUrl 等同 path，行为不变。
+async function handleOssProxy(req, res) {
   if (!OSS_ORIGIN) return res.status(404).end()
   // 路径安全：拒绝目录穿越
   if (req.path.includes('..')) return res.status(400).end()
 
   // 1) 内存缓存
-  const mem = memCardGet(req.path)
+  const mem = memCardGet(req.originalUrl)
   if (mem) return sendCard(res, mem, true)
 
   // 2) 磁盘缓存（跨重启 / 多实例共享）
   try {
-    const dp = cardDiskFile(req.path)
+    const dp = cardDiskFile(req.originalUrl)
     const buf = await fsp.readFile(dp + '.bin')
     const contentType = (await fsp.readFile(dp + '.ct', 'utf8').catch(() => 'image/png'))
     const data = { buf, contentType, contentLength: buf.length }
-    memCardSet(req.path, data)
+    memCardSet(req.originalUrl, data)
     return sendCard(res, data, true)
   } catch { /* 未命中，回源 */ }
 
-  // 3) 回源 OSS（req.path 已是合法 URL 编码路径，切勿再 encodeURI 否则 % 二次编码 → 404）
-  const target = OSS_ORIGIN + req.path
+  // 3) 回源 OSS（originalUrl 已是合法 URL 编码路径，切勿再 encodeURI 否则 % 二次编码 → 404）
+  const target = OSS_ORIGIN + req.originalUrl
   try {
-    const data = await fetchCardFromOSS(target, req.path)
+    const data = await fetchCardFromOSS(target, req.originalUrl)
     return sendCard(res, data, false)
   } catch (err) {
-    appLog('ERROR', `卡牌图代理失败: ${target} -> ${err.message}`)
+    appLog('ERROR', `OSS 代理失败: ${target} -> ${err.message}`)
     return res.status(err.status === 404 ? 404 : 502).end()
   }
-})
+}
+
+// 炉石卡牌图反代
+app.get('/hearthstone-cards/*', handleOssProxy)
+// 站点静态资源反代（如江阴地图底图）：前端用相对路径 /site-assets/*，由服务端回源 OSS
+app.get('/site-assets/*', handleOssProxy)
 
 // 静态资源（带长期缓存）
 app.use(

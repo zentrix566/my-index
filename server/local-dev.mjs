@@ -1,4 +1,4 @@
-/** 启动不依赖 PostgreSQL 的本地验证服务，内存数据会在进程退出后清空。 */
+/** 启动不依赖 PostgreSQL 的本地验证服务，数据保存到本地 SQLite。 */
 // 载入 .env（若存在）；文件不存在时静默跳过，不阻断启动
 try {
   process.loadEnvFile('.env')

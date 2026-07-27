@@ -21,7 +21,7 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.join(__dirname, '..')
-const OUT = path.join(ROOT, 'src/hearthstone-achievements/data/dbfid-cardnames.json')
+const OUT = path.join(ROOT, 'src/features/hearthstone/data/dbfid-cardnames.json')
 
 // 英文枚举 → 中文（与历史缓存风格一致）
 const CLASS_CN = {

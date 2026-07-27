@@ -10,6 +10,7 @@ import jwt from 'jsonwebtoken'
 import rateLimit from 'express-rate-limit'
 import { getUserByUsername, createUser, getUserById } from './db.js'
 import { appLog } from './logger.js'
+import { isOwnerUser } from './auth-policy.js'
 
 const router = express.Router()
 const SALT_ROUNDS = 10
@@ -56,6 +57,24 @@ export function requireAuth(req, res, next) {
     next()
   } catch {
     return res.status(401).json({ error: '登录已过期' })
+  }
+}
+
+/** 仅允许配置的 owner 用户访问管理接口。 */
+export async function requireOwner(req, res, next) {
+  const token = req.cookies?.[TOKEN_NAME]
+  if (!token) return res.status(401).json({ error: '请先登录所有者账号' })
+  try {
+    const payload = jwt.verify(token, JWT_SECRET)
+    const user = await getUserById(payload.uid)
+    if (!isOwnerUser(user)) {
+      return res.status(403).json({ error: '仅所有者可查看访问统计' })
+    }
+    req.userId = payload.uid
+    req.user = user
+    next()
+  } catch {
+    return res.status(401).json({ error: '登录已过期，请重新登录' })
   }
 }
 
@@ -156,7 +175,11 @@ router.get('/me', async (req, res) => {
   try {
     const payload = jwt.verify(token, JWT_SECRET)
     const user = await getUserById(payload.uid)
-    return res.json({ user: user ? { id: user.id, username: user.username } : null })
+    return res.json({
+      user: user
+        ? { id: user.id, username: user.username, isOwner: isOwnerUser(user) }
+        : null
+    })
   } catch {
     return res.json({ user: null })
   }

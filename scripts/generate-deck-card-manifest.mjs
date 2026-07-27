@@ -16,7 +16,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const SRC = process.env.CARD_IMG_SOURCE
   || 'E:/github/my-heartstone/hearthstone_cards/wild'
 const META_PATH = join(SRC, 'cards_meta.json')
-const OUT_PATH = join(__dirname, '../src/hearthstone-achievements/data/deck-card-images.json')
+const OUT_PATH = join(__dirname, '../src/features/hearthstone/data/deck-card-images.json')
 
 function rarityName(id) {
   // 与 HearthstoneJSON 的 rarity_id 保持一致

@@ -26,14 +26,10 @@ ENV VITE_OSS_BASE=$VITE_OSS_BASE
 
 RUN npm run build
 
-# 运行时（同样需要编译 better-sqlite3 原生模块）
+# 运行时仅安装生产依赖；本地 SQLite 驱动属于开发依赖，不进入生产镜像。
 FROM node:20-slim
 LABEL maintainer="Zentrix"
 WORKDIR /app
-
-RUN apt-get update && apt-get install -y --no-install-recommends python3 make g++ \
-    && rm -rf /var/lib/apt/lists/*
-ENV npm_config_build_from_source=true
 
 COPY package*.json ./
 RUN npm ci --omit=dev && npm cache clean --force
@@ -42,9 +38,9 @@ COPY --from=build /app/dist/ ./dist/
 COPY server/ ./server/
 # 成就定义 JSON：运行时 achievements-meta.js 需要扫描它来写中文名/版本/职业。
 # 线上镜像没有 src/，必须显式复制到 server/achievements-data/（meta 的第 2 候选路径）。
-COPY src/hearthstone-achievements/data/achievements ./server/achievements-data/
+COPY src/features/hearthstone/data/achievements ./server/achievements-data/
 # 硬核模式过滤用的核心版本 ID 列表（ai-advisor.js 在生产镜像里的第 1 候选路径）。
-COPY src/hearthstone-achievements/data/core-expansion-ids.js ./server/achievements-data/
+COPY src/features/hearthstone/data/core-expansion-ids.js ./server/achievements-data/
 
 RUN mkdir -p /app/logs /app/data
 

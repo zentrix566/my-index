@@ -1,7 +1,14 @@
 <template>
   <div v-if="visible && deck" class="ddm-overlay" @click.self="$emit('close')">
-    <div class="ddm-modal" role="dialog" aria-modal="true" aria-labelledby="ddm-title">
-      <button class="ddm-close" type="button" aria-label="关闭" @click="$emit('close')">
+    <div
+      ref="modalElement"
+      class="ddm-modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="ddm-title"
+      tabindex="-1"
+    >
+      <button ref="closeButton" class="ddm-close" type="button" aria-label="关闭" @click="$emit('close')">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
 
@@ -35,36 +42,17 @@
       <div v-if="decoded.valid && decoded.cards.length" class="ddm-body">
         <div class="ddm-cards">
           <div class="ddm-card-cols">
-            <ul class="ddm-card-list">
+            <ul v-for="(column, columnIndex) in cardColumns" :key="columnIndex" class="ddm-card-list">
               <li
-                v-for="(c, idx) in leftCards"
-                :key="c.dbfId + '-' + c.count + '-L' + idx"
+                v-for="(c, idx) in column"
+                :key="c.dbfId + '-' + c.count + '-' + columnIndex + '-' + idx"
                 class="ddm-card-row"
                 :title="c.name + ' · ' + (c.cost ?? '?') + '费 · ' + (c.rarity || '') + '（点击看大图）'"
+                role="button"
+                tabindex="0"
                 @click="openLightbox(c)"
-              >
-                <span class="ddm-card-fade" aria-hidden="true"></span>
-                <img v-if="c.cropImage" class="ddm-card-thumb" :src="c.cropImage" :alt="c.name" loading="lazy" decoding="async">
-                <span class="ddm-crystal">
-                  <svg class="ddm-crystal-svg" viewBox="0 0 24 26" aria-hidden="true">
-                    <polygon points="12,1 22,7 22,19 12,25 2,19 2,7" />
-                    <polygon class="ddm-crystal-face" points="12,1 22,7 12,12 2,7" />
-                  </svg>
-                  <span class="ddm-crystal-num">{{ c.cost ?? '?' }}</span>
-                </span>
-                <span class="ddm-card-name" :class="getRarityClass(c.rarity)">{{ c.name }}</span>
-                <span class="ddm-count" :class="{ 'ddm-count-leg': c.rarityKey === 'legendary' }">
-                  {{ c.rarityKey === 'legendary' && c.count === 1 ? '★' : c.count }}
-                </span>
-              </li>
-            </ul>
-            <ul class="ddm-card-list">
-              <li
-                v-for="(c, idx) in rightCards"
-                :key="c.dbfId + '-' + c.count + '-R' + idx"
-                class="ddm-card-row"
-                :title="c.name + ' · ' + (c.cost ?? '?') + '费 · ' + (c.rarity || '') + '（点击看大图）'"
-                @click="openLightbox(c)"
+                @keydown.enter.prevent="openLightbox(c)"
+                @keydown.space.prevent="openLightbox(c)"
               >
                 <span class="ddm-card-fade" aria-hidden="true"></span>
                 <img v-if="c.cropImage" class="ddm-card-thumb" :src="c.cropImage" :alt="c.name" loading="lazy" decoding="async">
@@ -187,7 +175,7 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, onBeforeUnmount } from 'vue'
+import { ref, reactive, computed, watch, nextTick, onBeforeUnmount } from 'vue'
 import { decodeDeck } from '../utils/deckstring.js'
 import { getRarityClass, getCardFullImage, getRarityDust, RARITY_LABELS } from '../utils/cardImages.js'
 
@@ -196,6 +184,9 @@ const props = defineProps({
   deck: { type: Object, default: null }
 })
 const emit = defineEmits(['close'])
+const modalElement = ref(null)
+const closeButton = ref(null)
+let previouslyFocusedElement = null
 
 const decoded = computed(() => (props.deck ? decodeDeck(props.deck.code) : { valid: false, heroClass: '未知', total: 0, cards: [] }))
 const displayClass = computed(() => (props.deck && props.deck.heroClass) || decoded.value.heroClass)
@@ -227,6 +218,7 @@ const rightCards = computed(() => {
   const s = sortedCards.value
   return s.slice(Math.ceil(s.length / 2))
 })
+const cardColumns = computed(() => [leftCards.value, rightCards.value])
 
 // 全金造价（每张卡按金卡尘值计算）
 const dustGolden = computed(() =>
@@ -308,13 +300,43 @@ function onKeydown(e) {
   if (e.key === 'Escape') {
     if (lightbox.card) closeLightbox()
     else if (props.visible) emit('close')
+    return
+  }
+  if (e.key !== 'Tab' || !modalElement.value) return
+  const focusable = [...modalElement.value.querySelectorAll(
+    'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
+  )]
+  if (!focusable.length) {
+    e.preventDefault()
+    modalElement.value.focus()
+    return
+  }
+  const first = focusable[0]
+  const last = focusable[focusable.length - 1]
+  if (e.shiftKey && document.activeElement === first) {
+    e.preventDefault()
+    last.focus()
+  } else if (!e.shiftKey && document.activeElement === last) {
+    e.preventDefault()
+    first.focus()
   }
 }
 watch(() => props.visible, (show) => {
-  if (show) window.addEventListener('keydown', onKeydown)
-  else { window.removeEventListener('keydown', onKeydown); closeLightbox() }
+  if (show) {
+    previouslyFocusedElement = document.activeElement
+    window.addEventListener('keydown', onKeydown)
+    nextTick(() => closeButton.value?.focus())
+  } else {
+    window.removeEventListener('keydown', onKeydown)
+    closeLightbox()
+    previouslyFocusedElement?.focus?.()
+    previouslyFocusedElement = null
+  }
+}, { immediate: true })
+onBeforeUnmount(() => {
+  window.removeEventListener('keydown', onKeydown)
+  previouslyFocusedElement?.focus?.()
 })
-onBeforeUnmount(() => window.removeEventListener('keydown', onKeydown))
 
 // ── 复制卡组代码 ──
 async function copy() {
