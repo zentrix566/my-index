@@ -63,28 +63,8 @@ try {
 const isProd = process.env.NODE_ENV === 'production'
 const PORT = Number(process.env.PORT) || (isProd ? 80 : 3000)
 const DIST_DIR = path.resolve(__dirname, '../dist')
-const DATA_DIR = path.resolve(__dirname, '../data')
-const ACHIEVEMENT_PROGRESS_FILE = path.join(DATA_DIR, 'achievement-progress.json')
 const STATIC_CACHE_MAX_AGE = 365 * 24 * 60 * 60 * 1000 // 1 年
 const FORCE_SHUTDOWN_TIMEOUT_MS = 25_000
-
-// 确保数据目录存在
-if (!fs.existsSync(DATA_DIR)) {
-  fs.mkdirSync(DATA_DIR, { recursive: true })
-}
-
-// 读取成就进度
-function loadAchievementProgress() {
-  try {
-    if (fs.existsSync(ACHIEVEMENT_PROGRESS_FILE)) {
-      const raw = fs.readFileSync(ACHIEVEMENT_PROGRESS_FILE, 'utf-8')
-      return JSON.parse(raw)
-    }
-  } catch (err) {
-    console.error('[achievement] 读取进度失败:', err)
-  }
-  return {}
-}
 
 const app = express()
 
@@ -705,7 +685,6 @@ async function bootstrap() {
   httpServer = app.listen(PORT, () => {
     appLog('SERVER', `服务已启动，监听端口 ${PORT}`)
     appLog('SERVER', `静态文件目录: ${DIST_DIR}`)
-    appLog('SERVER', `数据目录: ${DATA_DIR}`)
   })
 }
 

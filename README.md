@@ -69,7 +69,7 @@ npm run preview
 Get-Content -Wait logs/app-$(Get-Date -Format yyyy-MM-dd).log
 ```
 
-## Docker / Nginx
+## Docker
 
 ```bash
 docker build -t my-index .
@@ -84,9 +84,8 @@ docker run -d -p 8080:80 my-index
 .
 ├── src/
 │   ├── components/       # 复用组件（项目卡片网格、Vue 项目卡片网格）
-│   ├── crazy-people/     # 「疯狂的人」小游戏（组件/游戏逻辑/主循环）
-│   ├── hearthstone-achievements/  # 炉石传说成就查看器（组件/数据/卡牌图片）
 │   ├── data/             # 项目、训练与 Vue 项目索引数据
+│   ├── features/         # 各子项目功能模块（炉石、小游戏、训练与数据看板等）
 │   ├── router/           # Vue Router
 │   ├── styles/           # 全局样式
 │   ├── views/            # 页面
@@ -94,7 +93,6 @@ docker run -d -p 8080:80 my-index
 │   └── main.js
 ├── index.html            # Vite 入口
 ├── vite.config.js
-├── nginx.conf            # Nginx 配置
 ├── Dockerfile            # 多阶段构建镜像
 └── README.md
 ```

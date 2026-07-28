@@ -41,7 +41,7 @@ COPY src/features/hearthstone/data/achievements ./server/achievements-data/
 # 硬核模式过滤用的核心版本 ID 列表（ai-advisor.js 在生产镜像里的第 1 候选路径）。
 COPY src/features/hearthstone/data/core-expansion-ids.js ./server/achievements-data/
 
-RUN mkdir -p /app/logs /app/data
+RUN mkdir -p /app/logs
 
 ENV NODE_ENV=production
 ENV PORT=80

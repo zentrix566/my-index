@@ -2,13 +2,7 @@
 .github
 node_modules
 dist
-css
-js
-life
-projects
 README.md
-# 炉石卡牌图已迁移到阿里云 OSS（VITE_OSS_BASE），不再打进镜像，减小体积、加快构建
-public/hearthstone-cards
 
 # 本地构建/验证临时目录（.build-*、.hsbuild_* 等）与旧构建备份 dist-old：
 # 均为可再生的构建产物，不进 Docker 构建上下文，避免 800MB+ 垃圾拖慢 CI

@@ -27,12 +27,8 @@ jobs:
       packages: write
 
     steps:
-      # 卡牌图已迁移到阿里云 OSS（前端 VITE_OSS_BASE），不再依赖 Git LFS，
-      # 因此 checkout 不拉 LFS，省去拉取 93MB 指针/真实文件与校验步骤，构建更快更稳。
       - name: Checkout code
         uses: actions/checkout@v4
-        with:
-          lfs: false
 
       - name: Set up Node.js
         uses: actions/setup-node@v4

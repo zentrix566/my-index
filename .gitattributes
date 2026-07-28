@@ -1,3 +1,0 @@
-# 炉石卡牌图片（原 public/hearthstone-cards，约 93MB）已迁移到阿里云 OSS 托管，
-# 前端通过 VITE_OSS_BASE 引用 OSS URL；CI 用 .dockerignore 排除该目录，不再走 Git LFS。
-# 历史 LFS 指针仍在旧提交中，如需回收本地 .git/lfs 缓存可执行 `git lfs prune --force`。

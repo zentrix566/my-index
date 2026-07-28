@@ -3,7 +3,7 @@
  * 上传炉石卡牌图片到阿里云 OSS（公开读）
  *
  * 背景：
- *   卡牌图原先走 Git LFS 打进 Docker 镜像，线上因 LFS 指针 / CloudFront 不可达而破图。
+ *   卡牌图原先随 Docker 镜像发布，线上因静态资源链路不可达而破图。
  *   现改为托管到 OSS，前端统一用相对路径 /hearthstone-cards/wild/{crop,full}/...，
  *   由服务端（server/index.js）反代到 OSS 并强制 Content-Disposition: inline（带本站域名、不下载）。
  *
