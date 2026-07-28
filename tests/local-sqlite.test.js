@@ -41,6 +41,15 @@ test('SQLite 本地存储支持用户、进度和 AI 配额', () => {
       fixedCount: 1,
       freeCount: 0
     })
+    assert.deepEqual(store.reserveAiUsage(String(userId), '2026-07-27', 'fixed', 2), {
+      fixedCount: 2,
+      freeCount: 0
+    })
+    assert.equal(store.reserveAiUsage(String(userId), '2026-07-27', 'fixed', 2), null)
+    assert.deepEqual(store.releaseAiUsage(String(userId), '2026-07-27', 'fixed'), {
+      fixedCount: 1,
+      freeCount: 0
+    })
   } finally {
     store.close()
     fs.rmSync(directory, { recursive: true, force: true })

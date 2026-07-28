@@ -3992,6 +3992,11 @@ a.content-card:hover {
   box-shadow: var(--hs-shadow-hover);
 }
 
+.hs-achievement-card[role="button"]:focus-visible {
+  outline: 3px solid var(--hs-focus, #fbbf24);
+  outline-offset: 3px;
+}
+
 .hs-card-title {
   color: var(--hs-text);
   font-size: 15px;

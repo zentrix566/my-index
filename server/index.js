@@ -21,7 +21,8 @@ import {
   bulkUpsertProgress,
   getUserByUsername,
   getAiUsage,
-  incrementAiUsage,
+  reserveAiUsage,
+  releaseAiUsage,
   transaction
 } from './db.js'
 import { getAchievementMeta, hasAchievementMeta } from './achievements-meta.js'
@@ -398,10 +399,18 @@ app.post('/api/ai-advisor', requireAuth, async (req, res) => {
 
     const userKey = getUserKey(req)
     const day = todayKey()
-    const usage = await getAiUsage(userKey, day)
     const limit = type === 'fixed' ? AI_FIXED_DAILY : AI_FREE_DAILY
-    const used = type === 'fixed' ? usage.fixedCount : usage.freeCount
-    if (used >= limit) {
+
+    const userId = getUserIdFromReq(req)
+    const progress = userId ? await getProgress(userId) : {}
+    const effectiveHardcore = !!req.body?.hardcore
+    const context = buildAiContext(progress, { hardcore: effectiveHardcore })
+    if (!process.env.DEEPSEEK_API_KEY) {
+      return res.status(503).json({ error: 'AI 服务未配置（服务端缺少 DEEPSEEK_API_KEY）' })
+    }
+    const newUsage = await reserveAiUsage(userKey, day, type, limit)
+    if (!newUsage) {
+      const usage = await getAiUsage(userKey, day)
       const label = type === 'fixed' ? `固定问答（${AI_FIXED_DAILY} 次/天）` : `自由提问（${AI_FREE_DAILY} 次/天）`
       return res.status(429).json({
         error: `今日${label}额度已用完，明天再来看看～`,
@@ -413,16 +422,15 @@ app.post('/api/ai-advisor', requireAuth, async (req, res) => {
         }
       })
     }
-
-    const userId = getUserIdFromReq(req)
-    const progress = userId ? await getProgress(userId) : {}
-    const effectiveHardcore = !!req.body?.hardcore
-    const context = buildAiContext(progress, { hardcore: effectiveHardcore })
-    if (!process.env.DEEPSEEK_API_KEY) {
-      return res.status(503).json({ error: 'AI 服务未配置（服务端缺少 DEEPSEEK_API_KEY）' })
+    let reply
+    try {
+      reply = await callDeepSeek(buildSystemPrompt(context), question)
+    } catch (error) {
+      await releaseAiUsage(userKey, day, type).catch((releaseError) => {
+        appLog('ERROR', `AI 额度归还失败: ${releaseError.message}`)
+      })
+      throw error
     }
-    const reply = await callDeepSeek(buildSystemPrompt(context), question)
-    const newUsage = await incrementAiUsage(userKey, day, type)
     const versionCount = new Set(context.items.map((i) => i.version)).size
     res.json({
       ok: true,
@@ -472,7 +480,15 @@ const CARD_CACHE_DIR = path.join(os.tmpdir(), 'zentrix-hs-cards')
 const fsp = fs.promises                       // 异步文件操作（import fs from 'fs' 拿到的是回调风格 API）
 const memCardCache = new Map()          // reqPath -> { buf, contentType, contentLength }
 const MEM_CARD_CACHE_MAX = 800
+const MEM_CARD_CACHE_MAX_BYTES = 128 * 1024 * 1024
+const DISK_CARD_CACHE_MAX_BYTES = 256 * 1024 * 1024
+const MAX_OSS_IMAGE_BYTES = 10 * 1024 * 1024
+const OSS_FETCH_TIMEOUT_MS = 15_000
+const ALLOWED_OSS_CONTENT_TYPES = /^image\/(?:avif|gif|jpeg|png|webp)(?:;|$)/i
+const ALLOWED_OSS_PATH = /\.(?:avif|gif|jpe?g|png|webp)$/i
 const cardInflight = new Map()         // target -> Promise，避免并发重复回源（惊群效应）
+let memCardCacheBytes = 0
+let diskCachePrunePromise = null
 
 function memCardGet(key) {
   const v = memCardCache.get(key)
@@ -480,28 +496,100 @@ function memCardGet(key) {
   return v
 }
 function memCardSet(key, v) {
-  if (memCardCache.size >= MEM_CARD_CACHE_MAX) {
+  if (v.contentLength > MEM_CARD_CACHE_MAX_BYTES) return
+  const existing = memCardCache.get(key)
+  if (existing) {
+    memCardCacheBytes -= existing.contentLength
+    memCardCache.delete(key)
+  }
+  while (
+    memCardCache.size >= MEM_CARD_CACHE_MAX ||
+    memCardCacheBytes + v.contentLength > MEM_CARD_CACHE_MAX_BYTES
+  ) {
     const oldest = memCardCache.keys().next().value
-    if (oldest) memCardCache.delete(oldest)
+    if (!oldest) break
+    const removed = memCardCache.get(oldest)
+    memCardCache.delete(oldest)
+    memCardCacheBytes -= removed?.contentLength || 0
   }
   memCardCache.set(key, v)
+  memCardCacheBytes += v.contentLength
 }
 // 用 URL 路径的哈希作磁盘文件名：既规避中文/特殊字符非法路径，又杜绝不同图映射到同一文件。
 function cardDiskFile(reqPath) {
   const hash = crypto.createHash('sha1').update(reqPath).digest('hex')
   return path.join(CARD_CACHE_DIR, hash)
 }
+function pruneCardDiskCache() {
+  if (diskCachePrunePromise) return diskCachePrunePromise
+  diskCachePrunePromise = (async () => {
+    const entries = await fsp.readdir(CARD_CACHE_DIR, { withFileTypes: true })
+    const files = await Promise.all(entries
+      .filter((entry) => entry.isFile() && entry.name.endsWith('.bin'))
+      .map(async (entry) => {
+        const filePath = path.join(CARD_CACHE_DIR, entry.name)
+        const stat = await fsp.stat(filePath)
+        return { filePath, size: stat.size, mtimeMs: stat.mtimeMs }
+      }))
+    let totalBytes = files.reduce((sum, file) => sum + file.size, 0)
+    files.sort((a, b) => a.mtimeMs - b.mtimeMs)
+    for (const file of files) {
+      if (totalBytes <= DISK_CARD_CACHE_MAX_BYTES) break
+      totalBytes -= file.size
+      await Promise.all([
+        fsp.unlink(file.filePath).catch(() => {}),
+        fsp.unlink(file.filePath.replace(/\.bin$/, '.ct')).catch(() => {})
+      ])
+    }
+  })()
+    .catch(() => {})
+    .finally(() => { diskCachePrunePromise = null })
+  return diskCachePrunePromise
+}
+async function readLimitedBody(body, maxBytes) {
+  const reader = body.getReader()
+  const chunks = []
+  let totalBytes = 0
+  try {
+    while (true) {
+      const { done, value } = await reader.read()
+      if (done) break
+      totalBytes += value.byteLength
+      if (totalBytes > maxBytes) {
+        const error = new Error('upstream image is too large')
+        error.status = 413
+        throw error
+      }
+      chunks.push(Buffer.from(value))
+    }
+    return Buffer.concat(chunks, totalBytes)
+  } catch (error) {
+    await reader.cancel().catch(() => {})
+    throw error
+  }
+}
 async function fetchCardFromOSS(target, reqPath) {
   if (cardInflight.has(target)) return cardInflight.get(target)
   const p = (async () => {
-    const upstream = await fetch(target)
+    const upstream = await fetch(target, { signal: AbortSignal.timeout(OSS_FETCH_TIMEOUT_MS) })
     if (!upstream.ok || !upstream.body) {
       const e = new Error('upstream ' + upstream.status)
       e.status = upstream.status === 404 ? 404 : 502
       throw e
     }
-    const buf = Buffer.from(await upstream.arrayBuffer())
     const contentType = upstream.headers.get('content-type') || 'image/png'
+    if (!ALLOWED_OSS_CONTENT_TYPES.test(contentType)) {
+      const error = new Error('upstream content type is not an image')
+      error.status = 415
+      throw error
+    }
+    const declaredLength = Number(upstream.headers.get('content-length')) || 0
+    if (declaredLength > MAX_OSS_IMAGE_BYTES) {
+      const error = new Error('upstream image is too large')
+      error.status = 413
+      throw error
+    }
+    const buf = await readLimitedBody(upstream.body, MAX_OSS_IMAGE_BYTES)
     const data = { buf, contentType, contentLength: buf.length }
     memCardSet(reqPath, data)
     // 磁盘缓存（尽力而为：k8s 临时盘 / 本地 tmp 均可写；失败不阻断，退回纯内存缓存）
@@ -510,6 +598,7 @@ async function fetchCardFromOSS(target, reqPath) {
       await fsp.mkdir(CARD_CACHE_DIR, { recursive: true })
       await fsp.writeFile(dp + '.bin', buf)
       await fsp.writeFile(dp + '.ct', contentType)
+      void pruneCardDiskCache()
     } catch { /* 磁盘不可写时忽略 */ }
     return data
   })()
@@ -521,41 +610,46 @@ function sendCard(res, data, hit) {
   res.setHeader('Content-Disposition', 'inline')
   res.setHeader('Cache-Control', 'public, max-age=31536000, immutable')
   res.setHeader('Content-Length', data.contentLength)
+  res.setHeader('X-Content-Type-Options', 'nosniff')
   res.setHeader('X-Cache', hit ? 'HIT' : 'MISS')
   res.end(data.buf)
 }
 
 // 通用 OSS 反代处理函数：把 /hearthstone-cards/*（卡牌图）与 /site-assets/*（站点静态资源，
 // 如江阴地图底图）两类路径统一反代到 OSS_ORIGIN 并强制 inline。OSS 对象 key 与请求路径一致。
-// target 用 req.originalUrl（含查询串）而非 req.path，便于后续对 /site-assets 走 OSS 图片处理；
-// 卡牌图无查询串，originalUrl 等同 path，行为不变。
+// 统一使用 req.path 作为缓存键与 OSS 对象路径，忽略查询串，避免同一图片被重复缓存。
 async function handleOssProxy(req, res) {
   if (!OSS_ORIGIN) return res.status(404).end()
   // 路径安全：拒绝目录穿越
   if (req.path.includes('..')) return res.status(400).end()
+  if (!ALLOWED_OSS_PATH.test(req.path)) return res.status(415).end()
+  const cacheKey = req.path
 
   // 1) 内存缓存
-  const mem = memCardGet(req.originalUrl)
+  const mem = memCardGet(cacheKey)
   if (mem) return sendCard(res, mem, true)
 
   // 2) 磁盘缓存（跨重启 / 多实例共享）
   try {
-    const dp = cardDiskFile(req.originalUrl)
+    const dp = cardDiskFile(cacheKey)
     const buf = await fsp.readFile(dp + '.bin')
     const contentType = (await fsp.readFile(dp + '.ct', 'utf8').catch(() => 'image/png'))
+    if (buf.length > MAX_OSS_IMAGE_BYTES || !ALLOWED_OSS_CONTENT_TYPES.test(contentType)) {
+      throw new Error('invalid disk cache entry')
+    }
     const data = { buf, contentType, contentLength: buf.length }
-    memCardSet(req.originalUrl, data)
+    memCardSet(cacheKey, data)
     return sendCard(res, data, true)
   } catch { /* 未命中，回源 */ }
 
-  // 3) 回源 OSS（originalUrl 已是合法 URL 编码路径，切勿再 encodeURI 否则 % 二次编码 → 404）
-  const target = OSS_ORIGIN + req.originalUrl
+  // 3) 回源 OSS（req.path 已是合法 URL 编码路径，切勿再 encodeURI 否则 % 二次编码 → 404）
+  const target = OSS_ORIGIN + cacheKey
   try {
-    const data = await fetchCardFromOSS(target, req.originalUrl)
+    const data = await fetchCardFromOSS(target, cacheKey)
     return sendCard(res, data, false)
   } catch (err) {
     appLog('ERROR', `OSS 代理失败: ${target} -> ${err.message}`)
-    return res.status(err.status === 404 ? 404 : 502).end()
+    return res.status([404, 413, 415].includes(err.status) ? err.status : 502).end()
   }
 }
 

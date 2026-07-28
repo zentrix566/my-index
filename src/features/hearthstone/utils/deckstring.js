@@ -32,24 +32,36 @@ const HERO_CLASS_FALLBACK = {
   119030: '潜行者'
 }
 
+const MAX_DECK_CODE_LENGTH = 4096
+const MAX_VARINT_BYTES = 8
+
 function base64ToBytes(b64) {
-  const norm = b64.replace(/-/g, '+').replace(/_/g, '/')
+  if (typeof b64 !== 'string' || b64.length === 0 || b64.length > MAX_DECK_CODE_LENGTH) {
+    throw new Error('bad deck code length')
+  }
+  if (!/^[A-Za-z0-9+/_-]+={0,2}$/.test(b64) || b64.length % 4 === 1) {
+    throw new Error('bad base64')
+  }
+  let norm = b64.replace(/-/g, '+').replace(/_/g, '/')
+  norm += '='.repeat((4 - (norm.length % 4)) % 4)
   const bin = atob(norm)
-  const bytes = new Array(bin.length)
+  const bytes = new Uint8Array(bin.length)
   for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i)
   return bytes
 }
 
 function readVarint(bytes, i) {
   let result = 0
-  let shift = 0
-  let byte
-  do {
-    byte = bytes[i++]
-    result += (byte & 0x7f) << shift
-    shift += 7
-  } while (byte & 0x80)
-  return { value: result, next: i }
+  let multiplier = 1
+  for (let count = 0; count < MAX_VARINT_BYTES; count++) {
+    if (i >= bytes.length) throw new Error('truncated varint')
+    const byte = bytes[i++]
+    result += (byte & 0x7f) * multiplier
+    if (!Number.isSafeInteger(result)) throw new Error('varint overflow')
+    if ((byte & 0x80) === 0) return { value: result, next: i }
+    multiplier *= 128
+  }
+  throw new Error('varint too long')
 }
 
 /**
@@ -83,9 +95,12 @@ function enrichCardImages(card) {
 export function decodeDeck(code) {
   try {
     const bytes = base64ToBytes(code)
+    if (bytes.length < 3 || bytes[0] !== 0 || bytes[1] !== 1) {
+      throw new Error('bad header')
+    }
     let i = 2 // 跳过保留字节(0)与版本字节(1)
     const fmt = readVarint(bytes, i); i = fmt.next
-    if (i > bytes.length || fmt.value > 3) throw new Error('bad format')
+    if (fmt.value < 1 || fmt.value > 3) throw new Error('bad format')
     const nh = readVarint(bytes, i); i = nh.next
     if (i > bytes.length || nh.value < 1 || nh.value > 3) throw new Error('bad hero count')
     const heroes = []

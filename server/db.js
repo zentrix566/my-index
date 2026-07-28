@@ -491,4 +491,40 @@ export async function incrementAiUsage(userKey, day, type) {
   return { fixedCount: row.fixed_count || 0, freeCount: row.free_count || 0 }
 }
 
+// 原子预占当日额度；达到上限时返回 null，避免并发请求同时越过限额检查。
+export async function reserveAiUsage(userKey, day, type, limit) {
+  if (!Number.isInteger(limit) || limit <= 0) return null
+  const col = type === 'free' ? 'free_count' : 'fixed_count'
+  if (isLocalDevMode) {
+    return (await getLocalStore()).reserveAiUsage(userKey, day, type, limit)
+  }
+  const { rows } = await pool.query(
+    `INSERT INTO ai_advisor_usage(user_key, day, ${col}) VALUES($1, $2, 1)
+     ON CONFLICT(user_key, day) DO UPDATE SET ${col} = ai_advisor_usage.${col} + 1
+     WHERE ai_advisor_usage.${col} < $3
+     RETURNING fixed_count, free_count`,
+    [userKey, day, limit]
+  )
+  const row = rows[0]
+  if (!row) return null
+  return { fixedCount: row.fixed_count || 0, freeCount: row.free_count || 0 }
+}
+
+// 上游调用失败时归还已预占额度。
+export async function releaseAiUsage(userKey, day, type) {
+  const col = type === 'free' ? 'free_count' : 'fixed_count'
+  if (isLocalDevMode) {
+    return (await getLocalStore()).releaseAiUsage(userKey, day, type)
+  }
+  const { rows } = await pool.query(
+    `UPDATE ai_advisor_usage
+     SET ${col} = GREATEST(${col} - 1, 0)
+     WHERE user_key = $1 AND day = $2
+     RETURNING fixed_count, free_count`,
+    [userKey, day]
+  )
+  const row = rows[0]
+  return { fixedCount: row?.fixed_count || 0, freeCount: row?.free_count || 0 }
+}
+
 export default pool

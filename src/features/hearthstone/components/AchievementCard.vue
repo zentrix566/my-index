@@ -22,6 +22,10 @@ const getDifficultyStyle = (difficulty) => ({
 
 const isClickable = (ach) =>
   ach.cards && ach.cards.length > 0 && ach.cards.some((c) => c.image || c.imageFallback)
+const cardInteractive = computed(() => isClickable(props.achievement))
+const activateCard = () => {
+  if (cardInteractive.value) emit('click', props.achievement)
+}
 
 const onDeckClick = (deck, event) => {
   if (event) event.stopPropagation()
@@ -54,8 +58,12 @@ const copyDeckCode = async (deck, event) => {
 <template>
   <article
     class="hs-achievement-card"
-    :class="{ 'hs-clickable': isClickable(achievement) }"
-    @click="emit('click', achievement)"
+    :class="{ 'hs-clickable': cardInteractive }"
+    :role="cardInteractive ? 'button' : undefined"
+    :tabindex="cardInteractive ? 0 : undefined"
+    @click="activateCard"
+    @keydown.enter.self.prevent="activateCard"
+    @keydown.space.self.prevent="activateCard"
   >
     <div class="hs-card-content">
       <div class="hs-card-title-row">

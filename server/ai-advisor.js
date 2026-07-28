@@ -35,6 +35,7 @@ const CORE_EXPANSION_SET = new Set(CORE_EXPANSION_IDS)
 // 每日额度（可用环境变量调整，默认 5 次固定 + 1 次自由）
 export const AI_FIXED_DAILY = Number(process.env.AI_FIXED_DAILY) || 5
 export const AI_FREE_DAILY = Number(process.env.AI_FREE_DAILY) || 1
+export const AI_QUOTA_TIME_ZONE = process.env.AI_QUOTA_TIME_ZONE || 'Asia/Hong_Kong'
 
 // 固定服务端配置：前端不配置地址/模型，Key 仅存于服务端环境变量
 const DEEPSEEK_BASE_URL = 'https://api.deepseek.com/v1'
@@ -42,12 +43,16 @@ const DEEPSEEK_MODEL = 'deepseek-v4-flash'
 const DEEPSEEK_TEMPERATURE = 0.5
 const DEEPSEEK_TIMEOUT_MS = 30_000
 
-/** 本地日期 YYYY-MM-DD（用于每日额度重置） */
-export function todayKey() {
-  const d = new Date()
-  const m = String(d.getMonth() + 1).padStart(2, '0')
-  const day = String(d.getDate()).padStart(2, '0')
-  return `${d.getFullYear()}-${m}-${day}`
+/** 按指定 IANA 时区返回 YYYY-MM-DD（用于每日额度重置）。 */
+export function todayKey(date = new Date(), timeZone = AI_QUOTA_TIME_ZONE) {
+  const parts = new Intl.DateTimeFormat('en-CA', {
+    timeZone,
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit'
+  }).formatToParts(date)
+  const values = Object.fromEntries(parts.map(({ type, value }) => [type, value]))
+  return `${values.year}-${values.month}-${values.day}`
 }
 
 /**

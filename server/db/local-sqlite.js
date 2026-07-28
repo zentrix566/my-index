@@ -283,6 +283,34 @@ export function createLocalSqliteStore(filePath) {
           ${column} = ai_advisor_usage.${column} + 1
       `).run(userKey, day)
       return this.getAiUsage(userKey, day)
+    },
+
+    reserveAiUsage(userKey, day, type, limit) {
+      if (!Number.isInteger(limit) || limit <= 0) return null
+      const column = type === 'free' ? 'free_count' : 'fixed_count'
+      const row = database.prepare(`
+        INSERT INTO ai_advisor_usage(user_key, day, ${column})
+        VALUES(?, ?, 1)
+        ON CONFLICT(user_key, day) DO UPDATE SET
+          ${column} = ai_advisor_usage.${column} + 1
+        WHERE ai_advisor_usage.${column} < ?
+        RETURNING fixed_count, free_count
+      `).get(userKey, day, limit)
+      if (!row) return null
+      return {
+        fixedCount: row.fixed_count || 0,
+        freeCount: row.free_count || 0
+      }
+    },
+
+    releaseAiUsage(userKey, day, type) {
+      const column = type === 'free' ? 'free_count' : 'fixed_count'
+      database.prepare(`
+        UPDATE ai_advisor_usage
+        SET ${column} = MAX(${column} - 1, 0)
+        WHERE user_key = ? AND day = ?
+      `).run(userKey, day)
+      return this.getAiUsage(userKey, day)
     }
   }
 }

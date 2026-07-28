@@ -663,7 +663,7 @@
     <!-- AI 成就建议弹窗（实验功能，独立模块，可随时下线） -->
     <Teleport to="body">
       <div v-if="showAi" class="ai-global-modal" @click.self="closeAi">
-        <div class="ai-global-modal-box" role="dialog" aria-modal="true" aria-label="AI 成就建议">
+        <div ref="aiDialogElement" class="ai-global-modal-box" role="dialog" aria-modal="true" aria-label="AI 成就建议" tabindex="-1">
           <div class="ai-global-modal-head">
             <span class="ai-global-modal-title">🤖 AI 成就建议</span>
             <button type="button" class="ai-global-close" aria-label="关闭" @click="closeAi">×</button>
@@ -695,6 +695,7 @@ import { AI_ADVISOR_ENABLED } from '../ai/config.js'
 import { downloadBlob, nextTodoText, buildExportRows } from '../utils/achievementExport.js'
 import { saveAchievementProgress } from '../api/progress.js'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
+import { useDialogFocus } from '../composables/useDialogFocus.js'
 
 const DeckDetailModal = defineAsyncComponent(
   () => import('../components/DeckDetailModal.vue')
@@ -710,6 +711,8 @@ const router = useRouter()
 const showAi = ref(false)
 const openAi = () => { showAi.value = true }
 const closeAi = () => { showAi.value = false }
+const aiDialogElement = ref(null)
+useDialogFocus(showAi, aiDialogElement, closeAi)
 
 // 吸顶控制栏（视图切换 + 版本/职业选择）的引用：切换视图/版本时滚动到它，
 // 既能让内容从控制栏下方开始显示，又不会把页面弹回最顶、重新露出那个巨大的页面标题。

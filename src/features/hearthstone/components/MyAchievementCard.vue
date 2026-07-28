@@ -13,11 +13,6 @@ const props = defineProps({
 
 const emit = defineEmits(['click', 'toggle-select', 'deck-click'])
 
-const onCardClick = () => {
-  if (props.selectMode) emit('toggle-select', props.achievement)
-  else emit('click', props.achievement)
-}
-
 const { isStageCompleted, isAchievementCompleted, getCount, getProgressInfo, getMetric } = useAchievementProgress()
 
 // 累计成就的细分单位：点数 / 次数（用于卡片徽标）
@@ -35,6 +30,14 @@ const copiedDeckName = ref('')
 
 const isClickable = (ach) =>
   ach.cards && ach.cards.length > 0 && ach.cards.some((c) => c.image || c.imageFallback)
+const cardInteractive = computed(
+  () => props.selectMode || props.editable || isClickable(props.achievement)
+)
+const onCardClick = () => {
+  if (!cardInteractive.value) return
+  if (props.selectMode) emit('toggle-select', props.achievement)
+  else emit('click', props.achievement)
+}
 
 const getDifficultyStyle = (difficulty) => ({
   color: difficultyColors[difficulty] || '#666'
@@ -104,7 +107,11 @@ const copyDeckCode = async (deck, event) => {
       'hs-select-mode': selectMode,
       'hs-selected': selectMode && selected
     }"
+    :role="cardInteractive ? 'button' : undefined"
+    :tabindex="cardInteractive ? 0 : undefined"
     @click="onCardClick"
+    @keydown.enter.self.prevent="onCardClick"
+    @keydown.space.self.prevent="onCardClick"
   >
     <span
       v-if="selectMode"

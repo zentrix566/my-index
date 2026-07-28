@@ -1,5 +1,5 @@
 <script setup>
-import { ref } from 'vue'
+import { nextTick, onBeforeUnmount, ref, watch } from 'vue'
 
 const props = defineProps({
   cards: { type: Array, default: () => [] }
@@ -14,28 +14,76 @@ const hasImage = (card) => Boolean(card.image || card.imageFallback)
 
 // 点击缩略图放大查看大图
 const zoomCard = ref(null)
-const openZoom = (card) => { if (hasImage(card)) zoomCard.value = card }
+const zoomCloseButton = ref(null)
+let previouslyFocused = null
+const openZoom = (card) => {
+  if (!hasImage(card)) return
+  previouslyFocused = document.activeElement
+  zoomCard.value = card
+}
 const closeZoom = () => { zoomCard.value = null }
+
+const onZoomKeydown = (event) => {
+  if (!zoomCard.value) return
+  if (event.key === 'Escape') {
+    event.preventDefault()
+    event.stopImmediatePropagation()
+    closeZoom()
+  } else if (event.key === 'Tab') {
+    event.preventDefault()
+    zoomCloseButton.value?.focus()
+  }
+}
+
+watch(zoomCard, (card) => {
+  if (card) {
+    window.addEventListener('keydown', onZoomKeydown)
+    nextTick(() => zoomCloseButton.value?.focus())
+    return
+  }
+  window.removeEventListener('keydown', onZoomKeydown)
+  if (previouslyFocused?.isConnected) previouslyFocused.focus()
+  previouslyFocused = null
+})
+
+onBeforeUnmount(() => window.removeEventListener('keydown', onZoomKeydown))
 </script>
 
 <template>
   <div class="cg-grid">
     <figure v-for="card in cards" :key="card.name" class="cg-item">
-      <img
+      <button
         v-if="hasImage(card)"
-        :src="cardSrc(card)"
-        :alt="card.name"
-        class="cg-img"
-        loading="lazy"
-        @error="onCardError(card)"
+        type="button"
+        class="cg-img-button"
+        :aria-label="`放大查看${card.name}`"
         @click="openZoom(card)"
-      />
+      >
+        <img
+          :src="cardSrc(card)"
+          :alt="card.name"
+          class="cg-img"
+          loading="lazy"
+          @error="onCardError(card)"
+        />
+      </button>
       <div v-else class="cg-noimg">暂无「{{ card.name }}」的图片</div>
       <figcaption class="cg-name">{{ card.name }}</figcaption>
     </figure>
   </div>
 
-  <div v-if="zoomCard" class="cg-zoom" @click="closeZoom">
+  <div
+    v-if="zoomCard"
+    class="cg-zoom"
+    role="dialog"
+    aria-modal="true"
+    :aria-label="`查看${zoomCard.name}大图`"
+    data-nested-dialog="true"
+    @click="closeZoom"
+  >
+    <button ref="zoomCloseButton" type="button" class="cg-zoom-close" aria-label="关闭大图" @click.stop="closeZoom">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
     <img :src="cardSrc(zoomCard)" :alt="zoomCard.name" class="cg-zoom-img" @click.stop />
     <p class="cg-zoom-name">{{ zoomCard.name }}</p>
   </div>
@@ -59,8 +107,20 @@ const closeZoom = () => { zoomCard.value = null }
   max-width: 200px;
   border-radius: 8px;
   display: block;
-  cursor: zoom-in;
   border: 1px solid var(--hs-border, rgba(148, 163, 184, 0.25));
+}
+.cg-img-button {
+  display: block;
+  max-width: 200px;
+  padding: 0;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  cursor: zoom-in;
+}
+.cg-img-button:focus-visible {
+  outline: 3px solid #fbbf24;
+  outline-offset: 3px;
 }
 .cg-noimg {
   margin: 0 0 6px;
@@ -99,5 +159,23 @@ const closeZoom = () => { zoomCard.value = null }
   margin: 14px 0 0;
   color: #e2e8f0;
   font-size: 14px;
+}
+.cg-zoom-close {
+  position: absolute;
+  top: max(16px, env(safe-area-inset-top));
+  right: max(16px, env(safe-area-inset-right));
+  display: grid;
+  width: 44px;
+  height: 44px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 12px;
+  color: #f8fafc;
+  background: rgba(15, 23, 42, 0.72);
+  cursor: pointer;
+}
+.cg-zoom-close:focus-visible {
+  outline: 3px solid #fbbf24;
+  outline-offset: 3px;
 }
 </style>

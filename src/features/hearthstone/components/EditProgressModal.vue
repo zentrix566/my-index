@@ -1,6 +1,6 @@
 <template>
   <div v-if="visible" class="epm-overlay" @click.self="$emit('close')">
-    <div class="epm-modal" role="dialog" aria-modal="true" aria-labelledby="epm-title">
+    <div ref="dialogElement" class="epm-modal" role="dialog" aria-modal="true" aria-labelledby="epm-title" tabindex="-1">
       <button class="epm-close" type="button" aria-label="关闭" @click="$emit('close')">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
@@ -78,9 +78,10 @@
 </template>
 
 <script setup>
-import { ref, watch, computed } from 'vue'
+import { ref, watch, computed, toRef } from 'vue'
 import CardGallery from './CardGallery.vue'
 import { useAchievementProgress } from '../composables/useAchievementProgress.js'
+import { useDialogFocus } from '../composables/useDialogFocus.js'
 import { classColors } from '../utils/achievements.js'
 
 const props = defineProps({
@@ -89,6 +90,8 @@ const props = defineProps({
   saving: { type: Boolean, default: false }
 })
 const emit = defineEmits(['close', 'save'])
+const dialogElement = ref(null)
+useDialogFocus(toRef(props, 'visible'), dialogElement, () => emit('close'))
 
 const { progress, getUnit } = useAchievementProgress()
 

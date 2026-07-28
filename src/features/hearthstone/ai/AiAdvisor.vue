@@ -166,7 +166,8 @@ function clearChat() {
     <div class="ai-messages">
       <div v-for="(m, i) in messages" :key="i" class="ai-msg" :class="'ai-msg-' + m.role">
         <div class="ai-msg-role">{{ m.role === 'user' ? '你' : 'AI' }}</div>
-        <div class="ai-msg-text" :class="{ 'ai-md': m.role === 'assistant' }" v-html="m.role === 'assistant' ? renderMd(m.text) : m.text"></div>
+        <div v-if="m.role === 'assistant'" class="ai-msg-text ai-md" v-html="renderMd(m.text)"></div>
+        <div v-else class="ai-msg-text">{{ m.text }}</div>
       </div>
       <div v-if="loading" class="ai-msg ai-msg-assistant">
         <div class="ai-msg-role">AI</div>

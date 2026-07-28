@@ -174,11 +174,9 @@ export function useAchievementProgress(progressRef) {
         totalPoints += stage.points
         totalXp += stage.xpReward || 0
         if (isStageCompleted(ach, i)) {
+          completed++
           earnedPoints += stage.points
           earnedXp += stage.xpReward || 0
-          if (i === ach.stages.length - 1 && achCompleted) {
-            completed++
-          }
         }
       }
     }
@@ -192,7 +190,7 @@ export function useAchievementProgress(progressRef) {
       earnedPoints,
       totalXp,
       earnedXp,
-      percentage: total > 0 ? Math.round((earnedPoints / totalPoints) * 100) : 0
+      percentage: totalPoints > 0 ? Math.round((earnedPoints / totalPoints) * 100) : 0
     }
   }
 
