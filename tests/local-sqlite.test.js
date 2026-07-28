@@ -11,10 +11,14 @@ test('SQLite 本地存储支持用户、进度和 AI 配额', () => {
   try {
     const userId = store.createUser('owner', 'hash')
     assert.equal(store.getUserByUsername('owner').id, userId)
-    assert.deepEqual(store.getUserById(userId), {
+    const user = store.getUserById(userId)
+    assert.deepEqual(user, {
       id: userId,
       username: 'owner',
-      created_at: store.getUserById(userId).created_at
+      email: null,
+      email_verified: 0,
+      has_password: 1,
+      created_at: user.created_at
     })
 
     store.upsertProgress(userId, {
@@ -52,6 +56,49 @@ test('SQLite 用户名唯一约束与 PostgreSQL 错误码保持兼容', () => {
       () => store.createUser('same-name', 'second'),
       (error) => error.code === '23505'
     )
+  } finally {
+    store.close()
+    fs.rmSync(directory, { recursive: true, force: true })
+  }
+})
+
+test('SQLite 账户安全字段与一次性令牌保持一致', () => {
+  const directory = fs.mkdtempSync(path.join(os.tmpdir(), 'zentrix-sqlite-'))
+  const store = createLocalSqliteStore(path.join(directory, 'app.db'))
+  try {
+    const userId = store.createUser('account', 'initial-hash', 'User@example.com')
+    assert.equal(store.getUserByEmail('user@EXAMPLE.com').id, userId)
+    assert.equal(store.getUserByIdentifier('USER@example.com').id, userId)
+
+    store.setUserEmail(userId, 'new@example.com')
+    store.setEmailVerified(userId, true)
+    store.setHasPassword(userId, false)
+    store.updatePasswordById(userId, 'updated-hash')
+    assert.deepEqual(store.getUserAuthById(userId), {
+      id: userId,
+      username: 'account',
+      password_hash: 'updated-hash',
+      email: 'new@example.com',
+      has_password: 0
+    })
+
+    const future = new Date(Date.now() + 60_000).toISOString()
+    store.createVerificationToken(userId, 'old-verification', future)
+    store.createVerificationToken(userId, 'new-verification', future)
+    store.invalidateUserVerificationTokens(userId)
+    assert.equal(store.getValidVerificationToken('old-verification'), null)
+    assert.equal(store.getValidVerificationToken('new-verification'), null)
+
+    store.createVerificationToken(userId, 'active-verification', future)
+    store.consumeVerificationToken('active-verification', userId)
+    assert.equal(store.getValidVerificationToken('active-verification'), null)
+    assert.equal(store.getUserById(userId).email_verified, 1)
+
+    store.createResetToken(userId, 'old-reset', future)
+    store.createResetToken(userId, 'active-reset', future)
+    store.consumeResetToken('active-reset', userId)
+    assert.equal(store.getValidResetToken('old-reset'), null)
+    assert.equal(store.getValidResetToken('active-reset'), null)
   } finally {
     store.close()
     fs.rmSync(directory, { recursive: true, force: true })

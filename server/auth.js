@@ -26,9 +26,10 @@ import {
   invalidateUserResetTokens,
   createVerificationToken,
   getValidVerificationToken,
-  consumeVerificationToken
+  consumeVerificationToken,
+  invalidateUserVerificationTokens
 } from './db.js'
-import { sendPasswordResetEmail, sendEmailVerification, isMailConfigured } from './mailer.js'
+import { sendPasswordResetEmail, sendEmailVerification } from './mailer.js'
 import { appLog } from './logger.js'
 import { isOwnerUser } from './auth-policy.js'
 
@@ -283,6 +284,7 @@ router.post('/me/email', requireAuth, async (req, res) => {
       const alreadyVerified = !emailChanged && current?.email_verified
       if (!alreadyVerified) {
         await setEmailVerified(req.userId, false)
+        await invalidateUserVerificationTokens(req.userId)
         const token = crypto.randomBytes(32).toString('hex')
         const tokenHash = crypto.createHash('sha256').update(token).digest('hex')
         const expiresAt = new Date(Date.now() + 30 * 60 * 1000).toISOString()
@@ -292,6 +294,7 @@ router.post('/me/email', requireAuth, async (req, res) => {
       }
     } else {
       await setEmailVerified(req.userId, false)
+      await invalidateUserVerificationTokens(req.userId)
     }
     const user = await getUserById(req.userId)
     appLog('AUTH', `更新邮箱: uid=${req.userId} -> ${safeEmail || '（清空）'}${needsActivation ? ' 已发激活邮件' : ''}`)
@@ -386,6 +389,7 @@ router.post('/reset-password', async (req, res) => {
     }
     const hash = await bcrypt.hash(password, SALT_ROUNDS)
     await updatePasswordById(row.user_id, hash)
+    await setHasPassword(row.user_id, true)
     await consumeResetToken(tokenHash, row.user_id)
     // 重置成功后直接登录，提升体验（已通过 token 证明身份）
     setTokenCookie(req, res, row.user_id)

@@ -103,8 +103,11 @@ export function createLocalSqliteStore(filePath) {
     consumeVerificationToken: database.prepare(
       "UPDATE email_verification_tokens SET consumed_at = CURRENT_TIMESTAMP WHERE token_hash = ?"
     ),
-    invalidateUserVerificationTokens: database.prepare(
+    invalidateOtherVerificationTokens: database.prepare(
       'UPDATE email_verification_tokens SET consumed_at = CURRENT_TIMESTAMP WHERE user_id = ? AND consumed_at IS NULL AND token_hash <> ?'
+    ),
+    invalidateUserVerificationTokens: database.prepare(
+      'UPDATE email_verification_tokens SET consumed_at = CURRENT_TIMESTAMP WHERE user_id = ? AND consumed_at IS NULL'
     ),
     createUser: database.prepare(
       'INSERT INTO users(username, password_hash, email) VALUES(?, ?, ?)'
@@ -212,8 +215,12 @@ export function createLocalSqliteStore(filePath) {
       statements.consumeVerificationToken.run(tokenHash)
       if (userId) {
         statements.setEmailVerified.run(1, Number(userId))
-        statements.invalidateUserVerificationTokens.run(Number(userId), tokenHash)
+        statements.invalidateOtherVerificationTokens.run(Number(userId), tokenHash)
       }
+    },
+
+    invalidateUserVerificationTokens(userId) {
+      statements.invalidateUserVerificationTokens.run(Number(userId))
     },
 
     updatePasswordById(userId, passwordHash) {

@@ -15,6 +15,7 @@ import authRouter, { requireAuth, getUserIdFromReq } from './auth.js'
 import statsRouter from './routes/stats.js'
 import {
   closeDatabase,
+  ensureSchema,
   getProgress,
   upsertProgress,
   bulkUpsertProgress,
@@ -596,6 +597,8 @@ let httpServer = null
 let isShuttingDown = false
 
 async function bootstrap() {
+  await ensureSchema()
+
   if (process.env.SEED_ON_STARTUP !== 'false') {
     try {
       const { ensureSeeded } = await import('./seed/seed.js')

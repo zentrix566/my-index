@@ -139,9 +139,6 @@ export async function ensureSchema() {
   schemaReady = true
 }
 
-// 启动时确保表存在（失败仅记录，不阻塞服务启动）
-ensureSchema().catch((e) => console.error('[db] 建表失败:', e))
-
 // ========== 干净接口（业务层只调用这些，均为 async）==========
 
 // 按用户名查用户（含 password_hash，仅内部鉴权用）
@@ -276,6 +273,17 @@ export async function consumeVerificationToken(tokenHash, userId) {
       [userId, tokenHash]
     )
   }
+}
+
+// 作废某用户全部未完成激活令牌，避免更换邮箱后旧链接仍可激活。
+export async function invalidateUserVerificationTokens(userId) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).invalidateUserVerificationTokens(userId)
+  }
+  await pool.query(
+    'UPDATE email_verification_tokens SET consumed_at = now() WHERE user_id = $1 AND consumed_at IS NULL',
+    [userId]
+  )
 }
 
 // 按 id 更新密码哈希
