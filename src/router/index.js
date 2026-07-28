@@ -21,6 +21,10 @@ const ProjectDetail = () => import('../views/ProjectDetail.vue')
 const VueApps = () => import('../views/VueApps.vue')
 const About = () => import('../views/About.vue')
 const Login = () => import('../views/Login.vue')
+const ForgotPassword = () => import('../views/ForgotPassword.vue')
+const ResetPassword = () => import('../views/ResetPassword.vue')
+const Settings = () => import('../views/Settings.vue')
+const VerifyEmail = () => import('../views/VerifyEmail.vue')
 
 const routes = [
   { path: '/', name: 'home', component: Home },
@@ -46,7 +50,11 @@ const routes = [
   { path: '/stats', name: 'stats', component: loadStatsPage },
   { path: '/about', name: 'about', component: About },
   { path: '/changelog', redirect: '/hearthstone/changelog' },
-  { path: '/login', name: 'login', component: Login }
+  { path: '/login', name: 'login', component: Login },
+  { path: '/forgot-password', name: 'forgot-password', component: ForgotPassword },
+  { path: '/reset-password', name: 'reset-password', component: ResetPassword },
+  { path: '/verify-email', name: 'verify-email', component: VerifyEmail },
+  { path: '/settings', name: 'settings', component: Settings, meta: { requiresAuth: true } }
 ]
 
 const router = createRouter({

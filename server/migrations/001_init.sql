@@ -4,8 +4,21 @@ CREATE TABLE IF NOT EXISTS users (
   id            SERIAL PRIMARY KEY,
   username      TEXT UNIQUE NOT NULL,
   password_hash TEXT NOT NULL,
+  email         TEXT,
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+-- 密码重置令牌（存 token 的 SHA-256，原始 token 仅出现在邮件链接）
+-- email 唯一性在应用层保证（兼容 SQLite 加约束的方言差异），故此处不设 UNIQUE
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+  token_hash  TEXT PRIMARY KEY,
+  user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  expires_at  TIMESTAMPTZ NOT NULL,
+  used_at     TIMESTAMPTZ,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_pwreset_user ON password_reset_tokens(user_id);
 
 -- 进度表：每人每成就一行，复用现有进度结构 { stages, count }
 CREATE TABLE IF NOT EXISTS achievement_progress (

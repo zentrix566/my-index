@@ -6,7 +6,7 @@
 
 ## 当前内容
 
-- **工作项目**：EdgeCompute Lab、AIOps MCP Analyzer、OpsAgentAI、CI/CD 流水线实践。
+- **工作项目**：AIOps MCP Analyzer、OpsAgentAI、CI/CD 流水线实践。
 - **个人项目**（`/vue-apps`）：把自己写的小页面/小工具收拢成卡片索引，点卡片直接进入：
   - AIOps 智能运维控制台（`/aiops`）：告警筛选、根因分析、MCP 证据与 AI 助手演示。
   - 400 米间歇训练（`/interval-training`）：配速趋势图、评级、日历与导入导出。

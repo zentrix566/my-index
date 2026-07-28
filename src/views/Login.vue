@@ -75,6 +75,22 @@
           </span>
         </label>
 
+        <label v-if="mode === 'register'" class="auth-field">
+          <span>邮箱（注册后请在「个人中心」激活账号）</span>
+          <span class="auth-input-shell">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.485a2 2 0 0 1-2.06 0L2 7"/>
+            </svg>
+            <input
+              v-model.trim="email"
+              class="auth-input"
+              type="email"
+              placeholder="可选，绑定后可用邮件找回"
+              autocomplete="email"
+            />
+          </span>
+        </label>
+
         <p v-if="error" class="auth-error" role="alert">{{ error }}</p>
 
         <button class="auth-btn" type="submit" :disabled="loading">
@@ -87,6 +103,9 @@
         {{ mode === 'login' ? '还没有账号？' : '已有账号？' }}
         <button type="button" @click="toggle">{{ mode === 'login' ? '立即注册' : '返回登录' }}</button>
       </p>
+      <p v-if="mode === 'login'" class="auth-forgot">
+        <RouterLink to="/forgot-password">忘记密码？</RouterLink>
+      </p>
     </div>
   </div>
 </template>
@@ -96,13 +115,14 @@ import { ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useAuth } from '../auth/useAuth.js'
 
-const { login, register } = useAuth()
+const { user, login, register } = useAuth()
 const router = useRouter()
 
 const mode = ref('login')
 const username = ref('')
 const password = ref('')
 const confirm = ref('')
+const email = ref('')
 const error = ref('')
 const loading = ref(false)
 const showPassword = ref(false)
@@ -123,9 +143,11 @@ async function submit() {
     if (mode.value === 'login') {
       await login(username.value, password.value)
     } else {
-      await register(username.value, password.value)
+      await register(username.value, password.value, email.value)
     }
-    router.push('/hearthstone')
+    // 未激活邮箱的新用户，登录后先去个人中心设置邮箱激活账号
+    const target = user.value && !user.value.emailVerified ? '/settings' : '/hearthstone'
+    router.push(target)
   } catch (e) {
     error.value = e.message || '操作失败'
   } finally {
@@ -137,6 +159,7 @@ function toggle() {
   mode.value = mode.value === 'login' ? 'register' : 'login'
   error.value = ''
   confirm.value = ''
+  email.value = ''
   showPassword.value = false
   showConfirm.value = false
 }
@@ -317,6 +340,17 @@ function toggle() {
   cursor: pointer;
   font-weight: 700;
 }
+.auth-forgot {
+  margin: 10px 0 0;
+  text-align: center;
+}
+.auth-forgot a {
+  color: #64748b;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.auth-forgot a:hover { color: #15803d; }
 .auth-back:focus-visible,
 .auth-visibility:focus-visible,
 .auth-btn:focus-visible,

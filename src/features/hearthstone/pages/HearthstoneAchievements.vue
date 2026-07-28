@@ -11,6 +11,7 @@
         <div class="hs-hero-side">
           <div class="hs-intro-actions">
             <template v-if="user">
+              <button type="button" class="hs-btn hs-btn-ghost" @click="router.push('/settings')">个人中心</button>
               <span class="hs-user-badge">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                   <path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/>

@@ -67,6 +67,34 @@ CREATE TABLE IF NOT EXISTS users (
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+-- 邮箱：找回密码用。可空（旧账号/所有者可能没绑），唯一性在应用层保证（兼容 SQLite 加约束的方言差异）。
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email TEXT;
+
+-- 密码重置令牌：存原始 token 的 SHA-256，原始 token 只出现在邮件链接里
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+  token_hash  TEXT PRIMARY KEY,
+  user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  expires_at  TIMESTAMPTZ NOT NULL,
+  used_at     TIMESTAMPTZ,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_pwreset_user ON password_reset_tokens(user_id);
+
+-- 邮箱激活：未激活用户不算「正式用户」。无邮箱账号始终未激活。
+ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN NOT NULL DEFAULT false;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS has_password BOOLEAN NOT NULL DEFAULT true;
+
+CREATE TABLE IF NOT EXISTS email_verification_tokens (
+  token_hash  TEXT PRIMARY KEY,
+  user_id     INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  expires_at  TIMESTAMPTZ NOT NULL,
+  consumed_at TIMESTAMPTZ,
+  created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_emailverify_user ON email_verification_tokens(user_id);
+
 CREATE TABLE IF NOT EXISTS achievement_progress (
   user_id         INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
   achievement_id  TEXT NOT NULL,
@@ -125,28 +153,191 @@ export async function getUserByUsername(username) {
   return rows[0] || null
 }
 
-// 按 id 查用户（对外脱敏，不含 password_hash）
+// 按 id 查用户（对外脱敏，不含 password_hash；含 email 供本人查看）
 export async function getUserById(id) {
   if (isLocalDevMode) {
     return (await getLocalStore()).getUserById(id)
   }
   const { rows } = await pool.query(
-    'SELECT id, username, created_at FROM users WHERE id = $1',
+    'SELECT id, username, email, email_verified, has_password, created_at FROM users WHERE id = $1',
     [id]
   )
   return rows[0] || null
 }
 
-// 创建用户，返回新 id
-export async function createUser(username, passwordHash) {
+// 创建用户，返回新 id；email 可选（注册时可不填）
+export async function createUser(username, passwordHash, email = null) {
   if (isLocalDevMode) {
-    return (await getLocalStore()).createUser(username, passwordHash)
+    return (await getLocalStore()).createUser(username, passwordHash, email)
   }
   const { rows } = await pool.query(
-    'INSERT INTO users(username, password_hash) VALUES($1, $2) RETURNING id',
-    [username, passwordHash]
+    'INSERT INTO users(username, password_hash, email) VALUES($1, $2, $3) RETURNING id',
+    [username, passwordHash, email || null]
   )
   return rows[0].id
+}
+
+// 按邮箱查用户（找回密码与邮箱唯一校验；邮箱忽略大小写）
+export async function getUserByEmail(email) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).getUserByEmail(email)
+  }
+  const { rows } = await pool.query('SELECT * FROM users WHERE LOWER(email) = LOWER($1)', [email])
+  return rows[0] || null
+}
+
+// 按用户名或邮箱查用户（找回密码入口；邮箱忽略大小写）
+export async function getUserByIdentifier(identifier) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).getUserByIdentifier(identifier)
+  }
+  const { rows } = await pool.query(
+    'SELECT id, username, email FROM users WHERE username = $1 OR LOWER(email) = LOWER($1)',
+    [identifier]
+  )
+  return rows[0] || null
+}
+
+// 按 id 查用户（含 password_hash 与 email，仅供改密码校验/发信，不外泄）
+export async function getUserAuthById(id) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).getUserAuthById(id)
+  }
+  const { rows } = await pool.query(
+    'SELECT id, username, password_hash, email, has_password FROM users WHERE id = $1',
+    [id]
+  )
+  return rows[0] || null
+}
+
+// 设置/清空邮箱；空串或 null 视为清空
+export async function setUserEmail(userId, email) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).setUserEmail(userId, email)
+  }
+  await pool.query('UPDATE users SET email = $1 WHERE id = $2', [email || null, userId])
+}
+
+// 设置邮箱激活状态（true=已激活）。改邮箱/清空邮箱时置 false。
+export async function setEmailVerified(userId, verified) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).setEmailVerified(userId, verified)
+  }
+  await pool.query('UPDATE users SET email_verified = $1 WHERE id = $2', [verified, userId])
+}
+
+// 设置是否已有密码（无密码账号在个人中心走「设置密码」）
+export async function setHasPassword(userId, value) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).setHasPassword(userId, value)
+  }
+  await pool.query('UPDATE users SET has_password = $1 WHERE id = $2', [value, userId])
+}
+
+// 创建邮箱激活令牌（仅存 token 的 SHA-256，原始 token 只出现在邮件链接）
+export async function createVerificationToken(userId, tokenHash, expiresAt) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).createVerificationToken(userId, tokenHash, expiresAt)
+  }
+  await pool.query(
+    'INSERT INTO email_verification_tokens(token_hash, user_id, expires_at) VALUES($1, $2, $3)',
+    [tokenHash, userId, expiresAt]
+  )
+}
+
+// 取有效（未用且未过期）激活令牌；无效返回 null
+export async function getValidVerificationToken(tokenHash) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).getValidVerificationToken(tokenHash)
+  }
+  const { rows } = await pool.query(
+    'SELECT token_hash, user_id, expires_at, consumed_at FROM email_verification_tokens WHERE token_hash = $1',
+    [tokenHash]
+  )
+  const row = rows[0]
+  if (!row || row.consumed_at) return null
+  if (new Date(row.expires_at).getTime() <= Date.now()) return null
+  return row
+}
+
+// 消费激活令牌（标记已用），并把用户标记为已激活、作废其余未完成令牌
+export async function consumeVerificationToken(tokenHash, userId) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).consumeVerificationToken(tokenHash, userId)
+  }
+  await pool.query(
+    'UPDATE email_verification_tokens SET consumed_at = now() WHERE token_hash = $1',
+    [tokenHash]
+  )
+  if (userId) {
+    await pool.query('UPDATE users SET email_verified = true WHERE id = $1', [userId])
+    await pool.query(
+      'UPDATE email_verification_tokens SET consumed_at = now() WHERE user_id = $1 AND consumed_at IS NULL AND token_hash <> $2',
+      [userId, tokenHash]
+    )
+  }
+}
+
+// 按 id 更新密码哈希
+export async function updatePasswordById(userId, passwordHash) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).updatePasswordById(userId, passwordHash)
+  }
+  await pool.query('UPDATE users SET password_hash = $1 WHERE id = $2', [passwordHash, userId])
+}
+
+// 创建重置令牌（只存 token 的 SHA-256，原始 token 仅在邮件链接出现）
+export async function createResetToken(userId, tokenHash, expiresAt) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).createResetToken(userId, tokenHash, expiresAt)
+  }
+  await pool.query(
+    'INSERT INTO password_reset_tokens(token_hash, user_id, expires_at) VALUES($1, $2, $3)',
+    [tokenHash, userId, expiresAt]
+  )
+}
+
+// 取有效（未用且未过期）重置令牌；无效返回 null
+export async function getValidResetToken(tokenHash) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).getValidResetToken(tokenHash)
+  }
+  const { rows } = await pool.query(
+    'SELECT token_hash, user_id, expires_at, used_at FROM password_reset_tokens WHERE token_hash = $1',
+    [tokenHash]
+  )
+  const row = rows[0]
+  if (!row || row.used_at) return null
+  if (new Date(row.expires_at).getTime() <= Date.now()) return null
+  return row
+}
+
+// 消费令牌（标记已用），并作废该用户其余未完成令牌，避免旧链接复用
+export async function consumeResetToken(tokenHash, userId) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).consumeResetToken(tokenHash, userId)
+  }
+  await pool.query(
+    'UPDATE password_reset_tokens SET used_at = now() WHERE token_hash = $1',
+    [tokenHash]
+  )
+  if (userId) {
+    await pool.query(
+      'UPDATE password_reset_tokens SET used_at = now() WHERE user_id = $1 AND used_at IS NULL AND token_hash <> $2',
+      [userId, tokenHash]
+    )
+  }
+}
+
+// 作废某用户全部未完成重置令牌（改密成功后调用）
+export async function invalidateUserResetTokens(userId) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).invalidateUserResetTokens(userId)
+  }
+  await pool.query(
+    'UPDATE password_reset_tokens SET used_at = now() WHERE user_id = $1 AND used_at IS NULL',
+    [userId]
+  )
 }
 
 // 写回单条进度（upsert），自动带入成就名称与版本（便于查库排查）
