@@ -13,6 +13,7 @@
 import pg from 'pg'
 import path from 'node:path'
 import { getAchievementMeta } from './achievements-meta.js'
+import { normalizePinnedAchievementIds } from './hearthstone-profile.js'
 
 const { Pool } = pg
 const isLocalDevMode =
@@ -113,6 +114,13 @@ ALTER TABLE achievement_progress ADD COLUMN IF NOT EXISTS version TEXT;
 ALTER TABLE achievement_progress ADD COLUMN IF NOT EXISTS hero_class TEXT;
 
 CREATE INDEX IF NOT EXISTS idx_achievement_progress_user ON achievement_progress(user_id);
+
+CREATE TABLE IF NOT EXISTS hearthstone_profiles (
+  user_id                INT PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  pinned_achievement_id  TEXT,
+  preferences_json       JSONB NOT NULL DEFAULT '{}'::jsonb,
+  updated_at             TIMESTAMPTZ NOT NULL DEFAULT now()
+);
 
 CREATE TABLE IF NOT EXISTS ai_advisor_usage (
   user_key    TEXT NOT NULL,
@@ -428,7 +436,7 @@ export async function getProgress(userId) {
     return (await getLocalStore()).getProgress(userId)
   }
   const { rows } = await pool.query(
-    'SELECT achievement_id, stages_json, count FROM achievement_progress WHERE user_id = $1',
+    'SELECT achievement_id, stages_json, count, updated_at FROM achievement_progress WHERE user_id = $1',
     [userId]
   )
   const out = {}
@@ -438,10 +446,71 @@ export async function getProgress(userId) {
       typeof r.stages_json === 'string' ? JSON.parse(r.stages_json) : (r.stages_json || {})
     out[r.achievement_id] = {
       stages,
-      count: r.count
+      count: r.count,
+      updatedAt: r.updated_at instanceof Date ? r.updated_at.toISOString() : r.updated_at
     }
   }
   return out
+}
+
+/** 读取用户的炉石个人配置；未配置时返回安全默认值。 */
+export async function getHearthstoneProfile(userId) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).getHearthstoneProfile(userId)
+  }
+  const { rows } = await pool.query(
+    'SELECT pinned_achievement_id, preferences_json, updated_at FROM hearthstone_profiles WHERE user_id = $1',
+    [userId]
+  )
+  const row = rows[0]
+  if (!row) return { pinnedAchievementIds: [], preferences: {}, updatedAt: null }
+  const preferences =
+    typeof row.preferences_json === 'string'
+      ? JSON.parse(row.preferences_json)
+      : (row.preferences_json || {})
+  const pinnedAchievementIds = normalizePinnedAchievementIds(
+    preferences.pinnedAchievementIds ?? row.pinned_achievement_id
+  )
+  delete preferences.pinnedAchievementIds
+  return {
+    pinnedAchievementIds,
+    preferences,
+    updatedAt: row.updated_at instanceof Date ? row.updated_at.toISOString() : row.updated_at
+  }
+}
+
+/** 保存用户的炉石置顶成就与显示偏好。 */
+export async function saveHearthstoneProfile(userId, profile) {
+  if (isLocalDevMode) {
+    return (await getLocalStore()).saveHearthstoneProfile(userId, profile)
+  }
+  const pinnedAchievementIds = normalizePinnedAchievementIds(profile.pinnedAchievementIds)
+  const storedPreferences = {
+    ...(profile.preferences || {}),
+    pinnedAchievementIds
+  }
+  const { rows } = await pool.query(
+    `INSERT INTO hearthstone_profiles(user_id, pinned_achievement_id, preferences_json, updated_at)
+     VALUES($1, $2, $3::jsonb, now())
+     ON CONFLICT(user_id) DO UPDATE SET
+       pinned_achievement_id = EXCLUDED.pinned_achievement_id,
+       preferences_json = EXCLUDED.preferences_json,
+       updated_at = now()
+     RETURNING pinned_achievement_id, preferences_json, updated_at`,
+    [
+      userId,
+      pinnedAchievementIds[0] || null,
+      JSON.stringify(storedPreferences)
+    ]
+  )
+  const row = rows[0]
+  const preferences = row.preferences_json || {}
+  delete preferences.pinnedAchievementIds
+  return {
+    pinnedAchievementIds,
+    preferences,
+    updatedAt: row.updated_at instanceof Date ? row.updated_at.toISOString() : row.updated_at
+  }
 }
 
 // 事务包装：fn(client) 内可执行多条 SQL，自动 BEGIN/COMMIT/ROLLBACK

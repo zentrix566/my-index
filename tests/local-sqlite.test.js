@@ -29,9 +29,33 @@ test('SQLite 本地存储支持用户、进度和 AI 配额', () => {
       version: '测试版本',
       heroClass: '中立'
     })
-    assert.deepEqual(store.getProgress(userId), {
-      'demo-achievement': { stages: { 0: true }, count: 3 }
+    const progress = store.getProgress(userId)
+    assert.deepEqual(progress['demo-achievement'], {
+      stages: { 0: true },
+      count: 3,
+      updatedAt: progress['demo-achievement'].updatedAt
     })
+    assert.ok(progress['demo-achievement'].updatedAt)
+
+    assert.deepEqual(store.getHearthstoneProfile(userId), {
+      pinnedAchievementIds: [],
+      preferences: {},
+      updatedAt: null
+    })
+    const savedProfile = store.saveHearthstoneProfile(userId, {
+      pinnedAchievementIds: ['demo-achievement', 'second-achievement'],
+      preferences: {
+        hardcore: true,
+        defaultExpansionId: 'violet-hold',
+        compactMode: true
+      }
+    })
+    assert.deepEqual(store.getHearthstoneProfile(userId), savedProfile)
+    assert.deepEqual(savedProfile.pinnedAchievementIds, [
+      'demo-achievement',
+      'second-achievement'
+    ])
+    assert.equal(savedProfile.preferences.compactMode, true)
 
     assert.deepEqual(store.getAiUsage(String(userId), '2026-07-27'), {
       fixedCount: 0,

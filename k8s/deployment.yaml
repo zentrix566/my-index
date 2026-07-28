@@ -83,6 +83,31 @@ spec:
               value: "5"
             - name: AI_FREE_DAILY
               value: "1"
+            # 邮箱激活与密码重置链接必须指向正式站点。
+            - name: APP_URL
+              value: "https://zentrix566.top"
+            # QQ 邮箱 SMTP：账号、授权码和发件地址由独立 Secret 注入。
+            - name: SMTP_HOST
+              value: "smtp.qq.com"
+            - name: SMTP_PORT
+              value: "465"
+            - name: SMTP_SECURE
+              value: "true"
+            - name: SMTP_USER
+              valueFrom:
+                secretKeyRef:
+                  name: zentrix-mail-secrets
+                  key: SMTP_USER
+            - name: SMTP_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: zentrix-mail-secrets
+                  key: SMTP_PASS
+            - name: SMTP_FROM
+              valueFrom:
+                secretKeyRef:
+                  name: zentrix-mail-secrets
+                  key: SMTP_FROM
           resources: {}
           # 数据层已迁移到 PostgreSQL（外部托管），不再有单文件数据库共享限制。
           # 常态保持 replicas:1；滚动发布时两个 Pod 会短暂重叠。

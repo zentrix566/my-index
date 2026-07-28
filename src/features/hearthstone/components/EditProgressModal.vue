@@ -59,7 +59,7 @@
           <button type="button" :aria-label="`减少一${countUnit}`" @click="dec">−</button>
           <input id="epm-count" type="number" inputmode="numeric" v-model.number="draftCount" min="0" />
           <button type="button" :aria-label="`增加一${countUnit}`" @click="inc">＋</button>
-          <button type="button" class="epm-max" :aria-label="直接填到完成目标" @click="setMax">MAX</button>
+          <button type="button" class="epm-max" aria-label="直接填到完成目标" @click="setMax">MAX</button>
         </div>
         <p class="epm-quota-hint">
           各阶段目标：{{ achievement.stages.map((s) => s.quota).join(' / ') }}

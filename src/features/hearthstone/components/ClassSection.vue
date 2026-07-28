@@ -17,10 +17,18 @@ const props = defineProps({
   summary: { type: Object, default: null },
   // 批量完成模式：开启时卡片显示勾选框
   selectMode: { type: Boolean, default: false },
-  selectedIds: { type: Array, default: () => [] }
+  selectedIds: { type: Array, default: () => [] },
+  pinnedIds: { type: Array, default: () => [] },
+  pinning: { type: Boolean, default: false }
 })
 
-const emit = defineEmits(['card-click', 'update:collapsed', 'toggle-select', 'deck-click'])
+const emit = defineEmits([
+  'card-click',
+  'update:collapsed',
+  'toggle-select',
+  'deck-click',
+  'toggle-pin'
+])
 
 const toggleCollapse = () => {
   emit('update:collapsed', !props.collapsed)
@@ -61,9 +69,12 @@ const toggleCollapse = () => {
         :style="classStyle"
         :select-mode="useMyCard && selectMode ? true : undefined"
         :selected="useMyCard && selectMode ? selectedIds.includes(ach.id) : undefined"
+        :pinned="useMyCard ? pinnedIds.includes(ach.id) : undefined"
+        :pinning="useMyCard ? pinning : undefined"
         @click="emit('card-click', ach)"
         @toggle-select="emit('toggle-select', $event)"
         @deck-click="emit('deck-click', $event)"
+        @toggle-pin="emit('toggle-pin', $event)"
       />
     </div>
   </section>

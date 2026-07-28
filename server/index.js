@@ -17,6 +17,8 @@ import {
   closeDatabase,
   ensureSchema,
   getProgress,
+  getHearthstoneProfile,
+  saveHearthstoneProfile,
   upsertProgress,
   bulkUpsertProgress,
   getUserByUsername,
@@ -26,6 +28,10 @@ import {
   transaction
 } from './db.js'
 import { getAchievementMeta, hasAchievementMeta } from './achievements-meta.js'
+import {
+  MAX_PINNED_ACHIEVEMENTS,
+  normalizePinnedAchievementIds
+} from './hearthstone-profile.js'
 import {
   AI_FIXED_DAILY,
   AI_FREE_DAILY,
@@ -227,6 +233,57 @@ app.get('/api/achievements/progress', async (req, res) => {
     res.json(data)
   } catch (err) {
     res.status(500).json({ error: err.message })
+  }
+})
+
+app.get('/api/hearthstone/profile', requireAuth, async (req, res) => {
+  try {
+    res.json(await getHearthstoneProfile(req.userId))
+  } catch (err) {
+    res.status(500).json({ error: err.message || '读取个人配置失败' })
+  }
+})
+
+app.put('/api/hearthstone/profile', requireAuth, async (req, res) => {
+  const body = req.body || {}
+  const submittedPinnedIds =
+    body.pinnedAchievementIds ??
+    (typeof body.pinnedAchievementId === 'string' ? [body.pinnedAchievementId] : [])
+  const preferences = body.preferences || {}
+
+  if (!Array.isArray(submittedPinnedIds)) {
+    return res.status(400).json({ error: '置顶成就格式错误' })
+  }
+  if (submittedPinnedIds.length > MAX_PINNED_ACHIEVEMENTS) {
+    return res.status(400).json({ error: `最多置顶 ${MAX_PINNED_ACHIEVEMENTS} 项成就` })
+  }
+  const pinnedAchievementIds = normalizePinnedAchievementIds(submittedPinnedIds)
+  if (
+    pinnedAchievementIds.length !== submittedPinnedIds.length ||
+    pinnedAchievementIds.some((id) => !hasAchievementMeta(id))
+  ) {
+    return res.status(400).json({ error: '置顶成就不存在或重复' })
+  }
+  if (!preferences || typeof preferences !== 'object' || Array.isArray(preferences)) {
+    return res.status(400).json({ error: '偏好设置格式错误' })
+  }
+
+  const hardcore = preferences.hardcore === true
+  const compactMode = preferences.compactMode === true
+  const defaultExpansionId =
+    typeof preferences.defaultExpansionId === 'string' &&
+    /^[a-z0-9_-]{1,64}$/i.test(preferences.defaultExpansionId)
+      ? preferences.defaultExpansionId
+      : ''
+
+  try {
+    const saved = await saveHearthstoneProfile(req.userId, {
+      pinnedAchievementIds,
+      preferences: { hardcore, compactMode, defaultExpansionId }
+    })
+    res.json(saved)
+  } catch (err) {
+    res.status(500).json({ error: err.message || '保存个人配置失败' })
   }
 })
 

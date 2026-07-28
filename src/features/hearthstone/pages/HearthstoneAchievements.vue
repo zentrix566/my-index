@@ -1,5 +1,9 @@
 <template>
-  <section class="section page-section hs-page" :data-hs-theme="hsTheme">
+  <section
+    class="section page-section hs-page"
+    :class="{ 'hs-compact': compactMode }"
+    :data-hs-theme="hsTheme"
+  >
     <div class="container">
       <section class="hs-hero" aria-labelledby="hs-page-title">
         <div class="section-heading">
@@ -351,11 +355,37 @@
 
       <!-- 我的成就：操作行 / 进度状态 / 待完成清单统计 —— 不吸顶，随页面正常滚动，保住内容可视区域 -->
       <template v-if="viewMode === 'my'">
-    <!-- 统一操作行：导出 Excel / 批量完成 / 攻略 / 硬核模式（ON/OFF 开关） -->
+    <!-- 统一操作行：数据备份 / 批量完成 / 攻略 / 硬核模式（ON/OFF 开关） -->
     <div class="hs-my-actions">
-      <button type="button" class="hs-btn hs-btn-ghost" :disabled="exporting" @click="exportExcel">
-        {{ exporting ? '导出中…' : '导出 Excel' }}
-      </button>
+      <details class="hs-guide-dropdown">
+        <summary class="hs-guide-btn">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M12 3v12"/><path d="m7 10 5 5 5-5"/><path d="M5 21h14"/>
+          </svg>
+          {{ exporting ? '导出中…' : '导出与备份' }}
+        </summary>
+        <div class="hs-guide-menu hs-backup-menu">
+          <button type="button" class="hs-guide-menu-item" :disabled="exporting" @click="exportExcel">
+            导出 Excel
+            <small>带摘要、筛选和多行阶段说明</small>
+          </button>
+          <button type="button" class="hs-guide-menu-item" @click="exportJson">
+            导出 JSON
+            <small>内容与 Excel 一致，可用于恢复进度</small>
+          </button>
+          <button v-if="user" type="button" class="hs-guide-menu-item" @click="triggerImport">
+            导入 JSON 备份
+            <small>合并恢复到当前账号</small>
+          </button>
+        </div>
+      </details>
+      <input
+        ref="fileInput"
+        class="hs-visually-hidden"
+        type="file"
+        accept="application/json,.json"
+        @change="onImportFile"
+      />
       <template v-if="user">
         <template v-if="!batchMode">
           <button type="button" class="hs-btn hs-btn-ghost" @click="startBatch">
@@ -402,6 +432,44 @@
           成就进度加载失败，当前显示的数据可能不是最新的。
           <button type="button" @click="reloadProgress">重试</button>
         </div>
+
+        <section
+          v-if="user && pinnedAchievements.length && !batchMode"
+          class="hs-pinned-section"
+          aria-labelledby="hs-pinned-title"
+        >
+          <div class="hs-pinned-section-head">
+            <div>
+              <p class="hs-pinned-eyebrow">优先追踪</p>
+              <h2 id="hs-pinned-title">置顶成就</h2>
+            </div>
+            <span>{{ pinnedAchievements.length }} / 5 项</span>
+          </div>
+          <div class="hs-pinned-list">
+            <article
+              v-for="achievement in pinnedAchievements"
+              :key="achievement.id"
+              class="hs-pinned-item"
+            >
+              <div class="hs-pinned-item-copy">
+                <span>{{ achievement._expansionName }} · {{ getClassName(achievement) }}</span>
+                <strong>{{ achievement.name }}</strong>
+                <small>{{ pinnedProgressText(achievement) }}</small>
+              </div>
+              <div class="hs-pinned-item-actions">
+                <button type="button" @click="openCardModal(achievement)">查看 / 编辑</button>
+                <button
+                  type="button"
+                  class="remove"
+                  :disabled="profileSaving"
+                  @click="togglePinnedAchievement(achievement)"
+                >
+                  取消置顶
+                </button>
+              </div>
+            </article>
+          </div>
+        </section>
 
         <!-- 待完成清单：说明（两行、数字高亮），置于顶部；筛选栏移至底部内容之后 -->
         <div class="hs-stats-panel hs-sprint-stats" v-if="myGroupBy === 'sprint'">
@@ -499,9 +567,12 @@
             :editable="Boolean(user)"
             :select-mode="batchMode"
             :selected-ids="selectedAchIds"
+            :pinned-ids="hearthstoneProfile.pinnedAchievementIds"
+            :pinning="profileSaving"
             @card-click="openCardModal"
             @deck-click="openDeckDetail"
             @toggle-select="toggleSelect"
+            @toggle-pin="togglePinnedAchievement"
           />
         </template>
       </div>
@@ -522,9 +593,12 @@
             :editable="Boolean(user)"
             :select-mode="batchMode"
             :selected-ids="selectedAchIds"
+            :pinned-ids="hearthstoneProfile.pinnedAchievementIds"
+            :pinning="profileSaving"
             @card-click="openCardModal"
             @deck-click="openDeckDetail"
             @toggle-select="toggleSelect"
+            @toggle-pin="togglePinnedAchievement"
           />
         </template>
       </div>
@@ -549,8 +623,11 @@
               :achievement="ach"
               :show-remaining="true"
               :editable="Boolean(user)"
+              :pinned="hearthstoneProfile.pinnedAchievementIds.includes(ach.id)"
+              :pinning="profileSaving"
               @click="openCardModal"
               @deck-click="openDeckDetail"
+              @toggle-pin="togglePinnedAchievement"
             />
           </div>
         </section>
@@ -573,8 +650,11 @@
               :achievement="ach"
               :show-remaining="true"
               :editable="Boolean(user)"
+              :pinned="hearthstoneProfile.pinnedAchievementIds.includes(ach.id)"
+              :pinning="profileSaving"
               @click="openCardModal"
               @deck-click="openDeckDetail"
+              @toggle-pin="togglePinnedAchievement"
             />
           </div>
         </section>
@@ -597,8 +677,11 @@
               :achievement="ach"
               :show-remaining="true"
               :editable="Boolean(user)"
+              :pinned="hearthstoneProfile.pinnedAchievementIds.includes(ach.id)"
+              :pinning="profileSaving"
               @click="openCardModal"
               @deck-click="openDeckDetail"
+              @toggle-pin="togglePinnedAchievement"
             />
           </div>
         </section>
@@ -677,7 +760,7 @@
 
 <script setup>
 import { computed, defineAsyncComponent, ref, reactive, watch } from 'vue'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { expansions, originalExpansions, addedExpansions } from '../data/expansions.js'
 import { classColors, getClassOrder, groupByClass, matchesClass, getClassName, CORE_EXPANSION_IDS } from '../utils/achievements.js'
 import { useAchievementProgress } from '../composables/useAchievementProgress.js'
@@ -692,9 +775,14 @@ import CardModal from '../components/CardModal.vue'
 import ScrollToTop from '../components/ScrollToTop.vue'
 import MyAchievementCard from '../components/MyAchievementCard.vue'
 import { AI_ADVISOR_ENABLED } from '../ai/config.js'
-import { downloadBlob, nextTodoText, buildExportRows } from '../utils/achievementExport.js'
+import {
+  buildExportBackup,
+  downloadExportJson,
+  downloadExportExcel
+} from '../utils/achievementExport.js'
 import { saveAchievementProgress } from '../api/progress.js'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
+import { useHearthstoneProfile } from '../composables/useHearthstoneProfile.js'
 import { useDialogFocus } from '../composables/useDialogFocus.js'
 
 const DeckDetailModal = defineAsyncComponent(
@@ -706,6 +794,15 @@ const AiAdvisor = defineAsyncComponent(
 
 const { user, init: initAuth, logout } = useAuth()
 const router = useRouter()
+const route = useRoute()
+const {
+  profile: hearthstoneProfile,
+  loaded: profileLoaded,
+  saving: profileSaving,
+  load: loadHearthstoneProfile,
+  save: saveHearthstoneProfile,
+  clear: clearHearthstoneProfile
+} = useHearthstoneProfile()
 
 // AI 建议弹窗（实验功能，独立模块，可随时下线）
 const showAi = ref(false)
@@ -781,7 +878,10 @@ initAuth()
 // 登录态变化：登录后重新拉取「自己的」进度（单例初始以匿名拉取过，需强制刷新）；
 // 未登录时服务端返回空进度，页面展示全部成就的未完成状态，无需额外加载。
 watch(user, (u) => {
-  if (u) reloadProgress()
+  if (u) {
+    reloadProgress()
+    loadHearthstoneProfile({ force: true }).catch(() => {})
+  }
 }, { immediate: true })
 
 // 编辑进度弹窗
@@ -930,6 +1030,9 @@ async function batchComplete() {
 async function logoutAndRefresh() {
   await logout()
   clearProgress()
+  clearHearthstoneProfile()
+  hardcore.value = false
+  compactMode.value = false
 }
 function goChangelog() {
   router.push('/hearthstone/changelog')
@@ -940,57 +1043,27 @@ const exporting = ref(false)
 const fileInput = ref(null)
 
 
-// 导出 JSON：含可再导入的 progress 与统计摘要
-function exportJson() {
-  const data = {
-    meta: {
-      app: '炉石传说成就查看器',
-      exportedAt: new Date().toISOString(),
-      user: user.value ? user.value.username : '全部成就（未登录）',
-      scope: viewMode.value === 'my' ? myGroupBy.value : viewMode.value
-    },
-    progress: displayProgress.value || {},
-    todoList: allAchievements.value.map(ach => ({
-      id: ach.id,
-      name: ach.name,
-      type: ach.type,
-      completed: isAchievementCompleted(ach),
-      nextTodo: nextTodoText(ach)
-    })),
-    summary: {
-      total: allAchievements.value.length,
-      completed: myCompletedCount.value,
-      stats: myStats.value,
-      passBonus: passBonus.value,
-      passBonusPercent: passBonusPercent.value,
-      earnedXp: myStats.value.earnedXp,
-      earnedXpWithBonus: myEarnedXpBonus.value,
-      totalXp: myStats.value.totalXp
-    }
-  }
-  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' })
-  downloadBlob(blob, `hearthstone-progress-${Date.now()}.json`)
+function getExportBackup() {
+  return buildExportBackup(allAchievements.value, passBonus.value, {
+    user: user.value?.username || '未登录',
+    scope: '完整成就库',
+    progress: displayProgress.value || {}
+  })
 }
 
-// 导出 Excel：生成真正的 .xlsx，每行一个成就
+// JSON 与 Excel 使用完全相同的 rows，并额外保留可恢复的原始 progress。
+function exportJson() {
+  downloadExportJson(getExportBackup())
+}
+
+// 导出 Excel：摘要页 + 可筛选进度页，多阶段目标在单元格内换行。
 async function exportExcel() {
   exporting.value = true
   try {
-    const XLSX = await import('xlsx')
-    const rows = buildExportRows(allAchievements.value, passBonus.value)
-    const wb = XLSX.utils.book_new()
-    const ws = XLSX.utils.json_to_sheet(rows)
-    ws['!cols'] = [
-      { wch: 16 }, { wch: 10 }, { wch: 28 }, { wch: 50 }, { wch: 40 },
-      { wch: 8 }, { wch: 8 }, { wch: 10 }, { wch: 10 }
-    ]
-    XLSX.utils.book_append_sheet(wb, ws, '成就进度')
-    const out = XLSX.write(wb, { bookType: 'xlsx', type: 'array' })
-    const blob = new Blob([out], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet' })
-    downloadBlob(blob, `hearthstone-progress-${Date.now()}.xlsx`)
-    } catch (e) {
-      showToast('error', '导出 Excel 失败：' + (e.message || e))
-    } finally {
+    await downloadExportExcel(getExportBackup())
+  } catch (e) {
+    showToast('error', '导出 Excel 失败：' + (e.message || e))
+  } finally {
     exporting.value = false
   }
 }
@@ -1056,6 +1129,42 @@ const allAchievements = computed(() => {
   }
   return all
 })
+const achievementById = computed(
+  () => new Map(allAchievements.value.map((achievement) => [achievement.id, achievement]))
+)
+const pinnedAchievements = computed(
+  () =>
+    hearthstoneProfile.value.pinnedAchievementIds
+      .map((id) => achievementById.value.get(id))
+      .filter(Boolean)
+)
+
+function pinnedProgressText(achievement) {
+  const info = getProgressInfo(achievement)
+  return info.completed ? '已完成' : `${info.percent}% · ${info.remainingText || '待完成'}`
+}
+
+async function togglePinnedAchievement(achievement) {
+  if (!user.value || profileSaving.value) return
+  const currentIds = hearthstoneProfile.value.pinnedAchievementIds
+  const removing = currentIds.includes(achievement.id)
+  if (!removing && currentIds.length >= 5) {
+    showToast('error', '最多置顶 5 项成就，请先取消一项')
+    return
+  }
+  const pinnedAchievementIds = removing
+    ? currentIds.filter((id) => id !== achievement.id)
+    : [...currentIds, achievement.id]
+  try {
+    await saveHearthstoneProfile({
+      ...hearthstoneProfile.value,
+      pinnedAchievementIds
+    })
+    showToast('success', removing ? '已取消置顶' : `已置顶「${achievement.name}」`)
+  } catch (error) {
+    showToast('error', error.message || '置顶保存失败，请重试')
+  }
+}
 
 // 「更多版本」（本次新增、无经验值）的成就：只在「按版本浏览 / 我的-按版本」中出现，
 // 不进入「按职业浏览 / 我的-按职业 / 待完成清单」，以免干扰推荐与按职业统计。
@@ -1067,6 +1176,7 @@ const classSprintAchievements = computed(() =>
 // 硬核模式：开启后「我的成就」统计与待完成清单覆盖全部版本（含无经验的「更多版本」），
 // 而非仅原有的 9 个有经验版本。硬核仅作用于「我的成就」视图。
 const hardcore = ref(false)
+const compactMode = ref(false)
 // 硬核作用域：仅在「我的成就」且开启硬核时使用全部成就；其余情况维持原有 9 版本。
 const scopeAchievements = computed(() =>
   hardcore.value && viewMode.value === 'my' ? allAchievements.value : classSprintAchievements.value
@@ -1090,15 +1200,32 @@ watch(hardcore, (on) => {
 })
 
 // 状态
-const viewMode = ref('expansion')
+const viewMode = ref(route.query.view === 'my' ? 'my' : 'expansion')
 const myGroupBy = ref('expansion') // 'expansion' | 'class' | 'sprint'
 const currentExpansionId = ref(expansions[0].id)
 const currentClass = ref('圣骑士')
-const query = ref('')
+const query = ref(typeof route.query.q === 'string' ? route.query.q : '')
 const selectedClass = ref('all')
 const selectedDifficulty = ref('all')
 const selectedMetric = ref('all')
-const selectedStatus = ref('未完成')
+const selectedStatus = ref(query.value ? 'all' : '未完成')
+let suppressNextExpansionScroll = false
+
+watch(
+  [hearthstoneProfile, profileLoaded],
+  ([currentProfile, isLoaded]) => {
+    if (!isLoaded) return
+    const preferences = currentProfile.preferences || {}
+    hardcore.value = preferences.hardcore === true
+    compactMode.value = preferences.compactMode === true
+    if (expansions.some((expansion) => expansion.id === preferences.defaultExpansionId)) {
+      suppressNextExpansionScroll =
+        currentExpansionId.value !== preferences.defaultExpansionId
+      currentExpansionId.value = preferences.defaultExpansionId
+    }
+  },
+  { immediate: true, deep: true }
+)
 
 const modalCards = ref([])
 const modalTitle = ref('')
@@ -1628,16 +1755,6 @@ const PASS_BONUS_OPTIONS = [
   { label: '通行证 +20%', value: 0.2 }
 ]
 const passBonus = ref(0)
-const passBonusPercent = computed(() => Math.round(passBonus.value * 100))
-// 已获得经验（受通行证加成影响，网页显示与导出都用它）
-const myEarnedXpBonus = computed(() =>
-  Math.round((myStats.value.earnedXp || 0) * (1 + passBonus.value))
-)
-// 总经验（受加成，仅作参考）
-const myTotalXpBonus = computed(() =>
-  Math.round((myStats.value.totalXp || 0) * (1 + passBonus.value))
-)
-
 const resetFilters = () => {
   query.value = ''
   selectedClass.value = 'all'
@@ -1666,8 +1783,9 @@ watch(myGroupBy, () => {
 
 watch(currentExpansionId, () => {
   if (viewMode.value === 'expansion' || (viewMode.value === 'my' && myGroupBy.value === 'expansion')) {
-    resetViewState({ scroll: true })
+    if (!suppressNextExpansionScroll) resetViewState({ scroll: true })
   }
+  suppressNextExpansionScroll = false
   resetClassViews()
 })
 
@@ -2051,6 +2169,33 @@ const showEmpty = computed(() => filteredAchievements.value.length === 0)
   transition: background .12s, color .12s;
 }
 .hs-guide-menu-item:hover { background: rgba(21, 128, 61, 0.12); color: #15803d; }
+.hs-backup-menu .hs-guide-menu-item {
+  width: 100%;
+  border: 0;
+  text-align: left;
+  cursor: pointer;
+}
+.hs-backup-menu .hs-guide-menu-item small {
+  display: block;
+  margin-top: 2px;
+  color: #64748b;
+  font-size: 11px;
+}
+.hs-guide-menu-item:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.hs-visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
 
 /* 硬核模式 ON/OFF 开关 */
 .hs-toggle {

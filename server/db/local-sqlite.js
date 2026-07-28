@@ -1,6 +1,7 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import Database from 'better-sqlite3'
+import { normalizePinnedAchievementIds } from '../hearthstone-profile.js'
 
 const SQLITE_SCHEMA = `
 CREATE TABLE IF NOT EXISTS users (
@@ -27,6 +28,13 @@ CREATE TABLE IF NOT EXISTS achievement_progress (
 
 CREATE INDEX IF NOT EXISTS idx_achievement_progress_user
   ON achievement_progress(user_id);
+
+CREATE TABLE IF NOT EXISTS hearthstone_profiles (
+  user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  pinned_achievement_id TEXT,
+  preferences_json TEXT NOT NULL DEFAULT '{}',
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
 
 CREATE TABLE IF NOT EXISTS ai_advisor_usage (
   user_key TEXT NOT NULL,
@@ -127,9 +135,25 @@ export function createLocalSqliteStore(filePath) {
         updated_at = CURRENT_TIMESTAMP
     `),
     getProgress: database.prepare(`
-      SELECT achievement_id, stages_json, count
+      SELECT achievement_id, stages_json, count, updated_at
       FROM achievement_progress
       WHERE user_id = ?
+    `),
+    getHearthstoneProfile: database.prepare(`
+      SELECT pinned_achievement_id, preferences_json, updated_at
+      FROM hearthstone_profiles
+      WHERE user_id = ?
+    `),
+    saveHearthstoneProfile: database.prepare(`
+      INSERT INTO hearthstone_profiles(
+        user_id, pinned_achievement_id, preferences_json, updated_at
+      )
+      VALUES(?, ?, ?, CURRENT_TIMESTAMP)
+      ON CONFLICT(user_id) DO UPDATE SET
+        pinned_achievement_id = excluded.pinned_achievement_id,
+        preferences_json = excluded.preferences_json,
+        updated_at = CURRENT_TIMESTAMP
+      RETURNING pinned_achievement_id, preferences_json, updated_at
     `),
     getAiUsage: database.prepare(`
       SELECT fixed_count, free_count
@@ -260,10 +284,45 @@ export function createLocalSqliteStore(filePath) {
       for (const row of statements.getProgress.all(Number(userId))) {
         output[row.achievement_id] = {
           stages: JSON.parse(row.stages_json || '{}'),
-          count: row.count
+          count: row.count,
+          updatedAt: row.updated_at
         }
       }
       return output
+    },
+
+    getHearthstoneProfile(userId) {
+      const row = statements.getHearthstoneProfile.get(Number(userId))
+      if (!row) return { pinnedAchievementIds: [], preferences: {}, updatedAt: null }
+      const preferences = JSON.parse(row.preferences_json || '{}')
+      const pinnedAchievementIds = normalizePinnedAchievementIds(
+        preferences.pinnedAchievementIds ?? row.pinned_achievement_id
+      )
+      delete preferences.pinnedAchievementIds
+      return {
+        pinnedAchievementIds,
+        preferences,
+        updatedAt: row.updated_at
+      }
+    },
+
+    saveHearthstoneProfile(userId, profile) {
+      const pinnedAchievementIds = normalizePinnedAchievementIds(profile.pinnedAchievementIds)
+      const row = statements.saveHearthstoneProfile.get(
+        Number(userId),
+        pinnedAchievementIds[0] || null,
+        JSON.stringify({
+          ...(profile.preferences || {}),
+          pinnedAchievementIds
+        })
+      )
+      const preferences = JSON.parse(row.preferences_json || '{}')
+      delete preferences.pinnedAchievementIds
+      return {
+        pinnedAchievementIds,
+        preferences,
+        updatedAt: row.updated_at
+      }
     },
 
     getAiUsage(userKey, day) {

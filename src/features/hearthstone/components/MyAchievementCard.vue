@@ -8,10 +8,12 @@ const props = defineProps({
   showRemaining: { type: Boolean, default: false },
   editable: { type: Boolean, default: false },
   selectMode: { type: Boolean, default: false },
-  selected: { type: Boolean, default: false }
+  selected: { type: Boolean, default: false },
+  pinned: { type: Boolean, default: false },
+  pinning: { type: Boolean, default: false }
 })
 
-const emit = defineEmits(['click', 'toggle-select', 'deck-click'])
+const emit = defineEmits(['click', 'toggle-select', 'deck-click', 'toggle-pin'])
 
 const { isStageCompleted, isAchievementCompleted, getCount, getProgressInfo, getMetric } = useAchievementProgress()
 
@@ -105,7 +107,8 @@ const copyDeckCode = async (deck, event) => {
       'hs-clickable': editable || isClickable(achievement),
       'hs-completed': isAchievementCompleted(achievement),
       'hs-select-mode': selectMode,
-      'hs-selected': selectMode && selected
+      'hs-selected': selectMode && selected,
+      'hs-pinned': pinned
     }"
     :role="cardInteractive ? 'button' : undefined"
     :tabindex="cardInteractive ? 0 : undefined"
@@ -145,6 +148,21 @@ const copyDeckCode = async (deck, event) => {
             v-if="!editable && !isAchievementCompleted(achievement) && isClickable(achievement)"
             class="hs-card-hint"
           >点击查看卡牌</span>
+          <button
+            v-if="editable && !selectMode"
+            class="hs-card-pin"
+            :class="{ active: pinned }"
+            type="button"
+            :disabled="pinning"
+            :aria-pressed="pinned"
+            :aria-label="pinned ? `取消置顶 ${achievement.name}` : `置顶 ${achievement.name}`"
+            @click.stop="emit('toggle-pin', achievement)"
+          >
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="m14 4 6 6-3 1-4 4-1 5-2-2-2-2-2-2 5-1 4-4z"/><path d="m5 19 4-4"/>
+            </svg>
+            <span>{{ pinned ? '已置顶' : '置顶' }}</span>
+          </button>
           <button
             v-if="(editable || isClickable(achievement)) && !selectMode"
             class="hs-card-open"

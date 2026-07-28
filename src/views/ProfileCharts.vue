@@ -1,5 +1,5 @@
 <template>
-  <div class="pc-charts">
+  <div class="pc-charts pc-chart-grid">
     <div v-if="!ready" class="pc-charts-loading">
       <span class="pc-spinner" aria-hidden="true"></span>
       正在加载你的成就数据…

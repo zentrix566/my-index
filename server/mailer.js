@@ -39,7 +39,7 @@ export function isMailConfigured() {
  */
 export async function sendPasswordResetEmail(to, resetUrl) {
   const t = getTransporter()
-  const from = process.env.SMTP_FROM || process.env.SMTP_USER || 'no-reply@zentrix.top'
+  const from = process.env.SMTP_FROM || process.env.SMTP_USER || 'no-reply@zentrix566.top'
   const siteName = 'Zentrix 个人索引'
 
   if (!t) {
@@ -82,7 +82,7 @@ export async function sendPasswordResetEmail(to, resetUrl) {
  */
 export async function sendEmailVerification(to, verifyUrl) {
   const t = getTransporter()
-  const from = process.env.SMTP_FROM || process.env.SMTP_USER || 'no-reply@zentrix.top'
+  const from = process.env.SMTP_FROM || process.env.SMTP_USER || 'no-reply@zentrix566.top'
   const siteName = 'Zentrix 个人索引'
 
   if (!t) {

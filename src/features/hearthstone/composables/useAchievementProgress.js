@@ -70,7 +70,12 @@ const reload = () => loadFromServer({ force: true })
 // entries 形如 { [achId]: { stages, count } }，与 PUT 请求体的 progress 同构。
 const applyLocalProgress = (entries) => {
   if (!entries || typeof entries !== 'object') return
-  progressData.value = { ...progressData.value, ...entries }
+  const updatedAt = new Date().toISOString()
+  const normalized = {}
+  for (const [achievementId, entry] of Object.entries(entries)) {
+    normalized[achievementId] = { ...entry, updatedAt }
+  }
+  progressData.value = { ...progressData.value, ...normalized }
 }
 
 // 退出登录时立即清空内存中的用户进度，并阻止较早的请求回写旧用户数据。
