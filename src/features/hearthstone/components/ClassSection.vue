@@ -27,7 +27,8 @@ const emit = defineEmits([
   'update:collapsed',
   'toggle-select',
   'deck-click',
-  'toggle-pin'
+  'toggle-pin',
+  'share'
 ])
 
 const toggleCollapse = () => {
@@ -75,6 +76,7 @@ const toggleCollapse = () => {
         @toggle-select="emit('toggle-select', $event)"
         @deck-click="emit('deck-click', $event)"
         @toggle-pin="emit('toggle-pin', $event)"
+        @share="emit('share', $event)"
       />
     </div>
   </section>

@@ -13,7 +13,7 @@ const props = defineProps({
   pinning: { type: Boolean, default: false }
 })
 
-const emit = defineEmits(['click', 'toggle-select', 'deck-click', 'toggle-pin'])
+const emit = defineEmits(['click', 'toggle-select', 'deck-click', 'toggle-pin', 'share'])
 
 const { isStageCompleted, isAchievementCompleted, getCount, getProgressInfo, getMetric } = useAchievementProgress()
 
@@ -140,6 +140,18 @@ const copyDeckCode = async (deck, event) => {
               <path d="m14 4 6 6-3 1-4 4-1 5-2-2-2-2-2-2 5-1 4-4z"/><path d="m5 19 4-4"/>
             </svg>
             <span>{{ pinned ? '已置顶' : '置顶' }}</span>
+          </button>
+          <button
+            v-if="editable && !selectMode"
+            class="hs-card-share hs-pin-inline"
+            type="button"
+            :aria-label="`分享 ${achievement.name} 的成就卡片`"
+            @click.stop="emit('share', achievement)"
+          >
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/>
+            </svg>
+            <span>分享</span>
           </button>
           <span v-if="isAchievementCompleted(achievement)" class="hs-completed-badge">✓ 已完成</span>
         </h3>

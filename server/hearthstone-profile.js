@@ -1,4 +1,6 @@
-export const MAX_PINNED_ACHIEVEMENTS = 5
+// 服务端置顶成就上限。与前端 src/features/hearthstone/utils/constants.js
+// 中的 MAX_PINNED_ACHIEVEMENTS 保持一致，调整时两处需要同步。
+export const MAX_PINNED_ACHIEVEMENTS = 10
 
 /** 将旧的单项置顶值与新的数组值统一为去重后的 ID 数组。 */
 export function normalizePinnedAchievementIds(value) {

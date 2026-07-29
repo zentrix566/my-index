@@ -443,7 +443,19 @@
               <p class="hs-pinned-eyebrow">优先追踪</p>
               <h2 id="hs-pinned-title">置顶成就</h2>
             </div>
-            <span>{{ pinnedAchievements.length }} / 10 项</span>
+            <div class="hs-pinned-section-meta">
+              <span>{{ pinnedAchievements.length }} / {{ MAX_PINNED_ACHIEVEMENTS }} 项</span>
+              <button
+                type="button"
+                class="hs-pinned-share-btn"
+                :disabled="!pinnedAchievements.length"
+                @click="openSharePinnedBundle"
+                aria-label="一键分享置顶成就合集"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/></svg>
+                分享合集
+              </button>
+            </div>
           </div>
           <div class="hs-pinned-list">
             <article
@@ -530,6 +542,7 @@
             :class-style="getClassStyle(heroClass)"
             @card-click="openCardModal"
             @deck-click="openDeckDetail"
+            @share="openShareAchievement"
           />
         </template>
       </div>
@@ -547,6 +560,7 @@
             :summary="expViewSummaries[exp.id]"
             @card-click="openCardModal"
             @deck-click="openDeckDetail"
+            @share="openShareAchievement"
           />
         </template>
       </div>
@@ -573,6 +587,7 @@
             @deck-click="openDeckDetail"
             @toggle-select="toggleSelect"
             @toggle-pin="togglePinnedAchievement"
+            @share="openShareAchievement"
           />
         </template>
       </div>
@@ -599,6 +614,7 @@
             @deck-click="openDeckDetail"
             @toggle-select="toggleSelect"
             @toggle-pin="togglePinnedAchievement"
+            @share="openShareAchievement"
           />
         </template>
       </div>
@@ -628,6 +644,7 @@
               @click="openCardModal"
               @deck-click="openDeckDetail"
               @toggle-pin="togglePinnedAchievement"
+              @share="openShareAchievement"
             />
           </div>
         </section>
@@ -655,6 +672,7 @@
               @click="openCardModal"
               @deck-click="openDeckDetail"
               @toggle-pin="togglePinnedAchievement"
+              @share="openShareAchievement"
             />
           </div>
         </section>
@@ -682,6 +700,7 @@
               @click="openCardModal"
               @deck-click="openDeckDetail"
               @toggle-pin="togglePinnedAchievement"
+              @share="openShareAchievement"
             />
           </div>
         </section>
@@ -715,6 +734,18 @@
         :visible="deckDetailVisible"
         :deck="deckDetailData"
         @close="deckDetailVisible = false"
+      />
+
+      <ShareAchievementModal
+        v-if="shareState.visible"
+        :visible="shareState.visible"
+        :mode="shareState.mode"
+        :achievement="shareState.achievement"
+        :progress-info="shareState.achievement ? getProgressInfo(shareState.achievement) : null"
+        :achievements="shareState.achievements"
+        :get-progress-info="getProgressInfo"
+        :user="user"
+        @close="closeShare"
       />
 
       <ScrollToTop />
@@ -784,12 +815,17 @@ import { saveAchievementProgress } from '../api/progress.js'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 import { useHearthstoneProfile } from '../composables/useHearthstoneProfile.js'
 import { useDialogFocus } from '../composables/useDialogFocus.js'
+import { MAX_PINNED_ACHIEVEMENTS } from '../utils/constants.js'
 
 const DeckDetailModal = defineAsyncComponent(
   () => import('../components/DeckDetailModal.vue')
 )
 const AiAdvisor = defineAsyncComponent(
   () => import('../ai/AiAdvisor.vue')
+)
+// 成就分享弹窗：按需异步加载（Canvas 生成图 + 复制/下载，仅在用户点分享时才拉入）
+const ShareAchievementModal = defineAsyncComponent(
+  () => import('../components/ShareAchievementModal.vue')
 )
 
 const { user, init: initAuth, logout } = useAuth()
@@ -810,6 +846,31 @@ const openAi = () => { showAi.value = true }
 const closeAi = () => { showAi.value = false }
 const aiDialogElement = ref(null)
 useDialogFocus(showAi, aiDialogElement, closeAi)
+
+// 成就分享弹窗：支持三种入口——浏览视图卡片、我的成就卡片、置顶区一键合集
+const shareState = reactive({
+  visible: false,
+  mode: 'single',       // 'single' | 'bundle'
+  achievement: null,
+  achievements: null
+})
+function openShareAchievement(achievement) {
+  if (!achievement) return
+  shareState.mode = 'single'
+  shareState.achievement = achievement
+  shareState.achievements = null
+  shareState.visible = true
+}
+function openSharePinnedBundle() {
+  if (!pinnedAchievements.value.length) return
+  shareState.mode = 'bundle'
+  shareState.achievement = null
+  shareState.achievements = pinnedAchievements.value.slice(0, MAX_PINNED_ACHIEVEMENTS)
+  shareState.visible = true
+}
+function closeShare() {
+  shareState.visible = false
+}
 
 // 吸顶控制栏（视图切换 + 版本/职业选择）的引用：切换视图/版本时滚动到它，
 // 既能让内容从控制栏下方开始显示，又不会把页面弹回最顶、重新露出那个巨大的页面标题。
@@ -1148,8 +1209,8 @@ async function togglePinnedAchievement(achievement) {
   if (!user.value || profileSaving.value) return
   const currentIds = hearthstoneProfile.value.pinnedAchievementIds
   const removing = currentIds.includes(achievement.id)
-  if (!removing && currentIds.length >= 10) {
-    showToast('error', '最多置顶 10 项成就，请先取消一项')
+  if (!removing && currentIds.length >= MAX_PINNED_ACHIEVEMENTS) {
+    showToast('error', `最多置顶 ${MAX_PINNED_ACHIEVEMENTS} 项成就，请先取消一项`)
     return
   }
   const pinnedAchievementIds = removing

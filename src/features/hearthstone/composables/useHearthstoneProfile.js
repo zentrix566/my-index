@@ -3,6 +3,7 @@ import {
   fetchHearthstoneProfile,
   saveHearthstoneProfile as saveProfileRequest
 } from '../api/profile.js'
+import { MAX_PINNED_ACHIEVEMENTS } from '../utils/constants.js'
 
 const DEFAULT_PROFILE = Object.freeze({
   pinnedAchievementIds: [],
@@ -29,7 +30,7 @@ function normalizeProfile(value) {
       : []
   return {
     pinnedAchievementIds: [...new Set(rawPinnedIds.filter((id) => typeof id === 'string'))]
-      .slice(0, 5),
+      .slice(0, MAX_PINNED_ACHIEVEMENTS),
     preferences: {
       hardcore: value?.preferences?.hardcore === true,
       defaultExpansionId:

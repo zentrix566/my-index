@@ -19,6 +19,8 @@ const error = ref('')
 const needLogin = ref(false)
 // 服务端返回的实际作用域（用于向用户展示「当前 AI 读取了哪些版本」，验证硬核开关是否生效）
 const lastScope = ref(null)
+// 作用域样式：全部版本 vs 核心版本
+const isScopeAll = computed(() => lastScope.value ? lastScope.value.hardcore : props.hardcore)
 
 const fixedRemaining = computed(() => Math.max(0, quota.value.fixedLimit - quota.value.fixedUsed))
 const freeRemaining = computed(() => Math.max(0, quota.value.freeLimit - quota.value.freeUsed))
@@ -126,7 +128,7 @@ function clearChat() {
     </div>
 
     <!-- 作用域提示：明确 AI 当前读取的是「核心版本」还是「全部版本」，验证硬核开关是否生效 -->
-    <div class="ai-scope" :class="lastScope && lastScope.hardcore ? 'ai-scope-all' : 'ai-scope-core'">
+    <div class="ai-scope" :class="{ 'ai-scope-all': isScopeAll, 'ai-scope-core': !isScopeAll }">
       <span class="ai-scope-dot"></span>
       <template v-if="lastScope">
         <b>范围：{{ lastScope.hardcore ? '全部版本' : '核心版本' }}</b>

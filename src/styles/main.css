@@ -4100,6 +4100,39 @@ a.content-card:hover {
   height: 13px;
 }
 
+/* 分享按钮：与置顶按钮共用 .hs-pin-inline 尺寸，只调整颜色语义 */
+.hs-card-share {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  min-width: 0;
+  min-height: 0;
+  height: 24px;
+  padding: 0 9px;
+  border: 1px solid var(--hs-border);
+  border-radius: 7px;
+  color: var(--hs-text-muted);
+  background: var(--hs-surface);
+  font: inherit;
+  font-size: 11px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: color 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.hs-card-share:hover {
+  border-color: rgba(59, 130, 246, 0.5);
+  color: #2563eb;
+  background: rgba(59, 130, 246, 0.08);
+}
+.hs-card-share:focus-visible {
+  outline: 3px solid var(--hs-focus, #fbbf24);
+  outline-offset: 3px;
+}
+.hs-card-share svg {
+  width: 13px;
+  height: 13px;
+}
+
 .hs-achievement-card.hs-pinned {
   border-color: rgba(212, 160, 23, 0.42);
   border-left-color: var(--hs-gold);
@@ -4144,6 +4177,40 @@ a.content-card:hover {
 .hs-pinned-section-head > span {
   color: var(--hs-text-muted);
   font-size: 12px;
+}
+
+.hs-pinned-section-meta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-shrink: 0;
+}
+.hs-pinned-section-meta > span {
+  color: var(--hs-text-muted);
+  font-size: 12px;
+}
+.hs-pinned-share-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 30px;
+  padding: 0 12px;
+  border: 1px solid var(--hs-border);
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--hs-text);
+  background: var(--hs-surface-soft);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.hs-pinned-share-btn:hover:not(:disabled) {
+  background: var(--hs-surface-overlay);
+  border-color: var(--hs-focus);
+}
+.hs-pinned-share-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
 }
 
 .hs-pinned-list {

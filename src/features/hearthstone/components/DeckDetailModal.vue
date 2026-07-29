@@ -8,7 +8,7 @@
       aria-labelledby="ddm-title"
       tabindex="-1"
     >
-      <button ref="closeButton" class="ddm-close" type="button" aria-label="关闭" @click="$emit('close')">
+      <button class="ddm-close" type="button" aria-label="关闭" @click="$emit('close')">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
 
@@ -152,7 +152,7 @@
     </div>
 
     <!-- 卡牌大图灯箱（点击卡片弹出，替代右键下载） -->
-    <div v-if="lightbox.card" class="ddm-lightbox" @click.self="closeLightbox">
+    <div v-if="lightbox.card" class="ddm-lightbox" data-nested-dialog="true" @click.self="closeLightbox">
       <button class="ddm-lb-close" type="button" aria-label="关闭大图" @click="closeLightbox">
         <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
@@ -175,9 +175,10 @@
 </template>
 
 <script setup>
-import { ref, reactive, computed, watch, nextTick, onBeforeUnmount } from 'vue'
+import { ref, reactive, computed, toRef } from 'vue'
 import { decodeDeck } from '../utils/deckstring.js'
 import { getRarityClass, getCardFullImage, getRarityDust, RARITY_LABELS } from '../utils/cardImages.js'
+import { useDialogFocus } from '../composables/useDialogFocus.js'
 
 const props = defineProps({
   visible: { type: Boolean, default: false },
@@ -185,8 +186,6 @@ const props = defineProps({
 })
 const emit = defineEmits(['close'])
 const modalElement = ref(null)
-const closeButton = ref(null)
-let previouslyFocusedElement = null
 
 const decoded = computed(() => (props.deck ? decodeDeck(props.deck.code) : { valid: false, heroClass: '未知', total: 0, cards: [] }))
 const displayClass = computed(() => (props.deck && props.deck.heroClass) || decoded.value.heroClass)
@@ -296,46 +295,15 @@ function closeLightbox() {
   lightbox.img = ''
   lightbox.broken = false
 }
-function onKeydown(e) {
-  if (e.key === 'Escape') {
-    if (lightbox.card) closeLightbox()
-    else if (props.visible) emit('close')
-    return
-  }
-  if (e.key !== 'Tab' || !modalElement.value) return
-  const focusable = [...modalElement.value.querySelectorAll(
-    'button:not([disabled]), [href], input:not([disabled]), select:not([disabled]), textarea:not([disabled]), [tabindex]:not([tabindex="-1"])'
-  )]
-  if (!focusable.length) {
-    e.preventDefault()
-    modalElement.value.focus()
-    return
-  }
-  const first = focusable[0]
-  const last = focusable[focusable.length - 1]
-  if (e.shiftKey && document.activeElement === first) {
-    e.preventDefault()
-    last.focus()
-  } else if (!e.shiftKey && document.activeElement === last) {
-    e.preventDefault()
-    first.focus()
-  }
-}
-watch(() => props.visible, (show) => {
-  if (show) {
-    previouslyFocusedElement = document.activeElement
-    window.addEventListener('keydown', onKeydown)
-    nextTick(() => closeButton.value?.focus())
-  } else {
-    window.removeEventListener('keydown', onKeydown)
+
+// 焦点管理：Tab 循环、Escape 关闭、首个可聚焦元素获取焦点。
+// 灯箱打开时 Escape 先关灯箱、再关主弹窗（模板里 .ddm-lightbox 带 data-nested-dialog）。
+useDialogFocus(toRef(props, 'visible'), modalElement, () => {
+  if (lightbox.card) {
     closeLightbox()
-    previouslyFocusedElement?.focus?.()
-    previouslyFocusedElement = null
+    return
   }
-}, { immediate: true })
-onBeforeUnmount(() => {
-  window.removeEventListener('keydown', onKeydown)
-  previouslyFocusedElement?.focus?.()
+  emit('close')
 })
 
 // ── 复制卡组代码 ──
