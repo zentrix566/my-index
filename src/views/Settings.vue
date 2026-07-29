@@ -74,6 +74,28 @@
         role="tabpanel"
         aria-labelledby="achievements-tab"
       >
+        <section class="pc-card pc-card-charts">
+          <div class="pc-card-head">
+            <div>
+              <h2 class="pc-card-title">成就仪表盘</h2>
+              <p class="pc-hint pc-hint-mb">以图表汇总你的炉石成就进度，按版本、职业、类型与难度多维度展示。</p>
+            </div>
+            <button
+              type="button"
+              class="pc-toggle"
+              :class="{ on: hardcore }"
+              role="switch"
+              :aria-checked="hardcore"
+              :title="'硬核模式：统计全部 ' + totalExpansions + ' 个版本（含更多版本），而非仅核心 ' + coreExpansions + ' 个版本。'"
+              @click="hardcore = !hardcore"
+            >
+              <span class="pc-toggle-track"><span class="pc-toggle-thumb"></span></span>
+              <span class="pc-toggle-label">硬核模式{{ hardcore ? '：开' : '：关' }}</span>
+            </button>
+          </div>
+          <ProfileCharts :hardcore="hardcore" />
+        </section>
+
         <div class="pc-activity-grid">
           <section class="pc-card pc-activity-card">
             <div class="pc-card-head">
@@ -113,28 +135,6 @@
             <p v-else class="pc-empty-copy">修改成就进度后，这里会显示最近记录。</p>
           </section>
         </div>
-
-        <section class="pc-card pc-card-charts">
-          <div class="pc-card-head">
-            <div>
-              <h2 class="pc-card-title">成就仪表盘</h2>
-              <p class="pc-hint pc-hint-mb">以图表汇总你的炉石成就进度，按版本、职业、类型与难度多维度展示。</p>
-            </div>
-            <button
-              type="button"
-              class="pc-toggle"
-              :class="{ on: hardcore }"
-              role="switch"
-              :aria-checked="hardcore"
-              :title="'硬核模式：统计全部 ' + totalExpansions + ' 个版本（含更多版本），而非仅核心 ' + coreExpansions + ' 个版本。'"
-              @click="hardcore = !hardcore"
-            >
-              <span class="pc-toggle-track"><span class="pc-toggle-thumb"></span></span>
-              <span class="pc-toggle-label">硬核模式{{ hardcore ? '：开' : '：关' }}</span>
-            </button>
-          </div>
-          <ProfileCharts :hardcore="hardcore" />
-        </section>
       </div>
 
       <div

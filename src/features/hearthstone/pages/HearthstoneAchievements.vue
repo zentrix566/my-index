@@ -443,7 +443,7 @@
               <p class="hs-pinned-eyebrow">优先追踪</p>
               <h2 id="hs-pinned-title">置顶成就</h2>
             </div>
-            <span>{{ pinnedAchievements.length }} / 5 项</span>
+            <span>{{ pinnedAchievements.length }} / 10 项</span>
           </div>
           <div class="hs-pinned-list">
             <article
@@ -1148,8 +1148,8 @@ async function togglePinnedAchievement(achievement) {
   if (!user.value || profileSaving.value) return
   const currentIds = hearthstoneProfile.value.pinnedAchievementIds
   const removing = currentIds.includes(achievement.id)
-  if (!removing && currentIds.length >= 5) {
-    showToast('error', '最多置顶 5 项成就，请先取消一项')
+  if (!removing && currentIds.length >= 10) {
+    showToast('error', '最多置顶 10 项成就，请先取消一项')
     return
   }
   const pinnedAchievementIds = removing

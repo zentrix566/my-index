@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed } from 'vue'
-import { difficultyColors, getClassName } from '../utils/achievements.js'
+import { getClassName } from '../utils/achievements.js'
 import { useAchievementProgress } from '../composables/useAchievementProgress.js'
 
 const props = defineProps({
@@ -15,10 +15,6 @@ const { getMetric } = useAchievementProgress()
 const metric = computed(() => getMetric(props.achievement))
 
 const copiedDeckName = ref('')
-
-const getDifficultyStyle = (difficulty) => ({
-  color: difficultyColors[difficulty] || '#666'
-})
 
 const isClickable = (ach) =>
   ach.cards && ach.cards.length > 0 && ach.cards.some((c) => c.image || c.imageFallback)
@@ -78,9 +74,6 @@ const copyDeckCode = async (deck, event) => {
             :class="achievement.type === '一次性' ? 'hs-one-time' : 'hs-cumulative'"
           >
             {{ achievement.type === '一次性' ? '一次性' : (metric === 'points' ? '点数' : '次数') }}
-          </span>
-          <span class="hs-badge hs-difficulty-badge" :style="getDifficultyStyle(achievement.difficulty)">
-            {{ achievement.difficulty }}
           </span>
           <span v-if="isClickable(achievement)" class="hs-card-hint">点击查看卡牌</span>
         </div>

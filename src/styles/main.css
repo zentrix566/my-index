@@ -2260,6 +2260,7 @@ a.content-card:hover {
 
 .hs-card-content {
   min-width: 0;
+  overflow: hidden;
 }
 
 .hs-card-title-row {
@@ -2472,9 +2473,7 @@ a.content-card:hover {
   align-items: center;
   justify-content: space-between;
   gap: 8px;
-  padding: 6px 10px;
-  background: #f8f5f0;
-  border-radius: 6px;
+  padding: 4px 0;
   font-size: 13px;
 }
 
@@ -4086,6 +4085,21 @@ a.content-card:hover {
   opacity: 0.6;
 }
 
+/* 标题后的内联置顶按钮：压缩尺寸，贴合一行标题 */
+.hs-card-pin.hs-pin-inline {
+  min-width: 0;
+  min-height: 0;
+  height: 24px;
+  padding: 0 9px;
+  gap: 4px;
+  font-size: 11px;
+  border-radius: 7px;
+}
+.hs-card-pin.hs-pin-inline svg {
+  width: 13px;
+  height: 13px;
+}
+
 .hs-achievement-card.hs-pinned {
   border-color: rgba(212, 160, 23, 0.42);
   border-left-color: var(--hs-gold);
@@ -4289,7 +4303,9 @@ a.content-card:hover {
   color: var(--hs-link);
 }
 
-.hs-deck-item,
+.hs-deck-item {
+  color: var(--hs-text-soft);
+}
 .hs-guide-text {
   color: var(--hs-text-soft);
   background: var(--hs-inset-bg);

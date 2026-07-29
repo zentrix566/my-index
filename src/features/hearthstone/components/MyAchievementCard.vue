@@ -1,6 +1,6 @@
 <script setup>
 import { computed, ref } from 'vue'
-import { difficultyColors, getClassName } from '../utils/achievements.js'
+import { getClassName } from '../utils/achievements.js'
 import { useAchievementProgress } from '../composables/useAchievementProgress.js'
 
 const props = defineProps({
@@ -40,10 +40,6 @@ const onCardClick = () => {
   if (props.selectMode) emit('toggle-select', props.achievement)
   else emit('click', props.achievement)
 }
-
-const getDifficultyStyle = (difficulty) => ({
-  color: difficultyColors[difficulty] || '#666'
-})
 
 // 累计进度显示：done 以 isStageCompleted 为准（兼容「stages 勾选」标记的完成），
 // 已完成阶段显示满额（quota），避免「已完成却 0% 进度条」的显示矛盾
@@ -130,27 +126,9 @@ const copyDeckCode = async (deck, event) => {
       <div class="hs-card-title-row">
           <h3 class="hs-card-title">
           <span class="hs-card-name">{{ achievement.name }}</span>
-          <span v-if="isAchievementCompleted(achievement)" class="hs-completed-badge">✓ 已完成</span>
-        </h3>
-        <div class="hs-card-badges">
-          <span class="hs-badge hs-version-badge">{{ achievement._expansionName }}</span>
-          <span class="hs-badge hs-class-badge">{{ getClassName(achievement) }}</span>
-          <span
-            class="hs-badge hs-type-badge"
-            :class="achievement.type === '一次性' ? 'hs-one-time' : 'hs-cumulative'"
-          >
-            {{ achievement.type === '一次性' ? '一次性' : (metric === 'points' ? '点数' : '次数') }}
-          </span>
-          <span class="hs-badge hs-difficulty-badge" :style="getDifficultyStyle(achievement.difficulty)">
-            {{ achievement.difficulty }}
-          </span>
-          <span
-            v-if="!editable && !isAchievementCompleted(achievement) && isClickable(achievement)"
-            class="hs-card-hint"
-          >点击查看卡牌</span>
           <button
             v-if="editable && !selectMode"
-            class="hs-card-pin"
+            class="hs-card-pin hs-pin-inline"
             :class="{ active: pinned }"
             type="button"
             :disabled="pinning"
@@ -163,6 +141,21 @@ const copyDeckCode = async (deck, event) => {
             </svg>
             <span>{{ pinned ? '已置顶' : '置顶' }}</span>
           </button>
+          <span v-if="isAchievementCompleted(achievement)" class="hs-completed-badge">✓ 已完成</span>
+        </h3>
+        <div class="hs-card-badges">
+          <span class="hs-badge hs-version-badge">{{ achievement._expansionName }}</span>
+          <span class="hs-badge hs-class-badge">{{ getClassName(achievement) }}</span>
+          <span
+            class="hs-badge hs-type-badge"
+            :class="achievement.type === '一次性' ? 'hs-one-time' : 'hs-cumulative'"
+          >
+            {{ achievement.type === '一次性' ? '一次性' : (metric === 'points' ? '点数' : '次数') }}
+          </span>
+          <span
+            v-if="!editable && !isAchievementCompleted(achievement) && isClickable(achievement)"
+            class="hs-card-hint"
+          >点击查看卡牌</span>
           <button
             v-if="(editable || isClickable(achievement)) && !selectMode"
             class="hs-card-open"
