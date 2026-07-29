@@ -33,6 +33,8 @@ const routes = [
     path: '/projects/:slug.html',
     redirect: (to) => `/projects/${String(to.params.slug).replace(/\.html$/, '')}`
   },
+  // OpsAgentAI 已合并进 CI/CD 流水线实践，旧链接重定向
+  { path: '/projects/opsagentai', redirect: '/projects/cicd-architecture' },
   { path: '/projects/:slug', name: 'project-detail', component: ProjectDetail },
   { path: '/vue-apps', name: 'vue-apps', component: VueApps },
   { path: '/life/interval-training.html', redirect: '/interval-training' },
