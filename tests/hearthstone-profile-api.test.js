@@ -8,17 +8,17 @@ import {
   normalizePinnedAchievementIds
 } from '../server/hearthstone-profile.js'
 
-test('置顶成就兼容旧单项值并限制为五项', () => {
+test('置顶成就兼容旧单项值并限制为十项', () => {
   assert.deepEqual(normalizePinnedAchievementIds('legacy-achievement'), [
     'legacy-achievement'
   ])
   assert.deepEqual(
-    normalizePinnedAchievementIds(JSON.stringify(['a', 'b', 'b', 'c', 'd', 'e', 'f'])),
-    ['a', 'b', 'c', 'd', 'e']
+    normalizePinnedAchievementIds(JSON.stringify(['a', 'b', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k'])),
+    ['a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j']
   )
 })
 
-test('炉石个人配置 API 发送并保留最多五项置顶成就与显示偏好', async () => {
+test('炉石个人配置 API 发送并保留最多十项置顶成就与显示偏好', async () => {
   const originalFetch = globalThis.fetch
   const profile = {
     pinnedAchievementIds: ['target-achievement', 'second-achievement'],
