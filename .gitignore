@@ -55,3 +55,6 @@ server/remote-data/
 
 # Windows 保留设备名误生成的垃圾文件，永不入库
 nul
+
+# AI 临时工具脚本（单下划线前缀，如 _audit_ach_updates.mjs），不入库；正式脚本（generate-*/audit-*/upload-* 等）保持跟踪
+scripts/_*.mjs
