@@ -1,13 +1,23 @@
 <script setup>
-import { ref, computed, onMounted } from 'vue'
+import { ref, computed, onMounted, watch } from 'vue'
 import MarkdownIt from 'markdown-it'
 
 const props = defineProps({
   // 是否开启硬核模式：true 纳入全部版本，false 仅核心 9 个有经验版本
-  hardcore: { type: Boolean, default: false }
+  hardcore: { type: Boolean, default: false },
+  // 当前作用域覆盖的版本总数（核心 = 核心版本数，硬核 = 全部版本数），用于向用户澄清范围
+  scopeVersions: { type: Number, default: 0 }
 })
 
 const md = new MarkdownIt({ html: false, linkify: true, breaks: true })
+
+// 弹窗内可独立切换硬核模式：初始化自父组件开关，保证与「我的成就 / 按职业浏览」的硬核状态一致，
+// 同时允许在对话中临时切换并立刻生效（每次提问都带上当前值）。
+const localHardcore = ref(props.hardcore)
+watch(
+  () => props.hardcore,
+  (v) => { localHardcore.value = v }
+)
 
 // 每日额度（来自服务端，前端只读）
 const quota = ref({ fixedUsed: 0, fixedLimit: 5, freeUsed: 0, freeLimit: 1 })
@@ -20,7 +30,7 @@ const needLogin = ref(false)
 // 服务端返回的实际作用域（用于向用户展示「当前 AI 读取了哪些版本」，验证硬核开关是否生效）
 const lastScope = ref(null)
 // 作用域样式：全部版本 vs 核心版本
-const isScopeAll = computed(() => lastScope.value ? lastScope.value.hardcore : props.hardcore)
+const isScopeAll = computed(() => lastScope.value ? lastScope.value.hardcore : localHardcore.value)
 
 const fixedRemaining = computed(() => Math.max(0, quota.value.fixedLimit - quota.value.fixedUsed))
 const freeRemaining = computed(() => Math.max(0, quota.value.freeLimit - quota.value.freeUsed))
@@ -72,7 +82,7 @@ async function ask(question, type) {
       body: JSON.stringify({
         type,
         question: q,
-        hardcore: props.hardcore
+        hardcore: localHardcore.value
       })
     })
     const data = await resp.json().catch(() => ({}))
@@ -130,14 +140,20 @@ function clearChat() {
     <!-- 作用域提示：明确 AI 当前读取的是「核心版本」还是「全部版本」，验证硬核开关是否生效 -->
     <div class="ai-scope" :class="{ 'ai-scope-all': isScopeAll, 'ai-scope-core': !isScopeAll }">
       <span class="ai-scope-dot"></span>
-      <template v-if="lastScope">
-        <b>范围：{{ lastScope.hardcore ? '全部版本' : '核心版本' }}</b>
-        （{{ lastScope.versions }} 个版本 · {{ lastScope.remaining }} 项未完成）
-      </template>
-      <template v-else>
-        <b>范围：{{ props.hardcore ? '全部版本' : '核心版本' }}</b>
-        （将依据上方「硬核模式」开关决定）
-      </template>
+      <span class="ai-scope-text">
+        <template v-if="lastScope">
+          <b>范围：{{ lastScope.hardcore ? '全部版本' : '核心版本' }}</b>
+          （覆盖 {{ scopeVersions || lastScope.versions }} 个版本 · 剩余 <b>{{ lastScope.remaining }}</b> 项未完成）
+        </template>
+        <template v-else>
+          <b>范围：{{ localHardcore ? '全部版本' : '核心版本' }}</b>
+          （将依据下方「硬核模式」开关决定，覆盖 {{ scopeVersions || '—' }} 个版本）
+        </template>
+      </span>
+      <label class="ai-scope-toggle">
+        <input type="checkbox" v-model="localHardcore" />
+        硬核模式
+      </label>
     </div>
 
     <!-- 额度 -->
@@ -255,6 +271,7 @@ function clearChat() {
   border: 1px solid #fed7aa;
 }
 .ai-scope b { font-weight: 700; }
+.ai-scope-text { flex: 1 1 auto; }
 .ai-scope-dot {
   flex: 0 0 auto;
   width: 8px;
@@ -262,6 +279,23 @@ function clearChat() {
   border-radius: 50%;
   background: currentColor;
 }
+.ai-scope-toggle {
+  flex: 0 0 auto;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  margin-left: 4px;
+  padding: 3px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  color: inherit;
+  background: rgba(255, 255, 255, 0.45);
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  cursor: pointer;
+  user-select: none;
+}
+.ai-scope-toggle input { width: 13px; height: 13px; accent-color: currentColor; cursor: pointer; }
 .ai-bar {
   display: flex;
   align-items: center;

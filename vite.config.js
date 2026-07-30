@@ -24,6 +24,10 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [vue()],
-    server: { proxy }
+    server: { proxy },
+    build: {
+      // 卡组解析器按需加载完整本地卡牌资料库；3.5 MB 是该独立懒加载数据块的预期上限。
+      chunkSizeWarningLimit: 3500
+    }
   }
 })

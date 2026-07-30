@@ -1,79 +1,20 @@
-<template>
+﻿<template>
   <section
     class="section page-section hs-page"
     :class="{ 'hs-compact': compactMode }"
     :data-hs-theme="hsTheme"
   >
     <div class="container">
-      <section class="hs-hero" aria-labelledby="hs-page-title">
-        <div class="section-heading">
-          <p class="eyebrow"><span class="hs-live-dot" aria-hidden="true"></span> Hearthstone Tracker</p>
-          <h1 id="hs-page-title">炉石传说成就查看器</h1>
-          <p>把分散的成就目标整理成清晰的行动清单。按版本与职业筛选、记录完成进度，并快速找到下一项值得冲刺的成就。</p>
-        </div>
-
-        <div class="hs-hero-side">
-          <div class="hs-intro-actions">
-            <template v-if="user">
-              <button type="button" class="hs-btn hs-btn-ghost" @click="router.push('/settings')">个人中心</button>
-              <span class="hs-user-badge">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/>
-                </svg>
-                {{ user.username }}
-              </span>
-              <button type="button" class="hs-btn hs-btn-ghost" @click="logoutAndRefresh">退出登录</button>
-            </template>
-            <template v-else>
-              <button type="button" class="hs-btn hs-btn-primary" @click="router.push('/login')">
-                登录或注册
-                <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>
-                </svg>
-              </button>
-            </template>
-            <button type="button" class="hs-btn hs-btn-ghost" @click="goChangelog">查看更新</button>
-            <button type="button" class="hs-btn hs-btn-ghost" @click="router.push('/hearthstone/deck')">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M14 3v4a1 1 0 0 0 1 1h4"/><path d="M17 21H7a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h7l5 5v11a2 2 0 0 1-2 2Z"/><path d="M9 13h6"/><path d="M9 17h3"/></svg>
-              卡组代码解析
-            </button>
-            <button
-              type="button"
-              class="hs-btn hs-btn-ghost hs-theme-toggle"
-              @click="toggleTheme"
-              :aria-label="hsTheme === 'dark' ? '切换到明亮主题' : '切换到暗色主题'"
-              :title="hsTheme === 'dark' ? '切换到明亮主题' : '切换到暗色主题'"
-            >
-              <svg v-if="hsTheme === 'dark'" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
-              </svg>
-              <svg v-else width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-              </svg>
-              {{ hsTheme === 'dark' ? '明亮' : '暗色' }}
-            </button>
-            <button
-              type="button"
-              class="hs-btn hs-btn-ghost hs-contact-btn"
-              @click="contactAuthor"
-              title="发送邮件给作者"
-            >
-              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-              </svg>
-              联系作者
-            </button>
-          </div>
-          <p class="hs-intro-text">
-            {{ user ? '当前进度会自动保存到你的账号。' : '未登录可浏览全部内容；登录后即可记录并同步个人进度。' }}
-          </p>
-        </div>
-
-        <div class="hs-hero-metrics" aria-label="数据概览">
-          <div><strong>{{ allAchievements.length }}</strong><span>收录成就</span></div>
-          <div><strong>{{ expansions.length }}</strong><span>游戏版本</span></div>
-        </div>
-      </section>
+      <HearthstoneAchievementsHero
+        :user="user"
+        :hs-theme="hsTheme"
+        :achievement-count="allAchievements.length"
+        :expansion-count="expansions.length"
+        @navigate="router.push"
+        @logout="logoutAndRefresh"
+        @toggle-theme="toggleTheme"
+        @contact="contactAuthor"
+      />
 
       <!-- AI 成就建议：悬浮按钮（仅登录 + 我的成就视图），点击打开弹窗 -->
       <button
@@ -178,79 +119,34 @@
               <button type="button" class="hs-tiny-btn" @click="expandAllSections">展开全部</button>
               <button type="button" class="hs-tiny-btn" @click="collapseAllSections">收起全部</button>
               <!-- 硬核模式：ON/OFF 开关（置于展开/收起之后，吸顶始终可见，免去滚动到操作行去开关） -->
-              <button
-                type="button"
-                class="hs-toggle"
-                :class="{ on: hardcore }"
-                role="switch"
-                :aria-checked="hardcore"
-                :title="'硬核模式：统计全部 ' + expansions.length + ' 个版本（含无经验的更多版本），而非仅核心 ' + originalExpansions.length + ' 个有经验版本。'"
-                @click="hardcore = !hardcore"
-              >
-                <span class="hs-toggle-track"><span class="hs-toggle-thumb"></span></span>
-                <span class="hs-toggle-label">硬核模式{{ hardcore ? '：开' : '：关' }}</span>
-              </button>
+              <HardcoreModeToggle
+                v-model="hardcore"
+                :expansion-count="expansions.length"
+                :core-expansion-count="originalExpansions.length"
+                action="统计"
+              />
             </div>
           </template>
           <!-- 按版本浏览：版本选择（我的成就模式下版本/职业选择移到子切换下方） -->
-          <template v-if="viewMode === 'expansion'">
-            <ExpansionTabs
-              :expansions="originalExpansions"
-              :current-id="currentExpansionId"
-              @switch="currentExpansionId = $event"
-            />
-            <!-- 本次新增的版本：收进下拉，不与原有 9 个版本混排；我的成就-按版本下仅硬核模式可见 -->
-            <div v-if="showMoreVersions" class="hs-more-versions" v-click-outside="closeMoreVersions">
-              <button
-                type="button"
-                class="hs-btn hs-btn-ghost hs-more-versions-toggle"
-                :class="{ active: moreVersionsOpen || addedExpansions.some((e) => e.id === currentExpansionId) }"
-                :title="`本次新增的 ${addedExpansions.length} 个版本`"
-                @click="toggleMoreVersions"
-              >
-                更多版本
-                <span class="hs-more-versions-count">{{ addedExpansions.length }}</span>
-                <svg class="hs-more-versions-caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                  <path d="M6 9l6 6 6-6" />
-                </svg>
-              </button>
-              <div v-if="moreVersionsOpen" class="hs-more-versions-panel" role="menu">
-                <p class="hs-more-versions-tip">本次新增的版本（已本地化成就数据）</p>
-                <div class="hs-more-versions-grid">
-                  <button
-                    v-for="exp in addedExpansions"
-                    :key="exp.id"
-                    type="button"
-                    class="hs-more-versions-item"
-                    :class="{ active: currentExpansionId === exp.id }"
-                    @click="selectAdded(exp.id)"
-                  >
-                    <span>{{ exp.name }}</span>
-                    <svg v-if="currentExpansionId === exp.id" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                      <path d="M20 6L9 17l-5-5" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-            </div>
-          </template>
-          <!-- 按职业浏览：职业选择（我的成就模式下版本/职业选择移到子切换下方） -->
+          <AchievementExpansionSelector
+            v-if="viewMode === 'expansion'"
+            v-model="currentExpansionId"
+            :original-expansions="originalExpansions"
+            :added-expansions="addedExpansions"
+            :show-more-versions="showMoreVersions"
+          />
+          <!-- 按职业浏览：职业选择 + 硬核模式开关（与「我的成就」一致，便于直接纳入全部版本） -->
           <div
             v-else-if="viewMode === 'class'"
-            class="hs-expansion-tabs"
-            role="tablist"
-            aria-label="选择职业"
+            class="hs-class-top"
           >
-            <button
-              v-for="cls in allClasses"
-              :key="cls"
-              :class="{ active: currentClass === cls }"
-              type="button"
-              role="tab"
-              @click="onClassTabClick(cls)"
-            >
-              {{ cls }}
-            </button>
+            <AchievementClassTabs v-model="currentClass" :classes="allClasses" />
+            <HardcoreModeToggle
+              v-model="hardcore"
+              :expansion-count="expansions.length"
+              :core-expansion-count="originalExpansions.length"
+              action="纳入"
+            />
           </div>
           <!-- 展开全部 / 收起全部：三视图一致，紧跟版本 / 职业选择之后 -->
           <div v-if="showFabSectionToggles" class="hs-section-toggles">
@@ -272,64 +168,21 @@
         </div>
         <div class="hs-my-controls">
     <!-- 按版本：版本选择（在顶栏子切换下方）；硬核开启时含更多版本下拉 -->
-    <div v-if="myGroupBy === 'expansion'" class="hs-my-selector">
-      <ExpansionTabs
-        :expansions="originalExpansions"
-        :current-id="currentExpansionId"
-        @switch="currentExpansionId = $event"
-      />
-      <div v-if="showMoreVersions" class="hs-more-versions" v-click-outside="closeMoreVersions">
-        <button
-          type="button"
-          class="hs-btn hs-btn-ghost hs-more-versions-toggle"
-          :class="{ active: moreVersionsOpen || addedExpansions.some((e) => e.id === currentExpansionId) }"
-          :title="`本次新增的 ${addedExpansions.length} 个版本`"
-          @click="toggleMoreVersions"
-        >
-          更多版本
-          <span class="hs-more-versions-count">{{ addedExpansions.length }}</span>
-          <svg class="hs-more-versions-caret" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M6 9l6 6 6-6" />
-          </svg>
-        </button>
-        <div v-if="moreVersionsOpen" class="hs-more-versions-panel" role="menu">
-          <p class="hs-more-versions-tip">本次新增的版本（已本地化成就数据）</p>
-          <div class="hs-more-versions-grid">
-            <button
-              v-for="exp in addedExpansions"
-              :key="exp.id"
-              type="button"
-              class="hs-more-versions-item"
-              :class="{ active: currentExpansionId === exp.id }"
-              @click="selectAdded(exp.id)"
-            >
-              <span>{{ exp.name }}</span>
-              <svg v-if="currentExpansionId === exp.id" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M20 6L9 17l-5-5" />
-              </svg>
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    <AchievementExpansionSelector
+      v-if="myGroupBy === 'expansion'"
+      v-model="currentExpansionId"
+      class="hs-my-selector"
+      :original-expansions="originalExpansions"
+      :added-expansions="addedExpansions"
+      :show-more-versions="showMoreVersions"
+    />
     <!-- 按职业：职业选择（在子切换下方） -->
-    <div
+    <AchievementClassTabs
       v-else-if="myGroupBy === 'class'"
-      class="hs-my-selector hs-expansion-tabs"
-      role="tablist"
-      aria-label="选择职业"
-    >
-      <button
-        v-for="cls in allClasses"
-        :key="cls"
-        :class="{ active: currentClass === cls }"
-        type="button"
-        role="tab"
-        @click="onClassTabClick(cls)"
-      >
-        {{ cls }}
-      </button>
-    </div>
+      v-model="currentClass"
+      class="hs-my-selector"
+      :classes="allClasses"
+    />
 
     <!-- 我的成就：搜索框上移到导出 Excel 之上（sprint 待完成清单用 searchOnly 只显示搜索框） -->
     <FilterBar
@@ -483,6 +336,14 @@
           </div>
         </section>
 
+        <AchievementRecommendations
+          v-if="!batchMode"
+          :recommendations="ruleRecommendations"
+          :editable="Boolean(user)"
+          @select="openCardModal"
+          @share="openShareAchievement"
+        />
+
         <!-- 待完成清单：说明（两行、数字高亮），置于顶部；筛选栏移至底部内容之后 -->
         <div class="hs-stats-panel hs-sprint-stats" v-if="myGroupBy === 'sprint'">
           <p class="hs-overview-summary-text" v-html="overviewSummaryHtml.line1"></p>
@@ -530,185 +391,38 @@
       <!-- 导出 / 批量完成已合并到「我的成就」统一操作行（hs-my-actions） -->
 
 
-      <!-- 按版本浏览：按职业分组 -->
-      <div v-if="viewMode === 'expansion'" class="hs-expansion-groups">
-        <template v-for="heroClass in classGroupOrder" :key="heroClass">
-          <ClassSection
-            v-if="filteredByClass[heroClass] && filteredByClass[heroClass].length > 0"
-            v-model:collapsed="classViewCollapsed[heroClass]"
-            :hero-class="heroClass"
-            :achievements="filteredByClass[heroClass]"
-            :badge-style="getClassBadgeStyle(heroClass)"
-            :class-style="getClassStyle(heroClass)"
-            @card-click="openCardModal"
-            @deck-click="openDeckDetail"
-            @share="openShareAchievement"
-          />
-        </template>
-      </div>
-
-      <!-- 按职业浏览：按版本分组 -->
-      <div v-else-if="viewMode === 'class'" class="hs-expansion-groups">
-        <template v-for="exp in expansions" :key="exp.id">
-          <ClassSection
-            v-if="filteredByExpansion[exp.id] && filteredByExpansion[exp.id].length > 0"
-            v-model:collapsed="expViewCollapsed[exp.id]"
-            :hero-class="exp.name"
-            :achievements="filteredByExpansion[exp.id]"
-            :badge-style="getExpansionBadgeStyle()"
-            :class-style="getExpansionStyle()"
-            :summary="expViewSummaries[exp.id]"
-            @card-click="openCardModal"
-            @deck-click="openDeckDetail"
-            @share="openShareAchievement"
-          />
-        </template>
-      </div>
-
-      <!-- 我的成就-按版本：按职业分组 -->
-      <div v-else-if="myGroupBy === 'expansion'" class="hs-expansion-groups">
-        <template v-for="heroClass in classGroupOrder" :key="heroClass">
-          <ClassSection
-            v-if="myFilteredByClass[heroClass] && myFilteredByClass[heroClass].length > 0"
-            v-model:collapsed="classViewCollapsed[heroClass]"
-            :hero-class="heroClass"
-            :achievements="myFilteredByClass[heroClass]"
-            :badge-style="getClassBadgeStyle(heroClass)"
-            :class-style="getClassStyle(heroClass)"
-            :summary="classViewSummaries[heroClass]"
-            :use-my-card="true"
-            :show-remaining="true"
-            :editable="Boolean(user)"
-            :select-mode="batchMode"
-            :selected-ids="selectedAchIds"
-            :pinned-ids="hearthstoneProfile.pinnedAchievementIds"
-            :pinning="profileSaving"
-            @card-click="openCardModal"
-            @deck-click="openDeckDetail"
-            @toggle-select="toggleSelect"
-            @toggle-pin="togglePinnedAchievement"
-            @share="openShareAchievement"
-          />
-        </template>
-      </div>
-
-      <!-- 我的成就-按职业：按版本分组，版本按剩余未完成数从低到高排序 -->
-      <div v-else-if="myGroupBy === 'class'" class="hs-expansion-groups">
-        <template v-for="exp in myClassExpansionOrder" :key="exp.id">
-          <ClassSection
-            v-if="myFilteredByExpansion[exp.id] && myFilteredByExpansion[exp.id].length > 0"
-            v-model:collapsed="expViewCollapsed[exp.id]"
-            :hero-class="exp.name"
-            :achievements="myFilteredByExpansion[exp.id]"
-            :badge-style="getExpansionBadgeStyle()"
-            :class-style="getExpansionStyle()"
-            :summary="expViewSummaries[exp.id]"
-            :use-my-card="true"
-            :show-remaining="true"
-            :editable="Boolean(user)"
-            :select-mode="batchMode"
-            :selected-ids="selectedAchIds"
-            :pinned-ids="hearthstoneProfile.pinnedAchievementIds"
-            :pinning="profileSaving"
-            @card-click="openCardModal"
-            @deck-click="openDeckDetail"
-            @toggle-select="toggleSelect"
-            @toggle-pin="togglePinnedAchievement"
-            @share="openShareAchievement"
-          />
-        </template>
-      </div>
-
-      <!-- 我的成就-待完成清单：按 一次性 / 累计-次数 / 累计-点数 分组，默认折叠 -->
-      <div v-else-if="myGroupBy === 'sprint'" class="hs-priority-wrap">
-        <section v-if="sprintGroups.oneTime.length" class="hs-priority-group hs-sprint-cat">
-          <button
-            type="button"
-            class="hs-sprint-cat-head"
-            :aria-expanded="!sprintSectionCollapsed.oneTime"
-            @click="toggleSprintSection('oneTime')"
-          >
-            <span class="hs-sprint-cat-caret" :class="{ open: !sprintSectionCollapsed.oneTime }">▶</span>
-            <span class="hs-sprint-cat-title">一次性成就</span>
-            <span class="hs-sprint-cat-count">{{ sprintGroups.oneTime.length }} 个 · 剩余 {{ sprintOneTimeRemain }} 次</span>
-          </button>
-          <div v-show="!sprintSectionCollapsed.oneTime" class="hs-achievement-list hs-priority-list">
-            <MyAchievementCard
-              v-for="ach in sprintGroups.oneTime"
-              :key="ach.id"
-              :achievement="ach"
-              :show-remaining="true"
-              :editable="Boolean(user)"
-              :pinned="hearthstoneProfile.pinnedAchievementIds.includes(ach.id)"
-              :pinning="profileSaving"
-              @click="openCardModal"
-              @deck-click="openDeckDetail"
-              @toggle-pin="togglePinnedAchievement"
-              @share="openShareAchievement"
-            />
-          </div>
-        </section>
-
-        <section v-if="sprintGroups.count.length" class="hs-priority-group hs-sprint-cat">
-          <button
-            type="button"
-            class="hs-sprint-cat-head"
-            :aria-expanded="!sprintSectionCollapsed.count"
-            @click="toggleSprintSection('count')"
-          >
-            <span class="hs-sprint-cat-caret" :class="{ open: !sprintSectionCollapsed.count }">▶</span>
-            <span class="hs-sprint-cat-title">累计-次数（剩余从低到高）</span>
-            <span class="hs-sprint-cat-count">{{ sprintGroups.count.length }} 个</span>
-          </button>
-          <div v-show="!sprintSectionCollapsed.count" class="hs-achievement-list hs-priority-list">
-            <MyAchievementCard
-              v-for="ach in sprintGroups.count"
-              :key="ach.id"
-              :achievement="ach"
-              :show-remaining="true"
-              :editable="Boolean(user)"
-              :pinned="hearthstoneProfile.pinnedAchievementIds.includes(ach.id)"
-              :pinning="profileSaving"
-              @click="openCardModal"
-              @deck-click="openDeckDetail"
-              @toggle-pin="togglePinnedAchievement"
-              @share="openShareAchievement"
-            />
-          </div>
-        </section>
-
-        <section v-if="sprintGroups.points.length" class="hs-priority-group hs-sprint-cat">
-          <button
-            type="button"
-            class="hs-sprint-cat-head"
-            :aria-expanded="!sprintSectionCollapsed.points"
-            @click="toggleSprintSection('points')"
-          >
-            <span class="hs-sprint-cat-caret" :class="{ open: !sprintSectionCollapsed.points }">▶</span>
-            <span class="hs-sprint-cat-title">累计-点数（剩余从低到高）</span>
-            <span class="hs-sprint-cat-count">{{ sprintGroups.points.length }} 个</span>
-          </button>
-          <div v-show="!sprintSectionCollapsed.points" class="hs-achievement-list hs-priority-list">
-            <MyAchievementCard
-              v-for="ach in sprintGroups.points"
-              :key="ach.id"
-              :achievement="ach"
-              :show-remaining="true"
-              :editable="Boolean(user)"
-              :pinned="hearthstoneProfile.pinnedAchievementIds.includes(ach.id)"
-              :pinning="profileSaving"
-              @click="openCardModal"
-              @deck-click="openDeckDetail"
-              @toggle-pin="togglePinnedAchievement"
-              @share="openShareAchievement"
-            />
-          </div>
-        </section>
-
-        <p v-if="!sprintAllList.length" class="hs-sprint-empty">
-          当前筛选范围内没有未完成的成就。
-        </p>
-      </div>
+      <HearthstoneAchievementResults
+        :view-mode="viewMode"
+        :my-group-by="myGroupBy"
+        :class-group-order="classGroupOrder"
+        :filtered-by-class="filteredByClass"
+        :class-view-collapsed="classViewCollapsed"
+        :expansions="expansions"
+        :filtered-by-expansion="filteredByExpansion"
+        :exp-view-collapsed="expViewCollapsed"
+        :exp-view-summaries="expViewSummaries"
+        :my-filtered-by-class="myFilteredByClass"
+        :class-view-summaries="classViewSummaries"
+        :my-filtered-by-expansion="myFilteredByExpansion"
+        :my-class-expansion-order="myClassExpansionOrder"
+        :user="user"
+        :batch-mode="batchMode"
+        :selected-ach-ids="selectedAchIds"
+        :pinned-ids="hearthstoneProfile.pinnedAchievementIds"
+        :profile-saving="profileSaving"
+        :sprint-groups="sprintGroups"
+        :sprint-section-collapsed="sprintSectionCollapsed"
+        :sprint-one-time-remain="sprintOneTimeRemain"
+        :sprint-all-list="sprintAllList"
+        @set-class-collapsed="setClassCollapsed"
+        @set-expansion-collapsed="setExpansionCollapsed"
+        @toggle-sprint-section="toggleSprintSection"
+        @card-click="openCardModal"
+        @deck-click="openDeckDetail"
+        @toggle-select="toggleSelect"
+        @toggle-pin="togglePinnedAchievement"
+        @share="openShareAchievement"
+      />
 
       <div v-if="showEmpty && !(viewMode === 'my' && myGroupBy === 'sprint')" class="hs-empty-state">
         <p>没有符合筛选条件的成就</p>
@@ -782,7 +496,7 @@
             <span class="ai-global-modal-title">🤖 AI 成就建议</span>
             <button type="button" class="ai-global-close" aria-label="关闭" @click="closeAi">×</button>
           </div>
-          <AiAdvisor v-if="showAi" :hardcore="hardcore" />
+          <AiAdvisor v-if="showAi" :hardcore="hardcore" :scope-versions="hardcore ? expansions.length : originalExpansions.length" />
         </div>
       </div>
     </Teleport>
@@ -793,24 +507,28 @@
 import { computed, defineAsyncComponent, ref, reactive, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { expansions, originalExpansions, addedExpansions } from '../data/expansions.js'
-import { classColors, getClassOrder, groupByClass, matchesClass, getClassName, CORE_EXPANSION_IDS } from '../utils/achievements.js'
+import { getClassOrder, matchesClass, getClassName, CORE_EXPANSION_IDS } from '../utils/achievements.js'
 import { useAchievementProgress } from '../composables/useAchievementProgress.js'
+import { usePersistentRef } from '../composables/usePersistentRef.js'
+import { useAchievementBackup } from '../composables/useAchievementBackup.js'
+import { useAchievementFeedback } from '../composables/useAchievementFeedback.js'
+import { useAchievementSprint } from '../composables/useAchievementSprint.js'
+import { useAchievementCatalog } from '../composables/useAchievementCatalog.js'
+import { useAchievementFilters } from '../composables/useAchievementFilters.js'
 import { useAuth } from '../../../auth/useAuth.js'
-import { getWildCardFull, getWildCardCrop } from '../utils/cardImages.js'
 import EditProgressModal from '../components/EditProgressModal.vue'
 
-import ExpansionTabs from '../components/ExpansionTabs.vue'
 import FilterBar from '../components/FilterBar.vue'
-import ClassSection from '../components/ClassSection.vue'
 import CardModal from '../components/CardModal.vue'
 import ScrollToTop from '../components/ScrollToTop.vue'
-import MyAchievementCard from '../components/MyAchievementCard.vue'
+import AchievementClassTabs from '../components/AchievementClassTabs.vue'
+import AchievementExpansionSelector from '../components/AchievementExpansionSelector.vue'
+import HardcoreModeToggle from '../components/HardcoreModeToggle.vue'
+import HearthstoneAchievementsHero from '../components/HearthstoneAchievementsHero.vue'
+import HearthstoneAchievementResults from '../components/HearthstoneAchievementResults.vue'
+import AchievementRecommendations from '../components/AchievementRecommendations.vue'
 import { AI_ADVISOR_ENABLED } from '../ai/config.js'
-import {
-  buildExportBackup,
-  downloadExportJson,
-  downloadExportExcel
-} from '../utils/achievementExport.js'
+import { rankAchievementRecommendations } from '../utils/achievementRecommendations.js'
 import { saveAchievementProgress } from '../api/progress.js'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 import { useHearthstoneProfile } from '../composables/useHearthstoneProfile.js'
@@ -889,32 +607,8 @@ function contactAuthor() {
   window.location.href = `mailto:${AUTHOR_EMAIL}?subject=${encodeURIComponent('炉石成就查看器 - 反馈/建议')}`
 }
 
-// ============ 「更多版本」下拉：本次新增版本（不与原有 9 个混排） ============
-const moreVersionsOpen = ref(false)
-function toggleMoreVersions() {
-  moreVersionsOpen.value = !moreVersionsOpen.value
-}
-function closeMoreVersions() {
-  moreVersionsOpen.value = false
-}
-function selectAdded(id) {
-  currentExpansionId.value = id
-  moreVersionsOpen.value = false
-}
-// 局部指令：点击元素外部时触发回调（用于关闭下拉）
-const vClickOutside = {
-  mounted(el, binding) {
-    el._clickOutside = (e) => {
-      if (!el.contains(e.target)) binding.value(e)
-    }
-    document.addEventListener('click', el._clickOutside, true)
-  },
-  unmounted(el) {
-    document.removeEventListener('click', el._clickOutside, true)
-  }
-}
-
 const userAch = useAchievementProgress() // 默认加载当前用户进度到 progressData
+userAch.init()
 // 进度数据源：登录显示自己的进度；未登录时服务端 /api/achievements/progress 返回空对象，
 // 即「全部成就、全部未完成」，用于匿名浏览与导出全部成就（不再展示 owner 示例账号进度）。
 const displayProgress = computed(() => userAch.progress.value)
@@ -923,9 +617,7 @@ const {
   getAchievementXp,
   isAchievementCompleted,
   getProgressInfo,
-  isStageCompleted,
   getCount,
-  getUnit,
   getMetric,
   loading: progressLoading,
   error: progressError,
@@ -953,46 +645,13 @@ function openEditModal(achievement) {
   editAchievement.value = achievement
   editVisible.value = true
 }
-// 轻量提示（成功/失败），替代原生 alert
-const toast = ref({ show: false, type: '', message: '' })
-let toastTimer = null
-function showToast(type, message) {
-  toast.value = { show: true, type, message }
-  if (toastTimer) clearTimeout(toastTimer)
-  toastTimer = setTimeout(() => { toast.value = { ...toast.value, show: false } }, 2600)
-}
-
-// ============ 成就达成庆祝提示 ============
-const celebration = ref({ show: false, name: '', sub: '' })
-let celebrationTimer = null
-function showAchievementCelebration(ach) {
-  if (!ach) return
-  let xp = 0
-  let pts = 0
-  for (const s of ach.stages || []) {
-    xp += s.xpReward || 0
-    pts += s.points || 0
-  }
-  const sub = [getClassName(ach), ach.difficulty, xp || pts ? `${xp} XP · ${pts} 点` : '']
-    .filter(Boolean)
-    .join(' · ')
-  celebration.value = { show: true, name: ach.name, sub }
-  if (celebrationTimer) clearTimeout(celebrationTimer)
-  celebrationTimer = setTimeout(() => {
-    celebration.value = { ...celebration.value, show: false }
-  }, 3400)
-}
-// 彩屑爆发：10 个色块沿圆周向外飞散
-const confettiColors = ['#fbbf24', '#4ade80', '#60a5fa', '#f472b6', '#a78bfa']
-function confettiStyle(n) {
-  const angle = (n * 36) * (Math.PI / 180)
-  const dist = 96 + (n % 3) * 20
-  return {
-    '--x': Math.cos(angle) * dist + 'px',
-    '--y': Math.sin(angle) * dist + 'px',
-    background: confettiColors[n % confettiColors.length]
-  }
-}
+const {
+  toast,
+  celebration,
+  showToast,
+  showAchievementCelebration,
+  confettiStyle
+} = useAchievementFeedback()
 
 async function saveProgress(payload) {
   if (savingProgress.value) return
@@ -1095,110 +754,46 @@ async function logoutAndRefresh() {
   hardcore.value = false
   compactMode.value = false
 }
-function goChangelog() {
-  router.push('/hearthstone/changelog')
-}
-
-// ============ 本地备份：导出 / 导入 ============
-const exporting = ref(false)
-const fileInput = ref(null)
-
-
-function getExportBackup() {
-  return buildExportBackup(allAchievements.value, passBonus.value, {
-    user: user.value?.username || '未登录',
-    scope: '完整成就库',
-    progress: displayProgress.value || {}
-  })
-}
-
-// JSON 与 Excel 使用完全相同的 rows，并额外保留可恢复的原始 progress。
-function exportJson() {
-  downloadExportJson(getExportBackup())
-}
-
-// 导出 Excel：摘要页 + 可筛选进度页，多阶段目标在单元格内换行。
-async function exportExcel() {
-  exporting.value = true
-  try {
-    await downloadExportExcel(getExportBackup())
-  } catch (e) {
-    showToast('error', '导出 Excel 失败：' + (e.message || e))
-  } finally {
-    exporting.value = false
-  }
-}
-
-// 触发文件选择（导入需登录）
-function triggerImport() {
-  if (!user.value) {
-    showToast('error', '请先登录后再导入进度')
-    return
-  }
-  fileInput.value?.click()
-}
-
-// 从 JSON 文件导入进度（复用后端 PUT 接口保存）
-async function onImportFile(e) {
-  const file = e.target.files?.[0]
-  if (!file) return
-  const reader = new FileReader()
-  reader.onload = async () => {
-    try {
-      const parsed = JSON.parse(reader.result)
-      const progress = parsed.progress && typeof parsed.progress === 'object' ? parsed.progress : parsed
-      if (!progress || typeof progress !== 'object') throw new Error('文件格式不正确')
-      await saveAchievementProgress(progress)
-      // 乐观更新：导入进度已成功落库，合并进本地状态即可，无需再整份拉取服务端进度
-      applyLocalProgress(progress)
-      showToast('success', '进度导入成功')
-    } catch (err) {
-      showToast('error', '导入失败：' + (err.message || err))
-    } finally {
-      e.target.value = '' // 允许重复选择同一文件
-    }
-  }
-  reader.readAsText(file)
-}
-
-// 关联卡牌图统一走本站相对路径 /hearthstone-cards/wild/{full,crop}/<卡名>_<id>.png，
-// 与卡组卡图同源（都在阿里云 OSS 的 hearthstone-cards/wild 下），由服务端反代到 OSS 并强制
-// Content-Disposition: inline（见 server/index.js），右键「在新标签打开图片」直接查看而非下载。
-// 不再单独维护 related 目录——所有卡牌原画都集中在 wild/full，便于管理。
-// 主图优先 full，缺失时由 imageFallback（crop 缩略图）兜底。
-// 兜底：部分特殊卡（如衍生物/更名卡）在图库无对应原画，返回 null，前端显示「（暂无图）」。
-
-// 给成就附加卡牌图片和版本信息（图片 URL 同步可用）
-const attachCards = (ach, exp) => ({
-  ...ach,
-  cards: (ach.relatedCards || []).map((name) => ({
-    name,
-    image: getWildCardFull(name),
-    imageFallback: getWildCardCrop(name)
-  })),
-  _expansionId: exp.id,
-  _expansionName: exp.name
-})
-
-// 所有成就（带版本信息和卡牌）
-const allAchievements = computed(() => {
-  const all = []
-  for (const exp of expansions) {
-    for (const ach of exp.achievements) {
-      all.push(attachCards(ach, exp))
-    }
-  }
-  return all
-})
-const achievementById = computed(
-  () => new Map(allAchievements.value.map((achievement) => [achievement.id, achievement]))
+const hardcore = usePersistentRef('hs:hardcore', false, { boolean: true })
+const compactMode = ref(false)
+const viewMode = usePersistentRef(
+  'hs:viewMode',
+  route.query.view === 'my' ? 'my' : 'expansion'
 )
-const pinnedAchievements = computed(
-  () =>
-    hearthstoneProfile.value.pinnedAchievementIds
-      .map((id) => achievementById.value.get(id))
-      .filter(Boolean)
+const myGroupBy = usePersistentRef('hs:myGroupBy', 'expansion')
+const currentExpansionId = usePersistentRef(
+  'hs:currentExpansionId',
+  expansions[0].id
 )
+if (!expansions.some((expansion) => expansion.id === currentExpansionId.value)) {
+  currentExpansionId.value = expansions[0].id
+}
+const currentClass = usePersistentRef('hs:currentClass', '圣骑士')
+const query = ref(typeof route.query.q === 'string' ? route.query.q : '')
+const selectedClass = usePersistentRef('hs:selectedClass', 'all')
+const selectedDifficulty = ref('all')
+const selectedMetric = ref('all')
+const selectedStatus = ref(query.value ? 'all' : '未完成')
+let suppressNextExpansionScroll = false
+
+const {
+  addedExpansionIdSet,
+  allAchievements,
+  coreAchievements: classSprintAchievements,
+  pinnedAchievements,
+  scopeAchievements,
+  currentExpansion,
+  currentExpansionAchievements,
+  currentClassAchievements,
+  showMoreVersions
+} = useAchievementCatalog({
+  profile: hearthstoneProfile,
+  hardcore,
+  viewMode,
+  myGroupBy,
+  currentExpansionId,
+  currentClass
+})
 
 function pinnedProgressText(achievement) {
   const info = getProgressInfo(achievement)
@@ -1227,59 +822,23 @@ async function togglePinnedAchievement(achievement) {
   }
 }
 
-// 「更多版本」（本次新增、无经验值）的成就：只在「按版本浏览 / 我的-按版本」中出现，
-// 不进入「按职业浏览 / 我的-按职业 / 待完成清单」，以免干扰推荐与按职业统计。
-const addedExpansionIdSet = new Set(addedExpansions.map((e) => e.id))
-const classSprintAchievements = computed(() =>
-  allAchievements.value.filter((a) => !addedExpansionIdSet.has(a._expansionId))
+const ruleRecommendations = computed(() =>
+  rankAchievementRecommendations(scopeAchievements.value, {
+    getProgressInfo,
+    getAchievementXp,
+    pinnedIds: hearthstoneProfile.value.pinnedAchievementIds,
+    limit: 6
+  })
 )
-
-// 硬核模式：开启后「我的成就」统计与待完成清单覆盖全部版本（含无经验的「更多版本」），
-// 而非仅原有的 9 个有经验版本。硬核仅作用于「我的成就」视图。
-const hardcore = ref(false)
-const compactMode = ref(false)
-// 硬核作用域：仅在「我的成就」且开启硬核时使用全部成就；其余情况维持原有 9 版本。
-const scopeAchievements = computed(() =>
-  hardcore.value && viewMode.value === 'my' ? allAchievements.value : classSprintAchievements.value
-)
-// 硬核模式下额外纳入统计的「更多版本」名称（用于硬核介绍）
-const hardcoreExtraNames = computed(() => addedExpansions.map((e) => e.name).join('、'))
-// 「更多版本」下拉的可见性：按版本浏览始终可见；我的成就-按版本下受硬核模式控制
-// （硬核关闭时仅核心 9 版本，避免「关掉硬核后仍停留在新增版本」的困惑）。
-const showMoreVersions = computed(() =>
-  viewMode.value === 'expansion' ||
-  (viewMode.value === 'my' && myGroupBy.value === 'expansion' && hardcore.value)
-)
-// 关闭硬核：若正停留在新增版本，切回首个核心版本并收起「更多版本」下拉
-watch(hardcore, (on) => {
-  if (!on) {
-    moreVersionsOpen.value = false
-    if (addedExpansionIdSet.has(currentExpansionId.value)) {
-      currentExpansionId.value = originalExpansions[0].id
-    }
-  }
-})
-
-// 状态
-const viewMode = ref(route.query.view === 'my' ? 'my' : 'expansion')
-const myGroupBy = ref('expansion') // 'expansion' | 'class' | 'sprint'
-const currentExpansionId = ref(expansions[0].id)
-const currentClass = ref('圣骑士')
-const query = ref(typeof route.query.q === 'string' ? route.query.q : '')
-const selectedClass = ref('all')
-const selectedDifficulty = ref('all')
-const selectedMetric = ref('all')
-const selectedStatus = ref(query.value ? 'all' : '未完成')
-let suppressNextExpansionScroll = false
-
 watch(
   [hearthstoneProfile, profileLoaded],
   ([currentProfile, isLoaded]) => {
     if (!isLoaded) return
     const preferences = currentProfile.preferences || {}
-    hardcore.value = preferences.hardcore === true
-    compactMode.value = preferences.compactMode === true
-    if (expansions.some((expansion) => expansion.id === preferences.defaultExpansionId)) {
+    // 仅当用户在账号里显式设置过，才覆盖本地（localStorage）偏好；未设置则保留本地值
+    if (preferences.hardcore !== undefined) hardcore.value = preferences.hardcore === true
+    if (preferences.compactMode !== undefined) compactMode.value = preferences.compactMode === true
+    if (preferences.defaultExpansionId && expansions.some((expansion) => expansion.id === preferences.defaultExpansionId)) {
       suppressNextExpansionScroll =
         currentExpansionId.value !== preferences.defaultExpansionId
       currentExpansionId.value = preferences.defaultExpansionId
@@ -1338,29 +897,8 @@ const classGroupOrder = computed(() => {
   return classOrder.value
 })
 
-// 当前版本
-const currentExpansion = computed(() =>
-  expansions.find((exp) => exp.id === currentExpansionId.value)
-)
-
 const currentClassName = computed(() => currentClass.value)
-const onClassTabClick = (cls) => {
-  currentClass.value = cls
-}
 const myViewSubLabel = computed(() => user.value ? '我的进度' : '全部成就')
-// 子切换左侧的版本/职业名芯片（替代原顶部冗长面包屑，仅显示版本号/职业名）
-const myScopeLabel = computed(() => {
-  if (myGroupBy.value === 'sprint') return ''
-  if (myGroupBy.value === 'class') return currentClassName.value
-  return currentExpansion.value?.name || ''
-})
-
-// 当前版本的成就
-const currentExpansionAchievements = computed(() => {
-  const exp = currentExpansion.value
-  if (!exp) return []
-  return exp.achievements.map(ach => attachCards(ach, exp))
-})
 
 // 职业总览：按版本浏览/我的-按版本 默认展开各职业（用户嫌长可自行收起）
 const classViewCollapsed = reactive({})
@@ -1369,17 +907,18 @@ for (const c of classGroupOrder.value) classViewCollapsed[c] = false
 const expViewCollapsed = reactive({})
 for (const exp of expansions) expViewCollapsed[exp.id] = false
 
+const setClassCollapsed = (heroClass, collapsed) => {
+  classViewCollapsed[heroClass] = collapsed
+}
+const setExpansionCollapsed = (expansionId, collapsed) => {
+  expViewCollapsed[expansionId] = collapsed
+}
+
 const resetClassViews = () => {
   for (const c of classGroupOrder.value) classViewCollapsed[c] = false
   for (const exp of expansions) expViewCollapsed[exp.id] = false
 }
 
-const expandAllClasses = () => {
-  for (const c of classGroupOrder.value) classViewCollapsed[c] = false
-}
-const collapseAllClasses = () => {
-  for (const c of classGroupOrder.value) classViewCollapsed[c] = true
-}
 // 总览面板「展开/收起全部」：按当前视图切换 职业分组 或 版本分组 的折叠态
 const expandAllSections = () => {
   if (viewMode.value === 'my' && myGroupBy.value === 'sprint') {
@@ -1400,10 +939,6 @@ const collapseAllSections = () => {
   }
 }
 
-// 是否为「按版本」视图（按版本浏览 / 我的-按版本），用于展示版本描述等通用信息
-const isExpansionView = computed(
-  () => viewMode.value === 'expansion' || (viewMode.value === 'my' && myGroupBy.value === 'expansion')
-)
 // 仅在「我的-按版本 / 我的-按职业」时展示总览面板（含完成度进度条与剩余统计一句话说明）
 const showClassOverview = computed(
   () => viewMode.value === 'my' && (myGroupBy.value === 'expansion' || myGroupBy.value === 'class')
@@ -1464,15 +999,6 @@ const overviewScope = computed(() => {
 })
 // 总览面板统计（完成度、点数、经验）
 const overviewStats = computed(() => getStats(overviewScope.value))
-const overviewCompletedCount = computed(() =>
-  overviewScope.value.filter((a) => isAchievementCompleted(a)).length
-)
-
-// 当前职业的成就（按职业浏览 / 我的-按职业）：硬核下使用全部成就
-const currentClassAchievements = computed(() => {
-  const base = hardcore.value && viewMode.value === 'my' ? allAchievements.value : classSprintAchievements.value
-  return base.filter((ach) => matchesClass(ach, currentClass.value))
-})
 
 // 我的成就模式 - 当前范围的成就列表
 const myAchievementsList = computed(() => {
@@ -1484,245 +1010,43 @@ const myAchievementsList = computed(() => {
   }
 })
 
-// 待完成清单视图只有这一套筛选状态，避免顶部标签和下拉框产生范围冲突。
-const sprintVersionFilter = ref('all')
-const sprintClassFilter = ref('all')
-// 指标筛选：按剩余的「一次性 / 累计-次数 / 累计-点数」过滤未完成成就。
-const sprintMetricFilter = ref('all')
-const sprintMetricOptions = [
-  { value: 'all', label: '全部指标' },
-  { value: '一次性', label: '剩余一次性' },
-  { value: '次数', label: '累计-次数 剩余' },
-  { value: '点数', label: '累计-点数 剩余' }
-]
-const versionOptions = computed(() =>
-  (hardcore.value && viewMode.value === 'my'
-    ? expansions
-    : expansions.filter((e) => !addedExpansionIdSet.has(e.id))
-  ).map((e) => ({ id: e.id, name: e.name }))
-)
-
-// 判断一条成就是否命中当前的指标筛选（一次性 / 次数 / 点数）。
-const matchSprintMetric = (ach) => {
-  if (sprintMetricFilter.value === 'all') return true
-  if (sprintMetricFilter.value === '一次性') return ach.type !== '累计'
-  if (sprintMetricFilter.value === '次数') return ach.type === '累计' && getMetric(ach) === 'count'
-  if (sprintMetricFilter.value === '点数') return ach.type === '累计' && getMetric(ach) === 'points'
-  return true
-}
-
-// 待完成清单分组折叠状态：三类默认折叠，点击标题展开。
-const sprintSectionCollapsed = reactive({ oneTime: true, count: true, points: true })
-const toggleSprintSection = (key) => {
-  sprintSectionCollapsed[key] = !sprintSectionCollapsed[key]
-}
-
-// 待完成清单分组：统一应用版本/职业/指标范围，再按 一次性 / 累计-次数 / 累计-点数 分类。
-// 累计两类按剩余从低到高排序（越接近完成越靠前）。
-const sprintGroups = computed(() => {
-  const oneTime = [] // 一次性成就
-  const count = [] // 累计-次数
-  const points = [] // 累计-点数
-
-  const text = query.value.trim().toLowerCase()
-  for (const ach of scopeAchievements.value) {
-    if (sprintVersionFilter.value !== 'all' && ach._expansionId !== sprintVersionFilter.value) continue
-    if (sprintClassFilter.value !== 'all' && !matchesClass(ach, sprintClassFilter.value)) continue
-    if (!matchSprintMetric(ach)) continue
-    // 搜索关键词：名称 / 职业 / 关联卡牌 / 阶段描述
-    if (text) {
-      const targets = [ach.name, getClassName(ach), ...(ach.relatedCards || []), ...ach.stages.map((s) => s.description)]
-      if (!targets.filter(Boolean).some((v) => String(v).toLowerCase().includes(text))) continue
-    }
-    const info = getProgressInfo(ach)
-    if (info.completed) continue
-    if (ach.type !== '累计') oneTime.push(ach)
-    else if (getMetric(ach) === 'points') points.push(ach)
-    else count.push(ach)
-  }
-
-  const sortByRemaining = (list) => {
-    return [...list].sort((a, b) => {
-      const ia = getProgressInfo(a)
-      const ib = getProgressInfo(b)
-      if (ia.remainingCount !== ib.remainingCount) return ia.remainingCount - ib.remainingCount
-      return ib.percent - ia.percent
-    })
-  }
-
-  return {
-    oneTime: sortByRemaining(oneTime),
-    count: sortByRemaining(count),
-    points: sortByRemaining(points)
-  }
-})
-const sprintAllList = computed(() => [
-  ...sprintGroups.value.oneTime,
-  ...sprintGroups.value.count,
-  ...sprintGroups.value.points
-])
-
-// 当前冲刺筛选范围内的剩余汇总：未完成成就总数 + 各类型成就个数。
-const sprintRemainingTotals = computed(() => ({
-  total: sprintAllList.value.length,
-  oneTime: sprintGroups.value.oneTime.length,
-  countAch: sprintGroups.value.count.length,
-  pointAch: sprintGroups.value.points.length
-}))
-
-// 一次性成就还差的总阶段数（“次”），与顶部总览的「一次性成就还剩 X 次」口径一致，
-// 用于列表标题同时展示「N 个 · 剩余 X 次」，避免与总览数字产生歧义。
-const sprintOneTimeRemain = computed(() =>
-  sprintGroups.value.oneTime.reduce((sum, a) => sum + (getProgressInfo(a).remainingCount || 0), 0)
-)
-
-// 展示的成就列表
-// 有搜索关键词时，跨所有版本与职业全局搜索；否则只看当前范围
-const displayAchievements = computed(() => {
-  if (query.value.trim()) return allAchievements.value
-  if (viewMode.value === 'my') return myAchievementsList.value
-  if (viewMode.value === 'class') return currentClassAchievements.value
-  return currentExpansionAchievements.value
+const {
+  groups: sprintGroups,
+  all: sprintAllList,
+  oneTimeRemaining: sprintOneTimeRemain,
+  sectionCollapsed: sprintSectionCollapsed,
+  toggleSection: toggleSprintSection
+} = useAchievementSprint({
+  achievements: scopeAchievements,
+  query,
+  getProgressInfo,
+  getMetric
 })
 
-// 可用职业筛选
-const getAvailableClassesForList = (list) => {
-  const classes = new Set()
-  for (const ach of list) {
-    classes.add(ach.heroClass || '中立')
-    if (ach.dualClasses) {
-      ach.dualClasses.forEach(c => classes.add(c))
-    }
-  }
-  return getClassOrder(currentExpansionId.value).filter((c) => classes.has(c))
-}
-
-const availableClassesExp = computed(() => getAvailableClassesForList(currentExpansionAchievements.value))
-const availableClassesMy = computed(() => getAvailableClassesForList(myAchievementsList.value))
-
-const filterAvailableClasses = computed(() => {
-  if (viewMode.value === 'class') return []
-  return viewMode.value === 'my' ? availableClassesMy.value : availableClassesExp.value
+const {
+  availableClasses: filterAvailableClasses,
+  filteredAchievements,
+  filteredByClass,
+  myFilteredByClass,
+  filteredByExpansion,
+  myFilteredByExpansion,
+  myClassExpansionOrder
+} = useAchievementFilters({
+  allAchievements,
+  currentExpansionAchievements,
+  currentClassAchievements,
+  myAchievements: myAchievementsList,
+  viewMode,
+  query,
+  selectedClass,
+  selectedDifficulty,
+  selectedMetric,
+  selectedStatus,
+  currentExpansionId,
+  getMetric,
+  isAchievementCompleted
 })
 
-// 筛选成就
-const filterAchievements = (list) => {
-  const text = query.value.trim().toLowerCase()
-  return list.filter((ach) => {
-    if (selectedClass.value !== 'all' && !matchesClass(ach, selectedClass.value)) return false
-    if (selectedDifficulty.value !== 'all' && ach.difficulty !== selectedDifficulty.value) return false
-    // 指标筛选：一次性 / 累计·次数 / 累计·点数
-    if (selectedMetric.value !== 'all') {
-      if (selectedMetric.value === '一次性') {
-        if (ach.type !== '一次性') return false
-      } else {
-        if (ach.type !== '累计') return false
-        if (getMetric(ach) !== selectedMetric.value) return false
-      }
-    }
-    // 搜索模式下忽略状态筛选：用户想「找到某个成就」而非「只看某状态的成就」，
-    // 否则在「我的成就」视图默认「未完成」时会把已完成的成就从搜索结果里藏掉
-    if (!text && viewMode.value === 'my' && selectedStatus.value !== 'all') {
-      const completed = isAchievementCompleted(ach)
-      if (selectedStatus.value === '已完成' && !completed) return false
-      if (selectedStatus.value === '未完成' && completed) return false
-    }
-    if (text) {
-      const targets = [ach.name, getClassName(ach), ...(ach.relatedCards || []), ...ach.stages.map((s) => s.description)]
-      return targets.filter(Boolean).some((v) => String(v).toLowerCase().includes(text))
-    }
-    return true
-  })
-}
-
-const filteredAchievements = computed(() => filterAchievements(displayAchievements.value))
-
-	// 按职业分组（按版本浏览 / 我的-按版本）：核心系列合并为「职业」「中立」两大栏（coreUmbrella），
-	// 其余版本按真实职业分组。groupByClass 内部仍按 category 优先（游戏-综合按 5 大分类）。
-const filteredByClass = computed(() => groupByClass(filteredAchievements.value, { coreUmbrella: true }))
-
-// 我的成就-按版本分组：与按版本浏览一致（核心合并为职业/中立），未完成排前面
-const myFilteredByClass = computed(() => {
-  const groups = groupByClass(filteredAchievements.value, { coreUmbrella: true })
-  for (const cls in groups) {
-    groups[cls] = [...groups[cls]].sort((a, b) => {
-      return (isAchievementCompleted(a) ? 1 : 0) - (isAchievementCompleted(b) ? 1 : 0)
-    })
-  }
-  return groups
-})
-
-// 按版本分组（按职业浏览）
-const groupByExpansion = (list) => {
-  const groups = {}
-  for (const exp of expansions) {
-    const achs = list.filter((a) => a._expansionId === exp.id)
-    if (achs.length > 0) groups[exp.id] = achs
-  }
-  return groups
-}
-const filteredByExpansion = computed(() => groupByExpansion(filteredAchievements.value))
-
-// 我的成就-按版本分组：未完成排前面
-const myFilteredByExpansion = computed(() => {
-  const groups = {}
-  for (const exp of expansions) {
-    let achs = filteredAchievements.value.filter((a) => a._expansionId === exp.id)
-    if (achs.length > 0) {
-      achs = [...achs].sort((a, b) => {
-        return (isAchievementCompleted(a) ? 1 : 0) - (isAchievementCompleted(b) ? 1 : 0)
-      })
-      groups[exp.id] = achs
-    }
-  }
-  return groups
-})
-
-// 我的成就-按职业视图：外层版本分组按「剩余未完成数」从低到高排序（与待完成清单一致）
-const myClassExpansionOrder = computed(() => {
-  return [...expansions]
-    .filter((exp) => myFilteredByExpansion.value[exp.id])
-    .sort((a, b) => {
-      const ra = myFilteredByExpansion.value[a.id].filter((x) => !isAchievementCompleted(x)).length
-      const rb = myFilteredByExpansion.value[b.id].filter((x) => !isAchievementCompleted(x)).length
-      if (ra !== rb) return ra - rb
-      return a.name.localeCompare(b.name, 'zh')
-    })
-})
-
-// 我的成就统计
-const myStats = computed(() => getStats(myAchievementsList.value))
-const myCompletedCount = computed(() =>
-  myAchievementsList.value.filter(ach => isAchievementCompleted(ach)).length
-)
-
-// 按职业筛选时，顶部展示该职业还剩多少个未完成成就（按版本浏览 / 我的-按职业均适用）
-const classRemaining = computed(() => {
-  const list =
-    viewMode.value === 'class'
-      ? currentClassAchievements.value
-      : viewMode.value === 'my' && myGroupBy.value === 'class'
-        ? myAchievementsList.value
-        : []
-  const remaining = list.filter((a) => !isAchievementCompleted(a)).length
-  return { remaining, total: list.length }
-})
-
-// 当前范围累计成就「还剩多少次 / 多少点」总计（不含已完成），用于顶部总计横幅
-const metricTotals = computed(() => {
-  let countRemain = 0
-  let pointRemain = 0
-  for (const ach of filteredAchievements.value) {
-    if (ach.type !== '累计') continue
-    if (isAchievementCompleted(ach)) continue
-    const count = getCount(ach) ?? 0
-    const lastQuota = ach.stages[ach.stages.length - 1].quota
-    const remaining = Math.max(0, lastQuota - count)
-    if (getMetric(ach) === 'points') pointRemain += remaining
-    else countRemain += remaining
-  }
-  return { countRemain, pointRemain }
-})
 // 总览面板剩余统计（基于 overviewScope，保证 已完成 + 剩余 = 总数）
 const overviewRemaining = computed(() => {
   let achievements = 0
@@ -1784,30 +1108,6 @@ const overviewSummaryHtml = computed(() => {
     `已获得成就值 ${n(`${stats.earnedPoints}/${stats.totalPoints}`)}，剩余可获得成就值 ${n(remainPts)} 点。`
   return { line1, line2 }
 })
-const metricTotalRemain = computed(() => metricTotals.value.countRemain + metricTotals.value.pointRemain)
-
-// 当前筛选范围内「一次性」成就个数（用于指标=一次性 时的总计横幅）
-const oneTimeCount = computed(() =>
-  filteredAchievements.value.filter((a) => a.type === '一次性').length
-)
-// 是否为「按职业」视图（按职业浏览 / 我的-按职业）
-const isClassView = computed(
-  () => viewMode.value === 'class' || (viewMode.value === 'my' && myGroupBy.value === 'class')
-)
-
-// 当前指标筛选下是否有总计次数/点数（或一次性个数）可展示
-const hasMetricTotals = computed(() => {
-  if (selectedMetric.value === '一次性') return oneTimeCount.value > 0
-  return metricTotalRemain.value > 0
-})
-
-// 独立总计横幅：仅在非「按职业」视图显示（按职业视图已并入职业剩余横幅）
-const showMetricBanner = computed(() => {
-  if (viewMode.value === 'my' && myGroupBy.value === 'sprint') return false
-  if (isClassView.value) return false
-  return hasMetricTotals.value
-})
-
 // 通行证经验加成：默认不加成；可选 10% / 15% / 20%
 const PASS_BONUS_OPTIONS = [
   { label: '无加成', value: 0 },
@@ -1816,6 +1116,22 @@ const PASS_BONUS_OPTIONS = [
   { label: '通行证 +20%', value: 0.2 }
 ]
 const passBonus = ref(0)
+const {
+  exporting,
+  fileInput,
+  exportJson,
+  exportExcel,
+  triggerImport,
+  onImportFile
+} = useAchievementBackup({
+  achievements: allAchievements,
+  passBonus,
+  user,
+  progress: displayProgress,
+  applyLocalProgress,
+  showToast
+})
+
 const resetFilters = () => {
   query.value = ''
   selectedClass.value = 'all'
@@ -1885,444 +1201,7 @@ const openDeckDetail = (deck) => {
   deckDetailData.value = deck
   deckDetailVisible.value = true
 }
-
-
-const getClassStyle = (heroClass) => ({
-  '--hs-class-color': classColors[heroClass] || '#8b7355'
-})
-
-const getClassBadgeStyle = (heroClass) => ({
-  backgroundColor: classColors[heroClass] || '#8b7355',
-  color: '#fff'
-})
-
-const expansionColor = '#6b5b4f'
-const getExpansionStyle = () => ({
-  '--hs-class-color': expansionColor
-})
-const getExpansionBadgeStyle = () => ({
-  backgroundColor: expansionColor,
-  color: '#fff'
-})
-
 const showEmpty = computed(() => filteredAchievements.value.length === 0)
 </script>
 
-<style scoped>
-.hs-class-overview-browse-count {
-  font-size: 15px;
-  font-weight: 600;
-  color: var(--hs-text-soft);
-}
-.hs-class-overview-browse-count b {
-  color: var(--hs-text);
-  font-size: 17px;
-  font-weight: 700;
-}
-
-.hs-overview-note {
-  margin: 0 0 10px;
-  padding: 8px 12px;
-  font-size: 13px;
-  line-height: 1.5;
-  color: #8a6d3b;
-  background: #fff8e6;
-  border: 1px solid #f0d9a8;
-  border-radius: 10px;
-}
-.hs-overview-note strong {
-  color: #a9791f;
-}
-
-.hs-xp-line {
-  margin-top: 2px;
-}
-.hs-xp-line b {
-  color: #fbbf24;
-}
-.hs-btn[disabled] {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-.hs-toast {
-  position: fixed;
-  top: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  gap: 8px;
-  max-width: 90vw;
-  padding: 12px 18px;
-  border-radius: 10px;
-  font-size: 14px;
-  font-weight: 600;
-  color: #fff;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-  pointer-events: none;
-}
-.hs-toast.success {
-  background: #2e9e5b;
-}
-.hs-toast.error {
-  background: #d64545;
-}
-.hs-toast-icon {
-  font-weight: 700;
-}
-.hs-toast-fade-enter-active,
-.hs-toast-fade-leave-active {
-  transition: opacity .25s ease, transform .25s ease;
-}
-.hs-toast-fade-enter-from,
-.hs-toast-fade-leave-to {
-  opacity: 0;
-  transform: translateX(-50%) translateY(-8px);
-}
-
-/* ============ 成就达成庆祝提示 ============ */
-.hs-celebrate {
-  position: fixed;
-  top: 92px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 1100;
-  pointer-events: none;
-}
-.hs-celebrate-card {
-  position: relative;
-  width: min(360px, 86vw);
-  padding: 24px 26px 20px;
-  text-align: center;
-  border-radius: 18px;
-  background: linear-gradient(158deg, #1e3a2f 0%, #0f1f2b 100%);
-  border: 1px solid rgba(74, 222, 128, 0.4);
-  box-shadow: 0 22px 64px rgba(2, 6, 23, 0.6), 0 0 0 1px rgba(251, 191, 36, 0.14) inset;
-  color: #e2e8f0;
-  overflow: hidden;
-}
-.hs-celebrate-card::after {
-  content: '';
-  position: absolute;
-  top: 0;
-  left: -60%;
-  width: 50%;
-  height: 100%;
-  background: linear-gradient(100deg, transparent, rgba(255, 255, 255, 0.14), transparent);
-  transform: skewX(-18deg);
-  animation: hs-celebrate-shimmer 2.2s ease-in-out 0.2s infinite;
-}
-.hs-celebrate-ring {
-  position: absolute;
-  top: 30px;
-  left: 50%;
-  width: 72px;
-  height: 72px;
-  margin-left: -36px;
-  border-radius: 50%;
-  border: 2px solid rgba(251, 191, 36, 0.6);
-  animation: hs-celebrate-ring 1.1s ease-out forwards;
-}
-.hs-celebrate-icon {
-  position: relative;
-  font-size: 46px;
-  line-height: 1;
-  margin: 4px 0 10px;
-  animation: hs-celebrate-pop 0.5s cubic-bezier(0.2, 0.9, 0.3, 1.5) both;
-  filter: drop-shadow(0 4px 10px rgba(251, 191, 36, 0.4));
-}
-.hs-celebrate-eyebrow {
-  margin: 0 0 4px;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  color: #fbbf24;
-  text-transform: uppercase;
-}
-.hs-celebrate-name {
-  margin: 0 0 6px;
-  font-size: 19px;
-  font-weight: 700;
-  color: #f8fafc;
-}
-.hs-celebrate-sub {
-  margin: 0;
-  font-size: 12.5px;
-  color: #94a3b8;
-}
-/* 彩屑爆发 */
-.hs-celebrate-confetti {
-  position: absolute;
-  top: 50px;
-  left: 50%;
-  width: 0;
-  height: 0;
-}
-.hs-confetti {
-  position: absolute;
-  width: 7px;
-  height: 7px;
-  border-radius: 2px;
-  opacity: 0;
-  transform: translate(-50%, -50%);
-  animation: hs-confetti-burst 0.9s ease-out forwards;
-}
-@keyframes hs-celebrate-pop {
-  0% { transform: scale(0.3) rotate(-20deg); opacity: 0; }
-  60% { transform: scale(1.18) rotate(6deg); opacity: 1; }
-  100% { transform: scale(1) rotate(0); opacity: 1; }
-}
-@keyframes hs-celebrate-ring {
-  0% { transform: scale(0.5); opacity: 0.85; }
-  100% { transform: scale(1.9); opacity: 0; }
-}
-@keyframes hs-celebrate-shimmer {
-  0% { left: -60%; }
-  60%, 100% { left: 130%; }
-}
-@keyframes hs-confetti-burst {
-  0% { opacity: 1; transform: translate(-50%, -50%) scale(1); }
-  100% { opacity: 0; transform: translate(calc(-50% + var(--x)), calc(-50% + var(--y))) scale(0.4) rotate(180deg); }
-}
-.hs-celebrate-fade-enter-active {
-  transition: opacity 0.35s ease, transform 0.35s cubic-bezier(0.2, 0.9, 0.3, 1.3);
-}
-.hs-celebrate-fade-leave-active {
-  transition: opacity 0.45s ease, transform 0.45s ease;
-}
-.hs-celebrate-fade-enter-from,
-.hs-celebrate-fade-leave-to {
-  opacity: 0;
-  transform: translateX(-50%) translateY(-18px);
-}
-
-/* ============ AI 建议（实验）入口 / 弹窗 ============ */
-.hs-ai-btn {
-  color: #7c3aed;
-  font-weight: 600;
-}
-.hs-ai-btn:hover {
-  background: #f5f3ff;
-}
-.ai-global-modal {
-  position: fixed;
-  inset: 0;
-  z-index: 1000;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 16px;
-  background: rgba(15, 23, 42, 0.45);
-}
-.ai-global-modal-box {
-  width: 100%;
-  max-width: 680px;
-  max-height: 86vh;
-  display: flex;
-  flex-direction: column;
-  background: #fff;
-  border-radius: 16px;
-  box-shadow: 0 24px 60px rgba(15, 23, 42, 0.35);
-  overflow: hidden;
-}
-.ai-global-modal-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 12px 16px;
-  border-bottom: 1px solid #e2e8f0;
-}
-.ai-global-modal-title {
-  font-size: 15px;
-  font-weight: 700;
-  color: #7c3aed;
-}
-.ai-global-close {
-  border: none;
-  background: none;
-  font-size: 24px;
-  line-height: 1;
-  color: #64748b;
-  cursor: pointer;
-  padding: 0 6px;
-}
-.ai-global-close:hover { color: #1e293b; }
-.ai-global-modal-box :deep(.ai-advisor) {
-  border: none;
-  border-radius: 0;
-  flex: 1 1 auto;
-  overflow-y: auto;
-}
-
-/* ===== 本次布局调整新增样式 ===== */
-/* 标题行内联攻略按钮（按版本浏览，与版本名/成就数同一行） */
-/* 攻略：标题行内联按钮（summary，去掉默认三角箭头） */
-.hs-guide-btn-inline {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  align-self: center;
-  height: auto;
-  margin-left: 6px;
-  padding: 6px 12px;
-  border: 1px solid rgba(21, 128, 61, 0.35);
-  border-radius: 8px;
-  font-size: 12px;
-  font-weight: 600;
-  color: #15803d;
-  background: rgba(21, 128, 61, 0.1);
-  cursor: pointer;
-  list-style: none;
-  transition: all .15s;
-}
-.hs-guide-btn-inline::-webkit-details-marker { display: none; }
-.hs-guide-btn-inline:hover { background: rgba(21, 128, 61, 0.18); }
-
-/* 攻略：动作行按钮（summary） */
-.hs-guide-btn {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  height: auto;
-  padding: 8px 14px;
-  border: 1px solid rgba(21, 128, 61, 0.35);
-  border-radius: 8px;
-  font-size: 13px;
-  font-weight: 600;
-  color: #15803d;
-  background: rgba(21, 128, 61, 0.1);
-  cursor: pointer;
-  list-style: none;
-  transition: all .15s;
-}
-.hs-guide-btn::-webkit-details-marker { display: none; }
-.hs-guide-btn:hover { background: rgba(21, 128, 61, 0.18); }
-
-/* 攻略：下拉容器与菜单（列出各攻略标题，点击在新标签打开） */
-.hs-guide-dropdown { position: relative; display: inline-block; }
-.hs-guide-dropdown[open] > summary { background: rgba(21, 128, 61, 0.18); }
-.hs-guide-menu {
-  position: absolute;
-  top: calc(100% + 6px);
-  left: 0;
-  z-index: 30;
-  min-width: 260px;
-  max-width: 320px;
-  padding: 6px;
-  background: #ffffff;
-  border: 1px solid rgba(21, 128, 61, 0.25);
-  border-radius: 10px;
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.hs-guide-menu-item {
-  display: block;
-  padding: 8px 10px;
-  border-radius: 7px;
-  font-size: 13px;
-  line-height: 1.4;
-  color: #1f2937;
-  text-decoration: none;
-  background: transparent;
-  transition: background .12s, color .12s;
-}
-.hs-guide-menu-item:hover { background: rgba(21, 128, 61, 0.12); color: #15803d; }
-.hs-backup-menu .hs-guide-menu-item {
-  width: 100%;
-  border: 0;
-  text-align: left;
-  cursor: pointer;
-}
-.hs-backup-menu .hs-guide-menu-item small {
-  display: block;
-  margin-top: 2px;
-  color: #64748b;
-  font-size: 11px;
-}
-.hs-guide-menu-item:disabled {
-  opacity: 0.55;
-  cursor: not-allowed;
-}
-.hs-visually-hidden {
-  position: absolute;
-  width: 1px;
-  height: 1px;
-  padding: 0;
-  margin: -1px;
-  overflow: hidden;
-  clip: rect(0, 0, 0, 0);
-  white-space: nowrap;
-  border: 0;
-}
-
-/* 硬核模式 ON/OFF 开关 */
-.hs-toggle {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  flex: 0 0 auto;
-  padding: 0;
-  border: none;
-  background: none;
-  cursor: pointer;
-  color: var(--hs-text-soft);
-  font-size: 13px;
-  font-weight: 600;
-}
-.hs-toggle-track {
-  position: relative;
-  width: 40px;
-  height: 22px;
-  border-radius: 999px;
-  background: rgba(148, 163, 184, 0.4);
-  transition: background .18s ease;
-}
-.hs-toggle-thumb {
-  position: absolute;
-  top: 2px;
-  left: 2px;
-  width: 18px;
-  height: 18px;
-  border-radius: 50%;
-  background: #fff;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.25);
-  transition: transform .18s ease;
-}
-.hs-toggle.on .hs-toggle-track { background: #15803d; }
-.hs-toggle.on .hs-toggle-thumb { transform: translateX(18px); }
-.hs-toggle-label { white-space: nowrap; }
-
-/* 待完成清单：筛选栏上移到操作行下方 */
-.hs-sprint-toolbar-top {
-  margin-top: 12px;
-  padding: 12px 14px;
-  border: 1px solid var(--hs-border);
-  border-radius: 12px;
-  background: var(--hs-surface-overlay);
-}
-.hs-sprint-toolbar-top .hs-sprint-filters {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-}
-.hs-sprint-toolbar-top .hs-filter-field {
-  display: grid;
-  gap: 5px;
-}
-.hs-sprint-toolbar-top .hs-filter-label {
-  color: var(--hs-muted);
-  font-size: 11px;
-  font-weight: 700;
-}
-.hs-sprint-toolbar-top .hs-filter-select {
-  height: 38px;
-  padding: 0 10px;
-  border: 1px solid rgba(148, 163, 184, 0.22);
-  border-radius: 8px;
-  color: var(--hs-text);
-  background: var(--hs-inset-bg);
-}
-</style>
+<style scoped src="../styles/hearthstone-achievements-page.css"></style>

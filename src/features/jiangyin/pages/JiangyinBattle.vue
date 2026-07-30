@@ -87,6 +87,16 @@ const popupStyle = computed(() => ({
   left: `${popupPos.value.x}px`,
   top: `${popupPos.value.y}px`
 }))
+
+const mapBackgroundStyle = {
+  backgroundImage: [
+    "url('/site-assets/jiangyin-map.webp')",
+    'radial-gradient(circle at 30% 20%, #d8e3d2 0%, transparent 55%)',
+    'radial-gradient(circle at 75% 25%, #d6e2cd 0%, transparent 50%)',
+    'radial-gradient(circle at 50% 70%, #f1e6cb 0%, transparent 60%)',
+    'linear-gradient(180deg, #e6efde 0%, #efe6cf 60%, #e6dfc6 100%)'
+  ].join(', ')
+}
 </script>
 
 <template>
@@ -99,7 +109,7 @@ const popupStyle = computed(() => ({
 
     <div class="map-wrap" ref="wrapRef" @click.self="close">
       <!-- 底图：经服务端反代引用 /site-assets/jiangyin-map.webp；缺图时使用衬底色 -->
-      <div class="map-bg" />
+      <div class="map-bg" :style="mapBackgroundStyle" />
 
       <svg
         class="overlay"
@@ -260,12 +270,6 @@ const popupStyle = computed(() => ({
 .map-bg {
   position: absolute;
   inset: 0;
-  background:
-    radial-gradient(circle at 30% 20%, #d8e3d2 0%, transparent 55%),
-    radial-gradient(circle at 75% 25%, #d6e2cd 0%, transparent 50%),
-    radial-gradient(circle at 50% 70%, #f1e6cb 0%, transparent 60%),
-    linear-gradient(180deg, #e6efde 0%, #efe6cf 60%, #e6dfc6 100%);
-  background-image: url('/site-assets/jiangyin-map.webp'), none;
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;

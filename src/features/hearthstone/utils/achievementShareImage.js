@@ -4,7 +4,7 @@
 //   - progress       : 单条进行中成就的蓝色进度风格
 //   - pinned-bundle  : 置顶成就合集（多条），逐行绘制
 // 卡图从本站相对路径加载（同源代理到 OSS，crossOrigin=anonymous 可安全 drawImage）
-import { getWildCardCrop } from './cardImages.js'
+import { getAchievementCardCrop } from './achievementCardImages.js'
 import { getClassName } from './achievements.js'
 
 const FONT_FAMILY = '"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif'
@@ -92,7 +92,7 @@ function pickThumbSources(achievement) {
   const cards = Array.isArray(achievement?.cards) ? achievement.cards : []
   const names = cards.map((c) => c?.name).filter(Boolean)
   const uniq = [...new Set(names)].slice(0, 6)
-  return uniq.map((n) => ({ name: n, src: getWildCardCrop(n) }))
+  return uniq.map((n) => ({ name: n, src: getAchievementCardCrop(n) }))
 }
 
 /** 绘制页脚水印 */

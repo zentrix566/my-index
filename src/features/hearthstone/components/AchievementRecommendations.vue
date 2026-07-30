@@ -1,0 +1,182 @@
+<template>
+  <section
+    v-if="recommendations.length"
+    class="hs-rule-recommendations"
+    aria-labelledby="hs-rule-recommendations-title"
+  >
+    <div class="hs-rule-recommendations-head">
+      <div>
+        <p class="hs-rule-recommendations-eyebrow">本地规则计算 · 不消耗 AI 额度</p>
+        <h2 id="hs-rule-recommendations-title">优先冲刺建议</h2>
+      </div>
+      <span>{{ recommendations.length }} 项</span>
+    </div>
+
+    <ol class="hs-rule-recommendations-list">
+      <li
+        v-for="(recommendation, index) in recommendations"
+        :key="recommendation.achievement.id"
+        v-memo="[recommendation.score, editable]"
+        class="hs-rule-recommendation"
+      >
+        <span class="hs-rule-recommendation-rank" aria-hidden="true">{{ index + 1 }}</span>
+        <div class="hs-rule-recommendation-copy">
+          <span class="hs-rule-recommendation-scope">
+            {{ recommendation.achievement._expansionName }} ·
+            {{ getClassName(recommendation.achievement) }}
+          </span>
+          <strong>{{ recommendation.achievement.name }}</strong>
+          <p>{{ recommendation.reason }}</p>
+          <div class="hs-rule-recommendation-tags" aria-label="推荐理由">
+            <span v-for="tag in recommendation.tags" :key="tag">{{ tag }}</span>
+          </div>
+        </div>
+        <div class="hs-rule-recommendation-actions">
+          <button
+            type="button"
+            class="hs-btn hs-btn-primary"
+            @click="$emit('select', recommendation.achievement)"
+          >
+            {{ editable ? '记录进度' : '查看成就' }}
+          </button>
+          <button
+            type="button"
+            class="hs-btn hs-btn-ghost"
+            @click="$emit('share', recommendation.achievement)"
+          >
+            分享
+          </button>
+        </div>
+      </li>
+    </ol>
+  </section>
+</template>
+
+<script setup>
+import { getClassName } from '../utils/achievements.js'
+
+defineProps({
+  recommendations: { type: Array, required: true },
+  editable: { type: Boolean, default: false }
+})
+
+defineEmits(['select', 'share'])
+</script>
+
+<style scoped>
+.hs-rule-recommendations {
+  margin: 16px 0;
+  padding: 16px;
+  border: 1px solid var(--hs-border);
+  border-radius: 16px;
+  color: var(--hs-text);
+  background: var(--hs-surface-overlay);
+  box-shadow: var(--hs-shadow-sm, 0 4px 16px rgba(15, 23, 42, 0.08));
+}
+
+.hs-rule-recommendations-head,
+.hs-rule-recommendation {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.hs-rule-recommendations-head {
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.hs-rule-recommendations-head h2,
+.hs-rule-recommendations-eyebrow,
+.hs-rule-recommendation p {
+  margin: 0;
+}
+
+.hs-rule-recommendations-head h2 {
+  font-size: 18px;
+}
+
+.hs-rule-recommendations-eyebrow,
+.hs-rule-recommendation-scope {
+  color: var(--hs-muted);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.hs-rule-recommendations-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.hs-rule-recommendation {
+  padding: 12px;
+  border: 1px solid var(--hs-border);
+  border-radius: 12px;
+  background: var(--hs-surface-soft);
+}
+
+.hs-rule-recommendation-rank {
+  display: grid;
+  flex: 0 0 28px;
+  width: 28px;
+  height: 28px;
+  place-items: center;
+  border-radius: 50%;
+  color: var(--hs-surface);
+  background: var(--hs-primary);
+  font-weight: 800;
+}
+
+.hs-rule-recommendation-copy {
+  display: grid;
+  flex: 1 1 auto;
+  gap: 4px;
+  min-width: 0;
+}
+
+.hs-rule-recommendation-copy strong {
+  font-size: 14px;
+}
+
+.hs-rule-recommendation-copy p {
+  color: var(--hs-text-soft);
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+.hs-rule-recommendation-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.hs-rule-recommendation-tags span {
+  padding: 2px 8px;
+  border-radius: 999px;
+  color: var(--hs-link);
+  background: var(--hs-surface);
+  font-size: 11px;
+  font-weight: 700;
+}
+
+.hs-rule-recommendation-actions {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 8px;
+}
+
+@media (max-width: 720px) {
+  .hs-rule-recommendation {
+    align-items: flex-start;
+    flex-wrap: wrap;
+  }
+
+  .hs-rule-recommendation-actions {
+    width: 100%;
+    padding-left: 40px;
+  }
+}
+</style>

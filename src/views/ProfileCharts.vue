@@ -1,22 +1,30 @@
 <template>
-  <div class="pc-charts pc-chart-grid">
-    <div v-if="!ready" class="pc-charts-loading">
-      <span class="pc-spinner" aria-hidden="true"></span>
-      正在加载你的成就数据…
+  <div class="pc-charts-wrap">
+    <div class="pc-share-bar">
+      <span class="pc-share-title">我的炉石传说成就数据</span>
+      <button type="button" class="pc-share-btn" :disabled="!ready" @click="shareCharts">分享成就图</button>
     </div>
-    <template v-else>
-      <section class="pc-chart-card pc-chart-gauge">
-        <div class="pc-chart-head">
-          <h3>总完成度</h3>
-          <p class="pc-chart-cap">
-            已点亮 <strong>{{ stats.overall.completedAchievements }}</strong> /
-            {{ stats.overall.totalAchievements }} 个成就 ·
-            获得 <strong>{{ stats.overall.earnedPoints }}</strong> /
-            {{ stats.overall.totalPoints }} 点
-          </p>
-        </div>
-        <div ref="gaugeRef" class="pc-chart pc-chart-gauge-el"></div>
-      </section>
+    <div class="pc-charts pc-chart-grid">
+      <div v-if="!ready" class="pc-charts-loading">
+        <span class="pc-spinner" aria-hidden="true"></span>
+        正在加载你的成就数据…
+      </div>
+      <template v-else>
+        <section class="pc-chart-card pc-chart-gauge">
+          <div class="pc-chart-head">
+            <h3>总完成度</h3>
+            <p class="pc-chart-cap">
+              已点亮 <strong>{{ stats.overall.completedAchievements }}</strong> /
+              {{ stats.overall.totalAchievements }} 个成就 ·
+              获得 <strong>{{ stats.overall.earnedPoints }}</strong> /
+              {{ stats.overall.totalPoints }} 点
+            </p>
+            <p class="pc-chart-note">
+              百分比 = 已点亮成就数 ÷ 总成就数；满 100% 表示全部成就已点亮（点数完成度见上方「点」）。
+            </p>
+          </div>
+          <div ref="gaugeRef" class="pc-chart pc-chart-gauge-el"></div>
+        </section>
 
       <section class="pc-chart-card">
         <div class="pc-chart-head"><h3>各版本完成率</h3></div>
@@ -43,17 +51,26 @@
         <div ref="diffPieRef" class="pc-chart"></div>
       </section>
     </template>
+    </div>
+    <ShareChartsModal
+      :visible="share.visible"
+      :data-url="share.dataUrl"
+      :title="share.title"
+      @close="share.visible = false"
+    />
   </div>
 </template>
 
 <script setup>
-import { ref, onMounted, onBeforeUnmount, computed, watch, nextTick } from 'vue'
+import { ref, reactive, onMounted, onBeforeUnmount, computed, watch, nextTick } from 'vue'
 import { expansions, originalExpansions } from '../features/hearthstone/data/expansions.js'
 import { classColors } from '../features/hearthstone/utils/achievements.js'
 import { useAchievementProgress } from '../features/hearthstone/composables/useAchievementProgress.js'
+import ShareChartsModal from '../features/hearthstone/components/ShareChartsModal.vue'
 
 const ach = useAchievementProgress()
-const { progress, loaded, reload, getStats } = ach
+const { progress, loaded, init, reload, getStats } = ach
+init()
 
 // 硬核模式：开启则统计全部版本，否则仅核心版本（与「成就查看器」一致）
 const props = defineProps({
@@ -103,8 +120,32 @@ const radarRef = ref(null)
 const typeBarRef = ref(null)
 const diffPieRef = ref(null)
 
-let echarts = null
+let echartsLib = null
 let charts = []
+
+// echarts 按需引入：仅注册用到的图表与组件，显著减小打包体积
+async function ensureEcharts() {
+  if (echartsLib) return echartsLib
+  const [core, chartsMod, components, renderers] = await Promise.all([
+    import('echarts/core'),
+    import('echarts/charts'),
+    import('echarts/components'),
+    import('echarts/renderers')
+  ])
+  core.use([
+    chartsMod.GaugeChart,
+    chartsMod.BarChart,
+    chartsMod.PieChart,
+    chartsMod.RadarChart,
+    components.GridComponent,
+    components.TooltipComponent,
+    components.LegendComponent,
+    components.RadarComponent,
+    renderers.CanvasRenderer
+  ])
+  echartsLib = core
+  return core
+}
 
 function buildStats() {
   const overall = getStats(allAch.value)
@@ -124,17 +165,28 @@ function buildStats() {
     .filter((v) => v.total > 0)
     .sort((a, b) => b.pct - a.pct)
 
-  // 各职业
+  // 单次遍历累计：职业 / 类型 / 难度 三个维度（避免对每个成就重复调用 getStats）
   const classMap = {}
   for (const c of CLASS_ORDER) classMap[c] = { total: 0, completed: 0, points: 0, totalPoints: 0 }
+  const typeAgg = { 一次性: { total: 0, completed: 0 }, 累计: { total: 0, completed: 0 } }
+  const diffMap = {}
   for (const a of allAch.value) {
+    const s = getStats([a])
     const key = a.dualClasses ? '双职业' : (a.heroClass || '中立')
     if (!classMap[key]) classMap[key] = { total: 0, completed: 0, points: 0, totalPoints: 0 }
-    const s = getStats([a])
     classMap[key].total += s.totalAchievements
     classMap[key].completed += s.completedAchievements
     classMap[key].points += s.earnedPoints
     classMap[key].totalPoints += s.totalPoints
+
+    const tk = a.type === '累计' ? '累计' : '一次性'
+    typeAgg[tk].total += s.totalAchievements
+    typeAgg[tk].completed += s.completedAchievements
+
+    const d = a.difficulty || '未知'
+    if (!diffMap[d]) diffMap[d] = { total: 0, completed: 0 }
+    diffMap[d].total += s.totalAchievements
+    diffMap[d].completed += s.completedAchievements
   }
   const classKeys = CLASS_ORDER.filter((c) => classMap[c] && classMap[c].total > 0)
   const classData = classKeys.map((c) => ({
@@ -145,29 +197,11 @@ function buildStats() {
   const radarData = classKeys.map((c) => classMap[c].points)
   const radarTotal = classKeys.map((c) => classMap[c].totalPoints)
 
-  // 类型
-  const typeAgg = { 一次性: { total: 0, completed: 0 }, 累计: { total: 0, completed: 0 } }
-  for (const a of allAch.value) {
-    const k = a.type === '累计' ? '累计' : '一次性'
-    const s = getStats([a])
-    typeAgg[k].total += s.totalAchievements
-    typeAgg[k].completed += s.completedAchievements
-  }
-
-  // 难度
-  const diffMap = {}
-  for (const a of allAch.value) {
-    const d = a.difficulty || '未知'
-    if (!diffMap[d]) diffMap[d] = { total: 0, completed: 0 }
-    const s = getStats([a])
-    diffMap[d].total += s.totalAchievements
-    diffMap[d].completed += s.completedAchievements
-  }
-
   return { overall, byVersion, classKeys, classData, radarData, radarTotal, typeAgg, diffMap }
 }
 
 function gaugeOption(pct) {
+  // pct 为「已点亮成就数 / 总成就数」的百分比（与上方文字口径一致），保留 1 位小数以便区分 99% 与 100%
   return {
     backgroundColor: 'transparent',
     series: [{
@@ -192,7 +226,10 @@ function gaugeOption(pct) {
         fontWeight: 800,
         color: '#e2e8f0',
         offsetCenter: [0, '0%'],
-        formatter: '{value}%'
+        formatter: (v) => {
+          const d = Number.isInteger(v) ? v : Math.round(v * 10) / 10
+          return d + '%'
+        }
       },
       data: [{ value: pct }]
     }]
@@ -416,18 +453,22 @@ watch(loaded, () => { if (ready.value) render() })
 
 async function render() {
   if (!allAch.value.length) return
-  if (!echarts) echarts = await import('echarts')
+  const lib = await ensureEcharts()
   await nextTick()
   disposeAll()
-  const s = buildStats()
+  const s = stats.value
   const mk = (el, opt) => {
     if (!el) return null
-    const c = echarts.init(el, null, { renderer: 'canvas' })
+    const c = lib.init(el, null, { renderer: 'canvas' })
     c.setOption(opt)
     charts.push(c)
     return c
   }
-  mk(gaugeRef.value, gaugeOption(s.overall.percentage))
+  // 总完成度仪表盘：按「已点亮成就数 / 总成就数」计算（与卡片文字口径一致，避免点数完成度 100% 与成就数 99% 的混淆）
+  const overallPct = s.overall.totalAchievements
+    ? (s.overall.completedAchievements / s.overall.totalAchievements) * 100
+    : 0
+  mk(gaugeRef.value, gaugeOption(overallPct))
   mk(versionBarRef.value, versionBarOption(s.byVersion))
   mk(classPieRef.value, classPieOption(s.classData))
   mk(radarRef.value, radarOption(s.classKeys, s.radarData, s.radarTotal))
@@ -436,6 +477,113 @@ async function render() {
 }
 
 const stats = computed(() => (ready.value ? buildStats() : null))
+
+// ============ 分享成就图（个人中心）============
+// 将当前已渲染的各 ECharts 图表合成为一张长图，支持下载 / 复制。
+const share = reactive({ visible: false, dataUrl: '', title: '我的炉石传说成就数据' })
+// 与模板中各图表的渲染顺序一致（仪表盘 + 其余 5 张）
+const chartTitles = ['总完成度', '各版本完成率', '按职业完成分布', '职业点数雷达', '成就类型分布', '难度分布']
+
+function loadImage(url) {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => resolve(img)
+    img.onerror = reject
+    img.src = url
+  })
+}
+
+// 各图原始宽高比不同（如「各版本完成率」是竖向长条），合成时按原始比例等比缩放，
+// 否则强行塞进固定尺寸会被压扁 / 拉伸变形。
+async function buildShareImage() {
+  if (!charts.length) throw new Error('图表尚未渲染')
+  // 逐个导出画布（含深色背景），再按原始比例贴到一张合成图上
+  const urls = charts.map((c) => c.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: '#0f172a' }))
+  const imgs = await Promise.all(urls.map(loadImage))
+
+  const pad = 24
+  const gap = 16
+  const labelH = 26
+  const colW = 470
+  const cols = 2
+  const titleH = 70
+
+  const width = pad * 2 + colW * cols + gap * (cols - 1)
+  const contentW = width - pad * 2
+
+  // 第 0 张（仪表盘）跨整行，按比例算高度
+  const gauge = imgs[0]
+  const gaugeH = contentW * (gauge.height / gauge.width)
+  const rest = imgs.slice(1)
+
+  // 其余按 2 列排布，每行高度取该行两张图的最大高度（各自仍按自身比例缩放）
+  let restHeight = 0
+  for (let i = 0; i < rest.length; i += cols) {
+    let rowH = 0
+    for (let j = 0; j < cols; j++) {
+      const img = rest[i + j]
+      if (!img) break
+      const h = colW * (img.height / img.width)
+      if (h > rowH) rowH = h
+    }
+    restHeight += rowH + labelH + gap
+  }
+
+  const height = pad + titleH + gaugeH + gap + restHeight + pad
+
+  const canvas = document.createElement('canvas')
+  const ratio = 2
+  canvas.width = width * ratio
+  canvas.height = height * ratio
+  const ctx = canvas.getContext('2d')
+  ctx.scale(ratio, ratio)
+  ctx.fillStyle = '#0f172a'
+  ctx.fillRect(0, 0, width, height)
+
+  // 标题
+  ctx.fillStyle = '#e2e8f0'
+  ctx.font = '700 24px system-ui, "PingFang SC", "Microsoft YaHei", sans-serif'
+  ctx.textBaseline = 'middle'
+  ctx.fillText('我的炉石传说成就数据', pad, pad + titleH / 2)
+
+  // 仪表盘（跨整行，按比例）
+  let y = pad + titleH
+  ctx.drawImage(gauge, pad, y, contentW, gaugeH)
+  y += gaugeH + gap
+
+  // 其余 2 列网格（每张按自身原始比例缩放，标题贴在各图下方）
+  for (let i = 0; i < rest.length; i += cols) {
+    const cells = []
+    let rowH = 0
+    for (let j = 0; j < cols; j++) {
+      const img = rest[i + j]
+      if (!img) break
+      const h = colW * (img.height / img.width)
+      cells.push({ img, h })
+      if (h > rowH) rowH = h
+    }
+    cells.forEach((cell, j) => {
+      const x = pad + j * (colW + gap)
+      ctx.drawImage(cell.img, x, y, colW, cell.h)
+      ctx.fillStyle = '#94a3b8'
+      ctx.font = '600 14px system-ui, "PingFang SC", "Microsoft YaHei", sans-serif'
+      ctx.fillText(chartTitles[i + 1 + j], x, y + cell.h + labelH / 2)
+    })
+    y += rowH + labelH + gap
+  }
+
+  return canvas.toDataURL('image/png')
+}
+
+async function shareCharts() {
+  try {
+    const url = await buildShareImage()
+    share.dataUrl = url
+    share.visible = true
+  } catch (e) {
+    console.error('[charts] 分享图生成失败:', e)
+  }
+}
 
 onMounted(async () => {
   window.addEventListener('resize', resizeHandler)
@@ -453,6 +601,38 @@ onBeforeUnmount(() => {
 </script>
 
 <style scoped>
+.pc-charts-wrap { display: block; }
+.pc-share-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+.pc-share-title {
+  font-size: 16px;
+  font-weight: 700;
+  color: #e2e8f0;
+}
+.pc-share-btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #052e16;
+  background: #22c55e;
+  border: 1px solid #22c55e;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: background .15s ease;
+}
+.pc-share-btn:hover:not(:disabled) { background: #16a34a; }
+.pc-share-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.pc-chart-note {
+  margin: 6px 0 0;
+  font-size: 11.5px;
+  line-height: 1.5;
+  color: #94a3b8;
+}
 .pc-charts { display: block; }
 .pc-charts-loading {
   display: flex;

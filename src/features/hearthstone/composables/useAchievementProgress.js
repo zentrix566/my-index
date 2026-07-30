@@ -46,7 +46,9 @@ async function loadFromServer({ force = false } = {}) {
       if (generation !== progressGeneration) return
       progressData.value = data && typeof data === 'object' ? data : {}
       const n = Object.keys(progressData.value).length
-      console.log(`[progress] 已加载成就进度 ${n} 条`, progressData.value)
+      if (import.meta.env?.DEV) {
+        console.log(`[progress] 已加载成就进度 ${n} 条`, progressData.value)
+      }
     } catch (cause) {
       if (generation !== progressGeneration) return
       error.value = cause instanceof Error ? cause.message : '加载成就进度失败'
@@ -87,9 +89,6 @@ const clear = () => {
   error.value = null
   loadPromise = null
 }
-
-// 初始化加载
-loadFromServer()
 
 export function useAchievementProgress(progressRef) {
   // 允许外部传入进度源（如示例进度）；默认用内部加载的用户进度
@@ -292,6 +291,7 @@ export function useAchievementProgress(progressRef) {
     loaded,
     loading,
     error,
+    init: loadFromServer,
     reload,
     clear,
     applyLocalProgress,

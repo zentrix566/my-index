@@ -15,6 +15,9 @@ const props = defineProps({
   collapsed: { type: Boolean, default: false },
   // 收起态头部展示的总览数据：{ total, completed, remaining }
   summary: { type: Object, default: null },
+  // 仅展示任务总数（如「共 X 个任务」），用于按版本/按职业浏览；
+  // 为 false 时展示进度（已完成/剩余）。
+  summaryTotalOnly: { type: Boolean, default: false },
   // 批量完成模式：开启时卡片显示勾选框
   selectMode: { type: Boolean, default: false },
   selectedIds: { type: Array, default: () => [] },
@@ -52,7 +55,10 @@ const toggleCollapse = () => {
       <span class="hs-class-name">{{ heroClass }}</span>
       <span class="hs-class-header-right">
         <span v-if="summary" class="hs-class-summary">
-          <span class="hs-class-summary-text" :class="{ 'is-done': summary.remaining === 0 }">
+          <span v-if="summaryTotalOnly" class="hs-class-summary-text">
+            共 {{ summary.total }} 个任务
+          </span>
+          <span v-else class="hs-class-summary-text" :class="{ 'is-done': summary.remaining === 0 }">
             {{ summary.remaining === 0 ? '已完成 ' + summary.completed + '/' + summary.total : '已完成 ' + summary.completed + '/' + summary.total + '，剩余 ' + summary.remaining + ' 个' }}
           </span>
         </span>
