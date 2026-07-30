@@ -115,6 +115,9 @@ function getAvailableClasses(achievements, expansionId) {
   const classes = new Set()
   for (const achievement of achievements) {
     classes.add(achievement.heroClass || '中立')
+    for (const heroClass of achievement.classes || []) {
+      classes.add(heroClass)
+    }
     for (const heroClass of achievement.dualClasses || []) {
       classes.add(heroClass)
     }

@@ -179,6 +179,7 @@ import { ref, reactive, computed, toRef } from 'vue'
 import { decodeDeck } from '../utils/deckstring.js'
 import { getRarityClass, getCardFullImage, getRarityDust, RARITY_LABELS } from '../utils/cardImages.js'
 import { useDialogFocus } from '../composables/useDialogFocus.js'
+import { drawImageCover, prepareShareCanvas } from '../utils/shareCanvas.js'
 
 const props = defineProps({
   visible: { type: Boolean, default: false },
@@ -356,7 +357,6 @@ async function exportImage() {
   const maxCurve = Math.max(1, ...curve.map((b) => b.count))
   const thumbs = await Promise.all(cards.map((c) => loadThumb(c.cropImage)))
 
-  const dpr = 2
   const W = 780
   const padX = 28
   const headerH = 120
@@ -367,10 +367,7 @@ async function exportImage() {
   const footerH = 50
   const H = headerH + rows * rowH + footerH
   const canvas = document.createElement('canvas')
-  canvas.width = W * dpr
-  canvas.height = H * dpr
-  const ctx = canvas.getContext('2d')
-  ctx.scale(dpr, dpr)
+  const ctx = prepareShareCanvas(canvas, W, H)
 
   // 背景
   const bg = ctx.createLinearGradient(0, 0, 0, H)
@@ -457,7 +454,7 @@ async function exportImage() {
     const stripW = (x + colW - countW - 8) - stripX
     const stripY = y - stripH / 2
     if (thumbs[i]) {
-      ctx.drawImage(thumbs[i], stripX, stripY, stripW, stripH)
+      drawImageCover(ctx, thumbs[i], stripX, stripY, stripW, stripH)
     } else {
       ctx.fillStyle = 'rgba(255,255,255,0.06)'
       ctx.fillRect(stripX, stripY, stripW, stripH)

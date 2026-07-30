@@ -65,6 +65,10 @@
 import { ref, reactive, onMounted, onBeforeUnmount, computed, watch, nextTick } from 'vue'
 import { expansions, originalExpansions } from '../features/hearthstone/data/expansions.js'
 import { classColors } from '../features/hearthstone/utils/achievements.js'
+import {
+  prepareShareCanvas,
+  SHARE_SOURCE_SCALE
+} from '../features/hearthstone/utils/shareCanvas.js'
 import { useAchievementProgress } from '../features/hearthstone/composables/useAchievementProgress.js'
 import ShareChartsModal from '../features/hearthstone/components/ShareChartsModal.vue'
 
@@ -498,7 +502,11 @@ function loadImage(url) {
 async function buildShareImage() {
   if (!charts.length) throw new Error('图表尚未渲染')
   // 逐个导出画布（含深色背景），再按原始比例贴到一张合成图上
-  const urls = charts.map((c) => c.getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: '#0f172a' }))
+  const urls = charts.map((c) => c.getDataURL({
+    type: 'png',
+    pixelRatio: SHARE_SOURCE_SCALE,
+    backgroundColor: '#0f172a'
+  }))
   const imgs = await Promise.all(urls.map(loadImage))
 
   const pad = 24
@@ -532,11 +540,7 @@ async function buildShareImage() {
   const height = pad + titleH + gaugeH + gap + restHeight + pad
 
   const canvas = document.createElement('canvas')
-  const ratio = 2
-  canvas.width = width * ratio
-  canvas.height = height * ratio
-  const ctx = canvas.getContext('2d')
-  ctx.scale(ratio, ratio)
+  const ctx = prepareShareCanvas(canvas, width, height)
   ctx.fillStyle = '#0f172a'
   ctx.fillRect(0, 0, width, height)
 

@@ -172,5 +172,10 @@ export function matchesClass(ach, cls) {
  */
 export function getClassName(ach) {
   if (ach.dualClasses) return ach.dualClasses.join(" / ");
+  if (ach.classes?.length) {
+    return ach.classes.length > 3
+      ? `${ach.classes.length}职业`
+      : ach.classes.join(" / ");
+  }
   return ach.heroClass || "中立";
 }

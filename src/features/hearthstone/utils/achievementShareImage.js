@@ -6,6 +6,7 @@
 // 卡图从本站相对路径加载（同源代理到 OSS，crossOrigin=anonymous 可安全 drawImage）
 import { getAchievementCardCrop } from './achievementCardImages.js'
 import { getClassName } from './achievements.js'
+import { drawImageCover, prepareShareCanvas } from './shareCanvas.js'
 
 const FONT_FAMILY = '"Microsoft YaHei","PingFang SC","Segoe UI",sans-serif'
 const WATERMARK = '由 zentrix566.top/hearthstone 生成'
@@ -195,12 +196,8 @@ export async function generateAchievementShareImage({ achievement, progressInfo,
   const thumbBlockH = hasThumbs ? CARD_THUMB_ROW_H : 0
   const H = CARD_HEADER_H + stagesH + thumbBlockH + CARD_FOOTER_H
 
-  const dpr = window.devicePixelRatio > 1 ? 2 : 1
   const canvas = document.createElement('canvas')
-  canvas.width = CARD_WIDTH * dpr
-  canvas.height = H * dpr
-  const ctx = canvas.getContext('2d')
-  ctx.scale(dpr, dpr)
+  const ctx = prepareShareCanvas(canvas, CARD_WIDTH, H)
 
   // 背景
   drawBackground(ctx, CARD_WIDTH, H, palette)
@@ -313,7 +310,7 @@ export async function generateAchievementShareImage({ achievement, progressInfo,
       roundRect(ctx, x, thumbY, thumbW, thumbH, 10)
       ctx.clip()
       if (img) {
-        ctx.drawImage(img, x, thumbY, thumbW, thumbH)
+        drawImageCover(ctx, img, x, thumbY, thumbW, thumbH)
       } else {
         ctx.fillStyle = 'rgba(255,255,255,0.06)'
         ctx.fillRect(x, thumbY, thumbW, thumbH)
@@ -390,12 +387,8 @@ export async function generateBundleShareImage({ achievements, getProgressInfo, 
     BUNDLE_FOOTER_H +
     16
 
-  const dpr = window.devicePixelRatio > 1 ? 2 : 1
   const canvas = document.createElement('canvas')
-  canvas.width = BUNDLE_WIDTH * dpr
-  canvas.height = H * dpr
-  const ctx = canvas.getContext('2d')
-  ctx.scale(dpr, dpr)
+  const ctx = prepareShareCanvas(canvas, BUNDLE_WIDTH, H)
 
   drawBackground(ctx, BUNDLE_WIDTH, H, palette)
 

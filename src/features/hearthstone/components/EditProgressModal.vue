@@ -7,7 +7,7 @@
 
       <p class="epm-eyebrow">更新成就进度</p>
       <h3 id="epm-title" class="epm-title">{{ achievement?.name }}</h3>
-      <p class="epm-meta">{{ achievement?.dualClasses ? achievement.dualClasses.join(' / ') : achievement?.heroClass }} · {{ achievement?.difficulty }} · {{ achievement?.type }}</p>
+      <p class="epm-meta">{{ getClassName(achievement) }} · {{ achievement?.difficulty }} · {{ achievement?.type }}</p>
       <p v-if="achievement?.description" class="epm-desc">{{ achievement.description }}</p>
 
       <!-- 关联卡牌（与浏览卡牌弹窗共用 CardGallery，展示 / 交互完全一致） -->
@@ -36,24 +36,12 @@
           </button>
         </div>
         <p class="epm-quota-hint">
-          已{{ trackVerb }} <b>{{ draftDiscovered.length }}</b> 个{{ trackUnit }} ·
-          各阶段目标：{{ achievement.stages.map((s) => s.quota).join(' / ') }}
+          已{{ trackVerb }} <b>{{ draftDiscovered.length }}</b> 个{{ trackUnit }}，上方要求会随选择即时更新。
         </p>
       </div>
 
-      <!-- 一次性：阶段勾选 -->
-      <div v-else-if="achievement?.type === '一次性'" class="epm-stages">
-        <label v-for="(stage, i) in achievement.stages" :key="i" class="epm-stage">
-          <input type="checkbox" v-model="draftStages[i]" />
-          <span>
-            阶段 {{ i + 1 }}：{{ stage.description }}
-            <em class="epm-stage-points">{{ stage.xpReward }} XP / {{ stage.points }} 点</em>
-          </span>
-        </label>
-      </div>
-
       <!-- 累计：count 输入 -->
-      <div v-else class="epm-cumulative">
+      <div v-else-if="!isOneTime" class="epm-cumulative">
         <label class="epm-count-label" for="epm-count">当前累计（{{ countUnit }}）</label>
         <div class="epm-count-control">
           <button type="button" :aria-label="`减少一${countUnit}`" @click="dec">−</button>
@@ -62,10 +50,56 @@
           <button type="button" class="epm-max" aria-label="直接填到完成目标" @click="setMax">MAX</button>
         </div>
         <p class="epm-quota-hint">
-          各阶段目标：{{ achievement.stages.map((s) => s.quota).join(' / ') }}
-          <span class="epm-max-hint">· 点 <b>MAX</b> 直接视为完成（填到 {{ maxQuota }} {{ countUnit }}）</span>
+          上方要求会随累计数即时更新。
+          <span class="epm-max-hint">点 <b>MAX</b> 可直接填到最终目标 {{ maxQuota }} {{ countUnit }}。</span>
         </p>
       </div>
+
+      <section
+        v-if="achievement?.stages?.length"
+        class="epm-goals"
+        :class="{ 'epm-goals-standalone': isOneTime && !hasCards }"
+        aria-labelledby="epm-goals-title"
+      >
+        <div class="epm-goals-head">
+          <h4 id="epm-goals-title">成就要求</h4>
+          <span>已完成 {{ completedStageCount }} / {{ achievement.stages.length }}</span>
+        </div>
+        <ol class="epm-goal-list">
+          <li
+            v-for="(stage, i) in achievement.stages"
+            :key="i"
+            class="epm-goal"
+            :class="{ completed: isDraftStageCompleted(i, stage) }"
+          >
+            <label v-if="isOneTime" class="epm-goal-main epm-goal-editable">
+              <input type="checkbox" v-model="draftStages[i]" />
+              <span class="epm-goal-status" aria-hidden="true">
+                {{ isDraftStageCompleted(i, stage) ? '✓' : i + 1 }}
+              </span>
+              <span class="epm-goal-content">
+                <strong>{{ stage.description }}</strong>
+                <span class="epm-goal-rewards">
+                  <span v-if="stage.xpReward">{{ stage.xpReward }} 经验</span>
+                  <span v-if="stage.points">{{ stage.points }} 成就点</span>
+                </span>
+              </span>
+            </label>
+            <div v-else class="epm-goal-main">
+              <span class="epm-goal-status" aria-hidden="true">
+                {{ isDraftStageCompleted(i, stage) ? '✓' : i + 1 }}
+              </span>
+              <span class="epm-goal-content">
+                <strong>{{ stage.description }}</strong>
+                <span class="epm-goal-rewards">
+                  <span v-if="stage.xpReward">{{ stage.xpReward }} 经验</span>
+                  <span v-if="stage.points">{{ stage.points }} 成就点</span>
+                </span>
+              </span>
+            </div>
+          </li>
+        </ol>
+      </section>
 
       <div class="epm-actions">
         <button class="epm-cancel" type="button" @click="$emit('close')">取消</button>
@@ -82,7 +116,7 @@ import { ref, watch, computed, toRef } from 'vue'
 import CardGallery from './CardGallery.vue'
 import { useAchievementProgress } from '../composables/useAchievementProgress.js'
 import { useDialogFocus } from '../composables/useDialogFocus.js'
-import { classColors } from '../utils/achievements.js'
+import { classColors, getClassName } from '../utils/achievements.js'
 
 const props = defineProps({
   visible: Boolean,
@@ -100,20 +134,28 @@ const TRACK_CLASSES = ['战士', '猎人', '德鲁伊', '法师', '圣骑士', '
 const isTrackClasses = computed(() => !!props.achievement?.trackClasses)
 const isTrackItems = computed(() => !!props.achievement?.trackItems)
 const isTrack = computed(() => isTrackClasses.value || isTrackItems.value)
+const isOneTime = computed(() => props.achievement?.type === '一次性' && !isTrack.value)
 const draftDiscovered = ref([])
 
 // 收集类成就：已勾选的排前面，方便查看还差哪些（trackItems 与 trackClasses 通用）
 const trackList = computed(() => {
-  const base = isTrackItems.value ? (props.achievement?.trackItems || []) : TRACK_CLASSES
+  const customClasses = props.achievement?.trackClasses
+  const base = isTrackItems.value
+    ? (props.achievement?.trackItems || [])
+    : (Array.isArray(customClasses) ? customClasses : TRACK_CLASSES)
   const checked = base.filter((item) => draftDiscovered.value.includes(item))
   const unchecked = base.filter((item) => !draftDiscovered.value.includes(item))
   return [...checked, ...unchecked]
 })
 const trackLabel = computed(() =>
-  isTrackItems.value ? '已使用的战利品' : '已发现的职业'
+  props.achievement?.trackLabel ||
+  (isTrackItems.value ? '已使用的战利品' : '已发现的职业')
 )
 const trackUnit = computed(() => (isTrackItems.value ? '战利品' : '职业'))
-const trackVerb = computed(() => (isTrackItems.value ? '使用' : '发现'))
+const trackVerb = computed(() =>
+  props.achievement?.trackVerb ||
+  (isTrackItems.value ? '使用' : '发现')
+)
 
 function classColor(cls) {
   return classColors[cls] || '#999999'
@@ -153,6 +195,20 @@ const hasCards = computed(
 )
 const draftStages = ref({})
 const draftCount = ref(0)
+const isDraftStageCompleted = (index, stage) => {
+  if (isTrack.value) {
+    return draftDiscovered.value.length >= (Number(stage?.quota) || 0)
+  }
+  if (!isOneTime.value) {
+    return (Number(draftCount.value) || 0) >= (Number(stage?.quota) || 0)
+  }
+  return !!draftStages.value[index]
+}
+const completedStageCount = computed(() =>
+  (props.achievement?.stages || []).filter((stage, index) =>
+    isDraftStageCompleted(index, stage)
+  ).length
+)
 
 // 打开时从当前进度初始化草稿
 watch(
@@ -247,31 +303,101 @@ function save() {
   font-size: 13px;
   line-height: 1.6;
 }
-.epm-stages {
+.epm-goals {
+  margin: 0 0 20px;
+  padding: 14px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 14px;
+  background: rgba(2, 6, 23, 0.22);
+}
+.epm-goals-standalone { margin-top: 18px; }
+.epm-goals-head {
   display: flex;
-  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
   gap: 12px;
-  margin-bottom: 20px;
+  margin-bottom: 10px;
 }
-.epm-stage {
-  display: flex;
-  gap: 10px;
-  align-items: flex-start;
+.epm-goals-head h4 {
+  margin: 0;
+  color: #f8fafc;
   font-size: 14px;
-  color: #374151;
-  cursor: pointer;
 }
-.epm-stage input {
-  margin-top: 2px;
-  width: 18px;
-  height: 18px;
-}
-.epm-stage-points {
-  display: block;
-  font-style: normal;
-  color: #9ca3af;
+.epm-goals-head > span {
+  color: #94a3b8;
   font-size: 12px;
-  margin-top: 2px;
+  white-space: nowrap;
+}
+.epm-goal-list {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+.epm-goal {
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 10px;
+  background: rgba(15, 23, 42, 0.48);
+  transition: border-color .15s, background .15s;
+}
+.epm-goal.completed {
+  border-color: rgba(74, 222, 128, 0.34);
+  background: rgba(22, 101, 52, 0.14);
+}
+.epm-goal-main {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 11px 12px;
+}
+.epm-goal-editable { cursor: pointer; }
+.epm-goal-editable input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  opacity: 0;
+}
+.epm-goal-status {
+  display: grid;
+  flex: 0 0 24px;
+  width: 24px;
+  height: 24px;
+  place-items: center;
+  border-radius: 50%;
+  color: #cbd5e1;
+  background: rgba(148, 163, 184, 0.16);
+  font-size: 12px;
+  font-weight: 800;
+}
+.epm-goal.completed .epm-goal-status {
+  color: #052e16;
+  background: #4ade80;
+}
+.epm-goal-content {
+  display: grid;
+  min-width: 0;
+  gap: 6px;
+}
+.epm-goal-content strong {
+  color: #e2e8f0;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.55;
+}
+.epm-goal.completed .epm-goal-content strong { color: #bbf7d0; }
+.epm-goal-rewards {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  color: #fbbf24;
+  font-size: 12px;
+}
+.epm-goal-editable:focus-within {
+  border-radius: 9px;
+  outline: 3px solid rgba(74, 222, 128, 0.28);
+  outline-offset: 2px;
 }
 .epm-cumulative {
   margin-bottom: 20px;
@@ -473,16 +599,6 @@ function save() {
 .epm-title { margin-right: 52px; color: #f8fafc; font-size: 21px; }
 .epm-meta { color: #fbbf24; }
 .epm-desc { color: #94a3b8; }
-.epm-stage {
-  min-height: 48px;
-  padding: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 10px;
-  color: #e2e8f0;
-  background: rgba(2, 6, 23, 0.24);
-}
-.epm-stage input { accent-color: #22c55e; }
-.epm-stage-points,
 .epm-count-label,
 .epm-quota-hint { color: #94a3b8; }
 .epm-cards-label { color: #cbd5e1; }
@@ -509,7 +625,6 @@ function save() {
 .epm-cancel { border-color: rgba(148, 163, 184, 0.3); color: #cbd5e1; background: transparent; }
 .epm-save { background: linear-gradient(135deg, #15803d, #166534); }
 .epm-close:focus-visible,
-.epm-stage:focus-within,
 .epm-cancel:focus-visible,
 .epm-save:focus-visible {
   outline: 3px solid rgba(251, 191, 36, 0.55);
