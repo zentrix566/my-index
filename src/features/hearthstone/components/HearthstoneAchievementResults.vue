@@ -92,6 +92,16 @@
   </div>
 
   <div v-else-if="myGroupBy === 'sprint'" class="hs-priority-wrap">
+    <AchievementRecommendations
+      v-if="!batchMode"
+      :recommendations="recommendations"
+      :editable="Boolean(user)"
+      :collapsed="recommendationsCollapsed"
+      @toggle="$emit('toggle-sprint-section', 'recommendations')"
+      @select="$emit('card-click', $event)"
+      @share="$emit('share', $event)"
+    />
+
     <section
       v-for="section in sprintSections"
       v-show="section.achievements.length"
@@ -136,6 +146,7 @@
 <script setup>
 import { computed } from 'vue'
 import { classColors } from '../utils/achievements.js'
+import AchievementRecommendations from './AchievementRecommendations.vue'
 import ClassSection from './ClassSection.vue'
 import MyAchievementCard from './MyAchievementCard.vue'
 
@@ -161,7 +172,9 @@ const props = defineProps({
   sprintGroups: { type: Object, required: true },
   sprintSectionCollapsed: { type: Object, required: true },
   sprintOneTimeRemain: { type: Number, required: true },
-  sprintAllList: { type: Array, required: true }
+  sprintAllList: { type: Array, required: true },
+  recommendations: { type: Array, default: () => [] },
+  recommendationsCollapsed: { type: Boolean, default: true }
 })
 
 defineEmits([

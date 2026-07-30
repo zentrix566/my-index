@@ -336,14 +336,6 @@
           </div>
         </section>
 
-        <AchievementRecommendations
-          v-if="!batchMode"
-          :recommendations="ruleRecommendations"
-          :editable="Boolean(user)"
-          @select="openCardModal"
-          @share="openShareAchievement"
-        />
-
         <!-- 待完成清单：说明（两行、数字高亮），置于顶部；筛选栏移至底部内容之后 -->
         <div class="hs-stats-panel hs-sprint-stats" v-if="myGroupBy === 'sprint'">
           <p class="hs-overview-summary-text" v-html="overviewSummaryHtml.line1"></p>
@@ -414,6 +406,8 @@
         :sprint-section-collapsed="sprintSectionCollapsed"
         :sprint-one-time-remain="sprintOneTimeRemain"
         :sprint-all-list="sprintAllList"
+        :recommendations="ruleRecommendations"
+        :recommendations-collapsed="sprintSectionCollapsed.recommendations"
         @set-class-collapsed="setClassCollapsed"
         @set-expansion-collapsed="setExpansionCollapsed"
         @toggle-sprint-section="toggleSprintSection"
@@ -526,7 +520,6 @@ import AchievementExpansionSelector from '../components/AchievementExpansionSele
 import HardcoreModeToggle from '../components/HardcoreModeToggle.vue'
 import HearthstoneAchievementsHero from '../components/HearthstoneAchievementsHero.vue'
 import HearthstoneAchievementResults from '../components/HearthstoneAchievementResults.vue'
-import AchievementRecommendations from '../components/AchievementRecommendations.vue'
 import { AI_ADVISOR_ENABLED } from '../ai/config.js'
 import { rankAchievementRecommendations } from '../utils/achievementRecommendations.js'
 import { saveAchievementProgress } from '../api/progress.js'

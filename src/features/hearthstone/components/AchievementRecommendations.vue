@@ -1,18 +1,28 @@
 <template>
   <section
     v-if="recommendations.length"
-    class="hs-rule-recommendations"
+    class="hs-priority-group hs-sprint-cat hs-rule-recommendations"
     aria-labelledby="hs-rule-recommendations-title"
   >
-    <div class="hs-rule-recommendations-head">
-      <div>
-        <p class="hs-rule-recommendations-eyebrow">本地规则计算 · 不消耗 AI 额度</p>
-        <h2 id="hs-rule-recommendations-title">优先冲刺建议</h2>
-      </div>
-      <span>{{ recommendations.length }} 项</span>
-    </div>
+    <button
+      type="button"
+      class="hs-sprint-cat-head"
+      :aria-expanded="!collapsed"
+      aria-controls="hs-rule-recommendations-list"
+      @click="$emit('toggle')"
+    >
+      <span class="hs-sprint-cat-caret" :class="{ open: !collapsed }" aria-hidden="true">▶</span>
+      <h2 id="hs-rule-recommendations-title" class="hs-sprint-cat-title">优先冲刺建议</h2>
+      <span class="hs-sprint-cat-count">
+        {{ recommendations.length }} 项 · 本地规则 · 不消耗 AI 额度
+      </span>
+    </button>
 
-    <ol class="hs-rule-recommendations-list">
+    <ol
+      id="hs-rule-recommendations-list"
+      v-show="!collapsed"
+      class="hs-rule-recommendations-list"
+    >
       <li
         v-for="(recommendation, index) in recommendations"
         :key="recommendation.achievement.id"
@@ -57,56 +67,43 @@ import { getClassName } from '../utils/achievements.js'
 
 defineProps({
   recommendations: { type: Array, required: true },
-  editable: { type: Boolean, default: false }
+  editable: { type: Boolean, default: false },
+  collapsed: { type: Boolean, default: true }
 })
 
-defineEmits(['select', 'share'])
+defineEmits(['toggle', 'select', 'share'])
 </script>
 
 <style scoped>
 .hs-rule-recommendations {
-  margin: 16px 0;
-  padding: 16px;
-  border: 1px solid var(--hs-border);
-  border-radius: 16px;
+  margin: 0;
   color: var(--hs-text);
-  background: var(--hs-surface-overlay);
-  box-shadow: var(--hs-shadow-sm, 0 4px 16px rgba(15, 23, 42, 0.08));
 }
 
-.hs-rule-recommendations-head,
 .hs-rule-recommendation {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.hs-rule-recommendations-head {
-  justify-content: space-between;
-  margin-bottom: 12px;
-}
-
-.hs-rule-recommendations-head h2,
-.hs-rule-recommendations-eyebrow,
 .hs-rule-recommendation p {
   margin: 0;
 }
 
-.hs-rule-recommendations-head h2 {
-  font-size: 18px;
-}
-
-.hs-rule-recommendations-eyebrow,
 .hs-rule-recommendation-scope {
   color: var(--hs-muted);
   font-size: 11px;
   font-weight: 700;
 }
 
+.hs-sprint-cat-title {
+  margin: 0;
+}
+
 .hs-rule-recommendations-list {
   display: grid;
   gap: 8px;
-  margin: 0;
+  margin: 14px 0 0;
   padding: 0;
   list-style: none;
 }

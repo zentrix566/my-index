@@ -11,6 +11,7 @@ export function useAchievementSprint({
   getMetric
 }) {
   const sectionCollapsed = reactive({
+    recommendations: true,
     oneTime: true,
     count: true,
     points: true
