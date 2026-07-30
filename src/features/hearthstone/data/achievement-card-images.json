@@ -1694,11 +1694,6 @@
     "full": "/hearthstone-cards/wild/full/拉格纳罗斯，绝世烈火_124110.png",
     "rarityId": 5
   },
-  "拉特维厄斯，城市之眼": {
-    "crop": "/hearthstone-cards/wild/crop/拉特维厄斯，城市之眼_117717.png",
-    "full": "/hearthstone-cards/wild/full/拉特维厄斯，城市之眼_117717.png",
-    "rarityId": null
-  },
   "拉祖尔的信使": {
     "crop": "/hearthstone-cards/wild/crop/拉祖尔的信使_54887.png",
     "full": "/hearthstone-cards/wild/full/拉祖尔的信使_54887.png",
@@ -3987,6 +3982,11 @@
     "full": "/hearthstone-cards/wild/full/自由之魂_94218.png",
     "rarityId": 4
   },
+  "走进失落之城": {
+    "crop": "/hearthstone-cards/wild/crop/走进失落之城_117716.png",
+    "full": "/hearthstone-cards/wild/full/走进失落之城_117716.png",
+    "rarityId": 5
+  },
   "最后期限": {
     "crop": "/hearthstone-cards/wild/crop/最后期限_110759.png",
     "full": "/hearthstone-cards/wild/full/最后期限_110759.png",
@@ -4027,4 +4027,35 @@
     "full": "/hearthstone-cards/wild/full/MC布林顿_90603.png",
     "rarityId": 5
   }
+,
+  "魔古信徒": {"crop":"/hearthstone-cards/wild/crop/魔古信徒_54291.png","full":"/hearthstone-cards/wild/full/魔古信徒_54291.png","rarityId":4},
+  "复苏": {"crop":"/hearthstone-cards/wild/crop/复苏_56595.png","full":"/hearthstone-cards/wild/full/复苏_56595.png","rarityId":1},
+  "月蚀": {"crop":"/hearthstone-cards/wild/crop/月蚀_61449.png","full":"/hearthstone-cards/wild/full/月蚀_61449.png","rarityId":1},
+  "日蚀": {"crop":"/hearthstone-cards/wild/crop/日蚀_61450.png","full":"/hearthstone-cards/wild/full/日蚀_61450.png","rarityId":1},
+  "玛克希玛·雷管": {"crop":"/hearthstone-cards/wild/crop/玛克希玛·雷管_61842.png","full":"/hearthstone-cards/wild/full/玛克希玛·雷管_61842.png","rarityId":5},
+  "制造法力饼干": {"crop":"/hearthstone-cards/wild/crop/制造法力饼干_61957.png","full":"/hearthstone-cards/wild/full/制造法力饼干_61957.png","rarityId":1},
+  "暗月先知塞格": {"crop":"/hearthstone-cards/wild/crop/暗月先知塞格_61589.png","full":"/hearthstone-cards/wild/full/暗月先知塞格_61589.png","rarityId":5},
+  "救赎者洛萨克森": {"crop":"/hearthstone-cards/wild/crop/救赎者洛萨克森_61191.png","full":"/hearthstone-cards/wild/full/救赎者洛萨克森_61191.png","rarityId":5},
+  "蕉猾诡计": {"crop":"/hearthstone-cards/wild/crop/蕉猾诡计_61955.png","full":"/hearthstone-cards/wild/full/蕉猾诡计_61955.png","rarityId":3},
+  "月牙": {"crop":"/hearthstone-cards/wild/crop/月牙_61973.png","full":"/hearthstone-cards/wild/full/月牙_61973.png","rarityId":5},
+  "克雷什，群龟之王": {"crop":"/hearthstone-cards/wild/crop/克雷什，群龟之王_63375.png","full":"/hearthstone-cards/wild/full/克雷什，群龟之王_63375.png","rarityId":5},
+  "堆肥": {"crop":"/hearthstone-cards/wild/crop/堆肥_64385.png","full":"/hearthstone-cards/wild/full/堆肥_64385.png","rarityId":4},
+  "应急木工": {"crop":"/hearthstone-cards/wild/crop/应急木工_65584.png","full":"/hearthstone-cards/wild/full/应急木工_65584.png","rarityId":3},
+  "沙德拉斯·月树": {"crop":"/hearthstone-cards/wild/crop/沙德拉斯·月树_64439.png","full":"/hearthstone-cards/wild/full/沙德拉斯·月树_64439.png","rarityId":5},
+  "开进码头": {"crop":"/hearthstone-cards/wild/crop/开进码头_64280.png","full":"/hearthstone-cards/wild/full/开进码头_64280.png","rarityId":5},
+  "一决胜负": {"crop":"/hearthstone-cards/wild/crop/一决胜负_64375.png","full":"/hearthstone-cards/wild/full/一决胜负_64375.png","rarityId":5},
+  "恶魔之种": {"crop":"/hearthstone-cards/wild/crop/恶魔之种_64900.png","full":"/hearthstone-cards/wild/full/恶魔之种_64900.png","rarityId":5},
+  "点燃": {"crop":"/hearthstone-cards/wild/crop/点燃_64434.png","full":"/hearthstone-cards/wild/full/点燃_64434.png","rarityId":4},
+  "首席法师安东尼达斯": {"crop":"/hearthstone-cards/wild/crop/首席法师安东尼达斯_64438.png","full":"/hearthstone-cards/wild/full/首席法师安东尼达斯_64438.png","rarityId":5},
+  "锁喉": {"crop":"/hearthstone-cards/wild/crop/锁喉_64014.png","full":"/hearthstone-cards/wild/full/锁喉_64014.png","rarityId":4},
+  "寻求指引": {"crop":"/hearthstone-cards/wild/crop/寻求指引_64349.png","full":"/hearthstone-cards/wild/full/寻求指引_64349.png","rarityId":5},
+  "瘟疫鼠群": {"crop":"/hearthstone-cards/wild/crop/瘟疫鼠群_40428.png","full":"/hearthstone-cards/wild/full/瘟疫鼠群_40428.png","rarityId":4},
+  "老鼠窝": {"crop":"/hearthstone-cards/wild/crop/老鼠窝_64960.png","full":"/hearthstone-cards/wild/full/老鼠窝_64960.png","rarityId":1},
+  "硕鼠成群": {"crop":"/hearthstone-cards/wild/crop/硕鼠成群_64627.png","full":"/hearthstone-cards/wild/full/硕鼠成群_64627.png","rarityId":4},
+  "保卫矮人区": {"crop":"/hearthstone-cards/wild/crop/保卫矮人区_64637.png","full":"/hearthstone-cards/wild/full/保卫矮人区_64637.png","rarityId":5},
+  "鼠王": {"crop":"/hearthstone-cards/wild/crop/鼠王_64970.png","full":"/hearthstone-cards/wild/full/鼠王_64970.png","rarityId":5},
+  "伯尔纳·锤喙": {"crop":"/hearthstone-cards/wild/crop/伯尔纳·锤喙_64774.png","full":"/hearthstone-cards/wild/full/伯尔纳·锤喙_64774.png","rarityId":5},
+  "哥利亚，斯尼德的杰作": {"crop":"/hearthstone-cards/wild/crop/哥利亚，斯尼德的杰作_65705.png","full":"/hearthstone-cards/wild/full/哥利亚，斯尼德的杰作_65705.png","rarityId":5},
+  "艾尔文野猪": {"crop":"/hearthstone-cards/wild/crop/艾尔文野猪_64723.png","full":"/hearthstone-cards/wild/full/艾尔文野猪_64723.png","rarityId":4},
+  "飞行管理员杜加尔": {"crop":"/hearthstone-cards/wild/crop/飞行管理员杜加尔_64727.png","full":"/hearthstone-cards/wild/full/飞行管理员杜加尔_64727.png","rarityId":5}
 }

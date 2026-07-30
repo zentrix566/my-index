@@ -73,7 +73,10 @@
       "heroClass": "德鲁伊",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "月蚀",
+        "日蚀"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -121,7 +124,9 @@
       "heroClass": "法师",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "制造法力饼干"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -187,7 +192,9 @@
       "heroClass": "法师",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "暗月先知塞格"
+      ],
       "recommendedDecks": [
         {
           "name": "前途迷蒙",
@@ -272,7 +279,9 @@
       "heroClass": "猎人",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "玛克希玛·雷管"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -427,7 +436,9 @@
       "heroClass": "潜行者",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "蕉猾诡计"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -707,7 +718,9 @@
       "heroClass": "圣骑士",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "救赎者洛萨克森"
+      ],
       "recommendedDecks": [
         {
           "name": "洛萨克森气球店 卡组1",
@@ -1048,7 +1061,9 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "月牙"
+      ],
       "recommendedDecks": [],
       "stages": [
         {

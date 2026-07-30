@@ -28,7 +28,8 @@ export function useAchievementSprint({
     for (const achievement of achievements.value) {
       if (!matchesSearch(achievement, searchText)) continue
       const progressInfo = getProgressInfo(achievement)
-      if (progressInfo.completed) continue
+      // 有搜索词时不过滤已完成，与「按版本/按职业」等视图的搜索逻辑保持一致（搜全部成就）
+      if (!searchText && progressInfo.completed) continue
 
       if (achievement.type !== '累计') {
         grouped.oneTime.push(achievement)

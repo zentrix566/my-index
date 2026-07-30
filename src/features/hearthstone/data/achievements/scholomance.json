@@ -266,7 +266,7 @@
       "id": "scholomance-011",
       "name": "雷象不会遗忘",
       "heroClass": "法师",
-      "type": "累计",
+      "type": "一次性",
       "category": "光辉事迹",
       "metric": "count",
       "difficulty": "中等",

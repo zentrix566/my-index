@@ -142,7 +142,9 @@
       "type": "一次性",
       "category": "光辉事迹",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "复苏"
+      ],
       "recommendedDecks": [
         {
           "name": "记忆复苏",

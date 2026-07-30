@@ -26,7 +26,9 @@
       "type": "累计",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "堆肥"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -77,7 +79,9 @@
       "heroClass": "德鲁伊",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "应急木工"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -100,7 +104,9 @@
       "heroClass": "德鲁伊",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "沙德拉斯·月树"
+      ],
       "recommendedDecks": [
         {
           "name": "洗刷刷",
@@ -122,7 +128,9 @@
       "heroClass": "法师",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "点燃"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -140,7 +148,7 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [
-        "火球术"
+        "首席法师安东尼达斯"
       ],
       "recommendedDecks": [],
       "stages": [
@@ -215,7 +223,11 @@
       "type": "累计",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "瘟疫鼠群",
+        "老鼠窝",
+        "硕鼠成群"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -232,7 +244,9 @@
       "heroClass": "猎人",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "保卫矮人区"
+      ],
       "recommendedDecks": [
         {
           "name": "你到底有多少箭？",
@@ -254,7 +268,9 @@
       "heroClass": "猎人",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "鼠王"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -308,7 +324,9 @@
       "heroClass": "牧师",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "寻求指引"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -400,7 +418,19 @@
       "id": "stormwind-017",
       "name": "无面女郎",
       "heroClass": "潜行者",
-      "type": "一次性",
+      "type": "累计",
+      "trackClasses": [
+        "战士",
+        "猎人",
+        "德鲁伊",
+        "法师",
+        "圣骑士",
+        "牧师",
+        "萨满祭司",
+        "术士",
+        "恶魔猎手",
+        "死亡骑士"
+      ],
       "difficulty": "中等",
       "relatedCards": [
         "变装大师"
@@ -411,7 +441,7 @@
           "description": "使用变装大师，在对战开始时扮演所有其他职业。",
           "xpReward": 0,
           "points": 20,
-          "quota": 0
+          "quota": 10
         }
       ]
     },
@@ -438,7 +468,9 @@
       "heroClass": "潜行者",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "锁喉"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -531,7 +563,9 @@
       "heroClass": "萨满祭司",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "伯尔纳·锤喙"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -728,7 +762,9 @@
       "heroClass": "术士",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "恶魔之种"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -821,7 +857,9 @@
       "heroClass": "恶魔猎手",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "一决胜负"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -875,7 +913,9 @@
       "heroClass": "战士",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "开进码头"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1242,7 +1282,9 @@
       "heroClass": "中立",
       "type": "一次性",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "艾尔文野猪"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1359,7 +1401,9 @@
       "type": "累计",
       "metric": "count",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "飞行管理员杜加尔"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
@@ -1424,7 +1468,9 @@
       "heroClass": "中立",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "哥利亚，斯尼德的杰作"
+      ],
       "recommendedDecks": [],
       "stages": [
         {

@@ -430,6 +430,18 @@
       "name": "盗用身份非儿戏",
       "heroClass": "潜行者",
       "type": "累计",
+      "trackClasses": [
+        "战士",
+        "猎人",
+        "德鲁伊",
+        "法师",
+        "圣骑士",
+        "牧师",
+        "萨满祭司",
+        "术士",
+        "恶魔猎手",
+        "死亡骑士"
+      ],
       "metric": "count",
       "difficulty": "中等",
       "relatedCards": [
@@ -1035,7 +1047,9 @@
       "heroClass": "战士",
       "type": "累计",
       "difficulty": "中等",
-      "relatedCards": [],
+      "relatedCards": [
+        "克雷什，群龟之王"
+      ],
       "recommendedDecks": [],
       "stages": [
         {
