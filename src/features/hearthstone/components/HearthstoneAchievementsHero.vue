@@ -34,6 +34,12 @@
           </svg>
           卡组代码解析
         </button>
+        <button type="button" class="hs-btn hs-btn-ghost" @click="$emit('navigate', '/hearthstone/xp')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M3 3v18h18"/><path d="m7 14 4-4 3 3 5-6"/>
+          </svg>
+          战令计算器
+        </button>
         <button
           type="button"
           class="hs-btn hs-btn-ghost hs-theme-toggle"

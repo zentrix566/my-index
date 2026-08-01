@@ -291,6 +291,17 @@
 /* 攻略：下拉容器与菜单（列出各攻略标题，点击在新标签打开） */
 .hs-guide-dropdown { position: relative; display: inline-block; }
 .hs-guide-dropdown[open] > summary { background: rgba(21, 128, 61, 0.18); }
+
+/* 攻略：悬停显示（鼠标放上去显示地址，移开自动隐藏；键盘聚焦也可触发） */
+.hs-guide-hover .hs-guide-menu { display: none; }
+.hs-guide-hover:hover .hs-guide-menu,
+.hs-guide-hover:focus-within .hs-guide-menu { display: flex; }
+.hs-guide-hover:hover > .hs-guide-btn,
+.hs-guide-hover:hover > .hs-guide-btn-inline,
+.hs-guide-hover:focus-within > .hs-guide-btn,
+.hs-guide-hover:focus-within > .hs-guide-btn-inline {
+  background: rgba(21, 128, 61, 0.18);
+}
 .hs-guide-menu {
   position: absolute;
   top: calc(100% + 6px);

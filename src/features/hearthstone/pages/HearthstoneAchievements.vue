@@ -73,16 +73,16 @@
               <template v-else>{{ myViewSubLabel }}</template>
             </p>
           </div>
-          <details
+          <div
             v-if="viewMode === 'expansion' && currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0"
-            class="hs-guide-dropdown hs-guide-dropdown-inline"
+            class="hs-guide-dropdown hs-guide-dropdown-inline hs-guide-hover"
           >
-            <summary class="hs-guide-btn-inline">
+            <button type="button" class="hs-guide-btn-inline">
               <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
               </svg>
               攻略
-            </summary>
+            </button>
             <div class="hs-guide-menu">
               <a
                 v-for="link in currentExpansion.referenceLinks"
@@ -93,7 +93,7 @@
                 class="hs-guide-menu-item"
               >{{ link.name }}</a>
             </div>
-          </details>
+          </div>
         </div>
         <div class="hs-top-actions">
           <!-- 我的成就：子切换（按版本/按职业/待完成清单）移入顶栏左侧，填充奖杯行空白；展开/收起为独立按钮（同按版本浏览） -->
@@ -257,16 +257,16 @@
         </template>
       </template>
       <!-- 攻略：跟在导出/批量完成之后；下拉展示各攻略标题，点击在新标签打开 -->
-      <details
+      <div
         v-if="myGroupBy === 'expansion' && currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0"
-        class="hs-guide-dropdown"
+        class="hs-guide-dropdown hs-guide-hover"
       >
-        <summary class="hs-guide-btn">
+        <button type="button" class="hs-guide-btn">
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
           </svg>
           攻略
-        </summary>
+        </button>
         <div class="hs-guide-menu">
           <a
             v-for="link in currentExpansion.referenceLinks"
@@ -277,7 +277,7 @@
             class="hs-guide-menu-item"
           >{{ link.name }}</a>
         </div>
-      </details>
+      </div>
     </div>
 
     <div v-if="progressLoading" class="hs-progress-status" role="status">正在加载成就进度…</div>

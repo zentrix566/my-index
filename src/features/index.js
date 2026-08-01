@@ -6,7 +6,8 @@ export { loadDominoPage } from './domino/index.js'
 export {
   loadDeckCodeViewerPage,
   loadHearthstoneAchievementsPage,
-  loadHearthstoneChangelogPage
+  loadHearthstoneChangelogPage,
+  loadTavernPassXpPage
 } from './hearthstone/index.js'
 export { loadIntervalTrainingPage } from './interval-training/index.js'
 export { loadJiangyinPage } from './jiangyin/index.js'
