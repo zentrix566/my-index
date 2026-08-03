@@ -35,10 +35,12 @@ import {
   deleteResistance,
   getResistanceById,
   getWillpowerAiUsage,
+  getCachedAiReport,
   getPositiveLogById,
   updateResistance,
   updatePositiveLog,
   listAllResistances,
+  listCachedAiReports,
   listCustomAchievements,
   listPendingResistances,
   listPositiveActivities,
@@ -49,6 +51,7 @@ import {
   reorderDemons,
   reserveWillpowerAiUsage,
   resolveResistance,
+  saveAiReport,
   upsertDemon,
   upsertPositiveActivity
 } from './db.js'
@@ -455,7 +458,7 @@ router.get('/days/:date', requireWpAuth, async (req, res) => {
     await settleDueResistances(req.wpUserId)
     const [rows, positiveRows, activities] = await Promise.all([
       listAllResistances(req.wpUserId),
-      listPositiveLogs(req.wpUserId, 1000),
+      listPositiveLogs(req.wpUserId, 5000),
       loadActivities(req.wpUserId)
     ])
     const actMap = new Map(activities.map((item) => [item.activityKey, item]))
@@ -895,6 +898,33 @@ ${json}
 
 const WILLPOWER_AI_DAILY = Number(process.env.WILLPOWER_AI_DAILY) || 5
 
+/** GET /ai-report?scope=today — 返回缓存的历史报告列表或某 scope 的缓存。 */
+router.get('/ai-report', requireWpAuth, async (req, res) => {
+  const { scope } = req.query || {}
+  const userId = req.wpUserId
+  try {
+    if (scope) {
+      // 返回指定 scope 的最近一次缓存
+      const cached = await getCachedAiReport(userId, scope)
+      if (!cached) return res.json({ cached: null })
+      return res.json({
+        cached: {
+          report: cached.report,
+          scope: cached.scope,
+          range: { from: cached.date_from, to: cached.date_to },
+          createdAt: cached.created_at
+        }
+      })
+    }
+    // 无 scope 时返回最近 N 条缓存列表
+    const list = await listCachedAiReports(userId, 10)
+    res.json({ reports: list.map((r) => ({ id: r.id, scope: r.scope, from: r.date_from, to: r.date_to, createdAt: r.created_at })) })
+  } catch (err) {
+    appLog('ERROR', `AI 报告缓存读取失败: uid=${userId}, error=${err?.message}`)
+    res.status(500).json({ error: '读取失败' })
+  }
+})
+
 router.post('/ai-report', requireWpAuth, async (req, res) => {
   const { scope, date, from, to } = req.body || {}
   const range = resolveReportRange(scope, date, from, to)
@@ -909,9 +939,12 @@ router.post('/ai-report', requireWpAuth, async (req, res) => {
     const used = await reserveWillpowerAiUsage(userId, day, WILLPOWER_AI_DAILY)
     if (!used) {
       const usage = await getWillpowerAiUsage(userId, day)
+      // 额度用完时，仍然尝试返回缓存（如果有）
+      const cached = await getCachedAiReport(userId, scope)
       return res.status(429).json({
         error: `今日 AI 分析额度已用完（${WILLPOWER_AI_DAILY} 次/天），明天再来吧～`,
-        quota: { used: usage, limit: WILLPOWER_AI_DAILY }
+        quota: { used: usage, limit: WILLPOWER_AI_DAILY },
+        cached: cached ? { report: cached.report, scope: cached.scope, range: { from: cached.date_from, to: cached.date_to }, createdAt: cached.created_at } : null
       })
     }
     let report
@@ -921,6 +954,12 @@ router.post('/ai-report', requireWpAuth, async (req, res) => {
     } catch (err) {
       await releaseWillpowerAiUsage(userId, day).catch(() => {})
       throw err
+    }
+    // 缓存报告内容，下次同一 scope 可直接读取
+    try {
+      await saveAiReport(userId, scope, range.from, range.to, report)
+    } catch (cacheErr) {
+      appLog('WARN', `AI 报告缓存写入失败（不影响响应）: uid=${userId}, error=${cacheErr?.message}`)
     }
     res.json({
       ok: true,

@@ -17,19 +17,22 @@ import {
   upsertUnlock
 } from './db.js'
 
+/** 模块级缓存的 DateTimeFormat 实例，避免每行记录都 new 一个（7000+ 行时节省大量 CPU）。 */
+const ZONED_FORMATTER = new Intl.DateTimeFormat('en-US', {
+  timeZone: WILLPOWER_TIME_ZONE,
+  year: 'numeric',
+  month: '2-digit',
+  day: '2-digit',
+  hour: '2-digit',
+  hourCycle: 'h23',
+  weekday: 'short'
+})
+
 /** 把 ISO 时间换算到统计时区，返回自然日键与小时。 */
 export function zonedParts(iso, timeZone = WILLPOWER_TIME_ZONE) {
   const date = new Date(iso)
   if (Number.isNaN(date.getTime())) return { dateKey: '', hour: 0, weekday: 0 }
-  const parts = new Intl.DateTimeFormat('en-US', {
-    timeZone,
-    year: 'numeric',
-    month: '2-digit',
-    day: '2-digit',
-    hour: '2-digit',
-    hourCycle: 'h23',
-    weekday: 'short'
-  }).formatToParts(date)
+  const parts = ZONED_FORMATTER.formatToParts(date)
   const map = {}
   for (const part of parts) map[part.type] = part.value
   const weekdayIndex = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].indexOf(map.weekday)
@@ -245,6 +248,8 @@ export async function recalcAchievements(userId) {
   const newlyUnlocked = []
   const nowIso = new Date().toISOString()
 
+  // 收集所有需要更新的成就进度
+  const toUpsert = []
   for (const definition of definitions) {
     const { progress, target } = evaluateRule(definition.rule, ctx)
     const wasUnlocked = Boolean(previous.get(definition.code)?.unlocked_at)
@@ -257,7 +262,7 @@ export async function recalcAchievements(userId) {
       Number(previous.get(definition.code).target) !== target ||
       (unlocked && !wasUnlocked)
     if (changed) {
-      await upsertUnlock(userId, definition.code, progress, target, unlockedAt)
+      toUpsert.push({ userId, code: definition.code, progress, target, unlockedAt })
     }
 
     const view = {
@@ -280,6 +285,17 @@ export async function recalcAchievements(userId) {
     }
     achievements.push(view)
     if (unlocked && !wasUnlocked) newlyUnlocked.push(view)
+  }
+
+  // 批量写入数据库（分批 Promise.all，每批 10 条，避免耗尽 PG 连接池）
+  if (toUpsert.length) {
+    const BATCH = 10
+    for (let i = 0; i < toUpsert.length; i += BATCH) {
+      const batch = toUpsert.slice(i, i + BATCH)
+      await Promise.all(batch.map((item) =>
+        upsertUnlock(item.userId, item.code, item.progress, item.target, item.unlockedAt)
+      ))
+    }
   }
 
   return { achievements, newlyUnlocked, context: ctx }
@@ -314,14 +330,16 @@ export function buildOverview(ctx) {
   const failByDay = countByDay(ctx.failures)
   const { longest, current } = computeStreaks(ctx.successes)
 
-  // 日历视图需要全量按天数据（成功与破防各自计数），个人量级下天数有限，直接全量返回
-  const byDay = [...new Set([...successByDay.keys(), ...failByDay.keys()])]
+  // 日历视图需要全量按天数据（成功、破防与正向各自计数），个人量级下天数有限，直接全量返回
+  const positiveByDay = countByDay(ctx.positives)
+  const byDay = [...new Set([...successByDay.keys(), ...failByDay.keys(), ...positiveByDay.keys()])]
     .filter(Boolean)
     .sort()
     .map((date) => ({
       date,
       success: successByDay.get(date) || 0,
-      fail: failByDay.get(date) || 0
+      fail: failByDay.get(date) || 0,
+      positive: positiveByDay.get(date) || 0
     }))
 
   const weekKeys = new Set(Array.from({ length: 7 }, (_, i) => addDays(today, -i)))

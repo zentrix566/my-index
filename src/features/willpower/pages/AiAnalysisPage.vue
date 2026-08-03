@@ -14,6 +14,26 @@
 
       <p v-if="loadError" class="wp-error">{{ loadError }}</p>
 
+      <!-- 缓存的历史报告快捷入口 -->
+      <div v-if="cachedReports.length && !aiReport" class="wp-card">
+        <div class="wp-card-head">
+          <div>
+            <h2>历史分析</h2>
+            <p>点击可快速查看之前的分析结果（不消耗额度）。</p>
+          </div>
+        </div>
+        <div class="wp-ai-history">
+          <button
+            v-for="r in cachedReports"
+            :key="r.id"
+            type="button"
+            class="wp-chip"
+            :class="{ active: activeCacheId === r.id }"
+            @click="loadCachedReport(r)"
+          >{{ scopeLabel(r.scope) }} · {{ r.from }}</button>
+        </div>
+      </div>
+
       <div class="wp-card">
         <div class="wp-ai-scopes">
           <button
@@ -22,7 +42,7 @@
             type="button"
             class="wp-chip"
             :class="{ active: aiScope === s.value }"
-            @click="aiScope = s.value"
+            @click="aiScope = s.value; activeCacheId = null"
           >{{ s.label }}</button>
         </div>
 
@@ -38,7 +58,7 @@
           <button class="wp-btn primary" type="button" :disabled="aiBusy" @click="generateReport">
             {{ aiBusy ? '分析中…' : '生成分析' }}
           </button>
-          <span v-if="aiQuota" class="wp-ai-quota">今日剩余 {{ aiQuota.limit - aiQuota.used }} / {{ aiQuota.limit }} 次</span>
+          <span v-if="aiQuota !== null" class="wp-ai-quota">今日剩余 {{ aiQuota.limit - aiQuota.used }} / {{ aiQuota.limit }} 次</span>
         </div>
 
         <p v-if="aiError" class="wp-error">{{ aiError }}</p>
@@ -90,10 +110,56 @@ const aiReport = ref('')
 const aiQuota = ref(null)
 const aiHtml = computed(() => (aiReport.value ? md.render(aiReport.value) : ''))
 
+// 缓存的历史报告
+const cachedReports = ref([])
+const activeCacheId = ref(null)
+
+const scopeMap = { today: '今天', last_week: '上周', this_month: '本月', date: '指定日期', range: '时间段' }
+function scopeLabel(scope) { return scopeMap[scope] || scope }
+
+/** 加载缓存的历史报告列表 */
+async function loadCachedReports() {
+  try {
+    const res = await willpowerApi.aiReportCache()
+    cachedReports.value = res.reports || []
+  } catch (err) {
+    // 缓存加载失败不阻塞主流程
+    console.warn('[willpower] 加载 AI 报告缓存列表失败:', err?.message)
+  }
+}
+
+/** 点击历史报告时，直接从服务端读取缓存内容 */
+async function loadCachedReport(r) {
+  activeCacheId.value = r.id
+  aiError.value = ''
+  aiBusy.value = true
+  try {
+    const res = await willpowerApi.aiReportCache(r.scope)
+    if (res.cached && res.cached.report) {
+      aiReport.value = res.cached.report
+      aiScope.value = r.scope
+      // 匹配 scope 到对应的日期参数（方便用户知道是哪段）
+      if (r.from) {
+        if (r.scope === 'date') aiDate.value = r.from
+        else if (r.scope === 'range') { aiFrom.value = r.from; aiTo.value = r.to }
+      }
+      aiQuota.value = null // 缓存命中不显示额度
+    } else {
+      aiReport.value = ''
+      aiError.value = '该缓存已过期或不存在'
+    }
+  } catch (err) {
+    aiError.value = err.message || '读取缓存失败'
+  } finally {
+    aiBusy.value = false
+  }
+}
+
 async function generateReport() {
   aiBusy.value = true
   aiError.value = ''
   aiReport.value = ''
+  activeCacheId.value = null
   try {
     const payload = { scope: aiScope.value }
     if (aiScope.value === 'date') payload.date = aiDate.value
@@ -104,8 +170,18 @@ async function generateReport() {
     const res = await willpowerApi.aiReport(payload)
     aiReport.value = res.report || ''
     aiQuota.value = res.quota || null
+    // 刷新缓存列表（新生成的报告会出现在列表中）
+    loadCachedReports()
   } catch (err) {
-    aiError.value = err.message || '分析失败，请稍后重试'
+    const data = err.message ? JSON.parse(`{"error":"${err.message}"}`) : {}
+    // 如果是 429 且有缓存内容，直接展示缓存
+    if (data.error && data.cached && data.cached.report) {
+      aiReport.value = data.cached.report
+      aiError.value = '今日额度已用完，以上为最近一次的缓存结果'
+      aiQuota.value = data.quota || null
+    } else {
+      aiError.value = err.message || '分析失败，请稍后重试'
+    }
   } finally {
     aiBusy.value = false
   }
@@ -117,5 +193,20 @@ onMounted(async () => {
     router.replace('/willpower/login')
     return
   }
+  // 并行加载：缓存列表 + 尝试加载当前 scope 的缓存
+  await Promise.all([loadCachedReports(), loadCurrentScopeCache()])
 })
+
+/** 页面加载时自动尝试加载「今天」的缓存报告 */
+async function loadCurrentScopeCache() {
+  try {
+    const res = await willpowerApi.aiReportCache('today')
+    if (res.cached && res.cached.report) {
+      aiReport.value = res.cached.report
+      activeCacheId.value = null // 标记为自动加载的缓存
+    }
+  } catch {
+    // 无缓存时静默，等用户手动点生成
+  }
+}
 </script>

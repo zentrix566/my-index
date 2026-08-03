@@ -125,6 +125,10 @@ export const willpowerApi = {
   // AI 报告：scope 支持 last_week / today / date / range
   aiReport(payload) {
     return request(`${BASE}/ai-report`, { method: 'POST', body: JSON.stringify(payload) })
+  },
+  /** 获取缓存的 AI 报告（传 scope 返回单条，不传返回列表） */
+  aiReportCache(scope) {
+    return request(`${BASE}/ai-report${scope ? `?scope=${encodeURIComponent(scope)}` : ''}`)
   }
 }
 

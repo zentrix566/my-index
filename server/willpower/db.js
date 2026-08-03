@@ -1,5 +1,5 @@
 /**
- * 「抵御域外心魔」模块的独立数据层。
+ * 「抵御心魔」模块的独立数据层。
  * - 与炉石模块的 server/db.js 完全隔离：独立连接池、独立建表、独立 SQLite 文件
  * - 生产连独立的 PostgreSQL 库（WILLPOWER_PG_DATABASE，默认 zentrix_willpower）
  * - 本地开发（LOCAL_DEV_MODE=true）落 SQLite 文件，接口行为与 PG 一致
@@ -168,6 +168,17 @@ CREATE TABLE IF NOT EXISTS ai_report_usage (
   count INTEGER NOT NULL DEFAULT 0,
   PRIMARY KEY (user_id, day)
 );
+
+CREATE TABLE IF NOT EXISTS ai_reports (
+  id INTEGER PRIMARY KEY,
+  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  scope TEXT NOT NULL,
+  date_from TEXT NOT NULL,
+  date_to TEXT NOT NULL,
+  report TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS idx_ai_reports_user_scope ON ai_reports(user_id, scope, date_from DESC);
 `
 }
 
@@ -561,7 +572,7 @@ export async function listPendingResistances(userId) {
 /** 成就计算与看板都基于这份全量数据（个人应用量级，直接内存计算最省事）。 */
 export async function listAllResistances(userId, limit = 5000) {
   const { rows } = await query(
-    'SELECT * FROM resistances WHERE user_id = $1 ORDER BY started_at ASC LIMIT $2',
+    'SELECT * FROM resistances WHERE user_id = $1 ORDER BY started_at DESC LIMIT $2',
     [userId, limit]
   )
   return rows
@@ -725,4 +736,35 @@ export async function releaseWillpowerAiUsage(userId, day) {
     day
   ])
   return row?.count || 0
+}
+
+// ========== AI 报告缓存 ==========
+
+/** 查找某用户某 scope 的最近一次缓存报告（同一 scope 只保留最新一份）。 */
+export async function getCachedAiReport(userId, scope) {
+  return queryOne(
+    'SELECT * FROM ai_reports WHERE user_id = $1 AND scope = $2 ORDER BY created_at DESC LIMIT 1',
+    [userId, scope]
+  )
+}
+
+/** 查找某用户最近 N 条缓存报告（用于展示历史列表）。 */
+export async function listCachedAiReports(userId, limit = 10) {
+  const { rows } = await query(
+    'SELECT id, scope, date_from, date_to, created_at FROM ai_reports WHERE user_id = $1 ORDER BY created_at DESC LIMIT $2',
+    [userId, limit]
+  )
+  return rows
+}
+
+/** 写入/更新 AI 报告缓存（同一 scope 覆盖旧记录）。 */
+export async function saveAiReport(userId, scope, dateFrom, dateTo, report) {
+  // 先删除同 scope 旧缓存（保持每个 scope 只有一份）
+  await query('DELETE FROM ai_reports WHERE user_id = $1 AND scope = $2', [userId, scope])
+  const row = await queryOne(
+    `INSERT INTO ai_reports(user_id, scope, date_from, date_to, report, created_at)
+     VALUES($1, $2, $3, $4, $5, $6) RETURNING id`,
+    [userId, scope, dateFrom, dateTo, report, nowIso()]
+  )
+  return row?.id
 }

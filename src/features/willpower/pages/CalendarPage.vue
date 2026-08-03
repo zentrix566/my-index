@@ -46,6 +46,7 @@
               <span class="wp-cal-marks">
                 <span v-if="cell.success" class="wp-mark win">✓{{ cell.success }}</span>
                 <span v-if="cell.fail" class="wp-mark lose">✗{{ cell.fail }}</span>
+                <span v-if="cell.positive" class="wp-mark plus">+{{ cell.positive }}</span>
               </span>
             </button>
           </template>
@@ -54,7 +55,8 @@
         <div class="wp-legend">
           <span><i class="wp-mark win">✓</i> 成功抵御</span>
           <span><i class="wp-mark lose">✗</i> 破防</span>
-          <span>本月成功 {{ monthTotal.success }} 次 · 破防 {{ monthTotal.fail }} 次</span>
+          <span><i class="wp-mark plus">+</i> 正能量</span>
+          <span>本月成功 {{ monthTotal.success }} 次 · 破防 {{ monthTotal.fail }} 次 · 正能量 {{ monthTotal.positive || 0 }} 条</span>
         </div>
       </div>
 
@@ -161,7 +163,7 @@ const cells = computed(() => {
   for (let d = 1; d <= daysInMonth; d += 1) {
     const date = localDateKey(new Date(year, month, d))
     const stat = dayStats.value.get(date)
-    list.push({ date, dayNum: d, success: stat?.success || 0, fail: stat?.fail || 0 })
+    list.push({ date, dayNum: d, success: stat?.success || 0, fail: stat?.fail || 0, positive: stat?.positive || 0 })
   }
   return list
 })
@@ -170,8 +172,8 @@ const monthTotal = computed(() =>
   cells.value
     .filter((cell) => cell.date)
     .reduce(
-      (acc, cell) => ({ success: acc.success + cell.success, fail: acc.fail + cell.fail }),
-      { success: 0, fail: 0 }
+      (acc, cell) => ({ success: acc.success + cell.success, fail: acc.fail + cell.fail, positive: (acc.positive || 0) + (cell.positive || 0) }),
+      { success: 0, fail: 0, positive: 0 }
     )
 )
 

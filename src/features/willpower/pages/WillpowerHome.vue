@@ -9,7 +9,7 @@
         </div>
       </header>
 
-      <WpNav />
+      <WpNav :syncStatus="syncStatus" />
 
       <p v-if="loadError" class="wp-error">{{ loadError }}</p>
 
@@ -23,7 +23,8 @@
         </div>
 
         <p class="wp-section-title">选择心魔</p>
-        <div class="wp-demon-grid">
+        <div v-if="demonsLoading" class="wp-empty">加载心魔列表中...</div>
+        <div v-else class="wp-demon-grid">
           <button
             v-for="d in activeDemons"
             :key="d.demonKey"
@@ -184,6 +185,7 @@ const { user, init } = useWillpowerAuth()
 const { push: toast } = useToast()
 
 const demons = ref([])
+const demonsLoading = ref(false)
 const overview = ref({
   todayCount: 0,
   todayFailCount: 0,
@@ -202,9 +204,11 @@ const overview = ref({
 const achievementSummary = ref({ total: 0, unlocked: 0, points: 0 })
 const pending = ref([])
 const recent = ref([])
-const weekPositiveCount = ref(0)
 const busy = ref(false)
 const loadError = ref('')
+
+// 同步状态：idle | syncing | synced | error
+const syncStatus = ref('idle')
 
 // 内联编辑状态
 const editingId = ref(null)
@@ -266,24 +270,44 @@ function tick() {
   for (const p of pending.value) {
     if (dueAtMs(p) <= nowMs() && !settled.has(p.id)) {
       settled.add(p.id)
-      // 后端在读接口会自动结算，这里重拉一次即可
       refreshOverview().catch(() => {})
     }
   }
 }
 
+/** 用 Promise.allSettled 加载，单个接口失败不拖垮其他（尤其保证心魔列表可用）。 */
 async function loadAll() {
-  const [demonRes, ov, pos] = await Promise.all([
-    willpowerApi.listDemons(),
-    willpowerApi.overview(),
-    willpowerApi.listPositives()
-  ])
-  demons.value = demonRes.demons || []
-  applyOverview(ov)
-  const cutoff = Date.now() - 7 * 24 * 3600 * 1000
-  weekPositiveCount.value = (pos.positives || []).filter(
-    (p) => new Date(p.happenedAt).getTime() >= cutoff
-  ).length
+  demonsLoading.value = true
+  try {
+    const [demonRes, ovRes, posRes] = await Promise.allSettled([
+      willpowerApi.listDemons(),
+      willpowerApi.overview(),
+      willpowerApi.listPositives()
+    ])
+
+    // 心魔列表：优先用 /demons 接口，失败则降级到免鉴权 /catalog
+    if (demonRes.status === 'fulfilled') {
+      demons.value = demonRes.value.demons || []
+    } else {
+      console.warn('[willpower] /demons 加载失败，尝试 /catalog 兜底:', demonRes.reason?.message)
+      try {
+        const cat = await willpowerApi.catalog()
+        demons.value = (cat.demons || []).map((d) => ({ ...d, isBuiltin: true, archived: false }))
+      } catch {
+        demons.value = []
+      }
+    }
+
+    if (ovRes.status === 'fulfilled') applyOverview(ovRes.value)
+    else console.warn('[willpower] /overview 加载失败:', ovRes.reason?.message)
+
+    // positives 仅用于 overview 中 weekPositiveCount（后端已算好），前端不再单独拉取做过滤
+    if (posRes.status !== 'fulfilled') {
+      console.warn('[willpower] /positives 加载失败:', posRes.reason?.message)
+    }
+  } finally {
+    demonsLoading.value = false
+  }
   if (!form.demonKey && activeDemons.value.length) form.demonKey = activeDemons.value[0].demonKey
 }
 
@@ -294,9 +318,14 @@ function applyOverview(ov) {
   if (ov.achievementSummary) achievementSummary.value = ov.achievementSummary
 }
 
+/** 轻量刷新（仅更新统计数据，不阻塞 UI）。写操作后延迟调用以保持数据新鲜。 */
 async function refreshOverview() {
-  const ov = await willpowerApi.overview()
-  applyOverview(ov)
+  try {
+    const ov = await willpowerApi.overview()
+    applyOverview(ov)
+  } catch (err) {
+    console.warn('[willpower] 刷新概览失败:', err?.message)
+  }
 }
 
 function announceUnlocks(list) {
@@ -304,24 +333,61 @@ function announceUnlocks(list) {
   for (const a of list) toast(`🏆 解锁成就：${a.name}（+${a.points} 分）`, { type: 'success' })
 }
 
+/**
+ * 乐观更新辅助：先在本地 UI 插入记录，再异步提交到服务端。
+ * 成功后标记 syncStatus=synced；失败则回滚本地并提示。
+ */
+function optimisticPrepend(resistance) {
+  recent.value.unshift(resistance)
+  if (resistance.status === 'success') overview.value.todayCount += 1
+  else overview.value.todayFailCount += 1
+}
+
+function rollbackPrepend(id) {
+  const idx = recent.value.findIndex((r) => r.id === id)
+  if (idx >= 0) {
+    const removed = recent.value.splice(idx, 1)[0]
+    if (removed.status === 'success') overview.value.todayCount = Math.max(0, overview.value.todayCount - 1)
+    else overview.value.todayFailCount = Math.max(0, overview.value.todayFailCount - 1)
+  }
+}
+
 async function submitQuick(result) {
   if (!form.demonKey) return
+  const demonKey = form.demonKey
+  const note = form.note.trim()
   busy.value = true
+  syncStatus.value = 'syncing'
+
+  // 构造乐观占位记录
+  const now = new Date().toISOString()
+  const optimistic = {
+    id: `opt-${Date.now()}`,
+    demonKey,
+    mode: 'quick',
+    status: result,
+    note,
+    startedAt: now
+  }
+  optimisticPrepend(optimistic)
+  form.note = ''
+  toast(result === 'failed' ? '已记录一次破防，明天扳回来' : '已记录一次抵御 ✓', {
+    type: result === 'failed' ? 'info' : 'success'
+  })
+
   try {
-    const res = await willpowerApi.createResistance({
-      demonKey: form.demonKey,
-      mode: 'quick',
-      result,
-      note: form.note.trim()
-    })
-    form.note = ''
+    const res = await willpowerApi.createResistance({ demonKey, mode: 'quick', result, note })
+    // 用服务端返回的真实记录替换乐观占位
+    rollbackPrepend(optimistic.id)
+    if (res.resistance) optimisticPrepend(res.resistance)
     announceUnlocks(res.newlyUnlocked)
-    toast(result === 'failed' ? '已记录一次破防，明天扳回来' : '已记录一次抵御 ✓', {
-      type: result === 'failed' ? 'info' : 'success'
-    })
-    await refreshOverview()
+    syncStatus.value = 'synced'
+    // 延迟刷新概览（不阻塞 UI）
+    setTimeout(() => refreshOverview().finally(() => { syncStatus.value = 'idle' }), 800)
   } catch (err) {
-    toast(err.message || '记录失败', { type: 'error' })
+    rollbackPrepend(optimistic.id)
+    toast(err.message || '记录失败，请检查网络', { type: 'error' })
+    syncStatus.value = 'error'
   } finally {
     busy.value = false
   }
@@ -337,20 +403,23 @@ function quickFail() {
 
 async function startTimer() {
   if (!form.demonKey) return
+  const demonKey = form.demonKey
+  const durationSec = Math.max(1, Number(holdMinutes.value) || 10) * 60
+  const note = form.note.trim()
   busy.value = true
+  syncStatus.value = 'syncing'
   try {
-    const res = await willpowerApi.createResistance({
-      demonKey: form.demonKey,
-      mode: 'timer',
-      durationSec: Math.max(1, Number(holdMinutes.value) || 10) * 60,
-      note: form.note.trim()
-    })
+    const res = await willpowerApi.createResistance({ demonKey, mode: 'timer', durationSec, note })
     form.note = ''
     announceUnlocks(res.newlyUnlocked)
     toast('计时挑战已开启，坚持住！', { type: 'success' })
+    syncStatus.value = 'synced'
+    // 计时挑战需要真实 ID 才能结算，必须等服务端返回后再刷新
     await refreshOverview()
+    syncStatus.value = 'idle'
   } catch (err) {
     toast(err.message || '开启失败', { type: 'error' })
+    syncStatus.value = 'error'
   } finally {
     busy.value = false
   }
@@ -358,15 +427,18 @@ async function startTimer() {
 
 async function resolve(id, result) {
   busy.value = true
+  syncStatus.value = 'syncing'
   try {
     const res = await willpowerApi.resolveResistance(id, result)
     announceUnlocks(res.newlyUnlocked)
     toast(result === 'success' ? '这一关，扛住了！' : '已记录一次破防', {
       type: result === 'success' ? 'success' : 'info'
     })
-    await refreshOverview()
+    syncStatus.value = 'synced'
+    setTimeout(() => refreshOverview().finally(() => { syncStatus.value = 'idle' }), 800)
   } catch (err) {
     toast(err.message || '结算失败', { type: 'error' })
+    syncStatus.value = 'error'
   } finally {
     busy.value = false
   }
@@ -375,7 +447,10 @@ async function resolve(id, result) {
 async function removeRecord(id) {
   try {
     await willpowerApi.deleteResistance(id)
-    await refreshOverview()
+    // 从本地列表移除
+    const idx = recent.value.findIndex((r) => r.id === id)
+    if (idx >= 0) recent.value.splice(idx, 1)
+    refreshOverview()
   } catch (err) {
     toast(err.message || '删除失败', { type: 'error' })
   }
@@ -412,7 +487,7 @@ async function saveEdit(id) {
     })
     toast('记录已更新', { type: 'success' })
     editingId.value = null
-    await refreshOverview()
+    refreshOverview()
   } catch (err) {
     toast(err.message || '更新失败', { type: 'error' })
   } finally {
@@ -438,6 +513,7 @@ onMounted(async () => {
   } catch (err) {
     loadError.value = err.message || '数据加载失败'
   }
+  syncStatus.value = 'synced'
   timer = setInterval(tick, 1000)
 })
 
