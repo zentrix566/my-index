@@ -13,6 +13,11 @@ import { lookup } from './geoip.js'
 import cookieParser from 'cookie-parser'
 import authRouter, { requireAuth, getUserIdFromReq } from './auth.js'
 import statsRouter from './routes/stats.js'
+import willpowerRouter from './willpower/routes.js'
+import {
+  closeWillpowerDatabase,
+  ensureWillpowerSchema
+} from './willpower/db.js'
 import {
   closeDatabase,
   ensureSchema,
@@ -213,6 +218,9 @@ function getUserKey(req) {
 
 // ========== 认证 API ==========
 app.use('/api/auth', authRouter)
+
+// ========== 抵御域外心魔 API（独立账号体系与独立数据库）==========
+app.use('/api/willpower', willpowerRouter)
 
 // ========== 成就进度 API ==========
 
@@ -730,6 +738,14 @@ let isShuttingDown = false
 async function bootstrap() {
   await ensureSchema()
 
+  // 心魔库是独立的 PostgreSQL 库，建表失败不应拖垮主站；模块首个请求会自动重试
+  try {
+    await ensureWillpowerSchema()
+    appLog('SERVER', '心魔模块数据库已就绪')
+  } catch (err) {
+    appLog('ERROR', `心魔模块数据库初始化失败（该模块暂不可用）: ${err.message}`)
+  }
+
   if (process.env.SEED_ON_STARTUP !== 'false') {
     try {
       const { ensureSeeded } = await import('./seed/seed.js')
@@ -771,6 +787,7 @@ async function shutdown(signal) {
       httpServer.closeIdleConnections?.()
     })
     await closeDatabase()
+    await closeWillpowerDatabase().catch(() => {})
     clearTimeout(forceTimer)
     appLog('SERVER', '优雅停机完成')
     process.exit(0)

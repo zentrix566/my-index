@@ -982,6 +982,10 @@ a.content-card:hover {
 }
 
 .footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 14px;
+  justify-content: center;
   margin-top: 6px;
   font-size: 0.82rem;
 }

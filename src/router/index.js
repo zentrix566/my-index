@@ -11,7 +11,18 @@ import {
   loadIntervalTrainingPage,
   loadJiangyinPage,
   loadStatsPage,
-  loadWorldCupPage
+  loadWorldCupPage,
+  loadWillpowerHome,
+  loadWillpowerAchievements,
+  loadWillpowerProfile,
+  loadWillpowerPositive,
+  loadWillpowerCalendar,
+  loadWillpowerAiAnalysis,
+  loadWillpowerChangelog,
+  loadWillpowerLogin,
+  loadWillpowerRegister,
+  loadWillpowerForgotPassword,
+  loadWillpowerResetPassword
 } from '../features/index.js'
 
 // 路由级懒加载：每个页面单独成 chunk，首屏只加载当前路由所需的代码，
@@ -52,6 +63,17 @@ const routes = [
   { path: '/hearthstone/changelog', name: 'hearthstone-changelog', component: loadHearthstoneChangelogPage, meta: { title: '更新日志 | Zentrix' } },
   { path: '/hearthstone/xp', name: 'hearthstone-xp', component: loadTavernPassXpPage, meta: { title: '战令经验计算器 | Zentrix' } },
   { path: '/stats', name: 'stats', component: loadStatsPage },
+  { path: '/willpower', name: 'willpower', component: loadWillpowerHome, meta: { title: '抵御心魔 | Zentrix' } },
+  { path: '/willpower/achievements', name: 'willpower-achievements', component: loadWillpowerAchievements, meta: { title: '成就殿堂 | 抵御心魔' } },
+  { path: '/willpower/positive', name: 'willpower-positive', component: loadWillpowerPositive, meta: { title: '今日正能量 | 抵御心魔' } },
+  { path: '/willpower/calendar', name: 'willpower-calendar', component: loadWillpowerCalendar, meta: { title: '抵御日历 | 抵御心魔' } },
+  { path: '/willpower/ai', name: 'willpower-ai', component: loadWillpowerAiAnalysis, meta: { title: 'AI 分析 | 抵御心魔' } },
+  { path: '/willpower/changelog', name: 'willpower-changelog', component: loadWillpowerChangelog, meta: { title: '更新日志 | 抵御心魔' } },
+  { path: '/willpower/profile', name: 'willpower-profile', component: loadWillpowerProfile, meta: { title: '个人中心 | 抵御心魔' } },
+  { path: '/willpower/login', name: 'willpower-login', component: loadWillpowerLogin, meta: { title: '登录 | 抵御心魔' } },
+  { path: '/willpower/register', name: 'willpower-register', component: loadWillpowerRegister, meta: { title: '注册 | 抵御心魔' } },
+  { path: '/willpower/forgot-password', name: 'willpower-forgot', component: loadWillpowerForgotPassword, meta: { title: '找回密码 | 抵御心魔' } },
+  { path: '/willpower/reset-password', name: 'willpower-reset', component: loadWillpowerResetPassword, meta: { title: '重置密码 | 抵御心魔' } },
   { path: '/about', name: 'about', component: About },
   { path: '/changelog', redirect: '/hearthstone/changelog' },
   { path: '/login', name: 'login', component: Login },

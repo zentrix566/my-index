@@ -54,11 +54,24 @@
       </div>
     </div>
   </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">友情链接</p>
+        <h2>友情链接</h2>
+        <p>顺手收藏的站点，也欢迎互换链接。</p>
+      </div>
+      <FriendLinkGrid :links="friendLinks" />
+    </div>
+  </section>
 </template>
 
 <script setup>
+import FriendLinkGrid from '../components/FriendLinkGrid.vue'
 import ProjectGrid from '../components/ProjectGrid.vue'
 import VueAppGrid from '../components/VueAppGrid.vue'
+import { friendLinks } from '../data/friendLinks'
 import { projects } from '../data/projects'
 import { vueApps } from '../data/vueApps'
 </script>

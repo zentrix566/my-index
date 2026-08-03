@@ -48,6 +48,10 @@ data/app.db-shm
 data/app.local.db
 data/app.local.db-wal
 data/app.local.db-shm
+# 「抵御心魔」独立 SQLite 运行时库，不入库（含用户记录）
+data/willpower.local.db
+data/willpower.local.db-wal
+data/willpower.local.db-shm
 server/seed/*.local.json
 
 # 数据库导出中间产物（含用户密码哈希等敏感数据，绝不入库）

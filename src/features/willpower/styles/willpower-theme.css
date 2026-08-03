@@ -1,0 +1,1377 @@
+/* 「抵御心魔」模块主题与组件样式
+ * 复用全站 CSS 变量（--bg/--surface/--text/--muted/--line/--primary/--accent/--warm/--danger/--shadow），
+ * 并在 .wp-page 作用域内补充一套紫色系强调色，与炉石金区分。
+ */
+
+/* 强调色变量必须同时覆盖内容页与认证页：
+ * 之前只挂在 .wp-page 上，导致 .wp-auth 下 var(--wp) 解析失败，
+ * 主按钮变成「透明底 + 白字」，在白色卡片上完全看不见。 */
+.wp-page,
+.wp-auth {
+  --wp: #7c3aed;
+  --wp-dark: #6d28d9;
+  --wp-soft: rgba(124, 58, 237, 0.12);
+  --wp-line: rgba(124, 58, 237, 0.28);
+  --wp-win: #0f766e;
+  --wp-lose: #b91c1c;
+}
+
+.wp-page {
+  padding: 28px 24px 56px;
+  min-height: calc(100vh - 137px);
+}
+
+.wp-page *,
+.wp-auth * {
+  box-sizing: border-box;
+}
+
+.wp-container {
+  margin: 0 auto;
+  max-width: 1080px;
+}
+
+.wp-header {
+  align-items: flex-end;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  justify-content: space-between;
+  margin-bottom: 22px;
+}
+
+.wp-header h1 {
+  font-size: clamp(1.7rem, 3.4vw, 2.5rem);
+  letter-spacing: 0;
+  line-height: 1.12;
+  margin: 4px 0;
+}
+
+.wp-header p {
+  color: var(--muted);
+}
+
+.wp-eyebrow {
+  color: var(--wp);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+/* 子导航：首页 / 成就 / 个人中心 */
+.wp-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 22px;
+}
+
+.wp-nav a {
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--muted);
+  font-weight: 750;
+  padding: 8px 16px;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.wp-nav a:hover {
+  border-color: var(--wp-line);
+  color: var(--text);
+}
+
+.wp-nav a.router-link-active {
+  background: var(--wp-soft);
+  border-color: var(--wp-line);
+  color: var(--wp-dark);
+}
+
+/* 账号状态栏：品牌 + 个人中心 / 更新日志 / 退出登录 同一行 */
+.wp-nav-wrap {
+  margin-bottom: 22px;
+}
+
+.wp-account-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+  padding: 6px 0 14px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 14px;
+}
+
+.wp-brand {
+  color: var(--wp);
+  font-size: 1.05rem;
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  text-decoration: none;
+}
+
+.wp-brand:hover {
+  color: var(--wp-dark);
+}
+
+.wp-account-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.wp-account-link {
+  display: inline-flex;
+  align-items: center;
+  padding: 7px 13px;
+  border: 1px solid var(--wp-line);
+  border-radius: 999px;
+  color: var(--text);
+  font-size: 13px;
+  font-weight: 650;
+  text-decoration: none;
+  background: transparent;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.wp-account-link:hover {
+  border-color: var(--wp);
+  color: var(--wp-dark);
+  background: var(--wp-soft);
+}
+
+.wp-account-link.router-link-active {
+  background: var(--wp-soft);
+  border-color: var(--wp-line);
+  color: var(--wp-dark);
+}
+
+.wp-account-user {
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--muted);
+  padding: 0 4px;
+}
+
+.wp-logout {
+  color: var(--wp-lose);
+  border-color: rgba(185, 28, 28, 0.3);
+}
+
+.wp-logout:hover {
+  color: var(--wp-lose);
+  border-color: var(--wp-lose);
+  background: rgba(185, 28, 28, 0.1);
+}
+
+/* 通用面板卡片 */
+.wp-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 22px;
+  margin-bottom: 18px;
+}
+
+.wp-card-head {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.wp-card-head h2 {
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+
+.wp-card-head p {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.wp-section-title {
+  color: var(--muted);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  margin: 4px 0 10px;
+  text-transform: uppercase;
+}
+
+/* 统计卡片网格 */
+.wp-stat-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.wp-stat {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  padding: 18px;
+}
+
+.wp-stat strong {
+  color: var(--wp-dark);
+  display: block;
+  font-size: 1.9rem;
+  line-height: 1.1;
+}
+
+.wp-stat span {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.wp-stat .wp-stat-sub {
+  color: var(--wp);
+  font-size: 0.74rem;
+  font-weight: 800;
+}
+
+/* 按钮 */
+.wp-btn {
+  align-items: center;
+  border: 0;
+  border-radius: 10px;
+  cursor: pointer;
+  display: inline-flex;
+  font-weight: 750;
+  justify-content: center;
+  min-height: 42px;
+  padding: 10px 18px;
+  text-decoration: none;
+  transition: background 0.15s, border-color 0.15s, color 0.15s, opacity 0.15s;
+}
+
+/* 兜底色写死一份，避免变量缺失时按钮和背景撞色导致「隐形按钮」 */
+.wp-btn.primary {
+  background: var(--wp, #7c3aed);
+  border: 1px solid var(--wp-dark, #6d28d9);
+  color: #fff;
+}
+
+.wp-btn.primary:hover {
+  background: var(--wp-dark, #6d28d9);
+}
+
+.wp-btn.ghost {
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, #d9e1ea);
+  color: var(--text, #18212f);
+}
+
+.wp-btn.ghost:hover {
+  background: var(--wp-soft, rgba(124, 58, 237, 0.12));
+  border-color: var(--wp-line, rgba(124, 58, 237, 0.28));
+  color: var(--wp-dark, #6d28d9);
+}
+
+.wp-btn.danger {
+  background: rgba(185, 28, 28, 0.08);
+  border: 1px solid rgba(185, 28, 28, 0.32);
+  color: var(--danger, #b91c1c);
+}
+
+.wp-btn.danger:hover {
+  background: rgba(185, 28, 28, 0.16);
+}
+
+.wp-btn.block {
+  width: 100%;
+}
+
+.wp-btn.small {
+  font-size: 0.84rem;
+  min-height: 34px;
+  padding: 6px 12px;
+}
+
+.wp-btn:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+.wp-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+/* 心魔选择网格 */
+.wp-demon-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+  margin-bottom: 14px;
+}
+
+.wp-demon-btn {
+  align-items: center;
+  background: var(--surface);
+  border: 1.5px solid var(--line);
+  border-radius: 12px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px 10px;
+  text-align: center;
+  transition: border-color 0.15s, box-shadow 0.15s, transform 0.1s;
+}
+
+.wp-demon-btn .wp-demon-emoji {
+  font-size: 1.5rem;
+  line-height: 1;
+}
+
+.wp-demon-btn .wp-demon-name {
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 750;
+}
+
+.wp-demon-btn:not(.selected):hover {
+  border-color: var(--wp-line);
+}
+
+.wp-demon-btn.selected {
+  border-color: var(--wp);
+  box-shadow: 0 0 0 3px var(--wp-soft);
+}
+
+.wp-demon-btn.archived {
+  opacity: 0.4;
+}
+
+/* 表单 */
+.wp-field {
+  display: grid;
+  gap: 6px;
+  margin-bottom: 12px;
+}
+
+.wp-field label {
+  color: var(--text);
+  font-size: 0.9rem;
+  font-weight: 750;
+}
+
+.wp-field input,
+.wp-field select,
+.wp-field textarea {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  min-height: 40px;
+  padding: 8px 10px;
+  width: 100%;
+}
+
+.wp-field textarea {
+  resize: vertical;
+}
+
+.wp-form-row {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+}
+
+.wp-hint {
+  color: var(--muted);
+  font-size: 0.86rem;
+  margin-top: 4px;
+}
+
+.wp-error {
+  background: rgba(185, 28, 28, 0.08);
+  border: 1px solid rgba(185, 28, 28, 0.25);
+  border-radius: 8px;
+  color: var(--danger);
+  font-size: 0.9rem;
+  padding: 10px 12px;
+}
+
+.wp-ok {
+  background: rgba(15, 118, 110, 0.1);
+  border: 1px solid rgba(15, 118, 110, 0.28);
+  border-radius: 8px;
+  color: var(--accent);
+  font-size: 0.9rem;
+  padding: 10px 12px;
+}
+
+/* 计时挑战 / 待结算列表 */
+.wp-challenge {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: grid;
+  gap: 12px;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  margin-bottom: 10px;
+  padding: 14px;
+}
+
+.wp-challenge .wp-challenge-emoji {
+  font-size: 1.6rem;
+}
+
+.wp-challenge .wp-challenge-meta strong {
+  color: var(--text);
+}
+
+.wp-challenge .wp-challenge-meta span {
+  color: var(--muted);
+  display: block;
+  font-size: 0.86rem;
+}
+
+.wp-countdown {
+  color: var(--wp-dark);
+  font-size: 1.4rem;
+  font-weight: 900;
+  font-variant-numeric: tabular-nums;
+}
+
+.wp-challenge-actions {
+  display: flex;
+  gap: 8px;
+}
+
+/* 记录列表 */
+.wp-record-list {
+  display: grid;
+  gap: 8px;
+}
+
+.wp-record {
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: auto minmax(0, 1fr) auto auto auto;
+  padding: 12px 14px;
+}
+
+.wp-record .wp-record-emoji {
+  font-size: 1.4rem;
+}
+
+.wp-record .wp-record-main strong {
+  color: var(--text);
+}
+
+.wp-record .wp-record-main span {
+  color: var(--muted);
+  display: block;
+  font-size: 0.82rem;
+}
+
+.wp-record .wp-record-time {
+  color: var(--muted);
+  font-size: 0.82rem;
+}
+
+.wp-record .wp-record-del {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.wp-record .wp-record-del:hover {
+  color: var(--danger);
+}
+
+.wp-record-actions {
+  align-items: center;
+  display: flex;
+  gap: 6px;
+}
+
+.wp-record-edit {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  cursor: pointer;
+  font-size: 1.1rem;
+}
+
+.wp-record-edit:hover {
+  color: var(--wp, #7c3aed);
+}
+
+/* 内联编辑表单：占满整行（网格首列到末列） */
+.wp-record-edit-form {
+  border-top: 1px dashed var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  grid-column: 1 / -1;
+  margin-top: 4px;
+  padding-top: 12px;
+}
+
+/* 成就网格 */
+.wp-ach-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+}
+
+.wp-ach {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 18px;
+  position: relative;
+}
+
+.wp-ach.unlocked {
+  border-color: var(--wp-line);
+  box-shadow: 0 0 0 1px var(--wp-line), var(--shadow);
+}
+
+.wp-ach.locked {
+  opacity: 0.92;
+}
+
+.wp-ach.hidden-locked {
+  background: linear-gradient(180deg, rgba(124, 58, 237, 0.06), var(--surface));
+}
+
+.wp-ach-top {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+}
+
+.wp-ach-icon {
+  align-items: center;
+  background: var(--wp-soft);
+  border-radius: 10px;
+  color: var(--wp-dark);
+  display: flex;
+  font-size: 1.3rem;
+  font-weight: 900;
+  height: 40px;
+  justify-content: center;
+  width: 40px;
+}
+
+.wp-ach.unlocked .wp-ach-icon {
+  background: var(--wp);
+  color: #fff;
+}
+
+.wp-ach.locked .wp-ach-icon {
+  background: var(--surface-soft);
+  color: var(--muted);
+}
+
+.wp-ach h3 {
+  font-size: 1.02rem;
+  line-height: 1.2;
+}
+
+.wp-ach .wp-ach-tier {
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 3px 9px;
+}
+
+.wp-ach-tier.tier-入门,
+.wp-ach-tier.tier-普通 {
+  background: var(--surface-soft);
+  color: var(--muted);
+}
+
+.wp-ach-tier.tier-进阶 {
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--primary-dark);
+}
+
+.wp-ach-tier.tier-精通,
+.wp-ach-tier.tier-大师 {
+  background: rgba(180, 83, 9, 0.12);
+  color: var(--warm);
+}
+
+.wp-ach-tier.tier-隐藏 {
+  background: var(--wp-soft);
+  color: var(--wp-dark);
+}
+
+.wp-ach p {
+  color: var(--muted);
+  font-size: 0.88rem;
+}
+
+.wp-ach .wp-ach-points {
+  color: var(--wp-dark);
+  font-size: 0.82rem;
+  font-weight: 800;
+}
+
+/* 进度条 */
+.wp-progress {
+  background: var(--surface-soft);
+  border-radius: 999px;
+  height: 8px;
+  overflow: hidden;
+}
+
+.wp-progress > i {
+  background: var(--wp);
+  display: block;
+  height: 100%;
+}
+
+.wp-ach-foot {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-top: auto;
+}
+
+/* 隐藏成就提示 */
+.wp-hidden-hint {
+  color: var(--wp-dark);
+  font-size: 0.84rem;
+  font-style: italic;
+}
+
+/* 简易柱状图（14 天趋势 / 按心魔 / 按小时） */
+.wp-bars {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.wp-bar-row {
+  align-items: center;
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 64px minmax(0, 1fr) 34px;
+}
+
+.wp-bar-track {
+  background: var(--surface-soft);
+  border-radius: 999px;
+  height: 12px;
+  overflow: hidden;
+}
+
+.wp-bar-fill {
+  background: var(--wp);
+  height: 100%;
+}
+
+.wp-bar-row span:last-child {
+  color: var(--muted);
+  font-size: 0.82rem;
+  text-align: right;
+}
+
+/* 周小结 */
+.wp-weekly {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.wp-weekly .wp-stat strong {
+  color: var(--accent);
+}
+
+/* 空状态 */
+.wp-empty {
+  color: var(--muted);
+  font-size: 0.92rem;
+  padding: 18px;
+  text-align: center;
+}
+
+/* Toast */
+.wp-toast-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  position: fixed;
+  right: 20px;
+  top: 84px;
+  z-index: 60;
+}
+
+.wp-toast {
+  animation: wp-toast-in 0.2s ease;
+  background: var(--wp-dark);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 700;
+  max-width: 320px;
+  padding: 12px 16px;
+}
+
+.wp-toast.info {
+  background: #334155;
+}
+
+.wp-toast.success {
+  background: var(--accent);
+}
+
+.wp-toast.error {
+  background: var(--danger);
+}
+
+@keyframes wp-toast-in {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* 认证页（登录/注册/忘记/重置）居中卡片 */
+.wp-auth {
+  align-items: center;
+  display: flex;
+  justify-content: center;
+  min-height: calc(100vh - 137px);
+  padding: 40px 20px;
+}
+
+.wp-auth-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  box-shadow: var(--shadow);
+  max-width: 420px;
+  padding: 30px;
+  width: 100%;
+}
+
+.wp-auth-card h1 {
+  font-size: 1.6rem;
+  margin: 6px 0 4px;
+}
+
+.wp-auth-card .wp-sub {
+  color: var(--muted);
+  margin-bottom: 20px;
+}
+
+.wp-auth-card .wp-actions {
+  margin-top: 6px;
+}
+
+.wp-auth-card .wp-switch {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 18px;
+  text-align: center;
+}
+
+.wp-auth-card .wp-switch a {
+  color: var(--wp);
+  font-weight: 750;
+  text-decoration: none;
+}
+
+.wp-loading {
+  color: var(--muted);
+  padding: 40px;
+  text-align: center;
+}
+
+/* ===== 抵御日历 ===== */
+.wp-cal-head {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.wp-cal-title {
+  font-size: 1.1rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+}
+
+.wp-cal-week {
+  color: var(--muted);
+  display: grid;
+  font-size: 0.78rem;
+  font-weight: 800;
+  gap: 6px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  text-align: center;
+}
+
+.wp-cal-grid {
+  display: grid;
+  gap: 6px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  margin-top: 6px;
+}
+
+.wp-cal-cell {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  min-height: 68px;
+  padding: 6px 7px;
+  text-align: left;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.wp-cal-cell:hover {
+  border-color: var(--wp-line);
+}
+
+.wp-cal-cell.blank {
+  background: transparent;
+  border-color: transparent;
+  cursor: default;
+}
+
+.wp-cal-cell.today {
+  border-color: var(--wp);
+}
+
+.wp-cal-cell.selected {
+  box-shadow: 0 0 0 3px var(--wp-soft);
+  border-color: var(--wp);
+}
+
+.wp-cal-cell.future {
+  opacity: 0.45;
+}
+
+.wp-cal-day {
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+}
+
+.wp-cal-cell.today .wp-cal-day {
+  color: var(--wp-dark);
+}
+
+.wp-cal-marks {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin-top: auto;
+}
+
+.wp-mark {
+  border-radius: 999px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  line-height: 1.5;
+  padding: 1px 7px;
+}
+
+.wp-mark.win {
+  background: rgba(15, 118, 110, 0.14);
+  color: var(--wp-win);
+}
+
+.wp-mark.lose {
+  background: rgba(185, 28, 28, 0.12);
+  color: var(--wp-lose);
+}
+
+.wp-mark.plus {
+  background: rgba(37, 99, 235, 0.12);
+  color: var(--primary-dark);
+}
+
+.wp-legend {
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.82rem;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+/* ===== 记录状态标签 ===== */
+.wp-status {
+  border-radius: 999px;
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+
+.wp-status.success {
+  background: rgba(15, 118, 110, 0.14);
+  color: var(--wp-win);
+}
+
+.wp-status.failed {
+  background: rgba(185, 28, 28, 0.12);
+  color: var(--wp-lose);
+}
+
+.wp-status.pending {
+  background: var(--wp-soft);
+  color: var(--wp-dark);
+}
+
+.wp-record.is-failed {
+  border-color: rgba(185, 28, 28, 0.32);
+}
+
+/* ===== 环形饼图 ===== */
+.wwp-pie-track,
+.wp-pie-track {
+  stroke: var(--line);
+}
+
+/* 饼在上、图例在下居中：避免图例文字横向溢出饼区 */
+.wp-pie-wrap {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.wp-pie {
+  flex: 0 0 auto;
+}
+
+.wp-pie-center {
+  fill: var(--text);
+  font-size: 10px;
+  font-weight: 800;
+  text-anchor: middle;
+}
+
+.wp-pie-center-sub {
+  fill: var(--muted);
+  font-size: 6.5px;
+  text-anchor: middle;
+}
+
+.wp-pie-legend {
+  display: grid;
+  flex: none;
+  gap: 8px;
+  width: 100%;
+  max-width: 320px;
+}
+
+.wp-pie-item {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 12px minmax(0, 1fr) auto auto;
+}
+
+.wp-pie-dot {
+  border-radius: 3px;
+  height: 12px;
+  width: 12px;
+}
+
+.wp-pie-name {
+  color: var(--text);
+  font-size: 0.9rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wp-pie-value {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.wp-pie-pct {
+  color: var(--wp-dark);
+  font-size: 0.86rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  min-width: 44px;
+  text-align: right;
+}
+
+/* ===== 快捷入口（今日页顶部） ===== */
+.wp-quick-links {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  margin-bottom: 18px;
+}
+
+.wp-quick-link {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  box-shadow: var(--shadow);
+  color: inherit;
+  display: flex;
+  gap: 12px;
+  padding: 14px 16px;
+  text-decoration: none;
+  transition: border-color 0.15s, transform 0.15s;
+}
+
+.wp-quick-link:hover {
+  border-color: var(--wp-line);
+  transform: translateY(-2px);
+}
+
+.wp-quick-link .wp-quick-emoji {
+  font-size: 1.5rem;
+}
+
+.wp-quick-link strong {
+  display: block;
+  font-size: 0.98rem;
+}
+
+.wp-quick-link span.wp-quick-sub {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+@media (max-width: 840px) {
+  .wp-stat-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .wp-weekly {
+    grid-template-columns: 1fr;
+  }
+
+  .wp-challenge,
+  .wp-record {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+
+  .wp-challenge-actions,
+  .wp-record .wp-record-del {
+    grid-column: 1 / -1;
+    justify-self: start;
+  }
+
+  .wp-cal-cell {
+    min-height: 56px;
+    padding: 4px 5px;
+  }
+
+  .wp-pie-wrap {
+    gap: 16px;
+    justify-content: center;
+  }
+}
+
+/* ===== AI 分析 ===== */
+.wp-ai-scopes {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.wp-chip {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--text);
+  cursor: pointer;
+  font-size: 0.86rem;
+  padding: 6px 14px;
+  transition: border-color 0.15s, background 0.15s, color 0.15s;
+}
+
+.wp-chip:hover {
+  border-color: var(--wp-line);
+}
+
+.wp-chip.active {
+  background: var(--wp, #7c3aed);
+  border-color: var(--wp, #7c3aed);
+  color: #fff;
+}
+
+.wp-ai-dates {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.wp-ai-dates label {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  font-size: 0.84rem;
+  gap: 6px;
+}
+
+.wp-ai-dates input[type='date'] {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--text);
+  font: inherit;
+  padding: 5px 8px;
+}
+
+.wp-ai-quota {
+  color: var(--muted);
+  font-size: 0.8rem;
+}
+
+/* Markdown 渲染（markdown-it，html:false 已转义，安全） */
+.wp-markdown {
+  background: var(--surface-soft);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  line-height: 1.7;
+  margin-top: 16px;
+  padding: 16px 18px;
+}
+
+.wp-markdown > :first-child {
+  margin-top: 0;
+}
+
+.wp-markdown > :last-child {
+  margin-bottom: 0;
+}
+
+.wp-markdown h3,
+.wp-markdown h4 {
+  margin: 14px 0 6px;
+}
+
+.wp-markdown p {
+  margin: 8px 0;
+  white-space: pre-wrap;
+}
+
+.wp-markdown ul {
+  margin: 8px 0;
+  padding-left: 20px;
+}
+
+.wp-markdown li + li {
+  margin-top: 4px;
+}
+
+.wp-markdown code {
+  background: rgba(124, 58, 237, 0.12);
+  border-radius: 4px;
+  font-size: 0.9em;
+  padding: 1px 5px;
+}
+
+.wp-markdown strong {
+  color: var(--wp-dark);
+}
+
+/* ===== 个人中心（仿炉石 Settings：左上角标题 + tab 分区） ===== */
+.wp-pc-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.wp-pc-eyebrow {
+  margin: 0 0 4px;
+  color: var(--wp);
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+
+.wp-pc-title {
+  margin: 0;
+  font-size: clamp(1.7rem, 3.4vw, 2.4rem);
+  line-height: 1.12;
+  color: var(--text);
+}
+
+.wp-pc-tabs {
+  display: flex;
+  flex-wrap: nowrap;
+  gap: 6px;
+  margin-bottom: 18px;
+  padding: 5px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--surface);
+  box-shadow: var(--shadow);
+}
+
+.wp-pc-tab {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 46px;
+  padding: 0 14px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  color: var(--muted);
+  background: transparent;
+  font-size: 14px;
+  font-weight: 750;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background 0.2s ease;
+}
+
+.wp-pc-tab:hover {
+  color: var(--text);
+  background: var(--wp-soft);
+}
+
+.wp-pc-tab.active {
+  border-color: var(--wp-line);
+  color: var(--wp-dark);
+  background: var(--wp-soft);
+}
+
+/* 心魔 / 正向 种类可拖拽列表 */
+.wp-demon-list {
+  display: grid;
+  gap: 8px;
+}
+
+.wp-demon-row {
+  align-items: center;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: flex;
+  gap: 10px;
+  padding: 10px 12px;
+}
+
+.wp-demon-row.archived {
+  opacity: 0.5;
+}
+
+.wp-demon-row.dragging {
+  border-color: var(--wp);
+  box-shadow: 0 0 0 3px var(--wp-soft);
+  opacity: 0.7;
+}
+
+.wp-drag-handle {
+  color: var(--muted);
+  cursor: grab;
+  font-size: 1.1rem;
+  user-select: none;
+}
+
+.wp-drag-handle:active {
+  cursor: grabbing;
+}
+
+.wp-demon-row .wp-demon-emoji {
+  font-size: 1.3rem;
+}
+
+.wp-demon-row .wp-demon-name {
+  color: var(--text);
+  font-weight: 750;
+}
+
+.wp-tag {
+  background: var(--wp-soft);
+  border-radius: 999px;
+  color: var(--wp-dark);
+  font-size: 0.74rem;
+  font-weight: 800;
+  padding: 2px 9px;
+  white-space: nowrap;
+}
+
+@media (max-width: 600px) {
+  .wp-pc-tabs {
+    flex-wrap: wrap;
+  }
+  .wp-account-bar {
+    padding-bottom: 10px;
+  }
+}
+
+/* ===== 更新日志 ===== */
+.wp-changelog-entry {
+  position: relative;
+}
+
+.wp-changelog-date {
+  color: var(--wp);
+  font-size: 0.82rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+}
+
+.wp-changelog-title {
+  font-size: 1.2rem;
+  margin: 4px 0 12px;
+}
+
+.wp-changelog-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.wp-changelog-list li {
+  border-left: 3px solid var(--wp-line);
+  color: var(--text);
+  font-size: 0.94rem;
+  line-height: 1.6;
+  padding: 6px 0 6px 14px;
+  position: relative;
+}
+
+.wp-changelog-list li::before {
+  content: '·';
+  color: var(--wp);
+  font-weight: 900;
+  left: -3px;
+  position: absolute;
+}

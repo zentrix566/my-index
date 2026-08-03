@@ -32,6 +32,13 @@
       <p>© {{ year }} Zentrix. Built as a Vue-powered personal index.</p>
       <p class="footer-links">
         <RouterLink to="/stats">访问统计</RouterLink>
+        <a
+          v-for="link in friendLinks"
+          :key="link.url"
+          :href="link.url"
+          target="_blank"
+          rel="noopener noreferrer"
+        >{{ link.name }}</a>
       </p>
     </footer>
   </div>
@@ -39,6 +46,7 @@
 
 <script setup>
 import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { friendLinks } from './data/friendLinks'
 
 const year = new Date().getFullYear()
 const isMenuOpen = ref(false)

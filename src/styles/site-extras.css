@@ -185,3 +185,56 @@
   font-size: 0.86rem;
   color: var(--muted);
 }
+
+/* 友情链接 */
+.friend-grid {
+  display: grid;
+  gap: 18px;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+}
+
+.friend-card {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  color: inherit;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 22px;
+  text-decoration: none;
+  transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.friend-card:hover {
+  border-color: rgba(37, 99, 235, 0.5);
+  box-shadow: 0 22px 55px rgba(28, 39, 60, 0.16);
+  transform: translateY(-2px);
+}
+
+.friend-kicker {
+  color: var(--muted);
+  font-size: 0.76rem;
+  font-weight: 800;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.friend-card strong {
+  font-size: 1.2rem;
+  line-height: 1.25;
+}
+
+.friend-card p {
+  color: var(--muted);
+  font-size: 0.92rem;
+  margin: 0;
+}
+
+.friend-host {
+  color: var(--primary);
+  font-size: 0.86rem;
+  font-weight: 800;
+  margin-top: auto;
+}

@@ -72,6 +72,27 @@ spec:
                 secretKeyRef:
                   name: zentrix-secrets
                   key: pg-pass
+            # ========== 「抵御域外心魔」独立数据层 ==========
+            # 复用同一套 PG 凭据，但连独立的库 zentrix_willpower（与炉石库隔离）。
+            - name: WILLPOWER_PG_HOST
+              value: "39.106.136.18"
+            - name: WILLPOWER_PG_USER
+              value: "postgres"
+            - name: WILLPOWER_PG_DATABASE
+              value: "zentrix_willpower"
+            - name: WILLPOWER_PG_PORT
+              value: "5432"
+            - name: WILLPOWER_PG_SSL
+              value: "false"
+            - name: WILLPOWER_PG_PASS
+              valueFrom:
+                secretKeyRef:
+                  name: zentrix-secrets
+                  key: pg-pass
+            - name: WILLPOWER_HOLD_SECONDS
+              value: "600"
+            - name: WILLPOWER_TIME_ZONE
+              value: "Asia/Shanghai"
             # AI 建议（实验功能）：DeepSeek Key 仅服务端使用，前端不接触
             - name: DEEPSEEK_API_KEY
               valueFrom:

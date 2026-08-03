@@ -8,6 +8,13 @@ export const vueApps = [
     tags: ['炉石传说', '成就', '卡牌']
   },
   {
+    to: '/willpower',
+    title: '抵御心魔',
+    kicker: '自律 · 记录',
+    summary: '记录每一次抵御诱惑的瞬间，含计时挑战、成就系统与正向记录，专属独立账号。',
+    tags: ['自律', '成就', '记录']
+  },
+  {
     to: '/hearthstone/deck',
     title: '炉石卡组代码解析',
     kicker: '游戏 · 工具',

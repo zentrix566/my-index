@@ -12,3 +12,16 @@ export {
 export { loadIntervalTrainingPage } from './interval-training/index.js'
 export { loadJiangyinPage } from './jiangyin/index.js'
 export { loadWorldCupPage } from './world-cup/index.js'
+export {
+  loadWillpowerHome,
+  loadWillpowerAchievements,
+  loadWillpowerProfile,
+  loadWillpowerPositive,
+  loadWillpowerCalendar,
+  loadWillpowerAiAnalysis,
+  loadWillpowerChangelog,
+  loadWillpowerLogin,
+  loadWillpowerRegister,
+  loadWillpowerForgotPassword,
+  loadWillpowerResetPassword
+} from './willpower/index.js'
