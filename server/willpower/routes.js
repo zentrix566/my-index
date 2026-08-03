@@ -1,6 +1,6 @@
 /**
  * 「抵御域外心魔」业务路由，统一挂在 /api/willpower 下。
- * 认证子路由在 ./auth.js；本文件只处理心魔、抵御记录、成就、正向记录与看板。
+ * 认证子路由在 ./auth.js；本文件只处理心魔、抵御记录、成就、正能量记录与看板。
  */
 import express from 'express'
 import crypto from 'node:crypto'
@@ -25,6 +25,7 @@ import {
   zonedParts
 } from './achievements.js'
 import {
+  nowIso,
   createCustomAchievement,
   createPositiveLog,
   createResistance,
@@ -114,7 +115,7 @@ async function loadDemons(userId) {
 }
 
 /**
- * 合并内置正向活动与用户自定义/覆盖项（镜像 loadDemons）。
+ * 合并内置正能量活动与用户自定义/覆盖项（镜像 loadDemons）。
  */
 async function loadActivities(userId) {
   const rows = await listPositiveActivities(userId)
@@ -165,7 +166,7 @@ async function settleDueResistances(userId) {
   for (const row of pending) {
     const dueAt = new Date(row.started_at).getTime() + Number(row.duration_sec || 0) * 1000
     if (dueAt <= now) {
-      const updated = await resolveResistance(userId, row.id, 'success', new Date(dueAt).toISOString())
+      const updated = await resolveResistance(userId, row.id, 'success', nowIso(dueAt))
       if (updated) settled.push(updated)
     }
   }
@@ -198,7 +199,7 @@ function serializePositive(row, inputMode) {
   }
 }
 
-// ========== 目录：心魔 / 正向活动 / 可用规则 ==========
+// ========== 目录：心魔 / 正能量活动 / 可用规则 ==========
 
 router.get('/catalog', (req, res) => {
   res.json({
@@ -347,7 +348,7 @@ router.post('/resistances', requireWpAuth, async (req, res) => {
       }
     }
 
-    const startedAt = new Date().toISOString()
+    const startedAt = nowIso()
     const row = await createResistance(req.wpUserId, {
       demonKey,
       status: safeMode === 'timer' ? 'pending' : quickStatus,
@@ -382,7 +383,7 @@ router.post('/resistances/:id/resolve', requireWpAuth, async (req, res) => {
     if (current.status !== 'pending') {
       return res.status(400).json({ error: '该记录已结算' })
     }
-    const row = await resolveResistance(req.wpUserId, id, result, new Date().toISOString())
+    const row = await resolveResistance(req.wpUserId, id, result, nowIso())
     const { newlyUnlocked } = await recalcAchievements(req.wpUserId)
     res.json({ ok: true, resistance: serializeResistance(row), newlyUnlocked })
   } catch (err) {
@@ -435,7 +436,8 @@ router.patch('/resistances/:id', requireWpAuth, async (req, res) => {
     if (startedAt !== undefined) {
       const d = new Date(startedAt)
       if (Number.isNaN(d.getTime())) return res.status(400).json({ error: '时间格式非法' })
-      patch.startedAt = d.toISOString()
+      // 客户端统一传北京时间 ISO（带 +08:00）；缺失偏移时按北京时间补全，避免被当成本地时区。
+      patch.startedAt = /[zZ]|[+-]\d{2}:?\d{2}$/.test(startedAt) ? startedAt : `${startedAt}+08:00`
     }
     if (!Object.keys(patch).length) return res.status(400).json({ error: '没有可更新的内容' })
     const row = await updateResistance(req.wpUserId, id, patch)
@@ -448,7 +450,7 @@ router.patch('/resistances/:id', requireWpAuth, async (req, res) => {
 })
 
 /**
- * 日历里点某一天时用：返回这天的全部抵御记录与正向记录。
+ * 日历里点某一天时用：返回这天的全部抵御记录与正能量记录。
  * 自然日按统计时区（默认北京时间）切分，而不是 UTC。
  */
 router.get('/days/:date', requireWpAuth, async (req, res) => {
@@ -483,7 +485,7 @@ router.get('/days/:date', requireWpAuth, async (req, res) => {
   }
 })
 
-// ========== 正向记录 ==========
+// ========== 正能量记录 ==========
 
 router.get('/positives', requireWpAuth, async (req, res) => {
   try {
@@ -494,7 +496,7 @@ router.get('/positives', requireWpAuth, async (req, res) => {
     const actMap = new Map(activities.map((item) => [item.activityKey, item]))
     res.json({ positives: rows.map((row) => serializePositive(row, actMap.get(row.activity_key)?.inputMode)) })
   } catch (err) {
-    appLog('ERROR', `正向记录读取失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `正能量记录读取失败: uid=${req.wpUserId}, error=${err?.message}`)
     res.status(500).json({ error: '读取失败，请稍后重试' })
   }
 })
@@ -502,14 +504,14 @@ router.get('/positives', requireWpAuth, async (req, res) => {
 router.post('/positives', requireWpAuth, async (req, res) => {
   const { activityKey, name, amount, unit, note } = req.body || {}
   if (typeof activityKey !== 'string' || !KEY_PATTERN.test(activityKey)) {
-    return res.status(400).json({ error: '请选择正向项目' })
+    return res.status(400).json({ error: '请选择正能量项目' })
   }
   const builtin = BUILTIN_ACTIVITIES.find((item) => item.activityKey === activityKey)
   const safeName = (typeof name === 'string' && name.trim()) || builtin?.name
   if (!safeName || safeName.length > 20) return res.status(400).json({ error: '项目名称非法' })
   const activity = await loadActivities(req.wpUserId)
   const act = activity.find((item) => item.activityKey === activityKey)
-  if (!act) return res.status(400).json({ error: '请选择正向项目' })
+  if (!act) return res.status(400).json({ error: '请选择正能量项目' })
   const safeAmount = Number(amount)
   if (!Number.isFinite(safeAmount) || safeAmount < 0 || safeAmount > 100000) {
     return res.status(400).json({ error: '数量需在 0-100000 之间' })
@@ -521,12 +523,12 @@ router.post('/positives', requireWpAuth, async (req, res) => {
       amount: safeAmount,
       unit: (typeof unit === 'string' && unit.slice(0, 8)) || builtin?.unit || '',
       note: typeof note === 'string' ? note.slice(0, MAX_NOTE_LENGTH) : '',
-      happenedAt: new Date().toISOString()
+      happenedAt: nowIso()
     })
     const { newlyUnlocked } = await recalcAchievements(req.wpUserId)
     res.json({ ok: true, positive: serializePositive(row, act.inputMode), newlyUnlocked })
   } catch (err) {
-    appLog('ERROR', `新增正向记录失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `新增正能量记录失败: uid=${req.wpUserId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
@@ -540,12 +542,12 @@ router.delete('/positives/:id', requireWpAuth, async (req, res) => {
     await recalcAchievements(req.wpUserId)
     res.json({ ok: true })
   } catch (err) {
-    appLog('ERROR', `删除正向记录失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `删除正能量记录失败: uid=${req.wpUserId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
-/** 编辑正向记录：可改项目 / 数量 / 备注 / 时间。改项目或数量会触发成就重算。 */
+/** 编辑正能量记录：可改项目 / 数量 / 备注 / 时间。改项目或数量会触发成就重算。 */
 router.patch('/positives/:id', requireWpAuth, async (req, res) => {
   const id = parseInt(req.params.id, 10)
   if (!Number.isInteger(id)) return res.status(400).json({ error: '记录不存在' })
@@ -576,7 +578,8 @@ router.patch('/positives/:id', requireWpAuth, async (req, res) => {
     if (happenedAt !== undefined) {
       const d = new Date(happenedAt)
       if (Number.isNaN(d.getTime())) return res.status(400).json({ error: '时间格式非法' })
-      patch.happenedAt = d.toISOString()
+      // 客户端统一传北京时间 ISO（带 +08:00）；缺失偏移时按北京时间补全。
+      patch.happenedAt = /[zZ]|[+-]\d{2}:?\d{2}$/.test(happenedAt) ? happenedAt : `${happenedAt}+08:00`
     }
     if (!Object.keys(patch).length) return res.status(400).json({ error: '没有可更新的内容' })
     const row = await updatePositiveLog(req.wpUserId, id, patch)
@@ -584,18 +587,18 @@ router.patch('/positives/:id', requireWpAuth, async (req, res) => {
     const actMap = new Map((await loadActivities(req.wpUserId)).map((a) => [a.activityKey, a]))
     res.json({ ok: true, positive: serializePositive(row, actMap.get(row.activity_key)?.inputMode) })
   } catch (err) {
-    appLog('ERROR', `编辑正向记录失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `编辑正能量记录失败: uid=${req.wpUserId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
-// ========== 正向活动（可配置类型）==========
+// ========== 正能量活动（可配置类型）==========
 
 router.get('/activities', requireWpAuth, async (req, res) => {
   try {
     res.json({ activities: await loadActivities(req.wpUserId) })
   } catch (err) {
-    appLog('ERROR', `正向活动读取失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `正能量活动读取失败: uid=${req.wpUserId}, error=${err?.message}`)
     res.status(500).json({ error: '读取失败，请稍后重试' })
   }
 })
@@ -609,7 +612,7 @@ router.post('/activities', requireWpAuth, async (req, res) => {
   try {
     const existing = await listPositiveActivities(req.wpUserId)
     const customCount = existing.filter((row) => !isBuiltinActivity(row.activity_key)).length
-    if (customCount >= 30) return res.status(400).json({ error: '自定义正向活动最多 30 个' })
+    if (customCount >= 30) return res.status(400).json({ error: '自定义正能量活动最多 30 个' })
     const row = await upsertPositiveActivity(req.wpUserId, {
       activityKey: randomKey('a'),
       name: name.trim(),
@@ -632,7 +635,7 @@ router.post('/activities', requireWpAuth, async (req, res) => {
       }
     })
   } catch (err) {
-    appLog('ERROR', `新增正向活动失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `新增正能量活动失败: uid=${req.wpUserId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
@@ -659,7 +662,7 @@ router.patch('/activities/:activityKey', requireWpAuth, async (req, res) => {
     })
     res.json({ ok: true, activities: await loadActivities(req.wpUserId) })
   } catch (err) {
-    appLog('ERROR', `更新正向活动失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `更新正能量活动失败: uid=${req.wpUserId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
@@ -674,7 +677,7 @@ router.delete('/activities/:activityKey', requireWpAuth, async (req, res) => {
     if (!removed) return res.status(404).json({ error: '活动不存在' })
     res.json({ ok: true })
   } catch (err) {
-    appLog('ERROR', `删除正向活动失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `删除正能量活动失败: uid=${req.wpUserId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
@@ -735,7 +738,7 @@ router.post('/achievements', requireWpAuth, async (req, res) => {
   if (['positive_count', 'positive_amount'].includes(ruleType)) {
     const activityKey = typeof rule.activityKey === 'string' && rule.activityKey ? rule.activityKey : '*'
     if (activityKey !== '*' && !KEY_PATTERN.test(activityKey)) {
-      return res.status(400).json({ error: '正向项目标识非法' })
+      return res.status(400).json({ error: '正能量项目标识非法' })
     }
     safeRule.activityKey = activityKey
   }
@@ -818,7 +821,7 @@ function resolveReportRange(scope, date, from, to) {
   return null
 }
 
-/** 聚合某区间内的抵御与正向数据，喂给模型做分析。 */
+/** 聚合某区间内的抵御与正能量数据，喂给模型做分析。 */
 async function gatherReportData(userId, from, to) {
   const [rows, positiveRows, demonRows] = await Promise.all([
     listAllResistances(userId),

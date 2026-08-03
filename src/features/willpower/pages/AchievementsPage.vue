@@ -148,7 +148,7 @@
 
           <div v-if="ruleNeedsActivity" class="wp-form-row">
             <div class="wp-field">
-              <label for="ach-act">针对正向项目</label>
+              <label for="ach-act">针对正能量项目</label>
               <select id="ach-act" v-model="ach.rule.activityKey">
                 <option value="*">任意项目</option>
                 <option v-for="a in activities" :key="a.activityKey" :value="a.activityKey">{{ a.name }}</option>

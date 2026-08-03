@@ -19,6 +19,7 @@ export {
   loadWillpowerPositive,
   loadWillpowerCalendar,
   loadWillpowerAiAnalysis,
+  loadWillpowerData,
   loadWillpowerChangelog,
   loadWillpowerLogin,
   loadWillpowerRegister,

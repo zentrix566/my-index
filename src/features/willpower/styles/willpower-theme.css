@@ -238,6 +238,24 @@
   font-weight: 800;
 }
 
+.wp-stat.wp-stat-accent {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.14), rgba(245, 158, 11, 0.04));
+  border-color: rgba(245, 158, 11, 0.34);
+}
+.wp-stat.wp-stat-accent strong {
+  color: #d97706;
+}
+
+.wp-pc-hint {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  font-size: 0.9rem;
+}
+
+
 /* 按钮 */
 .wp-btn {
   align-items: center;
@@ -1030,6 +1048,117 @@
   text-align: right;
 }
 
+/* ===== 高大上甜甜圈（抗住 / 破防 / 正能量）===== */
+.wp-donut-wrap {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+  justify-content: center;
+}
+
+.wp-donut {
+  flex: 0 0 auto;
+  position: relative;
+}
+
+.wp-donut-track {
+  stroke: var(--line);
+  stroke-width: 3.4;
+}
+
+.wp-donut-seg {
+  stroke-width: 3.4;
+  stroke-linecap: round;
+  transform-origin: center;
+  animation: wp-donut-grow 0.9s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes wp-donut-grow {
+  from { stroke-dashoffset: 25; opacity: 0; }
+  to { opacity: 1; }
+}
+
+.wp-donut-center {
+  fill: var(--text);
+  font-size: 11px;
+  font-weight: 800;
+  text-anchor: middle;
+  font-variant-numeric: tabular-nums;
+}
+
+.wp-donut-center .wp-donut-pct {
+  font-size: 5px;
+  font-weight: 700;
+  fill: var(--muted);
+  alignment-baseline: hanging;
+  baseline-shift: 4px;
+}
+
+.wp-donut-sub {
+  fill: var(--muted);
+  font-size: 4.4px;
+  letter-spacing: 0.3px;
+  text-anchor: middle;
+}
+
+.wp-donut-legend {
+  display: grid;
+  flex: 1 1 260px;
+  gap: 10px;
+  max-width: 340px;
+}
+
+.wp-donut-item {
+  align-items: center;
+  background: var(--card-2, var(--line));
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: 14px minmax(0, 1fr) auto auto;
+  padding: 10px 12px;
+}
+
+.wp-donut-dot {
+  border-radius: 4px;
+  height: 14px;
+  width: 14px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.18);
+}
+
+.wp-donut-name {
+  color: var(--text);
+  font-size: 0.92rem;
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.wp-donut-value {
+  color: var(--muted);
+  font-size: 0.86rem;
+  font-variant-numeric: tabular-nums;
+}
+
+.wp-donut-pct {
+  color: var(--wp-dark);
+  font-size: 0.92rem;
+  font-weight: 800;
+  font-variant-numeric: tabular-nums;
+  min-width: 46px;
+  text-align: right;
+}
+
+.wp-donut-note {
+  color: var(--muted);
+  font-size: 0.78rem;
+  grid-column: 1 / -1;
+  margin: 2px 0 0;
+}
+
+
 /* ===== 快捷入口（今日页顶部） ===== */
 .wp-quick-links {
   display: grid;
@@ -1278,7 +1407,7 @@
   background: var(--wp-soft);
 }
 
-/* 心魔 / 正向 种类可拖拽列表 */
+/* 心魔 / 正能量 种类可拖拽列表 */
 .wp-demon-list {
   display: grid;
   gap: 8px;

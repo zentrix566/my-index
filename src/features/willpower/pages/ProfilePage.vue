@@ -11,7 +11,6 @@
       </header>
 
       <nav class="wp-pc-tabs" role="tablist" aria-label="个人中心内容">
-        <button class="wp-pc-tab" :class="{ active: tab === 'data' }" type="button" role="tab" :aria-selected="tab === 'data'" @click="tab = 'data'">数据看板</button>
         <button class="wp-pc-tab" :class="{ active: tab === 'demons' }" type="button" role="tab" :aria-selected="tab === 'demons'" @click="tab = 'demons'">心魔配置</button>
         <button class="wp-pc-tab" :class="{ active: tab === 'config' }" type="button" role="tab" :aria-selected="tab === 'config'" @click="tab = 'config'">正能量配置</button>
         <button class="wp-pc-tab" :class="{ active: tab === 'account' }" type="button" role="tab" :aria-selected="tab === 'account'" @click="tab = 'account'">账号设置</button>
@@ -19,99 +18,14 @@
 
       <p v-if="loadError" class="wp-error">{{ loadError }}</p>
 
-      <!-- ===== 数据看板 ===== -->
-      <div v-show="tab === 'data'">
-        <div class="wp-card">
-          <div class="wp-card-head">
-            <div><h2>数据看板</h2><p>全局累计指标，一眼看清你的战绩。</p></div>
-          </div>
-
-          <div class="wp-stat-grid">
-            <div class="wp-stat"><strong>{{ overview.totalSuccess }}</strong><span>累计成功抵御</span></div>
-            <div class="wp-stat"><strong>{{ overview.totalFail }}</strong><span>累计破防</span></div>
-            <div class="wp-stat"><strong>{{ overview.successRate }}%</strong><span>成功率</span></div>
-            <div class="wp-stat"><strong>{{ overview.currentStreak }}</strong><span>当前连胜（天）</span></div>
-            <div class="wp-stat"><strong>{{ overview.longestStreak }}</strong><span>最长连胜（天）</span></div>
-            <div class="wp-stat"><strong>{{ overview.activeDays }}</strong><span>累计活跃天数</span></div>
-          </div>
-
-          <div class="wp-pie-wrap" style="margin-top: 18px">
-            <svg class="wp-pie" viewBox="0 0 36 36" width="160" height="160" role="img" :aria-label="`成功率 ${overview.successRate}%`">
-              <circle class="wp-pie-track" cx="18" cy="18" r="15.915" fill="none" stroke-width="4" />
-              <circle
-                cx="18" cy="18" r="15.915" fill="none" stroke="var(--wp-win)" stroke-width="4"
-                :stroke-dasharray="`${overview.successRate} ${100 - overview.successRate}`" stroke-dashoffset="25"
-              />
-              <circle
-                cx="18" cy="18" r="15.915" fill="none" stroke="var(--wp-lose)" stroke-width="4"
-                :stroke-dasharray="`${100 - overview.successRate} ${overview.successRate}`"
-                :stroke-dashoffset="25 - overview.successRate"
-              />
-              <text class="wp-pie-center" x="18" y="17">{{ overview.successRate }}%</text>
-              <text class="wp-pie-center-sub" x="18" y="23">成功率</text>
-            </svg>
-            <div class="wp-pie-legend">
-              <div class="wp-pie-item">
-                <i class="wp-pie-dot" style="background: var(--wp-win)"></i>
-                <span class="wp-pie-name">扛住了</span>
-                <span class="wp-pie-value">{{ overview.totalSuccess }} 次</span>
-                <span class="wp-pie-pct">{{ overview.totalSuccess + overview.totalFail ? Math.round((overview.totalSuccess / (overview.totalSuccess + overview.totalFail)) * 100) : 0 }}%</span>
-              </div>
-              <div class="wp-pie-item">
-                <i class="wp-pie-dot" style="background: var(--wp-lose)"></i>
-                <span class="wp-pie-name">破防了</span>
-                <span class="wp-pie-value">{{ overview.totalFail }} 次</span>
-                <span class="wp-pie-pct">{{ overview.totalSuccess + overview.totalFail ? 100 - Math.round((overview.totalSuccess / (overview.totalSuccess + overview.totalFail)) * 100) : 0 }}%</span>
-              </div>
-            </div>
-          </div>
-
-          <p class="wp-section-title" style="margin-top: 22px">按心魔分布</p>
-          <template v-for="d in overview.byDemon" :key="d.demonKey">
-            <div class="wp-bar-row">
-              <span>{{ d.emoji }} {{ d.name }}</span>
-              <div class="wp-bar-track"><i class="wp-bar-fill" :style="{ width: barWidth(d.count, maxDemon), background: d.color }"></i></div>
-              <span>{{ d.count }}</span>
-            </div>
-          </template>
-          <p v-if="!overview.byDemon.length" class="wp-empty">还没有抵御记录。</p>
-
-          <p class="wp-section-title" style="margin-top: 18px">按小时分布</p>
-          <div style="display: flex; align-items: flex-end; gap: 3px; height: 96px; overflow-x: auto">
-            <div
-              v-for="h in overview.byHour"
-              :key="h.hour"
-              :title="`${h.hour} 点：${h.count} 次`"
-              style="flex: 1 0 auto; width: 14px; background: var(--wp); border-radius: 3px 3px 0 0; min-height: 2px"
-              :style="{ height: hourHeight(h.count) }"
-            ></div>
-          </div>
-          <div style="display: flex; gap: 3px; overflow-x: auto; color: var(--muted); font-size: 0.7rem; margin-top: 4px">
-            <span v-for="h in overview.byHour" :key="'l' + h.hour" style="flex: 1 0 auto; width: 14px; text-align: center">{{ h.hour % 6 === 0 ? h.hour : '' }}</span>
-          </div>
-        </div>
-
-        <div class="wp-card">
-          <div class="wp-card-head"><div><h2>本周小结</h2><p>过去 7 天你的战绩。</p></div></div>
-          <div class="wp-weekly">
-            <div class="wp-stat"><strong>{{ overview.weekCount }}</strong><span class="wp-stat-sub">本周抵御</span></div>
-            <div class="wp-stat"><strong>{{ overview.weekFailCount }}</strong><span class="wp-stat-sub">本周破防</span></div>
-            <div class="wp-stat"><strong>{{ overview.weekPositiveCount }}</strong><span class="wp-stat-sub">本周正能量记录</span></div>
-            <div class="wp-stat"><strong>{{ overview.currentStreak }}</strong><span class="wp-stat-sub">当前连胜（天）</span></div>
-          </div>
-          <div class="wp-actions" style="margin-top: 14px">
-            <button class="wp-btn primary small" type="button" :disabled="aiBusy" @click="generateAi('last_week')">
-              {{ aiBusy && aiScope === 'last_week' ? '生成中…' : '🤖 生成 AI 周报' }}
-            </button>
-            <button class="wp-btn ghost small" type="button" :disabled="aiBusy" @click="generateAi('this_month')">
-              {{ aiBusy && aiScope === 'this_month' ? '生成中…' : '📅 生成 AI 月报' }}
-            </button>
-            <span v-if="aiQuota" class="wp-ai-quota">今日剩余 {{ aiQuota.limit - aiQuota.used }} / {{ aiQuota.limit }} 次</span>
-          </div>
-          <p v-if="aiError" class="wp-error" style="margin-top: 10px">{{ aiError }}</p>
-          <div v-if="aiReport" class="wp-markdown" v-html="aiHtml" style="margin-top: 14px"></div>
+      <div class="wp-card" style="margin-top: 16px">
+        <div class="wp-pc-hint">
+          <span>📊 数据看板已独立为顶部导航的「数据看板」，点这里可直达：</span>
+          <RouterLink class="wp-btn ghost small" to="/willpower/data">查看数据看板 →</RouterLink>
         </div>
       </div>
+
+      <p v-if="loadError" class="wp-error">{{ loadError }}</p>
 
       <!-- ===== 心魔配置 ===== -->
       <div v-show="tab === 'demons'">
@@ -273,22 +187,19 @@
 </template>
 
 <script setup>
-import { computed, onMounted, reactive, ref } from 'vue'
+import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import MarkdownIt from 'markdown-it'
 import willpowerApi from '../api/willpower.js'
 import { useWillpowerAuth } from '../composables/useWillpowerAuth.js'
 import { useToast } from '../composables/useToast.js'
 import WpNav from '../components/WpNav.vue'
 import WpToastHost from '../components/WpToastHost.vue'
 
-const md = new MarkdownIt({ html: false, linkify: true, breaks: true })
-
 const router = useRouter()
 const { user, init, updateProfile, changePassword } = useWillpowerAuth()
 const { push: toast } = useToast()
 
-const tab = ref('data')
+const tab = ref('demons')
 
 const username = ref('')
 const displayName = ref('')
@@ -299,19 +210,6 @@ const profileErr = ref('')
 
 const pw = reactive({ current: '', next: '' })
 
-const overview = ref({
-  totalSuccess: 0,
-  totalFail: 0,
-  successRate: 0,
-  currentStreak: 0,
-  longestStreak: 0,
-  activeDays: 0,
-  weekCount: 0,
-  weekFailCount: 0,
-  weekPositiveCount: 0,
-  byDemon: [],
-  byHour: []
-})
 const myDemons = ref([])
 const myActivities = ref([])
 const loadError = ref('')
@@ -326,33 +224,11 @@ const activity = reactive({ name: '', emoji: '', inputMode: 'count', unit: '' })
 
 const dragIndex = ref(-1)
 
-const maxDemon = computed(() => overview.value.byDemon.reduce((m, d) => Math.max(m, d.count), 0))
-const maxHour = computed(() => overview.value.byHour.reduce((m, d) => Math.max(m, d.count), 0))
-
-// ===== AI 周报/月报 =====
-const aiBusy = ref(false)
-const aiError = ref('')
-const aiReport = ref('')
-const aiScope = ref('')
-const aiQuota = ref(null)
-const aiHtml = computed(() => (aiReport.value ? md.render(aiReport.value) : ''))
-
-function barWidth(count, max) {
-  if (!max) return '0%'
-  return `${Math.round((count / max) * 100)}%`
-}
-function hourHeight(count) {
-  if (!maxHour.value) return '2px'
-  return `${Math.max(2, Math.round((count / maxHour.value) * 90))}px`
-}
-
 async function loadAll() {
-  const [ov, dm, act] = await Promise.all([
-    willpowerApi.overview(),
+  const [dm, act] = await Promise.all([
     willpowerApi.listDemons(),
     willpowerApi.listActivities()
   ])
-  overview.value = { ...overview.value, ...ov.overview }
   myDemons.value = dm.demons || []
   myActivities.value = act.activities || []
 }
@@ -490,23 +366,6 @@ function onDrop(targetIndex) {
   dragIndex.value = -1
   const keys = list.map((d) => d.demonKey)
   willpowerApi.reorderDemons(keys).catch((err) => toast(err.message || '排序失败', { type: 'error' }))
-}
-
-// ===== AI 周报/月报 =====
-async function generateAi(scope) {
-  aiBusy.value = true
-  aiError.value = ''
-  aiReport.value = ''
-  aiScope.value = scope
-  try {
-    const res = await willpowerApi.aiReport({ scope })
-    aiReport.value = res.report || ''
-    aiQuota.value = res.quota || null
-  } catch (err) {
-    aiError.value = err.message || '分析失败，请稍后重试'
-  } finally {
-    aiBusy.value = false
-  }
 }
 
 onMounted(async () => {

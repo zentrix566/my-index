@@ -1,5 +1,5 @@
 /**
- * 心魔 / 成就 / 正向活动的内置目录。
+ * 心魔 / 成就 / 正能量活动的内置目录。
  * 内置项不入库，只以常量存在；用户自定义项存 demons、custom_achievements 表，
  * 读取时按 key 合并（用户可对内置心魔做改名或归档的覆盖）。
  */
@@ -44,8 +44,8 @@ export const RULE_TYPES = {
   resist_duration_minutes: { label: '累计坚持时长', customizable: true, unit: '分钟' },
   time_window: { label: '指定时段内抵御', customizable: true, unit: '次' },
   recover_after_fail: { label: '失手当天扳回', customizable: true, unit: '次' },
-  positive_count: { label: '正向记录次数', customizable: true, unit: '次' },
-  positive_amount: { label: '正向记录累计量', customizable: true, unit: '' }
+  positive_count: { label: '正能量记录次数', customizable: true, unit: '次' },
+  positive_amount: { label: '正能量记录累计量', customizable: true, unit: '' }
 }
 
 /**
@@ -152,7 +152,7 @@ export const BUILTIN_ACHIEVEMENTS = [
   {
     code: 'positive-ten',
     name: '正道之行',
-    description: '累计 10 条正向记录',
+    description: '累计 10 条正能量记录',
     tier: '入门',
     points: 10,
     rule: { type: 'positive_count', activityKey: '*', target: 10 }

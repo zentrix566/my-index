@@ -146,6 +146,7 @@
     </div>
 
     <WpToastHost />
+    <WpBattleFx ref="battleFx" />
   </section>
 </template>
 
@@ -157,10 +158,13 @@ import { useWillpowerAuth } from '../composables/useWillpowerAuth.js'
 import { useToast } from '../composables/useToast.js'
 import WpNav from '../components/WpNav.vue'
 import WpToastHost from '../components/WpToastHost.vue'
+import WpBattleFx from '../components/WpBattleFx.vue'
+import { formatBeijing, toBeijingInput, fromBeijingInput } from '../utils/time.js'
 
 const router = useRouter()
 const { user, init } = useWillpowerAuth()
 const { push: toast } = useToast()
+const battleFx = ref(null)
 
 const activities = ref([])
 const positives = ref([])
@@ -211,11 +215,7 @@ function syncDuration() {
 }
 
 function fmt(iso) {
-  if (!iso) return ''
-  const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return ''
-  const p = (n) => String(n).padStart(2, '0')
-  return `${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`
+  return formatBeijing(iso)
 }
 
 function activityEmoji(key) {
@@ -265,6 +265,7 @@ async function addPositive() {
     })
     positive.note = ''
     toast('正能量记录已添加 ✓', { type: 'success' })
+    if (battleFx.value) battleFx.value.play('win', '正能量 +1 🌟')
     await loadAll()
     if (res.newlyUnlocked?.length) {
       for (const a of res.newlyUnlocked) toast(`🏆 解锁成就：${a.name}`, { type: 'success' })
@@ -286,11 +287,7 @@ async function removePositive(id) {
 }
 
 function toLocalInput(iso) {
-  if (!iso) return ''
-  const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return ''
-  const p = (n) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`
+  return toBeijingInput(iso)
 }
 
 function startEdit(p) {
@@ -335,7 +332,7 @@ async function saveEdit(id) {
       activityKey: editForm.activityKey,
       amount: Number(editForm.amount) || 0,
       note: editForm.note.trim(),
-      happenedAt: new Date(editForm.happenedAt).toISOString()
+      happenedAt: fromBeijingInput(editForm.happenedAt)
     })
     toast('记录已更新', { type: 'success' })
     editId.value = null

@@ -273,8 +273,19 @@ export async function closeWillpowerDatabase() {
   await driver.close()
 }
 
-function nowIso() {
-  return new Date().toISOString()
+/**
+ * 入库时间统一存为「北京时间（Asia/Shanghai, UTC+8）」的 ISO 字符串（带 +08:00 偏移）。
+ * 这样数据库里看到的就是北京时间，且 new Date() 仍能正确还原绝对时刻，
+ * 聚合层 zonedParts 按 Asia/Shanghai 重算时不会重复偏移。
+ */
+export function nowIso(ts = Date.now()) {
+  const d = new Date(ts + 8 * 3600 * 1000)
+  const pad = (n) => String(n).padStart(2, '0')
+  const pad3 = (n) => String(n).padStart(3, '0')
+  return (
+    `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}` +
+    `T${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}.${pad3(d.getUTCMilliseconds())}+08:00`
+  )
 }
 
 // ========== 用户 ==========
@@ -441,7 +452,7 @@ export async function reorderDemons(userId, keys) {
   }
 }
 
-// ========== 正向活动（用户自定义 / 对内置项的覆盖）==========
+// ========== 正能量活动（用户自定义 / 对内置项的覆盖）==========
 
 export async function listPositiveActivities(userId) {
   const { rows } = await query(
@@ -578,7 +589,7 @@ export async function listAllResistances(userId, limit = 5000) {
   return rows
 }
 
-// ========== 正向记录 ==========
+// ========== 正能量记录 ==========
 
 export async function createPositiveLog(userId, entry) {
   return queryOne(

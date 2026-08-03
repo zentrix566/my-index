@@ -27,7 +27,7 @@ async function request(url, options = {}) {
 const BASE = '/api/willpower'
 
 export const willpowerApi = {
-  // 公开目录：内置心魔 / 正向活动 / 可用成就规则
+  // 公开目录：内置心魔 / 正能量活动 / 可用成就规则
   catalog() {
     return request(`${BASE}/catalog`)
   },
@@ -52,7 +52,7 @@ export const willpowerApi = {
     return request(`${BASE}/demons/reorder`, { method: 'POST', body: JSON.stringify({ keys }) })
   },
 
-  // 正向活动（可配置类型）
+  // 正能量活动（可配置类型）
   listActivities() {
     return request(`${BASE}/activities`)
   },
@@ -88,12 +88,12 @@ export const willpowerApi = {
   updateResistance(id, payload) {
     return request(`${BASE}/resistances/${id}`, { method: 'PATCH', body: JSON.stringify(payload) })
   },
-  // 日历点某天时拉取当天明细（抵御 + 正向）
+  // 日历点某天时拉取当天明细（抵御 + 正能量）
   dayDetail(date) {
     return request(`${BASE}/days/${encodeURIComponent(date)}`)
   },
 
-  // 正向记录
+  // 正能量记录
   listPositives() {
     return request(`${BASE}/positives`)
   },

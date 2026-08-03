@@ -95,7 +95,7 @@
         <p v-else-if="!dayLoading" class="wp-empty">这天没有抵御记录。</p>
 
         <template v-if="dayPositives.length">
-          <p class="wp-section-title" style="margin-top: 18px">当天正向记录</p>
+          <p class="wp-section-title" style="margin-top: 18px">当天正能量记录</p>
           <div class="wp-record-list">
             <div v-for="p in dayPositives" :key="'p' + p.id" class="wp-record">
               <span class="wp-record-emoji">🌱</span>
@@ -123,6 +123,7 @@ import { useWillpowerAuth } from '../composables/useWillpowerAuth.js'
 import { useToast } from '../composables/useToast.js'
 import WpNav from '../components/WpNav.vue'
 import WpToastHost from '../components/WpToastHost.vue'
+import { formatBeijing } from '../utils/time.js'
 
 const router = useRouter()
 const { user, init } = useWillpowerAuth()
@@ -196,11 +197,8 @@ function statusLabel(status) {
 }
 
 function hhmm(iso) {
-  if (!iso) return ''
-  const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return ''
-  const p = (n) => String(n).padStart(2, '0')
-  return `${p(d.getHours())}:${p(d.getMinutes())}`
+  const s = formatBeijing(iso)
+  return s ? s.split(' ')[1] || '' : ''
 }
 
 function formatDayAmount(p) {

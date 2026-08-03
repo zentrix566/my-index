@@ -168,6 +168,7 @@
     </div>
 
     <WpToastHost />
+    <WpBattleFx ref="battleFx" />
   </section>
 </template>
 
@@ -179,10 +180,13 @@ import { useWillpowerAuth } from '../composables/useWillpowerAuth.js'
 import { useToast } from '../composables/useToast.js'
 import WpNav from '../components/WpNav.vue'
 import WpToastHost from '../components/WpToastHost.vue'
+import WpBattleFx from '../components/WpBattleFx.vue'
+import { formatBeijing, toBeijingInput, fromBeijingInput, nowBeijingIso } from '../utils/time.js'
 
 const router = useRouter()
 const { user, init } = useWillpowerAuth()
 const { push: toast } = useToast()
+const battleFx = ref(null)
 
 const demons = ref([])
 const demonsLoading = ref(false)
@@ -238,11 +242,7 @@ function statusLabel(status) {
 }
 
 function fmt(iso) {
-  if (!iso) return ''
-  const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return ''
-  const p = (n) => String(n).padStart(2, '0')
-  return `${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`
+  return formatBeijing(iso)
 }
 
 function nowMs() {
@@ -360,7 +360,7 @@ async function submitQuick(result) {
   syncStatus.value = 'syncing'
 
   // 构造乐观占位记录
-  const now = new Date().toISOString()
+  const now = nowBeijingIso()
   const optimistic = {
     id: `opt-${Date.now()}`,
     demonKey,
@@ -374,6 +374,7 @@ async function submitQuick(result) {
   toast(result === 'failed' ? '已记录一次破防，明天扳回来' : '已记录一次抵御 ✓', {
     type: result === 'failed' ? 'info' : 'success'
   })
+  if (battleFx.value) battleFx.value.play(result === 'failed' ? 'lose' : 'win')
 
   try {
     const res = await willpowerApi.createResistance({ demonKey, mode: 'quick', result, note })
@@ -434,6 +435,7 @@ async function resolve(id, result) {
     toast(result === 'success' ? '这一关，扛住了！' : '已记录一次破防', {
       type: result === 'success' ? 'success' : 'info'
     })
+    if (battleFx.value) battleFx.value.play(result === 'success' ? 'win' : 'lose')
     syncStatus.value = 'synced'
     setTimeout(() => refreshOverview().finally(() => { syncStatus.value = 'idle' }), 800)
   } catch (err) {
@@ -457,11 +459,7 @@ async function removeRecord(id) {
 }
 
 function toLocalInput(iso) {
-  if (!iso) return ''
-  const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return ''
-  const p = (n) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())}T${p(d.getHours())}:${p(d.getMinutes())}`
+  return toBeijingInput(iso)
 }
 
 function startEdit(r) {
@@ -483,7 +481,7 @@ async function saveEdit(id) {
       demonKey: editForm.demonKey,
       status: editForm.status,
       note: editForm.note.trim(),
-      startedAt: new Date(editForm.startedAt).toISOString()
+      startedAt: fromBeijingInput(editForm.startedAt)
     })
     toast('记录已更新', { type: 'success' })
     editingId.value = null

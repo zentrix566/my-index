@@ -10,6 +10,7 @@ import {
   isBuiltinAchievementCode
 } from './catalog.js'
 import {
+  nowIso,
   listAllResistances,
   listCustomAchievements,
   listPositiveLogs,
@@ -246,7 +247,7 @@ export async function recalcAchievements(userId) {
 
   const achievements = []
   const newlyUnlocked = []
-  const nowIso = new Date().toISOString()
+  const nowIsoForUnlock = nowIso()
 
   // 收集所有需要更新的成就进度
   const toUpsert = []
@@ -254,7 +255,7 @@ export async function recalcAchievements(userId) {
     const { progress, target } = evaluateRule(definition.rule, ctx)
     const wasUnlocked = Boolean(previous.get(definition.code)?.unlocked_at)
     const unlocked = progress >= target
-    const unlockedAt = wasUnlocked ? previous.get(definition.code).unlocked_at : unlocked ? nowIso : null
+    const unlockedAt = wasUnlocked ? previous.get(definition.code).unlocked_at : unlocked ? nowIsoForUnlock : null
 
     const changed =
       !previous.has(definition.code) ||
@@ -330,7 +331,7 @@ export function buildOverview(ctx) {
   const failByDay = countByDay(ctx.failures)
   const { longest, current } = computeStreaks(ctx.successes)
 
-  // 日历视图需要全量按天数据（成功、破防与正向各自计数），个人量级下天数有限，直接全量返回
+  // 日历视图需要全量按天数据（成功、破防与正能量各自计数），个人量级下天数有限，直接全量返回
   const positiveByDay = countByDay(ctx.positives)
   const byDay = [...new Set([...successByDay.keys(), ...failByDay.keys(), ...positiveByDay.keys()])]
     .filter(Boolean)
@@ -352,13 +353,21 @@ export function buildOverview(ctx) {
 
   const totalSuccess = ctx.successes.length
   const totalFail = ctx.failures.length
+  const totalPositive = ctx.positives.length
   const totalHeldMinutes = Math.floor(
     ctx.successes.reduce((sum, item) => sum + item.heldSeconds, 0) / 60
   )
 
+  // 综合胜率：抗住 + 正能量 占 全部记录（抗住 + 破防 + 正能量）的比例。
+  const totalAll = totalSuccess + totalFail + totalPositive
+  const compositeRate = totalAll ? Math.round(((totalSuccess + totalPositive) / totalAll) * 100) : 0
+
   return {
     totalSuccess,
     totalFail,
+    positiveCount: totalPositive,
+    totalAll,
+    compositeRate,
     successRate: totalSuccess + totalFail ? Math.round((totalSuccess / (totalSuccess + totalFail)) * 100) : 0,
     todayCount: successByDay.get(today) || 0,
     todayFailCount: failByDay.get(today) || 0,

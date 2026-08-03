@@ -21,11 +21,12 @@
       </div>
     </div>
 
-    <!-- 主导航：今日心魔 / 今日正能量 / 日历 / AI 分析 / 成就 -->
+    <!-- 主导航：今日心魔 / 今日正能量 / 日历 / 数据看板 / AI 分析 / 成就 -->
     <nav class="wp-nav">
       <RouterLink to="/willpower">今日心魔</RouterLink>
       <RouterLink to="/willpower/positive">今日正能量</RouterLink>
       <RouterLink to="/willpower/calendar">日历</RouterLink>
+      <RouterLink to="/willpower/data">数据看板</RouterLink>
       <RouterLink to="/willpower/ai">AI 分析</RouterLink>
       <RouterLink to="/willpower/achievements">成就</RouterLink>
     </nav>
