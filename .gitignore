@@ -2,6 +2,8 @@
 # 注：.git 目录由 git 自身管理，不受此规则影响；.github 必须提交以启用 CI。
 **/.*/
 !.github/
+# 验证构建散文件（vite build --outDir .build-* 产物及冒烟测试抓取的响应），均不提交
+.build-*
 
 # DevOps Actions directory
 devops-actions/
