@@ -11,6 +11,7 @@ export {
 } from './hearthstone/index.js'
 export { loadIntervalTrainingPage } from './interval-training/index.js'
 export { loadJiangyinPage } from './jiangyin/index.js'
+export { loadAgeCalculatorPage } from './age-calculator/index.js'
 export { loadWorldCupPage } from './world-cup/index.js'
 export {
   loadWillpowerHome,

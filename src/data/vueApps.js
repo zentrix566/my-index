@@ -69,5 +69,12 @@ export const vueApps = [
     kicker: '数据 · 看板',
     summary: '配速趋势、评级、日历与导入导出的跑步间歇训练数据看板。',
     tags: ['训练', '配速', '图表']
+  },
+  {
+    to: '/age-calculator',
+    title: '年龄计算器',
+    kicker: '工具 · 计算器',
+    summary: '输入出生年份与特定年份，直接算出当时的年龄，不做任何校验。',
+    tags: ['年龄', '计算器']
   }
 ]
