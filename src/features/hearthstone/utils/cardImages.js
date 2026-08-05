@@ -2,9 +2,10 @@
 // 数据由 scripts/generate-deck-card-manifest.mjs 根据本地完整卡牌图源生成
 import cardImageManifest from '../data/deck-card-images.json' with { type: 'json' }
 
-/** 卡牌原画统一托管在阿里云 OSS 的 hearthstone-cards/wild/{crop,full}/<卡名>_<id>.png。
- *  前端只拼本站相对路径 /hearthstone-cards/wild/...，由服务端（server/index.js）反向代理到 OSS——
- *  全程以本站域名开头、强制 Content-Disposition: inline（右键新标签直接查看、不下载），不拼 OSS 直链。 */
+/** 卡牌原画统一托管在阿里云 OSS 的 hearthstone-cards/<版本名>/{crop,full}/<卡名>_<id>.{png|jpg}
+ *  （full 为 png、crop 为 jpg）。前端只按卡名查表取本站相对路径 /hearthstone-cards/...，
+ *  由服务端（server/index.js）反向代理到 OSS——全程以本站域名开头、强制 Content-Disposition: inline
+ *  （右键新标签直接查看、不下载），不拼 OSS 直链。 */
 
 /** 稀有度到统一标识的映射（兼容 deckstring.js 的中文稀有度与 cards_meta 的 rarity_id） */
 const RARITY_MAP = {
@@ -39,7 +40,7 @@ export function getLocalCardImages(name) {
 
 /**
  * 取卡牌在 wild 图库的「相对路径」（full 优先，回退 crop）。
- * 返回形如 /hearthstone-cards/wild/full/名_id.png 的本站相对路径，
+ * 返回形如 /hearthstone-cards/<版本名>/full/名_id.png 的本站相对路径，
  * 由站点反代（server/index.js）强制 Content-Disposition: inline。
  * 所有卡牌原画都集中在 wild/full，按卡牌中文名查表即可，无需区分 related 目录。
  * @param {string} name 卡牌中文名
