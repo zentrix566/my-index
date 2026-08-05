@@ -6,6 +6,7 @@ import { getClassName } from '../utils/achievements.js'
  */
 export function useAchievementSprint({
   achievements,
+  searchAchievements,
   query,
   getProgressInfo,
   getMetric
@@ -24,8 +25,13 @@ export function useAchievementSprint({
       points: []
     }
     const searchText = query.value.trim().toLowerCase()
+    // 有搜索词时跨全版本（含硬核/更多版本）检索，与「按版本/按职业」等视图的搜索逻辑保持一致（搜全部成就）；
+    // 无搜索词时仅列出当前作用域（受硬核开关控制），保持「待完成清单」按版本范围收拢的原有行为。
+    const source = searchText
+      ? (searchAchievements || achievements).value
+      : achievements.value
 
-    for (const achievement of achievements.value) {
+    for (const achievement of source) {
       if (!matchesSearch(achievement, searchText)) continue
       const progressInfo = getProgressInfo(achievement)
       // 有搜索词时不过滤已完成，与「按版本/按职业」等视图的搜索逻辑保持一致（搜全部成就）

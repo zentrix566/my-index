@@ -7,6 +7,7 @@
 ## 当前内容
 
 - **炉石成就追踪增强**：支持本地规则型冲刺推荐、AI 建议核心/全部版本范围切换、个人中心成就图合成分享，以及按职业浏览时使用硬核模式纳入全部版本。
+- **炉石卡牌图库与检索数据**：基于暴雪国服官方 API 全量重建卡牌图（按「卡名_卡id」命名消除同名歧义，全图 png / 缩略图 jpg 按真实格式上传云端），生成 id 索引卡牌库 `cards-db.json` 作为卡片检索数据源；成就搜索（含待完成清单）现已跨全版本（含硬核与更多版本）。
 - **账户与个人中心**：支持注册登录、邮箱激活、设置或修改密码、邮件找回密码，并可查看最近成就动态、成就仪表盘、显示偏好和数据备份。
 - **抵御心魔**：记录每日抵御心魔（扛住/破防）与正能量状态，支持计时挑战、日历回看、AI 复盘分析（今天/上周/本月/指定天/时间段）、成就系统与个性化配置（心魔与正能量种类可拖拽排序、归档）。
 - **工作项目**：AIOps MCP Analyzer、CI/CD 流水线实践、项目上云与数据迁移。
@@ -66,6 +67,18 @@ npm run build
 npm run preview
 ```
 
+从暴雪国服官方 API 全量拉取卡牌、生成 id 索引卡牌库与图片清单（需本地有外网）：
+
+```bash
+node scripts/fetch-hs-cards.mjs
+```
+
+将本地卡牌图批量上传到阿里云 OSS（增量；设 `OSS_SKIP_EXISTING=0` 强制覆盖削弱卡旧图）：
+
+```bash
+node scripts/upload-hs-cards-to-oss.mjs
+```
+
 查看当天的注册、登录和进度更新日志：
 
 ```bash
@@ -89,11 +102,13 @@ docker run -d -p 8080:80 my-index
 │   ├── components/       # 复用组件（项目卡片网格、Vue 项目卡片网格）
 │   ├── data/             # 项目、训练与 Vue 项目索引数据
 │   ├── features/         # 各子项目功能模块（炉石、小游戏、训练与数据看板等）
+│   │   └── hearthstone/data/   # 炉石成就 JSON 与卡牌清单（cards-db.json / deck-card-images.json / achievement-card-images.json）
 │   ├── router/           # Vue Router
 │   ├── styles/           # 全局样式
 │   ├── views/            # 页面
 │   ├── App.vue
 │   └── main.js
+├── scripts/             # 数据/资源维护脚本（炉石卡牌抓取与 OSS 上传等）
 ├── index.html            # Vite 入口
 ├── vite.config.js
 ├── Dockerfile            # 多阶段构建镜像

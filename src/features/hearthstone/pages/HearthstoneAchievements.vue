@@ -1011,6 +1011,7 @@ const {
   toggleSection: toggleSprintSection
 } = useAchievementSprint({
   achievements: scopeAchievements,
+  searchAchievements: allAchievements,
   query,
   getProgressInfo,
   getMetric
