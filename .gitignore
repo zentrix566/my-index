@@ -64,3 +64,7 @@ nul
 
 # AI 临时工具脚本（单下划线前缀，如 _audit_ach_updates.mjs），不入库；正式脚本（generate-*/audit-*/upload-* 等）保持跟踪
 scripts/_*.mjs
+
+# 炉石卡牌图库旧管线脚本（已被 fetch-hs-cards.mjs / upload-hs-cards-to-oss.mjs 取代），不入库
+scripts/analyze-hs-dupes.mjs
+scripts/fetch-card-images.mjs
