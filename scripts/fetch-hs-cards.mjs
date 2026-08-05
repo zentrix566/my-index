@@ -13,11 +13,7 @@
  *   - 两份 name 索引清单与旧文件做「合并」：新数据覆盖同名项，旧文件里新库没有的卡名（多为非收藏卡）予以保留，避免回退成「暂无图」。
  *   - 跨检查所有成就 JSON 的 relatedCards，报告未匹配到卡牌的卡名，便于补齐。
  *
- * 接口（用户确认）：
- *   GET  https://webapi.blizzard.cn/hs-cards-api-server/api/web/cards/constructed/set            -> 所有版本（set）列表
- *   POST https://webapi.blizzard.cn/hs-cards-api-server/api/web/cards/constructed
- *        body: {page,page_size,class,mana_cost,sort,set,text_filter,attack,faction,health,keyword,minion_type,rarity,spell_school,type}
- *        -> 返回 data.list（每张卡含 id/name/slug/class_id/card_set_id/rarity_id/mana_cost/attack/health/text/flavor_text/image/crop_image/set_priority 等）
+ * 接口端点（基址 / set 列表 / 卡牌列表 / 单卡详情）统一见 scripts/blizzard-endpoints.mjs（单一查阅源）。
  *
  * 用法（在本机有外网的环境执行，沙箱无网）：
  *   node scripts/fetch-hs-cards.mjs                 # 真实拉取 + 下载 + 生成清单
@@ -52,9 +48,7 @@ try {
   }
 } catch { /* ignore */ }
 
-const API_BASE = process.env.HS_API_BASE || 'https://webapi.blizzard.cn/hs-cards-api-server/api/web'
-const SETS_URL = `${API_BASE}/cards/constructed/set`
-const CARDS_URL = `${API_BASE}/cards/constructed`
+import { BLIZZARD_API_BASE as API_BASE, SETS_URL, CARDS_URL } from './blizzard-endpoints.mjs'
 const LOCAL_ROOT = process.env.HS_LOCAL_ROOT || 'E:/github/我的炉石2/hs-cards-id'
 const DATA_DIR = resolve(process.env.HS_DATA_OUT || join(repoRoot, 'src/features/hearthstone/data'))
 const PAGE_SIZE = 200
