@@ -11,6 +11,7 @@
     "check:syntax": "node scripts/check-syntax.mjs",
     "test": "node --test",
     "check": "npm run check:syntax && npm test && npm run build",
+    "refresh:hearthstone-cards": "node scripts/fetch-hsjson-cards.mjs",
     "generate:achievement-card-manifest": "node scripts/generate-achievement-card-manifest.mjs",
     "preview": "vite preview",
     "server": "node server/index.js",

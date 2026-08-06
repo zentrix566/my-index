@@ -120,6 +120,50 @@ SELECT id, username, email, email_verified FROM users;
 > `display_name` / `avatar` 在 `zentrix_auth` 走默认值 NULL，owner 不受影响。
 > Phase 2（迁其余用户）仍建议用 bash 脚本（自动重映射业务表 `user_id`）。
 
+### Phase 2（纯 SQL）：带 id 直搬，业务表零改动
+若 Phase 1 已用 dblink 迁入 zentrix566（id=1），且 zentrix 测试用户 id=2 已删，
+**带 id 直搬**可让新旧 id 完全一致，业务表 `user_id` 无需重映射。
+
+```sql
+-- 0) 探测：zentrix 剩余用户 / zentrix_auth 已迁入（确认 zentrix_auth 只有 id=1）
+SELECT id, username, email FROM users ORDER BY id;   -- 两库各跑一次
+
+-- 1) 若 zentrix 的 id=2 测试用户仍在，先在 zentrix 库删除（连业务数据）：
+DO $$
+DECLARE r RECORD;
+BEGIN
+  FOR r IN
+    SELECT table_name FROM information_schema.columns
+    WHERE column_name='user_id' AND table_schema='public' AND table_name <> 'users'
+  LOOP
+    EXECUTE format('DELETE FROM %I WHERE user_id = 2', r.table_name);
+  END LOOP;
+END $$;
+DELETE FROM users WHERE id = 2;
+-- 也可以选择保留测试用户一并迁入（认证库多一个 id=2 测试账号，业务表零改动），
+-- 此时跳过上面删除块，下面直搬的 WHERE 用 id > 1 即可。
+
+-- 2) 连 zentrix_auth 执行：带 id 直搬剩余用户（id 与源库一致 → 业务表不用动）
+INSERT INTO users (id, username, password_hash, email, email_verified, has_password, created_at)
+SELECT id, username, password_hash, email, email_verified, has_password, created_at
+FROM dblink('host=39.106.136.18 port=5432 user=postgres password=生产PG密码 dbname=zentrix',
+  'SELECT id, username, password_hash, email, email_verified, has_password, created_at FROM users WHERE id > 1')
+AS t(id int, username text, password_hash text, email text, email_verified boolean, has_password boolean, created_at timestamptz)
+ON CONFLICT (id) DO NOTHING;
+
+-- 3) 修序列 + 验证（zentrix_auth 执行）
+SELECT setval(pg_get_serial_sequence('users','id'), COALESCE((SELECT max(id) FROM users),0)+1, false);
+SELECT count(*) FROM users;   -- zentrix_auth 与 zentrix 用户数应一致
+```
+> 前置条件：`zentrix_auth.users` 当前仅 zentrix566/id=1；若 id 已错位（如测试用户未删干净、
+> 新库 id 被占），则不能直搬，须回退到 bash 脚本的 `_id_map` 重映射方案。
+> `zentrix_willpower` 仅 zentrix566（Phase 1 已迁），Phase 2 无需处理。
+
+> ⚠️ **部署后到迁移完成前，严禁在站点注册测试账号**：注册只查 `zentrix_auth`，
+> 老用户名在新库能注册成功（同名双账号），且新账号自增 id 会占用老用户 id，
+> 导致直搬 `ON CONFLICT (id)` 静默跳过对应老用户、业务数据错位。
+> 若已发生：删除 auth 库该注册号（`DELETE FROM users WHERE id > 1`）并 `setval` 修序列后再直搬。
+
 ## 回滚（很稳）
 - 旧 `users` 表在两源库**默认保留**，撤销 `AUTH_DB_URL`（删 secret 的 auth-db-url key 或回滚 deployment）
   → 重建重启即回退到用主库认证，零数据丢失。

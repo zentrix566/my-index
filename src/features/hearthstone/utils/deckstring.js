@@ -65,12 +65,12 @@ function readVarint(bytes, i) {
 }
 
 /**
- * 从 dbfId 查找卡牌信息（中文名/费用/类型/职业/稀有度/图片ID）
+ * 从 dbfId 查找卡组展示需要的最小卡牌信息。
  * @param {number} dbfId
- * @returns {{ name:string, cost:number, type:string, cardClass:string, rarity:string, id:string }}
+ * @returns {{ name:string, cost:number, rarity:string }}
  */
 function getCardInfo(dbfId) {
-  return (cardNames && cardNames[dbfId]) || { name: `#${dbfId}`, cost: 0, type: '', cardClass: '', rarity: '', id: '' }
+  return (cardNames && cardNames[dbfId]) || { name: `#${dbfId}`, cost: 0, rarity: '' }
 }
 
 /**
@@ -90,7 +90,7 @@ function enrichCardImages(card) {
 
 /**
  * 解码卡组代码为结构化数据（含中文牌名、费用、类型、稀有度、本地图片路径等）
- * @returns {{ valid:boolean, heroClass:string, heroes:number[], cards:Array<{dbfId:number,count:number,name:string,cost:number,type:string,cardClass:string,rarity:string,id:string,rarityKey:string,cropImage:string,fullImage:string}>, total:number }}
+ * @returns {{ valid:boolean, heroClass:string, heroes:number[], cards:Array<{dbfId:number,count:number,name:string,cost:number,rarity:string,rarityKey:string,cropImage:string,fullImage:string}>, total:number }}
  */
 export function decodeDeck(code) {
   try {

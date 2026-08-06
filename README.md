@@ -7,7 +7,7 @@
 ## 当前内容
 
 - **炉石成就追踪增强**：支持本地规则型冲刺推荐、AI 建议核心/全部版本范围切换、个人中心成就图合成分享，以及按职业浏览时使用硬核模式纳入全部版本。
-- **炉石卡牌图库与检索数据**：基于暴雪国服官方 API 全量重建卡牌图（按「卡名_卡id」命名消除同名歧义，全图 png / 缩略图 jpg 按真实格式上传云端），生成 id 索引卡牌库 `cards-db.json` 作为卡片检索数据源；并将权威第三方卡牌库 HearthstoneJSON（zhCN 可收藏卡，含标准 dbfId/id 字段）落地为 `hearthstonejson-zhCN-cards.json` 作为查卡主体数据源，配套命令行查卡工具。成就搜索（含待完成清单）现已跨全版本（含硬核与更多版本）。
+- **炉石卡牌图库与检索数据**：基于暴雪国服官方 API 全量重建卡牌图（按「卡名_卡id」命名消除同名歧义，全图 png / 缩略图 jpg 按真实格式上传云端），生成 `cards-db.json` 供图片上传和未来卡片检索使用；卡组代码解析统一读取由 HearthstoneJSON 最新 zhCN 全量库生成的 `dbfid-cardnames.json`，覆盖可收藏卡、衍生卡、英雄与历史卡牌。成就搜索（含待完成清单）现已跨全版本（含硬核与更多版本）。
 - **账户与个人中心（统一账号）**：炉石与抵御心魔共用同一套注册登录体系，一处注册全站通用；支持邮箱激活、设置或修改密码、邮件找回密码，并可查看最近成就动态、成就仪表盘、显示偏好和数据备份。
 - **站点后台（owner 专属）**：访问 `/admin` 可查看已注册用户使用各模块（炉石 / 抵御心魔）的情况，含注册与最近活跃时间、按模块彩色标签筛选、从未使用用户统计；模块使用记录在访问对应接口时自动埋点，只记录首次与最近一次访问时间。
 - **抵御心魔**：记录每日抵御心魔（扛住/破防）与正能量状态，支持计时挑战、日历回看、AI 复盘分析（今天/上周/本月/指定天/时间段）、成就系统与个性化配置（心魔与正能量种类可拖拽排序、归档）。
@@ -74,13 +74,13 @@ npm run preview
 node scripts/fetch-hs-cards.mjs
 ```
 
-从 HearthstoneJSON 下载「可收藏卡牌总库」到本地作为主体卡牌数据源（默认 latest + zhCN，建议 `--version` 锁定补丁号以保证可复现）：
+从 HearthstoneJSON 最新 zhCN 全量库刷新卡组解析使用的唯一 dbfId 索引：
 
 ```bash
-node scripts/fetch-hsjson-cards.mjs
+npm run refresh:hearthstone-cards
 ```
 
-在已落地的 HearthstoneJSON 卡牌库里按 dbfId / 名称 / 版本 / 职业 / 类型 / 稀有度 查卡：
+在卡组解析索引里按 dbfId、名称或稀有度查卡：
 
 ```bash
 node scripts/hsjson-query.mjs --dbf 2539
@@ -115,13 +115,13 @@ docker run -d -p 8080:80 my-index
 │   ├── components/       # 复用组件（项目卡片网格、Vue 项目卡片网格）
 │   ├── data/             # 项目、训练与 Vue 项目索引数据
 │   ├── features/         # 各子项目功能模块（炉石、小游戏、训练与数据看板等）
-│   │   └── hearthstone/data/   # 炉石成就 JSON、卡牌清单（cards-db.json / deck-card-images.json / achievement-card-images.json）、HearthstoneJSON 主体卡库 hearthstonejson-zhCN-cards.json 与版本名映射 version-name-map.js
+│   │   └── hearthstone/data/   # 炉石成就 JSON、卡组 dbfId 索引、卡牌及图片清单与版本名映射
 │   ├── router/           # Vue Router
 │   ├── styles/           # 全局样式
 │   ├── views/            # 页面
 │   ├── App.vue
 │   └── main.js
-├── scripts/             # 数据/资源维护脚本（炉石卡牌抓取、HearthstoneJSON 下载与查卡、OSS 上传、官方端点与数据来源集中模块等）
+├── scripts/             # 数据/资源维护脚本（炉石卡牌抓取、dbfId 索引刷新与查询、OSS 上传、官方端点与数据来源说明等）
 ├── index.html            # Vite 入口
 ├── vite.config.js
 ├── Dockerfile            # 多阶段构建镜像

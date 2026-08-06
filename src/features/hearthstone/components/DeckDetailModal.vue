@@ -288,7 +288,7 @@ const rarityStats = computed(() => {
 const lightbox = reactive({ card: null, img: '', broken: false })
 function openLightbox(card) {
   lightbox.card = card
-  lightbox.img = getCardFullImage(card.name, card.id)
+  lightbox.img = getCardFullImage(card.name)
   lightbox.broken = false
 }
 function closeLightbox() {
