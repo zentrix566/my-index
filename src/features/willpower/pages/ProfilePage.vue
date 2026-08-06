@@ -190,13 +190,13 @@
 import { onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import willpowerApi from '../api/willpower.js'
-import { useWillpowerAuth } from '../composables/useWillpowerAuth.js'
+import { useAuth } from '../../../auth/useAuth.js'
 import { useToast } from '../composables/useToast.js'
 import WpNav from '../components/WpNav.vue'
 import WpToastHost from '../components/WpToastHost.vue'
 
 const router = useRouter()
-const { user, init, updateProfile, changePassword } = useWillpowerAuth()
+const { user, init, setDisplayName, setEmail, changePassword } = useAuth()
 const { push: toast } = useToast()
 
 const tab = ref('demons')
@@ -238,7 +238,8 @@ async function saveProfile() {
   profileErr.value = ''
   profileBusy.value = true
   try {
-    await updateProfile({ displayName: displayName.value.trim(), email: email.value.trim() })
+    await setDisplayName(displayName.value.trim())
+    await setEmail(email.value.trim())
     profileMsg.value = '资料已保存'
   } catch (err) {
     profileErr.value = err.message || '保存失败'
@@ -371,7 +372,7 @@ function onDrop(targetIndex) {
 onMounted(async () => {
   await init()
   if (!user.value) {
-    router.replace('/willpower/login')
+    router.replace('/login')
     return
   }
   username.value = user.value.username

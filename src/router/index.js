@@ -20,11 +20,7 @@ import {
   loadWillpowerCalendar,
   loadWillpowerData,
   loadWillpowerAiAnalysis,
-  loadWillpowerChangelog,
-  loadWillpowerLogin,
-  loadWillpowerRegister,
-  loadWillpowerForgotPassword,
-  loadWillpowerResetPassword
+  loadWillpowerChangelog
 } from '../features/index.js'
 
 // 路由级懒加载：每个页面单独成 chunk，首屏只加载当前路由所需的代码，
@@ -74,10 +70,11 @@ const routes = [
   { path: '/willpower/ai', name: 'willpower-ai', component: loadWillpowerAiAnalysis, meta: { title: 'AI 分析 | 抵御心魔' } },
   { path: '/willpower/changelog', name: 'willpower-changelog', component: loadWillpowerChangelog, meta: { title: '更新日志 | 抵御心魔' } },
   { path: '/willpower/profile', name: 'willpower-profile', component: loadWillpowerProfile, meta: { title: '个人中心 | 抵御心魔' } },
-  { path: '/willpower/login', name: 'willpower-login', component: loadWillpowerLogin, meta: { title: '登录 | 抵御心魔' } },
-  { path: '/willpower/register', name: 'willpower-register', component: loadWillpowerRegister, meta: { title: '注册 | 抵御心魔' } },
-  { path: '/willpower/forgot-password', name: 'willpower-forgot', component: loadWillpowerForgotPassword, meta: { title: '找回密码 | 抵御心魔' } },
-  { path: '/willpower/reset-password', name: 'willpower-reset', component: loadWillpowerResetPassword, meta: { title: '重置密码 | 抵御心魔' } },
+  // 心魔独立认证已并入主站，/login 等统一走主站账号体系
+  { path: '/willpower/login', redirect: '/login' },
+  { path: '/willpower/register', redirect: '/login' },
+  { path: '/willpower/forgot-password', redirect: '/forgot-password' },
+  { path: '/willpower/reset-password', redirect: '/reset-password' },
   { path: '/about', name: 'about', component: About },
   { path: '/changelog', redirect: '/hearthstone/changelog' },
   { path: '/login', name: 'login', component: Login },

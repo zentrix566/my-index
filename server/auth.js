@@ -19,6 +19,8 @@ import {
   setUserEmail,
   setEmailVerified,
   setHasPassword,
+  setDisplayName,
+  setAvatar,
   updatePasswordById,
   createResetToken,
   getValidResetToken,
@@ -35,7 +37,7 @@ import { isOwnerUser } from './auth-policy.js'
 
 const router = express.Router()
 const SALT_ROUNDS = 10
-const TOKEN_NAME = 'ztt_token' // zentrix token
+const TOKEN_NAME = 'site_token' // 站点统一登录 Cookie（全模块共享）
 const JWT_SECRET = process.env.JWT_SECRET || 'dev-insecure-secret-change-me'
 
 // CF 在边缘终止 TLS 后，原始协议在 x-forwarded-proto 里
@@ -252,12 +254,86 @@ router.get('/me', async (req, res) => {
             email: user.email || null,
             emailVerified: Boolean(user.email_verified),
             hasPassword: Boolean(user.has_password),
+            displayName: user.display_name || null,
+            avatar: user.avatar || null,
             isOwner: isOwnerUser(user)
           }
         : null
     })
   } catch {
     return res.json({ user: null })
+  }
+})
+
+// 设置昵称（心魔等模块展示用）
+router.post('/display-name', requireAuth, async (req, res) => {
+  const { displayName } = req.body || {}
+  if (typeof displayName !== 'string' || !displayName.trim()) {
+    return res.status(400).json({ error: '昵称不能为空' })
+  }
+  if (displayName.trim().length > 20) {
+    return res.status(400).json({ error: '昵称不能超过 20 个字符' })
+  }
+  try {
+    await setDisplayName(req.userId, displayName.trim())
+    const user = await getUserById(req.userId)
+    appLog('AUTH', `更新昵称: uid=${req.userId}`)
+    return res.json({
+      ok: true,
+      user: user
+        ? {
+            id: user.id,
+            username: user.username,
+            email: user.email || null,
+            emailVerified: Boolean(user.email_verified),
+            hasPassword: Boolean(user.has_password),
+            displayName: user.display_name || null,
+            avatar: user.avatar || null,
+            isOwner: isOwnerUser(user)
+          }
+        : null
+    })
+  } catch (err) {
+    appLog('ERROR', `更新昵称失败: uid=${req.userId}, error=${err?.message || 'unknown'}`)
+    return res.status(500).json({ error: '操作失败，请稍后重试' })
+  }
+})
+
+// 设置头像（全站共享字段，各模块展示用）。avatar 为 OSS 等外链 URL；空串表示清空
+router.post('/avatar', requireAuth, async (req, res) => {
+  const { avatar } = req.body || {}
+  if (typeof avatar !== 'string') {
+    return res.status(400).json({ error: '头像地址格式不正确' })
+  }
+  const url = avatar.trim()
+  if (url && url.length > 255) {
+    return res.status(400).json({ error: '头像地址过长' })
+  }
+  if (url && !/^https?:\/\//i.test(url)) {
+    return res.status(400).json({ error: '头像地址必须是 http(s) 链接' })
+  }
+  try {
+    await setAvatar(req.userId, url || null)
+    const user = await getUserById(req.userId)
+    appLog('AUTH', `更新头像: uid=${req.userId}`)
+    return res.json({
+      ok: true,
+      user: user
+        ? {
+            id: user.id,
+            username: user.username,
+            email: user.email || null,
+            emailVerified: Boolean(user.email_verified),
+            hasPassword: Boolean(user.has_password),
+            displayName: user.display_name || null,
+            avatar: user.avatar || null,
+            isOwner: isOwnerUser(user)
+          }
+        : null
+    })
+  } catch (err) {
+    appLog('ERROR', `更新头像失败: uid=${req.userId}, error=${err?.message || 'unknown'}`)
+    return res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 

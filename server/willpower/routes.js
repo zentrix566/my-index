@@ -1,11 +1,12 @@
 /**
  * 「抵御域外心魔」业务路由，统一挂在 /api/willpower 下。
- * 认证子路由在 ./auth.js；本文件只处理心魔、抵御记录、成就、正能量记录与看板。
+ * 认证已并入站点主账号体系（../auth.js 的 requireAuth，基于 site_token Cookie）；
+ * 本文件只处理心魔、抵御记录、成就、正能量记录与看板。
  */
 import express from 'express'
 import crypto from 'node:crypto'
 import { appLog } from '../logger.js'
-import authRouter, { requireWpAuth } from './auth.js'
+import { requireAuth } from '../auth.js'
 import {
   BUILTIN_ACTIVITIES,
   BUILTIN_DEMONS,
@@ -59,8 +60,6 @@ import {
 import { callDeepSeek } from '../ai-advisor.js'
 
 const router = express.Router()
-
-router.use('/auth', authRouter)
 
 const KEY_PATTERN = /^[a-z0-9][a-z0-9_-]{0,31}$/
 const MAX_NOTE_LENGTH = 200
@@ -213,26 +212,26 @@ router.get('/catalog', (req, res) => {
   })
 })
 
-router.get('/demons', requireWpAuth, async (req, res) => {
+router.get('/demons', requireAuth, async (req, res) => {
   try {
-    res.json({ demons: await loadDemons(req.wpUserId) })
+    res.json({ demons: await loadDemons(req.userId) })
   } catch (err) {
-    appLog('ERROR', `心魔列表读取失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `心魔列表读取失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '读取失败，请稍后重试' })
   }
 })
 
-router.post('/demons', requireWpAuth, async (req, res) => {
+router.post('/demons', requireAuth, async (req, res) => {
   const { name, emoji, color, description } = req.body || {}
   if (typeof name !== 'string' || !name.trim() || name.trim().length > 12) {
     return res.status(400).json({ error: '心魔名称需 1-12 个字符' })
   }
   try {
-    const existing = await listUserDemons(req.wpUserId)
+    const existing = await listUserDemons(req.userId)
     const customCount = existing.filter((row) => !isBuiltinDemon(row.demon_key)).length
     if (customCount >= 30) return res.status(400).json({ error: '自定义心魔最多 30 个' })
 
-    const row = await upsertDemon(req.wpUserId, {
+    const row = await upsertDemon(req.userId, {
       demonKey: randomKey('c'),
       name: name.trim(),
       emoji: typeof emoji === 'string' && emoji ? emoji.slice(0, 4) : '👹',
@@ -243,22 +242,22 @@ router.post('/demons', requireWpAuth, async (req, res) => {
     })
     res.json({ ok: true, demon: { demonKey: row.demon_key, name: row.name, emoji: row.emoji, color: row.color, description: row.description || '', builtin: false, archived: false } })
   } catch (err) {
-    appLog('ERROR', `新增心魔失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `新增心魔失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
-router.patch('/demons/:demonKey', requireWpAuth, async (req, res) => {
+router.patch('/demons/:demonKey', requireAuth, async (req, res) => {
   const { demonKey } = req.params
   if (!KEY_PATTERN.test(demonKey)) return res.status(400).json({ error: '心魔标识非法' })
   const { name, emoji, color, description, archived } = req.body || {}
   try {
     const builtin = getBuiltinDemon(demonKey)
-    const rows = await listUserDemons(req.wpUserId)
+    const rows = await listUserDemons(req.userId)
     const current = rows.find((row) => row.demon_key === demonKey)
     if (!builtin && !current) return res.status(404).json({ error: '心魔不存在' })
 
-    const row = await upsertDemon(req.wpUserId, {
+    const row = await upsertDemon(req.userId, {
       demonKey,
       name: (typeof name === 'string' && name.trim()) || current?.name || builtin?.name,
       emoji: (typeof emoji === 'string' && emoji) || current?.emoji || builtin?.emoji,
@@ -270,49 +269,49 @@ router.patch('/demons/:demonKey', requireWpAuth, async (req, res) => {
     })
     res.json({ ok: true, demon: { demonKey: row.demon_key, name: row.name, emoji: row.emoji, color: row.color, description: row.description || '', builtin: Boolean(builtin), archived: Boolean(row.archived) } })
   } catch (err) {
-    appLog('ERROR', `更新心魔失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `更新心魔失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
-router.delete('/demons/:demonKey', requireWpAuth, async (req, res) => {
+router.delete('/demons/:demonKey', requireAuth, async (req, res) => {
   const { demonKey } = req.params
   if (isBuiltinDemon(demonKey)) {
     return res.status(400).json({ error: '内置心魔不能删除，可以选择归档' })
   }
   try {
-    const removed = await deleteDemon(req.wpUserId, demonKey)
+    const removed = await deleteDemon(req.userId, demonKey)
     if (!removed) return res.status(404).json({ error: '心魔不存在' })
     res.json({ ok: true })
   } catch (err) {
-    appLog('ERROR', `删除心魔失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `删除心魔失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
 /** 拖拽排序：提交心魔的期望顺序（demonKey 数组，含内置与自定义），归档项始终沉底。 */
-router.post('/demons/reorder', requireWpAuth, async (req, res) => {
+router.post('/demons/reorder', requireAuth, async (req, res) => {
   const keys = req.body?.keys
   if (!Array.isArray(keys)) return res.status(400).json({ error: 'keys 需为数组' })
   try {
-    await reorderDemons(req.wpUserId, keys)
-    res.json({ ok: true, demons: await loadDemons(req.wpUserId) })
+    await reorderDemons(req.userId, keys)
+    res.json({ ok: true, demons: await loadDemons(req.userId) })
   } catch (err) {
-    appLog('ERROR', `心魔排序失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `心魔排序失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
 // ========== 抵御记录 ==========
 
-router.get('/resistances', requireWpAuth, async (req, res) => {
+router.get('/resistances', requireAuth, async (req, res) => {
   try {
-    await settleDueResistances(req.wpUserId)
+    await settleDueResistances(req.userId)
     const limit = Math.min(Math.max(parseInt(req.query.limit, 10) || 50, 1), 200)
-    const rows = await listResistances(req.wpUserId, limit)
+    const rows = await listResistances(req.userId, limit)
     res.json({ resistances: rows.map(serializeResistance) })
   } catch (err) {
-    appLog('ERROR', `抵御记录读取失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `抵御记录读取失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '读取失败，请稍后重试' })
   }
 })
@@ -323,7 +322,7 @@ router.get('/resistances', requireWpAuth, async (req, res) => {
  * mode=quick + result=success：直接记一次「已抵御」
  * mode=quick + result=failed：直接记一次「破防了」
  */
-router.post('/resistances', requireWpAuth, async (req, res) => {
+router.post('/resistances', requireAuth, async (req, res) => {
   const { demonKey, mode, note, durationSec, result } = req.body || {}
   if (typeof demonKey !== 'string' || !KEY_PATTERN.test(demonKey)) {
     return res.status(400).json({ error: '请选择心魔' })
@@ -337,19 +336,19 @@ router.post('/resistances', requireWpAuth, async (req, res) => {
       : 0
 
   try {
-    const demons = await loadDemons(req.wpUserId)
+    const demons = await loadDemons(req.userId)
     if (!demons.some((item) => item.demonKey === demonKey)) {
       return res.status(400).json({ error: '心魔不存在' })
     }
     if (safeMode === 'timer') {
-      const pending = await listPendingResistances(req.wpUserId)
+      const pending = await listPendingResistances(req.userId)
       if (pending.length >= 5) {
         return res.status(400).json({ error: '同时进行的挑战不能超过 5 个' })
       }
     }
 
     const startedAt = nowIso()
-    const row = await createResistance(req.wpUserId, {
+    const row = await createResistance(req.userId, {
       demonKey,
       status: safeMode === 'timer' ? 'pending' : quickStatus,
       mode: safeMode,
@@ -363,56 +362,56 @@ router.post('/resistances', requireWpAuth, async (req, res) => {
     // 快速记录立即触发成就重算；计时挑战等结算后再算
     let newlyUnlocked = []
     if (safeMode !== 'timer') {
-      newlyUnlocked = (await recalcAchievements(req.wpUserId)).newlyUnlocked
+      newlyUnlocked = (await recalcAchievements(req.userId)).newlyUnlocked
     }
     res.json({ ok: true, resistance: serializeResistance(row), newlyUnlocked })
   } catch (err) {
-    appLog('ERROR', `新增抵御记录失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `新增抵御记录失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
 /** 手动结算计时挑战：扛住了（success）或者破防了（failed）。 */
-router.post('/resistances/:id/resolve', requireWpAuth, async (req, res) => {
+router.post('/resistances/:id/resolve', requireAuth, async (req, res) => {
   const id = parseInt(req.params.id, 10)
   if (!Number.isInteger(id)) return res.status(400).json({ error: '记录不存在' })
   const result = req.body?.result === 'failed' ? 'failed' : 'success'
   try {
-    const current = await getResistanceById(req.wpUserId, id)
+    const current = await getResistanceById(req.userId, id)
     if (!current) return res.status(404).json({ error: '记录不存在' })
     if (current.status !== 'pending') {
       return res.status(400).json({ error: '该记录已结算' })
     }
-    const row = await resolveResistance(req.wpUserId, id, result, nowIso())
-    const { newlyUnlocked } = await recalcAchievements(req.wpUserId)
+    const row = await resolveResistance(req.userId, id, result, nowIso())
+    const { newlyUnlocked } = await recalcAchievements(req.userId)
     res.json({ ok: true, resistance: serializeResistance(row), newlyUnlocked })
   } catch (err) {
-    appLog('ERROR', `结算抵御记录失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `结算抵御记录失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
-router.delete('/resistances/:id', requireWpAuth, async (req, res) => {
+router.delete('/resistances/:id', requireAuth, async (req, res) => {
   const id = parseInt(req.params.id, 10)
   if (!Number.isInteger(id)) return res.status(400).json({ error: '记录不存在' })
   try {
-    const removed = await deleteResistance(req.wpUserId, id)
+    const removed = await deleteResistance(req.userId, id)
     if (!removed) return res.status(404).json({ error: '记录不存在' })
-    await recalcAchievements(req.wpUserId)
+    await recalcAchievements(req.userId)
     res.json({ ok: true })
   } catch (err) {
-    appLog('ERROR', `删除抵御记录失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `删除抵御记录失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
 /** 编辑已结算的抵御记录：可改心魔 / 结果 / 备注 / 时间。改结果会触发成就重算。 */
-router.patch('/resistances/:id', requireWpAuth, async (req, res) => {
+router.patch('/resistances/:id', requireAuth, async (req, res) => {
   const id = parseInt(req.params.id, 10)
   if (!Number.isInteger(id)) return res.status(400).json({ error: '记录不存在' })
   const { demonKey, status, note, startedAt } = req.body || {}
   try {
-    const current = await getResistanceById(req.wpUserId, id)
+    const current = await getResistanceById(req.userId, id)
     if (!current) return res.status(404).json({ error: '记录不存在' })
     if (current.status === 'pending') {
       return res.status(400).json({ error: '进行中的挑战请先结算，不能直接编辑' })
@@ -422,7 +421,7 @@ router.patch('/resistances/:id', requireWpAuth, async (req, res) => {
       if (typeof demonKey !== 'string' || !KEY_PATTERN.test(demonKey)) {
         return res.status(400).json({ error: '心魔标识非法' })
       }
-      const demons = await loadDemons(req.wpUserId)
+      const demons = await loadDemons(req.userId)
       if (!demons.some((d) => d.demonKey === demonKey)) {
         return res.status(400).json({ error: '心魔不存在' })
       }
@@ -440,11 +439,11 @@ router.patch('/resistances/:id', requireWpAuth, async (req, res) => {
       patch.startedAt = /[zZ]|[+-]\d{2}:?\d{2}$/.test(startedAt) ? startedAt : `${startedAt}+08:00`
     }
     if (!Object.keys(patch).length) return res.status(400).json({ error: '没有可更新的内容' })
-    const row = await updateResistance(req.wpUserId, id, patch)
-    await recalcAchievements(req.wpUserId)
+    const row = await updateResistance(req.userId, id, patch)
+    await recalcAchievements(req.userId)
     res.json({ ok: true, resistance: serializeResistance(row) })
   } catch (err) {
-    appLog('ERROR', `编辑抵御记录失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `编辑抵御记录失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
@@ -453,15 +452,15 @@ router.patch('/resistances/:id', requireWpAuth, async (req, res) => {
  * 日历里点某一天时用：返回这天的全部抵御记录与正能量记录。
  * 自然日按统计时区（默认北京时间）切分，而不是 UTC。
  */
-router.get('/days/:date', requireWpAuth, async (req, res) => {
+router.get('/days/:date', requireAuth, async (req, res) => {
   const { date } = req.params
   if (!/^\d{4}-\d{2}-\d{2}$/.test(date)) return res.status(400).json({ error: '日期格式应为 YYYY-MM-DD' })
   try {
-    await settleDueResistances(req.wpUserId)
+    await settleDueResistances(req.userId)
     const [rows, positiveRows, activities] = await Promise.all([
-      listAllResistances(req.wpUserId),
-      listPositiveLogs(req.wpUserId, 5000),
-      loadActivities(req.wpUserId)
+      listAllResistances(req.userId),
+      listPositiveLogs(req.userId, 5000),
+      loadActivities(req.userId)
     ])
     const actMap = new Map(activities.map((item) => [item.activityKey, item]))
     const sameDay = rows.filter((row) => zonedParts(row.started_at).dateKey === date)
@@ -480,28 +479,28 @@ router.get('/days/:date', requireWpAuth, async (req, res) => {
       }
     })
   } catch (err) {
-    appLog('ERROR', `单日明细读取失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `单日明细读取失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '读取失败，请稍后重试' })
   }
 })
 
 // ========== 正能量记录 ==========
 
-router.get('/positives', requireWpAuth, async (req, res) => {
+router.get('/positives', requireAuth, async (req, res) => {
   try {
     const [rows, activities] = await Promise.all([
-      listPositiveLogs(req.wpUserId, 200),
-      loadActivities(req.wpUserId)
+      listPositiveLogs(req.userId, 200),
+      loadActivities(req.userId)
     ])
     const actMap = new Map(activities.map((item) => [item.activityKey, item]))
     res.json({ positives: rows.map((row) => serializePositive(row, actMap.get(row.activity_key)?.inputMode)) })
   } catch (err) {
-    appLog('ERROR', `正能量记录读取失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `正能量记录读取失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '读取失败，请稍后重试' })
   }
 })
 
-router.post('/positives', requireWpAuth, async (req, res) => {
+router.post('/positives', requireAuth, async (req, res) => {
   const { activityKey, name, amount, unit, note } = req.body || {}
   if (typeof activityKey !== 'string' || !KEY_PATTERN.test(activityKey)) {
     return res.status(400).json({ error: '请选择正能量项目' })
@@ -509,7 +508,7 @@ router.post('/positives', requireWpAuth, async (req, res) => {
   const builtin = BUILTIN_ACTIVITIES.find((item) => item.activityKey === activityKey)
   const safeName = (typeof name === 'string' && name.trim()) || builtin?.name
   if (!safeName || safeName.length > 20) return res.status(400).json({ error: '项目名称非法' })
-  const activity = await loadActivities(req.wpUserId)
+  const activity = await loadActivities(req.userId)
   const act = activity.find((item) => item.activityKey === activityKey)
   if (!act) return res.status(400).json({ error: '请选择正能量项目' })
   const safeAmount = Number(amount)
@@ -517,7 +516,7 @@ router.post('/positives', requireWpAuth, async (req, res) => {
     return res.status(400).json({ error: '数量需在 0-100000 之间' })
   }
   try {
-    const row = await createPositiveLog(req.wpUserId, {
+    const row = await createPositiveLog(req.userId, {
       activityKey,
       name: safeName,
       amount: safeAmount,
@@ -525,42 +524,42 @@ router.post('/positives', requireWpAuth, async (req, res) => {
       note: typeof note === 'string' ? note.slice(0, MAX_NOTE_LENGTH) : '',
       happenedAt: nowIso()
     })
-    const { newlyUnlocked } = await recalcAchievements(req.wpUserId)
+    const { newlyUnlocked } = await recalcAchievements(req.userId)
     res.json({ ok: true, positive: serializePositive(row, act.inputMode), newlyUnlocked })
   } catch (err) {
-    appLog('ERROR', `新增正能量记录失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `新增正能量记录失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
-router.delete('/positives/:id', requireWpAuth, async (req, res) => {
+router.delete('/positives/:id', requireAuth, async (req, res) => {
   const id = parseInt(req.params.id, 10)
   if (!Number.isInteger(id)) return res.status(400).json({ error: '记录不存在' })
   try {
-    const removed = await deletePositiveLog(req.wpUserId, id)
+    const removed = await deletePositiveLog(req.userId, id)
     if (!removed) return res.status(404).json({ error: '记录不存在' })
-    await recalcAchievements(req.wpUserId)
+    await recalcAchievements(req.userId)
     res.json({ ok: true })
   } catch (err) {
-    appLog('ERROR', `删除正能量记录失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `删除正能量记录失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
 /** 编辑正能量记录：可改项目 / 数量 / 备注 / 时间。改项目或数量会触发成就重算。 */
-router.patch('/positives/:id', requireWpAuth, async (req, res) => {
+router.patch('/positives/:id', requireAuth, async (req, res) => {
   const id = parseInt(req.params.id, 10)
   if (!Number.isInteger(id)) return res.status(400).json({ error: '记录不存在' })
   const { activityKey, amount, note, happenedAt } = req.body || {}
   try {
-    const current = await getPositiveLogById(req.wpUserId, id)
+    const current = await getPositiveLogById(req.userId, id)
     if (!current) return res.status(404).json({ error: '记录不存在' })
     const patch = {}
     if (activityKey !== undefined) {
       if (typeof activityKey !== 'string' || !KEY_PATTERN.test(activityKey)) {
         return res.status(400).json({ error: '项目标识非法' })
       }
-      const acts = await loadActivities(req.wpUserId)
+      const acts = await loadActivities(req.userId)
       const act = acts.find((a) => a.activityKey === activityKey)
       if (!act) return res.status(400).json({ error: '项目不存在' })
       patch.activityKey = activityKey
@@ -582,38 +581,38 @@ router.patch('/positives/:id', requireWpAuth, async (req, res) => {
       patch.happenedAt = /[zZ]|[+-]\d{2}:?\d{2}$/.test(happenedAt) ? happenedAt : `${happenedAt}+08:00`
     }
     if (!Object.keys(patch).length) return res.status(400).json({ error: '没有可更新的内容' })
-    const row = await updatePositiveLog(req.wpUserId, id, patch)
-    await recalcAchievements(req.wpUserId)
-    const actMap = new Map((await loadActivities(req.wpUserId)).map((a) => [a.activityKey, a]))
+    const row = await updatePositiveLog(req.userId, id, patch)
+    await recalcAchievements(req.userId)
+    const actMap = new Map((await loadActivities(req.userId)).map((a) => [a.activityKey, a]))
     res.json({ ok: true, positive: serializePositive(row, actMap.get(row.activity_key)?.inputMode) })
   } catch (err) {
-    appLog('ERROR', `编辑正能量记录失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `编辑正能量记录失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
 // ========== 正能量活动（可配置类型）==========
 
-router.get('/activities', requireWpAuth, async (req, res) => {
+router.get('/activities', requireAuth, async (req, res) => {
   try {
-    res.json({ activities: await loadActivities(req.wpUserId) })
+    res.json({ activities: await loadActivities(req.userId) })
   } catch (err) {
-    appLog('ERROR', `正能量活动读取失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `正能量活动读取失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '读取失败，请稍后重试' })
   }
 })
 
-router.post('/activities', requireWpAuth, async (req, res) => {
+router.post('/activities', requireAuth, async (req, res) => {
   const { name, emoji, unit, inputMode } = req.body || {}
   if (typeof name !== 'string' || !name.trim() || name.trim().length > 12) {
     return res.status(400).json({ error: '活动名称需 1-12 个字符' })
   }
   const safeMode = inputMode === 'duration' ? 'duration' : 'count'
   try {
-    const existing = await listPositiveActivities(req.wpUserId)
+    const existing = await listPositiveActivities(req.userId)
     const customCount = existing.filter((row) => !isBuiltinActivity(row.activity_key)).length
     if (customCount >= 30) return res.status(400).json({ error: '自定义正能量活动最多 30 个' })
-    const row = await upsertPositiveActivity(req.wpUserId, {
+    const row = await upsertPositiveActivity(req.userId, {
       activityKey: randomKey('a'),
       name: name.trim(),
       emoji: typeof emoji === 'string' && emoji ? emoji.slice(0, 4) : '🌱',
@@ -635,23 +634,23 @@ router.post('/activities', requireWpAuth, async (req, res) => {
       }
     })
   } catch (err) {
-    appLog('ERROR', `新增正能量活动失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `新增正能量活动失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
-router.patch('/activities/:activityKey', requireWpAuth, async (req, res) => {
+router.patch('/activities/:activityKey', requireAuth, async (req, res) => {
   const { activityKey } = req.params
   if (!KEY_PATTERN.test(activityKey)) return res.status(400).json({ error: '活动标识非法' })
   const { name, emoji, unit, archived, inputMode } = req.body || {}
   try {
-    const rows = await listPositiveActivities(req.wpUserId)
+    const rows = await listPositiveActivities(req.userId)
     const current = rows.find((row) => row.activity_key === activityKey)
     const builtin = getBuiltinActivity(activityKey)
     if (!builtin && !current) return res.status(404).json({ error: '活动不存在' })
     const safeMode = inputMode === 'duration' ? 'duration' : current?.input_mode || builtin?.inputMode || 'count'
     const safeUnit = safeMode === 'count' && typeof unit === 'string' ? unit.slice(0, 8) : ''
-    await upsertPositiveActivity(req.wpUserId, {
+    await upsertPositiveActivity(req.userId, {
       activityKey,
       name: (typeof name === 'string' && name.trim()) || current?.name || builtin?.name,
       emoji: (typeof emoji === 'string' && emoji) || current?.emoji || builtin?.emoji,
@@ -660,34 +659,34 @@ router.patch('/activities/:activityKey', requireWpAuth, async (req, res) => {
       archived: archived === undefined ? Boolean(current?.archived) : Boolean(archived),
       sortOrder: Number(current?.sort_order) || 0
     })
-    res.json({ ok: true, activities: await loadActivities(req.wpUserId) })
+    res.json({ ok: true, activities: await loadActivities(req.userId) })
   } catch (err) {
-    appLog('ERROR', `更新正能量活动失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `更新正能量活动失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
-router.delete('/activities/:activityKey', requireWpAuth, async (req, res) => {
+router.delete('/activities/:activityKey', requireAuth, async (req, res) => {
   const { activityKey } = req.params
   if (isBuiltinActivity(activityKey)) {
     return res.status(400).json({ error: '内置活动不能删除' })
   }
   try {
-    const removed = await deletePositiveActivity(req.wpUserId, activityKey)
+    const removed = await deletePositiveActivity(req.userId, activityKey)
     if (!removed) return res.status(404).json({ error: '活动不存在' })
     res.json({ ok: true })
   } catch (err) {
-    appLog('ERROR', `删除正能量活动失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `删除正能量活动失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
 // ========== 成就 ==========
 
-router.get('/achievements', requireWpAuth, async (req, res) => {
+router.get('/achievements', requireAuth, async (req, res) => {
   try {
-    await settleDueResistances(req.wpUserId)
-    const { achievements } = await recalcAchievements(req.wpUserId)
+    await settleDueResistances(req.userId)
+    const { achievements } = await recalcAchievements(req.userId)
     const hiddenLocked = achievements.filter((item) => item.hidden && !item.unlocked).length
     res.json({
       achievements: maskHiddenAchievements(achievements),
@@ -701,12 +700,12 @@ router.get('/achievements', requireWpAuth, async (req, res) => {
       }
     })
   } catch (err) {
-    appLog('ERROR', `成就读取失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `成就读取失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '读取失败，请稍后重试' })
   }
 })
 
-router.post('/achievements', requireWpAuth, async (req, res) => {
+router.post('/achievements', requireAuth, async (req, res) => {
   const { name, description, rule, points, hidden } = req.body || {}
   if (typeof name !== 'string' || !name.trim() || name.trim().length > 20) {
     return res.status(400).json({ error: '成就名称需 1-20 个字符' })
@@ -744,13 +743,13 @@ router.post('/achievements', requireWpAuth, async (req, res) => {
   }
 
   try {
-    const existing = await listCustomAchievements(req.wpUserId)
+    const existing = await listCustomAchievements(req.userId)
     if (existing.length >= 50) return res.status(400).json({ error: '自定义成就最多 50 个' })
     if (existing.some((row) => row.name === name.trim())) {
       return res.status(409).json({ error: '已有同名成就' })
     }
 
-    await createCustomAchievement(req.wpUserId, {
+    await createCustomAchievement(req.userId, {
       code: randomKey('u'),
       name: name.trim(),
       description: typeof description === 'string' ? description.slice(0, 100) : '',
@@ -758,23 +757,23 @@ router.post('/achievements', requireWpAuth, async (req, res) => {
       points: Math.min(Math.max(parseInt(points, 10) || 10, 1), 200),
       hidden: Boolean(hidden)
     })
-    const { achievements } = await recalcAchievements(req.wpUserId)
+    const { achievements } = await recalcAchievements(req.userId)
     res.json({ ok: true, achievements: maskHiddenAchievements(achievements) })
   } catch (err) {
-    appLog('ERROR', `新增自定义成就失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `新增自定义成就失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
 
-router.delete('/achievements/:code', requireWpAuth, async (req, res) => {
+router.delete('/achievements/:code', requireAuth, async (req, res) => {
   const { code } = req.params
   if (!KEY_PATTERN.test(code)) return res.status(400).json({ error: '成就不存在' })
   try {
-    const removed = await deleteCustomAchievement(req.wpUserId, code)
+    const removed = await deleteCustomAchievement(req.userId, code)
     if (!removed) return res.status(404).json({ error: '只能删除自定义成就' })
     res.json({ ok: true })
   } catch (err) {
-    appLog('ERROR', `删除自定义成就失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `删除自定义成就失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '操作失败，请稍后重试' })
   }
 })
@@ -902,9 +901,9 @@ ${json}
 const WILLPOWER_AI_DAILY = Number(process.env.WILLPOWER_AI_DAILY) || 5
 
 /** GET /ai-report?scope=today — 返回缓存的历史报告列表或某 scope 的缓存。 */
-router.get('/ai-report', requireWpAuth, async (req, res) => {
+router.get('/ai-report', requireAuth, async (req, res) => {
   const { scope } = req.query || {}
-  const userId = req.wpUserId
+  const userId = req.userId
   try {
     if (scope) {
       // 返回指定 scope 的最近一次缓存
@@ -928,7 +927,7 @@ router.get('/ai-report', requireWpAuth, async (req, res) => {
   }
 })
 
-router.post('/ai-report', requireWpAuth, async (req, res) => {
+router.post('/ai-report', requireAuth, async (req, res) => {
   const { scope, date, from, to } = req.body || {}
   const range = resolveReportRange(scope, date, from, to)
   if (!range) return res.status(400).json({ error: 'scope 非法或日期参数不完整（格式需为 YYYY-MM-DD）' })
@@ -936,7 +935,7 @@ router.post('/ai-report', requireWpAuth, async (req, res) => {
     return res.status(503).json({ error: 'AI 服务未配置（服务端缺少 DEEPSEEK_API_KEY）' })
   }
 
-  const userId = req.wpUserId
+  const userId = req.userId
   const day = todayKey()
   try {
     const used = await reserveWillpowerAiUsage(userId, day, WILLPOWER_AI_DAILY)
@@ -978,11 +977,11 @@ router.post('/ai-report', requireWpAuth, async (req, res) => {
 
 // ========== 数据看板 ==========
 
-router.get('/overview', requireWpAuth, async (req, res) => {
+router.get('/overview', requireAuth, async (req, res) => {
   try {
-    await settleDueResistances(req.wpUserId)
-    const { achievements, context } = await recalcAchievements(req.wpUserId)
-    const demons = await loadDemons(req.wpUserId)
+    await settleDueResistances(req.userId)
+    const { achievements, context } = await recalcAchievements(req.userId)
+    const demons = await loadDemons(req.userId)
     const demonNames = new Map(demons.map((item) => [item.demonKey, item]))
     const overview = buildOverview(context)
     overview.byDemon = overview.byDemon.map((item) => ({
@@ -991,7 +990,7 @@ router.get('/overview', requireWpAuth, async (req, res) => {
       emoji: demonNames.get(item.demonKey)?.emoji || '👹',
       color: demonNames.get(item.demonKey)?.color || '#7c3aed'
     }))
-    const pending = (await listPendingResistances(req.wpUserId)).map(serializeResistance)
+    const pending = (await listPendingResistances(req.userId)).map(serializeResistance)
     res.json({
       overview,
       pending,
@@ -1002,10 +1001,10 @@ router.get('/overview', requireWpAuth, async (req, res) => {
           .filter((item) => item.unlocked)
           .reduce((sum, item) => sum + (item.points || 0), 0)
       },
-      recent: (await listResistances(req.wpUserId, 10)).map(serializeResistance)
+      recent: (await listResistances(req.userId, 10)).map(serializeResistance)
     })
   } catch (err) {
-    appLog('ERROR', `看板读取失败: uid=${req.wpUserId}, error=${err?.message}`)
+    appLog('ERROR', `看板读取失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '读取失败，请稍后重试' })
   }
 })

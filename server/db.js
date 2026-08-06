@@ -85,6 +85,8 @@ CREATE INDEX IF NOT EXISTS idx_pwreset_user ON password_reset_tokens(user_id);
 -- 邮箱激活：未激活用户不算「正式用户」。无邮箱账号始终未激活。
 ALTER TABLE users ADD COLUMN IF NOT EXISTS email_verified BOOLEAN NOT NULL DEFAULT false;
 ALTER TABLE users ADD COLUMN IF NOT EXISTS has_password BOOLEAN NOT NULL DEFAULT true;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS display_name TEXT;
+ALTER TABLE users ADD COLUMN IF NOT EXISTS avatar TEXT;
 
 CREATE TABLE IF NOT EXISTS email_verification_tokens (
   token_hash  TEXT PRIMARY KEY,
@@ -164,7 +166,7 @@ export async function getUserById(id) {
     return (await getLocalStore()).getUserById(id)
   }
   const { rows } = await pool.query(
-    'SELECT id, username, email, email_verified, has_password, created_at FROM users WHERE id = $1',
+    'SELECT id, username, email, email_verified, has_password, display_name, avatar, created_at FROM users WHERE id = $1',
     [id]
   )
   return rows[0] || null
@@ -237,6 +239,24 @@ export async function setHasPassword(userId, value) {
     return (await getLocalStore()).setHasPassword(userId, value)
   }
   await pool.query('UPDATE users SET has_password = $1 WHERE id = $2', [value, userId])
+}
+
+// 设置昵称（心魔等模块展示用，主站用户名之外的友好称呼）
+export async function setDisplayName(userId, displayName) {
+  const safe = typeof displayName === 'string' ? displayName.trim().slice(0, 20) : null
+  if (isLocalDevMode) {
+    return (await getLocalStore()).setDisplayName(userId, safe)
+  }
+  await pool.query('UPDATE users SET display_name = $1 WHERE id = $2', [safe, userId])
+}
+
+// 设置头像（全站共享字段）。avatarUrl 为 OSS 等外链，传 null/空串表示清空
+export async function setAvatar(userId, avatarUrl) {
+  const safe = typeof avatarUrl === 'string' ? avatarUrl.trim().slice(0, 255) || null : null
+  if (isLocalDevMode) {
+    return (await getLocalStore()).setAvatar(userId, safe)
+  }
+  await pool.query('UPDATE users SET avatar = $1 WHERE id = $2', [safe, userId])
 }
 
 // 创建邮箱激活令牌（仅存 token 的 SHA-256，原始 token 只出现在邮件链接）

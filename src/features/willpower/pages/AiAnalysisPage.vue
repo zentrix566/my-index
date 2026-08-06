@@ -76,14 +76,14 @@ import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import MarkdownIt from 'markdown-it'
 import willpowerApi from '../api/willpower.js'
-import { useWillpowerAuth } from '../composables/useWillpowerAuth.js'
+import { useAuth } from '../../../auth/useAuth.js'
 import WpNav from '../components/WpNav.vue'
 import WpToastHost from '../components/WpToastHost.vue'
 
 const md = new MarkdownIt({ html: false, linkify: true, breaks: true })
 
 const router = useRouter()
-const { user, init } = useWillpowerAuth()
+const { user, init } = useAuth()
 
 const loadError = ref('')
 
@@ -190,7 +190,7 @@ async function generateReport() {
 onMounted(async () => {
   await init()
   if (!user.value) {
-    router.replace('/willpower/login')
+    router.replace('/login')
     return
   }
   // 并行加载：缓存列表 + 尝试加载当前 scope 的缓存

@@ -1,7 +1,7 @@
 /**
  * 「抵御心魔」前端 API 客户端。
- * 业务接口统一挂在 /api/willpower 下；认证接口在 /api/willpower/auth。
- * 同源请求自动携带 wp_token Cookie，无需手动设置 credentials。
+ * 业务接口统一挂在 /api/willpower 下。
+ * 认证已并入站点主账号体系（/api/auth/*，同源自动携带 site_token Cookie）。
  */
 
 async function readJson(resp) {

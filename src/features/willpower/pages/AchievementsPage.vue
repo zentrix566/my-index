@@ -177,13 +177,13 @@
 import { computed, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import willpowerApi from '../api/willpower.js'
-import { useWillpowerAuth } from '../composables/useWillpowerAuth.js'
+import { useAuth } from '../../../auth/useAuth.js'
 import { useToast } from '../composables/useToast.js'
 import WpToastHost from '../components/WpToastHost.vue'
 import WpNav from '../components/WpNav.vue'
 
 const router = useRouter()
-const { user, init, logout: doLogout } = useWillpowerAuth()
+const { user, init, logout: doLogout } = useAuth()
 const { push: toast } = useToast()
 
 const achievements = ref([])
@@ -284,13 +284,13 @@ async function createAch() {
 
 async function logout() {
   await doLogout()
-  router.replace('/willpower/login')
+  router.replace('/login')
 }
 
 onMounted(async () => {
   await init()
   if (!user.value) {
-    router.replace('/willpower/login')
+    router.replace('/login')
     return
   }
   try {

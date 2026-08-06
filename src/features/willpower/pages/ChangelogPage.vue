@@ -31,12 +31,12 @@
 import { onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import changelogData from '../../../data/willpower-changelog.js'
-import { useWillpowerAuth } from '../composables/useWillpowerAuth.js'
+import { useAuth } from '../../../auth/useAuth.js'
 import WpNav from '../components/WpNav.vue'
 import WpToastHost from '../components/WpToastHost.vue'
 
 const router = useRouter()
-const { user, init } = useWillpowerAuth()
+const { user, init } = useAuth()
 const changelog = ref(changelogData)
 
 onMounted(async () => {

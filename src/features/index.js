@@ -21,9 +21,5 @@ export {
   loadWillpowerCalendar,
   loadWillpowerAiAnalysis,
   loadWillpowerData,
-  loadWillpowerChangelog,
-  loadWillpowerLogin,
-  loadWillpowerRegister,
-  loadWillpowerForgotPassword,
-  loadWillpowerResetPassword
+  loadWillpowerChangelog
 } from './willpower/index.js'

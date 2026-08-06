@@ -58,29 +58,9 @@ function toSqliteStatement(sql, params) {
 function buildSchema(dialect) {
   const pk = dialect === 'pg' ? 'SERIAL PRIMARY KEY' : 'INTEGER PRIMARY KEY AUTOINCREMENT'
   return `
-CREATE TABLE IF NOT EXISTS users (
-  id ${pk},
-  username TEXT UNIQUE NOT NULL,
-  password_hash TEXT NOT NULL,
-  email TEXT,
-  email_verified SMALLINT NOT NULL DEFAULT 0,
-  display_name TEXT,
-  created_at TEXT NOT NULL
-);
-
-CREATE TABLE IF NOT EXISTS password_reset_tokens (
-  token_hash TEXT PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  expires_at TEXT NOT NULL,
-  used_at TEXT,
-  created_at TEXT NOT NULL
-);
-
-CREATE INDEX IF NOT EXISTS idx_wp_reset_user ON password_reset_tokens(user_id);
-
 CREATE TABLE IF NOT EXISTS demons (
   id ${pk},
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL,
   demon_key TEXT NOT NULL,
   name TEXT NOT NULL,
   emoji TEXT,
@@ -95,7 +75,7 @@ CREATE TABLE IF NOT EXISTS demons (
 
 CREATE TABLE IF NOT EXISTS resistances (
   id ${pk},
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL,
   demon_key TEXT NOT NULL,
   status TEXT NOT NULL DEFAULT 'pending',
   mode TEXT NOT NULL DEFAULT 'quick',
@@ -111,7 +91,7 @@ CREATE INDEX IF NOT EXISTS idx_wp_resist_user ON resistances(user_id, started_at
 
 CREATE TABLE IF NOT EXISTS positive_logs (
   id ${pk},
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL,
   activity_key TEXT NOT NULL,
   name TEXT NOT NULL,
   amount REAL NOT NULL DEFAULT 0,
@@ -125,7 +105,7 @@ CREATE INDEX IF NOT EXISTS idx_wp_positive_user ON positive_logs(user_id, happen
 
 CREATE TABLE IF NOT EXISTS positive_activities (
   id ${pk},
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL,
   activity_key TEXT NOT NULL,
   name TEXT NOT NULL,
   emoji TEXT,
@@ -141,7 +121,7 @@ CREATE INDEX IF NOT EXISTS idx_wp_activity_user ON positive_activities(user_id, 
 
 CREATE TABLE IF NOT EXISTS custom_achievements (
   id ${pk},
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL,
   code TEXT NOT NULL,
   name TEXT NOT NULL,
   description TEXT,
@@ -153,7 +133,7 @@ CREATE TABLE IF NOT EXISTS custom_achievements (
 );
 
 CREATE TABLE IF NOT EXISTS achievement_unlocks (
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL,
   code TEXT NOT NULL,
   progress INTEGER NOT NULL DEFAULT 0,
   target INTEGER NOT NULL DEFAULT 0,
@@ -163,7 +143,7 @@ CREATE TABLE IF NOT EXISTS achievement_unlocks (
 );
 
 CREATE TABLE IF NOT EXISTS ai_report_usage (
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL,
   day TEXT NOT NULL,
   count INTEGER NOT NULL DEFAULT 0,
   PRIMARY KEY (user_id, day)
@@ -171,7 +151,7 @@ CREATE TABLE IF NOT EXISTS ai_report_usage (
 
 CREATE TABLE IF NOT EXISTS ai_reports (
   id INTEGER PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL,
   scope TEXT NOT NULL,
   date_from TEXT NOT NULL,
   date_to TEXT NOT NULL,
@@ -288,95 +268,9 @@ export function nowIso(ts = Date.now()) {
   )
 }
 
-// ========== 用户 ==========
-
-export async function getUserByUsername(username) {
-  return queryOne('SELECT * FROM users WHERE username = $1', [username])
-}
-
-export async function getUserByEmail(email) {
-  return queryOne('SELECT * FROM users WHERE LOWER(email) = LOWER($1)', [email])
-}
-
-export async function getUserByIdentifier(identifier) {
-  return queryOne(
-    'SELECT id, username, email FROM users WHERE username = $1 OR LOWER(email) = LOWER($1)',
-    [identifier]
-  )
-}
-
-/** 对外脱敏视图（不含 password_hash）。 */
-export async function getUserById(id) {
-  return queryOne(
-    'SELECT id, username, email, email_verified, display_name, created_at FROM users WHERE id = $1',
-    [id]
-  )
-}
-
-export async function getUserAuthById(id) {
-  return queryOne('SELECT id, username, password_hash, email FROM users WHERE id = $1', [id])
-}
-
-export async function createUser(username, passwordHash, email = null) {
-  const row = await queryOne(
-    `INSERT INTO users(username, password_hash, email, created_at)
-     VALUES($1, $2, $3, $4) RETURNING id`,
-    [username, passwordHash, email || null, nowIso()]
-  )
-  return row.id
-}
-
-export async function setUserEmail(userId, email) {
-  await query('UPDATE users SET email = $1, email_verified = 0 WHERE id = $2', [email, userId])
-}
-
-export async function updatePasswordById(userId, passwordHash) {
-  await query('UPDATE users SET password_hash = $1 WHERE id = $2', [passwordHash, userId])
-}
-
-export async function updateDisplayName(userId, displayName) {
-  await query('UPDATE users SET display_name = $1 WHERE id = $2', [displayName, userId])
-}
-
-// ========== 密码重置令牌 ==========
-
-export async function createResetToken(userId, tokenHash, expiresAt) {
-  await query(
-    `INSERT INTO password_reset_tokens(token_hash, user_id, expires_at, created_at)
-     VALUES($1, $2, $3, $4)`,
-    [tokenHash, userId, expiresAt, nowIso()]
-  )
-}
-
-export async function getValidResetToken(tokenHash) {
-  const row = await queryOne(
-    'SELECT token_hash, user_id, expires_at, used_at FROM password_reset_tokens WHERE token_hash = $1',
-    [tokenHash]
-  )
-  if (!row || row.used_at) return null
-  if (new Date(row.expires_at).getTime() < Date.now()) return null
-  return row
-}
-
-export async function consumeResetToken(tokenHash, userId) {
-  await query('UPDATE password_reset_tokens SET used_at = $1 WHERE token_hash = $2', [
-    nowIso(),
-    tokenHash
-  ])
-  await query(
-    'UPDATE password_reset_tokens SET used_at = $1 WHERE user_id = $2 AND used_at IS NULL',
-    [nowIso(), userId]
-  )
-}
-
-export async function invalidateUserResetTokens(userId) {
-  await query(
-    'UPDATE password_reset_tokens SET used_at = $1 WHERE user_id = $2 AND used_at IS NULL',
-    [nowIso(), userId]
-  )
-}
-
 // ========== 心魔（用户自定义 / 对内置项的覆盖）==========
+// 注意：心魔的认证已统一到站点主账号体系（server/auth.js + 主库 users 表），
+// 本模块不再维护独立用户表，业务表的 user_id 直接引用主站用户 uid。
 
 export async function listUserDemons(userId) {
   const { rows } = await query(

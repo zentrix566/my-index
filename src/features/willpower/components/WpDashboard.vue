@@ -141,11 +141,11 @@
 import { computed, onMounted, ref } from 'vue'
 import MarkdownIt from 'markdown-it'
 import willpowerApi from '../api/willpower.js'
-import { useWillpowerAuth } from '../composables/useWillpowerAuth.js'
+import { useAuth } from '../../../auth/useAuth.js'
 import { useToast } from '../composables/useToast.js'
 
 const md = new MarkdownIt({ html: false, linkify: true, breaks: true })
-const { init } = useWillpowerAuth()
+const { init } = useAuth()
 const { push: toast } = useToast()
 
 const overview = ref({

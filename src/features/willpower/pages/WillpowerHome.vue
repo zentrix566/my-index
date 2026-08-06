@@ -176,7 +176,7 @@
 import { computed, onBeforeUnmount, onMounted, reactive, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import willpowerApi from '../api/willpower.js'
-import { useWillpowerAuth } from '../composables/useWillpowerAuth.js'
+import { useAuth } from '../../../auth/useAuth.js'
 import { useToast } from '../composables/useToast.js'
 import WpNav from '../components/WpNav.vue'
 import WpToastHost from '../components/WpToastHost.vue'
@@ -184,7 +184,7 @@ import WpBattleFx from '../components/WpBattleFx.vue'
 import { formatBeijing, toBeijingInput, fromBeijingInput, nowBeijingIso } from '../utils/time.js'
 
 const router = useRouter()
-const { user, init } = useWillpowerAuth()
+const { user, init } = useAuth()
 const { push: toast } = useToast()
 const battleFx = ref(null)
 
@@ -502,7 +502,7 @@ onMounted(async () => {
   setGreeting()
   await init()
   if (!user.value) {
-    router.replace('/willpower/login')
+    router.replace('/login')
     return
   }
   displayName.value = user.value.displayName || user.value.username

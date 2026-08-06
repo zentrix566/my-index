@@ -17,7 +17,7 @@
           <span class="wp-account-user">{{ username }}</span>
           <button class="wp-account-link wp-logout" type="button" @click="logout">退出登录</button>
         </template>
-        <RouterLink v-else to="/willpower/login" class="wp-account-link">登录</RouterLink>
+        <RouterLink v-else to="/login" class="wp-account-link">登录</RouterLink>
       </div>
     </div>
 
@@ -36,7 +36,7 @@
 <script setup>
 import { computed } from 'vue'
 import { useRouter } from 'vue-router'
-import { useWillpowerAuth } from '../composables/useWillpowerAuth.js'
+import { useAuth } from '../../../auth/useAuth.js'
 
 const props = defineProps({
   /** 同步状态：idle | syncing | synced | error */
@@ -44,7 +44,7 @@ const props = defineProps({
 })
 
 const router = useRouter()
-const { user, logout: doLogout } = useWillpowerAuth()
+const { user, logout: doLogout } = useAuth()
 const username = computed(() => user.value?.displayName || user.value?.username || '')
 
 const syncLabel = computed(() => {
@@ -75,6 +75,6 @@ function onSyncClick() {
 
 async function logout() {
   await doLogout()
-  router.replace('/willpower/login')
+  router.replace('/login')
 }
 </script>

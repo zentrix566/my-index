@@ -119,14 +119,14 @@
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import willpowerApi from '../api/willpower.js'
-import { useWillpowerAuth } from '../composables/useWillpowerAuth.js'
+import { useAuth } from '../../../auth/useAuth.js'
 import { useToast } from '../composables/useToast.js'
 import WpNav from '../components/WpNav.vue'
 import WpToastHost from '../components/WpToastHost.vue'
 import { formatBeijing } from '../utils/time.js'
 
 const router = useRouter()
-const { user, init } = useWillpowerAuth()
+const { user, init } = useAuth()
 const { push: toast } = useToast()
 
 const weekLabels = ['一', '二', '三', '四', '五', '六', '日']
@@ -242,7 +242,7 @@ async function selectDay(date) {
 onMounted(async () => {
   await init()
   if (!user.value) {
-    router.replace('/willpower/login')
+    router.replace('/login')
     return
   }
   try {

@@ -62,11 +62,11 @@ async function login(username, password) {
   return data.user
 }
 
-async function register(username, password) {
+async function register(username, password, email) {
   const resp = await fetch('/api/auth/register', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
+    body: JSON.stringify(email ? { username, password, email } : { username, password })
   })
   const data = await readJsonResponse(resp)
   if (!resp.ok) throw new Error(data.error || '注册失败')
@@ -158,6 +158,31 @@ async function setPassword(newPassword) {
   return data
 }
 
+// 设置昵称（心魔等模块展示用）；成功后同步本地用户态
+async function setDisplayName(displayName) {
+  const resp = await fetch('/api/auth/display-name', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ displayName })
+  })
+  const data = await readJsonResponse(resp)
+  if (!resp.ok) throw new Error(data.error || '操作失败')
+  if (data.user) user.value = { ...user.value, ...data.user }
+  return data
+}
+
+async function setAvatar(avatar) {
+  const resp = await fetch('/api/auth/avatar', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ avatar })
+  })
+  const data = await readJsonResponse(resp)
+  if (!resp.ok) throw new Error(data.error || '操作失败')
+  if (data.user) user.value = { ...user.value, ...data.user }
+  return data
+}
+
 export function useAuth() {
   return {
     user,
@@ -172,6 +197,8 @@ export function useAuth() {
     changePassword,
     setEmail,
     verifyEmail,
-    setPassword
+    setPassword,
+    setDisplayName,
+    setAvatar
   }
 }

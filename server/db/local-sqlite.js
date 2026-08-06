@@ -11,6 +11,8 @@ CREATE TABLE IF NOT EXISTS users (
   email TEXT,
   email_verified INTEGER NOT NULL DEFAULT 0,
   has_password INTEGER NOT NULL DEFAULT 1,
+  display_name TEXT,
+  avatar TEXT,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
@@ -73,6 +75,8 @@ export function createLocalSqliteStore(filePath) {
   try { database.exec('ALTER TABLE users ADD COLUMN email TEXT') } catch { /* 已存在则忽略 */ }
   try { database.exec('ALTER TABLE users ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 0') } catch { /* 已存在则忽略 */ }
   try { database.exec('ALTER TABLE users ADD COLUMN has_password INTEGER NOT NULL DEFAULT 1') } catch { /* 已存在则忽略 */ }
+  try { database.exec('ALTER TABLE users ADD COLUMN display_name TEXT') } catch { /* 已存在则忽略 */ }
+  try { database.exec('ALTER TABLE users ADD COLUMN avatar TEXT') } catch { /* 已存在则忽略 */ }
 
   const statements = {
     getUserByUsername: database.prepare('SELECT * FROM users WHERE username = ?'),
@@ -98,10 +102,12 @@ export function createLocalSqliteStore(filePath) {
       'UPDATE password_reset_tokens SET used_at = CURRENT_TIMESTAMP WHERE user_id = ? AND used_at IS NULL'
     ),
     getUserById: database.prepare(
-      'SELECT id, username, email, email_verified, has_password, created_at FROM users WHERE id = ?'
+      'SELECT id, username, email, email_verified, has_password, display_name, avatar, created_at FROM users WHERE id = ?'
     ),
     setEmailVerified: database.prepare('UPDATE users SET email_verified = ? WHERE id = ?'),
     setHasPassword: database.prepare('UPDATE users SET has_password = ? WHERE id = ?'),
+    setDisplayName: database.prepare('UPDATE users SET display_name = ? WHERE id = ?'),
+    setAvatar: database.prepare('UPDATE users SET avatar = ? WHERE id = ?'),
     createVerificationToken: database.prepare(
       'INSERT INTO email_verification_tokens(token_hash, user_id, expires_at) VALUES(?, ?, ?)'
     ),
@@ -222,6 +228,14 @@ export function createLocalSqliteStore(filePath) {
 
     setHasPassword(userId, value) {
       statements.setHasPassword.run(value ? 1 : 0, Number(userId))
+    },
+
+    setDisplayName(userId, displayName) {
+      statements.setDisplayName.run(displayName || null, Number(userId))
+    },
+
+    setAvatar(userId, avatarUrl) {
+      statements.setAvatar.run(avatarUrl || null, Number(userId))
     },
 
     createVerificationToken(userId, tokenHash, expiresAt) {
