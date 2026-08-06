@@ -1,5 +1,5 @@
 import { computed, reactive } from 'vue'
-import { getClassName } from '../utils/achievements.js'
+import { getAchievementSearchTargets } from '../utils/achievements.js'
 
 /**
  * 构建待完成清单的分类、排序和折叠状态。
@@ -82,13 +82,7 @@ export function useAchievementSprint({
 
 function matchesSearch(achievement, searchText) {
   if (!searchText) return true
-  const targets = [
-    achievement.name,
-    getClassName(achievement),
-    ...(achievement.relatedCards || []),
-    ...(achievement.stages || []).map((stage) => stage.description)
-  ]
-  return targets
+  return getAchievementSearchTargets(achievement)
     .filter(Boolean)
     .some((value) => String(value).toLowerCase().includes(searchText))
 }

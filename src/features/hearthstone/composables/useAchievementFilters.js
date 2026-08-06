@@ -1,7 +1,7 @@
 import { computed } from 'vue'
 import { expansions } from '../data/expansions.js'
 import {
-  getClassName,
+  getAchievementSearchTargets,
   getClassOrder,
   groupByClass,
   matchesClass
@@ -23,7 +23,8 @@ export function useAchievementFilters({
   selectedStatus,
   currentExpansionId,
   getMetric,
-  isAchievementCompleted
+  isAchievementCompleted,
+  getProgressInfo
 }) {
   const displayAchievements = computed(() => {
     if (query.value.trim()) return allAchievements.value
@@ -81,23 +82,36 @@ export function useAchievementFilters({
       isAchievementCompleted
     )
   )
-  const myClassExpansionOrder = computed(() =>
-    expansions
-      .filter((expansion) => myFilteredByExpansion.value[expansion.id])
-      .sort((left, right) => {
-        const leftRemaining = countRemaining(
-          myFilteredByExpansion.value[left.id],
-          isAchievementCompleted
-        )
-        const rightRemaining = countRemaining(
-          myFilteredByExpansion.value[right.id],
-          isAchievementCompleted
-        )
-        if (leftRemaining !== rightRemaining) {
-          return leftRemaining - rightRemaining
-        }
-        return left.name.localeCompare(right.name, 'zh')
-      })
+  // 版本发布时间索引（expansions 数组 = 新→旧，索引小 = 新）
+  const expansionTimeIndex = new Map(
+    expansions.map((expansion, i) => [expansion.id, i])
+  )
+  // 按版本发布时间新→旧平铺（取消版本分组后，跨版本总览同一职业的所有成就）。
+  // 浏览模式（按职业浏览）：版本内保持数据原顺序。
+  const classFlatAchievements = computed(() =>
+    [...filteredAchievements.value].sort(
+      (a, b) =>
+        (expansionTimeIndex.get(a._expansionId) ?? 999) -
+        (expansionTimeIndex.get(b._expansionId) ?? 999)
+    )
+  )
+  // 我的成就-按职业：职业内全部成就跨版本平铺，按完成进度排序（用户 2026-08-06 确认的规则）：
+  //   1) 完成状态：未完成在前，已完成在后；
+  //   2) 完成度：未完成内按完成度降序（越接近完成越靠前，方便冲刺）；
+  //   3) 版本新旧：同级按版本发布时间新→旧（expansions 索引小 = 新版本）。
+  const myClassFlatAchievements = computed(() =>
+    [...filteredAchievements.value].sort((left, right) => {
+      const leftDone = Number(isAchievementCompleted(left))
+      const rightDone = Number(isAchievementCompleted(right))
+      if (leftDone !== rightDone) return leftDone - rightDone
+      const leftPercent = getProgressInfo(left).percent
+      const rightPercent = getProgressInfo(right).percent
+      if (leftPercent !== rightPercent) return rightPercent - leftPercent
+      return (
+        (expansionTimeIndex.get(left._expansionId) ?? 999) -
+        (expansionTimeIndex.get(right._expansionId) ?? 999)
+      )
+    })
   )
 
   return {
@@ -107,7 +121,8 @@ export function useAchievementFilters({
     myFilteredByClass,
     filteredByExpansion,
     myFilteredByExpansion,
-    myClassExpansionOrder
+    classFlatAchievements,
+    myClassFlatAchievements
   }
 }
 
@@ -169,13 +184,7 @@ function matchesMetric(achievement, selectedMetric, getMetric) {
 }
 
 function matchesSearch(achievement, searchText) {
-  const targets = [
-    achievement.name,
-    getClassName(achievement),
-    ...(achievement.relatedCards || []),
-    ...(achievement.stages || []).map((stage) => stage.description)
-  ]
-  return targets
+  return getAchievementSearchTargets(achievement)
     .filter(Boolean)
     .some((value) => String(value).toLowerCase().includes(searchText))
 }
@@ -201,10 +210,4 @@ function sortGroupsByCompletion(groups, isAchievementCompleted) {
     )
   }
   return sortedGroups
-}
-
-function countRemaining(achievements, isAchievementCompleted) {
-  return achievements.filter(
-    (achievement) => !isAchievementCompleted(achievement)
-  ).length
 }

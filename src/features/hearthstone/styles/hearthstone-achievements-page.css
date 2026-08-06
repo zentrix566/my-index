@@ -296,6 +296,16 @@
 .hs-guide-hover .hs-guide-menu { display: none; }
 .hs-guide-hover:hover .hs-guide-menu,
 .hs-guide-hover:focus-within .hs-guide-menu { display: flex; }
+/* 菜单与按钮之间有 6px 间距，鼠标移向菜单时会离开 hover 区域导致菜单瞬间消失、
+   点不到链接；用伪元素把这段空隙「桥接」进悬停区域，鼠标可无缝滑入菜单。 */
+.hs-guide-hover .hs-guide-menu::before {
+  content: '';
+  position: absolute;
+  top: -7px;
+  left: 0;
+  right: 0;
+  height: 7px;
+}
 .hs-guide-hover:hover > .hs-guide-btn,
 .hs-guide-hover:hover > .hs-guide-btn-inline,
 .hs-guide-hover:focus-within > .hs-guide-btn,

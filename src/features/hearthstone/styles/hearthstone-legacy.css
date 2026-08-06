@@ -30,17 +30,17 @@
 /* 视图模式切换 */
 .hs-view-switch {
   display: inline-flex;
-  gap: 4px;
-  padding: 4px;
-  margin-bottom: 8px;
+  gap: 3px;
+  padding: 3px;
+  margin-bottom: 5px;
   border: 1px solid rgba(38, 43, 50, 0.14);
   border-radius: 8px;
   background: #ece8df;
 }
 
 .hs-view-switch button {
-  height: 32px;
-  padding: 0 18px;
+  height: 28px;
+  padding: 0 14px;
   border: 0;
   border-radius: 6px;
   color: #5c554d;
@@ -67,8 +67,8 @@
   position: sticky;
   top: 0;
   z-index: 20;
-  padding-top: 2px;
-  padding-bottom: 10px;
+  padding-top: 1px;
+  padding-bottom: 6px;
   background: var(--hs-surface-overlay);
   border-bottom: 1px solid var(--hs-border);
   backdrop-filter: blur(6px);
@@ -817,16 +817,16 @@
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin: 12px 0 4px;
+  gap: 8px;
+  margin: 8px 0 2px;
 }
 /* 我的成就：子切换下方的版本 / 职业选择容器 */
 .hs-my-selector {
   display: flex;
   align-items: center;
   flex-wrap: wrap;
-  gap: 10px;
-  margin: 10px 0 2px;
+  gap: 8px;
+  margin: 6px 0 2px;
 }
 
 /* 攻略按钮（替换原行内参考链接） */

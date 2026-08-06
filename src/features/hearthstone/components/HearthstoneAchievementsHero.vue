@@ -6,7 +6,6 @@
         Hearthstone Tracker
       </p>
       <h1 id="hs-page-title">炉石传说成就查看器</h1>
-      <p>把分散的成就目标整理成清晰的行动清单。按版本与职业筛选、记录完成进度，并快速找到下一项值得冲刺的成就。</p>
       <p class="hs-contact-line">
         炉石成就QQ群 849150123 · 邮箱 <a href="mailto:1987247500@qq.com">1987247500@qq.com</a>
       </p>

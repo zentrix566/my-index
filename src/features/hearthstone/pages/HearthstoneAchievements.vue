@@ -389,14 +389,10 @@
         :class-group-order="classGroupOrder"
         :filtered-by-class="filteredByClass"
         :class-view-collapsed="classViewCollapsed"
-        :expansions="expansions"
-        :filtered-by-expansion="filteredByExpansion"
-        :exp-view-collapsed="expViewCollapsed"
-        :exp-view-summaries="expViewSummaries"
+        :class-flat-achievements="classFlatAchievements"
         :my-filtered-by-class="myFilteredByClass"
         :class-view-summaries="classViewSummaries"
-        :my-filtered-by-expansion="myFilteredByExpansion"
-        :my-class-expansion-order="myClassExpansionOrder"
+        :my-class-flat-achievements="myClassFlatAchievements"
         :user="user"
         :batch-mode="batchMode"
         :selected-ach-ids="selectedAchIds"
@@ -409,7 +405,6 @@
         :recommendations="ruleRecommendations"
         :recommendations-collapsed="sprintSectionCollapsed.recommendations"
         @set-class-collapsed="setClassCollapsed"
-        @set-expansion-collapsed="setExpansionCollapsed"
         @toggle-sprint-section="toggleSprintSection"
         @card-click="openCardModal"
         @deck-click="openDeckDetail"
@@ -694,9 +689,7 @@ const batchScopeAchievements = computed(() => {
     return list
   }
   if (myGroupBy.value === 'class') {
-    const list = []
-    for (const id in myFilteredByExpansion.value) list.push(...myFilteredByExpansion.value[id])
-    return list
+    return myClassFlatAchievements.value
   }
   if (myGroupBy.value === 'sprint') return sprintAllList.value
   return []
@@ -896,28 +889,21 @@ const myViewSubLabel = computed(() => user.value ? '我的进度' : '全部成�
 // 职业总览：按版本浏览/我的-按版本 默认展开各职业（用户嫌长可自行收起）
 const classViewCollapsed = reactive({})
 for (const c of classGroupOrder.value) classViewCollapsed[c] = false
-// 按职业浏览/我的-按职业：按版本分组，默认展开
-const expViewCollapsed = reactive({})
-for (const exp of expansions) expViewCollapsed[exp.id] = false
+// 注：按职业浏览 / 我的成就-按职业 已取消版本分组（该职业全部成就平铺），无版本折叠状态
 
 const setClassCollapsed = (heroClass, collapsed) => {
   classViewCollapsed[heroClass] = collapsed
 }
-const setExpansionCollapsed = (expansionId, collapsed) => {
-  expViewCollapsed[expansionId] = collapsed
-}
 
 const resetClassViews = () => {
   for (const c of classGroupOrder.value) classViewCollapsed[c] = false
-  for (const exp of expansions) expViewCollapsed[exp.id] = false
 }
 
-// 总览面板「展开/收起全部」：按当前视图切换 职业分组 或 版本分组 的折叠态
+// 总览面板「展开/收起全部」：按当前视图切换 职业分组 或 冲刺分组 的折叠态
+// （按职业浏览/我的成就-按职业为平铺列表，无分组可折叠，不参与）
 const expandAllSections = () => {
   if (viewMode.value === 'my' && myGroupBy.value === 'sprint') {
     for (const k of Object.keys(sprintSectionCollapsed)) sprintSectionCollapsed[k] = false
-  } else if (viewMode.value === 'class' || (viewMode.value === 'my' && myGroupBy.value === 'class')) {
-    for (const exp of expansions) expViewCollapsed[exp.id] = false
   } else {
     for (const c of classGroupOrder.value) classViewCollapsed[c] = false
   }
@@ -925,8 +911,6 @@ const expandAllSections = () => {
 const collapseAllSections = () => {
   if (viewMode.value === 'my' && myGroupBy.value === 'sprint') {
     for (const k of Object.keys(sprintSectionCollapsed)) sprintSectionCollapsed[k] = true
-  } else if (viewMode.value === 'class' || (viewMode.value === 'my' && myGroupBy.value === 'class')) {
-    for (const exp of expansions) expViewCollapsed[exp.id] = true
   } else {
     for (const c of classGroupOrder.value) classViewCollapsed[c] = true
   }
@@ -936,13 +920,13 @@ const collapseAllSections = () => {
 const showClassOverview = computed(
   () => viewMode.value === 'my' && (myGroupBy.value === 'expansion' || myGroupBy.value === 'class')
 )
-// 悬浮「展开全部 / 收起全部」按钮的显示条件：按版本浏览、按职业浏览（我的成就由 showMySectionToggles 独立控制）
+// 悬浮「展开全部 / 收起全部」按钮的显示条件：仅按版本浏览（按职业浏览已平铺无分组可折叠）
 const showFabSectionToggles = computed(
-  () => viewMode.value === 'expansion' || viewMode.value === 'class'
+  () => viewMode.value === 'expansion'
 )
-// 我的成就-按版本/按职业/待完成清单：展开全部/收起全部显示在子切换行后面
+// 我的成就-按版本/待完成清单：展开全部/收起全部显示在子切换行后面（按职业已平铺，无分组可折叠）
 const showMySectionToggles = computed(
-  () => viewMode.value === 'my' && (myGroupBy.value === 'expansion' || myGroupBy.value === 'class' || myGroupBy.value === 'sprint')
+  () => viewMode.value === 'my' && (myGroupBy.value === 'expansion' || myGroupBy.value === 'sprint')
 )
 
 // 每个职业的完成度总览（基于当前筛选结果）
@@ -959,20 +943,6 @@ const classViewSummaries = computed(() => {
       completed,
       remaining
     }
-  }
-  return map
-})
-
-// 我的成就 - 按职业：按版本分组的总览数据（与 classViewSummaries 结构一致，去掉冗余的百分比）
-const expViewSummaries = computed(() => {
-  const groups = viewMode.value === 'my' && myGroupBy.value === 'class' ? myFilteredByExpansion.value : filteredByExpansion.value
-  const map = {}
-  for (const id in groups) {
-    const achievements = groups[id]
-    const completed = achievements.filter((achievement) => isAchievementCompleted(achievement)).length
-    const total = achievements.length
-    const remaining = total - completed
-    map[id] = { total, completed, remaining }
   }
   return map
 })
@@ -1022,9 +992,8 @@ const {
   filteredAchievements,
   filteredByClass,
   myFilteredByClass,
-  filteredByExpansion,
-  myFilteredByExpansion,
-  myClassExpansionOrder
+  classFlatAchievements,
+  myClassFlatAchievements
 } = useAchievementFilters({
   allAchievements,
   currentExpansionAchievements,
@@ -1038,7 +1007,8 @@ const {
   selectedStatus,
   currentExpansionId,
   getMetric,
-  isAchievementCompleted
+  isAchievementCompleted,
+  getProgressInfo
 })
 
 // 总览面板剩余统计（基于 overviewScope，保证 已完成 + 剩余 = 总数）

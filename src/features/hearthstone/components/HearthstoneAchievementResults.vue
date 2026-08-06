@@ -18,23 +18,19 @@
     </template>
   </div>
 
-  <div v-else-if="viewMode === 'class'" class="hs-expansion-groups">
-    <template v-for="expansion in expansions" :key="expansion.id">
-      <ClassSection
-        v-if="filteredByExpansion[expansion.id]?.length"
-        :collapsed="expViewCollapsed[expansion.id]"
-        :hero-class="expansion.name"
-        :achievements="filteredByExpansion[expansion.id]"
-        :badge-style="expansionBadgeStyle"
-        :class-style="expansionStyle"
-        :summary="expViewSummaries[expansion.id]"
-        summary-total-only
-        @update:collapsed="$emit('set-expansion-collapsed', expansion.id, $event)"
-        @card-click="$emit('card-click', $event)"
+  <div v-else-if="viewMode === 'class'" class="hs-flat-groups">
+    <!-- 按职业浏览：取消版本分组，该职业全部成就按版本发布时间新→旧平铺（总览方便） -->
+    <div class="hs-achievement-list">
+      <AchievementCard
+        v-for="achievement in classFlatAchievements"
+        :key="achievement.id"
+        :achievement="achievement"
+        :style="expansionStyle"
+        @click="$emit('card-click', $event)"
         @deck-click="$emit('deck-click', $event)"
         @share="$emit('share', $event)"
       />
-    </template>
+    </div>
   </div>
 
   <div v-else-if="myGroupBy === 'expansion'" class="hs-expansion-groups">
@@ -64,31 +60,27 @@
     </template>
   </div>
 
-  <div v-else-if="myGroupBy === 'class'" class="hs-expansion-groups">
-    <template v-for="expansion in myClassExpansionOrder" :key="expansion.id">
-      <ClassSection
-        v-if="myFilteredByExpansion[expansion.id]?.length"
-        :collapsed="expViewCollapsed[expansion.id]"
-        :hero-class="expansion.name"
-        :achievements="myFilteredByExpansion[expansion.id]"
-        :badge-style="expansionBadgeStyle"
-        :class-style="expansionStyle"
-        :summary="expViewSummaries[expansion.id]"
-        use-my-card
+  <div v-else-if="myGroupBy === 'class'" class="hs-flat-groups">
+    <!-- 我的成就-按职业：取消版本分组，该职业全部成就平铺（未完成在前 → 完成度降序 → 版本新→旧） -->
+    <div class="hs-achievement-list">
+      <MyAchievementCard
+        v-for="achievement in myClassFlatAchievements"
+        :key="achievement.id"
+        :achievement="achievement"
         show-remaining
         :editable="Boolean(user)"
+        :style="expansionStyle"
         :select-mode="batchMode"
-        :selected-ids="selectedAchIds"
-        :pinned-ids="pinnedIds"
+        :selected="selectedAchIds.includes(achievement.id)"
+        :pinned="pinnedIds.includes(achievement.id)"
         :pinning="profileSaving"
-        @update:collapsed="$emit('set-expansion-collapsed', expansion.id, $event)"
-        @card-click="$emit('card-click', $event)"
+        @click="$emit('card-click', $event)"
         @deck-click="$emit('deck-click', $event)"
         @toggle-select="$emit('toggle-select', $event)"
         @toggle-pin="$emit('toggle-pin', $event)"
         @share="$emit('share', $event)"
       />
-    </template>
+    </div>
   </div>
 
   <div v-else-if="myGroupBy === 'sprint'" class="hs-priority-wrap">
@@ -146,6 +138,7 @@
 <script setup>
 import { computed } from 'vue'
 import { classColors } from '../utils/achievements.js'
+import AchievementCard from './AchievementCard.vue'
 import AchievementRecommendations from './AchievementRecommendations.vue'
 import ClassSection from './ClassSection.vue'
 import MyAchievementCard from './MyAchievementCard.vue'
@@ -156,14 +149,12 @@ const props = defineProps({
   classGroupOrder: { type: Array, required: true },
   filteredByClass: { type: Object, required: true },
   classViewCollapsed: { type: Object, required: true },
-  expansions: { type: Array, required: true },
-  filteredByExpansion: { type: Object, required: true },
-  expViewCollapsed: { type: Object, required: true },
-  expViewSummaries: { type: Object, required: true },
+  // 按职业浏览：取消版本分组后的平铺成就列表（版本发布时间新→旧）
+  classFlatAchievements: { type: Array, required: true },
   myFilteredByClass: { type: Object, required: true },
   classViewSummaries: { type: Object, required: true },
-  myFilteredByExpansion: { type: Object, required: true },
-  myClassExpansionOrder: { type: Array, required: true },
+  // 我的成就-按职业：取消版本分组后的平铺列表（未完成在前 → 完成度降序 → 版本新→旧，见 useAchievementFilters.js）
+  myClassFlatAchievements: { type: Array, required: true },
   user: { type: Object, default: null },
   batchMode: { type: Boolean, required: true },
   selectedAchIds: { type: Array, required: true },
@@ -179,7 +170,6 @@ const props = defineProps({
 
 defineEmits([
   'set-class-collapsed',
-  'set-expansion-collapsed',
   'toggle-sprint-section',
   'card-click',
   'deck-click',
@@ -204,5 +194,4 @@ const getClassBadgeStyle = (heroClass) => ({
 })
 
 const expansionStyle = { '--hs-class-color': '#6b5b4f' }
-const expansionBadgeStyle = { backgroundColor: '#6b5b4f', color: '#fff' }
 </script>

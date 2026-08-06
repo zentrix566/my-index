@@ -179,3 +179,17 @@ export function getClassName(ach) {
   }
   return ach.heroClass || "中立";
 }
+
+/**
+ * 成就的搜索目标文本集合（搜索时按这些字段匹配，不只搜标题）：
+ * 标题、职业、关联卡牌名、阶段描述。
+ * 返回数组过滤空值后供 includes 匹配。
+ */
+export function getAchievementSearchTargets(ach) {
+  return [
+    ach.name,
+    getClassName(ach),
+    ...(ach.relatedCards || []),
+    ...(ach.stages || []).map((stage) => stage.description)
+  ];
+}

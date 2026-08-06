@@ -114,7 +114,12 @@
       "relatedCards": [
         "月光射线"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "星月奇迹",
+          "code": "AAECAc6LBQbk7gPJ9QO1igSJiwSljQSKugUMwOwDxfkDr4AEsIAEiZ8Erp8E2p8Ez6wE/70ErsAE1dIE2qEFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用月光射线造成30点伤害。",
@@ -141,12 +146,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "鲨鱼饵，吼哈 卡组1",
+          "name": "鲨鱼饵，吼哈",
           "code": "AAECAauwBAKpgQShsQQO0uwDw/kDx4oE1qAEiLAEkrUE4bUEybcEyrcE3bkE47kEssEE2NkElKQFAA=="
-        },
-        {
-          "name": "鲨鱼饵，吼哈 卡组2",
-          "code": "AAECAauwBAbn9wOoigT6rASW1ASY1ASp3gQM1OoD1uwDp/cDrvcDv/kD0PkDio0En5IEhLIEh7cE4bkEssEEAA=="
         }
       ],
       "stages": [
@@ -192,7 +193,12 @@
       "relatedCards": [
         "指挥官西瓦拉"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "法术听我指挥",
+          "code": "AAECAauwBAbn9wOoigT6rASW1ASY1ASp3gQM1OoD1uwDp/cDrvcDv/kD0PkDio0En5IEhLIEh7cE4bkEssEEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用指挥官西瓦拉将10张法术牌置入你的手牌。",
@@ -223,7 +229,12 @@
       "relatedCards": [
         "纳兹夏尔女士"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "纳兹夏尔还在异变！",
+          "code": "AAECAdeEBQSoigSXoATYsgTduQQN0OwD1uwD9PYDp/cDrvcDio0E/J4E6J8ExqAEhLIEh7cE4bkEssEEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用2种不同形态的纳兹夏尔女士。",
@@ -251,12 +262,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "上下开弓 卡组1",
+          "name": "上下开弓",
           "code": "AAECAa/XAwLl7wP9+AMO2+0D9/gDqZ8Eqp8E458Eu6AEwawEnbAEhLIEwbkEssEEgckEhMkEjNQEAA=="
-        },
-        {
-          "name": "上下开弓 卡组2",
-          "code": "AAECAa/XAwKZrQTnuQQO6ukD8OwD9PYDw4AEqIEEpY0Eq40EqZ8Eqp8E458E5J8Eu6AE2KMEv6wEAA=="
         }
       ],
       "stages": [
@@ -277,7 +284,12 @@
       "relatedCards": [
         "海卓拉顿"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "本该砍头",
+          "code": "AAECAa/XAwKZrQTnuQQO6ukD8OwD9PYDw4AEqIEEpY0Eq40EqZ8Eqp8E458E5J8Eu6AE2KMEv6wEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中召唤12个海卓拉顿之头。",
@@ -332,7 +344,12 @@
       "relatedCards": [
         "K9-0型机械狗"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "亲昵爱抚",
+          "code": "AAECAdGLBQLlsASIsgQO2+oD9PYDw/kDlPwDqZ8E4aQEv6wE3q8E4bUE6rkEssEEv9MEjqQFlKQFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用K9-0型机械狗召唤25个随从。",
@@ -357,7 +374,12 @@
       "relatedCards": [
         "缴械元素"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "起泡，冲洗，再一遍",
+          "code": "AAECAdCLBQKW1ASY1AQOmesDnusDh/cDrYoEhZ8EiqMEyKwEobYEorYEpLYEssEE7MkE9vEE+PEEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用缴械元素使敌人的卡牌法力值消耗增加20点。",
@@ -553,7 +575,12 @@
       "relatedCards": [
         "头等大奖"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "好牌两对",
+          "code": "AAECAd75Awah+QPtgAT7igTYtgSW1ASY1AQMlugD/u4DvYAE9p8E7qAEuqQE+6UE+awEt7MElrcE+fEEl6QFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用头等大奖，将2张法力值消耗相同的卡牌置入你的手牌，完成1次。",
@@ -665,7 +692,12 @@
       "relatedCards": [
         "迷潮挖掘者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "赶海收获",
+          "code": "AAEBAdOLBQacmwOo7gOG+gPu0wSW1ASY1AQM+AfSE4vOArWYA5ToA7PoA5XwA6ugBNWyBLLBBMLOBMXOBAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用迷潮挖掘者召唤鱼人的20个2/2的复制。",
@@ -716,12 +748,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "雷达扫描 卡组1",
+          "name": "雷达扫描",
           "code": "AAEBAZ3DAwKpgQSwsgQO6g/HigTVoATWoASIsASStQThtQTeuQTjuQTUvQSywQTa0wTa2QSUpAUA"
-        },
-        {
-          "name": "雷达扫描 卡组2",
-          "code": "AAECAZ3DAwbgiwSwsgSW1ASY1ATa2QSh4gQMi40E0KwEj7AEsbAEjbUEh7cElrcE3rkE6rkE0L0E2r0EktQEAA=="
         }
       ],
       "stages": [
@@ -742,7 +770,12 @@
       "relatedCards": [
         "克托里·光刃"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "光刃映辉",
+          "code": "AAECAZ3DAwbgiwSwsgSW1ASY1ATa2QSh4gQMi40E0KwEj7AEsbAEjbUEh7cElrcE3rkE6rkE0L0E2r0EktQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在25个随从身上触发克托里·光刃的效果。",
@@ -773,7 +806,12 @@
       "relatedCards": [
         "战争前线"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "驻军上限：14",
+          "code": "AAECAcqLBQjgiwSnjQTtnwTvpASlrQSwsgS/zgSSpAUL7/YDi/gDt4AEi40EnJ8E7p8E5KQE9aQE9qQE+KQE9fEEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用战争前线召唤50个随从。",
@@ -825,12 +863,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "锋利鳞片 卡组1",
+          "name": "锋利鳞片",
           "code": "AAEBAcn1AgAPv7kDx7kDvb4DrMsD184DztIDld4D8d4D9N8D1+0Dg/sDxYAEsZ8E56AE26MEAA=="
-        },
-        {
-          "name": "锋利鳞片 卡组2",
-          "code": "AAECAcn1AgrX7QPy7QPQ+QOoigSwkQTmvQT1xwSW1ASY1ASb1AQKvfEDg/sDsZ8EnKAE56AE26MEhLIE/rQE3L0E4r0EAA=="
         }
       ],
       "stages": [
@@ -854,7 +888,12 @@
         "扎库尔",
         "深渊波流"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "#@*&%!",
+          "code": "AAECAcn1AgrX7QPy7QPQ+QOoigSwkQTmvQT1xwSW1ASY1ASb1AQKvfEDg/sDsZ8EnKAE56AE26MEhLIE/rQE3L0E4r0EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用深渊诅咒造成50点伤害。",
@@ -885,7 +924,12 @@
       "relatedCards": [
         "献祭"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "就是我们点的火",
+          "code": "AAEBAcyLBQKa7gL44wMO58sC2psD66wDrbYDv7kDvb4DrMsDzdIDk+QDg/sDxYAE56AEgLUE9c4EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用献祭烧掉30张牌。",
@@ -995,7 +1039,12 @@
       "relatedCards": [
         "损毁神像"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "艾萨拉的神像",
+          "code": "AAECAdKLBQiN9wOHiwSAnwTvpASlrQTlsASbyQS/zgQLwvEDivcDyIAEg58Etp8EtKAE7KAEx6wE8rEEjbIEvsoEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张损毁神像造成50点伤害。",
@@ -1116,7 +1165,12 @@
       "relatedCards": [
         "巨型剧斗"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "放出海怪！",
+          "code": "AAECAc2LBQa8igTlsASOyQSbyQSW1ASY1AQMju0DxvUD+IAE+YwE+owEiKAEiaAEi7cEjLcElrcE8c4EjtQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用战士，使用5张其他职业的巨型随从牌。",
@@ -1275,12 +1329,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "魔武双修 卡组1",
+          "name": "魔武双修",
           "code": "AAECAZurBALn9wP7igQO/u4D0/MDofQD6/YD9PYDv/kD0PkDvYAE/awEmbAEhLIEqbMEt7MEmtsEAA=="
-        },
-        {
-          "name": "魔武双修 卡组2",
-          "code": "AAECAa/XAwLl7wP9+AMO2+0D9/gDqZ8Eqp8E458Eu6AEwawElbAEnbAEhLIEwbkEssEEhMkEjNQEAA=="
         }
       ],
       "stages": [
@@ -1495,7 +1545,7 @@
       "recommendedDecks": [
         {
           "name": "失落的圣物",
-          "code": "AAEBAcn1AgKW1ASY1AQO/RHnywLamwOttgO/uQOsywPXzgPN0gOV3gOD+wPFgASxnwTnoATbowQA"
+          "code": "AAEBAcn1AgKW1ASY1AQO/RHnywLamwOttgO/uQOsywDXzgPN0gOV3gOD+wPFgASxnwTnoATbowQA"
         }
       ],
       "stages": [
@@ -1516,7 +1566,12 @@
       "relatedCards": [
         "厄祖玛特"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "海底反派",
+          "code": "AAEBAd75Awbe+gKEpgP21gOoigT7igS8zgQMxAHf4wLHmwPWnQOqywPn3QP+7gOh9AO9gASRnwT3nwS3swQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用厄祖玛特的亡语一次消灭3个敌人。",
@@ -1544,7 +1599,12 @@
         "混乱使徒",
         "暗影使徒"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "使徒是谁？",
+          "code": "AAEBAdCLBQKtigSY1AQO5QTRwQLmiAOTugPXzgPi3gP73wOe6wOH9wOFnwSKowTIrASitgSn1gQA"
+        }
+      ],
       "stages": [
         {
           "description": "触发25种纳迦使徒的战吼效果。",
@@ -1595,7 +1655,12 @@
       "relatedCards": [
         "巫婆纳迦"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "鱼昧童话",
+          "code": "AAECAa/XAwLl7wP9+AMO2+0D9/gDqZ8Eqp8E458Eu6AEwawElbAEnbAEhLIEwbkEssEEhMkEjNQEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用巫婆纳迦造成90点伤害。",
