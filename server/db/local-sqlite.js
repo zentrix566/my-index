@@ -3,7 +3,11 @@ import path from 'node:path'
 import Database from 'better-sqlite3'
 import { normalizePinnedAchievementIds } from '../hearthstone-profile.js'
 
-const SQLITE_SCHEMA = `
+// 两个独立 store：认证库（用户/令牌/模块使用）与业务库（炉石进度/AI 额度）。
+// 本地开发用两个 sqlite 文件分别模拟，对应生产环境的独立认证库与业务库。
+
+// ============ 认证库 schema ============
+const AUTH_SCHEMA = `
 CREATE TABLE IF NOT EXISTS users (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
   username TEXT UNIQUE NOT NULL,
@@ -16,8 +20,35 @@ CREATE TABLE IF NOT EXISTS users (
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE IF NOT EXISTS password_reset_tokens (
+  token_hash TEXT PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  expires_at TEXT NOT NULL,
+  used_at TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS email_verification_tokens (
+  token_hash TEXT PRIMARY KEY,
+  user_id INTEGER NOT NULL,
+  expires_at TEXT NOT NULL,
+  consumed_at TEXT,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE TABLE IF NOT EXISTS module_activity (
+  user_id      INTEGER NOT NULL,
+  module       TEXT NOT NULL,
+  first_seen_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  last_seen_at  TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, module)
+);
+`
+
+// ============ 业务库 schema ============
+const BUSINESS_SCHEMA = `
 CREATE TABLE IF NOT EXISTS achievement_progress (
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL,
   achievement_id TEXT NOT NULL,
   stages_json TEXT NOT NULL DEFAULT '{}',
   count INTEGER NOT NULL DEFAULT 0,
@@ -32,7 +63,7 @@ CREATE INDEX IF NOT EXISTS idx_achievement_progress_user
   ON achievement_progress(user_id);
 
 CREATE TABLE IF NOT EXISTS hearthstone_profiles (
-  user_id INTEGER PRIMARY KEY REFERENCES users(id) ON DELETE CASCADE,
+  user_id INTEGER PRIMARY KEY,
   pinned_achievement_id TEXT,
   preferences_json TEXT NOT NULL DEFAULT '{}',
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
@@ -45,40 +76,29 @@ CREATE TABLE IF NOT EXISTS ai_advisor_usage (
   free_count INTEGER NOT NULL DEFAULT 0,
   PRIMARY KEY (user_key, day)
 );
-
-CREATE TABLE IF NOT EXISTS password_reset_tokens (
-  token_hash TEXT PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  expires_at TEXT NOT NULL,
-  used_at TEXT,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
-
-CREATE TABLE IF NOT EXISTS email_verification_tokens (
-  token_hash TEXT PRIMARY KEY,
-  user_id INTEGER NOT NULL REFERENCES users(id) ON DELETE CASCADE,
-  expires_at TEXT NOT NULL,
-  consumed_at TEXT,
-  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
-);
 `
 
-/** 创建本地 SQLite 数据存储，接口与 PostgreSQL 数据层保持一致。 */
-export function createLocalSqliteStore(filePath) {
+function openSqlite(filePath) {
   fs.mkdirSync(path.dirname(filePath), { recursive: true })
   const database = new Database(filePath)
   database.pragma('journal_mode = WAL')
-  database.pragma('foreign_keys = ON')
-  database.exec(SQLITE_SCHEMA)
+  database.pragma('foreign_keys = OFF')
+  return database
+}
 
-  // 兼容已存在的旧库：补新增列（老 SQLite 不支持 ADD COLUMN IF NOT EXISTS，包裹 try/catch）
-  try { database.exec('ALTER TABLE users ADD COLUMN email TEXT') } catch { /* 已存在则忽略 */ }
-  try { database.exec('ALTER TABLE users ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 0') } catch { /* 已存在则忽略 */ }
-  try { database.exec('ALTER TABLE users ADD COLUMN has_password INTEGER NOT NULL DEFAULT 1') } catch { /* 已存在则忽略 */ }
-  try { database.exec('ALTER TABLE users ADD COLUMN display_name TEXT') } catch { /* 已存在则忽略 */ }
-  try { database.exec('ALTER TABLE users ADD COLUMN avatar TEXT') } catch { /* 已存在则忽略 */ }
+/** 创建本地认证库 SQLite 存储，接口与 PostgreSQL 认证层保持一致。 */
+export function createLocalAuthStore(filePath) {
+  const database = openSqlite(filePath)
+  database.exec(AUTH_SCHEMA)
 
-  const statements = {
+  // 兼容旧库：补新增列（老 SQLite 不支持 ADD COLUMN IF NOT EXISTS）
+  try { database.exec('ALTER TABLE users ADD COLUMN email TEXT') } catch {}
+  try { database.exec('ALTER TABLE users ADD COLUMN email_verified INTEGER NOT NULL DEFAULT 0') } catch {}
+  try { database.exec('ALTER TABLE users ADD COLUMN has_password INTEGER NOT NULL DEFAULT 1') } catch {}
+  try { database.exec('ALTER TABLE users ADD COLUMN display_name TEXT') } catch {}
+  try { database.exec('ALTER TABLE users ADD COLUMN avatar TEXT') } catch {}
+
+  const st = {
     getUserByUsername: database.prepare('SELECT * FROM users WHERE username = ?'),
     getUserByEmail: database.prepare('SELECT * FROM users WHERE LOWER(email) = LOWER(?)'),
     getUserByIdentifier: database.prepare(
@@ -126,6 +146,129 @@ export function createLocalSqliteStore(filePath) {
     createUser: database.prepare(
       'INSERT INTO users(username, password_hash, email) VALUES(?, ?, ?)'
     ),
+    trackModuleAccess: database.prepare(`
+      INSERT INTO module_activity(user_id, module, first_seen_at, last_seen_at)
+      VALUES(?, ?, CURRENT_TIMESTAMP, CURRENT_TIMESTAMP)
+      ON CONFLICT(user_id, module) DO UPDATE SET last_seen_at = CURRENT_TIMESTAMP
+    `),
+    getModuleUsageRaw: database.prepare(`
+      SELECT u.id, u.username, u.display_name, u.email, u.email_verified, u.created_at,
+             GROUP_CONCAT(m.module) AS modules,
+             MAX(m.last_seen_at) AS last_seen
+      FROM users u
+      LEFT JOIN module_activity m ON m.user_id = u.id
+      GROUP BY u.id, u.username, u.display_name, u.email, u.email_verified, u.created_at
+      ORDER BY last_seen DESC, u.id
+    `)
+  }
+
+  return {
+    close() {
+      database.close()
+    },
+    getUserByUsername(username) {
+      return st.getUserByUsername.get(username) || null
+    },
+    getUserById(id) {
+      return st.getUserById.get(Number(id)) || null
+    },
+    createUser(username, passwordHash, email = null) {
+      try {
+        return Number(st.createUser.run(username, passwordHash, email || null).lastInsertRowid)
+      } catch (error) {
+        if (error.code?.startsWith('SQLITE_CONSTRAINT')) error.code = '23505'
+        throw error
+      }
+    },
+    getUserByEmail(email) {
+      return st.getUserByEmail.get(email) || null
+    },
+    getUserByIdentifier(identifier) {
+      return st.getUserByIdentifier.get(identifier, identifier) || null
+    },
+    getUserAuthById(id) {
+      return st.getUserAuthById.get(Number(id)) || null
+    },
+    setUserEmail(userId, email) {
+      st.setUserEmail.run(email || null, Number(userId))
+    },
+    setEmailVerified(userId, verified) {
+      st.setEmailVerified.run(verified ? 1 : 0, Number(userId))
+    },
+    setHasPassword(userId, value) {
+      st.setHasPassword.run(value ? 1 : 0, Number(userId))
+    },
+    setDisplayName(userId, displayName) {
+      st.setDisplayName.run(displayName || null, Number(userId))
+    },
+    setAvatar(userId, avatarUrl) {
+      st.setAvatar.run(avatarUrl || null, Number(userId))
+    },
+    createVerificationToken(userId, tokenHash, expiresAt) {
+      st.createVerificationToken.run(tokenHash, Number(userId), expiresAt)
+    },
+    getValidVerificationToken(tokenHash) {
+      const row = st.getVerificationTokenRaw.get(tokenHash)
+      if (!row || row.consumed_at) return null
+      if (new Date(row.expires_at).getTime() <= Date.now()) return null
+      return row
+    },
+    consumeVerificationToken(tokenHash, userId) {
+      st.consumeVerificationToken.run(tokenHash)
+      if (userId) {
+        st.setEmailVerified.run(1, Number(userId))
+        st.invalidateOtherVerificationTokens.run(Number(userId), tokenHash)
+      }
+    },
+    invalidateUserVerificationTokens(userId) {
+      st.invalidateUserVerificationTokens.run(Number(userId))
+    },
+    updatePasswordById(userId, passwordHash) {
+      st.updatePasswordById.run(passwordHash, Number(userId))
+    },
+    createResetToken(userId, tokenHash, expiresAt) {
+      st.createResetToken.run(tokenHash, Number(userId), expiresAt)
+    },
+    getValidResetToken(tokenHash) {
+      const row = st.getResetTokenRaw.get(tokenHash)
+      if (!row || row.used_at) return null
+      if (new Date(row.expires_at).getTime() <= Date.now()) return null
+      return row
+    },
+    consumeResetToken(tokenHash, userId) {
+      st.consumeResetToken.run(tokenHash)
+      if (userId) st.invalidateUserResetTokens.run(Number(userId))
+    },
+    invalidateUserResetTokens(userId) {
+      st.invalidateUserResetTokens.run(Number(userId))
+    },
+    trackModuleAccess(userId, module) {
+      st.trackModuleAccess.run(Number(userId), module)
+    },
+    getModuleUsage() {
+      // SQLite 的 CURRENT_TIMESTAMP 是不带时区标记的 UTC 字符串，
+      // 补成 ISO 8601（带 Z）后前端 new Date() 才与 PG 的 timestamptz 行为一致
+      const toIso = (v) => (v ? `${String(v).replace(' ', 'T')}Z` : null)
+      return st.getModuleUsageRaw.all().map((r) => ({
+        id: r.id,
+        username: r.username,
+        displayName: r.display_name,
+        email: r.email,
+        emailVerified: Boolean(r.email_verified),
+        createdAt: toIso(r.created_at),
+        modules: r.modules ? r.modules.split(',') : [],
+        lastSeen: toIso(r.last_seen)
+      }))
+    }
+  }
+}
+
+/** 创建本地业务库 SQLite 存储，接口与 PostgreSQL 业务层保持一致。 */
+export function createLocalBusinessStore(filePath) {
+  const database = openSqlite(filePath)
+  database.exec(BUSINESS_SCHEMA)
+
+  const st = {
     upsertProgress: database.prepare(`
       INSERT INTO achievement_progress(
         user_id, achievement_id, stages_json, count,
@@ -142,13 +285,11 @@ export function createLocalSqliteStore(filePath) {
     `),
     getProgress: database.prepare(`
       SELECT achievement_id, stages_json, count, updated_at
-      FROM achievement_progress
-      WHERE user_id = ?
+      FROM achievement_progress WHERE user_id = ?
     `),
     getHearthstoneProfile: database.prepare(`
       SELECT pinned_achievement_id, preferences_json, updated_at
-      FROM hearthstone_profiles
-      WHERE user_id = ?
+      FROM hearthstone_profiles WHERE user_id = ?
     `),
     saveHearthstoneProfile: database.prepare(`
       INSERT INTO hearthstone_profiles(
@@ -162,14 +303,13 @@ export function createLocalSqliteStore(filePath) {
       RETURNING pinned_achievement_id, preferences_json, updated_at
     `),
     getAiUsage: database.prepare(`
-      SELECT fixed_count, free_count
-      FROM ai_advisor_usage
+      SELECT fixed_count, free_count FROM ai_advisor_usage
       WHERE user_key = ? AND day = ?
     `)
   }
 
   const saveProgressEntry = (userId, entry) => {
-    statements.upsertProgress.run(
+    st.upsertProgress.run(
       userId,
       entry.achievementId,
       JSON.stringify(entry.stages || {}),
@@ -187,115 +327,15 @@ export function createLocalSqliteStore(filePath) {
     close() {
       database.close()
     },
-
-    getUserByUsername(username) {
-      return statements.getUserByUsername.get(username) || null
-    },
-
-    getUserById(id) {
-      return statements.getUserById.get(Number(id)) || null
-    },
-
-    createUser(username, passwordHash, email = null) {
-      try {
-        return Number(statements.createUser.run(username, passwordHash, email || null).lastInsertRowid)
-      } catch (error) {
-        if (error.code?.startsWith('SQLITE_CONSTRAINT')) error.code = '23505'
-        throw error
-      }
-    },
-
-    getUserByEmail(email) {
-      return statements.getUserByEmail.get(email) || null
-    },
-
-    getUserByIdentifier(identifier) {
-      // SQLite 用两个 ? 占位符（username / email 各一），需传两次同一值
-      return statements.getUserByIdentifier.get(identifier, identifier) || null
-    },
-
-    getUserAuthById(id) {
-      return statements.getUserAuthById.get(Number(id)) || null
-    },
-
-    setUserEmail(userId, email) {
-      statements.setUserEmail.run(email || null, Number(userId))
-    },
-
-    setEmailVerified(userId, verified) {
-      statements.setEmailVerified.run(verified ? 1 : 0, Number(userId))
-    },
-
-    setHasPassword(userId, value) {
-      statements.setHasPassword.run(value ? 1 : 0, Number(userId))
-    },
-
-    setDisplayName(userId, displayName) {
-      statements.setDisplayName.run(displayName || null, Number(userId))
-    },
-
-    setAvatar(userId, avatarUrl) {
-      statements.setAvatar.run(avatarUrl || null, Number(userId))
-    },
-
-    createVerificationToken(userId, tokenHash, expiresAt) {
-      statements.createVerificationToken.run(tokenHash, Number(userId), expiresAt)
-    },
-
-    getValidVerificationToken(tokenHash) {
-      const row = statements.getVerificationTokenRaw.get(tokenHash)
-      if (!row || row.consumed_at) return null
-      if (new Date(row.expires_at).getTime() <= Date.now()) return null
-      return row
-    },
-
-    consumeVerificationToken(tokenHash, userId) {
-      statements.consumeVerificationToken.run(tokenHash)
-      if (userId) {
-        statements.setEmailVerified.run(1, Number(userId))
-        statements.invalidateOtherVerificationTokens.run(Number(userId), tokenHash)
-      }
-    },
-
-    invalidateUserVerificationTokens(userId) {
-      statements.invalidateUserVerificationTokens.run(Number(userId))
-    },
-
-    updatePasswordById(userId, passwordHash) {
-      statements.updatePasswordById.run(passwordHash, Number(userId))
-    },
-
-    createResetToken(userId, tokenHash, expiresAt) {
-      statements.createResetToken.run(tokenHash, Number(userId), expiresAt)
-    },
-
-    getValidResetToken(tokenHash) {
-      const row = statements.getResetTokenRaw.get(tokenHash)
-      if (!row || row.used_at) return null
-      if (new Date(row.expires_at).getTime() <= Date.now()) return null
-      return row
-    },
-
-    consumeResetToken(tokenHash, userId) {
-      statements.consumeResetToken.run(tokenHash)
-      if (userId) statements.invalidateUserResetTokens.run(Number(userId))
-    },
-
-    invalidateUserResetTokens(userId) {
-      statements.invalidateUserResetTokens.run(Number(userId))
-    },
-
     upsertProgress(userId, entry) {
       saveProgressEntry(Number(userId), entry)
     },
-
     bulkUpsertProgress(userId, entries) {
       saveProgressBatch(Number(userId), entries)
     },
-
     getProgress(userId) {
       const output = {}
-      for (const row of statements.getProgress.all(Number(userId))) {
+      for (const row of st.getProgress.all(Number(userId))) {
         output[row.achievement_id] = {
           stages: JSON.parse(row.stages_json || '{}'),
           count: row.count,
@@ -304,83 +344,57 @@ export function createLocalSqliteStore(filePath) {
       }
       return output
     },
-
     getHearthstoneProfile(userId) {
-      const row = statements.getHearthstoneProfile.get(Number(userId))
+      const row = st.getHearthstoneProfile.get(Number(userId))
       if (!row) return { pinnedAchievementIds: [], preferences: {}, updatedAt: null }
       const preferences = JSON.parse(row.preferences_json || '{}')
       const pinnedAchievementIds = normalizePinnedAchievementIds(
         preferences.pinnedAchievementIds ?? row.pinned_achievement_id
       )
       delete preferences.pinnedAchievementIds
-      return {
-        pinnedAchievementIds,
-        preferences,
-        updatedAt: row.updated_at
-      }
+      return { pinnedAchievementIds, preferences, updatedAt: row.updated_at }
     },
-
     saveHearthstoneProfile(userId, profile) {
       const pinnedAchievementIds = normalizePinnedAchievementIds(profile.pinnedAchievementIds)
-      const row = statements.saveHearthstoneProfile.get(
+      const row = st.saveHearthstoneProfile.get(
         Number(userId),
         pinnedAchievementIds[0] || null,
-        JSON.stringify({
-          ...(profile.preferences || {}),
-          pinnedAchievementIds
-        })
+        JSON.stringify({ ...(profile.preferences || {}), pinnedAchievementIds })
       )
       const preferences = JSON.parse(row.preferences_json || '{}')
       delete preferences.pinnedAchievementIds
-      return {
-        pinnedAchievementIds,
-        preferences,
-        updatedAt: row.updated_at
-      }
+      return { pinnedAchievementIds, preferences, updatedAt: row.updated_at }
     },
-
     getAiUsage(userKey, day) {
-      const row = statements.getAiUsage.get(userKey, day)
-      return {
-        fixedCount: row?.fixed_count || 0,
-        freeCount: row?.free_count || 0
-      }
+      const row = st.getAiUsage.get(userKey, day)
+      return { fixedCount: row?.fixed_count || 0, freeCount: row?.free_count || 0 }
     },
-
     incrementAiUsage(userKey, day, type) {
       const column = type === 'free' ? 'free_count' : 'fixed_count'
       database.prepare(`
         INSERT INTO ai_advisor_usage(user_key, day, ${column})
         VALUES(?, ?, 1)
-        ON CONFLICT(user_key, day) DO UPDATE SET
-          ${column} = ai_advisor_usage.${column} + 1
+        ON CONFLICT(user_key, day) DO UPDATE SET ${column} = ai_advisor_usage.${column} + 1
       `).run(userKey, day)
       return this.getAiUsage(userKey, day)
     },
-
     reserveAiUsage(userKey, day, type, limit) {
       if (!Number.isInteger(limit) || limit <= 0) return null
       const column = type === 'free' ? 'free_count' : 'fixed_count'
       const row = database.prepare(`
         INSERT INTO ai_advisor_usage(user_key, day, ${column})
         VALUES(?, ?, 1)
-        ON CONFLICT(user_key, day) DO UPDATE SET
-          ${column} = ai_advisor_usage.${column} + 1
+        ON CONFLICT(user_key, day) DO UPDATE SET ${column} = ai_advisor_usage.${column} + 1
         WHERE ai_advisor_usage.${column} < ?
         RETURNING fixed_count, free_count
       `).get(userKey, day, limit)
       if (!row) return null
-      return {
-        fixedCount: row.fixed_count || 0,
-        freeCount: row.free_count || 0
-      }
+      return { fixedCount: row.fixed_count || 0, freeCount: row.free_count || 0 }
     },
-
     releaseAiUsage(userKey, day, type) {
       const column = type === 'free' ? 'free_count' : 'fixed_count'
       database.prepare(`
-        UPDATE ai_advisor_usage
-        SET ${column} = MAX(${column} - 1, 0)
+        UPDATE ai_advisor_usage SET ${column} = MAX(${column} - 1, 0)
         WHERE user_key = ? AND day = ?
       `).run(userKey, day)
       return this.getAiUsage(userKey, day)

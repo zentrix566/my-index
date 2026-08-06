@@ -6,7 +6,7 @@
 import express from 'express'
 import crypto from 'node:crypto'
 import { appLog } from '../logger.js'
-import { requireAuth } from '../auth.js'
+import { requireAuth, trackModuleAccessMiddleware } from '../auth.js'
 import {
   BUILTIN_ACTIVITIES,
   BUILTIN_DEMONS,
@@ -60,6 +60,10 @@ import {
 import { callDeepSeek } from '../ai-advisor.js'
 
 const router = express.Router()
+
+// 全模块统一鉴权，并记录模块使用（供「谁用了哪些模块」统计）
+router.use(requireAuth)
+router.use(trackModuleAccessMiddleware('willpower'))
 
 const KEY_PATTERN = /^[a-z0-9][a-z0-9_-]{0,31}$/
 const MAX_NOTE_LENGTH = 200

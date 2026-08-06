@@ -35,6 +35,7 @@ const ForgotPassword = () => import('../views/ForgotPassword.vue')
 const ResetPassword = () => import('../views/ResetPassword.vue')
 const Settings = () => import('../views/Settings.vue')
 const VerifyEmail = () => import('../views/VerifyEmail.vue')
+const Admin = () => import('../views/Admin.vue')
 
 const routes = [
   { path: '/', name: 'home', component: Home },
@@ -81,7 +82,9 @@ const routes = [
   { path: '/forgot-password', name: 'forgot-password', component: ForgotPassword },
   { path: '/reset-password', name: 'reset-password', component: ResetPassword },
   { path: '/verify-email', name: 'verify-email', component: VerifyEmail },
-  { path: '/settings', name: 'settings', component: Settings, meta: { requiresAuth: true } }
+  { path: '/settings', name: 'settings', component: Settings, meta: { requiresAuth: true } },
+  // 所有者专属后台：页面内校验 isOwner，非所有者会被送回个人中心
+  { path: '/admin', name: 'admin', component: Admin, meta: { requiresAuth: true, title: '站点后台 | Zentrix' } }
 ]
 
 const router = createRouter({

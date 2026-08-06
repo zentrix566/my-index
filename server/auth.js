@@ -29,7 +29,9 @@ import {
   createVerificationToken,
   getValidVerificationToken,
   consumeVerificationToken,
-  invalidateUserVerificationTokens
+  invalidateUserVerificationTokens,
+  trackModuleAccess,
+  getModuleUsage
 } from './db.js'
 import { sendPasswordResetEmail, sendEmailVerification } from './mailer.js'
 import { appLog } from './logger.js'
@@ -135,6 +137,21 @@ export async function requireOwner(req, res, next) {
     next()
   } catch {
     return res.status(401).json({ error: '登录已过期，请重新登录' })
+  }
+}
+
+// 模块使用埋点中间件：用户访问某模块受保护路由时记录到 module_activity，
+// 用于「谁用了哪些模块」统计。用法：router.use(requireAuth); router.use(trackModuleAccessMiddleware('willpower'))
+export function trackModuleAccessMiddleware(module) {
+  return (req, res, next) => {
+    // requireAuth 之后 req.userId 已注入；可选登录的接口则宽松解析，匿名访问不记录
+    const userId = req.userId || getUserIdFromReq(req)
+    if (userId) {
+      trackModuleAccess(userId, module).catch((err) =>
+        appLog('ERROR', `记录模块使用失败: module=${module}, error=${err?.message || 'unknown'}`)
+      )
+    }
+    next()
   }
 }
 
@@ -532,6 +549,16 @@ router.post('/set-password', requireAuth, async (req, res) => {
   } catch (err) {
     appLog('ERROR', `首次设置密码失败: uid=${req.userId}, error=${err?.message || 'unknown'}`)
     return res.status(500).json({ error: '操作失败，请稍后重试' })
+  }
+})
+
+// 模块使用统计（仅 owner）：列出每个用户使用过的模块与最近访问时间
+router.get('/admin/module-usage', requireOwner, async (req, res) => {
+  try {
+    res.json({ users: await getModuleUsage() })
+  } catch (err) {
+    appLog('ERROR', `读取模块使用统计失败: error=${err?.message || 'unknown'}`)
+    res.status(500).json({ error: '读取失败，请稍后重试' })
   }
 })
 

@@ -13,10 +13,18 @@
           <p class="pc-eyebrow">个人中心</p>
           <h1 class="pc-title">{{ user?.username || '账号' }}</h1>
         </div>
-        <span class="pc-status" :class="user?.emailVerified ? 'ok' : 'warn'">
-          <span class="pc-dot" aria-hidden="true"></span>
-          {{ user?.emailVerified ? '已激活 · 正式用户' : '未激活' }}
-        </span>
+        <div class="pc-head-actions">
+          <RouterLink v-if="user?.isOwner" class="pc-manage-btn" to="/admin">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+            </svg>
+            站点后台
+          </RouterLink>
+          <span class="pc-status" :class="user?.emailVerified ? 'ok' : 'warn'">
+            <span class="pc-dot" aria-hidden="true"></span>
+            {{ user?.emailVerified ? '已激活 · 正式用户' : '未激活' }}
+          </span>
+        </div>
       </header>
 
       <nav class="pc-tabs" role="tablist" aria-label="个人中心内容">
@@ -694,6 +702,13 @@ async function doLogout() {
   line-height: 1.15;
   color: #f8fafc;
 }
+.pc-head-actions {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.pc-head-actions .pc-manage-btn { text-decoration: none; }
 .pc-status {
   display: inline-flex;
   align-items: center;

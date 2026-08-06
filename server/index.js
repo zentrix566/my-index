@@ -11,7 +11,7 @@ try { process.loadEnvFile('.env') } catch { /* 无 .env 时跳过 */ }
 import { writeLog, appLog, cleanOldLogs } from './logger.js'
 import { lookup } from './geoip.js'
 import cookieParser from 'cookie-parser'
-import authRouter, { requireAuth, getUserIdFromReq } from './auth.js'
+import authRouter, { requireAuth, getUserIdFromReq, trackModuleAccessMiddleware } from './auth.js'
 import statsRouter from './routes/stats.js'
 import willpowerRouter from './willpower/routes.js'
 import {
@@ -216,6 +216,9 @@ function getUserKey(req) {
   return `ip:${getClientIp(req)}`
 }
 
+// 炉石模块使用埋点（记录「谁用了炉石」）
+const trackHearthstone = trackModuleAccessMiddleware('hearthstone')
+
 // ========== 认证 API ==========
 app.use('/api/auth', authRouter)
 
@@ -225,7 +228,7 @@ app.use('/api/willpower', willpowerRouter)
 // ========== 成就进度 API ==========
 
 // 获取当前登录用户的进度；匿名返回空对象（前端据此隐藏进度、引导登录）
-app.get('/api/achievements/progress', async (req, res) => {
+app.get('/api/achievements/progress', trackHearthstone, async (req, res) => {
   try {
     const userId = getUserIdFromReq(req)
     if (!userId) {
@@ -244,7 +247,7 @@ app.get('/api/achievements/progress', async (req, res) => {
   }
 })
 
-app.get('/api/hearthstone/profile', requireAuth, async (req, res) => {
+app.get('/api/hearthstone/profile', requireAuth, trackHearthstone, async (req, res) => {
   try {
     res.json(await getHearthstoneProfile(req.userId))
   } catch (err) {
@@ -252,7 +255,7 @@ app.get('/api/hearthstone/profile', requireAuth, async (req, res) => {
   }
 })
 
-app.put('/api/hearthstone/profile', requireAuth, async (req, res) => {
+app.put('/api/hearthstone/profile', requireAuth, trackHearthstone, async (req, res) => {
   const body = req.body || {}
   const submittedPinnedIds =
     body.pinnedAchievementIds ??
@@ -316,7 +319,7 @@ app.get('/api/achievements/example', async (req, res) => {
 // 进度格式：{ stages: {"0":true,"1":false}, count:N }
 // 性能：单条保存免去 BEGIN/COMMIT（单条 upsert 本身原子），多条用 UNNEST 批量 upsert
 // 把 N 次数据库往返降为 1 次，显著缩短高网络延迟下的保存耗时。
-app.put('/api/achievements/progress', requireAuth, async (req, res) => {
+app.put('/api/achievements/progress', requireAuth, trackHearthstone, async (req, res) => {
   const t0 = Date.now()
   const progress = req.body && req.body.progress
   const setCost = () => res.set('X-Save-Time-Ms', String(Date.now() - t0))
@@ -419,7 +422,7 @@ app.put('/api/achievements/progress', requireAuth, async (req, res) => {
 // ========== AI 建议（实验功能，服务端持有 Key 与额度）==========
 // 强制登录：AI 消耗服务端 DeepSeek 额度，仅对登录用户开放，未登录返回 401。
 // 每日额度：固定问答 AI_FIXED_DAILY 次 + 自由问答 AI_FREE_DAILY 次，按用户 + 日期 限流。
-app.get('/api/ai-advisor/quota', requireAuth, async (req, res) => {
+app.get('/api/ai-advisor/quota', requireAuth, trackHearthstone, async (req, res) => {
   try {
     const usage = await getAiUsage(getUserKey(req), todayKey())
     res.json({
@@ -433,7 +436,7 @@ app.get('/api/ai-advisor/quota', requireAuth, async (req, res) => {
   }
 })
 
-app.post('/api/ai-advisor', requireAuth, async (req, res) => {
+app.post('/api/ai-advisor', requireAuth, trackHearthstone, async (req, res) => {
   try {
     const { type, question } = req.body || {}
     if (type !== 'fixed' && type !== 'free') return res.status(400).json({ error: 'type 非法' })
