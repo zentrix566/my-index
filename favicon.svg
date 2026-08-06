@@ -1,10 +1,29 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100">
-  <rect width="100" height="100" rx="20" fill="url(#gradient)"/>
-  <text x="50" y="65" font-size="50" font-weight="bold" text-anchor="middle" fill="white">Z</text>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="Zentrix">
   <defs>
-    <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="100%">
-      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
-      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#6a8bff"/>
+      <stop offset="1" stop-color="#7b3fe4"/>
     </linearGradient>
+    <linearGradient id="zstroke" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e7ebff"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.5" cy="0.32" r="0.78">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.38"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
   </defs>
+
+  <!-- 渐变圆角底 -->
+  <rect width="100" height="100" rx="24" fill="url(#bg)"/>
+  <!-- 顶部柔光，增加立体感 -->
+  <rect width="100" height="100" rx="24" fill="url(#glow)"/>
+  <!-- 细描边内框 -->
+  <rect x="3.5" y="3.5" width="93" height="93" rx="20.5" fill="none" stroke="#ffffff" stroke-opacity="0.16" stroke-width="2"/>
+
+  <!-- 手绘几何 Z 字母标 -->
+  <path d="M30 36 H70 L30 64 H70" fill="none" stroke="url(#zstroke)" stroke-width="13" stroke-linecap="round" stroke-linejoin="round"/>
+
+  <!-- 金色节点点缀，呼应“索引/连接” -->
+  <circle cx="70" cy="36" r="6.5" fill="#ffd479"/>
 </svg>
