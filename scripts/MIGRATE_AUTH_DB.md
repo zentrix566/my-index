@@ -90,6 +90,36 @@ docker run --rm -v "$PWD/scripts:/scripts" -e PG_PASS='生产PG密码' postgres:
 
 ---
 
+## 附录 A：纯 SQL（dblink）迁移方式
+若你直接用 SQL 客户端执行（而非 bash 脚本），可用 dblink 跨库搬用户。
+**生产源 `users` 实际只有 7 列**：`id, username, password_hash, created_at, email, email_verified, has_password`
+（**没有 `display_name` / `avatar`**，故远端 SELECT 不得引用这两列，否则报 `42703 column does not exist`）。
+
+```sql
+-- 连到 zentrix_auth 执行
+CREATE EXTENSION IF NOT EXISTS dblink;
+
+-- Phase 1：只搬 zentrix566（两库去重合并为 1 行，密码取 zentrix 来源）
+INSERT INTO users (username, password_hash, email, email_verified, has_password, created_at)
+SELECT username, password_hash, email, email_verified, has_password, created_at
+FROM dblink('host=39.106.136.18 port=5432 user=postgres password=生产PG密码 dbname=zentrix',
+  'SELECT username, password_hash, email, email_verified, has_password, created_at FROM users WHERE id = 1')
+AS t(username text, password_hash text, email text, email_verified boolean, has_password boolean, created_at timestamptz)
+ON CONFLICT (username) DO NOTHING;
+
+INSERT INTO users (username, password_hash, email, email_verified, has_password, created_at)
+SELECT username, password_hash, email, email_verified, has_password, created_at
+FROM dblink('host=39.106.136.18 port=5432 user=postgres password=生产PG密码 dbname=zentrix_willpower',
+  'SELECT username, password_hash, email, email_verified, has_password, created_at FROM users WHERE id = 1')
+AS t(username text, password_hash text, email text, email_verified boolean, has_password boolean, created_at timestamptz)
+ON CONFLICT (username) DO NOTHING;
+
+-- 确认
+SELECT id, username, email, email_verified FROM users;
+```
+> `display_name` / `avatar` 在 `zentrix_auth` 走默认值 NULL，owner 不受影响。
+> Phase 2（迁其余用户）仍建议用 bash 脚本（自动重映射业务表 `user_id`）。
+
 ## 回滚（很稳）
 - 旧 `users` 表在两源库**默认保留**，撤销 `AUTH_DB_URL`（删 secret 的 auth-db-url key 或回滚 deployment）
   → 重建重启即回退到用主库认证，零数据丢失。

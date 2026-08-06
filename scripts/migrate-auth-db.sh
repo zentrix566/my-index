@@ -93,13 +93,24 @@ WHERE=""
 if [ -n "$MIGRATE_USER" ]; then
   WHERE="WHERE lower(username)=lower('$(esc "$MIGRATE_USER")')"
 fi
-# 列顺序：id username password_hash email email_verified has_password display_name avatar created_at
-COLQ="id, username, COALESCE(password_hash,'$SENT'), COALESCE(email,'$SENT'),
- COALESCE(email_verified::text,'$SENT'), COALESCE(has_password::text,'$SENT'),
- COALESCE(display_name,'$SENT'), COALESCE(avatar,'$SENT'),
- COALESCE(to_char(created_at,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),'$SENT')"
-$PSQL -d "$MAIN_DB" -c "SELECT $COLQ FROM users $WHERE ORDER BY id;" > "$F_MAIN"
-$PSQL -d "$WP_DB"   -c "SELECT $COLQ FROM users $WHERE ORDER BY id;" > "$F_WP"
+# 动态探测源 users 表可选列（不同部署版本列可能不同，避免引用不存在的列报错 42703）
+col_expr() {
+  # $1=db $2=col $3=type(text|bool) -> 存在返回 COALESCE 表达式，否则返回哨兵字面量
+  local db="$1" col="$2" typ="$3"
+  if $PSQL -d "$db" -t -A -c "SELECT 1 FROM information_schema.columns WHERE table_schema='public' AND table_name='users' AND column_name='$col'" | grep -q 1; then
+    if [ "$typ" = bool ]; then echo "COALESCE($col::text,'$SENT')"; else echo "COALESCE($col,'$SENT')"; fi
+  else
+    echo "'$SENT'"
+  fi
+}
+build_colq() {
+  local db="$1"
+  echo "id, username, COALESCE(password_hash,'$SENT'), $(col_expr "$db" email text), $(col_expr "$db" email_verified bool), $(col_expr "$db" has_password bool), $(col_expr "$db" display_name text), $(col_expr "$db" avatar text), COALESCE(to_char(created_at,'YYYY-MM-DD\"T\"HH24:MI:SS\"Z\"'),'$SENT')"
+}
+COLQ_MAIN=$(build_colq "$MAIN_DB")
+COLQ_WP=$(build_colq "$WP_DB")
+$PSQL -d "$MAIN_DB" -c "SELECT $COLQ_MAIN FROM users $WHERE ORDER BY id;" > "$F_MAIN"
+$PSQL -d "$WP_DB"   -c "SELECT $COLQ_WP FROM users $WHERE ORDER BY id;" > "$F_WP"
 echo "zentrix 命中 $(grep -c . "$F_MAIN") 行；zentrix_willpower 命中 $(grep -c . "$F_WP") 行"
 
 # 计算合并：按 username(小写) 去重，分配新 id
