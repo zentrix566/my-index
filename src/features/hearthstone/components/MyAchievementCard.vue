@@ -67,6 +67,13 @@ const progressText = computed(() => {
     return { quota: s.quota, done, value }
   })
 })
+// 收集类成就（按职业/物品勾选计数）：进度条本身不可点，给 hover 提示引导
+const isTrack = computed(() => !!props.achievement?.trackClasses || !!props.achievement?.trackItems)
+const trackProgressTitle = computed(() =>
+  isTrack.value
+    ? (props.achievement?.trackClasses ? '此成就按职业勾选记录进度：点编辑后勾选已完成的职业即可（无需输入数字）' : '此成就按物品勾选记录进度：点编辑后勾选已使用的物品即可（无需输入数字）')
+    : ''
+)
 
 const onDeckClick = (deck, event) => {
   if (event) event.stopPropagation()
@@ -215,9 +222,15 @@ const copyDeckCode = async (deck, event) => {
       </ul>
 
       <!-- 累积进度显示（直接录入的 count 值，已完成阶段按满额显示） -->
-      <div v-if="showCountProgress" class="hs-count-progress">
+      <div
+        v-if="showCountProgress"
+        class="hs-count-progress"
+        :class="{ 'hs-count-track': isTrack }"
+        :title="trackProgressTitle"
+      >
         <div class="hs-count-header">
           <span class="hs-count-label">累计</span>
+          <span v-if="isTrack" class="hs-track-hint">{{ achievement.trackClasses ? '按职业勾选' : '按物品勾选' }}</span>
           <span class="hs-count-number">{{ headerCount }}</span>
         </div>
         <div class="hs-count-stage-list">

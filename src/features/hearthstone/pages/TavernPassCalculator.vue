@@ -171,7 +171,8 @@
 
           <h2 class="hs-xp-h2">反向：规划肝度 / 核对进度</h2>
           <p class="hs-xp-rev-desc">
-            给定一个目标等级，反推在赛季结束（<b>{{ SEASON_END }}</b>）前达成所需的<b>每日游戏时长</b>。
+            给定一个目标等级，反推在赛季结束（<b>{{ SEASON_END }}</b>）前达成所需的<b>每日游戏时长</b>，
+            并预测<b>目标等级的预计完成日期</b>（按当前参数逐日模拟，周任务统一计入周一）。
           </p>
           <div class="hs-xp-field">
             <label for="xp-target">目标等级</label>
@@ -190,6 +191,32 @@
             </div>
             <div v-else-if="reverse.impossible" class="hs-xp-warn">
               ✕ 无法计算对战时长（请在各模式里设置每日游戏时长，让每小时经验 > 0）。
+            </div>
+
+            <!-- 目标等级预计完成日期（按当前参数逐日模拟，周任务计入周一） -->
+            <div class="hs-xp-target-date">
+              <div class="hs-xp-td-title">目标等级预计完成日期</div>
+              <template v-if="targetPlan.valid">
+                <div v-if="targetPlan.reached" class="hs-xp-td-ok">
+                  <span class="hs-xp-td-date">{{ formatFullDate(targetPlan.reachDate) }}</span>
+                  <span class="hs-xp-td-sub">
+                    预计 <b>{{ targetPlan.daysNeeded }}</b> 天达成（周一计入周任务
+                    <b>+{{ formatXp(targetPlan.weeklyXp) }}</b> XP）
+                  </span>
+                  <div class="hs-xp-td-status">
+                    <span v-if="targetPlan.onTime" class="hs-xp-tag hs-xp-tag-ok">
+                      ✓ 版本结束前可达成
+                    </span>
+                    <span v-else class="hs-xp-tag hs-xp-tag-late">
+                      ✕ 版本结束前无法达成（超出 {{ targetPlan.overByDays }} 天）
+                    </span>
+                  </div>
+                </div>
+                <div v-else class="hs-xp-warn">
+                  ✕ 按当前参数无法在赛季结束前达到目标等级（赛季结束 {{ SEASON_END }} 时预计 {{ targetPlan.endLevel }} 级）。
+                </div>
+              </template>
+              <div v-else class="hs-xp-warn">目标等级超出 1–{{ MAX_LEVEL }} 的范围，请调整。</div>
             </div>
           </div>
           <div v-else class="hs-xp-warn">目标等级超出 1–{{ MAX_LEVEL }} 的范围，请调整。</div>
@@ -220,9 +247,75 @@
         </div>
       </div>
 
+      <!-- 进度日历：全宽醒目区块（以当前等级为基数逐日模拟，周任务计入周一） -->
+      <section class="hs-xp-cal-section">
+        <div class="hs-xp-cal-head">
+          <div class="hs-xp-cal-head-text">
+            <h2>📅 进度日历</h2>
+            <p>
+              以当前等级为基数，按上方参数逐日模拟应达等级：<b>周任务经验统一计入周一</b>
+              （周一相比上周五额外增加 <b>+{{ formatXp(targetPlan.weeklyXp) }}</b> XP 对应的等级）。
+              对照日历即可随时自查，判断是否跟上预期节奏。
+            </p>
+          </div>
+          <div v-if="calendar.valid" class="hs-xp-cal-summary">
+            <span class="sum-today" v-if="calendar.todayLevel != null">
+              今日应达 <b>Lv {{ calendar.todayLevel }}</b>
+            </span>
+            <span class="sum-gap">
+              距目标还差 <b>{{ Math.max(0, calendar.target - (calendar.todayLevel || 0)) }}</b> 级
+            </span>
+            <span v-if="calendar.reached" class="sum-reach">
+              🎯 预计达成 <b>{{ formatFullDate(calendar.reachDate) }}</b>
+            </span>
+            <span v-else class="sum-late">✕ 版本内无法达成</span>
+          </div>
+        </div>
+
+        <div v-if="calendar.valid" class="hs-xp-cal">
+          <div class="hs-xp-cal-months">
+            <div v-for="month in calendar.months" :key="month.key" class="hs-xp-cal-month">
+              <div class="hs-xp-cal-month-title">{{ month.label }}</div>
+              <div class="hs-xp-cal-week">
+                <span v-for="w in WEEK_LABELS" :key="w">{{ w }}</span>
+              </div>
+              <div class="hs-xp-cal-grid">
+                <span v-for="n in month.leadingBlanks" :key="'b' + n" class="hs-xp-cal-blank"></span>
+                <div
+                  v-for="day in month.days"
+                  :key="day.dateKey"
+                  class="hs-xp-cal-cell"
+                  :class="{
+                    'is-monday': day.isMonday,
+                    'is-today': day.isToday,
+                    'is-reach': day.isReach,
+                    'is-past': day.isPast,
+                    'is-weekend': day.isWeekend
+                  }"
+                  :title="day.title"
+                >
+                  <span class="hs-xp-cal-daynum">{{ day.dayNum }}</span>
+                  <span v-if="day.level != null" class="hs-xp-cal-lv">Lv {{ day.level }}</span>
+                  <span v-if="day.isMonday && day.weeklyXp > 0" class="hs-xp-cal-weekly">周+{{ formatXp(day.weeklyXp) }}</span>
+                  <span v-if="day.isReach" class="hs-xp-cal-reach-tag">达成</span>
+                  <span v-if="day.isSeasonEnd" class="hs-xp-cal-end-tag">赛季结束</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="hs-xp-cal-legend">
+            <span><i class="dot monday"></i>周一（含周任务）</span>
+            <span><i class="dot today"></i>今天</span>
+            <span><i class="dot reach"></i>目标达成日</span>
+            <span><i class="dot weekend"></i>周末</span>
+          </div>
+        </div>
+        <div v-else class="hs-xp-warn">目标等级超出 1–{{ MAX_LEVEL }} 的范围，请调整。</div>
+      </section>
+
       <p class="hs-xp-foot">
         曲线依据暴雪官方奖励轨道：131–400 级每级 1500 XP，满级 400 级总经验 602,200。
-        每周经验按每 7 天结算一次估算，结果用于规划参考，实际以游戏内为准。
+        周任务经验统一计入周一结算，结果用于规划参考，实际以游戏内为准。
       </p>
     </div>
   </section>
@@ -242,6 +335,7 @@ import {
 } from '../data/rewardsTrack.js'
 import {
   projectToSeasonEnd,
+  projectDaily,
   modeHourlyXp,
   totalDailyPlayXp,
   blendedPlayXpPerHour,
@@ -369,6 +463,145 @@ const reverse = computed(() => {
   const req = requiredHoursPerDay(params.value, t, SEASON_END, new Date())
   return { valid: true, ...req }
 })
+
+// ===== 目标等级预计完成日期（与日历同源：projectDaily 逐日模拟，周任务计入周一） =====
+function startOfDay(d) {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate())
+}
+
+const targetPlan = computed(() => {
+  const t = Number(targetLevel.value)
+  const valid = t >= 1 && t <= MAX_LEVEL
+  if (!valid) return { valid: false }
+  const today = startOfDay(new Date())
+  const plan = projectDaily(params.value, t, SEASON_END, today)
+  const reached = plan.targetReached
+  const reachDate = plan.targetReachedDate
+  const endDate = plan.seasonEndDate
+  const end = startOfDay(new Date(SEASON_END))
+  const daysNeeded = reached && reachDate ? daysBetweenLocal(today, reachDate) + 1 : null
+  const onTime = reached && reachDate && endDate ? reachDate <= end : false
+  const overByDays = reached && endDate && reachDate > end ? daysBetweenLocal(end, reachDate) : 0
+  const endLevel = endDate ? projectToSeasonEnd(params.value, SEASON_END, today).level : null
+  return {
+    valid: true,
+    target: t,
+    reached,
+    reachDate,
+    daysNeeded,
+    onTime,
+    overByDays,
+    weeklyXp: plan.weeklyXp,
+    endLevel
+  }
+})
+
+// ===== 进度日历：按月分组渲染 =====
+const WEEK_LABELS = ['一', '二', '三', '四', '五', '六', '日']
+
+function daysBetweenLocal(a, b) {
+  return Math.round((startOfDay(b) - startOfDay(a)) / 86400000)
+}
+
+const calendar = computed(() => {
+  const t = Number(targetLevel.value)
+  const valid = t >= 1 && t <= MAX_LEVEL
+  if (!valid) return { valid: false }
+
+  const today = startOfDay(new Date())
+  const plan = projectDaily(params.value, t, SEASON_END, today)
+  const reachDate = plan.targetReachedDate
+  // 日历终点：达成日（若有）否则版本结束日
+  const horizonEnd = (reachDate || plan.seasonEndDate || today)
+  const byDate = new Map()
+  for (const d of plan.days) {
+    const key = fmtKey(d.date)
+    byDate.set(key, d)
+  }
+  const reachKey = reachDate ? fmtKey(reachDate) : null
+  const endKey = plan.seasonEndDate ? fmtKey(plan.seasonEndDate) : null
+
+  const months = []
+  let cursor = new Date(today.getFullYear(), today.getMonth(), 1)
+  const lastMonthStart = new Date(horizonEnd.getFullYear(), horizonEnd.getMonth(), 1)
+  while (cursor <= lastMonthStart) {
+    const y = cursor.getFullYear()
+    const m = cursor.getMonth()
+    const firstWeekday = new Date(y, m, 1).getDay() // 0=周日
+    const leadingBlanks = (firstWeekday + 6) % 7 // 周一起始
+    const daysInMonth = new Date(y, m + 1, 0).getDate()
+    const monthDays = []
+    for (let d = 1; d <= daysInMonth; d++) {
+      const date = new Date(y, m, d)
+      const key = fmtKey(date)
+      const sim = byDate.get(key)
+      const isMonday = date.getDay() === 1
+      const isWeekend = date.getDay() === 0 || date.getDay() === 6
+      const isToday = +startOfDay(date) === +today
+      const isPast = date < today
+      const isReach = key === reachKey
+      const isSeasonEnd = key === endKey
+      monthDays.push({
+        dateKey: key,
+        dayNum: d,
+        level: sim ? sim.level : null,
+        weeklyXp: sim ? sim.weeklyXp : 0,
+        isMonday,
+        isWeekend,
+        isToday,
+        isPast,
+        isReach,
+        isSeasonEnd,
+        title: buildDayTitle(sim, date, isMonday, isReach, isSeasonEnd)
+      })
+    }
+    months.push({
+      key: `${y}-${m}`,
+      label: `${y} 年 ${m + 1} 月`,
+      leadingBlanks,
+      days: monthDays
+    })
+    cursor = new Date(y, m + 1, 1)
+  }
+
+  const todayLevel = byDate.get(fmtKey(today)) ? byDate.get(fmtKey(today)).level : null
+  return {
+    valid: true,
+    target: t,
+    reached: plan.targetReached,
+    reachDate,
+    todayLevel,
+    months,
+    weeklyXp: plan.weeklyXp
+  }
+})
+
+function fmtKey(d) {
+  const dd = startOfDay(d)
+  return `${dd.getFullYear()}-${dd.getMonth()}-${dd.getDate()}`
+}
+
+function buildDayTitle(sim, date, isMonday, isReach, isSeasonEnd) {
+  if (!sim) {
+    if (isReach) return `${date.toLocaleDateString('zh-CN')}：目标达成`
+    if (isSeasonEnd) return `${date.toLocaleDateString('zh-CN')}：版本结束`
+    return `${date.toLocaleDateString('zh-CN')}：暂无数据`
+  }
+  const parts = [`${date.toLocaleDateString('zh-CN')}：应达 Lv ${sim.level}`]
+  parts.push(`当日经验 ${formatXp(sim.dayXp)} XP`)
+  if (isMonday && sim.weeklyXp > 0) parts.push(`含周任务 +${formatXp(sim.weeklyXp)} XP`)
+  return parts.join('\n')
+}
+
+// ===== 格式化 =====
+function formatFullDate(d) {
+  if (!d) return '-'
+  const dd = startOfDay(d)
+  const y = dd.getFullYear()
+  const m = String(dd.getMonth() + 1).padStart(2, '0')
+  const day = String(dd.getDate()).padStart(2, '0')
+  return `${y}-${m}-${day}`
+}
 
 // ===== 格式化 =====
 function formatXp(n) {
@@ -544,6 +777,77 @@ const gridY = [0, 0.25, 0.5, 0.75, 1].map((p) => ({
 .hs-xp-target-line { stroke: var(--xp-amber); stroke-width: 1.5; stroke-dasharray: 4 3; }
 .hs-xp-target-dot { fill: var(--xp-amber); }
 .hs-xp-target-text { fill: var(--xp-amber); font-size: 12px; font-weight: 700; }
+
+/* ===== 目标等级预计完成日期 ===== */
+.hs-xp-target-date { margin-top: 14px; padding: 12px 14px; border: 1px solid var(--xp-border); border-radius: 10px; background: var(--xp-green-soft); }
+.hs-xp-td-title { font-size: 12px; font-weight: 700; color: var(--xp-muted); margin-bottom: 6px; letter-spacing: .5px; }
+.hs-xp-td-date { display: block; font-size: 30px; font-weight: 800; color: var(--xp-green); line-height: 1.2; font-variant-numeric: tabular-nums; }
+.hs-xp-td-sub { display: block; font-size: 13px; color: var(--xp-text); margin-top: 4px; }
+.hs-xp-td-sub b { color: var(--xp-green); }
+.hs-xp-td-status { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+.hs-xp-tag { font-size: 12px; font-weight: 700; border-radius: 999px; padding: 4px 12px; }
+.hs-xp-tag-ok { background: var(--xp-green-mid); color: var(--xp-green); }
+.hs-xp-tag-late { background: rgba(220,38,38,.12); color: var(--xp-red); }
+.hs-xp-td-ok .hs-xp-warn { margin: 0; }
+
+/* ===== 进度日历（全宽醒目区块） ===== */
+.hs-xp-cal-section {
+  margin-top: 22px;
+  background: linear-gradient(180deg, var(--xp-green-soft), var(--xp-card) 40%);
+  border: 1.5px solid var(--xp-green);
+  border-radius: 16px;
+  padding: 20px 22px 22px;
+}
+.hs-xp-cal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+.hs-xp-cal-head-text { flex: 1; min-width: 260px; }
+.hs-xp-cal-head h2 { font-size: 22px; margin: 0 0 6px; color: var(--xp-green); letter-spacing: .5px; }
+.hs-xp-cal-head p { margin: 0; font-size: 13px; color: var(--xp-muted); line-height: 1.6; max-width: 640px; }
+.hs-xp-cal-head p b { color: var(--xp-green); }
+.hs-xp-cal-summary { display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+.hs-xp-cal-summary span { font-size: 13px; font-weight: 600; background: var(--xp-card); border: 1px solid var(--xp-border); border-radius: 999px; padding: 7px 14px; color: var(--xp-text); box-shadow: 0 1px 3px rgba(0,0,0,.06); }
+.hs-xp-cal-summary b { color: var(--xp-green); font-size: 15px; }
+.hs-xp-cal-summary .sum-reach { border-color: var(--xp-amber); background: rgba(180,83,9,.1); color: var(--xp-amber); }
+.hs-xp-cal-summary .sum-reach b { color: var(--xp-amber); font-size: 16px; }
+.hs-xp-cal-summary .sum-late { border-color: rgba(220,38,38,.4); background: rgba(220,38,38,.08); color: var(--xp-red); }
+.hs-xp-cal-months { display: flex; gap: 16px; flex-wrap: wrap; }
+.hs-xp-cal-month {
+  flex: 1 1 300px; min-width: 280px; max-width: 100%;
+  background: var(--xp-card); border: 1px solid var(--xp-border); border-radius: 12px; padding: 12px 12px 10px;
+}
+.hs-xp-cal-month-title { font-size: 15px; font-weight: 800; color: var(--xp-text); margin-bottom: 8px; }
+.hs-xp-cal-week, .hs-xp-cal-grid { display: grid; grid-template-columns: repeat(7, 1fr); gap: 3px; }
+.hs-xp-cal-week { margin-bottom: 4px; }
+.hs-xp-cal-week span { text-align: center; font-size: 11px; font-weight: 700; color: var(--xp-muted); padding: 2px 0; }
+.hs-xp-cal-blank { min-height: 52px; }
+.hs-xp-cal-cell {
+  position: relative; min-height: 52px; border: 1px solid var(--xp-border); border-radius: 8px;
+  padding: 4px 5px; box-sizing: border-box; background: var(--xp-card); display: flex; flex-direction: column; gap: 2px;
+}
+.hs-xp-cal-daynum { font-size: 12px; font-weight: 700; color: var(--xp-muted); line-height: 1; }
+.hs-xp-cal-lv { font-size: 13px; font-weight: 800; color: var(--xp-text); line-height: 1.1; font-variant-numeric: tabular-nums; }
+.hs-xp-cal-weekly { font-size: 10px; font-weight: 700; color: var(--xp-amber); line-height: 1; }
+.hs-xp-cal-reach-tag, .hs-xp-cal-end-tag { position: absolute; top: 4px; right: 5px; font-size: 10px; font-weight: 800; line-height: 1; }
+.hs-xp-cal-reach-tag { color: #fff; background: var(--xp-amber); border-radius: 999px; padding: 2px 6px; }
+.hs-xp-cal-end-tag { color: var(--xp-red); }
+.hs-xp-cal-cell.is-monday { border-color: var(--xp-amber); background: rgba(180,83,9,.06); }
+.hs-xp-cal-cell.is-weekend { background: var(--xp-green-soft); }
+.hs-xp-cal-cell.is-today { outline: 2px solid var(--xp-green); outline-offset: 1px; }
+.hs-xp-cal-cell.is-reach { border-color: var(--xp-amber); background: rgba(180,83,9,.14); }
+.hs-xp-cal-cell.is-past { opacity: .45; }
+.hs-xp-cal-legend { display: flex; flex-wrap: wrap; gap: 14px; margin-top: 14px; }
+.hs-xp-cal-legend span { display: inline-flex; align-items: center; gap: 5px; font-size: 12px; color: var(--xp-muted); }
+.hs-xp-cal-legend i.dot { width: 10px; height: 10px; border-radius: 3px; display: inline-block; }
+.hs-xp-cal-legend i.monday { background: rgba(180,83,9,.35); border: 1px solid var(--xp-amber); }
+.hs-xp-cal-legend i.today { background: var(--xp-green); }
+.hs-xp-cal-legend i.reach { background: var(--xp-amber); }
+.hs-xp-cal-legend i.weekend { background: var(--xp-green-soft); border: 1px solid var(--xp-border); }
+@media (max-width: 640px) {
+  .hs-xp-cal-section { padding: 14px 12px 16px; }
+  .hs-xp-cal-month { flex-basis: 100%; min-width: 0; }
+  .hs-xp-cal-cell { min-height: 44px; padding: 3px 4px; }
+  .hs-xp-cal-lv { font-size: 11px; }
+  .hs-xp-cal-weekly { font-size: 9px; }
+}
 
 .hs-xp-foot { margin-top: 22px; font-size: 12px; color: var(--xp-muted); line-height: 1.6; text-align: center; }
 </style>

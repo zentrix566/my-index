@@ -19,6 +19,7 @@
       <!-- 收集类成就：记录已发现的职业 / 已使用的战利品，勾选即进度 -->
       <div v-if="isTrack" class="epm-classes">
         <p class="epm-classes-label">{{ trackLabel }}</p>
+        <p class="epm-track-hint">点击下方对应{{ trackUnit }}即可勾选计数（无需手动输入数字）</p>
         <div class="epm-class-grid">
           <button
             v-for="item in trackList"
@@ -496,6 +497,15 @@ function save() {
   color: #4b5563;
   letter-spacing: .01em;
 }
+/* 收集类成就操作提示：点职业/物品勾选，而非手动输入数字 */
+.epm-track-hint {
+  margin: -6px 0 12px;
+  font-size: 12px;
+  color: #b45309;
+  background: rgba(180, 83, 9, 0.08);
+  border-radius: 6px;
+  padding: 6px 10px;
+}
 .epm-class-grid { display: flex; flex-wrap: wrap; gap: 9px; }
 .epm-class-chip {
   display: inline-flex;
@@ -632,6 +642,10 @@ function save() {
 }
 /* 收集类成就：深色主题下职业芯片 */
 .epm-classes-label { color: #cbd5e1; }
+.epm-track-hint {
+  color: #fbbf24;
+  background: rgba(251, 191, 36, 0.1);
+}
 .epm-class-chip {
   border-color: rgba(148, 163, 184, 0.42);
   color: #e2e8f0;

@@ -38,6 +38,14 @@
   background: #ece8df;
 }
 
+/* 硬核模式总开关：置于视图切换之后，与切换 tab 同排显示 */
+.hs-hardcore-global {
+  display: inline-flex;
+  align-items: center;
+  margin-left: 12px;
+  margin-bottom: 5px;
+}
+
 .hs-view-switch button {
   height: 28px;
   padding: 0 14px;
@@ -1853,6 +1861,21 @@
   color: #2c5669;
   line-height: 1;
 }
+
+/* 收集类成就（按职业/物品勾选）进度区提示 */
+.hs-track-hint {
+  flex: 0 0 auto;
+  margin-left: auto;
+  margin-right: 8px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #b45309;
+  background: rgba(180, 83, 9, 0.1);
+  cursor: help;
+}
+.hs-count-track { cursor: help; }
 
 .hs-count-stage-list {
   display: flex;

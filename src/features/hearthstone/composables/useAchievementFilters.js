@@ -95,24 +95,40 @@ export function useAchievementFilters({
         (expansionTimeIndex.get(b._expansionId) ?? 999)
     )
   )
-  // 我的成就-按职业：职业内全部成就跨版本平铺，按完成进度排序（用户 2026-08-06 确认的规则）：
-  //   1) 完成状态：未完成在前，已完成在后；
-  //   2) 完成度：未完成内按完成度降序（越接近完成越靠前，方便冲刺）；
-  //   3) 版本新旧：同级按版本发布时间新→旧（expansions 索引小 = 新版本）。
-  const myClassFlatAchievements = computed(() =>
-    [...filteredAchievements.value].sort((left, right) => {
-      const leftDone = Number(isAchievementCompleted(left))
-      const rightDone = Number(isAchievementCompleted(right))
-      if (leftDone !== rightDone) return leftDone - rightDone
-      const leftPercent = getProgressInfo(left).percent
-      const rightPercent = getProgressInfo(right).percent
-      if (leftPercent !== rightPercent) return rightPercent - leftPercent
-      return (
-        (expansionTimeIndex.get(left._expansionId) ?? 999) -
-        (expansionTimeIndex.get(right._expansionId) ?? 999)
-      )
-    })
-  )
+  // 我的成就-按职业：与待完成清单一致，按 一次性 / 累计-次数 / 累计-点数 分组，
+  // 组内未完成在前（剩余从低到高、完成度从高到低），已完成统一排在组尾。
+  // 数据源 = 当前职业筛选后的成就（filteredAchievements）。
+  const myClassGroups = computed(() => {
+    const grouped = { oneTime: [], count: [], points: [] }
+    for (const achievement of filteredAchievements.value) {
+      if (achievement.type !== '累计') grouped.oneTime.push(achievement)
+      else if (getMetric(achievement) === 'points') grouped.points.push(achievement)
+      else grouped.count.push(achievement)
+    }
+    const sortGroup = (list) =>
+      [...list].sort((left, right) => {
+        const leftProgress = getProgressInfo(left)
+        const rightProgress = getProgressInfo(right)
+        if (leftProgress.completed !== rightProgress.completed) {
+          return leftProgress.completed ? 1 : -1
+        }
+        if (leftProgress.remainingCount !== rightProgress.remainingCount) {
+          return leftProgress.remainingCount - rightProgress.remainingCount
+        }
+        return rightProgress.percent - leftProgress.percent
+      })
+    return {
+      oneTime: sortGroup(grouped.oneTime),
+      count: sortGroup(grouped.count),
+      points: sortGroup(grouped.points)
+    }
+  })
+  // 平铺视图（全选范围等场景用）：按分组顺序依次展开
+  const myClassFlatAchievements = computed(() => [
+    ...myClassGroups.value.oneTime,
+    ...myClassGroups.value.count,
+    ...myClassGroups.value.points
+  ])
 
   return {
     availableClasses,
@@ -122,6 +138,7 @@ export function useAchievementFilters({
     filteredByExpansion,
     myFilteredByExpansion,
     classFlatAchievements,
+    myClassGroups,
     myClassFlatAchievements
   }
 }

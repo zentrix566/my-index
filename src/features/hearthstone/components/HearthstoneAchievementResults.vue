@@ -61,26 +61,43 @@
   </div>
 
   <div v-else-if="myGroupBy === 'class'" class="hs-flat-groups">
-    <!-- 我的成就-按职业：取消版本分组，该职业全部成就平铺（未完成在前 → 完成度降序 → 版本新→旧） -->
-    <div class="hs-achievement-list">
-      <MyAchievementCard
-        v-for="achievement in myClassFlatAchievements"
-        :key="achievement.id"
-        :achievement="achievement"
-        show-remaining
-        :editable="Boolean(user)"
-        :style="expansionStyle"
-        :select-mode="batchMode"
-        :selected="selectedAchIds.includes(achievement.id)"
-        :pinned="pinnedIds.includes(achievement.id)"
-        :pinning="profileSaving"
-        @click="$emit('card-click', $event)"
-        @deck-click="$emit('deck-click', $event)"
-        @toggle-select="$emit('toggle-select', $event)"
-        @toggle-pin="$emit('toggle-pin', $event)"
-        @share="$emit('share', $event)"
-      />
-    </div>
+    <!-- 我的成就-按职业：与待完成清单一致，按 一次性/累计-次数/累计-点数 分组，默认收起，组内未完成在前（剩余从低到高） -->
+    <section
+      v-for="section in myClassSections"
+      v-show="section.achievements.length"
+      :key="section.key"
+      class="hs-priority-group hs-sprint-cat"
+    >
+      <button
+        type="button"
+        class="hs-sprint-cat-head"
+        :aria-expanded="!myClassCollapsed[section.key]"
+        @click="$emit('toggle-my-class-section', section.key)"
+      >
+        <span class="hs-sprint-cat-caret" :class="{ open: !myClassCollapsed[section.key] }">▶</span>
+        <span class="hs-sprint-cat-title">{{ section.title }}</span>
+        <span class="hs-sprint-cat-count">{{ section.achievements.length }} 个</span>
+      </button>
+      <div v-show="!myClassCollapsed[section.key]" class="hs-achievement-list hs-priority-list">
+        <MyAchievementCard
+          v-for="achievement in section.achievements"
+          :key="achievement.id"
+          :achievement="achievement"
+          show-remaining
+          :editable="Boolean(user)"
+          :style="expansionStyle"
+          :select-mode="batchMode"
+          :selected="selectedAchIds.includes(achievement.id)"
+          :pinned="pinnedIds.includes(achievement.id)"
+          :pinning="profileSaving"
+          @click="$emit('card-click', $event)"
+          @deck-click="$emit('deck-click', $event)"
+          @toggle-select="$emit('toggle-select', $event)"
+          @toggle-pin="$emit('toggle-pin', $event)"
+          @share="$emit('share', $event)"
+        />
+      </div>
+    </section>
   </div>
 
   <div v-else-if="myGroupBy === 'sprint'" class="hs-priority-wrap">
@@ -153,8 +170,10 @@ const props = defineProps({
   classFlatAchievements: { type: Array, required: true },
   myFilteredByClass: { type: Object, required: true },
   classViewSummaries: { type: Object, required: true },
-  // 我的成就-按职业：取消版本分组后的平铺列表（未完成在前 → 完成度降序 → 版本新→旧，见 useAchievementFilters.js）
-  myClassFlatAchievements: { type: Array, required: true },
+  // 我的成就-按职业：按 一次性/累计-次数/累计-点数 分组（组内未完成在前、剩余从低到高，见 useAchievementFilters.js）
+  myClassGroups: { type: Object, required: true },
+  // 我的成就-按职业：分组折叠状态（默认收起）
+  myClassCollapsed: { type: Object, required: true },
   user: { type: Object, default: null },
   batchMode: { type: Boolean, required: true },
   selectedAchIds: { type: Array, required: true },
@@ -171,6 +190,7 @@ const props = defineProps({
 defineEmits([
   'set-class-collapsed',
   'toggle-sprint-section',
+  'toggle-my-class-section',
   'card-click',
   'deck-click',
   'toggle-select',
@@ -182,6 +202,13 @@ const sprintSections = computed(() => [
   { key: 'oneTime', title: '一次性成就', achievements: props.sprintGroups.oneTime },
   { key: 'count', title: '累计-次数（剩余从低到高）', achievements: props.sprintGroups.count },
   { key: 'points', title: '累计-点数（剩余从低到高）', achievements: props.sprintGroups.points }
+])
+
+// 我的成就-按职业：分组标题与待完成清单一致（组内剩余从低到高）
+const myClassSections = computed(() => [
+  { key: 'oneTime', title: '一次性成就', achievements: props.myClassGroups.oneTime },
+  { key: 'count', title: '累计-次数（剩余从低到高）', achievements: props.myClassGroups.count },
+  { key: 'points', title: '累计-点数（剩余从低到高）', achievements: props.myClassGroups.points }
 ])
 
 const getClassStyle = (heroClass) => ({

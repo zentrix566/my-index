@@ -58,6 +58,16 @@
         </button>
       </div>
 
+      <!-- 硬核模式总开关：置于视图切换之后，全视图生效（不再在其他位置重复放置开关） -->
+      <div class="hs-hardcore-global">
+        <HardcoreModeToggle
+          v-model="hardcore"
+          :expansion-count="expansions.length"
+          :core-expansion-count="originalExpansions.length"
+          action="纳入"
+        />
+      </div>
+
       <header class="hs-topbar">
         <div class="hs-brand">
           <div class="hs-brand-mark" aria-hidden="true">
@@ -118,13 +128,6 @@
             <div v-if="showMySectionToggles" class="hs-section-toggles">
               <button type="button" class="hs-tiny-btn" @click="expandAllSections">展开全部</button>
               <button type="button" class="hs-tiny-btn" @click="collapseAllSections">收起全部</button>
-              <!-- 硬核模式：ON/OFF 开关（置于展开/收起之后，吸顶始终可见，免去滚动到操作行去开关） -->
-              <HardcoreModeToggle
-                v-model="hardcore"
-                :expansion-count="expansions.length"
-                :core-expansion-count="originalExpansions.length"
-                action="统计"
-              />
             </div>
           </template>
           <!-- 按版本浏览：版本选择（我的成就模式下版本/职业选择移到子切换下方） -->
@@ -141,12 +144,6 @@
             class="hs-class-top"
           >
             <AchievementClassTabs v-model="currentClass" :classes="allClasses" />
-            <HardcoreModeToggle
-              v-model="hardcore"
-              :expansion-count="expansions.length"
-              :core-expansion-count="originalExpansions.length"
-              action="纳入"
-            />
           </div>
           <!-- 展开全部 / 收起全部：三视图一致，紧跟版本 / 职业选择之后 -->
           <div v-if="showFabSectionToggles" class="hs-section-toggles">
@@ -392,7 +389,8 @@
         :class-flat-achievements="classFlatAchievements"
         :my-filtered-by-class="myFilteredByClass"
         :class-view-summaries="classViewSummaries"
-        :my-class-flat-achievements="myClassFlatAchievements"
+        :my-class-groups="myClassGroups"
+        :my-class-collapsed="myClassCollapsed"
         :user="user"
         :batch-mode="batchMode"
         :selected-ach-ids="selectedAchIds"
@@ -406,6 +404,7 @@
         :recommendations-collapsed="sprintSectionCollapsed.recommendations"
         @set-class-collapsed="setClassCollapsed"
         @toggle-sprint-section="toggleSprintSection"
+        @toggle-my-class-section="toggleMyClassSection"
         @card-click="openCardModal"
         @deck-click="openDeckDetail"
         @toggle-select="toggleSelect"
@@ -899,11 +898,18 @@ const resetClassViews = () => {
   for (const c of classGroupOrder.value) classViewCollapsed[c] = false
 }
 
-// 总览面板「展开/收起全部」：按当前视图切换 职业分组 或 冲刺分组 的折叠态
-// （按职业浏览/我的成就-按职业为平铺列表，无分组可折叠，不参与）
+// 我的成就-按职业：一次性/累计次数/累计点数 分组折叠状态（默认收起，与待完成清单一致）
+const myClassCollapsed = reactive({ oneTime: true, count: true, points: true })
+const toggleMyClassSection = (key) => {
+  myClassCollapsed[key] = !myClassCollapsed[key]
+}
+
+// 总览面板「展开/收起全部」：按当前视图切换 职业分组 / 冲刺分组 / 我的-按职业分组 的折叠态
 const expandAllSections = () => {
   if (viewMode.value === 'my' && myGroupBy.value === 'sprint') {
     for (const k of Object.keys(sprintSectionCollapsed)) sprintSectionCollapsed[k] = false
+  } else if (viewMode.value === 'my' && myGroupBy.value === 'class') {
+    for (const k of Object.keys(myClassCollapsed)) myClassCollapsed[k] = false
   } else {
     for (const c of classGroupOrder.value) classViewCollapsed[c] = false
   }
@@ -911,6 +917,8 @@ const expandAllSections = () => {
 const collapseAllSections = () => {
   if (viewMode.value === 'my' && myGroupBy.value === 'sprint') {
     for (const k of Object.keys(sprintSectionCollapsed)) sprintSectionCollapsed[k] = true
+  } else if (viewMode.value === 'my' && myGroupBy.value === 'class') {
+    for (const k of Object.keys(myClassCollapsed)) myClassCollapsed[k] = true
   } else {
     for (const c of classGroupOrder.value) classViewCollapsed[c] = true
   }
@@ -924,9 +932,9 @@ const showClassOverview = computed(
 const showFabSectionToggles = computed(
   () => viewMode.value === 'expansion'
 )
-// 我的成就-按版本/待完成清单：展开全部/收起全部显示在子切换行后面（按职业已平铺，无分组可折叠）
+// 我的成就-按版本/按职业/待完成清单：展开全部/收起全部显示在子切换行后面（三视图均有分组可折叠）
 const showMySectionToggles = computed(
-  () => viewMode.value === 'my' && (myGroupBy.value === 'expansion' || myGroupBy.value === 'sprint')
+  () => viewMode.value === 'my' && (myGroupBy.value === 'expansion' || myGroupBy.value === 'class' || myGroupBy.value === 'sprint')
 )
 
 // 每个职业的完成度总览（基于当前筛选结果）
@@ -993,6 +1001,7 @@ const {
   filteredByClass,
   myFilteredByClass,
   classFlatAchievements,
+  myClassGroups,
   myClassFlatAchievements
 } = useAchievementFilters({
   allAchievements,
