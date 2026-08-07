@@ -28,6 +28,13 @@
 }
 
 /* 视图模式切换 */
+.hs-view-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
 .hs-view-switch {
   display: inline-flex;
   gap: 3px;
@@ -42,7 +49,6 @@
 .hs-hardcore-global {
   display: inline-flex;
   align-items: center;
-  margin-left: 12px;
   margin-bottom: 5px;
 }
 

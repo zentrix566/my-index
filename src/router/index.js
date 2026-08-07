@@ -6,12 +6,10 @@ import {
   loadDeckCodeViewerPage,
   loadDominoPage,
   loadHearthstoneAchievementsPage,
-  loadHearthstoneChangelogPage,
   loadTavernPassXpPage,
   loadIntervalTrainingPage,
   loadJiangyinPage,
   loadAgeCalculatorPage,
-  loadStatsPage,
   loadWorldCupPage,
   loadWillpowerHome,
   loadWillpowerAchievements,
@@ -19,8 +17,7 @@ import {
   loadWillpowerPositive,
   loadWillpowerCalendar,
   loadWillpowerData,
-  loadWillpowerAiAnalysis,
-  loadWillpowerChangelog
+  loadWillpowerAiAnalysis
 } from '../features/index.js'
 
 // 路由级懒加载：每个页面单独成 chunk，首屏只加载当前路由所需的代码，
@@ -28,7 +25,6 @@ import {
 const Home = () => import('../views/Home.vue')
 const Projects = () => import('../views/Projects.vue')
 const ProjectDetail = () => import('../views/ProjectDetail.vue')
-const VueApps = () => import('../views/VueApps.vue')
 const About = () => import('../views/About.vue')
 const Login = () => import('../views/Login.vue')
 const ForgotPassword = () => import('../views/ForgotPassword.vue')
@@ -36,6 +32,7 @@ const ResetPassword = () => import('../views/ResetPassword.vue')
 const Settings = () => import('../views/Settings.vue')
 const VerifyEmail = () => import('../views/VerifyEmail.vue')
 const Admin = () => import('../views/Admin.vue')
+const Changelog = () => import('../views/Changelog.vue')
 
 const routes = [
   { path: '/', name: 'home', component: Home },
@@ -47,7 +44,7 @@ const routes = [
   // OpsAgentAI 已合并进 CI/CD 流水线实践，旧链接重定向
   { path: '/projects/opsagentai', redirect: '/projects/cicd-architecture' },
   { path: '/projects/:slug', name: 'project-detail', component: ProjectDetail },
-  { path: '/vue-apps', name: 'vue-apps', component: VueApps },
+  { path: '/vue-apps', redirect: '/projects' },
   { path: '/life/interval-training.html', redirect: '/interval-training' },
   { path: '/interval-training', name: 'interval-training', component: loadIntervalTrainingPage },
   { path: '/lab', redirect: '/countdown' },
@@ -60,16 +57,16 @@ const routes = [
   { path: '/domino', name: 'domino', component: loadDominoPage },
   { path: '/hearthstone', name: 'hearthstone-achievements', component: loadHearthstoneAchievementsPage, meta: { title: '炉石传说成就查看器 | Zentrix' } },
   { path: '/hearthstone/deck', name: 'hearthstone-deck', component: loadDeckCodeViewerPage, meta: { title: '炉石卡组代码解析 | Zentrix' } },
-  { path: '/hearthstone/changelog', name: 'hearthstone-changelog', component: loadHearthstoneChangelogPage, meta: { title: '更新日志 | Zentrix' } },
+  { path: '/hearthstone/changelog', redirect: '/changelog?category=hearthstone' },
   { path: '/hearthstone/xp', name: 'hearthstone-xp', component: loadTavernPassXpPage, meta: { title: '战令经验计算器 | Zentrix' } },
-  { path: '/stats', name: 'stats', component: loadStatsPage },
+  { path: '/stats', redirect: '/admin?tab=stats' },
   { path: '/willpower', name: 'willpower', component: loadWillpowerHome, meta: { title: '抵御心魔 | Zentrix' } },
   { path: '/willpower/achievements', name: 'willpower-achievements', component: loadWillpowerAchievements, meta: { title: '成就殿堂 | 抵御心魔' } },
   { path: '/willpower/positive', name: 'willpower-positive', component: loadWillpowerPositive, meta: { title: '今日正能量 | 抵御心魔' } },
   { path: '/willpower/calendar', name: 'willpower-calendar', component: loadWillpowerCalendar, meta: { title: '抵御日历 | 抵御心魔' } },
   { path: '/willpower/data', name: 'willpower-data', component: loadWillpowerData, meta: { title: '数据看板 | 抵御心魔' } },
   { path: '/willpower/ai', name: 'willpower-ai', component: loadWillpowerAiAnalysis, meta: { title: 'AI 分析 | 抵御心魔' } },
-  { path: '/willpower/changelog', name: 'willpower-changelog', component: loadWillpowerChangelog, meta: { title: '更新日志 | 抵御心魔' } },
+  { path: '/willpower/changelog', redirect: '/changelog?category=willpower' },
   { path: '/willpower/profile', name: 'willpower-profile', component: loadWillpowerProfile, meta: { title: '个人中心 | 抵御心魔' } },
   // 心魔独立认证已并入主站，/login 等统一走主站账号体系
   { path: '/willpower/login', redirect: '/login' },
@@ -77,7 +74,7 @@ const routes = [
   { path: '/willpower/forgot-password', redirect: '/forgot-password' },
   { path: '/willpower/reset-password', redirect: '/reset-password' },
   { path: '/about', name: 'about', component: About },
-  { path: '/changelog', redirect: '/hearthstone/changelog' },
+  { path: '/changelog', name: 'changelog', component: Changelog, meta: { title: '更新日志 | Zentrix' } },
   { path: '/login', name: 'login', component: Login },
   { path: '/forgot-password', name: 'forgot-password', component: ForgotPassword },
   { path: '/reset-password', name: 'reset-password', component: ResetPassword },

@@ -8,7 +8,13 @@
         返回个人中心
       </RouterLink>
 
-      <header class="ad-head">
+      <nav class="ad-tabs" aria-label="后台功能">
+        <button type="button" :class="{ active: activeTab === 'users' }" @click="setActiveTab('users')">用户与模块</button>
+        <button type="button" :class="{ active: activeTab === 'stats' }" @click="setActiveTab('stats')">访问统计</button>
+      </nav>
+
+      <template v-if="activeTab === 'users'">
+        <header class="ad-head">
         <div>
           <p class="ad-eyebrow">站点后台</p>
           <h1 class="ad-title">用户与模块</h1>
@@ -20,7 +26,7 @@
           </svg>
           {{ loading ? '加载中…' : '刷新' }}
         </button>
-      </header>
+        </header>
 
       <p v-if="error" class="ad-error" role="alert">{{ error }}</p>
 
@@ -90,17 +96,21 @@
         </ul>
       </section>
 
-      <p class="ad-note">
-        模块使用记录在用户访问对应模块接口时自动写入，只记录首次与最近一次访问时间，不记录具体行为。
-      </p>
+        <p class="ad-note">
+          模块使用记录在用户访问对应模块接口时自动写入，只记录首次与最近一次访问时间，不记录具体行为。
+        </p>
+      </template>
+
+      <StatsPage v-else />
     </div>
   </div>
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, onMounted, ref, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '../auth/useAuth.js'
+import StatsPage from '../features/analytics/pages/Stats.vue'
 
 // 模块登记表：新增模块时在这里加一行，统计与标签会自动跟上
 const moduleCatalog = [
@@ -109,12 +119,14 @@ const moduleCatalog = [
 ]
 
 const { user, init } = useAuth()
+const route = useRoute()
 const router = useRouter()
 
 const users = ref([])
 const loading = ref(false)
 const error = ref('')
 const filter = ref('all')
+const activeTab = computed(() => route.query.tab === 'stats' ? 'stats' : 'users')
 
 const idleCount = computed(() => users.value.filter((u) => !u.modules.length).length)
 
@@ -181,6 +193,14 @@ async function load() {
   }
 }
 
+function setActiveTab(tab) {
+  router.replace({ path: '/admin', query: tab === 'stats' ? { tab: 'stats' } : {} })
+}
+
+watch(activeTab, (tab) => {
+  if (tab === 'users' && !users.value.length && !loading.value) load()
+})
+
 onMounted(async () => {
   await init()
   if (!user.value) {
@@ -191,7 +211,7 @@ onMounted(async () => {
     router.replace('/settings')
     return
   }
-  await load()
+  if (activeTab.value === 'users') await load()
 })
 </script>
 
@@ -221,6 +241,38 @@ onMounted(async () => {
   text-decoration: none;
 }
 .ad-back:hover { color: #38bdf8; }
+
+.ad-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 24px;
+}
+.ad-tabs button {
+  min-height: 40px;
+  padding: 0 16px;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 10px;
+  color: #94a3b8;
+  background: rgba(15, 23, 42, 0.5);
+  font-weight: 700;
+  cursor: pointer;
+}
+.ad-tabs button.active {
+  border-color: rgba(56, 189, 248, 0.5);
+  color: #e0f2fe;
+  background: rgba(56, 189, 248, 0.14);
+}
+.ad-tabs button:focus-visible {
+  outline: 3px solid rgba(56, 189, 248, 0.5);
+  outline-offset: 3px;
+}
+.ad-shell :deep(.page-section) {
+  padding: 0;
+}
+.ad-shell :deep(.narrow-container) {
+  max-width: none;
+  padding: 0;
+}
 
 .ad-head {
   display: flex;

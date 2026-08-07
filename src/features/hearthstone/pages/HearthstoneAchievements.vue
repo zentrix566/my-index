@@ -28,44 +28,46 @@
 
       <!-- 视图模式切换 + 版本/职业选择：滚动时固定在顶部 -->
       <div class="hs-sticky-controls" ref="stickyRef">
-      <div class="hs-view-switch" role="tablist" aria-label="浏览方式">
-        <button
-          :class="{ active: viewMode === 'expansion' }"
-          type="button"
-          role="tab"
-          :aria-selected="viewMode === 'expansion'"
-          @click="viewMode = 'expansion'"
-        >
-          按版本浏览
-        </button>
-        <button
-          :class="{ active: viewMode === 'class' }"
-          type="button"
-          role="tab"
-          :aria-selected="viewMode === 'class'"
-          @click="viewMode = 'class'"
-        >
-          按职业浏览
-        </button>
-        <button
-          :class="{ active: viewMode === 'my' }"
-          type="button"
-          role="tab"
-          :aria-selected="viewMode === 'my'"
-          @click="viewMode = 'my'"
-        >
-          我的成就
-        </button>
-      </div>
+      <div class="hs-view-row">
+        <div class="hs-view-switch" role="tablist" aria-label="浏览方式">
+          <button
+            :class="{ active: viewMode === 'expansion' }"
+            type="button"
+            role="tab"
+            :aria-selected="viewMode === 'expansion'"
+            @click="viewMode = 'expansion'"
+          >
+            按版本浏览
+          </button>
+          <button
+            :class="{ active: viewMode === 'class' }"
+            type="button"
+            role="tab"
+            :aria-selected="viewMode === 'class'"
+            @click="viewMode = 'class'"
+          >
+            按职业浏览
+          </button>
+          <button
+            :class="{ active: viewMode === 'my' }"
+            type="button"
+            role="tab"
+            :aria-selected="viewMode === 'my'"
+            @click="viewMode = 'my'"
+          >
+            我的成就
+          </button>
+        </div>
 
-      <!-- 硬核模式总开关：置于视图切换之后，全视图生效（不再在其他位置重复放置开关） -->
-      <div class="hs-hardcore-global">
-        <HardcoreModeToggle
-          v-model="hardcore"
-          :expansion-count="expansions.length"
-          :core-expansion-count="originalExpansions.length"
-          action="纳入"
-        />
+        <!-- 硬核模式是全局范围开关，与浏览方式同排，但不属于 tablist。 -->
+        <div class="hs-hardcore-global">
+          <HardcoreModeToggle
+            v-model="hardcore"
+            :expansion-count="expansions.length"
+            :core-expansion-count="originalExpansions.length"
+            action="纳入"
+          />
+        </div>
       </div>
 
       <header class="hs-topbar">

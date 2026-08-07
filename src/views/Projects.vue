@@ -2,15 +2,19 @@
   <section class="section page-section">
     <div class="container">
       <div class="section-heading">
-        <p class="eyebrow">工作项目</p>
-        <h1>工作项目</h1>
-        <p>把项目经验作为索引站里的一个分区，后续可以继续扩展为案例库或文章库。</p>
+        <p class="eyebrow">项目索引</p>
+        <h1>工作项目与个人项目</h1>
+        <p>集中查看项目经验、互动页面与实用工具。</p>
       </div>
       <div class="project-groups">
         <section v-for="g in projectGroups.filter((x) => x.items.length)" :key="g.name" class="project-group">
           <h2 class="group-title">{{ g.name }}</h2>
           <ProjectGrid v-if="g.items.length" :projects="g.items" />
           <p v-else class="group-empty">（暂无，把简历相关项目设 group: '工作项目' 即可显示在此）</p>
+        </section>
+        <section class="project-group">
+          <h2 class="group-title">个人项目</h2>
+          <VueAppGrid :apps="vueApps" />
         </section>
       </div>
     </div>
@@ -19,10 +23,11 @@
 
 <script setup>
 import ProjectGrid from '../components/ProjectGrid.vue'
+import VueAppGrid from '../components/VueAppGrid.vue'
 import { projects } from '../data/projects'
+import { vueApps } from '../data/vueApps'
 
-// 来源分组：工作项目（简历中用到的）/ 个人项目（自己做的）
-const GROUP_ORDER = ['工作项目', '个人项目']
+const GROUP_ORDER = ['工作项目']
 const projectGroups = GROUP_ORDER.map((name) => ({
   name,
   items: projects.filter((p) => p.group === name)

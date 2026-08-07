@@ -270,15 +270,25 @@
   font-size: 12px;
 }
 
-.hs-view-switch {
+.hs-view-row {
+  gap: 16px;
+  margin: 12px 0 10px;
+}
+
+.hs-view-row .hs-view-switch {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  flex: 0 1 560px;
   width: min(100%, 560px);
-  margin: 22px 0 14px;
+  margin: 0;
   padding: 5px;
   border-color: var(--hs-border);
   border-radius: 13px;
   background: var(--hs-inset-bg);
+}
+
+.hs-view-row .hs-hardcore-global {
+  margin: 0;
 }
 
 .hs-view-switch button,
@@ -301,9 +311,9 @@
 }
 
 .hs-topbar {
-  gap: 16px;
-  margin-bottom: 14px;
-  padding: 14px 16px;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding: 10px 12px;
   border: 1px solid var(--hs-border);
   border-radius: 14px;
   background: var(--hs-surface-overlay);
@@ -314,8 +324,8 @@
 }
 
 .hs-brand-mark {
-  width: 40px;
-  height: 40px;
+  width: 36px;
+  height: 36px;
   border: 1px solid rgba(212, 160, 23, 0.25);
   border-radius: 12px;
   color: var(--hs-gold-soft);

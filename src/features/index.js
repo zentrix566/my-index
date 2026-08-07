@@ -1,12 +1,10 @@
 export { loadAIOpsPage } from './aiops/index.js'
-export { loadStatsPage } from './analytics/index.js'
 export { loadCountdownPage } from './countdown/index.js'
 export { loadCrazyPeoplePage } from './crazy-people/index.js'
 export { loadDominoPage } from './domino/index.js'
 export {
   loadDeckCodeViewerPage,
   loadHearthstoneAchievementsPage,
-  loadHearthstoneChangelogPage,
   loadTavernPassXpPage
 } from './hearthstone/index.js'
 export { loadIntervalTrainingPage } from './interval-training/index.js'
@@ -20,6 +18,5 @@ export {
   loadWillpowerPositive,
   loadWillpowerCalendar,
   loadWillpowerAiAnalysis,
-  loadWillpowerData,
-  loadWillpowerChangelog
+  loadWillpowerData
 } from './willpower/index.js'

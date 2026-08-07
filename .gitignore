@@ -58,6 +58,8 @@ data/willpower.local.db-shm
 data/auth.local.db
 data/auth.local.db-wal
 data/auth.local.db-shm
+# 本地数据迁移备份可能包含账号、邮箱和业务记录，整目录不入库
+data/backups/
 server/seed/*.local.json
 
 # 数据库导出中间产物（含用户密码哈希等敏感数据，绝不入库）

@@ -5,7 +5,7 @@
       <RouterLink to="/willpower" class="wp-brand">抵御心魔</RouterLink>
       <div class="wp-account-actions">
         <RouterLink to="/willpower/profile" class="wp-account-link">个人中心</RouterLink>
-        <RouterLink to="/willpower/changelog" class="wp-account-link">更新日志</RouterLink>
+        <RouterLink to="/changelog?category=willpower" class="wp-account-link">更新日志</RouterLink>
         <!-- 同步状态指示器 -->
         <span
           class="wp-sync-dot"

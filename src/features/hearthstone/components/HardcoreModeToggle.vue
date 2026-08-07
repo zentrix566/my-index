@@ -38,7 +38,8 @@ const title = computed(
   align-items: center;
   gap: 8px;
   flex: 0 0 auto;
-  padding: 0;
+  min-height: 44px;
+  padding: 0 4px;
   border: none;
   color: var(--hs-text-soft);
   background: none;
