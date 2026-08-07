@@ -1,5 +1,5 @@
 /**
- * 「炉石卡牌蛙生」找茬玩法核心逻辑。
+ * 「蛙生模拟器」找茬玩法核心逻辑。
  *
  * 玩法：每轮抽 3 张真实随从牌，其中一张的某个卡面元素（费用/攻击/生命/稀有度/
  * 名称/效果/种族）被另一张牌的同位置像素「贴片」覆盖，玩家要指出被动手脚的那张。
@@ -22,13 +22,60 @@ export const mutationTypes = [
 ]
 
 export const fieldLabels = {
-  manaCost: '法力值消耗',
+  manaCost: '法力值',
   attack: '攻击力',
   health: '生命值',
   rarityId: '稀有度',
   name: '名称',
   text: '效果',
   minionTypeId: '随从类型'
+}
+
+/** 可在设置里勾选的混淆类型。unstable 标注的几类贴片效果还不够稳定，默认不勾选。 */
+export const mutationOptions = [
+  { key: 'manaCost', label: '法力值', hint: '只做 +1 / -1 微调，卡面数字与原始仅差 1；上限 10，不会出现 1→0 这类离谱值' },
+  { key: 'attack', label: '攻击力', hint: '只做 +1 / -1 微调，卡面数字与原始仅差 1' },
+  { key: 'health', label: '生命值', hint: '只做 +1 / -1 微调，卡面数字与原始仅差 1' },
+  {
+    key: 'rarityId',
+    label: '稀有度',
+    hint: '替换稀有度宝石贴片（此类型 bug 较多、结果不够准确，仍在调优）',
+    unstable: true
+  },
+  {
+    key: 'name',
+    label: '名称',
+    hint: '覆盖名称条文字贴片（此类型 bug 较多、结果不够准确，仍在调优）',
+    unstable: true
+  },
+  {
+    key: 'text',
+    label: '效果',
+    hint: '覆盖效果描述区贴片（此类型 bug 较多、结果不够准确，仍在调优）',
+    unstable: true
+  },
+  {
+    key: 'minionTypeId',
+    label: '随从类型',
+    hint: '替换种族铭牌贴片（此类型 bug 较多、结果不够准确，仍在调优）',
+    unstable: true
+  }
+]
+
+/** 数值类字段：只做 ±1 微调，避免和原图差距过大被一眼看穿 */
+const numericTypes = ['manaCost', 'attack', 'health']
+
+/** 数值贴片的合法落点：法力值封顶 10（炉石无法支付超过 10），
+ *  所有数值都不允许到 0（1→0、攻击→0 太明显，一眼就看穿）。 */
+const numericBounds = {
+  manaCost: { min: 1, max: 10 },
+  attack: { min: 1, max: 30 },
+  health: { min: 1, max: 30 }
+}
+
+const isNumericTargetValid = (type, target) => {
+  const { min, max } = numericBounds[type] || { min: 1, max: 30 }
+  return target >= min && target <= max
 }
 
 export const minionTypes = {
@@ -118,17 +165,33 @@ const selectCleanDonor = (type, donors) => {
 export const createMutationForType = (card, cards, type) => {
   const donors = cards.filter((candidate) => isCompatibleDonor(type, card, candidate))
   if (!donors.length) return null
+
+  // 数值类只做 ±1 微调：找一张恰好是「原值 ±1」的兼容供体，
+  // 贴片显示的卡面数字就只差 1，既不会被一眼看穿，也不会差太远。
+  // 但改动后的值不能太离谱：法力值封顶 10、所有数值都不允许到 0。
+  if (numericTypes.includes(type)) {
+    const first = Math.random() < 0.5 ? 1 : -1
+    for (const sign of [first, -first]) {
+      const target = Number(card[type]) + sign
+      if (!isNumericTargetValid(type, target)) continue
+      const match = donors.find((candidate) => Number(candidate[type]) === target)
+      if (match) return { type, original: card[type], changed: target, donor: match, delta: sign }
+    }
+    return null
+  }
+
   const donor = selectCleanDonor(type, donors)
   if (!donor) return null
   return { type, original: card[type], changed: donor[type], donor }
 }
 
-const createMutation = (card, cards) => {
-  const availableTypes = mutationTypes.filter(
-    (type) => cards.some((candidate) => isCompatibleDonor(type, card, candidate))
-  )
-  if (!availableTypes.length) return null
-  return createMutationForType(card, cards, sample(availableTypes))
+const createMutation = (card, cards, enabledTypes) => {
+  const pool = shuffle([...enabledTypes])
+  for (const type of pool) {
+    const result = createMutationForType(card, cards, type)
+    if (result) return result
+  }
+  return null
 }
 
 export const formatValue = (type, value) => {
@@ -156,6 +219,9 @@ export const useFrogGame = () => {
   const dealing = ref(false)
   const error = ref('')
 
+  // 勾选的混淆类型：默认只开数值三项，稀有度/名称/效果/随从类型默认关闭
+  const activeTypes = ref(['manaCost', 'attack', 'health'])
+
   const revealed = computed(() => selectedIndex.value !== null)
   const correct = computed(() => revealed.value && selectedIndex.value === suspiciousIndex.value)
   const accuracy = computed(() => (rounds.value ? Math.round((hits.value / rounds.value) * 100) : 0))
@@ -172,6 +238,10 @@ export const useFrogGame = () => {
 
   const startRound = async () => {
     if (allCards.value.length < 3) return
+    if (!activeTypes.value.length) {
+      error.value = '请至少勾选一种混淆类型'
+      return
+    }
     dealing.value = true
     try {
       let chosen = []
@@ -180,7 +250,7 @@ export const useFrogGame = () => {
       for (let attempt = 0; attempt < 12 && !picked; attempt += 1) {
         chosen = shuffle(allCards.value).slice(0, 3)
         const index = Math.floor(Math.random() * chosen.length)
-        const found = createMutation(chosen[index], allCards.value)
+        const found = createMutation(chosen[index], allCards.value, activeTypes.value)
         if (found) picked = { index, mutation: found }
       }
       if (!picked) {
@@ -232,6 +302,7 @@ export const useFrogGame = () => {
 
   return {
     accuracy,
+    activeTypes,
     allCards,
     bestStreak,
     correct,

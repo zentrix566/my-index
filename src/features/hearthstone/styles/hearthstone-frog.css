@@ -1,5 +1,5 @@
 /**
- * 「炉石卡牌蛙生」找茬玩法样式。
+ * 「蛙生模拟器」找茬玩法样式。
  * 全部选择器都挂在 .frog-page 下，避免污染主站全局样式；
  * 明暗两套配色跟随全站主题（section 上的 data-hs-theme）。
  */
@@ -17,15 +17,15 @@
 }
 
 .frog-page[data-hs-theme='light'] {
-  --frog-surface: rgba(255, 255, 255, 0.82);
-  --frog-surface-strong: rgba(255, 255, 255, 0.94);
-  --frog-border: rgba(31, 41, 55, 0.14);
-  --frog-text: #1f2937;
-  --frog-muted: #5b6673;
-  --frog-gold: #a86b1c;
-  --frog-gold-soft: #8a5a18;
-  --frog-green: #3f7a2e;
-  --frog-glow: rgba(120, 168, 108, 0.16);
+  --frog-surface: rgba(236, 241, 230, 0.94);
+  --frog-surface-strong: rgba(224, 230, 215, 0.98);
+  --frog-border: rgba(40, 54, 38, 0.18);
+  --frog-text: #1f2a22;
+  --frog-muted: #586354;
+  --frog-gold: #9a6116;
+  --frog-gold-soft: #7c4d10;
+  --frog-green: #3c7a2c;
+  --frog-glow: rgba(110, 158, 96, 0.22);
 }
 
 .frog-wrap {
@@ -627,6 +627,410 @@
 
 @keyframes frog-result-in {
   from { opacity: 0; transform: translateY(10px); }
+}
+
+/* ---------- 混淆类型设置 + 验收模式 ---------- */
+
+.frog-config {
+  margin: 16px 0 0;
+  padding: 16px 18px;
+  background: var(--frog-surface);
+  border: 1px solid var(--frog-border);
+  border-radius: 16px;
+}
+
+.frog-config__head {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  margin-bottom: 12px;
+}
+
+.frog-config__title {
+  color: var(--frog-text);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.frog-config__list {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 8px 14px;
+}
+
+.frog-check {
+  display: grid;
+  grid-template-columns: auto auto 1fr;
+  gap: 8px 9px;
+  align-items: center;
+  padding: 8px 10px;
+  background: var(--frog-surface-strong);
+  border: 1px solid var(--frog-border);
+  border-radius: 12px;
+  cursor: pointer;
+  transition: border-color 160ms ease, background 160ms ease;
+}
+
+.frog-check:hover {
+  border-color: color-mix(in srgb, var(--frog-gold) 45%, transparent);
+}
+
+.frog-check input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.frog-check__box {
+  display: grid;
+  width: 18px;
+  height: 18px;
+  place-items: center;
+  background: color-mix(in srgb, var(--frog-text) 8%, transparent);
+  border: 1.5px solid var(--frog-muted);
+  border-radius: 6px;
+  transition: background 160ms ease, border-color 160ms ease;
+}
+
+.frog-check__box::after {
+  width: 10px;
+  height: 10px;
+  content: '';
+  background: #172011;
+  clip-path: polygon(14% 44%, 0 65%, 40% 100%, 100% 16%, 84% 0, 38% 68%);
+  opacity: 0;
+  transition: opacity 140ms ease;
+}
+
+.frog-check input:checked + .frog-check__box {
+  background: linear-gradient(#d8ed8d, #9ec353);
+  border-color: #9ec353;
+}
+
+.frog-check input:checked + .frog-check__box::after {
+  opacity: 1;
+}
+
+.frog-check__label {
+  color: var(--frog-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.frog-check__hint {
+  grid-column: 2 / -1;
+  color: var(--frog-muted);
+  font-size: 11px;
+  line-height: 1.5;
+}
+
+.frog-check--unstable {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--frog-gold) 32%, transparent);
+}
+
+.frog-check--unstable .frog-check__hint {
+  color: var(--frog-gold-soft);
+}
+
+/* 验收模式开关 */
+.frog-switch {
+  display: inline-flex;
+  gap: 8px;
+  align-items: center;
+  cursor: pointer;
+  user-select: none;
+}
+
+.frog-switch input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.frog-switch__track {
+  position: relative;
+  width: 40px;
+  height: 22px;
+  background: color-mix(in srgb, var(--frog-text) 22%, transparent);
+  border-radius: 999px;
+  transition: background 180ms ease;
+}
+
+.frog-switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 180ms cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.frog-switch input:checked + .frog-switch__track {
+  background: linear-gradient(#d8ed8d, #9ec353);
+}
+
+.frog-switch input:checked + .frog-switch__track .frog-switch__thumb {
+  transform: translateX(18px);
+}
+
+.frog-switch__label {
+  color: var(--frog-text);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* 头部右侧：验收入口 + 计分板 */
+.frog-head__actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.frog-review-link {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 8px 14px;
+  color: var(--frog-gold);
+  font-size: 13px;
+  font-weight: 700;
+  text-decoration: none;
+  background: color-mix(in srgb, var(--frog-gold) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--frog-gold) 46%, transparent);
+  border-radius: 999px;
+  transition: filter 160ms ease, background 160ms ease;
+}
+
+.frog-review-link:hover {
+  filter: brightness(1.08);
+  background: color-mix(in srgb, var(--frog-gold) 20%, transparent);
+}
+
+.frog-review-link--ghost {
+  color: var(--frog-muted);
+  background: var(--frog-surface);
+  border-color: var(--frog-border);
+}
+
+.frog-review-link--ghost:hover {
+  color: var(--frog-text);
+  background: var(--frog-surface-strong);
+}
+
+/* 混淆类型 / 验收台控制台 */
+.frog-config__hint-inline {
+  color: var(--frog-muted);
+  font-size: 12px;
+}
+
+.frog-config__list--tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.frog-tab {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 7px 14px;
+  color: var(--frog-text);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  background: var(--frog-surface-strong);
+  border: 1px solid var(--frog-border);
+  border-radius: 999px;
+  transition: border-color 160ms ease, background 160ms ease, color 160ms ease;
+}
+
+.frog-tab:hover {
+  border-color: color-mix(in srgb, var(--frog-gold) 45%, transparent);
+}
+
+.frog-tab--active {
+  color: #172011;
+  background: linear-gradient(#d8ed8d, #9ec353);
+  border-color: #9ec353;
+}
+
+.frog-tab--unstable {
+  border-style: dashed;
+  border-color: color-mix(in srgb, var(--frog-gold) 34%, transparent);
+  color: var(--frog-gold-soft);
+}
+
+.frog-tab--unstable.frog-tab--active {
+  color: #172011;
+}
+
+.frog-review__actions {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+}
+
+.frog-btn--ghost {
+  color: var(--frog-text);
+  font-weight: 600;
+  background: var(--frog-surface-strong);
+  border: 1px solid var(--frog-border);
+}
+
+.frog-btn--ghost:hover {
+  border-color: color-mix(in srgb, var(--frog-gold) 45%, transparent);
+}
+
+/* 验收台：摘要 / 三张对照 */
+.frog-review__summary {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  justify-content: center;
+  margin: 22px 0 0;
+  color: var(--frog-muted);
+  font-size: 14px;
+}
+
+.frog-review__summary-label {
+  padding: 4px 12px;
+  color: var(--frog-gold);
+  font-weight: 700;
+  background: color-mix(in srgb, var(--frog-gold) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--frog-gold) 34%, transparent);
+  border-radius: 999px;
+}
+
+.frog-review__summary strong {
+  color: var(--frog-text);
+  font-size: 18px;
+}
+
+.frog-review__summary svg {
+  width: 18px;
+  fill: none;
+  stroke: var(--frog-muted);
+  stroke-width: 2.5;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.frog-review__grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(16px, 3vw, 32px);
+  align-items: start;
+  margin: 24px 0 0;
+}
+
+.frog-compare {
+  max-width: 300px;
+  margin: 0 auto;
+  width: 100%;
+}
+
+.frog-compare__head {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.frog-compare__head span {
+  display: grid;
+  width: 30px;
+  height: 30px;
+  place-items: center;
+  color: var(--frog-gold);
+  font-size: 12px;
+  font-weight: 800;
+  background: color-mix(in srgb, var(--frog-gold) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--frog-gold) 34%, transparent);
+  border-radius: 50%;
+}
+
+.frog-compare__head strong {
+  display: block;
+  font-size: 14px;
+}
+
+.frog-compare__head small {
+  color: var(--frog-muted);
+  font-size: 12px;
+}
+
+.frog-compare--result .frog-compare__head strong {
+  color: var(--frog-gold);
+}
+
+.frog-compare--result .frog-card__frame {
+  outline: 2px solid color-mix(in srgb, var(--frog-gold) 60%, transparent);
+  outline-offset: 3px;
+  border-radius: 10px;
+}
+
+.frog-review__warn {
+  max-width: 760px;
+  margin: 22px auto 0;
+  padding: 12px 16px;
+  color: var(--frog-gold-soft);
+  font-size: 13px;
+  line-height: 1.6;
+  background: color-mix(in srgb, var(--frog-gold) 8%, transparent);
+  border: 1px dashed color-mix(in srgb, var(--frog-gold) 40%, transparent);
+  border-radius: 14px;
+}
+
+.frog-review__empty {
+  margin: 24px 0 0;
+  color: var(--frog-muted);
+  font-size: 14px;
+  text-align: center;
+}
+
+.frog-link {
+  padding: 0;
+  color: var(--frog-gold);
+  font: inherit;
+  text-decoration: underline;
+  background: none;
+  border: 0;
+  cursor: pointer;
+}
+
+/* 验收台移动端：三张对照横向滑动 */
+@media (max-width: 760px) {
+  .frog-review__grid {
+    display: flex;
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .frog-review__grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .frog-compare {
+    flex: 0 0 min(72vw, 260px);
+    scroll-snap-align: center;
+  }
 }
 
 @media (max-width: 760px) {

@@ -7,3 +7,4 @@ export const loadHearthstoneAchievementsPage = () => loadWithStyles(() => import
 export const loadDeckCodeViewerPage = () => loadWithStyles(() => import('./pages/DeckCodeViewer.vue'))
 export const loadTavernPassXpPage = () => loadWithStyles(() => import('./pages/TavernPassCalculator.vue'))
 export const loadFrogSuspectCardPage = () => loadWithStyles(() => import('./pages/FrogSuspectCard.vue'))
+export const loadFrogReviewPage = () => loadWithStyles(() => import('./pages/FrogReviewPage.vue'))

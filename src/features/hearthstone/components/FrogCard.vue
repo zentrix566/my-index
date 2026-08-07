@@ -29,7 +29,7 @@
       />
 
       <span
-        v-if="patchClass && revealed"
+        v-if="patchClass && (revealed || showPatchGuide)"
         class="frog-guide"
         :class="`frog-guide--${mutation.type}`"
         aria-hidden="true"
@@ -60,7 +60,9 @@ const props = defineProps({
   isSelected: { type: Boolean, default: false },
   revealed: { type: Boolean, default: false },
   interactive: { type: Boolean, default: true },
-  showNumber: { type: Boolean, default: true }
+  showNumber: { type: Boolean, default: true },
+  // 显示补丁边界：在篡改处画红框，用于验收台对照实际替换范围
+  showPatchGuide: { type: Boolean, default: false }
 })
 
 const emit = defineEmits(['select'])

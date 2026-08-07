@@ -4,6 +4,7 @@ export { loadCrazyPeoplePage } from './crazy-people/index.js'
 export { loadDominoPage } from './domino/index.js'
 export {
   loadDeckCodeViewerPage,
+  loadFrogReviewPage,
   loadFrogSuspectCardPage,
   loadHearthstoneAchievementsPage,
   loadTavernPassXpPage
