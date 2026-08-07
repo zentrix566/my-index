@@ -1,5 +1,5 @@
 <template>
-  <div class="pc-charts-wrap">
+  <div ref="chartsWrapRef" class="pc-charts-wrap">
     <div class="pc-share-bar">
       <span class="pc-share-title">我的炉石传说成就数据</span>
       <button type="button" class="pc-share-btn" :disabled="!ready" @click="shareCharts">分享成就图</button>
@@ -71,9 +71,11 @@ import {
 } from '../features/hearthstone/utils/shareCanvas.js'
 import { useAchievementProgress } from '../features/hearthstone/composables/useAchievementProgress.js'
 import ShareChartsModal from '../features/hearthstone/components/ShareChartsModal.vue'
+import { useTheme } from '../composables/useTheme.js'
 
 const ach = useAchievementProgress()
 const { progress, loaded, init, reload, getStats } = ach
+const { theme } = useTheme()
 init()
 
 // 硬核模式：开启则统计全部版本，否则仅核心版本（与「成就查看器」一致）
@@ -103,8 +105,7 @@ const CLASS_ORDER = [
   '潜行者', '萨满祭司', '术士', '战士', '死亡骑士', '中立', '双职业'
 ]
 
-// 暗色主题统一配色
-const C = {
+const DARK_CHART_COLORS = {
   text: '#cbd5e1',
   sub: '#94a3b8',
   axis: '#475569',
@@ -114,9 +115,33 @@ const C = {
   blue: '#38bdf8',
   purple: '#a78bfa',
   pink: '#f472b6',
-  line: 'rgba(34,197,94,0.45)'
+  line: 'rgba(34,197,94,0.45)',
+  background: '#0f172a',
+  detail: '#e2e8f0',
+  tooltip: 'rgba(15,23,42,0.94)',
+  pieBorder: 'rgba(15,23,42,0.6)'
 }
 
+const LIGHT_CHART_COLORS = {
+  text: '#334155',
+  sub: '#64748b',
+  axis: '#94a3b8',
+  split: 'rgba(100,116,139,0.18)',
+  green: '#16a34a',
+  gold: '#b45309',
+  blue: '#0284c7',
+  purple: '#7c3aed',
+  pink: '#db2777',
+  line: 'rgba(22,163,74,0.4)',
+  background: '#ffffff',
+  detail: '#1e293b',
+  tooltip: 'rgba(255,255,255,0.97)',
+  pieBorder: 'rgba(255,255,255,0.9)'
+}
+
+const C = reactive({ ...(theme.value === 'dark' ? DARK_CHART_COLORS : LIGHT_CHART_COLORS) })
+
+const chartsWrapRef = ref(null)
 const gaugeRef = ref(null)
 const versionBarRef = ref(null)
 const classPieRef = ref(null)
@@ -126,6 +151,8 @@ const diffPieRef = ref(null)
 
 let echartsLib = null
 let charts = []
+let resizeObserver = null
+let resizeFrame = 0
 
 // echarts 按需引入：仅注册用到的图表与组件，显著减小打包体积
 async function ensureEcharts() {
@@ -228,7 +255,7 @@ function gaugeOption(pct) {
         valueAnimation: true,
         fontSize: 34,
         fontWeight: 800,
-        color: '#e2e8f0',
+        color: C.detail,
         offsetCenter: [0, '0%'],
         formatter: (v) => {
           const d = Number.isInteger(v) ? v : Math.round(v * 10) / 10
@@ -249,7 +276,7 @@ function versionBarOption(byVersion) {
     tooltip: {
       trigger: 'axis',
       axisPointer: { type: 'shadow' },
-      backgroundColor: 'rgba(15,23,42,0.92)',
+      backgroundColor: C.tooltip,
       borderColor: 'rgba(148,163,184,0.2)',
       textStyle: { color: C.text },
       formatter: (p) => {
@@ -293,7 +320,7 @@ function classPieOption(classData) {
     backgroundColor: 'transparent',
     tooltip: {
       trigger: 'item',
-      backgroundColor: 'rgba(15,23,42,0.92)',
+      backgroundColor: C.tooltip,
       borderColor: 'rgba(148,163,184,0.2)',
       textStyle: { color: C.text },
       formatter: '{b}<br/>已完成 {c} 个'
@@ -308,7 +335,7 @@ function classPieOption(classData) {
       radius: ['42%', '70%'],
       center: ['50%', '46%'],
       avoidLabelOverlap: true,
-      itemStyle: { borderColor: 'rgba(15,23,42,0.6)', borderWidth: 2 },
+      itemStyle: { borderColor: C.pieBorder, borderWidth: 2 },
       label: { color: C.text, fontSize: 11, formatter: '{b}\n{c}' },
       labelLine: { lineStyle: { color: C.axis } },
       data: classData
@@ -320,7 +347,7 @@ function radarOption(classKeys, earned, totals) {
   return {
     backgroundColor: 'transparent',
     tooltip: {
-      backgroundColor: 'rgba(15,23,42,0.92)',
+      backgroundColor: C.tooltip,
       borderColor: 'rgba(148,163,184,0.2)',
       textStyle: { color: C.text },
       formatter: (p) => {
@@ -374,7 +401,7 @@ function typeBarOption(typeAgg) {
     grid: { left: 8, right: 12, top: 28, bottom: 8, containLabel: true },
     tooltip: {
       trigger: 'axis', axisPointer: { type: 'shadow' },
-      backgroundColor: 'rgba(15,23,42,0.92)',
+      backgroundColor: C.tooltip,
       borderColor: 'rgba(148,163,184,0.2)',
       textStyle: { color: C.text }
     },
@@ -416,7 +443,7 @@ function diffPieOption(diffMap) {
     backgroundColor: 'transparent',
     tooltip: {
       trigger: 'item',
-      backgroundColor: 'rgba(15,23,42,0.92)',
+      backgroundColor: C.tooltip,
       borderColor: 'rgba(148,163,184,0.2)',
       textStyle: { color: C.text },
       formatter: (p) => {
@@ -429,7 +456,7 @@ function diffPieOption(diffMap) {
       type: 'pie',
       radius: ['42%', '70%'],
       center: ['50%', '46%'],
-      itemStyle: { borderColor: 'rgba(15,23,42,0.6)', borderWidth: 2 },
+      itemStyle: { borderColor: C.pieBorder, borderWidth: 2 },
       label: { color: C.text, fontSize: 11, formatter: '{b}\n{c}' },
       labelLine: { lineStyle: { color: C.axis } },
       data
@@ -450,10 +477,22 @@ const resizeHandler = () => {
   }
 }
 
+const scheduleResize = () => {
+  cancelAnimationFrame(resizeFrame)
+  resizeFrame = requestAnimationFrame(() => {
+    if (!chartsWrapRef.value?.offsetWidth) return
+    resizeHandler()
+  })
+}
+
 // 硬核模式切换时重算并重绘（数据源在 core/all 间切换）
 watch(() => props.hardcore, () => { if (ready.value) render() })
 // 进度接口返回后重绘（数字从「全 0」刷新为真实完成度）
 watch(loaded, () => { if (ready.value) render() })
+watch(theme, async (nextTheme) => {
+  Object.assign(C, nextTheme === 'dark' ? DARK_CHART_COLORS : LIGHT_CHART_COLORS)
+  if (ready.value) await render()
+})
 
 async function render() {
   if (!allAch.value.length) return
@@ -505,7 +544,7 @@ async function buildShareImage() {
   const urls = charts.map((c) => c.getDataURL({
     type: 'png',
     pixelRatio: SHARE_SOURCE_SCALE,
-    backgroundColor: '#0f172a'
+    backgroundColor: C.background
   }))
   const imgs = await Promise.all(urls.map(loadImage))
 
@@ -541,11 +580,11 @@ async function buildShareImage() {
 
   const canvas = document.createElement('canvas')
   const ctx = prepareShareCanvas(canvas, width, height)
-  ctx.fillStyle = '#0f172a'
+  ctx.fillStyle = C.background
   ctx.fillRect(0, 0, width, height)
 
   // 标题
-  ctx.fillStyle = '#e2e8f0'
+  ctx.fillStyle = C.detail
   ctx.font = '700 24px system-ui, "PingFang SC", "Microsoft YaHei", sans-serif'
   ctx.textBaseline = 'middle'
   ctx.fillText('我的炉石传说成就数据', pad, pad + titleH / 2)
@@ -569,7 +608,7 @@ async function buildShareImage() {
     cells.forEach((cell, j) => {
       const x = pad + j * (colW + gap)
       ctx.drawImage(cell.img, x, y, colW, cell.h)
-      ctx.fillStyle = '#94a3b8'
+      ctx.fillStyle = C.sub
       ctx.font = '600 14px system-ui, "PingFang SC", "Microsoft YaHei", sans-serif'
       ctx.fillText(chartTitles[i + 1 + j], x, y + cell.h + labelH / 2)
     })
@@ -591,6 +630,10 @@ async function shareCharts() {
 
 onMounted(async () => {
   window.addEventListener('resize', resizeHandler)
+  if (typeof ResizeObserver !== 'undefined') {
+    resizeObserver = new ResizeObserver(scheduleResize)
+    if (chartsWrapRef.value) resizeObserver.observe(chartsWrapRef.value)
+  }
   await nextTick()
   // 静态数据已就绪，先出图（进度为空时数字计 0）
   try { await render() } catch (e) { console.error('[charts] 渲染失败:', e) }
@@ -600,12 +643,28 @@ onMounted(async () => {
 
 onBeforeUnmount(() => {
   window.removeEventListener('resize', resizeHandler)
+  resizeObserver?.disconnect()
+  cancelAnimationFrame(resizeFrame)
   disposeAll()
 })
 </script>
 
 <style scoped>
-.pc-charts-wrap { display: block; }
+.pc-charts-wrap {
+  --chart-card: rgba(255, 255, 255, 0.78);
+  --chart-border: rgba(100, 116, 139, 0.18);
+  --chart-heading: #1e293b;
+  --chart-muted: #64748b;
+  --chart-shadow: 0 18px 48px rgba(15, 23, 42, 0.1);
+  display: block;
+}
+:global(html[data-theme='dark'] .pc-charts-wrap) {
+  --chart-card: rgba(255, 255, 255, 0.03);
+  --chart-border: rgba(148, 163, 184, 0.14);
+  --chart-heading: #e2e8f0;
+  --chart-muted: #94a3b8;
+  --chart-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+}
 .pc-share-bar {
   display: flex;
   align-items: center;
@@ -616,7 +675,7 @@ onBeforeUnmount(() => {
 .pc-share-title {
   font-size: 16px;
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--chart-heading);
 }
 .pc-share-btn {
   padding: 8px 16px;
@@ -635,7 +694,7 @@ onBeforeUnmount(() => {
   margin: 6px 0 0;
   font-size: 11.5px;
   line-height: 1.5;
-  color: #94a3b8;
+  color: var(--chart-muted);
 }
 .pc-charts { display: block; }
 .pc-charts-loading {
@@ -663,10 +722,10 @@ onBeforeUnmount(() => {
 }
 .pc-chart-card {
   padding: 18px 18px 14px;
-  border: 1px solid rgba(148, 163, 184, 0.14);
+  border: 1px solid var(--chart-border);
   border-radius: 18px;
-  background: rgba(255, 255, 255, 0.03);
-  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.28);
+  background: var(--chart-card);
+  box-shadow: var(--chart-shadow);
   backdrop-filter: blur(10px);
 }
 .pc-chart-gauge { grid-column: 1 / -1; }
@@ -675,9 +734,9 @@ onBeforeUnmount(() => {
   margin: 0;
   font-size: 15px;
   font-weight: 700;
-  color: #e2e8f0;
+  color: var(--chart-heading);
 }
-.pc-chart-cap { margin: 4px 0 0; font-size: 12px; color: #94a3b8; }
+.pc-chart-cap { margin: 4px 0 0; font-size: 12px; color: var(--chart-muted); }
 .pc-chart-cap strong { color: #22c55e; font-weight: 700; }
 .pc-chart { width: 100%; height: 300px; }
 .pc-chart-gauge-el { height: 240px; }

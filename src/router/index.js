@@ -67,10 +67,10 @@ const routes = [
   { path: '/willpower/data', name: 'willpower-data', component: loadWillpowerData, meta: { title: '数据看板 | 抵御心魔' } },
   { path: '/willpower/ai', name: 'willpower-ai', component: loadWillpowerAiAnalysis, meta: { title: 'AI 分析 | 抵御心魔' } },
   { path: '/willpower/changelog', redirect: '/changelog?category=willpower' },
-  { path: '/willpower/profile', name: 'willpower-profile', component: loadWillpowerProfile, meta: { title: '个人中心 | 抵御心魔' } },
+  { path: '/willpower/profile', name: 'willpower-profile', component: loadWillpowerProfile, meta: { title: '心魔档案 | 抵御心魔' } },
   // 心魔独立认证已并入主站，/login 等统一走主站账号体系
-  { path: '/willpower/login', redirect: '/login' },
-  { path: '/willpower/register', redirect: '/login' },
+  { path: '/willpower/login', redirect: '/login?redirect=/willpower&source=willpower' },
+  { path: '/willpower/register', redirect: '/login?redirect=/willpower&source=willpower' },
   { path: '/willpower/forgot-password', redirect: '/forgot-password' },
   { path: '/willpower/reset-password', redirect: '/reset-password' },
   { path: '/about', name: 'about', component: About },
@@ -79,15 +79,18 @@ const routes = [
   { path: '/forgot-password', name: 'forgot-password', component: ForgotPassword },
   { path: '/reset-password', name: 'reset-password', component: ResetPassword },
   { path: '/verify-email', name: 'verify-email', component: VerifyEmail },
-  { path: '/settings', name: 'settings', component: Settings, meta: { requiresAuth: true } },
-  // 所有者专属后台：页面内校验 isOwner，非所有者会被送回个人中心
+  { path: '/settings', name: 'settings', component: Settings, meta: { requiresAuth: true, title: '账号中心 | Zentrix' } },
+  // 所有者专属后台：页面内校验 isOwner，非所有者会被送回账号中心
   { path: '/admin', name: 'admin', component: Admin, meta: { requiresAuth: true, title: '站点后台 | Zentrix' } }
 ]
 
 const router = createRouter({
   history: createWebHistory(),
   routes,
-  scrollBehavior() {
+  scrollBehavior(to) {
+    if (to.hash) {
+      return { el: to.hash, top: 88, behavior: 'smooth' }
+    }
     return { top: 0 }
   }
 })

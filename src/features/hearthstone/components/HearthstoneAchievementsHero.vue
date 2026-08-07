@@ -14,7 +14,7 @@
     <div class="hs-hero-side">
       <div class="hs-intro-actions">
         <template v-if="user">
-          <button type="button" class="hs-btn hs-btn-ghost" @click="$emit('navigate', '/settings')">个人中心</button>
+          <button type="button" class="hs-btn hs-btn-ghost" @click="$emit('navigate', '/settings?section=hearthstone')">炉石档案</button>
           <span class="hs-user-badge">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <path d="M20 21a8 8 0 0 0-16 0"/><circle cx="12" cy="7" r="4"/>
@@ -23,7 +23,12 @@
           </span>
           <button type="button" class="hs-btn hs-btn-ghost" @click="$emit('logout')">退出登录</button>
         </template>
-        <button v-else type="button" class="hs-btn hs-btn-primary" @click="$emit('navigate', '/login')">
+        <button
+          v-else
+          type="button"
+          class="hs-btn hs-btn-primary"
+          @click="$emit('navigate', { path: '/login', query: { redirect: '/hearthstone', source: 'hearthstone' } })"
+        >
           登录或注册
           <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M5 12h14"/><path d="m13 6 6 6-6 6"/>

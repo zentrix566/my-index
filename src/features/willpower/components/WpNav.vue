@@ -1,10 +1,10 @@
 <template>
   <div class="wp-nav-wrap">
-    <!-- 账号状态栏：品牌 + 个人中心 / 更新日志 / 同步状态 / 退出登录 同一行 -->
+    <!-- 项目状态栏：项目档案 / 更新日志 / 同步状态 / 账号快捷入口同一行 -->
     <div class="wp-account-bar">
       <RouterLink to="/willpower" class="wp-brand">抵御心魔</RouterLink>
       <div class="wp-account-actions">
-        <RouterLink to="/willpower/profile" class="wp-account-link">个人中心</RouterLink>
+        <RouterLink to="/willpower/profile" class="wp-account-link">心魔档案</RouterLink>
         <RouterLink to="/changelog?category=willpower" class="wp-account-link">更新日志</RouterLink>
         <!-- 同步状态指示器 -->
         <span
@@ -17,7 +17,11 @@
           <span class="wp-account-user">{{ username }}</span>
           <button class="wp-account-link wp-logout" type="button" @click="logout">退出登录</button>
         </template>
-        <RouterLink v-else to="/login" class="wp-account-link">登录</RouterLink>
+        <RouterLink
+          v-else
+          :to="{ path: '/login', query: { redirect: '/willpower', source: 'willpower' } }"
+          class="wp-account-link"
+        >登录 / 注册</RouterLink>
       </div>
     </div>
 

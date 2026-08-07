@@ -1,34 +1,7 @@
-import { ref, watch } from 'vue'
+import { useTheme } from '../../../composables/useTheme.js'
 
-const THEME_STORAGE_KEY = 'hs-theme'
-const sharedTheme = ref(readStoredTheme())
-let watcherStarted = false
-
-function readStoredTheme() {
-  try {
-    return localStorage.getItem(THEME_STORAGE_KEY) === 'dark' ? 'dark' : 'light'
-  } catch {
-    return 'light'
-  }
-}
-
-function startPersistence() {
-  if (watcherStarted) return
-  watcherStarted = true
-  watch(sharedTheme, (theme) => {
-    try {
-      localStorage.setItem(THEME_STORAGE_KEY, theme)
-    } catch {
-      // 隐私模式禁用本地存储时仍允许当前页面切换主题。
-    }
-  })
-}
-
-/** 返回跨炉石页面共享并持久化的主题状态。 */
+/** 兼容炉石页面原有接口，主题状态统一交由全站主题管理。 */
 export function useHearthstoneTheme() {
-  startPersistence()
-  const toggleTheme = () => {
-    sharedTheme.value = sharedTheme.value === 'dark' ? 'light' : 'dark'
-  }
-  return { hsTheme: sharedTheme, toggleTheme }
+  const { theme, toggleTheme } = useTheme()
+  return { hsTheme: theme, toggleTheme }
 }

@@ -1,11 +1,11 @@
 <template>
   <div class="auth-page">
     <div class="auth-card">
-      <RouterLink class="auth-back" to="/hearthstone">
+      <RouterLink class="auth-back" :to="backTarget">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="m15 18-6-6 6-6"/>
         </svg>
-        返回成就查看器
+        {{ backLabel }}
       </RouterLink>
 
       <div class="auth-mark" aria-hidden="true">
@@ -13,9 +13,9 @@
           <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
         </svg>
       </div>
-      <p class="auth-eyebrow">Hearthstone Tracker</p>
+      <p class="auth-eyebrow">{{ loginContext.eyebrow }}</p>
       <h1 class="auth-title">{{ mode === 'login' ? '欢迎回来' : '创建进度档案' }}</h1>
-      <p class="auth-sub">{{ mode === 'login' ? '登录后继续记录你的炉石成就进度。' : '注册后即可跨设备保存和同步成就进度。' }}</p>
+      <p class="auth-sub">{{ mode === 'login' ? loginContext.loginText : loginContext.registerText }}</p>
 
       <form class="auth-form" @submit.prevent="submit">
         <label class="auth-field">
@@ -76,7 +76,7 @@
         </label>
 
         <label v-if="mode === 'register'" class="auth-field">
-          <span>邮箱（注册后请在「个人中心」激活账号）</span>
+          <span>邮箱（注册后请在「账号中心」激活账号）</span>
           <span class="auth-input-shell">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
               <rect width="20" height="16" x="2" y="4" rx="2"/><path d="m22 7-8.97 5.485a2 2 0 0 1-2.06 0L2 7"/>
@@ -111,12 +111,51 @@
 </template>
 
 <script setup>
-import { ref } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, ref } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '../auth/useAuth.js'
 
 const { user, login, register } = useAuth()
+const route = useRoute()
 const router = useRouter()
+
+const safeRedirect = computed(() => {
+  const target = Array.isArray(route.query.redirect) ? route.query.redirect[0] : route.query.redirect
+  return typeof target === 'string' && target.startsWith('/') && !target.startsWith('//')
+    ? target
+    : '/projects'
+})
+const source = computed(() => {
+  if (route.query.source === 'hearthstone' || safeRedirect.value.startsWith('/hearthstone')) return 'hearthstone'
+  if (route.query.source === 'willpower' || safeRedirect.value.startsWith('/willpower')) return 'willpower'
+  return 'site'
+})
+const loginContexts = {
+  hearthstone: {
+    eyebrow: 'Hearthstone Tracker',
+    loginText: '登录后继续记录你的炉石成就进度。',
+    registerText: '注册后即可跨设备保存和同步炉石成就进度。',
+    backLabel: '返回成就查看器',
+    backTarget: '/hearthstone'
+  },
+  willpower: {
+    eyebrow: 'Willpower Tracker',
+    loginText: '登录后继续记录心魔与正能量数据。',
+    registerText: '注册后即可跨设备保存和同步心魔记录。',
+    backLabel: '返回抵御心魔',
+    backTarget: '/willpower'
+  },
+  site: {
+    eyebrow: 'Zentrix Account',
+    loginText: '登录后同步各项目的个人数据与使用进度。',
+    registerText: '注册一个账号，即可在所有项目中保存和同步数据。',
+    backLabel: '返回项目索引',
+    backTarget: '/projects'
+  }
+}
+const loginContext = computed(() => loginContexts[source.value])
+const backLabel = computed(() => loginContext.value.backLabel)
+const backTarget = computed(() => loginContext.value.backTarget)
 
 const mode = ref('login')
 const username = ref('')
@@ -145,8 +184,8 @@ async function submit() {
     } else {
       await register(username.value, password.value, email.value)
     }
-    // 未激活邮箱的新用户，登录后先去个人中心设置邮箱激活账号
-    const target = user.value && !user.value.emailVerified ? '/settings' : '/hearthstone'
+    // 未激活邮箱的新用户先去账号中心完善邮箱，其他用户返回登录前的页面。
+    const target = user.value && !user.value.emailVerified ? '/settings' : safeRedirect.value
     router.push(target)
   } catch (e) {
     error.value = e.message || '操作失败'

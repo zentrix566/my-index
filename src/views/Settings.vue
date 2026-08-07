@@ -1,16 +1,16 @@
 <template>
   <div class="pc-page">
     <div class="pc-shell">
-      <RouterLink class="pc-back" to="/hearthstone">
+      <RouterLink class="pc-back" to="/projects">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <path d="m15 18-6-6 6-6"/>
         </svg>
-        返回成就查看器
+        返回项目索引
       </RouterLink>
 
       <header class="pc-head">
         <div>
-          <p class="pc-eyebrow">个人中心</p>
+          <p class="pc-eyebrow">账号中心</p>
           <h1 class="pc-title">{{ user?.username || '账号' }}</h1>
         </div>
         <div class="pc-head-actions">
@@ -27,36 +27,18 @@
         </div>
       </header>
 
-      <nav class="pc-tabs" role="tablist" aria-label="个人中心内容">
+      <nav class="pc-tabs" role="tablist" aria-label="账号中心内容">
         <button
-          id="achievements-tab"
+          id="projects-tab"
           class="pc-tab"
-          :class="{ active: activeSection === 'achievements' }"
+          :class="{ active: activeSection === 'projects' || activeSection === 'hearthstone' }"
           type="button"
           role="tab"
-          :aria-selected="activeSection === 'achievements'"
-          aria-controls="achievements-panel"
-          @click="activeSection = 'achievements'"
+          :aria-selected="activeSection === 'projects' || activeSection === 'hearthstone'"
+          aria-controls="projects-panel"
+          @click="activeSection = 'projects'"
         >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M8 21h8"/><path d="M12 17v4"/><path d="M7 4h10"/><path d="M17 4v8a5 5 0 0 1-10 0V4"/><path d="M5 6H3v2a4 4 0 0 0 4 4"/><path d="M19 6h2v2a4 4 0 0 1-4 4"/>
-          </svg>
-          成就概览
-        </button>
-        <button
-          id="preferences-tab"
-          class="pc-tab"
-          :class="{ active: activeSection === 'preferences' }"
-          type="button"
-          role="tab"
-          :aria-selected="activeSection === 'preferences'"
-          aria-controls="preferences-panel"
-          @click="activeSection = 'preferences'"
-        >
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-            <path d="M4 21v-7"/><path d="M4 10V3"/><path d="M12 21v-9"/><path d="M12 8V3"/><path d="M20 21v-5"/><path d="M20 12V3"/><path d="M1 14h6"/><path d="M9 8h6"/><path d="M17 16h6"/>
-          </svg>
-          偏好与数据
+          我的项目
         </button>
         <button
           id="security-tab"
@@ -77,10 +59,41 @@
       </nav>
 
       <div
-        v-show="activeSection === 'achievements'"
+        v-show="activeSection === 'projects'"
+        id="projects-panel"
+        role="tabpanel"
+        aria-labelledby="projects-tab"
+      >
+        <section class="pc-card">
+          <div class="pc-card-head">
+            <div>
+              <h2 class="pc-card-title">我的项目</h2>
+              <p class="pc-hint">账号信息全站共用；每个项目只管理自己的记录和偏好。</p>
+            </div>
+          </div>
+          <div class="pc-project-grid">
+            <article v-for="project in accountProjects" :key="project.key" class="pc-project-item">
+              <div>
+                <span class="pc-project-kicker">{{ project.eyebrow }}</span>
+                <h3>{{ project.title }}</h3>
+                <p>{{ project.description }}</p>
+              </div>
+              <RouterLink class="pc-manage-btn" :to="project.to">进入{{ project.title }}</RouterLink>
+            </article>
+          </div>
+        </section>
+      </div>
+
+      <nav v-show="activeSection === 'hearthstone'" class="pc-tabs pc-project-tabs" aria-label="炉石档案内容">
+        <button id="hearthstone-overview-tab" class="pc-tab" :class="{ active: hearthstoneSection === 'overview' }" type="button" @click="hearthstoneSection = 'overview'">成就概览</button>
+        <button id="hearthstone-preferences-tab" class="pc-tab" :class="{ active: hearthstoneSection === 'preferences' }" type="button" @click="hearthstoneSection = 'preferences'">偏好与数据</button>
+      </nav>
+
+      <div
+        v-if="activeSection === 'hearthstone' && hearthstoneSection === 'overview'"
         id="achievements-panel"
         role="tabpanel"
-        aria-labelledby="achievements-tab"
+        aria-labelledby="hearthstone-overview-tab"
       >
         <section class="pc-card pc-card-charts">
           <div class="pc-card-head">
@@ -146,10 +159,10 @@
       </div>
 
       <div
-        v-show="activeSection === 'preferences'"
+        v-show="activeSection === 'hearthstone' && hearthstoneSection === 'preferences'"
         id="preferences-panel"
         role="tabpanel"
-        aria-labelledby="preferences-tab"
+        aria-labelledby="hearthstone-preferences-tab"
       >
         <section class="pc-card">
           <div class="pc-card-head">
@@ -193,7 +206,7 @@
           <div class="pc-card-head">
             <div>
               <h2 class="pc-card-title">成就数据导出与备份</h2>
-              <p class="pc-hint">Excel 和 JSON 使用相同的成就明细；个人中心 JSON 还会备份进度、置顶成就和显示偏好。</p>
+              <p class="pc-hint">Excel 和 JSON 使用相同的成就明细；账号中心 JSON 还会备份进度、置顶成就和显示偏好。</p>
             </div>
           </div>
           <div class="pc-backup-actions">
@@ -210,7 +223,7 @@
               @change="importProfileJson"
             />
           </div>
-          <p class="pc-hint pc-backup-note">个人中心导出的经验值不含临时通行证加成；如需带加成导出，可在成就页选择加成后导出。</p>
+          <p class="pc-hint pc-backup-note">账号中心导出的经验值不含临时通行证加成；如需带加成导出，可在成就页选择加成后导出。</p>
           <p v-if="backupMsg" class="pc-feedback" :class="{ error: !backupOk }" aria-live="polite">{{ backupMsg }}</p>
         </section>
       </div>
@@ -221,6 +234,24 @@
         role="tabpanel"
         aria-labelledby="security-tab"
       >
+        <section class="pc-card pc-profile-card">
+          <div class="pc-card-head">
+            <div>
+              <h2 class="pc-card-title">公开昵称</h2>
+              <p class="pc-hint">昵称会用于心魔等项目的账号展示，登录用户名不会改变。</p>
+            </div>
+          </div>
+          <form class="pc-form" @submit.prevent="saveDisplayNameValue">
+            <span class="pc-input-shell">
+              <input v-model.trim="displayName" class="pc-input" type="text" maxlength="20" placeholder="留空则显示登录用户名" />
+            </span>
+            <button class="pc-btn" type="submit" :disabled="displayNameLoading">
+              {{ displayNameLoading ? '保存中…' : '保存昵称' }}
+            </button>
+          </form>
+          <p v-if="displayNameMsg" class="pc-feedback" :class="{ error: !displayNameOk }" aria-live="polite">{{ displayNameMsg }}</p>
+        </section>
+
         <section class="pc-card pc-security">
           <div class="pc-security-head">
             <div>
@@ -373,8 +404,8 @@
 </template>
 
 <script setup>
-import { computed, reactive, ref, onMounted } from 'vue'
-import { useRouter } from 'vue-router'
+import { computed, reactive, ref, onMounted, watch } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '../auth/useAuth.js'
 import { expansions, originalExpansions } from '../features/hearthstone/data/expansions.js'
 import { saveAchievementProgress } from '../features/hearthstone/api/progress.js'
@@ -387,7 +418,8 @@ import {
 } from '../features/hearthstone/utils/achievementExport.js'
 import ProfileCharts from './ProfileCharts.vue'
 
-const { user, init, setEmail, changePassword, setPassword, logout } = useAuth()
+const { user, init, setEmail, changePassword, setPassword, setDisplayName, logout } = useAuth()
+const route = useRoute()
 const router = useRouter()
 const {
   progress,
@@ -425,8 +457,34 @@ const pwOk = ref(false)
 const showC = ref(false)
 const showN = ref(false)
 const showN2 = ref(false)
-const activeSection = ref('achievements')
+const legacyHearthstoneSections = new Set(['achievements', 'preferences'])
+const validSections = new Set(['projects', 'hearthstone', 'security'])
+const initialSection = legacyHearthstoneSections.has(route.query.section)
+  ? 'hearthstone'
+  : route.query.section
+const activeSection = ref(validSections.has(initialSection) ? initialSection : 'projects')
+const hearthstoneSection = ref(route.query.section === 'preferences' ? 'preferences' : 'overview')
+const accountProjects = [
+  {
+    key: 'hearthstone',
+    eyebrow: 'Hearthstone',
+    title: '炉石档案',
+    description: '查看成就概览、显示偏好以及炉石数据备份。',
+    to: { path: '/settings', query: { section: 'hearthstone' } }
+  },
+  {
+    key: 'willpower',
+    eyebrow: 'Willpower',
+    title: '心魔档案',
+    description: '管理心魔与正能量类型，查看项目数据。',
+    to: '/willpower/profile'
+  }
+]
 const accountPanel = ref(null)
+const displayName = ref(user.value?.displayName || '')
+const displayNameLoading = ref(false)
+const displayNameMsg = ref('')
+const displayNameOk = ref(true)
 const preferenceDraft = reactive({
   hardcore: false,
   defaultExpansionId: '',
@@ -488,11 +546,39 @@ onMounted(async () => {
     router.replace('/login')
     return
   }
+  displayName.value = user.value.displayName || ''
   email.value = user.value.email || ''
   await Promise.allSettled([reloadProgress(), loadProfile({ force: true })])
   Object.assign(preferenceDraft, profile.value.preferences)
   hardcore.value = profile.value.preferences.hardcore === true
 })
+
+watch(
+  () => route.query.section,
+  (section) => {
+    if (legacyHearthstoneSections.has(section)) {
+      activeSection.value = 'hearthstone'
+      hearthstoneSection.value = section === 'preferences' ? 'preferences' : 'overview'
+    } else if (validSections.has(section)) {
+      activeSection.value = section
+    }
+  }
+)
+
+async function saveDisplayNameValue() {
+  displayNameMsg.value = ''
+  displayNameLoading.value = true
+  try {
+    await setDisplayName(displayName.value)
+    displayNameOk.value = true
+    displayNameMsg.value = '昵称已保存'
+  } catch (error) {
+    displayNameOk.value = false
+    displayNameMsg.value = error.message || '昵称保存失败'
+  } finally {
+    displayNameLoading.value = false
+  }
+}
 
 function formatActivityTime(value) {
   const date = new Date(value)
@@ -531,7 +617,7 @@ async function savePreferences() {
 function getProfileBackup() {
   return buildExportBackup(allAchievements.value, 0, {
     user: user.value?.username || '',
-    scope: '个人中心完整备份',
+    scope: '账号中心完整备份',
     progress: progress.value || {},
     profile: profile.value
   })
@@ -702,6 +788,46 @@ async function doLogout() {
   line-height: 1.15;
   color: #f8fafc;
 }
+.pc-project-grid {
+  display: grid;
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+.pc-project-item {
+  align-items: flex-start;
+  background: rgba(15, 23, 42, 0.48);
+  border: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  justify-content: space-between;
+  min-height: 190px;
+  padding: 20px;
+}
+.pc-project-item h3 {
+  color: #f8fafc;
+  font-size: 20px;
+  margin: 4px 0 7px;
+}
+.pc-project-item p {
+  color: #94a3b8;
+  font-size: 14px;
+  line-height: 1.65;
+  margin: 0;
+}
+.pc-project-item .pc-manage-btn {
+  align-self: flex-start;
+  text-decoration: none;
+}
+.pc-project-kicker {
+  color: #22c55e;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.pc-profile-card { margin-bottom: 16px; }
 .pc-head-actions {
   display: inline-flex;
   align-items: center;
@@ -740,7 +866,7 @@ async function doLogout() {
 
 .pc-tabs {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 6px;
   margin-bottom: 18px;
   padding: 5px;
@@ -748,6 +874,11 @@ async function doLogout() {
   border-radius: 14px;
   background: rgba(15, 23, 42, 0.72);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.2);
+}
+.pc-project-tabs {
+  margin-left: auto;
+  margin-right: auto;
+  max-width: 520px;
 }
 .pc-tab {
   display: inline-flex;
@@ -1164,6 +1295,7 @@ async function doLogout() {
   outline: 3px solid rgba(34, 197, 94, 0.5);
   outline-offset: 3px;
 }
+
 @media (max-width: 600px) {
   .pc-page { padding: 24px 14px; }
   .pc-card { padding: 18px 16px; }
@@ -1178,6 +1310,7 @@ async function doLogout() {
   }
   .pc-tab svg { display: none; }
   .pc-tab-badge { display: none; }
+  .pc-project-grid { grid-template-columns: 1fr; }
   .pc-activity-grid { grid-template-columns: 1fr; gap: 0; }
   .pc-card-head { flex-direction: column; }
   .pc-security-head { padding: 18px 16px 12px; }

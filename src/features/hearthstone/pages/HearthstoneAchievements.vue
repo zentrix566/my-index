@@ -162,7 +162,11 @@
             <circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>
           </svg>
           <span>当前展示的是<strong>全部成就</strong>（未记录进度）。</span>
-          <button type="button" class="hs-link" @click="router.push('/login')">登录 / 注册</button>
+          <button
+            type="button"
+            class="hs-link"
+            @click="router.push({ path: '/login', query: { redirect: '/hearthstone?view=my', source: 'hearthstone' } })"
+          >登录 / 注册</button>
           <span>后即可记录并保存你自己的完成进度。</span>
         </div>
         <div class="hs-my-controls">

@@ -5,15 +5,15 @@
 
       <header class="wp-pc-head">
         <div>
-          <p class="wp-pc-eyebrow">个人中心</p>
+          <p class="wp-pc-eyebrow">心魔档案</p>
           <h1 class="wp-pc-title">{{ displayName || username }}</h1>
         </div>
       </header>
 
-      <nav class="wp-pc-tabs" role="tablist" aria-label="个人中心内容">
+      <nav class="wp-pc-tabs" role="tablist" aria-label="心魔档案内容">
         <button class="wp-pc-tab" :class="{ active: tab === 'demons' }" type="button" role="tab" :aria-selected="tab === 'demons'" @click="tab = 'demons'">心魔配置</button>
         <button class="wp-pc-tab" :class="{ active: tab === 'config' }" type="button" role="tab" :aria-selected="tab === 'config'" @click="tab = 'config'">正能量配置</button>
-        <button class="wp-pc-tab" :class="{ active: tab === 'account' }" type="button" role="tab" :aria-selected="tab === 'account'" @click="tab = 'account'">账号设置</button>
+        <RouterLink class="wp-pc-tab" to="/settings?section=security">账号设置</RouterLink>
       </nav>
 
       <p v-if="loadError" class="wp-error">{{ loadError }}</p>
@@ -24,8 +24,6 @@
           <RouterLink class="wp-btn ghost small" to="/willpower/data">查看数据看板 →</RouterLink>
         </div>
       </div>
-
-      <p v-if="loadError" class="wp-error">{{ loadError }}</p>
 
       <!-- ===== 心魔配置 ===== -->
       <div v-show="tab === 'demons'">
@@ -144,42 +142,6 @@
         </div>
       </div>
 
-      <!-- ===== 账号设置 ===== -->
-      <div v-show="tab === 'account'">
-        <div class="wp-card">
-          <div class="wp-card-head"><div><h2>账号设置</h2><p>昵称、邮箱与登录密码。</p></div></div>
-          <div class="wp-form-row">
-            <div class="wp-field">
-              <label for="pf-name">昵称</label>
-              <input id="pf-name" v-model="displayName" type="text" maxlength="20" placeholder="给自己起个名字" />
-            </div>
-            <div class="wp-field">
-              <label for="pf-email">邮箱（用于找回密码）</label>
-              <input id="pf-email" v-model="email" type="email" placeholder="留空则解绑" />
-            </div>
-          </div>
-          <div class="wp-actions">
-            <button class="wp-btn primary" type="button" :disabled="profileBusy" @click="saveProfile">保存资料</button>
-          </div>
-
-          <p class="wp-section-title" style="margin-top: 18px">修改密码</p>
-          <div class="wp-form-row">
-            <div class="wp-field">
-              <label for="pf-cur">当前密码</label>
-              <input id="pf-cur" v-model="pw.current" type="password" autocomplete="current-password" />
-            </div>
-            <div class="wp-field">
-              <label for="pf-new">新密码</label>
-              <input id="pf-new" v-model="pw.next" type="password" autocomplete="new-password" placeholder="6-128 位" />
-            </div>
-          </div>
-          <div class="wp-actions">
-            <button class="wp-btn ghost" type="button" :disabled="profileBusy" @click="changePw">修改密码</button>
-          </div>
-          <p v-if="profileMsg" class="wp-ok" style="margin-top: 12px">{{ profileMsg }}</p>
-          <p v-if="profileErr" class="wp-error" style="margin-top: 12px">{{ profileErr }}</p>
-        </div>
-      </div>
     </div>
 
     <WpToastHost />
@@ -196,20 +158,13 @@ import WpNav from '../components/WpNav.vue'
 import WpToastHost from '../components/WpToastHost.vue'
 
 const router = useRouter()
-const { user, init, setDisplayName, setEmail, changePassword } = useAuth()
+const { user, init } = useAuth()
 const { push: toast } = useToast()
 
 const tab = ref('demons')
 
 const username = ref('')
 const displayName = ref('')
-const email = ref('')
-const profileBusy = ref(false)
-const profileMsg = ref('')
-const profileErr = ref('')
-
-const pw = reactive({ current: '', next: '' })
-
 const myDemons = ref([])
 const myActivities = ref([])
 const loadError = ref('')
@@ -231,41 +186,6 @@ async function loadAll() {
   ])
   myDemons.value = dm.demons || []
   myActivities.value = act.activities || []
-}
-
-async function saveProfile() {
-  profileMsg.value = ''
-  profileErr.value = ''
-  profileBusy.value = true
-  try {
-    await setDisplayName(displayName.value.trim())
-    await setEmail(email.value.trim())
-    profileMsg.value = '资料已保存'
-  } catch (err) {
-    profileErr.value = err.message || '保存失败'
-  } finally {
-    profileBusy.value = false
-  }
-}
-
-async function changePw() {
-  profileMsg.value = ''
-  profileErr.value = ''
-  if (!pw.current || !pw.next) {
-    profileErr.value = '请填写当前密码与新密码'
-    return
-  }
-  profileBusy.value = true
-  try {
-    await changePassword(pw.current, pw.next)
-    profileMsg.value = '密码已修改'
-    pw.current = ''
-    pw.next = ''
-  } catch (err) {
-    profileErr.value = err.message || '修改失败'
-  } finally {
-    profileBusy.value = false
-  }
 }
 
 async function toggleArchive(d) {
@@ -377,7 +297,6 @@ onMounted(async () => {
   }
   username.value = user.value.username
   displayName.value = user.value.displayName || ''
-  email.value = user.value.email || ''
   try {
     await loadAll()
   } catch (err) {

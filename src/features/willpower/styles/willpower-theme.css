@@ -59,7 +59,7 @@
   text-transform: uppercase;
 }
 
-/* 子导航：首页 / 成就 / 个人中心 */
+/* 子导航：首页 / 成就 / 心魔档案 */
 .wp-nav {
   display: flex;
   flex-wrap: wrap;
@@ -88,7 +88,7 @@
   color: var(--wp-dark);
 }
 
-/* 账号状态栏：品牌 + 个人中心 / 更新日志 / 退出登录 同一行 */
+/* 账号状态栏：品牌 + 心魔档案 / 更新日志 / 退出登录同一行 */
 .wp-nav-wrap {
   margin-bottom: 22px;
 }
@@ -1343,7 +1343,7 @@
   color: var(--wp-dark);
 }
 
-/* ===== 个人中心（仿炉石 Settings：左上角标题 + tab 分区） ===== */
+/* ===== 心魔档案：项目配置按 tab 分区 ===== */
 .wp-pc-head {
   display: flex;
   align-items: center;

@@ -36,7 +36,7 @@
             <span class="wp-demon-emoji">{{ d.emoji }}</span>
             <span class="wp-demon-name">{{ d.name }}</span>
           </button>
-          <p v-if="!activeDemons.length" class="wp-empty">还没有可选的心魔，去个人中心添加。</p>
+          <p v-if="!activeDemons.length" class="wp-empty">还没有可选的心魔，去心魔档案添加。</p>
         </div>
 
         <div class="wp-form-row">
