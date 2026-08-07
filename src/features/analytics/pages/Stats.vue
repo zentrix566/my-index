@@ -1,9 +1,26 @@
 <template>
   <section class="section page-section">
     <div class="container narrow-container">
-      <p class="eyebrow">Analytics</p>
-      <h1>访问统计</h1>
-      <p class="section-desc">本页面展示站点实时访问数据，包括访问量、独立访客、热门页面和访问来源。</p>
+      <div class="stats-heading">
+        <div>
+          <p class="eyebrow">Analytics</p>
+          <h1>访问统计</h1>
+          <p class="section-desc">进入页面时加载一次数据，需要查看最新记录时可手动刷新。</p>
+        </div>
+        <button
+          class="stats-refresh"
+          type="button"
+          :disabled="loading || refreshing"
+          :aria-label="loading ? '正在加载访问统计' : refreshing ? '正在刷新访问统计' : '刷新访问统计'"
+          @click="loadData"
+        >
+          <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M20 11a8.1 8.1 0 0 0-15.5-2M4 4v5h5"/>
+            <path d="M4 13a8.1 8.1 0 0 0 15.5 2M20 20v-5h-5"/>
+          </svg>
+          {{ loading ? '加载中…' : refreshing ? '刷新中…' : '刷新数据' }}
+        </button>
+      </div>
 
       <div v-if="loading" class="stats-loading" role="status">正在验证权限并加载统计...</div>
 
@@ -27,7 +44,7 @@
       <template v-else-if="overview">
         <!-- 最近访问（放在最前面） -->
         <div class="stats-block">
-          <h2>最近访问记录</h2>
+          <h2>最近访问记录（20 条）</h2>
           <div v-if="recentVisits.length === 0" class="stats-empty">暂无数据</div>
           <div v-else class="recent-table-wrap">
             <table class="recent-table">
@@ -133,7 +150,7 @@
           </ul>
         </div>
 
-        <p class="stats-updated">数据更新于 {{ formatTime(overview.updatedAt) }}</p>
+        <p class="stats-updated" role="status" aria-live="polite">数据更新于 {{ formatTime(overview.updatedAt) }}</p>
       </template>
 
       <template v-else>
@@ -144,15 +161,17 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted, onBeforeUnmount } from 'vue'
+import { ref, computed, onMounted } from 'vue'
 
 const loading = ref(true)
+const refreshing = ref(false)
 const accessError = ref(null)
 const overview = ref(null)
 const topPages = ref([])
 const geoDist = ref([])
 const recentVisits = ref([])
 const hourly = ref(new Array(24).fill(0).map((_, i) => ({ hour: i, count: 0 })))
+const RECENT_VISIT_LIMIT = 20
 
 const maxHourly = computed(() => {
   const m = Math.max(...hourly.value.map(h => h.count))
@@ -252,14 +271,16 @@ function compareText(today, yesterday) {
 }
 
 async function loadData() {
-  loading.value = true
+  const isInitialLoad = !overview.value
+  if (isInitialLoad) loading.value = true
+  else refreshing.value = true
   accessError.value = null
   try {
     const responses = await Promise.all([
       fetch('/api/stats/overview'),
       fetch('/api/stats/pages?days=7'),
       fetch('/api/stats/geo?days=7'),
-      fetch('/api/stats/recent?limit=30'),
+      fetch(`/api/stats/recent?limit=${RECENT_VISIT_LIMIT}`),
       fetch('/api/stats/hourly')
     ])
     const failed = responses.find((response) => !response.ok)
@@ -285,17 +306,11 @@ async function loadData() {
     }
   } finally {
     loading.value = false
+    refreshing.value = false
   }
 }
 
-let refreshTimer
 onMounted(() => {
   loadData()
-  // 每 30 秒自动刷新
-  refreshTimer = window.setInterval(loadData, 30000)
-})
-
-onBeforeUnmount(() => {
-  window.clearInterval(refreshTimer)
 })
 </script>

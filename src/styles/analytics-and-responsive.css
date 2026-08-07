@@ -2,8 +2,59 @@
 .section-desc {
   color: var(--muted);
   font-size: 0.95rem;
-  margin-bottom: 32px;
+  margin-bottom: 0;
   margin-top: 8px;
+}
+
+.stats-heading {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 24px;
+  margin-bottom: 32px;
+}
+
+.stats-refresh {
+  display: inline-flex;
+  flex: 0 0 auto;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 16px;
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  color: var(--text);
+  background: var(--surface);
+  font: inherit;
+  font-size: 0.88rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: border-color 0.2s ease, color 0.2s ease, background-color 0.2s ease;
+}
+
+.stats-refresh:hover:not(:disabled) {
+  border-color: var(--primary);
+  color: var(--primary);
+  background: var(--surface-soft);
+}
+
+.stats-refresh:focus-visible {
+  outline: 3px solid color-mix(in srgb, var(--primary) 35%, transparent);
+  outline-offset: 3px;
+}
+
+.stats-refresh:disabled {
+  opacity: 0.58;
+  cursor: wait;
+}
+
+.stats-refresh:disabled svg {
+  animation: stats-refresh-spin 0.8s linear infinite;
+}
+
+@keyframes stats-refresh-spin {
+  to { transform: rotate(360deg); }
 }
 
 .stats-loading,
@@ -232,6 +283,16 @@
 
 /* 响应式 */
 @media (max-width: 760px) {
+  .stats-heading {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .stats-refresh {
+    align-self: flex-start;
+  }
+
   .stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -288,5 +349,15 @@
 
   .hs-achievement-list {
     grid-template-columns: 1fr;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .stats-refresh {
+    transition: none;
+  }
+
+  .stats-refresh:disabled svg {
+    animation: none;
   }
 }
