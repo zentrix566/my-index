@@ -47,6 +47,12 @@
           </svg>
           战令计算器
         </button>
+        <button type="button" class="hs-btn hs-btn-ghost" @click="$emit('navigate', '/hearthstone/frog')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="m9 9 6 6"/><path d="m15 9-6 6"/>
+          </svg>
+          卡牌蛙生
+        </button>
         <button
           type="button"
           class="hs-btn hs-btn-ghost hs-theme-toggle"

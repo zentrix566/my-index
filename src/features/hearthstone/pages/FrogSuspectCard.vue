@@ -1,0 +1,149 @@
+<template>
+  <section class="section page-section hs-page frog-page" :data-hs-theme="hsTheme">
+    <div class="container">
+      <div class="frog-wrap">
+        <!-- 头部：返回 + 标题 + 计分板 -->
+        <div class="frog-head">
+          <div>
+            <router-link to="/hearthstone" class="frog-back" aria-label="返回炉石成就查看器">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+              返回炉石成就
+            </router-link>
+            <p class="frog-eyebrow"><span class="hs-live-dot" aria-hidden="true"></span> Frog Suspect Card</p>
+            <h1>炉石卡牌蛙生</h1>
+            <p class="frog-sub">
+              三张都是真实存在的随从，但其中一张的卡面被蛙生悄悄动了手脚。
+              盯紧费用、攻击、生命、稀有度、名称、效果和种族，把那张假牌揪出来。
+            </p>
+          </div>
+          <div class="frog-scoreboard" aria-label="游戏得分">
+            <div><small>得分</small><strong>{{ score }}</strong></div>
+            <i></i>
+            <div><small>连胜</small><strong>{{ streak }}</strong></div>
+            <i></i>
+            <div><small>命中率</small><strong>{{ rounds ? accuracy + '%' : '—' }}</strong></div>
+          </div>
+        </div>
+
+        <!-- 卡池说明 -->
+        <div class="frog-pool">
+          <span class="frog-pool__label">当前卡池 · 标准模式随从</span>
+          <span v-for="set in setSummary" :key="set.id" class="frog-pool__tag">{{ set.name }}</span>
+          <span class="frog-pool__count">共 {{ allCards.length }} 张</span>
+        </div>
+
+        <p class="frog-notice">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
+          <span>
+            现阶段只收录<b>标准模式的随从牌</b>，法术、武器和地标不参与找茬。
+            <b>狂野版本卡牌调试完毕后敬请期待。</b>
+          </span>
+        </p>
+
+        <!-- 牌桌 -->
+        <div class="frog-stage">
+          <div class="frog-round"><span></span> 第 {{ round || 1 }} 轮 <span></span></div>
+          <h2>哪张牌，被蛙生动了手脚？</h2>
+          <p class="frog-stage__intro">篡改只会发生在一处，且一定来自另一张真实卡牌的同一位置。</p>
+
+          <div v-if="loading" class="frog-status" role="status">
+            <span class="frog-spinner"></span>
+            正在洗入卡牌……
+          </div>
+
+          <div v-else-if="error" class="frog-status frog-status--error" role="alert">
+            <strong>卡牌没有成功入场</strong>
+            <span>{{ error }}</span>
+            <button type="button" class="frog-btn" @click="loadCards">重新加载</button>
+          </div>
+
+          <template v-else>
+            <div class="frog-row">
+              <FrogCard
+                v-for="(card, index) in roundCards"
+                :key="`${round}-${card.id}`"
+                :card="card"
+                :index="index"
+                :mutation="mutation"
+                :is-suspicious="index === suspiciousIndex"
+                :is-selected="index === selectedIndex"
+                :revealed="revealed"
+                @select="selectCard(index)"
+              />
+            </div>
+
+            <p v-if="!revealed" class="frog-tip">
+              仔细比对卡面（手机可左右滑动），然后点击你认为可疑的那张牌
+            </p>
+
+            <aside
+              v-else
+              class="frog-result"
+              :class="{ 'frog-result--success': correct }"
+              aria-live="polite"
+            >
+              <span class="frog-result__icon" aria-hidden="true">
+                <svg v-if="correct" viewBox="0 0 24 24"><path d="m5 13 4 4L19 7" /></svg>
+                <svg v-else viewBox="0 0 24 24"><path d="m7 7 10 10M17 7 7 17" /></svg>
+              </span>
+              <div class="frog-result__copy">
+                <strong>{{ correct ? '眼力不错，抓到了！' : '蛙生骗过了你' }}</strong>
+                <p v-if="explanation">
+                  可疑的是第 {{ suspiciousIndex + 1 }} 张
+                  「{{ roundCards[suspiciousIndex]?.name }}」，篡改了
+                  <b>{{ explanation.field }}</b>：
+                  <del>{{ explanation.original }}</del>
+                  <span aria-hidden="true">→</span>
+                  <ins>{{ explanation.changed }}</ins>
+                </p>
+              </div>
+              <button class="frog-btn" type="button" :disabled="dealing" @click="startRound">
+                {{ dealing ? '发牌中…' : '下一轮' }}
+                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+              </button>
+            </aside>
+          </template>
+        </div>
+
+        <p class="frog-foot">
+          卡牌数据来自暴雪国服卡牌接口，卡图经本站反向代理自对象存储 · 仅作交互演示，不代表游戏内实际数值
+        </p>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script setup>
+import { onMounted } from 'vue'
+import FrogCard from '../components/FrogCard.vue'
+import { useFrogGame } from '../composables/useFrogGame.js'
+import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
+import '../styles/hearthstone-frog.css'
+
+const { hsTheme } = useHearthstoneTheme()
+
+const {
+  accuracy,
+  allCards,
+  correct,
+  dealing,
+  error,
+  explanation,
+  loadCards,
+  loading,
+  mutation,
+  revealed,
+  round,
+  roundCards,
+  rounds,
+  score,
+  selectCard,
+  selectedIndex,
+  setSummary,
+  startRound,
+  streak,
+  suspiciousIndex
+} = useFrogGame()
+
+onMounted(loadCards)
+</script>

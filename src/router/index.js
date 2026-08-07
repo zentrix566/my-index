@@ -7,6 +7,7 @@ import {
   loadDominoPage,
   loadHearthstoneAchievementsPage,
   loadTavernPassXpPage,
+  loadFrogSuspectCardPage,
   loadIntervalTrainingPage,
   loadJiangyinPage,
   loadAgeCalculatorPage,
@@ -17,7 +18,8 @@ import {
   loadWillpowerPositive,
   loadWillpowerCalendar,
   loadWillpowerData,
-  loadWillpowerAiAnalysis
+  loadWillpowerAiAnalysis,
+  loadDreamPage
 } from '../features/index.js'
 
 // 路由级懒加载：每个页面单独成 chunk，首屏只加载当前路由所需的代码，
@@ -59,6 +61,7 @@ const routes = [
   { path: '/hearthstone/deck', name: 'hearthstone-deck', component: loadDeckCodeViewerPage, meta: { title: '炉石卡组代码解析 | Zentrix' } },
   { path: '/hearthstone/changelog', redirect: '/changelog?category=hearthstone' },
   { path: '/hearthstone/xp', name: 'hearthstone-xp', component: loadTavernPassXpPage, meta: { title: '战令经验计算器 | Zentrix' } },
+  { path: '/hearthstone/frog', name: 'hearthstone-frog', component: loadFrogSuspectCardPage, meta: { title: '炉石卡牌蛙生 | Zentrix' } },
   { path: '/stats', redirect: '/admin?tab=stats' },
   { path: '/willpower', name: 'willpower', component: loadWillpowerHome, meta: { title: '抵御心魔 | Zentrix' } },
   { path: '/willpower/achievements', name: 'willpower-achievements', component: loadWillpowerAchievements, meta: { title: '成就殿堂 | 抵御心魔' } },
@@ -68,6 +71,7 @@ const routes = [
   { path: '/willpower/ai', name: 'willpower-ai', component: loadWillpowerAiAnalysis, meta: { title: 'AI 分析 | 抵御心魔' } },
   { path: '/willpower/changelog', redirect: '/changelog?category=willpower' },
   { path: '/willpower/profile', name: 'willpower-profile', component: loadWillpowerProfile, meta: { title: '心魔档案 | 抵御心魔' } },
+  { path: '/dream', name: 'dream', component: loadDreamPage, meta: { title: '黄粱一梦 | Zentrix' } },
   // 心魔独立认证已并入主站，/login 等统一走主站账号体系
   { path: '/willpower/login', redirect: '/login?redirect=/willpower&source=willpower' },
   { path: '/willpower/register', redirect: '/login?redirect=/willpower&source=willpower' },

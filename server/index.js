@@ -45,6 +45,7 @@ import {
   buildSystemPrompt,
   todayKey
 } from './ai-advisor.js'
+import { validateDreamPayload, streamDream } from './dream.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -498,6 +499,53 @@ app.post('/api/ai-advisor', requireAuth, trackHearthstone, async (req, res) => {
   } catch (err) {
     appLog('ERROR', `AI 建议失败: ${err.message}`)
     res.status(500).json({ error: err.message || 'AI 请求失败' })
+  }
+})
+
+// ========== 黄粱一梦：人生模拟器（流式 SSE，服务端代理 DeepSeek） ==========
+// 公开接口：不要求登录；单 IP 每小时上限 60 次，防止被恶意刷爆 DeepSeek 额度，
+// 但对正常游玩毫无影响（平均每分钟才 1 次）。
+const DREAM_RATE_WINDOW_MS = 3_600_000
+const DREAM_RATE_MAX = 60
+const dreamRateMap = new Map() // ip -> { count, start }
+
+function checkDreamRate(ip) {
+  const now = Date.now()
+  const rec = dreamRateMap.get(ip)
+  if (!rec || now - rec.start >= DREAM_RATE_WINDOW_MS) {
+    dreamRateMap.set(ip, { count: 1, start: now })
+    return true
+  }
+  if (rec.count >= DREAM_RATE_MAX) {
+    return false
+  }
+  rec.count += 1
+  return true
+}
+
+app.post('/api/dream', async (req, res) => {
+  const ip = req.ip || req.socket.remoteAddress || 'unknown'
+  const { ok, error, data } = validateDreamPayload(req.body)
+  if (!ok) {
+    return res.status(400).json({ error })
+  }
+  if (!process.env.DEEPSEEK_API_KEY) {
+    return res.status(503).json({ error: 'AI 服务未配置（服务端缺少 DEEPSEEK_API_KEY）' })
+  }
+  if (!checkDreamRate(ip)) {
+    return res.status(429).json({ error: '烹梦太频繁了，每个 IP 每小时最多 60 锅，请稍后再来。' })
+  }
+  try {
+    await streamDream(res, data)
+  } catch (err) {
+    appLog('ERROR', `黄粱一梦生成失败: ${err.message}`)
+    if (!res.headersSent) {
+      res.status(502).json({ error: err.message || '梦境生成失败，请稍后重试' })
+    } else {
+      res.write(`data: ${JSON.stringify({ error: err.message || '梦境生成中断' })}\n\n`)
+      res.write('data: [DONE]\n\n')
+      res.end()
+    }
   }
 })
 

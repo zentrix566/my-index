@@ -48,6 +48,8 @@
               <div class="nav-dropdown-menu">
                 <RouterLink to="/hearthstone" @click="closeNavigationMenus">炉石</RouterLink>
                 <RouterLink to="/willpower" @click="closeNavigationMenus">心魔</RouterLink>
+                <RouterLink to="/dream" @click="closeNavigationMenus">黄粱一梦</RouterLink>
+                <RouterLink to="/hearthstone/frog" @click="closeNavigationMenus">炉石卡牌蛙生</RouterLink>
                 <RouterLink to="/projects#personal-projects" @click="closeNavigationMenus">更多项目</RouterLink>
               </div>
             </details>

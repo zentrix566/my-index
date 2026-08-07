@@ -15,6 +15,20 @@ export const vueApps = [
     tags: ['自律', '成就', '记录']
   },
   {
+    to: '/dream',
+    title: '黄粱一梦',
+    kicker: 'AI · 人生模拟',
+    summary: '写下当前年龄、期望寿命与人生野心，由 DeepSeek 为你烹一锅按时间线铺陈的人间大梦。',
+    tags: ['AI', 'DeepSeek', '模拟']
+  },
+  {
+    to: '/hearthstone/frog',
+    title: '炉石卡牌蛙生',
+    kicker: '炉石 · 找茬小游戏',
+    summary: '三张真实随从牌中有一张被蛙生动了手脚，盯紧费用、攻防与效果，把假牌揪出来。仅标准模式随从。',
+    tags: ['炉石传说', '随从', '找茬']
+  },
+  {
     to: '/hearthstone/deck',
     title: '炉石卡组代码解析',
     kicker: '游戏 · 工具',

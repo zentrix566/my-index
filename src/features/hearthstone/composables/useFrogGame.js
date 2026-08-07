@@ -1,0 +1,257 @@
+/**
+ * 「炉石卡牌蛙生」找茬玩法核心逻辑。
+ *
+ * 玩法：每轮抽 3 张真实随从牌，其中一张的某个卡面元素（费用/攻击/生命/稀有度/
+ * 名称/效果/种族）被另一张牌的同位置像素「贴片」覆盖，玩家要指出被动手脚的那张。
+ *
+ * 卡池：仅当前标准模式的可收藏随从（数据见 data/standard-minions.json，
+ * 由 scripts/generate-standard-minions.mjs 生成）。狂野卡牌暂不开放。
+ * 卡图不入仓库，统一走 /hearthstone-cards/... 相对路径由服务端反代 OSS。
+ */
+import { computed, ref, shallowRef } from 'vue'
+
+/** 可被篡改的卡面字段 */
+export const mutationTypes = [
+  'manaCost',
+  'attack',
+  'health',
+  'rarityId',
+  'name',
+  'text',
+  'minionTypeId'
+]
+
+export const fieldLabels = {
+  manaCost: '法力值消耗',
+  attack: '攻击力',
+  health: '生命值',
+  rarityId: '稀有度',
+  name: '名称',
+  text: '效果',
+  minionTypeId: '随从类型'
+}
+
+export const minionTypes = {
+  0: '无种族',
+  14: '鱼人',
+  15: '恶魔',
+  17: '机械',
+  18: '元素',
+  20: '野兽',
+  23: '海盗',
+  24: '龙',
+  26: '全部',
+  43: '野猪人',
+  92: '娜迦',
+  93: '亡灵'
+}
+
+const rarityLabels = {
+  1: '普通',
+  2: '免费',
+  3: '稀有',
+  4: '史诗',
+  5: '传说'
+}
+
+/** 贴片都会带一点卡框底纹，供体必须来自同款卡框，否则边缘会出现断层 */
+const framePatchTypes = ['manaCost', 'attack', 'health', 'rarityId', 'name', 'text', 'minionTypeId']
+
+/** 这几类贴片覆盖的是文字排版区，优先挑「内容最少」的供体，避免残留旧文字 */
+const templatePatchTypes = ['rarityId', 'name', 'text', 'minionTypeId']
+
+const sample = (items) => items[Math.floor(Math.random() * items.length)]
+
+const shuffle = (items) => {
+  const result = [...items]
+  for (let index = result.length - 1; index > 0; index -= 1) {
+    const target = Math.floor(Math.random() * (index + 1))
+    ;[result[index], result[target]] = [result[target], result[index]]
+  }
+  return result
+}
+
+/** 预加载指定图片，成功失败都 resolve，只用来避免贴片先于底图出现 */
+export const preloadCardImages = (urls) => Promise.all(
+  urls.filter(Boolean).map((src) => new Promise((resolve) => {
+    const image = new Image()
+    image.onload = resolve
+    image.onerror = resolve
+    image.src = src
+  }))
+)
+
+const isCompatibleDonor = (type, card, candidate) => {
+  if (candidate.id === card.id || candidate[type] === card[type]) return false
+
+  // 卡框按职业着色，双职业卡还是两色拼接，供体必须完全同款卡框。
+  if (framePatchTypes.includes(type)) {
+    if (candidate.classId !== card.classId) return false
+    if ((candidate.dual || '') !== (card.dual || '')) return false
+  }
+
+  // 名称条和效果区紧邻稀有度宝石，同稀有度可避免边缘带入不同颜色的宝石。
+  if (['name', 'text'].includes(type) && candidate.rarityId !== card.rarityId) return false
+
+  // 效果区下沿会触到种族铭牌上缘，再限定同种族以保持底纹一致。
+  return type !== 'text' || candidate.minionTypeId === card.minionTypeId
+}
+
+const cleanText = (value = '') => value.replace(/<[^>]+>/g, '')
+
+const getTemplateScore = (type, candidate) => {
+  const textLength = cleanText(candidate.text).length
+  if (type === 'name') return candidate.name.length * 10 + textLength * 0.05
+  if (type === 'text') return textLength
+  if (type === 'minionTypeId') return textLength + candidate.name.length
+  return textLength * 0.1
+}
+
+const selectCleanDonor = (type, donors) => {
+  if (!templatePatchTypes.includes(type)) return sample(donors)
+  const cleanest = [...donors]
+    .sort((left, right) => getTemplateScore(type, left) - getTemplateScore(type, right))
+    .slice(0, 3)
+  return sample(cleanest)
+}
+
+export const createMutationForType = (card, cards, type) => {
+  const donors = cards.filter((candidate) => isCompatibleDonor(type, card, candidate))
+  if (!donors.length) return null
+  const donor = selectCleanDonor(type, donors)
+  if (!donor) return null
+  return { type, original: card[type], changed: donor[type], donor }
+}
+
+const createMutation = (card, cards) => {
+  const availableTypes = mutationTypes.filter(
+    (type) => cards.some((candidate) => isCompatibleDonor(type, card, candidate))
+  )
+  if (!availableTypes.length) return null
+  return createMutationForType(card, cards, sample(availableTypes))
+}
+
+export const formatValue = (type, value) => {
+  if (type === 'rarityId') return rarityLabels[value] ?? `稀有度 ${value}`
+  if (type === 'minionTypeId') return minionTypes[value] ?? `种族 ${value}`
+  if (type === 'text') return cleanText(value) || '（无）'
+  return value
+}
+
+export const useFrogGame = () => {
+  // 712 张卡只读不改，用 shallowRef 省掉深层响应式代理开销
+  const allCards = shallowRef([])
+  const setSummary = shallowRef([])
+  const roundCards = shallowRef([])
+  const suspiciousIndex = ref(-1)
+  const mutation = shallowRef(null)
+  const selectedIndex = ref(null)
+  const score = ref(0)
+  const streak = ref(0)
+  const bestStreak = ref(0)
+  const round = ref(0)
+  const rounds = ref(0)
+  const hits = ref(0)
+  const loading = ref(true)
+  const dealing = ref(false)
+  const error = ref('')
+
+  const revealed = computed(() => selectedIndex.value !== null)
+  const correct = computed(() => revealed.value && selectedIndex.value === suspiciousIndex.value)
+  const accuracy = computed(() => (rounds.value ? Math.round((hits.value / rounds.value) * 100) : 0))
+
+  const explanation = computed(() => {
+    if (!mutation.value) return null
+    const { type, original, changed } = mutation.value
+    return {
+      field: fieldLabels[type],
+      original: formatValue(type, original),
+      changed: formatValue(type, changed)
+    }
+  })
+
+  const startRound = async () => {
+    if (allCards.value.length < 3) return
+    dealing.value = true
+    try {
+      let chosen = []
+      let picked = null
+      // 极小概率抽到三张都找不到合法供体的组合，重抽即可
+      for (let attempt = 0; attempt < 12 && !picked; attempt += 1) {
+        chosen = shuffle(allCards.value).slice(0, 3)
+        const index = Math.floor(Math.random() * chosen.length)
+        const found = createMutation(chosen[index], allCards.value)
+        if (found) picked = { index, mutation: found }
+      }
+      if (!picked) {
+        error.value = '这一轮没能凑出合适的卡牌，请再试一次'
+        return
+      }
+      // 只预载本轮真正会用到的 4 张图（3 张底图 + 1 张供体），不整包预热
+      await preloadCardImages([...chosen.map((card) => card.image), picked.mutation.donor.image])
+      roundCards.value = chosen
+      suspiciousIndex.value = picked.index
+      mutation.value = picked.mutation
+      selectedIndex.value = null
+      round.value += 1
+      error.value = ''
+    } finally {
+      dealing.value = false
+    }
+  }
+
+  const loadCards = async () => {
+    loading.value = true
+    error.value = ''
+    try {
+      const { default: payload } = await import('../data/standard-minions.json')
+      allCards.value = payload.cards || []
+      setSummary.value = payload.sets || []
+      if (allCards.value.length < 3) throw new Error('可用随从牌不足三张')
+      await startRound()
+    } catch (loadError) {
+      error.value = loadError.message || '卡牌数据读取失败'
+    } finally {
+      loading.value = false
+    }
+  }
+
+  const selectCard = (index) => {
+    if (revealed.value || dealing.value) return
+    selectedIndex.value = index
+    rounds.value += 1
+    if (index === suspiciousIndex.value) {
+      score.value += 100 + streak.value * 20
+      streak.value += 1
+      hits.value += 1
+      if (streak.value > bestStreak.value) bestStreak.value = streak.value
+    } else {
+      streak.value = 0
+    }
+  }
+
+  return {
+    accuracy,
+    allCards,
+    bestStreak,
+    correct,
+    dealing,
+    error,
+    explanation,
+    hits,
+    loadCards,
+    loading,
+    mutation,
+    revealed,
+    round,
+    roundCards,
+    rounds,
+    score,
+    selectCard,
+    selectedIndex,
+    setSummary,
+    startRound,
+    streak,
+    suspiciousIndex
+  }
+}
