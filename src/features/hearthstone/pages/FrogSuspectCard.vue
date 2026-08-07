@@ -31,12 +31,6 @@
           </div>
         </div>
 
-        <!-- 卡池说明 -->
-        <div class="frog-pool">
-          <span class="frog-pool__label">当前卡池 · 标准模式随从</span>
-          <span v-for="set in setSummary" :key="set.id" class="frog-pool__tag">{{ set.name }}</span>
-          <span class="frog-pool__count">共 {{ allCards.length }} 张</span>
-        </div>
 
         <p class="frog-notice">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
@@ -169,7 +163,6 @@ const {
   score,
   selectCard,
   selectedIndex,
-  setSummary,
   startRound,
   streak,
   suspiciousIndex

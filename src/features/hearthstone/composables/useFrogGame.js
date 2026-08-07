@@ -33,9 +33,9 @@ export const fieldLabels = {
 
 /** 可在设置里勾选的混淆类型。unstable 标注的几类贴片效果还不够稳定，默认不勾选。 */
 export const mutationOptions = [
-  { key: 'manaCost', label: '法力值', hint: '只做 +1 / -1 微调，卡面数字与原始仅差 1；上限 10，不会出现 1→0 这类离谱值' },
-  { key: 'attack', label: '攻击力', hint: '只做 +1 / -1 微调，卡面数字与原始仅差 1' },
-  { key: 'health', label: '生命值', hint: '只做 +1 / -1 微调，卡面数字与原始仅差 1' },
+  { key: 'manaCost', label: '法力值' },
+  { key: 'attack', label: '攻击力' },
+  { key: 'health', label: '生命值' },
   {
     key: 'rarityId',
     label: '稀有度',
