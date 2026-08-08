@@ -26,6 +26,11 @@
           <div class="frog-config__head">
             <span class="frog-config__title">修改字段</span>
             <div class="frog-review__actions">
+              <label class="frog-switch" :title="wildMode ? '已开启：狂野随从已并入卡池' : '开启后把狂野模式的随从并入卡池'">
+                <input type="checkbox" :checked="wildMode" @change="toggleWildMode" />
+                <span class="frog-switch__track"><span class="frog-switch__thumb"></span></span>
+                <span class="frog-switch__label">狂野模式</span>
+              </label>
               <label class="frog-switch" :title="showPatchGuide ? '已开启：在修改处画红框标记实际替换范围' : '开启后会在修改处画红框标记实际替换范围'">
                 <input type="checkbox" v-model="showPatchGuide" />
                 <span class="frog-switch__track"><span class="frog-switch__thumb"></span></span>
@@ -122,22 +127,21 @@ import {
   fieldLabels,
   formatValue,
   mutationTypes,
-  preloadCardImages
+  preloadCardImages,
+  useFrogGame
 } from '../composables/useFrogGame.js'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 import '../styles/hearthstone-frog.css'
 
 const { hsTheme } = useHearthstoneTheme()
+const { allCards, loadData, loading, error, wildMode, toggleWild } = useFrogGame()
 
 // 这几类贴片效果还不够稳定，tab 上用虚线提示
 const unstableTypes = new Set(['rarityId', 'name', 'text', 'minionTypeId'])
 
-const allCards = ref([])
 const activeType = ref(mutationTypes[0])
 const baseCard = ref(null)
 const mutation = ref(null)
-const loading = ref(true)
-const error = ref('')
 const showPatchGuide = ref(true)
 const sampleIndex = ref(0)
 
@@ -180,23 +184,25 @@ const pickFirstAvailableType = () => {
   }
 }
 
+// 切换「狂野模式」后重新挑选样本，让新卡池立即生效
+const toggleWildMode = async () => {
+  if (loading.value) return
+  await toggleWild()
+  sampleIndex.value = 0
+  setSample()
+}
+
 watch(activeType, () => {
   sampleIndex.value = 0
   setSample()
 })
 
 onMounted(async () => {
-  try {
-    const { default: payload } = await import('../data/standard-minions.json')
-    allCards.value = payload.cards || []
-    if (allCards.value.length < 3) throw new Error('可用随从牌不足三张')
+  await loadData()
+  if (!error.value) {
     await preloadCardImages(allCards.value.map((card) => card.image))
     pickFirstAvailableType()
     setSample()
-  } catch (loadError) {
-    error.value = loadError.message || '卡牌数据读取失败'
-  } finally {
-    loading.value = false
   }
 })
 </script>

@@ -4,8 +4,9 @@
  * 玩法：每轮抽 3 张真实随从牌，其中一张的某个卡面元素（费用/攻击/生命/稀有度/
  * 名称/效果/种族）被另一张牌的同位置像素「贴片」覆盖，玩家要指出被动手脚的那张。
  *
- * 卡池：仅当前标准模式的可收藏随从（数据见 data/standard-minions.json，
- * 由 scripts/generate-standard-minions.mjs 生成）。狂野卡牌暂不开放。
+ * 卡池：默认仅当前标准模式的可收藏随从（见 data/standard-minions.json）。
+ * 打开「狂野模式」开关后，再并入 data/wild-minions.json 的全部可收藏随从。
+ * 两份数据均由 scripts/generate-standard-minions.mjs 从 cards-db.json 生成。
  * 卡图不入仓库，统一走 /hearthstone-cards/... 相对路径由服务端反代 OSS。
  */
 import { computed, ref, shallowRef } from 'vue'
@@ -202,8 +203,15 @@ export const formatValue = (type, value) => {
 }
 
 export const useFrogGame = () => {
-  // 712 张卡只读不改，用 shallowRef 省掉深层响应式代理开销
-  const allCards = shallowRef([])
+  // 标准卡池默认加载；狂野卡池在玩家打开开关后才懒加载并合并
+  const standardCards = shallowRef([])
+  const wildCards = shallowRef([])
+  const wildMode = ref(false)
+  const wildLoaded = ref(false)
+  // 只读不改，用 computed + shallowRef 省掉深层响应式代理开销
+  const allCards = computed(() => (wildMode.value
+    ? [...standardCards.value, ...wildCards.value]
+    : standardCards.value))
   const setSummary = shallowRef([])
   const roundCards = shallowRef([])
   const suspiciousIndex = ref(-1)
@@ -270,20 +278,42 @@ export const useFrogGame = () => {
     }
   }
 
-  const loadCards = async () => {
+  // 只加载卡池数据（不自动发牌），供游戏与验收台共用
+  const loadData = async () => {
     loading.value = true
     error.value = ''
     try {
       const { default: payload } = await import('../data/standard-minions.json')
-      allCards.value = payload.cards || []
+      standardCards.value = payload.cards || []
       setSummary.value = payload.sets || []
-      if (allCards.value.length < 3) throw new Error('可用随从牌不足三张')
-      await startRound()
+      if (standardCards.value.length < 3) throw new Error('可用随从牌不足三张')
     } catch (loadError) {
       error.value = loadError.message || '卡牌数据读取失败'
     } finally {
       loading.value = false
     }
+  }
+
+  // 游戏入口：加载标准卡池后立即发牌
+  const loadCards = async () => {
+    await loadData()
+    if (!error.value) await startRound()
+  }
+
+  // 切换「狂野模式」：首次打开才懒加载狂野卡池；返回切换后的状态（失败回 false）
+  const toggleWild = async (next = !wildMode.value) => {
+    if (next && !wildLoaded.value) {
+      try {
+        const { default: payload } = await import('../data/wild-minions.json')
+        wildCards.value = payload.cards || []
+        wildLoaded.value = true
+      } catch (loadError) {
+        error.value = '狂野卡牌数据读取失败'
+        return false
+      }
+    }
+    wildMode.value = next
+    return next
   }
 
   const selectCard = (index) => {
@@ -311,6 +341,7 @@ export const useFrogGame = () => {
     explanation,
     hits,
     loadCards,
+    loadData,
     loading,
     mutation,
     revealed,
@@ -323,6 +354,8 @@ export const useFrogGame = () => {
     setSummary,
     startRound,
     streak,
-    suspiciousIndex
+    suspiciousIndex,
+    toggleWild,
+    wildMode
   }
 }

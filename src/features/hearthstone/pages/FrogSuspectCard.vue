@@ -35,9 +35,14 @@
         <p class="frog-notice">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/></svg>
           <span>
-            现阶段只收录<b>标准模式的随从牌</b>，法术、武器和地标不参与找茬。
-            <b>狂野版本卡牌调试完毕后敬请期待。</b>
+            现阶段默认只收录<b>标准模式的随从牌</b>，法术、武器和地标不参与找茬。
+            打开开关可把<b>狂野模式</b>的随从也并入卡池。
           </span>
+          <label class="frog-switch frog-switch--notice" :title="wildMode ? '已开启：狂野随从已并入卡池' : '开启后把狂野模式的随从并入卡池'">
+            <input type="checkbox" :checked="wildMode" @change="toggleWildMode" />
+            <span class="frog-switch__track"><span class="frog-switch__thumb"></span></span>
+            <span class="frog-switch__label">狂野模式</span>
+          </label>
         </p>
 
         <!-- 混淆类型设置 -->
@@ -165,12 +170,21 @@ const {
   selectedIndex,
   startRound,
   streak,
-  suspiciousIndex
+  suspiciousIndex,
+  toggleWild,
+  wildMode
 } = useFrogGame()
 
 // 揭晓后才给出答案
 const showAnswer = computed(() => revealed.value)
 const resultTone = computed(() => (correct.value ? 'success' : 'fail'))
+
+// 切换「狂野模式」后重新发牌，让新卡池立即生效
+const toggleWildMode = async () => {
+  if (loading.value || dealing.value) return
+  await toggleWild()
+  startRound()
+}
 
 // 切换混淆类型后立即重新发牌，立即看到效果
 const reDeal = () => {

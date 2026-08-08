@@ -177,6 +177,16 @@
   color: var(--frog-text);
 }
 
+.frog-notice > span {
+  flex: 1 1 auto;
+  min-width: 220px;
+}
+
+.frog-switch--notice {
+  margin-left: auto;
+  flex: 0 0 auto;
+}
+
 /* ---------- 牌桌 ---------- */
 
 .frog-stage {
