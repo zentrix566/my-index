@@ -761,9 +761,9 @@ app.use(
     immutable: true,
     index: false,
     setHeaders(res, filePath) {
-      // HTML 文件不缓存，确保 SPA 更新能及时生效
+      // HTML 文件强制不缓存（no-store），确保任何部署后 SPA 外壳与 JS hash 都即时生效
       if (filePath.endsWith('.html')) {
-        res.setHeader('Cache-Control', 'no-cache')
+        res.setHeader('Cache-Control', 'no-store')
       }
     }
   })
@@ -776,7 +776,7 @@ app.get('*', (req, res) => {
     return res.status(404).json({ error: 'Not found' })
   }
   res.sendFile(path.join(DIST_DIR, 'index.html'), {
-    headers: { 'Cache-Control': 'no-cache' }
+    headers: { 'Cache-Control': 'no-store' }
   })
 })
 
