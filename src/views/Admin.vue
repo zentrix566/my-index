@@ -178,6 +178,27 @@ function formatDate(value) {
   }).format(date)
 }
 
+function normalizeUser(row) {
+  // 防御性归一化：线上曾出现 modules 为 null/字符串导致 .includes 抛错、
+  // 整张列表渲染失败（数据有返回却空白）。这里保证每个字段都是安全类型。
+  const rawModules = row?.modules
+  const modules = Array.isArray(rawModules)
+    ? rawModules
+    : typeof rawModules === 'string'
+      ? rawModules.split(',').filter(Boolean)
+      : []
+  return {
+    id: row?.id ?? null,
+    username: row?.username || '',
+    displayName: row?.displayName || null,
+    email: row?.email || null,
+    emailVerified: Boolean(row?.emailVerified),
+    createdAt: row?.createdAt || null,
+    lastSeen: row?.lastSeen || null,
+    modules
+  }
+}
+
 async function load() {
   loading.value = true
   error.value = ''
@@ -185,7 +206,7 @@ async function load() {
     const resp = await fetch('/api/auth/admin/module-usage')
     const data = await resp.json().catch(() => ({}))
     if (!resp.ok) throw new Error(data.error || '读取失败')
-    users.value = Array.isArray(data.users) ? data.users : []
+    users.value = (Array.isArray(data.users) ? data.users : []).map(normalizeUser)
   } catch (e) {
     error.value = e.message || '读取失败'
   } finally {

@@ -61,7 +61,7 @@
                 <tr v-for="visit in recentVisits" :key="visit.ts + visit.ip + visit.path">
                   <td class="td-time">{{ formatTime(visit.ts) }}</td>
                   <td class="td-ip">{{ formatIp(visit.ip) }}</td>
-                  <td class="td-path">{{ formatPath(visit.path) }}</td>
+                  <td class="td-path" :title="formatPath(visit.path)">{{ formatPath(visit.path) }}</td>
                   <td>{{ formatRegion(visit) }}</td>
                   <td class="td-referer">{{ formatReferer(visit.referer) }}</td>
                 </tr>
@@ -126,7 +126,7 @@
           <div v-if="topPages.length === 0" class="stats-empty">暂无数据</div>
           <ul v-else class="top-pages-list">
             <li v-for="page in topPages" :key="page.path">
-              <span class="page-path">{{ formatPath(page.path) }}</span>
+              <span class="page-path" :title="formatPath(page.path)">{{ formatPath(page.path) }}</span>
               <div class="page-bar-wrap">
                 <div class="page-bar" :style="{ width: (page.count / topPages[0].count * 100) + '%' }"></div>
               </div>
@@ -181,7 +181,6 @@ const maxHourly = computed(() => {
 const ROUTE_NAMES = {
   '/': '首页',
   '/projects': '项目列表',
-  '/vue-apps': '个人项目',
   '/interval-training': '间歇训练数据看板',
   '/countdown': '人生倒计时',
   '/aiops': 'AIOps 智能运维控制台',
@@ -190,7 +189,22 @@ const ROUTE_NAMES = {
   '/jiangyin': '江阴保卫战',
   '/domino': '多米诺骨牌',
   '/hearthstone': '炉石传说成就',
+  '/hearthstone/deck': '炉石卡组代码解析',
+  '/hearthstone/xp': '战令经验计算器',
+  '/hearthstone/frog': '蛙生模拟器',
+  '/hearthstone/frog/review': '卡牌修改验收台',
+  '/willpower': '抵御心魔',
+  '/willpower/achievements': '成就殿堂',
+  '/willpower/positive': '今日正能量',
+  '/willpower/calendar': '抵御日历',
+  '/willpower/data': '心魔数据看板',
+  '/willpower/ai': '心魔 AI 分析',
+  '/willpower/profile': '心魔档案',
+  '/age-calculator': '年龄计算器',
+  '/dream': '黄粱一梦',
   '/about': '关于',
+  '/changelog': '更新日志',
+  '/settings': '账号中心',
   '/stats': '访问统计'
 }
 

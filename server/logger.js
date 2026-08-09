@@ -117,6 +117,27 @@ function readLogsByDate(date) {
 }
 
 /**
+ * 把原始访问路径规范化为稳定、可读的「页面标识」，用于统计聚合与展示：
+ * - 去掉查询串 / 锚点、尾部斜杠
+ * - 折叠明显是动态 id 的段（UUID / 12+ 位字母数字）为 *
+ * - 已知二级模块（willpower / hearthstone）深层路径只保留到子页两级，
+ *   避免 /willpower/achievements/<长id> 这类 URL 在热门页面里各自成行、被 CSS 截断成 /willpower/achiev...
+ */
+function canonicalizePath(raw) {
+  if (!raw || typeof raw !== 'string') return '/'
+  let p = raw.split('?')[0].split('#')[0].replace(/\/+$/, '') || '/'
+  if (p === '/') return '/'
+  const segs = p.split('/').filter(Boolean)
+  const folded = segs.map((s) => (/^[a-zA-Z0-9]{12,}$/.test(s) ? '*' : s))
+  const known2 = ['willpower', 'hearthstone']
+  if (known2.includes(folded[0]) && folded.length > 2) {
+    return '/' + folded.slice(0, 2).join('/')
+  }
+  if (folded.length > 3) return '/' + folded.slice(0, 3).join('/')
+  return '/' + folded.join('/')
+}
+
+/**
  * 获取今天零点时间戳
  */
 function getTodayStart() {
@@ -211,7 +232,7 @@ export async function getTopPages(days = 7, limit = 20) {
     const entries = await readLogsByDate(d)
     for (const e of entries) {
       if (!e.isPage) continue
-      const path = e.path || '/'
+      const path = canonicalizePath(e.path || '/')
       pageMap.set(path, (pageMap.get(path) || 0) + 1)
     }
   }
@@ -274,6 +295,7 @@ export async function getRecentVisits(limit = 50) {
   return allEntries
     .sort((a, b) => new Date(b.ts) - new Date(a.ts))
     .slice(0, limit)
+    .map((e) => ({ ...e, path: canonicalizePath(e.path || '/') }))
 }
 
 /**
