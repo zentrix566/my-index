@@ -13,6 +13,7 @@
         </div>
         <div class="todo-actions">
           <button v-if="view === 'today_done' && tasks.length" class="todo-btn export" type="button" @click="exportDoneCard">导出卡片</button>
+          <button v-if="view === 'today_done' && tasks.length" class="todo-btn ghost" type="button" @click="pickSlogan">🔁 换一句</button>
           <button class="todo-btn primary" type="button" @click="openNewTask">＋ 新建</button>
         </div>
       </header>
@@ -38,7 +39,7 @@
               </div>
             </div>
             <div class="todo-done-card-foot">
-              把每一件小事做好，就是不平凡 ☀️
+              {{ doneSlogan }}
             </div>
           </div>
         </div>
@@ -170,6 +171,32 @@ const emptyText = computed(() => {
   return '今天还没有待办事项，点右上角新建一个吧'
 })
 const prioLabel = { low: '低', medium: '中', high: '高' }
+
+// ===== 今日已完成卡片底部励志短句（不固定，随机轮换）=====
+const DONE_SLOGANS = [
+  '把每一件小事做好，就是不平凡 ☀️',
+  '今天的努力，都会在未来开花 🌱',
+  '完成比完美更重要 ✅',
+  '一步一个脚印，走得踏实 👣',
+  '你比昨天的自己更进了一步 🌟',
+  '行动，是治愈焦虑的良药 💪',
+  '慢慢来，比较快 🐢',
+  '认真生活的人，自带光芒 ✨',
+  '每一天都是新的开始 🌅',
+  '小事做到极致，便是大事 🔥',
+  '坚持很酷，别轻易认输 🏔️',
+  '你在为自己的人生打卡 📌',
+  '自律给你自由 🕊️',
+  '今天也很棒，明天继续加油 🚀'
+]
+const doneSlogan = ref(DONE_SLOGANS[Math.floor(Math.random() * DONE_SLOGANS.length)])
+function pickSlogan() {
+  let next = doneSlogan.value
+  while (next === doneSlogan.value && DONE_SLOGANS.length > 1) {
+    next = DONE_SLOGANS[Math.floor(Math.random() * DONE_SLOGANS.length)]
+  }
+  doneSlogan.value = next
+}
 
 // ===== 日期（北京时间）=====
 function beijingToday() {
@@ -340,7 +367,10 @@ const groupModal = ref(null)
 
 watch(
   () => view.value,
-  () => loadTasks()
+  (v) => {
+    loadTasks()
+    if (v === 'today_done') pickSlogan()
+  }
 )
 
 onMounted(async () => {
