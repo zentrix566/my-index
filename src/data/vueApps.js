@@ -15,6 +15,13 @@ export const vueApps = [
     tags: ['自律', '成就', '记录']
   },
   {
+    to: '/todo',
+    title: '日程管理',
+    kicker: '自律 · 效率',
+    summary: '按「今日待办 / 今日已完成」管理任务，支持自定义分组、月周日历、全量表格与 AI 日程分析，数据独立存储。',
+    tags: ['待办', '分组', '日历', 'AI']
+  },
+  {
     to: '/dream',
     title: '黄粱一梦',
     kicker: 'AI · 人生模拟',

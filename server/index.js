@@ -18,6 +18,11 @@ import {
   closeWillpowerDatabase,
   ensureWillpowerSchema
 } from './willpower/db.js'
+import todoRouter from './todo/routes.js'
+import {
+  closeTodoDatabase,
+  ensureTodoSchema
+} from './todo/db.js'
 import {
   closeDatabase,
   ensureSchema,
@@ -225,6 +230,9 @@ app.use('/api/auth', authRouter)
 
 // ========== 抵御域外心魔 API（独立账号体系与独立数据库）==========
 app.use('/api/willpower', willpowerRouter)
+
+// ========== 日程管理 API（独立数据库，统一登录）==========
+app.use('/api/todo', todoRouter)
 
 // ========== 成就进度 API ==========
 
@@ -797,6 +805,14 @@ async function bootstrap() {
     appLog('ERROR', `心魔模块数据库初始化失败（该模块暂不可用）: ${err.message}`)
   }
 
+  // 日程管理库是独立的 SQLite/PostgreSQL 库，建表失败不应拖垮主站
+  try {
+    await ensureTodoSchema()
+    appLog('SERVER', '日程管理模块数据库已就绪')
+  } catch (err) {
+    appLog('ERROR', `日程管理模块数据库初始化失败（该模块暂不可用）: ${err.message}`)
+  }
+
   if (process.env.SEED_ON_STARTUP !== 'false') {
     try {
       const { ensureSeeded } = await import('./seed/seed.js')
@@ -839,6 +855,7 @@ async function shutdown(signal) {
     })
     await closeDatabase()
     await closeWillpowerDatabase().catch(() => {})
+    await closeTodoDatabase().catch(() => {})
     clearTimeout(forceTimer)
     appLog('SERVER', '优雅停机完成')
     process.exit(0)

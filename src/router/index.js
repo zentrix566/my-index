@@ -18,7 +18,12 @@ import {
   loadWillpowerCalendar,
   loadWillpowerData,
   loadWillpowerAiAnalysis,
-  loadDreamPage
+  loadDreamPage,
+  loadTodoHome,
+  loadTodoCalendar,
+  loadTodoManage,
+  loadTodoAi,
+  loadTodoGroups
 } from '../features/index.js'
 
 // 路由级懒加载：每个页面单独成 chunk，首屏只加载当前路由所需的代码，
@@ -68,6 +73,16 @@ const routes = [
   { path: '/willpower/ai', name: 'willpower-ai', component: loadWillpowerAiAnalysis, meta: { title: 'AI 分析 | 抵御心魔' } },
   { path: '/willpower/changelog', redirect: '/changelog?category=willpower' },
   { path: '/willpower/profile', name: 'willpower-profile', component: loadWillpowerProfile, meta: { title: '心魔档案 | 抵御心魔' } },
+  // ========== 日程管理（统一登录，独立数据库）==========
+  { path: '/todo', name: 'todo', component: loadTodoHome, meta: { title: '日程管理 | Zentrix' } },
+  { path: '/todo/done', name: 'todo-done', component: loadTodoHome },
+  { path: '/todo/list/:listId', name: 'todo-list', component: loadTodoHome },
+  { path: '/todo/calendar', name: 'todo-calendar', component: loadTodoCalendar, meta: { title: '日历视图 | 日程管理' } },
+  { path: '/todo/manage', name: 'todo-manage', component: loadTodoManage, meta: { title: '日程管理 | 日程管理' } },
+  { path: '/todo/ai', name: 'todo-ai', component: loadTodoAi, meta: { title: '日程 AI 分析 | 日程管理' } },
+  { path: '/todo/groups', name: 'todo-groups', component: loadTodoGroups, meta: { title: '分组设置 | 日程管理' } },
+  { path: '/todo/changelog', redirect: '/changelog?category=todo' },
+  { path: '/todo/login', redirect: '/login?redirect=/todo&source=todo' },
   { path: '/dream', name: 'dream', component: loadDreamPage, meta: { title: '黄粱一梦 | Zentrix' } },
   // 心魔独立认证已并入主站，/login 等统一走主站账号体系
   { path: '/willpower/login', redirect: '/login?redirect=/willpower&source=willpower' },
