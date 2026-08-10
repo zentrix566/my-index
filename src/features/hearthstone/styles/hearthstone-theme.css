@@ -793,7 +793,7 @@
   padding: 0 11px;
   border: 1px solid var(--hs-border);
   border-radius: 8px;
-  color: var(--hs-text-muted);
+  color: var(--hs-text-muted, var(--hs-text-soft));
   background: var(--hs-surface);
   font: inherit;
   font-size: 12px;
@@ -845,7 +845,7 @@
   padding: 0 9px;
   border: 1px solid var(--hs-border);
   border-radius: 7px;
-  color: var(--hs-text-muted);
+  color: var(--hs-text-muted, var(--hs-text-soft));
   background: var(--hs-surface);
   font: inherit;
   font-size: 11px;
@@ -909,7 +909,7 @@
 }
 
 .hs-pinned-section-head > span {
-  color: var(--hs-text-muted);
+  color: var(--hs-text-muted, var(--hs-text-soft));
   font-size: 12px;
 }
 
@@ -920,7 +920,7 @@
   flex-shrink: 0;
 }
 .hs-pinned-section-meta > span {
-  color: var(--hs-text-muted);
+  color: var(--hs-text-muted, var(--hs-text-soft));
   font-size: 12px;
 }
 .hs-pinned-share-btn {
@@ -974,7 +974,7 @@
 .hs-pinned-item-copy > span,
 .hs-pinned-item-copy > small {
   overflow-wrap: anywhere;
-  color: var(--hs-text-muted);
+  color: var(--hs-text-muted, var(--hs-text-soft));
   font-size: 11px;
 }
 
@@ -1013,7 +1013,7 @@
 }
 
 .hs-pinned-item-actions button.remove {
-  color: var(--hs-text-muted);
+  color: var(--hs-text-muted, var(--hs-text-soft));
   border-color: var(--hs-border);
   background: transparent;
 }
