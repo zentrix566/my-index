@@ -26,34 +26,44 @@ const soundOn = ref(true)
 
 let rafId = 0
 let lastTime = 0
+let firstFrame = true
 let audioCtx = null
 
 // 浏览器要求音频上下文在用户手势中创建/恢复，push 按钮即满足
 function ensureAudio() {
-  if (!audioCtx) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+  try {
+    if (!audioCtx) {
+      audioCtx = new (window.AudioContext || window.webkitAudioContext)()
+    }
+    if (audioCtx.state === 'suspended') audioCtx.resume()
+    return audioCtx
+  } catch (e) {
+    return null
   }
-  if (audioCtx.state === 'suspended') audioCtx.resume()
-  return audioCtx
 }
 
 // 实时合成一声木质敲击：短促三角波 + 快速衰减，音高随序号轻微上行
 function playKnock(i) {
   if (!soundOn.value) return
   const ctx = ensureAudio()
-  const now = ctx.currentTime
-  const base = 180 + (i % 12) * 14
-  const osc = ctx.createOscillator()
-  const gain = ctx.createGain()
-  osc.type = 'triangle'
-  osc.frequency.setValueAtTime(base, now)
-  osc.frequency.exponentialRampToValueAtTime(base * 0.6, now + 0.12)
-  gain.gain.setValueAtTime(0.0001, now)
-  gain.gain.exponentialRampToValueAtTime(0.45, now + 0.005)
-  gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14)
-  osc.connect(gain).connect(ctx.destination)
-  osc.start(now)
-  osc.stop(now + 0.16)
+  if (!ctx) return
+  try {
+    const now = ctx.currentTime
+    const base = 180 + (i % 12) * 14
+    const osc = ctx.createOscillator()
+    const gain = ctx.createGain()
+    osc.type = 'triangle'
+    osc.frequency.setValueAtTime(base, now)
+    osc.frequency.exponentialRampToValueAtTime(base * 0.6, now + 0.12)
+    gain.gain.setValueAtTime(0.0001, now)
+    gain.gain.exponentialRampToValueAtTime(0.45, now + 0.005)
+    gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.14)
+    osc.connect(gain).connect(ctx.destination)
+    osc.start(now)
+    osc.stop(now + 0.16)
+  } catch (e) {
+    // 音频异常不影响连锁动画
+  }
 }
 
 const polyline = computed(() =>
@@ -158,14 +168,22 @@ function push() {
     finished.value = false
   }
   dominoes.value[0].progress = 0.001
-  playKnock(0)
   running.value = true
-  lastTime = performance.now()
+  firstFrame = true
+  lastTime = 0
   rafId = requestAnimationFrame(step)
+  // 声音可失败，但绝不允许阻塞连锁动画
+  playKnock(0)
 }
 
 function step(now) {
-  const dt = Math.min((now - lastTime) / 1000, 0.05)
+  let dt
+  if (firstFrame) {
+    dt = 1 / 60
+    firstFrame = false
+  } else {
+    dt = Math.min(Math.max((now - lastTime) / 1000, 0), 0.05)
+  }
   lastTime = now
   const list = dominoes.value
 
@@ -195,6 +213,8 @@ function redraw() {
   cancelAnimationFrame(rafId)
   running.value = false
   finished.value = false
+  firstFrame = true
+  lastTime = 0
   isDrawing.value = false
   rawPoints.value = []
   dominoes.value = []
@@ -298,7 +318,7 @@ onBeforeUnmount(() => {
 
 .subtitle {
   margin: 0 0 28px;
-  color: var(--color-muted);
+  color: var(--muted);
 }
 
 .panel {
@@ -307,9 +327,9 @@ onBeforeUnmount(() => {
   align-items: center;
   gap: 22px;
   padding: 16px 22px;
-  background: var(--color-card);
-  border-radius: var(--radius);
-  box-shadow: var(--shadow-card);
+  background: var(--surface);
+  border-radius: 10px;
+  box-shadow: var(--shadow);
 }
 
 .field {
@@ -317,7 +337,7 @@ onBeforeUnmount(() => {
   flex-direction: column;
   gap: 6px;
   font-size: 13px;
-  color: var(--color-muted);
+  color: var(--muted);
 }
 
 .field input[type='range'] {
@@ -332,22 +352,23 @@ onBeforeUnmount(() => {
 .buttons button {
   padding: 9px 18px;
   font-size: 15px;
-  border: 1px solid #ddd;
+  border: 1px solid var(--line);
   border-radius: 8px;
-  background: #fff;
+  background: var(--surface);
+  color: var(--text);
   cursor: pointer;
   transition: transform 0.12s ease, box-shadow 0.12s ease;
 }
 
 .buttons button:hover:not(:disabled) {
   transform: translateY(-1px);
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow);
 }
 
 .buttons .primary {
-  background: var(--color-primary);
+  background: var(--primary);
   color: #fff;
-  border-color: var(--color-primary);
+  border-color: var(--primary);
 }
 
 .buttons button:disabled {
@@ -356,13 +377,13 @@ onBeforeUnmount(() => {
 }
 
 .buttons .toggle {
-  border-color: #ddd;
+  border-color: var(--line);
 }
 
 .status {
   margin-left: auto;
   font-size: 14px;
-  color: var(--color-muted);
+  color: var(--muted);
 }
 
 .stage {
@@ -370,7 +391,7 @@ onBeforeUnmount(() => {
   margin-top: 26px;
   height: 460px;
   overflow: hidden;
-  border-radius: var(--radius);
+  border-radius: 12px;
   background: linear-gradient(180deg, #fbf8f1 0%, #efe7d6 100%);
   box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.06);
   touch-action: none;
@@ -413,7 +434,7 @@ onBeforeUnmount(() => {
   justify-content: center;
   margin: 0;
   font-size: 16px;
-  color: var(--color-muted);
+  color: var(--muted);
   pointer-events: none;
 }
 
@@ -421,6 +442,6 @@ onBeforeUnmount(() => {
   margin-top: 18px;
   text-align: center;
   font-size: 15px;
-  color: var(--color-primary);
+  color: var(--primary);
 }
 </style>
