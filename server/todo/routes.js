@@ -362,14 +362,18 @@ export function weekRangeOf(key) {
 
 /** 不同 scope 对应的系统提示词 */
 export function buildTodoSystemPrompt(scope) {
-  // 通用约束：完成时间不送进上下文，也严禁据此推断用户的工作节奏/执行时间
+  // 通用约束 1：完成时间不送进上下文，也严禁据此推断用户的工作节奏/执行时间
   const timingRule =
-    '重要约束：数据中没有「完成时间」字段，也请勿依据完成时间推断用户的工作节奏或真实执行时间——用户习惯在晚间统一整理并标记完成，完成时间不等于实际执行时间。分析只基于计划日期(date)、分类(category)、优先级(priority)、状态(status)与内容(title/note)进行客观判断。'
+    '重要约束：数据中没有「完成时间」字段，也请勿依据完成时间推断用户的工作节奏或真实执行时间——用户习惯在晚间统一整理并标记完成，完成时间不等于实际执行时间。分析只基于计划日期(date)、分类(category)、状态(status)与内容(title/note)进行客观判断。'
+  // 通用约束 2：用户本人并不看重任务优先级，禁止以优先级作为评判/排序/建议依据
+  const priorityRule =
+    '不要以任务优先级(priority)作为评判、排序或建议的依据——用户本人并不看重优先级，请忽略该维度，聚焦任务内容、分类与完成情况本身；数据中也不会提供 priority 字段。'
   if (scope === 'week') {
     return [
       '你是一个周计划助理。下面是用户本周的日程清单（JSON 数组）。',
-      '字段：date 计划日期、title 标题、note 备注、category 分类、priority 优先级(low/medium/high)、status 状态(pending 待办 / done 已办)。',
+      '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / done 已办)。',
       timingRule,
+      priorityRule,
       '请基于这份清单生成一份「周计划」：按日期梳理每天的重点任务、标注关键交付或里程碑、指出哪几天可能过载或冲突、给出精力分配建议。',
       '用简洁的中文回答，使用 Markdown 排版（含小标题与 - 列表），控制在 600 字以内。'
     ].join('\n')
@@ -377,17 +381,19 @@ export function buildTodoSystemPrompt(scope) {
   if (scope === 'month') {
     return [
       '你是一个月计划助理。下面是用户本月的日程清单（JSON 数组）。',
-      '字段：date 计划日期、title 标题、note 备注、category 分类、priority 优先级(low/medium/high)、status 状态(pending 待办 / done 已办)。',
+      '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / done 已办)。',
       timingRule,
-      '请生成一份「月计划概览」：整体完成率、各分类的任务分布、关键时间节点（按 plan 日期）、本月建议聚焦的主题与节奏安排。',
+      priorityRule,
+      '请生成一份「月计划概览」：整体完成率、各分类的任务分布、关键时间节点（按计划日期）、本月建议聚焦的主题与节奏安排。',
       '用简洁的中文回答，使用 Markdown 排版（含小标题与 - 列表），控制在 600 字以内。'
     ].join('\n')
   }
   return [
     '你是一个日程助理。下面是用户某一天的日程清单（JSON 数组）。',
-    '字段：date 计划日期、title 标题、note 备注、category 分类、priority 优先级(low/medium/high)、status 状态(pending 待办 / done 已办)。',
+    '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / done 已办)。',
     timingRule,
-    '请做一段「日程分析」：已完成 / 未完成各多少、哪些是高优先级或临近截止、当天任务的重点与均衡度、给出具体行动建议与风险提示（不要评价完成时间早晚，也不要猜测是否「深夜补录」）。',
+    priorityRule,
+    '请做一段「日程分析」：已完成 / 未完成各多少、当天任务的重点与均衡度、给出具体行动建议与风险提示（不要评价完成时间早晚，也不要猜测是否「深夜补录」；不要提及或依据任务优先级）。',
     '用简洁的中文回答，使用 Markdown 排版（含小标题与 - 列表），控制在 450 字以内。'
   ].join('\n')
 }
@@ -428,7 +434,6 @@ router.post('/ai-analyze', async (req, res) => {
       title: row.title,
       note: row.note || '',
       category: row.list_id ? nameMap.get(row.list_id) || '' : '',
-      priority: row.priority,
       status: row.status
     }))
 
