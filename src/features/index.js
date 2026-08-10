@@ -7,7 +7,8 @@ export {
   loadFrogReviewPage,
   loadFrogSuspectCardPage,
   loadHearthstoneAchievementsPage,
-  loadTavernPassXpPage
+  loadTavernPassXpPage,
+  loadEventCalculatorPage
 } from './hearthstone/index.js'
 export { loadDreamPage } from './dream/index.js'
 export { loadAgeCalculatorPage } from './age-calculator/index.js'
