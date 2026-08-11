@@ -251,7 +251,8 @@ async function loadLists() {
 async function loadTasks() {
   try {
     const r = await todoApi.listTasks(view.value)
-    tasks.value = r.tasks || []
+    // 新加入的任务（id 较大）排在最前
+    tasks.value = (r.tasks || []).slice().sort((a, b) => (b.id || 0) - (a.id || 0))
   } catch (e) {
     loadError.value = e.message
   }

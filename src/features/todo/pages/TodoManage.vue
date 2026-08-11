@@ -196,11 +196,13 @@ const filteredTasks = computed(() => {
     if (to && d && d > to) return false
     return true
   })
-  // 按日期升序、状态权重（未完成在前、已取消在后）、再按标题
+  // 按日期降序（最近的在前）、无日期任务始终垫底；同日期再按状态权重、标题
   return rows.sort((a, b) => {
-    const da = a.dueDate || '9999-99-99'
-    const db = b.dueDate || '9999-99-99'
-    if (da !== db) return da < db ? -1 : 1
+    const da = a.dueDate || ''
+    const db = b.dueDate || ''
+    if (da && !db) return -1
+    if (!da && db) return 1
+    if (da && db && da !== db) return da > db ? -1 : 1
     const wa = TASK_STATUS_WEIGHT[a.status] ?? 99
     const wb = TASK_STATUS_WEIGHT[b.status] ?? 99
     if (wa !== wb) return wa - wb
