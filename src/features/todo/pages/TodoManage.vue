@@ -148,6 +148,10 @@
             <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
           </select>
         </div>
+        <div v-if="form.status === 'done'" class="todo-field">
+          <label>完成日期</label>
+          <input v-model="form.completedDate" type="date" class="todo-input" />
+        </div>
         <p v-if="taskError" class="todo-error">{{ taskError }}</p>
         <div class="todo-modal-actions">
           <button class="todo-btn ghost" type="button" @click="taskModal = false">取消</button>
@@ -348,18 +352,18 @@ const taskModal = ref(false)
 const editingId = ref(null)
 const taskBusy = ref(false)
 const taskError = ref('')
-const form = ref({ title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: '' })
+const form = ref({ title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: '', completedDate: '' })
 
 function openNewTask() {
   editingId.value = null
   taskError.value = ''
-  form.value = { title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: filterList.value ? Number(filterList.value) : getLastListId() }
+  form.value = { title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: filterList.value ? Number(filterList.value) : getLastListId(), completedDate: '' }
   taskModal.value = true
 }
 function editTask(t) {
   editingId.value = t.id
   taskError.value = ''
-  form.value = { title: t.title, note: t.note || '', dueDate: t.dueDate || '', priority: t.priority, status: t.status || 'pending', listId: t.listId || '' }
+  form.value = { title: t.title, note: t.note || '', dueDate: t.dueDate || '', priority: t.priority, status: t.status || 'pending', listId: t.listId || '', completedDate: t.completedAt ? t.completedAt.slice(0, 10) : '' }
   taskModal.value = true
 }
 async function submitTask() {
@@ -375,7 +379,8 @@ async function submitTask() {
     dueDate: form.value.dueDate || null,
     priority: form.value.priority,
     status: form.value.status,
-    listId: form.value.listId ? Number(form.value.listId) : null
+    listId: form.value.listId ? Number(form.value.listId) : null,
+    completedAt: form.value.status === 'done' ? form.value.completedDate || null : null
   }
   try {
     if (editingId.value) {

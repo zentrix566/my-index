@@ -53,8 +53,18 @@
 
       <!-- 其它视图保持原列表 -->
       <template v-else>
-        <div v-if="tasks.length" class="todo-task-list">
-          <div v-for="t in tasks" :key="t.id" class="todo-task" :class="'status-' + t.status">
+        <div v-if="tasks.length" class="todo-today-layout" :class="{ 'is-today-view': view === 'today_todo' }">
+          <div class="todo-task-column">
+            <div v-if="view === 'today_todo'" class="todo-progress-card">
+              <div class="todo-progress-copy">
+                <span class="todo-progress-kicker">TODAY'S FOCUS</span>
+                <strong>先完成一件最重要的事</strong>
+              </div>
+              <span class="todo-progress-count">{{ todayDoneCount }} / {{ todayTotal }} 已完成</span>
+              <div class="todo-progress-track" aria-hidden="true"><span :style="{ width: `${todayProgress}%` }"></span></div>
+            </div>
+            <div class="todo-task-list">
+              <div v-for="t in tasks" :key="t.id" class="todo-task" :class="'status-' + t.status">
             <!-- 今日待办：点击圆钮直接标记完成，不用下拉 -->
             <button
               v-if="view === 'today_todo'"
@@ -88,14 +98,24 @@
               <button class="todo-icon-btn" type="button" title="编辑" @click="editTask(t)">✎</button>
               <button class="todo-icon-btn danger" type="button" title="删除" @click="removeTask(t)">✕</button>
             </div>
-          </div>
-          <div class="todo-encourage">
-            <span class="todo-encourage-ico" aria-hidden="true">💪</span>
-            <div class="todo-encourage-body">
-              <p class="todo-encourage-title">今日还有 {{ tasks.length }} 项待办</p>
-              <p class="todo-encourage-sub">{{ encourageSlogan }}</p>
+              </div>
             </div>
           </div>
+
+          <aside v-if="view === 'today_todo'" class="todo-overview" aria-label="今日概览">
+            <div class="todo-overview-head">
+              <div><span class="todo-overview-kicker">TODAY</span><h2>今日概览</h2></div>
+              <span class="todo-overview-ring" :style="{ '--progress': todayProgress }">{{ todayProgress }}%</span>
+            </div>
+            <div class="todo-overview-stat main"><strong>{{ tasks.length }}</strong><span>待处理任务</span></div>
+            <div class="todo-overview-grid">
+              <div class="todo-overview-stat high"><strong>{{ priorityCounts.high }}</strong><span>高优先级</span></div>
+              <div class="todo-overview-stat"><strong>{{ priorityCounts.medium }}</strong><span>中优先级</span></div>
+              <div class="todo-overview-stat"><strong>{{ priorityCounts.low }}</strong><span>低优先级</span></div>
+              <div class="todo-overview-stat done"><strong>{{ todayDoneCount }}</strong><span>已经完成</span></div>
+            </div>
+            <p class="todo-overview-tip"><span>✦</span> 从高优先级任务开始，今天会更轻松。</p>
+          </aside>
         </div>
 
         <div v-else class="todo-empty">
@@ -104,6 +124,26 @@
           <p class="todo-empty-hint">或去「管理 → 日程管理」查看全部任务</p>
         </div>
       </template>
+
+      <!-- 底部装饰（仅今日待办有任务时显示） -->
+      <div v-if="view === 'today_todo' && tasks.length" class="todo-bottom-deco" aria-hidden="true">
+        <svg viewBox="0 0 360 80" preserveAspectRatio="xMidYMax meet" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <linearGradient id="deco-grad" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stop-color="#c7d2fe" stop-opacity="0"/>
+              <stop offset="35%" stop-color="#a5b4fc" stop-opacity=".45"/>
+              <stop offset="65%" stop-color="#a5b4fc" stop-opacity=".45"/>
+              <stop offset="100%" stop-color="#c7d2fe" stop-opacity="0"/>
+            </linearGradient>
+          </defs>
+          <path d="M0 55 Q45 30 90 50 T180 48 T270 52 T360 46 V80 H0 Z" fill="url(#deco-grad)"/>
+          <path d="M0 62 Q60 42 120 58 T240 54 T360 60 V80 H0 Z" fill="url(#deco-grad)" opacity=".5"/>
+          <circle cx="72" cy="38" r="3" fill="#a5b4fc" opacity=".35"/>
+          <circle cx="148" cy="28" r="2.5" fill="#c4b5fd" opacity=".3"/>
+          <circle cx="228" cy="36" r="2" fill="#a5b4fc" opacity=".25"/>
+          <circle cx="296" cy="30" r="3.5" fill="#c4b5fd" opacity=".3"/>
+        </svg>
+      </div>
     </div>
 
     <!-- 新建 / 编辑任务弹窗 -->
@@ -132,11 +172,15 @@
             </select>
           </div>
           <div class="todo-field">
-            <label>状态</label>
-            <select v-model="form.status" class="todo-select">
-              <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
-            </select>
-          </div>
+          <label>状态</label>
+          <select v-model="form.status" class="todo-select">
+            <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
+          </select>
+        </div>
+        <div v-if="form.status === 'done'" class="todo-field">
+          <label>完成日期</label>
+          <input v-model="form.completedDate" type="date" class="todo-input" />
+        </div>
         </div>
           <div class="todo-field">
           <label>分组</label>
@@ -232,16 +276,6 @@ function pickSlogan() {
   doneSlogan.value = next
 }
 
-// ===== 今日待办下方的鼓励短句 =====
-const ENCOURAGE_SLOGANS = [
-  '一点一点推进，每完成一项都是对自己的承诺 🌱',
-  '不必急于全部搞定，先挑最容易的开始 ✨',
-  '把今天的待办拆小一点，三件比一件+一件+一件更省心 🪴',
-  '已完成的任务会在「今日已完成」里等着你，留下记号吧 📌',
-  '别忘了给自己留几秒钟，看一眼窗外的光 ☀️'
-]
-const encourageSlogan = ref(ENCOURAGE_SLOGANS[Math.floor(Math.random() * ENCOURAGE_SLOGANS.length)])
-
 // ===== 日期（北京时间）=====
 function beijingToday() {
   const d = new Date(Date.now() + 8 * 3600 * 1000)
@@ -274,6 +308,15 @@ function fmtDateFull(dateKey) {
 const dateKey = beijingToday()
 const dateLabel = fmtDateCn(dateKey)
 const dateLabelFull = fmtDateFull(dateKey)
+const todayDoneTasks = ref([])
+const todayDoneCount = computed(() => todayDoneTasks.value.length)
+const todayTotal = computed(() => tasks.value.length + todayDoneCount.value)
+const todayProgress = computed(() => todayTotal.value ? Math.round((todayDoneCount.value / todayTotal.value) * 100) : 0)
+const priorityCounts = computed(() => tasks.value.reduce((counts, task) => {
+  const priority = ['high', 'medium', 'low'].includes(task.priority) ? task.priority : 'medium'
+  counts[priority] += 1
+  return counts
+}, { high: 0, medium: 0, low: 0 }))
 
 // ===== 轻量 toast =====
 const toastMsg = ref('')
@@ -298,6 +341,12 @@ async function loadTasks() {
     const r = await todoApi.listTasks(view.value)
     // 新加入的任务（id 较大）排在最前
     tasks.value = (r.tasks || []).slice().sort((a, b) => (b.id || 0) - (a.id || 0))
+    if (view.value === 'today_todo') {
+      const done = await todoApi.listTasks('today_done')
+      todayDoneTasks.value = done.tasks || []
+    } else {
+      todayDoneTasks.value = []
+    }
   } catch (e) {
     loadError.value = e.message
   }
@@ -348,6 +397,7 @@ async function toggleDone(t) {
   const ok = await setStatus(t, becomingDone ? 'done' : 'pending')
   if (ok && becomingDone && view.value === 'today_todo') {
     tasks.value = tasks.value.filter((x) => x.id !== t.id)
+    todayDoneTasks.value.unshift(t)
   }
 }
 
@@ -367,7 +417,7 @@ const taskModal = ref(false)
 const editingId = ref(null)
 const taskBusy = ref(false)
 const taskError = ref('')
-const form = ref({ title: '', note: '', dueDate: dateKey, priority: 'medium', status: 'pending', listId: '' })
+const form = ref({ title: '', note: '', dueDate: dateKey, priority: 'medium', status: 'pending', listId: '', completedDate: '' })
 
 function openNewTask() {
   editingId.value = null
@@ -378,7 +428,8 @@ function openNewTask() {
     dueDate: showDate.value ? dateKey : '',
     priority: 'medium',
     status: 'pending',
-    listId: view.value.startsWith('list:') ? Number(view.value.slice(5)) : getLastListId()
+    listId: view.value.startsWith('list:') ? Number(view.value.slice(5)) : '',
+    completedDate: ''
   }
   taskModal.value = true
 }
@@ -391,7 +442,8 @@ function editTask(t) {
     dueDate: t.dueDate || '',
     priority: t.priority,
     status: t.status || 'pending',
-    listId: t.listId || ''
+    listId: t.listId || '',
+    completedDate: t.completedAt ? t.completedAt.slice(0, 10) : ''
   }
   taskModal.value = true
 }
@@ -408,7 +460,8 @@ async function submitTask() {
     dueDate: form.value.dueDate || null,
     priority: form.value.priority,
     status: form.value.status,
-    listId: form.value.listId ? Number(form.value.listId) : null
+    listId: form.value.listId ? Number(form.value.listId) : null,
+    completedAt: form.value.status === 'done' ? form.value.completedDate || null : null
   }
   try {
     if (editingId.value) {
@@ -581,6 +634,57 @@ onMounted(async () => {
   color: #fff;
 }
 
+/* ===== 今日待办：让右侧留白成为概览区，而不是一整片白卡 ===== */
+.todo-progress-card {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 10px 16px;
+  margin-bottom: 14px;
+  padding: 16px 18px;
+  border: 1px solid rgba(99, 102, 241, 0.16);
+  border-radius: 14px;
+  background: linear-gradient(135deg, rgba(238, 242, 255, 0.92), rgba(255, 255, 255, 0.78));
+  box-shadow: 0 8px 24px rgba(99, 102, 241, 0.08);
+}
+.todo-progress-copy { display: flex; flex-direction: column; gap: 3px; }
+.todo-progress-copy strong { font-size: 15px; color: var(--todo-text); }
+.todo-progress-kicker, .todo-overview-kicker {
+  color: #6366f1;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+}
+.todo-progress-count { align-self: center; color: var(--todo-text-soft); font-size: 13px; font-weight: 700; }
+.todo-progress-track { grid-column: 1 / -1; height: 6px; overflow: hidden; border-radius: 999px; background: rgba(99, 102, 241, 0.12); }
+.todo-progress-track span { display: block; height: 100%; min-width: 0; border-radius: inherit; background: linear-gradient(90deg, #6366f1, #8b5cf6); transition: width 0.25s ease; }
+.todo-overview {
+  position: sticky;
+  top: 82px;
+  padding: 19px;
+  border: 1px solid rgba(99, 102, 241, 0.13);
+  border-radius: 16px;
+  background: linear-gradient(150deg, rgba(255, 255, 255, 0.94), rgba(244, 247, 255, 0.88));
+  box-shadow: 0 12px 32px rgba(48, 65, 110, 0.1);
+}
+.todo-overview-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 16px; }
+.todo-overview h2 { margin: 3px 0 0; font-size: 17px; color: var(--todo-text); }
+.todo-overview-ring { display: grid; width: 48px; height: 48px; place-items: center; border-radius: 50%; background: conic-gradient(#6366f1 calc(var(--progress, 0) * 1%), #e8eaff 0); color: #4f46e5; font-size: 12px; font-weight: 800; box-shadow: inset 0 0 0 6px #fff; }
+.todo-overview-stat { display: flex; flex-direction: column; gap: 3px; min-width: 0; padding: 11px; border-radius: 11px; background: rgba(255, 255, 255, 0.62); }
+.todo-overview-stat strong { color: var(--todo-text); font-size: 19px; line-height: 1; }
+.todo-overview-stat span { color: var(--todo-text-soft); font-size: 11px; white-space: nowrap; }
+.todo-overview-stat.main { margin-bottom: 10px; padding: 14px; background: linear-gradient(135deg, #6366f1, #818cf8); }
+.todo-overview-stat.main strong, .todo-overview-stat.main span { color: #fff; }
+.todo-overview-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.todo-overview-stat.high strong { color: #dc2626; }
+.todo-overview-stat.done strong { color: #16a34a; }
+.todo-overview-tip { margin: 15px 0 0; padding-top: 13px; border-top: 1px dashed rgba(99, 102, 241, 0.2); color: var(--todo-text-soft); font-size: 12px; line-height: 1.55; }
+.todo-overview-tip span { color: #8b5cf6; font-weight: 800; }
+
+html[data-theme='dark'] .todo-progress-card,
+html[data-theme='dark'] .todo-overview { background: linear-gradient(145deg, rgba(31, 37, 50, 0.96), rgba(25, 31, 43, 0.94)); border-color: rgba(129, 140, 248, 0.2); }
+html[data-theme='dark'] .todo-overview-stat { background: rgba(255, 255, 255, 0.04); }
+html[data-theme='dark'] .todo-overview-ring { box-shadow: inset 0 0 0 6px #1f2530; }
+
 .todo-toast {
   position: fixed;
   bottom: 28px;
@@ -605,5 +709,24 @@ onMounted(async () => {
   .todo-done-card-body { padding: 18px 16px 14px; gap: 13px; }
   .todo-done-item { font-size: 15px; }
   .todo-done-card-foot { padding: 12px 14px; font-size: 12px; }
+  .todo-progress-card { padding: 14px; }
+  .todo-overview { position: static; padding: 16px; }
+}
+
+/* ===== 底部波浪装饰 ===== */
+.todo-main {
+  display: flex;
+  flex-direction: column;
+}
+.todo-bottom-deco {
+  margin-top: auto;
+  padding-top: 20px;
+  width: 100%;
+  pointer-events: none;
+}
+.todo-bottom-deco svg {
+  display: block;
+  width: 100%;
+  height: auto;
 }
 </style>

@@ -27,5 +27,6 @@ export {
   loadTodoCalendar,
   loadTodoManage,
   loadTodoAi,
-  loadTodoGroups
+  loadTodoGroups,
+  loadTodoProfile
 } from './todo/index.js'

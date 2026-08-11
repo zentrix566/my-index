@@ -1,7 +1,7 @@
 <template>
   <div class="app-shell">
     <a class="skip-link" href="#main-content">跳到主要内容</a>
-    <header class="site-header">
+    <header class="site-header" :class="{ 'site-header--hidden': headerHidden }">
       <nav class="nav-container" aria-label="主导航">
         <RouterLink class="logo" to="/">Zentrix Index</RouterLink>
         <button
@@ -17,6 +17,29 @@
         </button>
         <ul class="nav-links" :class="{ active: isMenuOpen }">
           <li><RouterLink to="/" @click="closeMenu">首页</RouterLink></li>
+          <li class="nav-dropdown nav-project-menu">
+            <details ref="personalMenu" @toggle="handleDropdownToggle('personal')">
+              <summary>
+                个人项目
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+                  <path d="m6 9 6 6 6-6" />
+                </svg>
+              </summary>
+              <div class="nav-dropdown-menu">
+                <RouterLink
+                  v-for="app in featuredPersonalApps"
+                  :key="app.to"
+                  :to="app.to"
+                  @click="closeNavigationMenus"
+                >
+                  {{ app.title }}
+                </RouterLink>
+                <RouterLink to="/projects#personal-projects" @click="closeNavigationMenus">
+                  更多项目 →
+                </RouterLink>
+              </div>
+            </details>
+          </li>
           <li class="nav-dropdown nav-project-menu">
             <details ref="workMenu" @toggle="handleDropdownToggle('work')">
               <summary>
@@ -34,24 +57,6 @@
                 >
                   {{ project.title }}
                 </RouterLink>
-              </div>
-            </details>
-          </li>
-          <li class="nav-dropdown nav-project-menu">
-            <details ref="personalMenu" @toggle="handleDropdownToggle('personal')">
-              <summary>
-                个人项目
-                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-                  <path d="m6 9 6 6 6-6" />
-                </svg>
-              </summary>
-              <div class="nav-dropdown-menu">
-                <RouterLink to="/hearthstone" @click="closeNavigationMenus">炉石成就查看器</RouterLink>
-                <RouterLink to="/willpower" @click="closeNavigationMenus">心魔</RouterLink>
-                <RouterLink to="/todo" @click="closeNavigationMenus">日程管理</RouterLink>
-                <RouterLink to="/dream" @click="closeNavigationMenus">黄粱一梦</RouterLink>
-                <RouterLink to="/hearthstone/frog" @click="closeNavigationMenus">蛙生模拟器</RouterLink>
-                <RouterLink to="/projects#personal-projects" @click="closeNavigationMenus">更多项目</RouterLink>
               </div>
             </details>
           </li>
@@ -112,9 +117,12 @@ import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from './auth/useAuth.js'
 import { useTheme } from './composables/useTheme.js'
 import { projects } from './data/projects.js'
+import { vueApps } from './data/vueApps.js'
 
 const year = new Date().getFullYear()
 const isMenuOpen = ref(false)
+const headerHidden = ref(false)
+const lastScrollY = ref(0)
 const workMenu = ref(null)
 const personalMenu = ref(null)
 const accountMenu = ref(null)
@@ -122,7 +130,15 @@ const route = useRoute()
 const router = useRouter()
 const { user, init, logout } = useAuth()
 const { theme, toggleTheme } = useTheme()
-const workProjectLinks = projects.filter((project) => project.group === '工作项目').slice(0, 3)
+const workProjectLinks = projects.filter((project) => project.group === '工作项目')
+
+// 顶栏「个人项目」下拉只展示精选入口，其余统一收进「更多项目」
+const featuredPersonalApps = [
+  { title: '炉石传说成就查看器', to: '/hearthstone' },
+  { title: '日常管理', to: '/todo' },
+  { title: '蛙生模拟器', to: '/hearthstone/frog' },
+  { title: '黄粱一梦', to: '/dream' }
+]
 
 const displayName = computed(() => user.value?.displayName || user.value?.username || '账号')
 const loginTarget = computed(() => ({
@@ -169,18 +185,40 @@ const handleDocumentClick = (event) => {
   if (!event.target.closest('.nav-dropdown')) closeNavigationMenus()
 }
 
+// 滚动时自动隐藏/显示顶栏：往下滚隐藏，往上滚显示（首页不隐藏）
+const SCROLL_THRESHOLD = 8
+const handleScroll = () => {
+  const y = window.scrollY
+  if (y <= 0) { headerHidden.value = false; lastScrollY.value = y; return }
+  const delta = y - lastScrollY.value
+  if (Math.abs(delta) < SCROLL_THRESHOLD) return
+  // 首页始终显示顶栏；子页面才自动隐藏
+  if (route.path !== '/') {
+    headerHidden.value = delta > 0
+  } else {
+    headerHidden.value = false
+  }
+  lastScrollY.value = y
+}
+
 watch(() => route.fullPath, closeNavigationMenus)
 
 onMounted(() => {
   init()
+  lastScrollY.value = window.scrollY
+  window.addEventListener('scroll', handleScroll, { passive: true })
   window.addEventListener('keydown', handleKeydown)
   document.addEventListener('click', handleDocumentClick)
 })
 onBeforeUnmount(() => {
+  window.removeEventListener('scroll', handleScroll)
   window.removeEventListener('keydown', handleKeydown)
   document.removeEventListener('click', handleDocumentClick)
 })
 </script>
 
 <style scoped>
+.site-header--hidden {
+  transform: translateY(-100%);
+}
 </style>

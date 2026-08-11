@@ -207,7 +207,7 @@ router.post('/tasks', async (req, res) => {
 router.patch('/tasks/:id', async (req, res) => {
   const id = parseInt(req.params.id, 10)
   if (!Number.isInteger(id)) return res.status(400).json({ error: '任务不存在' })
-  const { title, note, dueDate, priority, isHarvest, listId, status, position } = req.body || {}
+  const { title, note, dueDate, priority, isHarvest, listId, status, position, completedAt } = req.body || {}
   try {
     const current = await getTask(req.userId, id)
     if (!current) return res.status(404).json({ error: '任务不存在' })
@@ -252,6 +252,12 @@ router.patch('/tasks/:id', async (req, res) => {
     if (status !== undefined) {
       if (!VALID_STATUS.has(status)) return res.status(400).json({ error: '状态非法' })
       patch.status = status
+    }
+    if (completedAt !== undefined) {
+      if (completedAt !== null && completedAt !== '' && !/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}.*)?$/.test(completedAt)) {
+        return res.status(400).json({ error: '完成日期格式应为 YYYY-MM-DD' })
+      }
+      patch.completedAt = completedAt
     }
     const row = await updateTask(req.userId, id, patch)
     res.json({ ok: true, task: serializeTask(row) })

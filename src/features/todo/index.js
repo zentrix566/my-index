@@ -9,3 +9,4 @@ export const loadTodoCalendar = () => loadWithStyles(() => import('./pages/TodoC
 export const loadTodoManage = () => loadWithStyles(() => import('./pages/TodoManage.vue'))
 export const loadTodoAi = () => loadWithStyles(() => import('./pages/TodoAiAnalysis.vue'))
 export const loadTodoGroups = () => loadWithStyles(() => import('./pages/TodoGroups.vue'))
+export const loadTodoProfile = () => loadWithStyles(() => import('./pages/TodoProfile.vue'))

@@ -327,6 +327,7 @@ a {
   position: sticky;
   top: 0;
   z-index: 20;
+  transition: transform 0.25s ease;
 }
 
 .nav-container {
@@ -655,10 +656,9 @@ label.button {
 }
 
 .signal-card {
-  align-items: baseline;
-  display: grid;
-  gap: 4px;
-  grid-template-columns: 1fr auto;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
   padding: 22px;
 }
 
@@ -679,7 +679,10 @@ a.signal-card:hover {
   font-size: 2.25rem;
 }
 
-.signal-card span:last-child {
+.signal-figure {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
   color: var(--muted);
 }
 

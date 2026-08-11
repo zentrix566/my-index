@@ -10,23 +10,15 @@
             </router-link>
             <p class="cl-eyebrow"><span class="hs-live-dot" aria-hidden="true"></span> Card Lookup</p>
             <h1>炉石卡牌查询</h1>
-            <p class="cl-sub">输入卡牌名称或 dbfId，查看卡图、效果与背景描述；并自检是否已正确入库：卡牌库登记、卡图 manifest 登记、OSS 图片可访问。</p>
+            <p class="cl-sub">输入卡牌名称或 dbfId，查看卡图、效果与背景描述。开启右上角「开发模式」可显示入库自检（卡牌库 / manifest / OSS）与资源路径等调试信息。</p>
           </div>
-          <button
-            type="button"
-            class="cl-theme"
-            @click="toggleTheme"
-            :aria-label="hsTheme === 'dark' ? '切换到明亮主题' : '切换到暗色主题'"
-            :title="hsTheme === 'dark' ? '切换到明亮主题' : '切换到暗色主题'"
-          >
-            <svg v-if="hsTheme === 'dark'" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
-            </svg>
-            <svg v-else width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
-            </svg>
-            {{ hsTheme === 'dark' ? '明亮' : '暗色' }}
-          </button>
+          <label class="cl-dev-toggle">
+            <span class="cl-dev-toggle-text">开发模式</span>
+            <span class="cl-switch">
+              <input type="checkbox" v-model="devMode" />
+              <span class="cl-switch-track"><span class="cl-switch-thumb"></span></span>
+            </span>
+          </label>
         </div>
 
         <div class="cl-card">
@@ -49,7 +41,7 @@
         <div v-if="results.length" class="cl-results">
           <p class="cl-count">共找到 {{ results.length }} 张匹配卡牌<span v-if="capped">（仅显示前 {{ LIMIT }} 张，请缩小关键词）</span></p>
           <div v-for="card in results" :key="card.id" class="cl-result">
-            <div class="cl-checks">
+            <div v-if="devMode" class="cl-checks">
               <div class="cl-check" :class="card.registered ? 'ok' : 'bad'">
                 <span class="cl-check-ico">{{ card.registered ? '✓' : '✕' }}</span>
                 卡牌库登记（cards-db）：{{ card.registered ? '已登记' : '未登记' }}
@@ -85,7 +77,7 @@
                   <h4>背景描述</h4>
                   <p class="cl-flavor">{{ card.flavorText || '—' }}</p>
                 </div>
-                <div class="cl-field">
+                <div v-if="devMode" class="cl-field">
                   <h4>资源路径</h4>
                   <p class="cl-path">full: {{ card.ossFull }}</p>
                   <p class="cl-path">crop: {{ card.ossCrop }}</p>
@@ -100,18 +92,20 @@
 </template>
 
 <script setup>
-import { ref, computed } from 'vue'
+import { ref, computed, watch } from 'vue'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 import cardsDb from '../data/cards-db.json' with { type: 'json' }
 import { getLocalCardImages, normalizeRarity, getRarityColor, RARITY_LABELS } from '../utils/cardImages.js'
 
-const { hsTheme, toggleTheme } = useHearthstoneTheme()
+const { hsTheme } = useHearthstoneTheme()
 
 const query = ref('')
 const results = ref([])
 const error = ref('')
 const LIMIT = 4
 const capped = computed(() => results.value.length >= LIMIT)
+// 开发模式：默认关闭，开启后显示入库自检与资源路径等调试信息
+const devMode = ref(false)
 
 function rarityColorOf(card) {
   return getRarityColor(card.rarityId)
@@ -150,8 +144,13 @@ function lookup() {
       ossState: 'pending'
     }
   })
-  results.value.forEach(probeOss)
+  if (devMode.value) results.value.forEach(probeOss)
 }
+
+// 开启开发模式时，对已有结果补跑 OSS 可达性探测（诊断信息）
+watch(devMode, (on) => {
+  if (on) results.value.forEach(probeOss)
+})
 
 // 用隐藏 Image 实际请求 OSS 图，确认线上可访问（4s 超时判为失败）
 function probeOss(card) {
@@ -228,21 +227,53 @@ function probeOss(card) {
   font-size: 14px;
   line-height: 1.6;
 }
-.cl-theme {
+.cl-dev-toggle {
   flex: none;
   display: inline-flex;
   align-items: center;
-  gap: 6px;
-  padding: 8px 12px;
-  border: 1px solid #e5e7eb;
-  border-radius: 10px;
-  background: #fff;
-  color: #374151;
+  gap: 8px;
   font-size: 13px;
+  color: #6b7280;
+  cursor: pointer;
+  user-select: none;
+}
+.cl-dev-toggle-text {
+  white-space: nowrap;
+}
+.cl-switch {
+  position: relative;
+  display: inline-flex;
+}
+.cl-switch input {
+  position: absolute;
+  inset: 0;
+  margin: 0;
+  opacity: 0;
   cursor: pointer;
 }
-.cl-theme:hover {
-  border-color: #cbd5e1;
+.cl-switch-track {
+  width: 38px;
+  height: 22px;
+  border-radius: 999px;
+  background: #d1d5db;
+  padding: 0 2px;
+  display: inline-flex;
+  align-items: center;
+  transition: background 0.18s ease;
+}
+.cl-switch-thumb {
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+  transition: transform 0.18s ease;
+}
+.cl-switch input:checked + .cl-switch-track {
+  background: #2563eb;
+}
+.cl-switch input:checked + .cl-switch-track .cl-switch-thumb {
+  transform: translateX(16px);
 }
 .cl-card {
   background: #fff;
@@ -443,10 +474,17 @@ function probeOss(card) {
 .hs-page[data-hs-theme='dark'] .cl-count {
   color: #9aa4b2;
 }
-.hs-page[data-hs-theme='dark'] .cl-theme {
-  background: #23272f;
-  border-color: #333a44;
-  color: #e6e8eb;
+.hs-page[data-hs-theme='dark'] .cl-dev-toggle {
+  color: #9aa4b2;
+}
+.hs-page[data-hs-theme='dark'] .cl-switch-track {
+  background: #333a44;
+}
+.hs-page[data-hs-theme='dark'] .cl-switch-thumb {
+  background: #cbd5e1;
+}
+.hs-page[data-hs-theme='dark'] .cl-switch input:checked + .cl-switch-track {
+  background: #2563eb;
 }
 .hs-page[data-hs-theme='dark'] .cl-card,
 .hs-page[data-hs-theme='dark'] .cl-card-detail {

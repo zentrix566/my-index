@@ -41,6 +41,10 @@
           <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
         </select>
       </div>
+      <div v-if="form.status === 'done'" class="todo-field">
+        <label>完成日期</label>
+        <input v-model="form.completedDate" type="date" class="todo-input" />
+      </div>
       <div class="todo-field">
         <label>分组</label>
         <select v-model="form.listId" class="todo-select">
@@ -73,7 +77,7 @@ const busy = ref(false)
 const error = ref('')
 const isEdit = ref(false)
 const editId = ref(null)
-const form = ref({ title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: '' })
+const form = ref({ title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: '', completedDate: '' })
 
 function open(initial = null) {
   error.value = ''
@@ -86,7 +90,8 @@ function open(initial = null) {
     dueDate: initial?.dueDate || '',
     priority: initial?.priority || 'medium',
     status: initial?.status || 'pending',
-    listId: initial?.listId || getLastListId()
+    listId: initial?.listId || getLastListId(),
+    completedDate: initial?.completedAt ? initial.completedAt.slice(0, 10) : ''
   }
   visible.value = true
 }
@@ -109,7 +114,8 @@ function submit() {
     dueDate: form.value.dueDate || null,
     priority: form.value.priority,
     status: form.value.status,
-    listId: form.value.listId ? Number(form.value.listId) : null
+    listId: form.value.listId ? Number(form.value.listId) : null,
+    completedAt: form.value.status === 'done' ? form.value.completedDate || null : null
   }
   if (payload.listId) setLastListId(payload.listId)
   emit('save', { payload, id: editId.value })

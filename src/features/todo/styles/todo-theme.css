@@ -172,7 +172,6 @@ html[data-theme='dark'] {
 }
 
 .todo-new-group {
-  margin-top: auto;
   display: flex;
   align-items: center;
   gap: 8px;
@@ -265,6 +264,15 @@ html[data-theme='dark'] .todo-done-check {
   border-color: rgba(94, 234, 212, 0.45);
 }
 html[data-theme='dark'] .todo-done-check-inner { color: #5eead4; }
+html[data-theme='dark'] .todo-task {
+  background: linear-gradient(115deg, var(--todo-panel) 0%, var(--todo-panel) 72%, rgba(37, 54, 86, 0.6) 100%);
+}
+.todo-sidebar-footer {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
 
 .todo-header {
   display: flex;
@@ -337,19 +345,33 @@ html[data-theme='dark'] .todo-done-check-inner { color: #5eead4; }
   flex-direction: column;
   gap: 10px;
 }
+.todo-today-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 800px);
+  gap: 22px;
+  align-items: start;
+}
+.todo-today-layout.is-today-view {
+  grid-template-columns: minmax(0, 800px) minmax(250px, 320px);
+}
+.todo-task-column { min-width: 0; }
 .todo-task {
   display: flex;
   align-items: flex-start;
   gap: 12px;
   padding: 14px 16px;
-  background: var(--todo-panel);
+  background: linear-gradient(115deg, var(--todo-panel) 0%, var(--todo-panel) 72%, rgba(234, 241, 255, 0.78) 100%);
   border: 1px solid var(--todo-border);
   border-left: 4px solid transparent;
   border-radius: var(--todo-radius);
   box-shadow: var(--todo-shadow);
-  transition: border-color 0.15s;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
 }
-.todo-task:hover { border-color: var(--todo-border-strong); }
+.todo-task:hover {
+  border-color: var(--todo-border-strong);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 22px rgba(42, 63, 96, 0.11);
+}
 .todo-task.status-pending { border-left-color: #3b82f6; }
 .todo-task.status-in_progress { border-left-color: #f59e0b; }
 .todo-task.status-deferred { border-left-color: #8b5cf6; }
@@ -591,4 +613,6 @@ html[data-theme='dark'] .todo-done-check-inner { color: #5eead4; }
   }
   .todo-main { padding: 18px 16px; }
   .todo-new-group { margin-top: 0; }
+  .todo-today-layout,
+  .todo-today-layout.is-today-view { grid-template-columns: 1fr; }
 }

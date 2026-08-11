@@ -193,6 +193,18 @@ export function dateKeyOf(iso) {
   return (iso || '').slice(0, 10)
 }
 
+/** 将前端传入的"完成日期"归一化为北京时间 ISO（带 +08:00）。
+ *  - 纯日期 YYYY-MM-DD → 当天 00:00:00.000+08:00
+ *  - 完整 ISO（含 T 与时间）→ 直接采用
+ *  - 非法格式返回 false，由调用方抛错。 */
+export function normalizeCompletedAt(value) {
+  if (typeof value !== 'string') return false
+  const v = value.trim()
+  if (/^\d{4}-\d{2}-\d{2}$/.test(v)) return `${v}T00:00:00.000+08:00`
+  if (/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}/.test(v)) return v
+  return false
+}
+
 // ========== 分组（todo_lists）==========
 
 const LIST_NAME_MAX = 20
@@ -418,9 +430,21 @@ export async function updateTask(userId, id, patch) {
       i += 1
     }
   }
-  // 完成/取消完成：自动维护 completed_at
-  // 切到 done 写入完成时间；切到任何非 done 状态（含已取消）则清空
-  if (patch.status === 'done') {
+  // 完成时间维护：
+  // - 显式传入 completedAt（前端仅在"已完成"时提供，并已预填原完成日期）→ 以传入值为准
+  // - 状态切到 done 且未传 completedAt → 自动写 nowIso()
+  // - 状态切到非 done（含已取消）→ 清空
+  if (patch.completedAt !== undefined) {
+    if (patch.completedAt === null || patch.completedAt === '') {
+      sets.push('completed_at = NULL')
+    } else {
+      const norm = normalizeCompletedAt(patch.completedAt)
+      if (norm === false) throw new Error('完成日期格式应为 YYYY-MM-DD 或 ISO 时间')
+      sets.push(`completed_at = $${i}`)
+      params.push(norm)
+      i += 1
+    }
+  } else if (patch.status === 'done') {
     sets.push(`completed_at = $${i}`)
     params.push(nowIso())
     i += 1

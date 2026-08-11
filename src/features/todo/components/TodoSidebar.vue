@@ -26,6 +26,9 @@
       <RouterLink to="/todo/groups" class="todo-nav-item">
         <span class="todo-nav-ico">⚙️</span>分组设置
       </RouterLink>
+      <RouterLink to="/todo/profile" class="todo-nav-item">
+        <span class="todo-nav-ico">◉</span>个人中心
+      </RouterLink>
     </nav>
 
     <div class="todo-section-title">我的分组</div>
@@ -41,7 +44,9 @@
       <p v-if="!lists.length" class="todo-empty-hint" style="padding: 0 10px">还没有分组，点下方新建</p>
     </nav>
 
-    <button class="todo-new-group" type="button" @click="$emit('new-group')">＋ 新建分组</button>
+    <div class="todo-sidebar-footer">
+      <button class="todo-new-group" type="button" @click="$emit('new-group')">＋ 新建分组</button>
+    </div>
   </aside>
 </template>
 

@@ -13,29 +13,13 @@
       </div>
       <div class="hero-panel" aria-label="站点模块概览">
         <RouterLink class="signal-card" to="/projects">
-          <span class="signal-label">工程实践</span>
-          <strong>{{ projects.length }}</strong>
-          <span>个项目案例</span>
+          <span class="signal-label">个人作品</span>
+          <span class="signal-figure"><strong>{{ vueApps.length }}</strong> 个页面与工具</span>
         </RouterLink>
         <RouterLink class="signal-card" to="/projects">
-          <span class="signal-label">个人作品</span>
-          <strong>{{ vueApps.length }}</strong>
-          <span>个页面与工具</span>
+          <span class="signal-label">工程实践</span>
+          <span class="signal-figure"><strong>{{ projects.length }}</strong> 个项目案例</span>
         </RouterLink>
-      </div>
-    </div>
-  </section>
-
-  <section class="section">
-    <div class="container">
-      <div class="section-heading">
-        <p class="eyebrow">运维 · DevOps · AIOps</p>
-        <h2>工程实践与项目复盘</h2>
-        <p>从 Linux 智能诊断、CI/CD 发布到上云迁移，记录可以复用的工程方案与实践经验。</p>
-      </div>
-      <ProjectGrid :projects="projects" />
-      <div class="section-more">
-        <RouterLink class="button secondary" to="/projects">查看全部工作项目 →</RouterLink>
       </div>
     </div>
   </section>
@@ -50,6 +34,20 @@
       <VueAppGrid :apps="vueApps" />
       <div class="section-more">
         <RouterLink class="button secondary" to="/projects">进入项目索引 →</RouterLink>
+      </div>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="container">
+      <div class="section-heading">
+        <p class="eyebrow">运维 · DevOps · AIOps</p>
+        <h2>工程实践与项目复盘</h2>
+        <p>从 Linux 智能诊断、CI/CD 发布到上云迁移，记录可以复用的工程方案与实践经验。</p>
+      </div>
+      <ProjectGrid :projects="projects" />
+      <div class="section-more">
+        <RouterLink class="button secondary" to="/projects">查看全部工作项目 →</RouterLink>
       </div>
     </div>
   </section>

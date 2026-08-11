@@ -24,7 +24,8 @@ import {
   loadTodoCalendar,
   loadTodoManage,
   loadTodoAi,
-  loadTodoGroups
+  loadTodoGroups,
+  loadTodoProfile
 } from '../features/index.js'
 
 // 路由级懒加载：每个页面单独成 chunk，首屏只加载当前路由所需的代码，
@@ -83,6 +84,7 @@ const routes = [
   { path: '/todo/manage', name: 'todo-manage', component: loadTodoManage, meta: { title: '日程管理 | 日程管理' } },
   { path: '/todo/ai', name: 'todo-ai', component: loadTodoAi, meta: { title: '日程 AI 分析 | 日程管理' } },
   { path: '/todo/groups', name: 'todo-groups', component: loadTodoGroups, meta: { title: '分组设置 | 日程管理' } },
+  { path: '/todo/profile', name: 'todo-profile', component: loadTodoProfile, meta: { title: '个人中心 | 日程管理' } },
   { path: '/todo/changelog', redirect: '/changelog?category=todo' },
   { path: '/todo/login', redirect: '/login?redirect=/todo&source=todo' },
   { path: '/dream', name: 'dream', component: loadDreamPage, meta: { title: '黄粱一梦 | Zentrix' } },

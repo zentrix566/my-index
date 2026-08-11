@@ -37,7 +37,7 @@
           <i class="sum-dot total"></i>合计 <b>{{ periodStats.total }}</b>
         </span>
         <span class="sum-item rate" v-if="periodStats.total > 0">
-          完成率 <b>{{ Math.round((periodStats.done / periodStats.total) * 100) }}%</b>
+          完成率 <b>{{ periodStats.completionRate }}%</b>
         </span>
       </div>
 
@@ -342,17 +342,32 @@ const cells = computed(() => {
 
 // 当前时间段统计（月视图=本月，周视图=本周）
 const periodStats = computed(() => {
-  let active = 0, done = 0, cancelled = 0
+  let active = 0, done = 0, cancelled = 0, eligibleActive = 0, eligibleDone = 0
   const source = mode.value === 'month' ? cells.value.filter((c) => !c.isOut) : weekDays.value
   for (const c of source) {
     for (const t of c.tasks) {
-      if (t.status === 'done') done++
+      if (t.status === 'done') {
+        done++
+        if (c.key <= todayKey) eligibleDone++
+      }
       else if (t.status === 'cancelled') cancelled++
-      else active++
+      else {
+        active++
+        if (c.key <= todayKey) eligibleActive++
+      }
     }
   }
   const total = active + done + cancelled
-  return total > 0 ? { pending: active, done, cancelled, total } : null
+  const eligibleTotal = eligibleActive + eligibleDone
+  return total > 0
+    ? {
+        pending: active,
+        done,
+        cancelled,
+        total,
+        completionRate: eligibleTotal ? Math.round((eligibleDone / eligibleTotal) * 100) : 0
+      }
+    : null
 })
 
 // 周视图：以今天所在周的周一为锚点，按 weekOffset 前后翻周
@@ -479,7 +494,7 @@ function openNewTask(date) {
   taskModalRef.value?.open({ title: '', note: '', dueDate: date || todayKey, priority: 'medium', listId: '' })
 }
 function editTask(t) {
-  taskModalRef.value?.open({ id: t.id, title: t.title, note: t.note || '', dueDate: t.dueDate || '', priority: t.priority, listId: t.listId || '' })
+  taskModalRef.value?.open({ id: t.id, title: t.title, note: t.note || '', dueDate: t.dueDate || '', priority: t.priority, listId: t.listId || '', completedAt: t.completedAt || '' })
 }
 async function handleSave({ payload, id }) {
   try {
@@ -520,7 +535,12 @@ onMounted(async () => {
   align-items: center;
   justify-content: space-between;
   gap: 16px;
-  margin-bottom: 18px;
+  margin-bottom: 14px;
+  padding: 15px 18px;
+  border: 1px solid rgba(99, 102, 241, 0.16);
+  border-radius: 16px;
+  background: linear-gradient(120deg, rgba(238, 242, 255, 0.92), rgba(255, 255, 255, 0.78));
+  box-shadow: 0 10px 28px rgba(60, 72, 133, 0.07);
   flex-wrap: wrap;
 }
 .todo-cal-month-ctrl {
@@ -530,11 +550,11 @@ onMounted(async () => {
   flex-wrap: wrap;
 }
 .todo-cal-month-label {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 800;
-  min-width: 100px;
+  min-width: 148px;
   text-align: center;
-  letter-spacing: 0.5px;
+  letter-spacing: 0.2px;
 }
 .todo-cal-topbar-right {
   display: flex;
@@ -544,50 +564,53 @@ onMounted(async () => {
 }
 .todo-cal-segment {
   display: inline-flex;
-  border: 1px solid var(--todo-border-strong);
-  border-radius: 8px;
-  overflow: hidden;
-  background: var(--todo-panel);
+  gap: 3px;
+  padding: 3px;
+  border: 1px solid rgba(99, 102, 241, 0.13);
+  border-radius: 10px;
+  background: rgba(255, 255, 255, 0.65);
 }
 .todo-cal-segment button {
   border: none;
-  background: none;
-  padding: 7px 16px;
+  border-radius: 7px;
+  background: transparent;
+  padding: 7px 14px;
   font-size: 13px;
   cursor: pointer;
   color: var(--todo-text-soft);
   transition: all 0.15s;
 }
 .todo-cal-segment button.active {
-  background: var(--todo-primary-soft);
-  color: var(--todo-primary);
+  background: linear-gradient(135deg, #6366f1, #818cf8);
+  color: #fff;
   font-weight: 700;
+  box-shadow: 0 3px 8px rgba(99, 102, 241, 0.24);
 }
 
 /* ===== 月份统计摘要 ===== */
 .todo-cal-summary {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-bottom: 14px;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 9px;
+  margin-bottom: 16px;
 }
 .todo-cal-summary .sum-item {
   font-size: 12px;
   font-weight: 600;
-  background: var(--todo-panel);
-  border: 1px solid var(--todo-border);
-  border-radius: 999px;
-  padding: 5px 12px;
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(99, 102, 241, 0.11);
+  border-radius: 12px;
+  padding: 10px 12px;
   color: var(--todo-text);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.04);
+  box-shadow: 0 5px 14px rgba(45, 61, 110, 0.05);
   display: inline-flex;
   align-items: center;
   gap: 5px;
 }
 .todo-cal-summary .sum-item b {
-  color: var(--todo-primary);
-  font-size: 14px;
+  margin-left: auto;
+  color: #4f46e5;
+  font-size: 17px;
   font-variant-numeric: tabular-nums;
 }
 .todo-cal-summary .sum-item.rate b {
@@ -609,18 +632,19 @@ onMounted(async () => {
 
 /* ===== 日历主区域（渐变背景卡片） ===== */
 .todo-cal-section {
-  background: linear-gradient(180deg, var(--todo-primary-soft), var(--todo-panel) 40%);
-  border: 1.5px solid var(--todo-primary);
-  border-radius: 16px;
-  padding: 14px 16px 16px;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(248, 250, 255, 0.72));
+  border: 1px solid rgba(99, 102, 241, 0.14);
+  border-radius: 18px;
+  padding: 16px;
+  box-shadow: 0 14px 35px rgba(43, 55, 105, 0.08);
 }
 
 /* ===== 月份卡片 ===== */
 .todo-cal-month-card {
-  background: var(--todo-panel);
-  border: 1px solid var(--todo-border);
-  border-radius: 12px;
-  padding: 10px 10px 8px;
+  background: rgba(255, 255, 255, 0.52);
+  border: 1px solid rgba(99, 102, 241, 0.1);
+  border-radius: 14px;
+  padding: 13px 12px 11px;
 }
 .todo-cal-month-card-title {
   font-size: 14px;
@@ -652,27 +676,29 @@ onMounted(async () => {
 .todo-cal-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 3px;
+  gap: 5px;
 }
 
 /* ===== 日期单元格 ===== */
 .todo-cal-cell {
   position: relative;
-  min-height: 58px;
-  border: 1px solid var(--todo-border);
-  border-radius: 8px;
-  padding: 4px 5px;
+  min-height: 82px;
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 10px;
+  padding: 7px;
   box-sizing: border-box;
   background: var(--todo-panel);
   display: flex;
   flex-direction: column;
   gap: 2px;
   cursor: pointer;
-  transition: all 0.15s;
+  transition: transform 0.15s, border-color 0.15s, box-shadow 0.15s;
 }
 .todo-cal-cell:hover {
-  border-color: var(--todo-primary);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.12);
+  z-index: 1;
+  border-color: #818cf8;
+  transform: translateY(-2px);
+  box-shadow: 0 7px 16px rgba(79, 70, 229, 0.12);
 }
 .todo-cal-cell.out {
   background: rgba(107, 114, 128, 0.04);
@@ -684,8 +710,9 @@ onMounted(async () => {
   background: var(--todo-primary-soft);
 }
 .todo-cal-cell.today {
-  outline: 2px solid var(--todo-primary);
-  outline-offset: 1px;
+  border-color: #6366f1;
+  background: linear-gradient(145deg, rgba(238, 242, 255, 0.98), rgba(255, 255, 255, 0.92));
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.18);
 }
 .todo-cal-cell.past {
   background: rgba(107, 114, 128, 0.06);
@@ -710,6 +737,11 @@ onMounted(async () => {
   margin-bottom: 2px;
 }
 .todo-cal-daynum {
+  display: inline-grid;
+  width: 23px;
+  height: 23px;
+  place-items: center;
+  border-radius: 7px;
   font-size: 12px;
   font-weight: 700;
   color: var(--todo-text);
@@ -729,6 +761,7 @@ onMounted(async () => {
 .todo-cal-cell.all-done .todo-cal-badge {
   background: var(--todo-success);
 }
+.todo-cal-cell.today .todo-cal-daynum { background: #6366f1; color: #fff; }
 
 /* 单元格内任务列表 */
 .todo-cal-task-list {
@@ -742,9 +775,9 @@ onMounted(async () => {
   align-items: center;
   gap: 3px;
   font-size: 10px;
-  padding: 1px 4px;
-  border-radius: 4px;
-  background: rgba(59, 130, 246, 0.08);
+  padding: 3px 5px;
+  border-radius: 5px;
+  background: rgba(99, 102, 241, 0.09);
   color: var(--todo-text);
   white-space: nowrap;
   overflow: hidden;
@@ -816,14 +849,14 @@ onMounted(async () => {
 .todo-cal-week-grid {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
-  gap: 6px;
+  gap: 9px;
 }
 .todo-cal-week-day {
-  border: 1px solid var(--todo-border);
-  border-radius: 10px;
-  padding: 8px;
-  min-height: 150px;
-  background: var(--todo-panel);
+  border: 1px solid rgba(148, 163, 184, 0.24);
+  border-radius: 14px;
+  padding: 11px;
+  min-height: 185px;
+  background: rgba(255, 255, 255, 0.76);
   cursor: pointer;
   transition: all 0.15s;
   display: flex;
@@ -831,12 +864,14 @@ onMounted(async () => {
   gap: 5px;
 }
 .todo-cal-week-day:hover {
-  border-color: var(--todo-primary);
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
+  border-color: #818cf8;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(79, 70, 229, 0.11);
 }
 .todo-cal-week-day.today {
-  outline: 2px solid var(--todo-primary);
-  outline-offset: 1px;
+  border-color: #6366f1;
+  background: linear-gradient(150deg, rgba(238, 242, 255, 0.96), rgba(255, 255, 255, 0.88));
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.16);
 }
 .todo-cal-week-day.weekend {
   background: var(--todo-primary-soft);
@@ -926,12 +961,29 @@ onMounted(async () => {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
 }
 
+html[data-theme='dark'] .todo-cal-topbar,
+html[data-theme='dark'] .todo-cal-section,
+html[data-theme='dark'] .todo-cal-month-card,
+html[data-theme='dark'] .todo-cal-week-day,
+html[data-theme='dark'] .todo-cal-cell,
+html[data-theme='dark'] .todo-cal-summary .sum-item {
+  background: linear-gradient(145deg, rgba(31, 37, 50, 0.96), rgba(25, 31, 43, 0.94));
+  border-color: rgba(129, 140, 248, 0.2);
+}
+html[data-theme='dark'] .todo-cal-segment { background: rgba(255, 255, 255, 0.05); border-color: rgba(129, 140, 248, 0.2); }
+html[data-theme='dark'] .todo-cal-cell.today,
+html[data-theme='dark'] .todo-cal-week-day.today { background: linear-gradient(145deg, rgba(42, 48, 79, 0.98), rgba(31, 37, 50, 0.98)); }
+html[data-theme='dark'] .todo-cal-cell.weekend,
+html[data-theme='dark'] .todo-cal-week-day.weekend { background: rgba(99, 102, 241, 0.12); }
+
 /* ===== 响应式 ===== */
 @media (max-width: 760px) {
   .todo-cal-topbar { flex-direction: column; align-items: flex-start; }
+  .todo-cal-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .todo-cal-summary .sum-item:last-child { grid-column: span 2; }
   .todo-cal-section { padding: 12px 10px 14px; }
   .todo-cal-grid { gap: 2px; }
-  .todo-cal-cell { min-height: 50px; padding: 3px 4px; }
+  .todo-cal-cell { min-height: 58px; padding: 4px; }
   .todo-cal-daynum { font-size: 11px; }
   .todo-cal-task { font-size: 9px; padding: 1px 3px; }
   .todo-cal-week-grid { grid-template-columns: 1fr; }
