@@ -213,6 +213,16 @@ function beijingToday() {
   const pad = (n) => String(n).padStart(2, '0')
   return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`
 }
+/** 当前北京时间的 ISO 字符串（带 +08:00），与后端 nowIso() 同格式。 */
+function beijingNowIso() {
+  const d = new Date(Date.now() + 8 * 3600 * 1000)
+  const pad = (n) => String(n).padStart(2, '0')
+  const pad3 = (n) => String(n).padStart(3, '0')
+  return (
+    `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}` +
+    `T${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}.${pad3(d.getUTCMilliseconds())}+08:00`
+  )
+}
 function fmtDateCn(dateKey) {
   const [y, m, d] = dateKey.split('-').map(Number)
   const dt = new Date(y, m - 1, d)
@@ -283,7 +293,7 @@ async function setStatus(t, next) {
   const prev = t.status
   const prevCompleted = t.completedAt
   t.status = next
-  t.completedAt = next === 'done' ? new Date().toISOString() : null
+  t.completedAt = next === 'done' ? beijingNowIso() : null
   try {
     const r = await todoApi.updateTask(t.id, { status: next })
     Object.assign(t, r.task)

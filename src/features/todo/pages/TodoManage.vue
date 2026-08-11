@@ -59,7 +59,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="t in filteredTasks" :key="t.id" :class="'status-' + t.status">
+            <tr v-for="t in pagedTasks" :key="t.id" :class="'status-' + t.status">
               <td class="todo-td-date">{{ t.dueDate || '—' }}</td>
               <td>{{ doneTime(t) }}</td>
               <td class="todo-td-title">{{ t.title }}</td>
@@ -85,6 +85,24 @@
           </tbody>
         </table>
       </div>
+
+      <!-- 分页 -->
+      <div v-if="filteredTasks.length" class="todo-pagination">
+        <div class="todo-page-info">显示第 {{ rangeStart }}–{{ rangeEnd }} 项 / 共 {{ filteredTasks.length }} 项</div>
+        <div class="todo-page-controls">
+          <label class="todo-page-size">
+            每页
+            <select v-model.number="pageSize" class="todo-select small">
+              <option v-for="n in pageSizeOptions" :key="n" :value="n">{{ n }}</option>
+            </select>
+            项
+          </label>
+          <button class="todo-btn ghost small" type="button" :disabled="currentPage <= 1" @click="currentPage--">上一页</button>
+          <span class="todo-page-num">第 {{ currentPage }} / {{ totalPages }} 页</span>
+          <button class="todo-btn ghost small" type="button" :disabled="currentPage >= totalPages" @click="currentPage++">下一页</button>
+        </div>
+      </div>
+
       <div v-else class="todo-empty">
         <span class="todo-empty-emoji">🗂️</span>
         <p>没有符合条件的记录，调整筛选或新建一个任务吧</p>
@@ -144,7 +162,7 @@
 </template>
 
 <script setup>
-import { computed, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
 import { useAuth } from '../../../auth/useAuth.js'
@@ -210,19 +228,47 @@ const filteredTasks = computed(() => {
   })
 })
 
+// ===== 分页：日程管理表格分页 =====
+const pageSize = ref(10)
+const currentPage = ref(1)
+const pageSizeOptions = [10, 20, 50]
+const totalPages = computed(() =>
+  Math.max(1, Math.ceil(filteredTasks.value.length / pageSize.value))
+)
+const pagedTasks = computed(() => {
+  const page = Math.min(currentPage.value, totalPages.value)
+  const start = (page - 1) * pageSize.value
+  return filteredTasks.value.slice(start, start + pageSize.value)
+})
+const rangeStart = computed(() =>
+  filteredTasks.value.length ? (Math.min(currentPage.value, totalPages.value) - 1) * pageSize.value + 1 : 0
+)
+const rangeEnd = computed(() =>
+  Math.min(Math.min(currentPage.value, totalPages.value) * pageSize.value, filteredTasks.value.length)
+)
+// 筛选条件或每页大小变化后回到第 1 页
+watch([filterFrom, filterTo, filterStatus, filterList, pageSize], () => {
+  currentPage.value = 1
+})
+// 删除导致总页数变小后，纠正越界页码
+watch(totalPages, (tp) => { if (currentPage.value > tp) currentPage.value = tp })
+
 // 日期 / 时间格式化
-function pad(n) { return String(n).padStart(2, '0') }
+// completed_at 永远存北京时间 ISO（带 +08:00，如 2026-08-11T08:56:41.538+08:00），
+// dueDate 为纯日期（如 2026-08-11）。直接切片取北京日期/时间，避免受浏览器本地时区影响。
 function fmtDate(iso) {
-  if (!iso) return '—'
-  const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return '—'
-  return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`
+  if (!iso || !/^\d{4}-\d{2}-\d{2}/.test(iso)) return '—'
+  return iso.slice(0, 10)
 }
 function fmtTime(iso) {
-  if (!iso) return '—'
-  const d = new Date(iso)
-  if (Number.isNaN(d.getTime())) return '—'
-  return `${pad(d.getHours())}:${pad(d.getMinutes())}`
+  if (!iso || !iso.includes('T')) return '—'
+  return iso.slice(11, 16)
+}
+/** 今天（北京时间）日期键 YYYY-MM-DD，与后端 todayKey() 一致。 */
+function beijingTodayKey() {
+  const d = new Date(Date.now() + 8 * 3600 * 1000)
+  const p = (n) => String(n).padStart(2, '0')
+  return `${d.getUTCFullYear()}-${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())}`
 }
 function doneDate(t) { return t.status === 'done' ? fmtDate(t.completedAt) : '—' }
 function doneTime(t) { return t.status === 'done' ? fmtTime(t.completedAt) : '—' }
@@ -243,7 +289,7 @@ function exportExcel() {
   const ws = XLSX.utils.json_to_sheet(rows)
   const wb = XLSX.utils.book_new()
   XLSX.utils.book_append_sheet(wb, ws, '日程管理')
-  const stamp = new Date().toISOString().slice(0, 10)
+  const stamp = beijingTodayKey()
   XLSX.writeFile(wb, `todo-manage-${stamp}.xlsx`)
   toast('已导出 Excel')
 }
@@ -452,5 +498,45 @@ onMounted(async () => {
   font-size: 14px;
   z-index: 1100;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+}
+
+/* 分页 */
+.todo-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 16px;
+  padding: 10px 14px;
+  background: var(--todo-panel);
+  border: 1px solid var(--todo-border);
+  border-radius: var(--todo-radius);
+}
+.todo-page-info {
+  font-size: 13px;
+  color: var(--todo-text-soft);
+  font-weight: 600;
+}
+.todo-page-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.todo-page-size {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  color: var(--todo-text-soft);
+  font-weight: 600;
+}
+.todo-select.small { min-width: auto; width: 72px; padding: 6px 8px; }
+.todo-page-num {
+  font-size: 13px;
+  color: var(--todo-text);
+  font-weight: 600;
+  min-width: 92px;
+  text-align: center;
 }
 </style>
