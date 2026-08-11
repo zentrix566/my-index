@@ -534,9 +534,9 @@ onMounted(async () => {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
-  margin-bottom: 14px;
-  padding: 15px 18px;
+  gap: 12px;
+  margin-bottom: 10px;
+  padding: 10px 14px;
   border: 1px solid rgba(99, 102, 241, 0.16);
   border-radius: 16px;
   background: linear-gradient(120deg, rgba(238, 242, 255, 0.92), rgba(255, 255, 255, 0.78));
@@ -546,20 +546,20 @@ onMounted(async () => {
 .todo-cal-month-ctrl {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 7px;
   flex-wrap: wrap;
 }
 .todo-cal-month-label {
-  font-size: 20px;
+  font-size: 17px;
   font-weight: 800;
-  min-width: 148px;
+  min-width: 124px;
   text-align: center;
   letter-spacing: 0.2px;
 }
 .todo-cal-topbar-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   flex-wrap: wrap;
 }
 .todo-cal-segment {
@@ -589,28 +589,29 @@ onMounted(async () => {
 
 /* ===== 月份统计摘要 ===== */
 .todo-cal-summary {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 9px;
-  margin-bottom: 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
 }
 .todo-cal-summary .sum-item {
   font-size: 12px;
   font-weight: 600;
   background: rgba(255, 255, 255, 0.72);
   border: 1px solid rgba(99, 102, 241, 0.11);
-  border-radius: 12px;
-  padding: 10px 12px;
+  border-radius: 999px;
+  padding: 5px 9px;
   color: var(--todo-text);
-  box-shadow: 0 5px 14px rgba(45, 61, 110, 0.05);
+  box-shadow: none;
   display: inline-flex;
   align-items: center;
   gap: 5px;
 }
 .todo-cal-summary .sum-item b {
-  margin-left: auto;
+  margin-left: 2px;
   color: #4f46e5;
-  font-size: 17px;
+  font-size: 13px;
   font-variant-numeric: tabular-nums;
 }
 .todo-cal-summary .sum-item.rate b {
@@ -979,8 +980,6 @@ html[data-theme='dark'] .todo-cal-week-day.weekend { background: rgba(99, 102, 2
 /* ===== 响应式 ===== */
 @media (max-width: 760px) {
   .todo-cal-topbar { flex-direction: column; align-items: flex-start; }
-  .todo-cal-summary { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .todo-cal-summary .sum-item:last-child { grid-column: span 2; }
   .todo-cal-section { padding: 12px 10px 14px; }
   .todo-cal-grid { gap: 2px; }
   .todo-cal-cell { min-height: 58px; padding: 4px; }

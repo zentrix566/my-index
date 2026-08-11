@@ -48,6 +48,7 @@
           <span class="todo-empty-emoji">🗒️</span>
           <p>{{ emptyText }}</p>
           <p class="todo-empty-hint">或去「管理 → 日程管理」查看全部任务</p>
+          <button class="todo-btn primary todo-empty-action" type="button" @click="openNewTask">＋ 新建任务</button>
         </div>
       </template>
 
@@ -122,6 +123,7 @@
           <span class="todo-empty-emoji">🗒️</span>
           <p>{{ emptyText }}</p>
           <p class="todo-empty-hint">或去「管理 → 日程管理」查看全部任务</p>
+          <button class="todo-btn primary todo-empty-action" type="button" @click="openNewTask">＋ 新建任务</button>
         </div>
       </template>
 

@@ -6,9 +6,11 @@
     <nav class="todo-nav">
       <RouterLink to="/todo" class="todo-nav-item">
         <span class="todo-nav-ico">☐</span>今日待办
+        <span v-if="todayPendingCount !== null" class="todo-nav-count">{{ todayPendingCount }}</span>
       </RouterLink>
       <RouterLink to="/todo/done" class="todo-nav-item">
         <span class="todo-nav-ico">✓</span>今日已完成
+        <span v-if="todayDoneCount !== null" class="todo-nav-count">{{ todayDoneCount }}</span>
       </RouterLink>
     </nav>
 
@@ -51,8 +53,28 @@
 </template>
 
 <script setup>
+import { onMounted, ref } from 'vue'
+import { useAuth } from '../../../auth/useAuth.js'
+import todoApi from '../api/todo.js'
+
 defineProps({
   lists: { type: Array, default: () => [] }
 })
 defineEmits(['new-group'])
+
+const { user, init } = useAuth()
+const todayPendingCount = ref(null)
+const todayDoneCount = ref(null)
+
+onMounted(async () => {
+  await init()
+  if (!user.value) return
+  try {
+    const [pending, done] = await Promise.all([todoApi.listTasks('today_todo'), todoApi.listTasks('today_done')])
+    todayPendingCount.value = (pending.tasks || []).length
+    todayDoneCount.value = (done.tasks || []).length
+  } catch {
+    // 导航数量只作辅助展示，加载失败不影响页面主体。
+  }
+})
 </script>

@@ -1,7 +1,10 @@
 <template>
   <div v-if="visible" class="todo-modal-mask" @click.self="close">
-    <div class="todo-modal">
-      <h3>{{ isEdit ? '编辑任务' : '新建任务' }}</h3>
+    <div class="todo-modal todo-task-modal">
+      <div class="todo-task-modal-head">
+        <div><span>TODO ITEM</span><h3>{{ isEdit ? '编辑任务' : '新建任务' }}</h3></div>
+        <button class="todo-icon-btn" type="button" aria-label="关闭" @click="close">×</button>
+      </div>
       <div class="todo-field">
         <label>标题</label>
         <input
@@ -21,6 +24,8 @@
           placeholder="补充说明、链接、想法…"
         ></textarea>
       </div>
+      <div class="todo-form-section">
+        <span class="todo-form-section-label">计划</span>
       <div class="todo-row">
         <div class="todo-field">
           <label>日期</label>
@@ -28,18 +33,22 @@
         </div>
         <div class="todo-field">
           <label>优先级</label>
-          <select v-model="form.priority" class="todo-select">
-            <option value="low">低</option>
-            <option value="medium">中</option>
-            <option value="high">高</option>
-          </select>
+          <div class="todo-priority-picker" role="group" aria-label="优先级">
+            <button type="button" :class="{ active: form.priority === 'low' }" @click="form.priority = 'low'">低</button>
+            <button type="button" :class="{ active: form.priority === 'medium' }" @click="form.priority = 'medium'">中</button>
+            <button type="button" :class="{ active: form.priority === 'high' }" @click="form.priority = 'high'">高</button>
+          </div>
         </div>
       </div>
+      </div>
+      <div class="todo-form-section">
+        <span class="todo-form-section-label">归档与状态</span>
       <div class="todo-field">
         <label>状态</label>
         <select v-model="form.status" class="todo-select">
           <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
         </select>
+      </div>
       </div>
       <div v-if="form.status === 'done'" class="todo-field">
         <label>完成日期</label>
