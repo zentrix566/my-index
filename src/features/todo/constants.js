@@ -51,3 +51,26 @@ export function statusStyle(status) {
   const meta = statusMeta(status)
   return { color: meta.color, borderColor: meta.color }
 }
+
+// 默认分组固定顺序（「工作 / 学习 / 生活」），其余分组排在其后。
+export const DEFAULT_LIST_ORDER = ['工作', '学习', '生活']
+
+/**
+ * 分组列表排序：默认三组永远排在最前且按 工作→学习→生活 固定顺序，
+ * 其余分组保持后端给出的 (sort_order, id) 顺序。用于侧边栏、筛选下拉等所有分组列表。
+ */
+export function sortTodoLists(lists = []) {
+  const rank = (l) => {
+    const i = DEFAULT_LIST_ORDER.indexOf(l.name)
+    return i === -1 ? DEFAULT_LIST_ORDER.length : i
+  }
+  return [...lists].sort((a, b) => {
+    const ra = rank(a)
+    const rb = rank(b)
+    if (ra !== rb) return ra - rb
+    const sa = a.sortOrder ?? 0
+    const sb = b.sortOrder ?? 0
+    if (sa !== sb) return sa - sb
+    return (a.id ?? 0) - (b.id ?? 0)
+  })
+}

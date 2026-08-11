@@ -205,7 +205,7 @@ export async function listLists(userId) {
   return rows
 }
 
-export async function createList(userId, { name, color, icon }) {
+export async function createList(userId, { name, color, icon, sortOrder }) {
   const row = await queryOne(
     `INSERT INTO todo_lists(user_id, name, color, icon, sort_order, created_at)
      VALUES($1, $2, $3, $4, $5, $6) RETURNING *`,
@@ -214,7 +214,7 @@ export async function createList(userId, { name, color, icon }) {
       name,
       color || '#3b82f6',
       icon || null,
-      Math.floor(Date.now() / 1000),
+      sortOrder ?? Math.floor(Date.now() / 1000),
       nowIso()
     ]
   )
@@ -252,9 +252,9 @@ export async function getList(userId, id) {
 
 /** 默认分组：全新用户首次进入时自动创建，也可在「分组设置」里一键恢复。 */
 export const DEFAULT_LISTS = [
-  { name: '工作', color: '#3b82f6', icon: '💼' },
-  { name: '学习', color: '#8b5cf6', icon: '📚' },
-  { name: '生活', color: '#16a34a', icon: '🏡' }
+  { name: '工作', color: '#3b82f6', icon: '💼', sortOrder: 0 },
+  { name: '学习', color: '#8b5cf6', icon: '📚', sortOrder: 1 },
+  { name: '生活', color: '#16a34a', icon: '🏡', sortOrder: 2 }
 ]
 
 /** 统计用户任务总数（用于判断是否为「从未用过」的全新用户）。 */

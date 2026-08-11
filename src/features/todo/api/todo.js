@@ -4,6 +4,8 @@
  * 认证复用站点统一登录（/api/auth/*，同源自动携带 site_token Cookie）。
  */
 
+import { sortTodoLists } from '../constants.js'
+
 async function readJson(resp) {
   const text = await resp.text()
   if (!text) return {}
@@ -29,7 +31,10 @@ const BASE = '/api/todo'
 export const todoApi = {
   // 分组
   listLists() {
-    return request(`${BASE}/lists`)
+    return request(`${BASE}/lists`).then((data) => ({
+      ...data,
+      lists: sortTodoLists(data.lists || [])
+    }))
   },
   createList(payload) {
     return request(`${BASE}/lists`, { method: 'POST', body: JSON.stringify(payload) })
