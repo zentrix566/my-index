@@ -9,6 +9,7 @@ import { requireAuth, trackModuleAccessMiddleware } from '../auth.js'
 import { callDeepSeek } from '../ai-advisor.js'
 import {
   TODO_CONST,
+  VALID_STATUS,
   createList,
   createTask,
   dateKeyOf,
@@ -169,7 +170,7 @@ router.get('/tasks', async (req, res) => {
 })
 
 router.post('/tasks', async (req, res) => {
-  const { title, note, dueDate, priority, isHarvest, listId } = req.body || {}
+  const { title, note, dueDate, priority, isHarvest, listId, status } = req.body || {}
   if (typeof title !== 'string' || !title.trim() || title.trim().length > TODO_CONST.TITLE_MAX) {
     return res.status(400).json({ error: `任务标题需 1-${TODO_CONST.TITLE_MAX} 个字符` })
   }
@@ -192,6 +193,7 @@ router.post('/tasks', async (req, res) => {
       note: note ? note.slice(0, TODO_CONST.NOTE_MAX) : null,
       dueDate: dueDate || null,
       priority: safePriority,
+      status: VALID_STATUS.has(status) ? status : 'pending',
       isHarvest: Boolean(isHarvest),
       listId: safeListId
     })
@@ -248,7 +250,7 @@ router.patch('/tasks/:id', async (req, res) => {
       }
     }
     if (status !== undefined) {
-      if (!['pending', 'done'].includes(status)) return res.status(400).json({ error: '状态非法' })
+      if (!VALID_STATUS.has(status)) return res.status(400).json({ error: '状态非法' })
       patch.status = status
     }
     const row = await updateTask(req.userId, id, patch)
@@ -280,14 +282,17 @@ router.get('/day/:date', async (req, res) => {
   try {
     const rows = await dayTasks(req.userId, date)
     const tasks = rows.map(serializeTask)
+    const summary = { total: tasks.length, done: 0, cancelled: 0, active: 0 }
+    for (const t of tasks) {
+      if (t.status === 'done') summary.done += 1
+      else if (t.status === 'cancelled') summary.cancelled += 1
+      else summary.active += 1
+    }
     res.json({
       date,
       tasks,
-      summary: {
-        total: tasks.length,
-        done: tasks.filter((t) => t.status === 'done').length,
-        pending: tasks.filter((t) => t.status === 'pending').length
-      }
+      // pending 保留以兼容旧前端；其语义等同于 active（已完成/已取消之外的活跃态）
+      summary: { ...summary, pending: summary.active }
     })
   } catch (err) {
     appLog('ERROR', `单日明细读取失败: uid=${req.userId}, date=${date}, error=${err?.message}`)
@@ -313,10 +318,11 @@ router.get('/calendar', async (req, res) => {
     const days = {}
     for (const row of rows) {
       const key = row.due_date
-      if (!days[key]) days[key] = { total: 0, done: 0, pending: 0, tasks: [] }
+      if (!days[key]) days[key] = { total: 0, done: 0, cancelled: 0, active: 0, tasks: [] }
       days[key].total += 1
       if (row.status === 'done') days[key].done += 1
-      else days[key].pending += 1
+      else if (row.status === 'cancelled') days[key].cancelled += 1
+      else days[key].active += 1
       days[key].tasks.push(serializeTask(row))
     }
     res.json({ month, today: todayKey(), days })
@@ -371,7 +377,7 @@ export function buildTodoSystemPrompt(scope) {
   if (scope === 'week') {
     return [
       '你是一个周计划助理。下面是用户本周的日程清单（JSON 数组）。',
-      '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / done 已办)。',
+      '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / in_progress 进行中 / deferred 已延期 / waiting 等待中 / done 已办 / cancelled 已取消)。',
       timingRule,
       priorityRule,
       '请基于这份清单生成一份「周计划」：按日期梳理每天的重点任务、标注关键交付或里程碑、指出哪几天可能过载或冲突、给出精力分配建议。',
@@ -381,7 +387,7 @@ export function buildTodoSystemPrompt(scope) {
   if (scope === 'month') {
     return [
       '你是一个月计划助理。下面是用户本月的日程清单（JSON 数组）。',
-      '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / done 已办)。',
+      '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / in_progress 进行中 / deferred 已延期 / waiting 等待中 / done 已办 / cancelled 已取消)。',
       timingRule,
       priorityRule,
       '请生成一份「月计划概览」：整体完成率、各分类的任务分布、关键时间节点（按计划日期）、本月建议聚焦的主题与节奏安排。',

@@ -25,10 +25,13 @@
       <!-- 月份统计摘要 -->
       <div class="todo-cal-summary" v-if="periodStats">
         <span class="sum-item">
-          <i class="sum-dot pending"></i>待办 <b>{{ periodStats.pending }}</b>
+          <i class="sum-dot pending"></i>未完成 <b>{{ periodStats.pending }}</b>
         </span>
         <span class="sum-item">
           <i class="sum-dot done"></i>已完成 <b>{{ periodStats.done }}</b>
+        </span>
+        <span class="sum-item">
+          <i class="sum-dot cancelled"></i>已取消 <b>{{ periodStats.cancelled }}</b>
         </span>
         <span class="sum-item">
           <i class="sum-dot total"></i>合计 <b>{{ periodStats.total }}</b>
@@ -56,7 +59,7 @@
                 weekend: c.isWeekend && !c.isOut,
                 past: c.isPast && !c.isOut,
                 'all-done': c.tasks.length > 0 && c.tasks.every(t => t.status === 'done'),
-                'has-pending': c.tasks.some(t => t.status === 'pending')
+                'has-active': c.tasks.some(t => isActiveStatus(t.status))
               }"
               @click="selectDay(c.key)"
             >
@@ -69,7 +72,7 @@
                   v-for="t in c.tasks.slice(0, 2)"
                   :key="t.id"
                   class="todo-cal-task"
-                  :class="{ done: t.status === 'done' }"
+                  :class="'status-' + t.status"
                 >
                   <i class="todo-cal-task-dot" :class="t.status"></i>
                   <span class="todo-cal-task-text">{{ t.title }}</span>
@@ -86,7 +89,11 @@
           <span><i class="dot weekend"></i>周末</span>
           <span><i class="dot past"></i>已过去</span>
           <span><i class="dot pending"></i>待办</span>
+          <span><i class="dot in_progress"></i>进行中</span>
+          <span><i class="dot deferred"></i>已延期</span>
+          <span><i class="dot waiting"></i>等待中</span>
           <span><i class="dot done"></i>已完成</span>
+          <span><i class="dot cancelled"></i>已取消</span>
         </div>
       </section>
 
@@ -113,7 +120,7 @@
                 v-for="t in d.tasks"
                 :key="t.id"
                 class="todo-cal-week-item"
-                :class="{ done: t.status === 'done' }"
+                :class="'status-' + t.status"
               >
                 <i class="todo-cal-task-dot" :class="t.status"></i>
                 <span>{{ t.title }}</span>
@@ -137,8 +144,10 @@
         </div>
         <p v-if="selError" class="todo-error">{{ selError }}</p>
         <div v-if="dayTasks.length" class="todo-task-list">
-          <div v-for="t in dayTasks" :key="t.id" class="todo-task" :class="{ done: t.status === 'done' }">
-            <span class="todo-check" @click="toggleDayTask(t)">{{ t.status === 'done' ? '✓' : '' }}</span>
+          <div v-for="t in dayTasks" :key="t.id" class="todo-task" :class="'status-' + t.status">
+            <select class="todo-status-select" :value="t.status" :style="statusStyle(t.status)" @change="setDayStatus(t, $event.target.value)">
+              <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
+            </select>
             <div class="todo-task-body">
               <div class="todo-task-title">{{ t.title }}</div>
               <div v-if="t.note" class="todo-task-note">{{ t.note }}</div>
@@ -173,6 +182,7 @@ import todoApi from '../api/todo.js'
 import TodoSidebar from '../components/TodoSidebar.vue'
 import TodoTaskModal from '../components/TodoTaskModal.vue'
 import TodoNewGroupModal from '../components/TodoNewGroupModal.vue'
+import { TASK_STATUS_LIST, statusStyle, TASK_STATUS_META, isActiveStatus } from '../constants.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -332,16 +342,17 @@ const cells = computed(() => {
 
 // 当前时间段统计（月视图=本月，周视图=本周）
 const periodStats = computed(() => {
-  let pending = 0, done = 0
+  let active = 0, done = 0, cancelled = 0
   const source = mode.value === 'month' ? cells.value.filter((c) => !c.isOut) : weekDays.value
   for (const c of source) {
     for (const t of c.tasks) {
       if (t.status === 'done') done++
-      else pending++
+      else if (t.status === 'cancelled') cancelled++
+      else active++
     }
   }
-  const total = pending + done
-  return total > 0 ? { pending, done, total } : null
+  const total = active + done + cancelled
+  return total > 0 ? { pending: active, done, cancelled, total } : null
 })
 
 // 周视图：以今天所在周的周一为锚点，按 weekOffset 前后翻周
@@ -380,11 +391,12 @@ async function loadWeek() {
     for (const t of r.tasks || []) {
       const k = t.dueDate
       if (!k) continue
-      if (!map[k]) map[k] = { total: 0, done: 0, pending: 0, tasks: [] }
+      if (!map[k]) map[k] = { total: 0, done: 0, cancelled: 0, active: 0, tasks: [] }
       map[k].tasks.push(t)
       map[k].total += 1
       if (t.status === 'done') map[k].done += 1
-      else map[k].pending += 1
+      else if (t.status === 'cancelled') map[k].cancelled += 1
+      else map[k].active += 1
     }
     calData.value = map
   } catch (e) {
@@ -430,13 +442,12 @@ async function loadLists() {
   }
 }
 
-async function toggleDayTask(t) {
-  const next = t.status === 'done' ? 'pending' : 'done'
+async function setDayStatus(t, next) {
   const prev = t.status
   t.status = next
   try {
     await todoApi.updateTask(t.id, { status: next })
-    toast(next === 'done' ? '已完成 ✓' : '已标记为待办')
+    toast(`已设为「${TASK_STATUS_META[next].label}」`)
     await refreshCal()
   } catch (e) {
     t.status = prev
@@ -588,8 +599,12 @@ onMounted(async () => {
   border-radius: 50%;
   display: inline-block;
 }
-.todo-cal-summary .sum-dot.pending { background: var(--todo-primary); }
-.todo-cal-summary .sum-dot.done { background: var(--todo-success); }
+.todo-cal-summary .sum-dot.pending { background: #3b82f6; }
+.todo-cal-summary .sum-dot.in_progress { background: #f59e0b; }
+.todo-cal-summary .sum-dot.deferred { background: #8b5cf6; }
+.todo-cal-summary .sum-dot.waiting { background: #ef4444; }
+.todo-cal-summary .sum-dot.done { background: #22c55e; }
+.todo-cal-summary .sum-dot.cancelled { background: #94a3b8; }
 .todo-cal-summary .sum-dot.total { background: var(--todo-text-faint); }
 
 /* ===== 日历主区域（渐变背景卡片） ===== */
@@ -683,7 +698,7 @@ onMounted(async () => {
   border-color: var(--todo-success);
   background: rgba(22, 163, 74, 0.06);
 }
-.todo-cal-cell.has-pending:not(.all-done) {
+.todo-cal-cell.has-active:not(.all-done) {
   border-color: var(--todo-primary);
 }
 
@@ -736,11 +751,13 @@ onMounted(async () => {
   text-overflow: ellipsis;
   line-height: 1.35;
 }
-.todo-cal-task.done {
+.todo-cal-task.done,
+.todo-cal-task.status-done {
   background: rgba(22, 163, 74, 0.08);
   color: var(--todo-success);
   opacity: 0.9;
 }
+.todo-cal-task.status-cancelled { opacity: 0.5; }
 .todo-cal-task-dot {
   width: 4px;
   height: 4px;
@@ -748,8 +765,12 @@ onMounted(async () => {
   flex: 0 0 4px;
   display: inline-block;
 }
-.todo-cal-task-dot.pending { background: var(--todo-primary); }
-.todo-cal-task-dot.done { background: var(--todo-success); }
+.todo-cal-task-dot.pending { background: #3b82f6; }
+.todo-cal-task-dot.in_progress { background: #f59e0b; }
+.todo-cal-task-dot.deferred { background: #8b5cf6; }
+.todo-cal-task-dot.waiting { background: #ef4444; }
+.todo-cal-task-dot.done { background: #22c55e; }
+.todo-cal-task-dot.cancelled { background: #94a3b8; }
 .todo-cal-task-text {
   overflow: hidden;
   text-overflow: ellipsis;
@@ -784,8 +805,12 @@ onMounted(async () => {
 .todo-cal-legend i.today { background: var(--todo-primary); }
 .todo-cal-legend i.weekend { background: var(--todo-primary-soft); border: 1px solid var(--todo-border); }
 .todo-cal-legend i.past { background: rgba(107, 114, 128, 0.15); border: 1px dashed var(--todo-text-faint); }
-.todo-cal-legend i.pending { background: var(--todo-primary); border-radius: 50%; }
-.todo-cal-legend i.done { background: var(--todo-success); border-radius: 50%; }
+.todo-cal-legend i.pending { background: #3b82f6; border-radius: 50%; }
+.todo-cal-legend i.in_progress { background: #f59e0b; border-radius: 50%; }
+.todo-cal-legend i.deferred { background: #8b5cf6; border-radius: 50%; }
+.todo-cal-legend i.waiting { background: #ef4444; border-radius: 50%; }
+.todo-cal-legend i.done { background: #22c55e; border-radius: 50%; }
+.todo-cal-legend i.cancelled { background: #94a3b8; border-radius: 50%; }
 
 /* ===== 周视图 ===== */
 .todo-cal-week-grid {
@@ -861,11 +886,13 @@ onMounted(async () => {
   overflow: hidden;
   text-overflow: ellipsis;
 }
-.todo-cal-week-item.done {
+.todo-cal-week-item.done,
+.todo-cal-week-item.status-done {
   background: rgba(22, 163, 74, 0.08);
   color: var(--todo-success);
   opacity: 0.9;
 }
+.todo-cal-week-item.status-cancelled { opacity: 0.5; }
 .todo-cal-week-empty {
   font-size: 12px;
   color: var(--todo-text-faint);

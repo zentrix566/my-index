@@ -221,7 +221,9 @@
   transition: border-color 0.15s;
 }
 .todo-task:hover { border-color: var(--todo-border-strong); }
-.todo-task.done { opacity: 0.62; }
+.todo-task.done,
+.todo-task.status-done { opacity: 0.62; }
+.todo-task.status-cancelled { opacity: 0.55; }
 
 .todo-check {
   width: 20px;
@@ -240,10 +242,27 @@
   background: #fff;
 }
 .todo-check:hover { border-color: var(--todo-primary); }
-.todo-task.done .todo-check {
+.todo-task.done .todo-check,
+.todo-task.status-done .todo-check {
   background: var(--todo-success);
   border-color: var(--todo-success);
 }
+
+/* 状态下拉（任务行/表格内共用）：小药丸样式，颜色随状态 */
+.todo-status-select {
+  appearance: none;
+  -webkit-appearance: none;
+  border: 1.5px solid var(--todo-border-strong);
+  border-radius: 999px;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 600;
+  background: #fff;
+  cursor: pointer;
+  max-width: 96px;
+  line-height: 1.5;
+}
+.todo-status-select:focus { outline: none; box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.18); }
 
 .todo-task-body { flex: 1; min-width: 0; }
 .todo-task-title { font-size: 15px; font-weight: 600; word-break: break-word; }

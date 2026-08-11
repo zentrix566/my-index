@@ -54,8 +54,10 @@
       <!-- 其它视图保持原列表 -->
       <template v-else>
         <div v-if="tasks.length" class="todo-task-list">
-          <div v-for="t in tasks" :key="t.id" class="todo-task" :class="{ done: t.status === 'done' }">
-            <span class="todo-check" @click="toggleDone(t)">{{ t.status === 'done' ? '✓' : '' }}</span>
+          <div v-for="t in tasks" :key="t.id" class="todo-task" :class="'status-' + t.status">
+            <select class="todo-status-select" :value="t.status" :style="statusStyle(t.status)" @change="setStatus(t, $event.target.value)">
+              <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
+            </select>
             <div class="todo-task-body">
               <div class="todo-task-title">{{ t.title }}</div>
               <div v-if="t.note" class="todo-task-note">{{ t.note }}</div>
@@ -104,6 +106,12 @@
               <option value="high">高</option>
             </select>
           </div>
+          <div class="todo-field">
+            <label>状态</label>
+            <select v-model="form.status" class="todo-select">
+              <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
+            </select>
+          </div>
         </div>
           <div class="todo-field">
           <label>分组</label>
@@ -133,6 +141,7 @@ import { toPng } from 'html-to-image'
 import { useAuth } from '../../../auth/useAuth.js'
 import todoApi from '../api/todo.js'
 import { getLastListId, setLastListId } from '../utils/lastList.js'
+import { TASK_STATUS_LIST, statusStyle, TASK_STATUS_META } from '../constants.js'
 import TodoSidebar from '../components/TodoSidebar.vue'
 import TodoNewGroupModal from '../components/TodoNewGroupModal.vue'
 
@@ -269,16 +278,15 @@ async function exportDoneCard() {
   }
 }
 
-async function toggleDone(t) {
-  const next = t.status === 'done' ? 'pending' : 'done'
+async function setStatus(t, next) {
   const prev = t.status
   const prevCompleted = t.completedAt
   t.status = next
-  if (next === 'pending') t.completedAt = null
+  t.completedAt = next === 'done' ? new Date().toISOString() : null
   try {
     const r = await todoApi.updateTask(t.id, { status: next })
     Object.assign(t, r.task)
-    toast(next === 'done' ? '已完成 ✓' : '已标记为待办')
+    toast(`已设为「${TASK_STATUS_META[next].label}」`)
   } catch (e) {
     t.status = prev
     t.completedAt = prevCompleted
@@ -302,7 +310,7 @@ const taskModal = ref(false)
 const editingId = ref(null)
 const taskBusy = ref(false)
 const taskError = ref('')
-const form = ref({ title: '', note: '', dueDate: dateKey, priority: 'medium', listId: '' })
+const form = ref({ title: '', note: '', dueDate: dateKey, priority: 'medium', status: 'pending', listId: '' })
 
 function openNewTask() {
   editingId.value = null
@@ -312,6 +320,7 @@ function openNewTask() {
     note: '',
     dueDate: showDate.value ? dateKey : '',
     priority: 'medium',
+    status: 'pending',
     listId: view.value.startsWith('list:') ? Number(view.value.slice(5)) : getLastListId()
   }
   taskModal.value = true
@@ -324,6 +333,7 @@ function editTask(t) {
     note: t.note || '',
     dueDate: t.dueDate || '',
     priority: t.priority,
+    status: t.status || 'pending',
     listId: t.listId || ''
   }
   taskModal.value = true
@@ -340,6 +350,7 @@ async function submitTask() {
     note: form.value.note || '',
     dueDate: form.value.dueDate || null,
     priority: form.value.priority,
+    status: form.value.status,
     listId: form.value.listId ? Number(form.value.listId) : null
   }
   try {

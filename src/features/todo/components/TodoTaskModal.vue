@@ -36,6 +36,12 @@
         </div>
       </div>
       <div class="todo-field">
+        <label>状态</label>
+        <select v-model="form.status" class="todo-select">
+          <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
+        </select>
+      </div>
+      <div class="todo-field">
         <label>分组</label>
         <select v-model="form.listId" class="todo-select">
           <option :value="''">未分组</option>
@@ -54,6 +60,7 @@
 <script setup>
 import { ref } from 'vue'
 import { getLastListId, setLastListId } from '../utils/lastList.js'
+import { TASK_STATUS_LIST } from '../constants.js'
 
 defineProps({
   lists: { type: Array, default: () => [] }
@@ -66,7 +73,7 @@ const busy = ref(false)
 const error = ref('')
 const isEdit = ref(false)
 const editId = ref(null)
-const form = ref({ title: '', note: '', dueDate: '', priority: 'medium', listId: '' })
+const form = ref({ title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: '' })
 
 function open(initial = null) {
   error.value = ''
@@ -78,6 +85,7 @@ function open(initial = null) {
     note: initial?.note || '',
     dueDate: initial?.dueDate || '',
     priority: initial?.priority || 'medium',
+    status: initial?.status || 'pending',
     listId: initial?.listId || getLastListId()
   }
   visible.value = true
@@ -100,6 +108,7 @@ function submit() {
     note: form.value.note || '',
     dueDate: form.value.dueDate || null,
     priority: form.value.priority,
+    status: form.value.status,
     listId: form.value.listId ? Number(form.value.listId) : null
   }
   if (payload.listId) setLastListId(payload.listId)

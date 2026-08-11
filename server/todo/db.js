@@ -304,7 +304,14 @@ export async function deleteList(userId, id) {
 
 const TITLE_MAX = 200
 const NOTE_MAX = 2000
-const VALID_STATUS = new Set(['pending', 'done'])
+export const VALID_STATUS = new Set([
+  'pending',
+  'in_progress',
+  'deferred',
+  'waiting',
+  'done',
+  'cancelled'
+])
 const VALID_PRIORITY = new Set(['low', 'medium', 'high'])
 
 export async function createTask(userId, payload) {
@@ -317,7 +324,7 @@ export async function createTask(userId, payload) {
       payload.title,
       payload.note || null,
       payload.dueDate || null,
-      'pending',
+      VALID_STATUS.has(payload.status) ? payload.status : 'pending',
       payload.priority && VALID_PRIORITY.has(payload.priority) ? payload.priority : 'medium',
       payload.isHarvest ? 1 : 0,
       0,
@@ -346,7 +353,9 @@ export async function listTasks(userId, view) {
   let where = 'user_id = $1'
   const params = [userId]
   if (view === 'today_todo') {
-    where += " AND due_date = $2 AND status = 'pending'"
+    // 今日待办 = 今天到期且处于活跃态（未完成、非已取消）
+    where +=
+      " AND due_date = $2 AND status IN ('pending','in_progress','deferred','waiting')"
     params.push(tk)
   } else if (view === 'today_done') {
     where += " AND status = 'done' AND substr(completed_at, 1, 10) = $2"
@@ -410,11 +419,12 @@ export async function updateTask(userId, id, patch) {
     }
   }
   // 完成/取消完成：自动维护 completed_at
+  // 切到 done 写入完成时间；切到任何非 done 状态（含已取消）则清空
   if (patch.status === 'done') {
     sets.push(`completed_at = $${i}`)
     params.push(nowIso())
     i += 1
-  } else if (patch.status === 'pending') {
+  } else if (patch.status) {
     sets.push('completed_at = NULL')
   }
   sets.push(`updated_at = $${i}`)

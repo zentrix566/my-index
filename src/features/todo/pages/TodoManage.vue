@@ -7,7 +7,7 @@
       <header class="todo-header">
         <div>
           <h1 class="todo-title">日程管理</h1>
-          <div class="todo-date">全部记录 · 共 {{ filteredTasks.length }} 项（待办 {{ pendingCount }} / 已办 {{ doneCount }}）</div>
+          <div class="todo-date">全部记录 · 共 {{ filteredTasks.length }} 项（未完成 {{ activeCount }} / 已完成 {{ doneCount }} / 已取消 {{ cancelledCount }}）</div>
         </div>
         <div class="todo-actions">
           <button class="todo-btn" type="button" :disabled="!filteredTasks.length" @click="exportExcel">📤 导出 Excel</button>
@@ -29,8 +29,7 @@
           状态
           <select v-model="filterStatus" class="todo-select">
             <option value="all">全部</option>
-            <option value="pending">待办</option>
-            <option value="done">已办</option>
+            <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
           </select>
         </label>
         <label class="todo-filter">
@@ -60,7 +59,7 @@
             </tr>
           </thead>
           <tbody>
-            <tr v-for="t in filteredTasks" :key="t.id" :class="{ done: t.status === 'done' }">
+            <tr v-for="t in filteredTasks" :key="t.id" :class="'status-' + t.status">
               <td class="todo-td-date">{{ t.dueDate || '—' }}</td>
               <td>{{ doneTime(t) }}</td>
               <td class="todo-td-title">{{ t.title }}</td>
@@ -73,9 +72,9 @@
                 <span class="todo-tag" :class="'prio-' + t.priority">{{ prioLabel[t.priority] }}</span>
               </td>
               <td>
-                <span class="todo-status" :class="t.status === 'done' ? 'is-done' : 'is-pending'">
-                  {{ t.status === 'done' ? '已办' : '待办' }}
-                </span>
+                <select class="todo-status-select" :value="t.status" :style="statusStyle(t.status)" @change="setStatus(t, $event.target.value)">
+                  <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
+                </select>
               </td>
               <td class="todo-td-date">{{ doneDate(t) }}</td>
               <td class="todo-th-actions">
@@ -125,6 +124,12 @@
             <option v-for="l in lists" :key="l.id" :value="l.id">{{ l.name }}</option>
           </select>
         </div>
+        <div class="todo-field">
+          <label>状态</label>
+          <select v-model="form.status" class="todo-select">
+            <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
+          </select>
+        </div>
         <p v-if="taskError" class="todo-error">{{ taskError }}</p>
         <div class="todo-modal-actions">
           <button class="todo-btn ghost" type="button" @click="taskModal = false">取消</button>
@@ -147,6 +152,7 @@ import todoApi from '../api/todo.js'
 import TodoSidebar from '../components/TodoSidebar.vue'
 import TodoNewGroupModal from '../components/TodoNewGroupModal.vue'
 import { getLastListId, setLastListId } from '../utils/lastList.js'
+import { TASK_STATUS_LIST, statusStyle, TASK_STATUS_META, TASK_STATUS_WEIGHT } from '../constants.js'
 
 const router = useRouter()
 const { user, init } = useAuth()
@@ -173,8 +179,11 @@ function resetFilters() {
   filterList.value = ''
 }
 
-const pendingCount = computed(() => filteredTasks.value.filter((t) => t.status === 'pending').length)
+const activeCount = computed(() =>
+  filteredTasks.value.filter((t) => t.status !== 'done' && t.status !== 'cancelled').length
+)
 const doneCount = computed(() => filteredTasks.value.filter((t) => t.status === 'done').length)
+const cancelledCount = computed(() => filteredTasks.value.filter((t) => t.status === 'cancelled').length)
 
 const filteredTasks = computed(() => {
   const from = filterFrom.value
@@ -187,12 +196,14 @@ const filteredTasks = computed(() => {
     if (to && d && d > to) return false
     return true
   })
-  // 按日期升序、待办优先、再按标题
+  // 按日期升序、状态权重（未完成在前、已取消在后）、再按标题
   return rows.sort((a, b) => {
     const da = a.dueDate || '9999-99-99'
     const db = b.dueDate || '9999-99-99'
     if (da !== db) return da < db ? -1 : 1
-    if (a.status !== b.status) return a.status === 'pending' ? -1 : 1
+    const wa = TASK_STATUS_WEIGHT[a.status] ?? 99
+    const wb = TASK_STATUS_WEIGHT[b.status] ?? 99
+    if (wa !== wb) return wa - wb
     return a.title.localeCompare(b.title, 'zh')
   })
 })
@@ -224,7 +235,7 @@ function exportExcel() {
     分类: (t.listId && listMap.value.get(t.listId)?.name) || '未分组',
     备注: t.note || '',
     优先级: prioLabel[t.priority],
-    状态: t.status === 'done' ? '已办' : '待办',
+    状态: TASK_STATUS_META[t.status]?.label || t.status,
     完成日期: doneDate(t)
   }))
   const ws = XLSX.utils.json_to_sheet(rows)
@@ -271,23 +282,36 @@ async function removeTask(t) {
   }
 }
 
+async function setStatus(t, next) {
+  const prev = t.status
+  t.status = next
+  try {
+    const r = await todoApi.updateTask(t.id, { status: next })
+    Object.assign(t, r.task)
+    toast(`已设为「${TASK_STATUS_META[next].label}」`)
+  } catch (e) {
+    t.status = prev
+    toast(e.message)
+  }
+}
+
 // 编辑弹窗
 const taskModal = ref(false)
 const editingId = ref(null)
 const taskBusy = ref(false)
 const taskError = ref('')
-const form = ref({ title: '', note: '', dueDate: '', priority: 'medium', listId: '' })
+const form = ref({ title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: '' })
 
 function openNewTask() {
   editingId.value = null
   taskError.value = ''
-  form.value = { title: '', note: '', dueDate: '', priority: 'medium', listId: filterList.value ? Number(filterList.value) : getLastListId() }
+  form.value = { title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: filterList.value ? Number(filterList.value) : getLastListId() }
   taskModal.value = true
 }
 function editTask(t) {
   editingId.value = t.id
   taskError.value = ''
-  form.value = { title: t.title, note: t.note || '', dueDate: t.dueDate || '', priority: t.priority, listId: t.listId || '' }
+  form.value = { title: t.title, note: t.note || '', dueDate: t.dueDate || '', priority: t.priority, status: t.status || 'pending', listId: t.listId || '' }
   taskModal.value = true
 }
 async function submitTask() {
@@ -302,6 +326,7 @@ async function submitTask() {
     note: form.value.note || '',
     dueDate: form.value.dueDate || null,
     priority: form.value.priority,
+    status: form.value.status,
     listId: form.value.listId ? Number(form.value.listId) : null
   }
   try {
@@ -393,7 +418,9 @@ onMounted(async () => {
 }
 .todo-table tbody tr:last-child td { border-bottom: none; }
 .todo-table tbody tr:hover { background: #f9fbfe; }
-.todo-table tbody tr.done { color: var(--todo-text-faint); }
+.todo-table tbody tr.done,
+.todo-table tbody tr.status-done { color: var(--todo-text-faint); }
+.todo-table tbody tr.status-cancelled { color: var(--todo-text-faint); text-decoration: line-through; }
 .todo-td-title { font-weight: 600; min-width: 160px; }
 .todo-td-note { color: var(--todo-text-soft); max-width: 280px; white-space: pre-wrap; word-break: break-word; }
 .todo-td-date { white-space: nowrap; }
