@@ -1,4 +1,7 @@
 // 我自己做的个人项目索引：新增页面只需在这里追加一项
+const PERSONAL_APP_ORDER = ['/hearthstone', '/todo', '/hearthstone/frog', '/dream', '/willpower']
+const personalAppRank = new Map(PERSONAL_APP_ORDER.map((path, index) => [path, index]))
+
 export const vueApps = [
   {
     to: '/hearthstone',
@@ -84,4 +87,4 @@ export const vueApps = [
     summary: '输入出生年份与特定年份，直接算出当时的年龄，不做任何校验。',
     tags: ['年龄', '计算器']
   }
-]
+].sort((a, b) => (personalAppRank.get(a.to) ?? 100) - (personalAppRank.get(b.to) ?? 100))
