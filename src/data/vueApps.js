@@ -43,6 +43,13 @@ export const vueApps = [
     tags: ['炉石传说', '卡组', '工具']
   },
   {
+    to: '/hearthstone/lookup',
+    title: '炉石卡牌查询',
+    kicker: '游戏 · 工具',
+    summary: '输入卡牌名称或 dbfId，查看卡图、效果与背景描述，并自检卡牌库登记、卡图 manifest 与 OSS 图片是否就绪。',
+    tags: ['炉石传说', '卡牌', '查询', '自检']
+  },
+  {
     to: '/crazy-people',
     title: '疯狂的人',
     kicker: '互动 · 小游戏',
