@@ -450,7 +450,7 @@ onMounted(async () => {
 .todo-table thead th {
   text-align: left;
   padding: 12px 14px;
-  background: #f7f9fc;
+  background: var(--todo-table-head);
   color: var(--todo-text-soft);
   font-weight: 600;
   border-bottom: 1px solid var(--todo-border);
@@ -465,7 +465,7 @@ onMounted(async () => {
   color: var(--todo-text);
 }
 .todo-table tbody tr:last-child td { border-bottom: none; }
-.todo-table tbody tr:hover { background: #f9fbfe; }
+.todo-table tbody tr:hover { background: var(--todo-table-hover); }
 .todo-table tbody tr.done,
 .todo-table tbody tr.status-done { color: var(--todo-text-faint); }
 .todo-table tbody tr.status-cancelled { color: var(--todo-text-faint); text-decoration: line-through; }
@@ -483,8 +483,8 @@ onMounted(async () => {
   font-size: 12px;
   font-weight: 600;
 }
-.todo-status.is-done { background: #e7f6ec; color: var(--todo-success); }
-.todo-status.is-pending { background: #eef2f7; color: #64748b; }
+.todo-status.is-done { background: var(--todo-status-done-bg); color: var(--todo-success); }
+.todo-status.is-pending { background: var(--todo-status-pending-bg); color: var(--todo-status-pending-fg); }
 
 .todo-toast {
   position: fixed;

@@ -71,6 +71,13 @@
               <button class="todo-icon-btn danger" type="button" title="删除" @click="removeTask(t)">✕</button>
             </div>
           </div>
+          <div class="todo-encourage">
+            <span class="todo-encourage-ico" aria-hidden="true">💪</span>
+            <div class="todo-encourage-body">
+              <p class="todo-encourage-title">今日还有 {{ tasks.length }} 项待办</p>
+              <p class="todo-encourage-sub">{{ encourageSlogan }}</p>
+            </div>
+          </div>
         </div>
 
         <div v-else class="todo-empty">
@@ -206,6 +213,16 @@ function pickSlogan() {
   }
   doneSlogan.value = next
 }
+
+// ===== 今日待办下方的鼓励短句 =====
+const ENCOURAGE_SLOGANS = [
+  '一点一点推进，每完成一项都是对自己的承诺 🌱',
+  '不必急于全部搞定，先挑最容易的开始 ✨',
+  '把今天的待办拆小一点，三件比一件+一件+一件更省心 🪴',
+  '已完成的任务会在「今日已完成」里等着你，留下记号吧 📌',
+  '别忘了给自己留几秒钟，看一眼窗外的光 ☀️'
+]
+const encourageSlogan = ref(ENCOURAGE_SLOGANS[Math.floor(Math.random() * ENCOURAGE_SLOGANS.length)])
 
 // ===== 日期（北京时间）=====
 function beijingToday() {

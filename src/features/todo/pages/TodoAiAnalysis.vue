@@ -355,7 +355,7 @@ watch([scope, anchorDate, anchorMonth], () => {
 .todo-markdown :deep(li) { margin: 4px 0; line-height: 1.7; }
 .todo-markdown :deep(strong) { color: var(--todo-primary); }
 .todo-markdown :deep(code) {
-  background: #f1f3f6;
+  background: var(--todo-hover-bg);
   padding: 1px 6px;
   border-radius: 6px;
   font-size: 13px;

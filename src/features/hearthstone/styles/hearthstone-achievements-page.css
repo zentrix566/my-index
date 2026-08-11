@@ -441,3 +441,38 @@
   color: var(--hs-text);
   background: var(--hs-inset-bg);
 }
+
+/* ===== 暗色主题覆盖（.hs-page[data-hs-theme="dark"]）===== */
+.hs-page[data-hs-theme="dark"] .hs-overview-note {
+  color: #e2c68a;
+  background: rgba(180, 120, 20, 0.14);
+  border-color: rgba(212, 160, 23, 0.32);
+}
+.hs-page[data-hs-theme="dark"] .hs-overview-note strong { color: #f0c060; }
+.hs-page[data-hs-theme="dark"] .hs-ai-btn:hover {
+  background: rgba(124, 58, 237, 0.16);
+}
+.hs-page[data-hs-theme="dark"] .ai-global-modal {
+  background: var(--hs-surface-overlay, #1e2430);
+}
+.hs-page[data-hs-theme="dark"] .ai-global-modal-head {
+  border-bottom-color: var(--hs-border, #334155);
+}
+.hs-page[data-hs-theme="dark"] .ai-global-close {
+  color: var(--hs-muted, #a89880);
+}
+.hs-page[data-hs-theme="dark"] .ai-global-close:hover { color: var(--hs-text, #f5ead0); }
+.hs-page[data-hs-theme="dark"] .hs-guide-menu {
+  background: var(--hs-surface-overlay, #1e2430);
+  border-color: rgba(212, 160, 23, 0.25);
+}
+.hs-page[data-hs-theme="dark"] .hs-guide-menu-item {
+  color: var(--hs-text, #f5ead0);
+}
+.hs-page[data-hs-theme="dark"] .hs-guide-menu-item:hover {
+  background: rgba(21, 128, 61, 0.2);
+  color: #86efac;
+}
+.hs-page[data-hs-theme="dark"] .hs-backup-menu .hs-guide-menu-item small {
+  color: var(--hs-muted, #a89880);
+}

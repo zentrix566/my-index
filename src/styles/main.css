@@ -42,6 +42,23 @@
   --header-active-fg: #ffe089;
 }
 
+/* 顶栏下拉菜单（工作项目 / 个人项目 / 账号）暗色适配 */
+:root[data-theme="dark"] .nav-dropdown-menu {
+  background: rgba(24, 20, 18, 0.97);
+  border-color: rgba(212, 160, 23, 0.25);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.45);
+}
+:root[data-theme="dark"] .nav-dropdown-menu a,
+:root[data-theme="dark"] .nav-dropdown-menu button {
+  color: #f5ead0;
+}
+:root[data-theme="dark"] .nav-dropdown-menu a:hover,
+:root[data-theme="dark"] .nav-dropdown-menu button:hover,
+:root[data-theme="dark"] .nav-dropdown-menu a.router-link-active {
+  background: rgba(240, 192, 96, 0.16);
+  color: #ffe089;
+}
+
 :root[data-theme="dark"] .auth-page,
 :root[data-theme="dark"] .ve-page {
   color: var(--text) !important;

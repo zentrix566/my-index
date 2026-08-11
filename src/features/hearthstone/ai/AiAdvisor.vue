@@ -443,4 +443,64 @@ function clearChat() {
 }
 .ai-send:hover:not(:disabled) { background: #6d28d9; }
 .ai-send:disabled { opacity: .5; cursor: not-allowed; }
+
+/* ===== 暗色主题（炉石暗色模式）===== */
+.hs-page[data-hs-theme="dark"] .ai-advisor {
+  background: var(--hs-surface-overlay, #1e2430);
+  border-color: var(--hs-border, #334155);
+}
+.hs-page[data-hs-theme="dark"] .ai-banner {
+  color: #c4b5fd;
+  background: rgba(124, 58, 237, 0.16);
+  border-color: rgba(124, 58, 237, 0.32);
+}
+.hs-page[data-hs-theme="dark"] .ai-banner-sub { color: #a78bfa; }
+.hs-page[data-hs-theme="dark"] .ai-login-required {
+  color: #fbbf24;
+  background: rgba(180, 83, 9, 0.16);
+  border-color: rgba(245, 158, 11, 0.32);
+}
+.hs-page[data-hs-theme="dark"] .ai-login-required a { color: #93c5fd; }
+.hs-page[data-hs-theme="dark"] .ai-scope-core {
+  color: #5eead4;
+  background: rgba(15, 118, 110, 0.18);
+  border-color: rgba(45, 212, 191, 0.3);
+}
+.hs-page[data-hs-theme="dark"] .ai-scope-all {
+  color: #fdba74;
+  background: rgba(154, 52, 18, 0.18);
+  border-color: rgba(251, 146, 60, 0.3);
+}
+.hs-page[data-hs-theme="dark"] .ai-scope-toggle {
+  background: rgba(255, 255, 255, 0.08);
+}
+.hs-page[data-hs-theme="dark"] .ai-quota b { color: #c4b5fd; }
+.hs-page[data-hs-theme="dark"] .ai-warn {
+  color: #fbbf24;
+  background: rgba(180, 83, 9, 0.16);
+  border-color: rgba(245, 158, 11, 0.32);
+}
+.hs-page[data-hs-theme="dark"] .ai-error {
+  color: #fca5a5;
+  background: rgba(220, 38, 38, 0.16);
+  border-color: rgba(248, 113, 113, 0.32);
+}
+.hs-page[data-hs-theme="dark"] .ai-fixed-btn {
+  color: #c4b5fd;
+  background: rgba(124, 58, 237, 0.16);
+  border-color: rgba(124, 58, 237, 0.32);
+}
+.hs-page[data-hs-theme="dark"] .ai-fixed-btn:hover:not(:disabled) {
+  background: rgba(124, 58, 237, 0.26);
+}
+.hs-page[data-hs-theme="dark"] .ai-msg-user .ai-msg-text { background: rgba(99, 102, 241, 0.18); }
+.hs-page[data-hs-theme="dark"] .ai-msg-text.ai-md :deep(code) {
+  background: rgba(124, 58, 237, 0.22);
+}
+.hs-page[data-hs-theme="dark"] .ai-msg-text.ai-md :deep(strong) { color: #c4b5fd; }
+.hs-page[data-hs-theme="dark"] .ai-input {
+  background: var(--hs-inset-bg, #1a1f2b);
+  color: var(--hs-text, #e5edf7);
+}
+.hs-page[data-hs-theme="dark"] .ai-input:disabled { background: rgba(255, 255, 255, 0.04); }
 </style>

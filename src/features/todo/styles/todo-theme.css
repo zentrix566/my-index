@@ -1,6 +1,6 @@
-/* 「日程管理」模块浅色主题 */
+/* 「日程管理」模块主题：浅色为默认值，暗色通过全站 html[data-theme='dark'] 覆盖 */
 :root {
-  --todo-bg: #f4f6f9;
+  --todo-bg: #eef1f5;
   --todo-panel: #ffffff;
   --todo-border: #e7e9ee;
   --todo-border-strong: #d6dae1;
@@ -15,6 +15,67 @@
   --todo-warn: #f59e0b;
   --todo-radius: 12px;
   --todo-shadow: 0 1px 3px rgba(20, 30, 50, 0.06), 0 4px 16px rgba(20, 30, 50, 0.04);
+
+  /* 辅助色（浅色默认值，暗色统一覆盖） */
+  --todo-hover-bg: #f1f3f6;
+  --todo-btn-hover: #f6f8fb;
+  --todo-input-bg: #ffffff;
+  --todo-out-bg: #fafbfc;
+  --todo-table-head: #f7f9fc;
+  --todo-table-hover: #f9fbfe;
+  --todo-tag-low-bg: #eef2f7;
+  --todo-tag-low-fg: #64748b;
+  --todo-tag-mid-bg: #fff4e0;
+  --todo-tag-mid-fg: #b9760a;
+  --todo-tag-high-bg: #fdecec;
+  --todo-tag-high-fg: #d23b3b;
+  --todo-tag-harvest-bg: #fff7e6;
+  --todo-tag-harvest-fg: #d99309;
+  --todo-status-done-bg: #e7f6ec;
+  --todo-status-pending-bg: #eef2f7;
+  --todo-status-pending-fg: #64748b;
+  --todo-danger-bg: #fdecec;
+  --todo-danger-border: #f3c9c9;
+  --todo-main-gradient: linear-gradient(180deg, #f3f5f9 0%, #eef1f5 100%);
+}
+
+/* ===== 黑夜模式 ===== */
+html[data-theme='dark'] {
+  --todo-bg: #14161b;
+  --todo-panel: #1c1f26;
+  --todo-border: #2a2e38;
+  --todo-border-strong: #3a4050;
+  --todo-text: #e6e8ee;
+  --todo-text-soft: #9aa3b2;
+  --todo-text-faint: #6b7280;
+  --todo-primary: #60a5fa;
+  --todo-primary-hover: #7ab2ff;
+  --todo-primary-soft: rgba(96, 165, 250, 0.16);
+  --todo-danger: #f87171;
+  --todo-success: #4ade80;
+  --todo-warn: #fbbf24;
+  --todo-shadow: 0 1px 3px rgba(0, 0, 0, 0.35), 0 4px 16px rgba(0, 0, 0, 0.25);
+
+  --todo-hover-bg: #262b34;
+  --todo-btn-hover: #242933;
+  --todo-input-bg: #23272f;
+  --todo-out-bg: #191c22;
+  --todo-table-head: #20242d;
+  --todo-table-hover: #212630;
+  --todo-tag-low-bg: #222a33;
+  --todo-tag-low-fg: #94a3b8;
+  --todo-tag-mid-bg: #2e2617;
+  --todo-tag-mid-fg: #fbbf24;
+  --todo-tag-high-bg: #33201f;
+  --todo-tag-high-fg: #fca5a5;
+  --todo-tag-harvest-bg: #2e2617;
+  --todo-tag-harvest-fg: #fbbf24;
+  --todo-status-done-bg: #142b1d;
+  --todo-status-pending-bg: #23272f;
+  --todo-status-pending-fg: #9aa3b2;
+  --todo-danger-bg: #3a2222;
+  --todo-danger-border: #7f4a4a;
+  --todo-main-gradient: linear-gradient(180deg, #171a20 0%, #14161b 100%);
 }
 
 .todo-app {
@@ -82,7 +143,7 @@
   text-align: left;
 }
 .todo-nav-item:hover {
-  background: #f1f3f6;
+  background: var(--todo-hover-bg);
   color: var(--todo-text);
 }
 .todo-nav-item.router-link-active,
@@ -100,13 +161,13 @@
   margin-left: auto;
   font-size: 12px;
   color: var(--todo-text-faint);
-  background: #f1f3f6;
+  background: var(--todo-hover-bg);
   border-radius: 10px;
   padding: 1px 8px;
 }
 .todo-nav-item.router-link-active .todo-nav-count,
 .todo-nav-item.is-active .todo-nav-count {
-  background: #fff;
+  background: var(--todo-panel);
   color: var(--todo-primary);
 }
 
@@ -136,7 +197,74 @@
   padding: 28px 36px;
   overflow-y: auto;
   min-width: 0;
+  position: relative;
+  background:
+    radial-gradient(900px 480px at 88% 6%, rgba(99, 102, 241, 0.12), transparent 60%),
+    radial-gradient(720px 420px at 100% 62%, rgba(236, 72, 153, 0.10), transparent 60%),
+    radial-gradient(560px 360px at 6% 96%, rgba(34, 197, 94, 0.08), transparent 60%),
+    var(--todo-main-gradient);
 }
+/* 暗色模式叠加更明显的彩色光晕 */
+html[data-theme='dark'] .todo-main {
+  background:
+    radial-gradient(900px 480px at 88% 6%, rgba(99, 102, 241, 0.22), transparent 60%),
+    radial-gradient(720px 420px at 100% 62%, rgba(236, 72, 153, 0.14), transparent 60%),
+    radial-gradient(560px 360px at 6% 96%, rgba(34, 197, 94, 0.14), transparent 60%),
+    var(--todo-main-gradient);
+}
+
+/* ===== 今日鼓励卡（任务列表下方的视觉收尾） ===== */
+.todo-encourage {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  margin-top: 18px;
+  padding: 16px 20px;
+  border-radius: var(--todo-radius);
+  background: var(--todo-panel);
+  border: 1px solid var(--todo-border);
+  box-shadow: var(--todo-shadow);
+  color: var(--todo-text);
+}
+.todo-encourage-ico {
+  flex: 0 0 36px;
+  width: 36px;
+  height: 36px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #6366f1, #ec4899);
+  color: #fff;
+}
+.todo-encourage-body { flex: 1; min-width: 0; }
+.todo-encourage-title { font-size: 14px; font-weight: 700; margin: 0 0 2px; }
+.todo-encourage-sub { font-size: 13px; color: var(--todo-text-soft); margin: 0; }
+
+/* ===== 今日已完成卡片（暗色适配） ===== */
+html[data-theme='dark'] .todo-done-card {
+  background: #1f2530;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45), 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+html[data-theme='dark'] .todo-done-card-head {
+  background: linear-gradient(135deg, #2f8f6a 0%, #1f6e51 100%);
+}
+html[data-theme='dark'] .todo-done-card-body { color: #e6e8ee; }
+html[data-theme='dark'] .todo-done-text { color: #e6e8ee; }
+html[data-theme='dark'] .todo-done-card-foot {
+  background: #161a22;
+  color: #9aa3b2;
+}
+html[data-theme='dark'] .todo-done-count {
+  background: #f5ead0;
+  color: #1f6e51;
+}
+html[data-theme='dark'] .todo-done-check {
+  background: rgba(45, 212, 191, 0.18);
+  border-color: rgba(94, 234, 212, 0.45);
+}
+html[data-theme='dark'] .todo-done-check-inner { color: #5eead4; }
 
 .todo-header {
   display: flex;
@@ -176,7 +304,7 @@
   transition: all 0.15s;
   text-decoration: none;
 }
-.todo-btn:hover { background: #f6f8fb; }
+.todo-btn:hover { background: var(--todo-btn-hover); }
 .todo-btn.primary {
   background: var(--todo-primary);
   border-color: var(--todo-primary);
@@ -184,8 +312,8 @@
 }
 .todo-btn.primary:hover { background: var(--todo-primary-hover); }
 .todo-btn.ghost { background: transparent; }
-.todo-btn.danger { color: var(--todo-danger); border-color: #f3c9c9; }
-.todo-btn.danger:hover { background: #fdecec; }
+.todo-btn.danger { color: var(--todo-danger); border-color: var(--todo-danger-border); }
+.todo-btn.danger:hover { background: var(--todo-danger-bg); }
 .todo-btn.small { padding: 6px 12px; font-size: 13px; }
 .todo-btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
@@ -216,11 +344,19 @@
   padding: 14px 16px;
   background: var(--todo-panel);
   border: 1px solid var(--todo-border);
+  border-left: 4px solid transparent;
   border-radius: var(--todo-radius);
   box-shadow: var(--todo-shadow);
   transition: border-color 0.15s;
 }
 .todo-task:hover { border-color: var(--todo-border-strong); }
+.todo-task.status-pending { border-left-color: #3b82f6; }
+.todo-task.status-in_progress { border-left-color: #f59e0b; }
+.todo-task.status-deferred { border-left-color: #8b5cf6; }
+.todo-task.status-waiting { border-left-color: #ef4444; }
+.todo-task.status-done,
+.todo-task.done { border-left-color: #22c55e; }
+.todo-task.status-cancelled { border-left-color: #94a3b8; }
 .todo-task.done,
 .todo-task.status-done { opacity: 0.62; }
 .todo-task.status-cancelled { opacity: 0.55; }
@@ -239,7 +375,7 @@
   color: #fff;
   font-size: 12px;
   transition: all 0.15s;
-  background: #fff;
+  background: var(--todo-input-bg);
 }
 .todo-check:hover { border-color: var(--todo-primary); }
 .todo-task.done .todo-check,
@@ -257,7 +393,8 @@
   padding: 2px 8px;
   font-size: 12px;
   font-weight: 600;
-  background: #fff;
+  background: var(--todo-input-bg);
+  color: var(--todo-text);
   cursor: pointer;
   max-width: 96px;
   line-height: 1.5;
@@ -284,13 +421,13 @@
   font-size: 12px;
   padding: 1px 8px;
   border-radius: 8px;
-  background: #f1f3f6;
+  background: var(--todo-hover-bg);
   color: var(--todo-text-soft);
 }
-.todo-tag.prio-low { background: #eef2f7; color: #64748b; }
-.todo-tag.prio-medium { background: #fff4e0; color: #b9760a; }
-.todo-tag.prio-high { background: #fdecec; color: #d23b3b; }
-.todo-tag.harvest { background: #fff7e6; color: #d99309; }
+.todo-tag.prio-low { background: var(--todo-tag-low-bg); color: var(--todo-tag-low-fg); }
+.todo-tag.prio-medium { background: var(--todo-tag-mid-bg); color: var(--todo-tag-mid-fg); }
+.todo-tag.prio-high { background: var(--todo-tag-high-bg); color: var(--todo-tag-high-fg); }
+.todo-tag.harvest { background: var(--todo-tag-harvest-bg); color: var(--todo-tag-harvest-fg); }
 .todo-tag.list { background: var(--todo-primary-soft); color: var(--todo-primary); }
 
 .todo-task-actions {
@@ -309,8 +446,8 @@
   padding: 4px 6px;
   border-radius: 6px;
 }
-.todo-icon-btn:hover { background: #f1f3f6; color: var(--todo-text); }
-.todo-icon-btn.danger:hover { background: #fdecec; color: var(--todo-danger); }
+.todo-icon-btn:hover { background: var(--todo-hover-bg); color: var(--todo-text); }
+.todo-icon-btn.danger:hover { background: var(--todo-danger-bg); color: var(--todo-danger); }
 
 /* ===== 卡片 ===== */
 .todo-card {
@@ -334,7 +471,7 @@
   font-size: 14px;
   font-family: inherit;
   color: var(--todo-text);
-  background: #fff;
+  background: var(--todo-input-bg);
   width: 100%;
 }
 .todo-input:focus, .todo-textarea:focus, .todo-select:focus {
@@ -350,7 +487,7 @@
 .todo-modal-mask {
   position: fixed;
   inset: 0;
-  background: rgba(20, 28, 45, 0.4);
+  background: rgba(10, 16, 28, 0.45);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -360,10 +497,11 @@
 .todo-modal {
   width: 100%;
   max-width: 460px;
-  background: #fff;
+  background: var(--todo-panel);
+  border: 1px solid var(--todo-border);
   border-radius: 16px;
   padding: 24px;
-  box-shadow: 0 20px 60px rgba(20, 30, 50, 0.25);
+  box-shadow: 0 20px 60px rgba(10, 16, 28, 0.3);
   max-height: 90vh;
   overflow-y: auto;
 }
@@ -398,7 +536,7 @@
   aspect-ratio: 1 / 1;
   border-radius: 10px;
   border: 1px solid var(--todo-border);
-  background: #fff;
+  background: var(--todo-input-bg);
   cursor: pointer;
   padding: 6px;
   display: flex;
@@ -408,7 +546,7 @@
   position: relative;
 }
 .todo-cal-cell:hover { border-color: var(--todo-primary); }
-.todo-cal-cell.out { background: #fafbfc; color: var(--todo-text-faint); }
+.todo-cal-cell.out { background: var(--todo-out-bg); color: var(--todo-text-faint); }
 .todo-cal-cell.today { border-color: var(--todo-primary); }
 .todo-cal-cell.sel { box-shadow: 0 0 0 2px var(--todo-primary); }
 .todo-cal-day { font-size: 13px; font-weight: 600; }
@@ -418,10 +556,19 @@
 .todo-cal-dot.done { background: var(--todo-success); }
 .todo-cal-dot.harvest { background: var(--todo-warn); }
 
+/* ===== 表格（日程管理页） ===== */
+.todo-table thead th {
+  background: var(--todo-table-head);
+  color: var(--todo-text-soft);
+}
+.todo-table tbody tr:hover { background: var(--todo-table-hover); }
+.todo-status.is-done { background: var(--todo-status-done-bg); color: var(--todo-success); }
+.todo-status.is-pending { background: var(--todo-status-pending-bg); color: var(--todo-status-pending-fg); }
+
 /* ===== 提示条 ===== */
 .todo-error {
-  background: #fdecec;
-  color: #c0392b;
+  background: var(--todo-danger-bg);
+  color: var(--todo-danger);
   padding: 10px 14px;
   border-radius: 10px;
   font-size: 14px;
