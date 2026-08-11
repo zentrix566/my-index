@@ -29,7 +29,7 @@
               </div>
               <div class="todo-done-card-right">
                 <span class="todo-done-head-date">{{ dateLabelFull }}</span>
-                <span class="todo-done-count">{{ tasks.length }}</span>
+                <span class="todo-done-count"><b>{{ tasks.length }}</b><small>项完成</small></span>
               </div>
             </div>
             <div class="todo-done-card-body">
@@ -360,13 +360,27 @@ async function exportDoneCard() {
   if (!tasks.value.length) return toast('没有可导出的已完成任务')
   if (!doneCardRef.value) return
   try {
+    const exportWidth = 760
     const dataUrl = await toPng(doneCardRef.value, {
       pixelRatio: 2,
-      backgroundColor: '#ffffff',
-      cacheBust: true
+      backgroundColor: '#f4faf7',
+      cacheBust: true,
+      width: exportWidth,
+      style: {
+        width: `${exportWidth}px`,
+        maxWidth: 'none',
+        margin: '0',
+        transform: 'none',
+        boxShadow: 'none',
+        borderRadius: '0',
+        border: '0'
+      }
     })
     const link = document.createElement('a')
-    link.download = `todo-done-card-${dateKey}.png`
+    const now = new Date()
+    const pad = (value, size = 2) => String(value).padStart(size, '0')
+    const exportTime = `${pad(now.getHours())}${pad(now.getMinutes())}${pad(now.getSeconds())}${pad(now.getMilliseconds(), 3)}`
+    link.download = `todo-done-card-${dateKey.replaceAll('-', '')}-${exportTime}.png`
     link.href = dataUrl
     link.click()
     toast('已导出卡片图片')
@@ -518,11 +532,12 @@ onMounted(async () => {
 }
 .todo-done-card {
   width: 100%;
-  max-width: 1100px;
+  max-width: 760px;
   margin: 0 auto;
   background: #fff;
-  border-radius: 18px;
-  box-shadow: 0 8px 28px rgba(16, 185, 129, 0.18), 0 2px 8px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(16, 185, 129, 0.18);
+  border-radius: 22px;
+  box-shadow: 0 16px 38px rgba(16, 185, 129, 0.16), 0 3px 10px rgba(15, 23, 42, 0.06);
   overflow: hidden;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang SC", "Microsoft YaHei", sans-serif;
 }
@@ -531,8 +546,8 @@ onMounted(async () => {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 18px 20px;
-  background: linear-gradient(135deg, #4ec199 0%, #3ba883 100%);
+  padding: 20px 24px;
+  background: linear-gradient(120deg, #35b98e 0%, #4fcaa5 55%, #6fd5b6 100%);
   color: #fff;
 }
 .todo-done-card-left {
@@ -553,48 +568,53 @@ onMounted(async () => {
   flex: 0 0 24px;
 }
 .todo-done-head-title {
-  font-size: 18px;
+  font-size: 20px;
   font-weight: 800;
   letter-spacing: 0.5px;
 }
 .todo-done-card-right {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
 }
 .todo-done-head-date {
-  font-size: 14px;
-  font-weight: 600;
-  opacity: 0.95;
-  letter-spacing: 0.3px;
+  font-size: 13px;
+  font-weight: 700;
+  opacity: 0.92;
+  letter-spacing: 0.2px;
 }
 .todo-done-count {
-  font-size: 14px;
-  font-weight: 800;
-  color: #3ba883;
-  background: #fff;
-  border-radius: 50%;
-  width: 28px;
-  height: 28px;
+  min-width: 64px;
+  padding: 5px 9px;
+  color: #157457;
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 10px;
   display: inline-flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
-  flex: 0 0 28px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  line-height: 1.1;
+  box-shadow: 0 3px 9px rgba(15, 88, 67, 0.13);
 }
+.todo-done-count b { font-size: 16px; }
+.todo-done-count small { margin-top: 1px; font-size: 10px; font-weight: 700; white-space: nowrap; }
 .todo-done-card-body {
-  padding: 24px 22px 18px;
+  padding: 20px 24px 16px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 0;
+  background: #fff;
 }
 .todo-done-item {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 11px;
+  padding: 13px 2px;
+  border-bottom: 1px solid #eaf3ef;
   font-size: 16px;
   color: #1f2937;
 }
+.todo-done-item:last-child { border-bottom: 0; }
 .todo-done-check {
   width: 22px;
   height: 22px;
@@ -617,12 +637,12 @@ onMounted(async () => {
   font-weight: 500;
 }
 .todo-done-card-foot {
-  background: #f1f5f9;
-  color: #64748b;
+  background: #f4faf7;
+  color: #5e7f71;
   font-size: 13px;
   font-weight: 500;
   text-align: center;
-  padding: 14px 16px;
+  padding: 13px 16px;
   letter-spacing: 0.3px;
 }
 
@@ -707,8 +727,10 @@ html[data-theme='dark'] .todo-overview-ring { box-shadow: inset 0 0 0 6px #1f253
   .todo-done-card-head { padding: 15px 16px; }
   .todo-done-head-title { font-size: 16px; }
   .todo-done-head-date { font-size: 13px; }
-  .todo-done-count { width: 26px; height: 26px; font-size: 13px; }
-  .todo-done-card-body { padding: 18px 16px 14px; gap: 13px; }
+  .todo-done-count { min-width: 56px; padding: 4px 7px; }
+  .todo-done-count b { font-size: 14px; }
+  .todo-done-count small { font-size: 9px; }
+  .todo-done-card-body { padding: 14px 12px; gap: 7px; }
   .todo-done-item { font-size: 15px; }
   .todo-done-card-foot { padding: 12px 14px; font-size: 12px; }
   .todo-progress-card { padding: 14px; }
