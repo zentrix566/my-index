@@ -55,7 +55,25 @@
       <template v-else>
         <div v-if="tasks.length" class="todo-task-list">
           <div v-for="t in tasks" :key="t.id" class="todo-task" :class="'status-' + t.status">
-            <select class="todo-status-select" :value="t.status" :style="statusStyle(t.status)" @change="setStatus(t, $event.target.value)">
+            <!-- 今日待办：点击圆钮直接标记完成，不用下拉 -->
+            <button
+              v-if="view === 'today_todo'"
+              class="todo-check"
+              type="button"
+              :class="{ done: t.status === 'done' }"
+              :aria-label="t.status === 'done' ? '标记为未完成' : '标记为已完成'"
+              :title="t.status === 'done' ? '标记为未完成' : '标记为已完成'"
+              @click="toggleDone(t)"
+            >
+              <span v-if="t.status === 'done'">✓</span>
+            </button>
+            <select
+              v-else
+              class="todo-status-select"
+              :value="t.status"
+              :style="statusStyle(t.status)"
+              @change="setStatus(t, $event.target.value)"
+            >
               <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
             </select>
             <div class="todo-task-body">
@@ -315,10 +333,21 @@ async function setStatus(t, next) {
     const r = await todoApi.updateTask(t.id, { status: next })
     Object.assign(t, r.task)
     toast(`已设为「${TASK_STATUS_META[next].label}」`)
+    return true
   } catch (e) {
     t.status = prev
     t.completedAt = prevCompleted
     toast(e.message)
+    return false
+  }
+}
+
+// 今日待办：点击圆钮在 待办 ⇄ 已完成 间切换；标记完成后移出当前列表（转到「今日已完成」）
+async function toggleDone(t) {
+  const becomingDone = t.status !== 'done'
+  const ok = await setStatus(t, becomingDone ? 'done' : 'pending')
+  if (ok && becomingDone && view.value === 'today_todo') {
+    tasks.value = tasks.value.filter((x) => x.id !== t.id)
   }
 }
 
