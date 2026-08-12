@@ -100,7 +100,7 @@ const latestUpdates = changelog.slice(0, 3)
 const latestUpdate = latestUpdates[0]
 const { recents } = useProjectPreferences()
 const recentApps = computed(() => recents.value.map((path) => vueApps.find((app) => app.to === path)).filter(Boolean).slice(0, 3))
-const categoryLabel = (category) => ({ site: '站点', todo: '日程', hearthstone: '炉石', willpower: '心魔' }[category] || '项目')
+const categoryLabel = (category) => ({ site: '站点', todo: '日程', hearthstone: '炉石', willpower: '心魔', other: '其他' }[category] || '项目')
 </script>
 
 <style scoped>

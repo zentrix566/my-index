@@ -84,7 +84,7 @@ export const vueApps = [
     to: '/age-calculator',
     title: '年龄计算器',
     kicker: '工具 · 计算器',
-    summary: '输入出生年份与特定年份，直接算出当时的年龄，不做任何校验。',
+    summary: '输入出生年份与特定年份，支持公元前、跨纪元与停止输入后自动计算。',
     tags: ['年龄', '计算器']
   }
 ].sort((a, b) => (personalAppRank.get(a.to) ?? 100) - (personalAppRank.get(b.to) ?? 100))
