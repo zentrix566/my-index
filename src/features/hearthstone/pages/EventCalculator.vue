@@ -32,227 +32,199 @@
       </header>
 
       <div class="hs-ev-grid">
-        <!-- 左：输入 -->
-        <div class="hs-ev-card">
-          <h2>活动参数</h2>
-
-          <div class="hs-ev-field">
-            <label for="ev-name">活动名称</label>
-            <input id="ev-name" type="text" v-model="event.name" placeholder="例如：祖拉玛特的狂暴" />
+        <!-- 进度日历（置顶，重点突出） -->
+        <section class="hs-ev-cal-section" ref="calSectionRef" v-if="result.hasWindow">
+          <div class="hs-ev-cal-head">
+            <div class="hs-ev-cal-head-text">
+              <h2>📅 进度日历</h2>
+              <p>
+                按当前「每天游玩 {{ result.dailyPlayMinutes }} 分钟」逐日模拟累计点数：
+                <b>周任务在发布日计入</b>（当日额外 <b>+{{ formatXp(weeklyReleaseMax) }}</b> 点）。
+                命中满级目标的日期高亮为「达成」。
+              </p>
+            </div>
+            <div class="hs-ev-cal-head-actions">
+              <div class="hs-ev-cal-summary">
+                <span class="sum-today">
+                  当前进度 <b>{{ formatXp(result.currentPoints) }}</b>
+                </span>
+                <span v-if="result.withPlay.reachDate" class="sum-reach">
+                  🎯 预计达成 <b>{{ formatFullDate(result.withPlay.reachDate) }}</b>
+                </span>
+                <span v-else class="sum-late">✕ 结束前无法达成</span>
+              </div>
+              <button type="button" class="hs-btn hs-btn-mini hs-ev-export-btn" :disabled="exporting" @click="exportCalendar">
+                {{ exporting ? '导出中…' : '📷 导出为图片' }}
+              </button>
+            </div>
           </div>
 
-          <div class="hs-ev-field-row">
-            <div class="hs-ev-field">
-              <label for="ev-start">活动开始</label>
-              <input id="ev-start" type="date" v-model="event.startDate" />
-            </div>
-            <div class="hs-ev-field">
-              <label for="ev-end">活动结束</label>
-              <input id="ev-end" type="date" v-model="event.endDate" />
-            </div>
-          </div>
-          <p class="hs-ev-range" v-if="result.hasWindow">共 {{ result.totalDays }} 天（{{ event.startDate }} – {{ event.endDate }}）</p>
-
-          <div class="hs-ev-field-row">
-            <div class="hs-ev-field">
-              <label for="ev-daily">每日任务点数</label>
-              <input id="ev-daily" type="number" min="0" v-model.number="event.dailyPoints" />
-            </div>
-            <div class="hs-ev-field">
+          <!-- 输入条：当前已有点数 + 今日任务已完成开关（移入日历，置顶） -->
+          <div class="hs-ev-cal-controls">
+            <div class="hs-ev-current-top">
               <label for="ev-current">当前已有点数</label>
+              <label class="hs-ev-switch" :class="{ 'is-on': event.todayTaskDone }">
+                <input id="ev-today-done" type="checkbox" v-model="event.todayTaskDone" />
+                <span class="hs-ev-switch-track" aria-hidden="true"><span class="hs-ev-switch-knob"></span></span>
+                <span class="hs-ev-switch-text">今日任务已完成</span>
+              </label>
+            </div>
+            <div class="hs-ev-current-input">
               <input id="ev-current" type="number" min="0" v-model.number="event.currentPoints" />
-            </div>
-            <div class="hs-ev-field">
-              <label for="ev-target">满级所需总点数</label>
-              <input id="ev-target" type="number" min="1" v-model.number="event.targetTotal" />
+              <span class="hs-ev-current-unit">点</span>
             </div>
           </div>
 
-          <div class="hs-ev-field-row">
-            <div class="hs-ev-field">
-              <label for="ev-xpm">每分钟经验</label>
-              <input id="ev-xpm" type="number" min="0" step="0.1" v-model.number="event.xpPerMinute" />
-            </div>
-            <div class="hs-ev-field">
-              <label for="ev-play">每天游玩（分钟）</label>
-              <input id="ev-play" type="number" min="0" v-model.number="event.dailyPlayMinutes" />
-            </div>
-            <div class="hs-ev-field">
-              <label for="ev-game">每局（分钟）</label>
-              <input id="ev-game" type="number" min="1" v-model.number="event.gameMinutes" />
-            </div>
-          </div>
-
-          <div class="hs-ev-weekly">
-            <div class="hs-ev-weekly-head">
-              <span>周任务（发布日一次性发放）</span>
-              <button type="button" class="hs-btn hs-btn-mini" @click="addWeekly">+ 添加</button>
-            </div>
-            <div class="hs-ev-weekly-list">
-              <div class="hs-ev-weekly-row" v-for="(t, i) in event.weeklyTasks" :key="i">
-                <input type="date" v-model="t.date" aria-label="周任务日期" />
-                <input type="number" min="0" v-model.number="t.points" aria-label="周任务点数" placeholder="点数" />
-                <span class="hs-ev-weekly-unit">点</span>
-                <button type="button" class="hs-ev-weekly-del" :disabled="event.weeklyTasks.length <= 1" @click="removeWeekly(i)" aria-label="删除周任务">×</button>
-              </div>
-            </div>
-          </div>
-
-          <div class="hs-ev-weekly">
-            <div class="hs-ev-weekly-head">
-              <span>奖励里程碑（累计点数达标即领取）</span>
-              <button type="button" class="hs-btn hs-btn-mini" @click="addTier">+ 添加</button>
-            </div>
-            <div class="hs-ev-weekly-list">
-              <div class="hs-ev-tier-row" v-for="(t, i) in event.rewardTiers" :key="i">
-                <input type="number" min="0" v-model.number="t.xp" aria-label="奖励点数" placeholder="点数" />
-                <span class="hs-ev-weekly-unit">点</span>
-                <input type="text" v-model="t.label" aria-label="奖励名称" placeholder="奖励名" />
-                <button type="button" class="hs-ev-weekly-del" :disabled="event.rewardTiers.length <= 1" @click="removeTier(i)" aria-label="删除奖励">×</button>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- 右：结果 -->
-        <div class="hs-ev-card">
-          <h2>预计满级时间</h2>
-          <template v-if="result.hasWindow">
-            <div v-if="result.alreadyMaxed" class="hs-ev-reach">
-              <div class="hs-ev-reach-date">🎉 已满级</div>
-              <div class="hs-ev-reach-sub">
+          <!-- 预计满级时间（紧随输入之后） -->
+          <div class="hs-ev-reach-block">
+            <div class="hs-ev-reach-main">
+              <span class="hs-ev-reach-kicker">预计满级时间</span>
+              <div v-if="result.alreadyMaxed" class="hs-ev-reach-date">🎉 已满级</div>
+              <div v-else-if="result.withPlay.reachDate" class="hs-ev-reach-date">{{ formatFullDate(result.withPlay.reachDate) }}</div>
+              <div v-else class="hs-ev-reach-date hs-ev-reach-late">结束前无法满级</div>
+              <div v-if="result.alreadyMaxed" class="hs-ev-reach-sub">
                 当前 <b>{{ formatXp(result.currentPoints) }}</b> 点 ≥ 满级目标 <b>{{ formatXp(result.target) }}</b> 点，无需继续游玩。
               </div>
-            </div>
-            <div v-else-if="result.withPlay.reachDate" class="hs-ev-reach">
-              <div class="hs-ev-reach-date">{{ formatFullDate(result.withPlay.reachDate) }}</div>
-              <div class="hs-ev-reach-sub">
-                距今天第 <b>{{ result.withPlay.daysToReach }}</b> 天 · 累计达 <b>{{ formatXp(result.target) }}</b> 点
+              <div v-else-if="result.withPlay.reachDate" class="hs-ev-reach-sub">
+                预计 <b>{{ formatFullDate(result.withPlay.reachDate) }}</b> 达成，距今 <b>{{ result.withPlay.daysToReach }}</b> 天，累计达 <b>{{ formatXp(result.target) }}</b> 点。
+                <span v-if="result.withPlay.reachOnTime" class="hs-ev-tag hs-ev-tag-ok">✓ 活动结束前可达成</span>
+                <span v-else class="hs-ev-tag hs-ev-tag-late">✕ 超期 {{ daysBetween(result.endDate, result.withPlay.reachDate) }} 天</span>
               </div>
-              <span v-if="result.withPlay.reachOnTime" class="hs-ev-tag hs-ev-tag-ok">✓ 活动结束前可达成</span>
-              <span v-else class="hs-ev-tag hs-ev-tag-late">✕ 超期 {{ daysBetween(result.endDate, result.withPlay.reachDate) }} 天</span>
-            </div>
-            <div v-else class="hs-ev-warn">
-              ✕ 按当前「每天游玩 {{ result.dailyPlayMinutes }} 分钟」，活动结束前无法满级，还差 <b>{{ formatXp(result.shortBy) }}</b> 点。
-              <div v-if="result.dailyMinutesNeeded > 0" class="hs-ev-warn-tip">
-                若想在结束前满级，需每天游玩约 <b>{{ result.dailyMinutesNeeded }}</b> 分钟。
+              <div v-else class="hs-ev-reach-sub">
+                活动结束前无法满级，还差 <b>{{ formatXp(result.shortBy) }}</b> 点。
+                <span v-if="result.dailyMinutesNeeded > 0">若想在结束前满级，需每天游玩约 <b>{{ result.dailyMinutesNeeded }}</b> 分钟。</span>
               </div>
             </div>
-
-            <div class="hs-ev-breakdown">
-              <div><span>当前已有</span><b>{{ formatXp(result.currentPoints) }}</b></div>
-              <div><span>未来每日任务</span><b>{{ formatXp(result.futureDailyTotal) }}</b></div>
-              <div><span>未来周任务</span><b>{{ formatXp(result.futureWeeklyTotal) }}</b></div>
-              <div><span>未来任务合计</span><b>{{ formatXp(result.futureTaskTotal) }}</b></div>
-              <div><span>满级目标</span><b>{{ formatXp(result.target) }}</b></div>
+            <div class="hs-ev-reach-side">
+              <div class="hs-ev-breakdown">
+                <div><span>当前已有</span><b>{{ formatXp(result.currentPoints) }}</b></div>
+                <div><span>未来每日任务</span><b>{{ formatXp(result.futureDailyTotal) }}</b></div>
+                <div><span>未来周任务</span><b>{{ formatXp(result.futureWeeklyTotal) }}</b></div>
+                <div><span>满级目标</span><b>{{ formatXp(result.target) }}</b></div>
+              </div>
+              <div class="hs-ev-play-need" v-if="result.alreadyMaxed">✓ 已达满级</div>
+              <div class="hs-ev-play-need" v-else-if="result.tasksAloneEnough">✓ 仅靠每日 / 周常任务即可满级，无需额外游玩</div>
+              <div class="hs-ev-play-need" v-else-if="result.withPlay.reachDate">还需游玩 <b>{{ formatHours(result.playHoursTotal) }}</b>（约 <b>{{ result.gamesTotal }}</b> 局）</div>
+              <div class="hs-ev-play-need" v-else>需增加游玩时间方能满级</div>
             </div>
-
-            <h2 class="hs-ev-h2">游玩需求</h2>
-            <div v-if="result.tasksAloneEnough" class="hs-ev-ok">
-              ✓ 当前已 <b>{{ formatXp(result.currentPoints) }}</b> 点，仅完成每日 / 周常任务即可满级，约 <b>{{ formatFullDate(result.tasksOnly.reachDate) }}</b> 达成，无需额外游玩。
-            </div>
-            <template v-else>
-              <p class="hs-ev-play-line">
-                当前已 <b>{{ formatXp(result.currentPoints) }}</b> 点，仅靠任务还差 <b>{{ formatXp(result.needTotal) }}</b> 点，至少需游玩
-                <b>{{ formatHours(result.playHoursTotal) }}</b>（约 <b>{{ result.gamesTotal }}</b> 局）。
-              </p>
-              <p class="hs-ev-play-line" v-if="result.dailyMinutesNeeded > 0">
-                若想活动结束前均匀满级，每天需玩约 <b>{{ result.dailyMinutesNeeded }}</b> 分钟。
-              </p>
-            </template>
-          </template>
-          <p v-else class="hs-ev-warn">请填写有效的活动开始 / 结束日期。</p>
-        </div>
-      </div>
-
-      <!-- 进度日历 -->
-      <section class="hs-ev-cal-section" v-if="result.hasWindow">
-        <div class="hs-ev-cal-head">
-          <div class="hs-ev-cal-head-text">
-            <h2>📅 进度日历</h2>
-            <p>
-              按当前「每天游玩 {{ result.dailyPlayMinutes }} 分钟」逐日模拟累计点数：
-              <b>周任务在发布日计入</b>（当日额外 <b>+{{ formatXp(weeklyReleaseMax) }}</b> 点）。
-              命中满级目标的日期高亮为「达成」。
-            </p>
           </div>
-          <div class="hs-ev-cal-summary">
-            <span class="sum-today">
-              当前进度 <b>{{ formatXp(result.currentPoints) }}</b>
-            </span>
-            <span v-if="result.withPlay.reachDate" class="sum-reach">
-              🎯 预计达成 <b>{{ formatFullDate(result.withPlay.reachDate) }}</b>
-            </span>
-            <span v-else class="sum-late">✕ 结束前无法达成</span>
+
+          <!-- 奖励领取计划 -->
+          <div class="hs-ev-reward-plan" v-if="rewardPlan.length">
+            <h3>🎁 奖励领取计划（按累计点数升序）</h3>
+            <ul>
+              <li v-for="t in rewardPlan" :key="t.no" :class="{ 'is-got': t.already || t.reached }">
+                <template v-if="t.reached">
+                  <b>{{ formatFullDate(t.reachDate) }}</b> 获得 <b>{{ t.label }}</b>
+                  <span v-if="t.already" class="rp-tag">（当前已满足）</span>
+                  <span v-else class="rp-tag">（累计满 {{ formatXp(t.xp) }} 点）</span>
+                </template>
+                <template v-else>
+                  <b>{{ t.label }}</b> 活动结束前无法达到（需累计满 {{ formatXp(t.xp) }} 点）
+                </template>
+              </li>
+            </ul>
           </div>
-        </div>
 
-        <div class="hs-ev-reward-plan" v-if="rewardPlan.length">
-          <h3>🎁 奖励领取计划（按累计点数升序）</h3>
-          <ul>
-            <li v-for="t in rewardPlan" :key="t.no" :class="{ 'is-got': t.already || t.reached }">
-              <template v-if="t.reached">
-                <b>{{ formatFullDate(t.reachDate) }}</b> 获得 <b>{{ t.label }}</b>
-                <span v-if="t.already" class="rp-tag">（当前已满足）</span>
-                <span v-else class="rp-tag">（累计满 {{ formatXp(t.xp) }} 点）</span>
-              </template>
-              <template v-else>
-                <b>{{ t.label }}</b> 活动结束前无法达到（需累计满 {{ formatXp(t.xp) }} 点）
-              </template>
-            </li>
-          </ul>
-        </div>
-
-        <div class="hs-ev-cal">
-          <div class="hs-ev-cal-months">
-            <div v-for="month in calendar.months" :key="month.key" class="hs-ev-cal-month">
-              <div class="hs-ev-cal-month-title">{{ month.label }}</div>
-              <div class="hs-ev-cal-week">
-                <span v-for="w in WEEK_LABELS" :key="w">{{ w }}</span>
-              </div>
-              <div class="hs-ev-cal-grid">
-                <span v-for="n in month.leadingBlanks" :key="'b' + n" class="hs-ev-cal-blank"></span>
-                <div
-                  v-for="day in month.days"
-                  :key="day.dateKey"
-                  class="hs-ev-cal-cell"
-                  :class="{
-                    'is-window': day.inWindow,
-                    'is-reach': day.isReach,
-                    'is-reward': day.reward.length,
-                    'is-today': day.isToday,
-                    'is-end': day.isEnd,
-                    'is-weekend': day.isWeekend,
-                    'is-past': day.isPast
-                  }"
-                  :title="day.title"
-                >
-                  <span class="hs-ev-cal-daynum">{{ day.dayNum }}</span>
-                  <span v-if="day.inWindow && day.cumulative != null" class="hs-ev-cal-pts">{{ formatXp(day.cumulative) }}</span>
-                  <span v-if="day.inWindow && day.weekly > 0" class="hs-ev-cal-weekly">周+{{ formatXp(day.weekly) }}</span>
-                  <span v-if="day.reward.length" class="hs-ev-cal-reward">
-                    <i v-for="t in day.reward" :key="t.no" class="rp-badge">🎁{{ t.no }}</i>
-                  </span>
-                  <span v-if="day.isReach" class="hs-ev-cal-reach-tag">达成</span>
-                  <span v-if="day.isEnd" class="hs-ev-cal-end-tag">结束</span>
+          <!-- 日历网格 -->
+          <div class="hs-ev-cal">
+            <div class="hs-ev-cal-months">
+              <div v-for="month in calendar.months" :key="month.key" class="hs-ev-cal-month">
+                <div class="hs-ev-cal-month-title">{{ month.label }}</div>
+                <div class="hs-ev-cal-week">
+                  <span v-for="w in WEEK_LABELS" :key="w">{{ w }}</span>
+                </div>
+                <div class="hs-ev-cal-grid">
+                  <span v-for="n in month.leadingBlanks" :key="'b' + n" class="hs-ev-cal-blank"></span>
+                  <div
+                    v-for="day in month.days"
+                    :key="day.dateKey"
+                    class="hs-ev-cal-cell"
+                    :class="{
+                      'is-window': day.inWindow,
+                      'is-reach': day.isReach,
+                      'is-reward': day.reward.length,
+                      'is-today': day.isToday,
+                      'is-end': day.isEnd,
+                      'is-weekend': day.isWeekend,
+                      'is-past': day.isPast
+                    }"
+                    :title="day.title"
+                  >
+                    <span class="hs-ev-cal-daynum">{{ day.dayNum }}</span>
+                    <span v-if="day.inWindow && day.cumulative != null" class="hs-ev-cal-pts">{{ formatXp(day.cumulative) }}</span>
+                    <span v-if="day.inWindow && day.weekly > 0" class="hs-ev-cal-weekly">周+{{ formatXp(day.weekly) }}</span>
+                    <span v-if="day.reward.length" class="hs-ev-cal-reward">
+                      <i v-for="t in day.reward" :key="t.no" class="rp-badge">🎁{{ t.no }}</i>
+                    </span>
+                    <span v-if="day.isReach" class="hs-ev-cal-reach-tag">达成</span>
+                    <span v-if="day.isEnd" class="hs-ev-cal-end-tag">结束</span>
+                  </div>
                 </div>
               </div>
             </div>
+            <div class="hs-ev-cal-legend">
+              <span><i class="dot reach"></i>满级达成日</span>
+              <span><i class="dot today"></i>今天</span>
+              <span><i class="dot end"></i>活动结束</span>
+              <span><i class="dot weekend"></i>周末</span>
+              <span><i class="dot weekly"></i>含周任务</span>
+              <span><i class="dot reward"></i>奖励节点</span>
+            </div>
           </div>
-          <div class="hs-ev-cal-legend">
-            <span><i class="dot reach"></i>满级达成日</span>
-            <span><i class="dot today"></i>今天</span>
-            <span><i class="dot end"></i>活动结束</span>
-            <span><i class="dot weekend"></i>周末</span>
-            <span><i class="dot weekly"></i>含周任务</span>
-            <span><i class="dot reward"></i>奖励节点</span>
+        </section>
+
+        <!-- 活动信息 & 游玩参数（下方） -->
+        <div class="hs-ev-info-row">
+          <div class="hs-ev-card hs-ev-card--info">
+            <h2>固定活动信息</h2>
+            <div class="hs-ev-fixed">
+              <div class="hs-ev-fixed-row"><span>活动名称</span><b>{{ event.name }}</b></div>
+              <div class="hs-ev-fixed-row">
+                <span>活动时间</span>
+                <b>{{ event.startDate }} – {{ event.endDate }}</b>
+                <i v-if="result.hasWindow">共 {{ result.totalDays }} 天</i>
+              </div>
+              <div class="hs-ev-fixed-row"><span>每日任务点数</span><b>{{ event.dailyPoints }} 点 / 天</b></div>
+              <div class="hs-ev-fixed-row"><span>满级所需总点数</span><b>{{ formatXp(event.targetTotal) }} 点</b></div>
+              <div class="hs-ev-fixed-weekly">
+                <span class="hs-ev-fixed-label">周任务（发布日一次性发放）</span>
+                <ul>
+                  <li v-for="(t, i) in event.weeklyTasks" :key="i"><b>{{ t.date }}</b> · +{{ formatXp(t.points) }} 点</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <div class="hs-ev-card hs-ev-card--info">
+            <h2>游玩参数</h2>
+            <p class="hs-ev-section-label">影响预计满级时间，可调整</p>
+            <div class="hs-ev-field-row">
+              <div class="hs-ev-field">
+                <label for="ev-xpm">每分钟经验</label>
+                <input id="ev-xpm" type="number" min="0" step="0.1" v-model.number="event.xpPerMinute" />
+              </div>
+              <div class="hs-ev-field">
+                <label for="ev-play">每天游玩（分钟）</label>
+                <input id="ev-play" type="number" min="0" v-model.number="event.dailyPlayMinutes" />
+              </div>
+              <div class="hs-ev-field">
+                <label for="ev-game">每局（分钟）</label>
+                <input id="ev-game" type="number" min="1" v-model.number="event.gameMinutes" />
+              </div>
+            </div>
           </div>
         </div>
-      </section>
+      </div>
 
       <!-- 进度曲线 -->
-      <section class="hs-ev-chart-section" v-if="result.hasWindow && result.count > 1">
-        <h2>📈 累计点数曲线</h2>
+      <section class="hs-ev-chart-section" ref="chartSectionRef" v-if="result.hasWindow && result.count > 1">
+        <div class="hs-ev-chart-head">
+          <h2>📈 累计点数曲线</h2>
+          <button type="button" class="hs-btn hs-btn-mini hs-ev-export-btn" :disabled="exporting" @click="exportChart">
+            {{ exporting ? '导出中…' : '📷 导出为图片' }}
+          </button>
+        </div>
         <svg class="hs-ev-chart" :viewBox="`0 0 ${chartW} ${chartH}`" preserveAspectRatio="xMidYMid meet" role="img" aria-label="累计点数曲线">
           <g class="hs-ev-grid-y">
             <template v-for="(g, i) in gridY" :key="'gy' + i">
@@ -276,13 +248,13 @@
           <g class="hs-ev-reward-lines">
             <template v-for="t in rewardLines" :key="'rl' + t.no">
               <line :x1="pad.l" :y1="t.y" :x2="chartW - pad.r" :y2="t.y" />
-              <rect class="hs-ev-reward-bg" :x="chartW - pad.r - 2 - 96" :y="t.y - 13" width="96" height="15" rx="7.5" />
-              <text :x="chartW - pad.r - 4" :y="t.y - 2" text-anchor="end">{{ t.label }} · {{ formatXp(t.xp) }}</text>
+              <rect class="hs-ev-reward-bg" :x="t.x" :y="t.y - 13" :width="t.w" height="15" rx="7.5" />
+              <text :x="t.rightX" :y="t.y - 2" text-anchor="end">{{ t.text }}</text>
             </template>
           </g>
           <line class="hs-ev-target-line" :x1="pad.l" :y1="targetY" :x2="chartW - pad.r" :y2="targetY" />
-          <rect class="hs-ev-target-bg" :x="chartW - pad.r - 2 - 96" :y="targetY - 13" width="96" height="15" rx="7.5" />
-          <text class="hs-ev-target-text" :x="chartW - pad.r - 4" :y="targetY - 2" text-anchor="end">满级 {{ formatXp(result.target) }}</text>
+          <rect class="hs-ev-target-bg" :x="targetLabelBox.x" :y="targetY - 13" :width="targetLabelBox.w" height="15" rx="7.5" />
+          <text class="hs-ev-target-text" :x="targetLabelBox.rightX" :y="targetY - 2" text-anchor="end">{{ targetLabel }}</text>
           <circle v-if="reachPoint" class="hs-ev-reach-dot" :cx="reachPoint.x" :cy="reachPoint.y" r="5" />
           <g v-if="tip" class="hs-ev-tip">
             <line class="hs-ev-tip-line" :x1="tip.px" :y1="tip.py" :x2="tip.side === 'left' ? tip.x + tip.w : tip.x" :y2="tip.y + tip.h / 2" />
@@ -292,6 +264,10 @@
         </svg>
       </section>
 
+      <transition name="hs-ev-fade">
+        <div v-if="exportMsg" class="hs-ev-export-toast">{{ exportMsg }}</div>
+      </transition>
+
       <p class="hs-ev-foot">{{ EVENT_CALC_NOTE }}</p>
     </div>
   </section>
@@ -300,6 +276,7 @@
 <script setup>
 import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import { toPng } from 'html-to-image'
 import { DEFAULT_EVENT, EVENT_CALC_NOTE } from '../data/events.js'
 import { computeEvent, fmtDate, parseDate, daysBetween } from '../utils/eventCalculator.js'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
@@ -329,19 +306,19 @@ const event = persisted('event', JSON.parse(JSON.stringify(DEFAULT_EVENT)))
 if (!Array.isArray(event.value.rewardTiers) || !event.value.rewardTiers.length) {
   event.value.rewardTiers = JSON.parse(JSON.stringify(DEFAULT_EVENT.rewardTiers))
 }
-
-// 周任务增删
-function addWeekly() {
-  event.value.weeklyTasks.push({ date: event.value.startDate || '2026-01-01', points: 0 })
+// 兼容旧缓存：缺「今日任务已完成」开关时默认开启（今日点数已计入当前存量）
+if (typeof event.value.todayTaskDone !== 'boolean') {
+  event.value.todayTaskDone = true
 }
-function removeWeekly(i) {
-  if (event.value.weeklyTasks.length > 1) event.value.weeklyTasks.splice(i, 1)
-}
-function addTier() {
-  event.value.rewardTiers.push({ xp: 0, label: '奖励' + (event.value.rewardTiers.length + 1) })
-}
-function removeTier(i) {
-  if (event.value.rewardTiers.length > 1) event.value.rewardTiers.splice(i, 1)
+// 兼容旧缓存：将默认奖励标签（奖励1~4）迁移为新版奖励名称，保留用户自定义标签与阈值
+const OLD_REWARD_LABELS = ['奖励1', '奖励2', '奖励3', '奖励4']
+const NEW_REWARD_LABELS = DEFAULT_EVENT.rewardTiers.map((t) => t.label)
+if (Array.isArray(event.value.rewardTiers)) {
+  event.value.rewardTiers = event.value.rewardTiers.map((t, i) =>
+    OLD_REWARD_LABELS[i] && t.label === OLD_REWARD_LABELS[i] && NEW_REWARD_LABELS[i]
+      ? { ...t, label: NEW_REWARD_LABELS[i] }
+      : t
+  )
 }
 
 // ===== 计算结果 =====
@@ -460,6 +437,15 @@ const curvePath = computed(() => {
     .join(' ')
 })
 const targetY = computed(() => yFor(result.value.target))
+const targetLabel = computed(() => `满级 ${formatXp(result.value.target)}`)
+const targetLabelBox = computed(() => {
+  const rightX = chartW - pad.r - 4
+  const leftMin = pad.l + 4
+  const maxW = rightX - leftMin - 8
+  const w = labelWidth(targetLabel.value, maxW)
+  const x = Math.max(leftMin, rightX - w - 6)
+  return { x, rightX, w: rightX - x + 4 }
+})
 const reachPoint = computed(() => {
   const w = result.value.withPlay
   if (!w.reachDate || w.reachIndex < 0) return null
@@ -487,12 +473,31 @@ const gridX = computed(() => {
   return out
 })
 
+// 文本宽度估算（CJK 按 2 个英文字宽计）
+function cjkLen(s) {
+  let n = 0
+  for (const ch of String(s)) n += ch.charCodeAt(0) > 255 ? 2 : 1
+  return n
+}
+function labelWidth(text, maxW) {
+  const w = cjkLen(text) * 6.8 + 10
+  return Math.min(maxW, Math.max(48, w))
+}
+
 // 奖励横向参考线（仅在未与满级线重合时绘制）
 const rewardLines = computed(() => {
   const cap = result.value.target
+  const rightX = chartW - pad.r - 4
+  const leftMin = pad.l + 4
+  const maxW = rightX - leftMin - 8
   return result.value.rewardTiers
     .filter((t) => t.reached && t.xp < cap)
-    .map((t) => ({ no: t.no, label: t.label, xp: t.xp, y: yFor(t.xp) }))
+    .map((t) => {
+      const text = `${t.label} · ${formatXp(t.xp)}`
+      const w = labelWidth(text, maxW)
+      const x = Math.max(leftMin, rightX - w - 6)
+      return { no: t.no, label: t.label, xp: t.xp, y: yFor(t.xp), text, x, rightX, w: rightX - x + 4 }
+    })
 })
 
 // 曲线上的每个数据点：位置 + 日期 + 经验值（封顶），仅作圆点；悬浮时才显示详情
@@ -517,11 +522,6 @@ const pointMarkers = computed(() => {
 
 // 悬浮提示：把「日期 + 经验值（+达成）」只在移到点上时显示
 const hoverIdx = ref(null)
-function cjkLen(s) {
-  let n = 0
-  for (const ch of String(s)) n += ch.charCodeAt(0) > 255 ? 2 : 1
-  return n
-}
 const tip = computed(() => {
   if (hoverIdx.value == null) return null
   const p = pointMarkers.value[hoverIdx.value]
@@ -567,6 +567,51 @@ function formatFullDate(d) {
 function fmtMD(d) {
   if (!d || !(d instanceof Date)) return ''
   return `${d.getMonth() + 1}/${d.getDate()}`
+}
+
+// ===== 导出为图片 =====
+const calSectionRef = ref(null)
+const chartSectionRef = ref(null)
+const exporting = ref(false)
+const exportMsg = ref('')
+let exportMsgTimer = null
+function flashExport(msg) {
+  exportMsg.value = msg
+  if (exportMsgTimer) clearTimeout(exportMsgTimer)
+  exportMsgTimer = setTimeout(() => { exportMsg.value = '' }, 2600)
+}
+async function exportSection(el, filenameBase) {
+  if (!el || exporting.value) return
+  exporting.value = true
+  try {
+    const bg = hsTheme.value === 'dark' ? '#1a1410' : '#fdf8f4'
+    const dataUrl = await toPng(el, {
+      pixelRatio: 2,
+      backgroundColor: bg,
+      cacheBust: true,
+      filter: (node) =>
+        !(node.classList && node.classList.contains('hs-ev-export-btn')),
+      style: { margin: '0', boxShadow: 'none', borderRadius: '0', border: '0' }
+    })
+    const link = document.createElement('a')
+    const now = new Date()
+    const p2 = (v) => String(v).padStart(2, '0')
+    const ts = `${now.getFullYear()}${p2(now.getMonth() + 1)}${p2(now.getDate())}-${p2(now.getHours())}${p2(now.getMinutes())}${p2(now.getSeconds())}`
+    link.download = `${filenameBase}-${ts}.png`
+    link.href = dataUrl
+    link.click()
+    flashExport('已导出图片')
+  } catch (e) {
+    flashExport('导出失败：' + (e?.message || '未知错误'))
+  } finally {
+    exporting.value = false
+  }
+}
+function exportCalendar() {
+  exportSection(calSectionRef.value, '活动日历')
+}
+function exportChart() {
+  exportSection(chartSectionRef.value, '累计点数曲线')
 }
 </script>
 
@@ -616,12 +661,77 @@ function fmtMD(d) {
 .hs-btn-ghost:hover { background: var(--ev-orange-mid); }
 .hs-btn-mini { font-size: 12px; padding: 4px 10px; background: var(--ev-orange-soft); border-color: var(--ev-border); color: var(--ev-orange); font-weight: 700; border-radius: 6px; }
 
-.hs-ev-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; margin-top: 22px; }
-@media (max-width: 880px) { .hs-ev-grid { grid-template-columns: 1fr; } }
+.hs-ev-grid { display: flex; flex-direction: column; gap: 18px; margin-top: 22px; }
+.hs-ev-info-row { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+@media (max-width: 880px) { .hs-ev-info-row { grid-template-columns: 1fr; } }
 
 .hs-ev-card { background: var(--ev-card); border: 1px solid var(--ev-border); border-radius: 14px; padding: 20px; }
 .hs-ev-card h2 { font-size: 16px; margin: 0 0 14px; }
 .hs-ev-h2 { margin-top: 26px !important; }
+
+/* 当前已有点数输入条（移入日历） */
+.hs-ev-cal-controls {
+  display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; flex-wrap: wrap;
+  margin-bottom: 16px; padding: 14px 16px;
+  border: 1.5px solid var(--ev-orange); border-radius: 14px;
+  background: linear-gradient(180deg, var(--ev-orange-soft), var(--ev-card) 80%);
+}
+.hs-ev-current-top { display: flex; justify-content: space-between; align-items: center; gap: 12px; flex-wrap: wrap; width: 100%; }
+.hs-ev-current-top > label { font-size: 14px; font-weight: 800; color: var(--ev-orange); }
+.hs-ev-current-input { display: flex; align-items: baseline; gap: 8px; margin: 0; flex: 1; min-width: 200px; }
+.hs-ev-current-input input {
+  font: inherit; font-size: 34px; font-weight: 800; font-variant-numeric: tabular-nums;
+  padding: 6px 12px; border: 1px solid var(--ev-border); border-radius: 10px;
+  background: var(--ev-input-bg); color: var(--ev-text); width: 100%; box-sizing: border-box;
+}
+.hs-ev-current-input input:focus { outline: 2px solid var(--ev-orange-mid); border-color: var(--ev-orange); }
+.hs-ev-current-unit { font-size: 16px; font-weight: 700; color: var(--ev-muted); }
+
+/* 今日任务开关 */
+.hs-ev-switch { display: inline-flex; align-items: center; gap: 8px; cursor: pointer; user-select: none; }
+.hs-ev-switch input { position: absolute; opacity: 0; width: 0; height: 0; }
+.hs-ev-switch-track {
+  position: relative; width: 38px; height: 21px; border-radius: 999px; flex: none;
+  background: rgba(107, 114, 128, .35); transition: background .18s;
+}
+.hs-ev-switch-knob {
+  position: absolute; top: 2px; left: 2px; width: 17px; height: 17px; border-radius: 50%;
+  background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,.3); transition: transform .18s;
+}
+.hs-ev-switch.is-on .hs-ev-switch-track { background: var(--ev-orange); }
+.hs-ev-switch.is-on .hs-ev-switch-knob { transform: translateX(17px); }
+.hs-ev-switch-text { font-size: 12px; font-weight: 600; color: var(--ev-muted); line-height: 1.3; }
+.hs-ev-switch-text small { display: block; font-weight: 500; opacity: .8; }
+.hs-ev-switch.is-on .hs-ev-switch-text { color: var(--ev-orange); }
+
+/* 固定活动信息（只读展示） */
+.hs-ev-fixed { border: 1px solid var(--ev-border); border-radius: 12px; padding: 14px 16px; margin-bottom: 18px; background: linear-gradient(180deg, var(--ev-orange-soft), transparent 60%); }
+.hs-ev-fixed-row { display: flex; align-items: baseline; gap: 10px; padding: 5px 0; border-bottom: 1px dashed var(--ev-border); }
+.hs-ev-fixed-row:last-of-type { border-bottom: none; }
+.hs-ev-fixed-row > span { font-size: 13px; color: var(--ev-muted); font-weight: 600; flex: none; min-width: 88px; }
+.hs-ev-fixed-row > b { font-size: 14px; color: var(--ev-text); font-weight: 700; }
+.hs-ev-fixed-row > i { font-size: 12px; color: var(--ev-orange); font-style: normal; font-weight: 700; margin-left: auto; }
+.hs-ev-fixed-weekly { margin-top: 8px; }
+.hs-ev-fixed-label { display: block; font-size: 13px; font-weight: 700; color: var(--ev-orange); margin-bottom: 6px; }
+.hs-ev-fixed-weekly ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 4px; }
+.hs-ev-fixed-weekly li { font-size: 13px; color: var(--ev-text); background: var(--ev-card); border: 1px solid var(--ev-border); border-radius: 8px; padding: 6px 10px; }
+.hs-ev-fixed-weekly li b { color: var(--ev-orange); font-variant-numeric: tabular-nums; }
+.hs-ev-section-label { font-size: 13px; font-weight: 700; color: var(--ev-muted); margin: 0 0 10px; }
+
+/* 右侧/顶部结果块：重点突出 */
+.hs-ev-card--info { border-color: var(--ev-border); }
+
+.hs-ev-reach-block {
+  display: flex; gap: 18px; flex-wrap: wrap; align-items: stretch;
+  margin-bottom: 16px; padding: 16px 18px;
+  border: 1.5px solid var(--ev-orange); border-radius: 14px;
+  background: linear-gradient(180deg, var(--ev-orange-soft), var(--ev-card) 60%);
+}
+.hs-ev-reach-main { flex: 1; min-width: 240px; }
+.hs-ev-reach-kicker { display: block; font-size: 13px; font-weight: 800; color: var(--ev-orange); letter-spacing: .5px; margin-bottom: 4px; }
+.hs-ev-reach-side { flex: 1; min-width: 240px; display: flex; flex-direction: column; gap: 10px; justify-content: center; }
+.hs-ev-play-need { font-size: 14px; color: var(--ev-text); line-height: 1.5; background: var(--ev-card); border: 1px solid var(--ev-border); border-radius: 10px; padding: 10px 12px; }
+.hs-ev-play-need b { color: var(--ev-orange); font-size: 16px; }
 
 .hs-ev-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
 .hs-ev-field-row { display: flex; gap: 14px; }
@@ -644,7 +754,6 @@ function fmtMD(d) {
 .hs-ev-weekly-del { font: inherit; width: 26px; height: 26px; border-radius: 6px; border: 1px solid var(--ev-border); background: var(--ev-orange-soft); color: var(--ev-red); cursor: pointer; font-weight: 800; line-height: 1; }
 .hs-ev-weekly-del:disabled { opacity: .4; cursor: not-allowed; }
 
-.hs-ev-reach { margin-bottom: 14px; }
 .hs-ev-reach-date { font-size: 34px; font-weight: 800; color: var(--ev-orange); line-height: 1.2; font-variant-numeric: tabular-nums; }
 .hs-ev-reach-sub { font-size: 13px; color: var(--ev-muted); margin-top: 4px; }
 .hs-ev-reach-sub b { color: var(--ev-text); }
@@ -656,14 +765,6 @@ function fmtMD(d) {
 .hs-ev-breakdown div { flex: 1; min-width: 90px; background: var(--ev-orange-soft); border-radius: 10px; padding: 10px 12px; }
 .hs-ev-breakdown span { display: block; font-size: 12px; color: var(--ev-muted); margin-bottom: 4px; }
 .hs-ev-breakdown b { font-size: 16px; color: var(--ev-text); }
-
-.hs-ev-ok { margin-top: 8px; font-size: 13px; color: var(--ev-orange); line-height: 1.5; }
-.hs-ev-ok b { color: var(--ev-text); }
-.hs-ev-play-line { font-size: 14px; color: var(--ev-text); margin: 6px 0; line-height: 1.6; }
-.hs-ev-play-line b { color: var(--ev-orange); font-size: 16px; }
-.hs-ev-warn { margin-top: 8px; font-size: 13px; color: var(--ev-red); line-height: 1.6; background: rgba(220, 38, 38, .08); border: 1px solid rgba(220, 38, 38, .25); border-radius: 10px; padding: 12px 14px; }
-.hs-ev-warn b { color: var(--ev-red); }
-.hs-ev-warn-tip { margin-top: 6px; font-size: 13px; }
 
 .hs-ev-chart-section { margin-top: 22px; background: var(--ev-card); border: 1px solid var(--ev-border); border-radius: 14px; padding: 18px 20px; }
 .hs-ev-chart-section h2 { font-size: 16px; margin: 0 0 12px; color: var(--ev-orange); }
@@ -686,13 +787,23 @@ function fmtMD(d) {
 .hs-ev-tip-text.is-reach { fill: var(--ev-amber); font-weight: 800; }
 
 .hs-ev-cal-section {
-  margin-top: 22px;
+  margin-top: 0;
   background: linear-gradient(180deg, var(--ev-orange-soft), var(--ev-card) 40%);
   border: 1.5px solid var(--ev-orange);
   border-radius: 16px;
   padding: 20px 22px 22px;
 }
 .hs-ev-cal-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+.hs-ev-cal-head-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; justify-content: flex-end; }
+.hs-ev-chart-head { display: flex; justify-content: space-between; align-items: center; gap: 12px; margin-bottom: 12px; }
+.hs-ev-chart-head h2 { font-size: 16px; margin: 0; color: var(--ev-orange); }
+.hs-ev-export-btn { flex: none; background: var(--ev-card); border: 1px solid var(--ev-orange); color: var(--ev-orange); font-weight: 700; font-size: 12px; padding: 7px 12px; border-radius: 8px; cursor: pointer; transition: all .15s; }
+.hs-ev-export-btn:hover:not(:disabled) { background: var(--ev-orange-soft); }
+.hs-ev-export-btn:disabled { opacity: .6; cursor: not-allowed; }
+
+.hs-ev-export-toast { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 50; background: var(--ev-text); color: var(--ev-card); font-size: 13px; font-weight: 700; padding: 10px 18px; border-radius: 999px; box-shadow: 0 8px 24px rgba(0,0,0,.25); }
+.hs-ev-fade-enter-active, .hs-ev-fade-leave-active { transition: opacity .25s, transform .25s; }
+.hs-ev-fade-enter-from, .hs-ev-fade-leave-to { opacity: 0; transform: translate(-50%, 8px); }
 .hs-ev-cal-head-text { flex: 1; min-width: 260px; }
 .hs-ev-cal-head h2 { font-size: 22px; margin: 0 0 6px; color: var(--ev-orange); letter-spacing: .5px; }
 .hs-ev-cal-head p { margin: 0; font-size: 13px; color: var(--ev-muted); line-height: 1.6; max-width: 640px; }

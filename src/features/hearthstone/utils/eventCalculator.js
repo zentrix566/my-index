@@ -57,7 +57,9 @@ function resolveSimStart(event, today) {
 
 // 在「从 simStart 起、每天游玩 playMinutes 分钟」假设下，逐日模拟未来并返回数据源
 // 返回 { days, reachDate, reachIndex, reachedByEnd, daysToReach, reachOnTime }
-export function projectDays(event, playMinutes, startXp, simStart) {
+// opts.skipFirstDaily：当模拟起点就是「今天」且今日任务已完成时，首日不再叠加每日任务点数
+export function projectDays(event, playMinutes, startXp, simStart, opts = {}) {
+  const skipFirstDaily = !!opts.skipFirstDaily
   const start = parseDate(simStart)
   const end = parseDate(event.endDate)
   const dailyPoints = Number(event.dailyPoints) || 0
@@ -71,7 +73,6 @@ export function projectDays(event, playMinutes, startXp, simStart) {
   }
 
   const perDayPlay = (Number(playMinutes) || 0) * xpPerMinute
-  const perDayBase = dailyPoints + perDayPlay
 
   let xp = startXp
   let reachDate = null
@@ -82,7 +83,8 @@ export function projectDays(event, playMinutes, startXp, simStart) {
   while (date <= end && i < 800) {
     const k = fmtDate(date)
     const wk = weeklyMap[k] || 0
-    const dayGain = perDayBase + wk
+    const dayDaily = i === 0 && skipFirstDaily ? 0 : dailyPoints
+    const dayGain = dayDaily + perDayPlay + wk
     xp += dayGain
     const isReach = reachDate == null && target > 0 && xp >= target
     if (isReach) {
@@ -126,11 +128,20 @@ export function computeEvent(event, today = new Date()) {
   const end = parseDate(event.endDate)
   const futureDays = Math.max(0, daysBetween(simStart, end) + 1) // 含今天
 
+  // 今日任务开关：默认视为已完成（今日每日任务点数已计入「当前已有点数」），
+  // 因此投影首日不再叠加每日任务；若关闭开关则按原逻辑叠加（视为今日任务还没做）。
+  const todayTaskDone = event.todayTaskDone !== false
+  const todayIsFirstDay = fmtDate(simStart) === fmtDate(today)
+  const firstDayGetsDaily = !(todayIsFirstDay && todayTaskDone)
+  const skipFirstDaily = !firstDayGetsDaily
+
   // 未来周任务：仅统计发布日 ≥ 模拟起点（今天）的周任务
   const futureWeeklyTotal = (event.weeklyTasks || [])
     .filter((t) => parseDate(t.date) >= simStart)
     .reduce((s, t) => s + (Number(t.points) || 0), 0)
-  const futureDailyTotal = dailyPoints * futureDays
+  // 未来每日任务天数：若首日已计入今日任务，则该日不再重复算每日点数
+  const effectiveDailyDays = futureDays - (firstDayGetsDaily ? 0 : 1)
+  const futureDailyTotal = dailyPoints * effectiveDailyDays
   const futureTaskTotal = futureDailyTotal + futureWeeklyTotal
 
   const needTotal = Math.max(0, target - currentPoints - futureTaskTotal)
@@ -141,8 +152,8 @@ export function computeEvent(event, today = new Date()) {
   const alreadyMaxed = currentPoints >= target
 
   // 两种投影：当前每日游玩分钟 / 仅任务（0 游玩）；均从「当前已有点数」起算
-  const withPlay = projectDays(event, Number(event.dailyPlayMinutes) || 0, currentPoints, simStart)
-  const tasksOnly = projectDays(event, 0, currentPoints, simStart)
+  const withPlay = projectDays(event, Number(event.dailyPlayMinutes) || 0, currentPoints, simStart, { skipFirstDaily })
+  const tasksOnly = projectDays(event, 0, currentPoints, simStart, { skipFirstDaily })
 
   // 若想活动结束前均匀满级，每天需玩多少分钟
   let dailyMinutesNeeded = 0
@@ -171,6 +182,7 @@ export function computeEvent(event, today = new Date()) {
     futureTaskTotal,
     target,
     currentPoints,
+    todayTaskDone,
     needTotal,
     playMinutesTotal,
     playHoursTotal,
