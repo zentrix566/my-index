@@ -229,8 +229,6 @@ export const useFrogGame = () => {
   const roundLog = ref([])      // 已发牌的每一轮快照（含揭晓状态），支持上/下一张回看
   const cursor = ref(0)         // 当前展示的是第几轮
   const advanceTimer = ref(null)
-  const awaitingAuto = ref(false)
-  const autoDelay = ref(1000)
   const displayToken = ref(0)   // 每次切换展示的牌桌都 +1，强制卡牌组件重挂载
 
   // 勾选的混淆类型：默认只开数值三项，稀有度/名称/效果/随从类型默认关闭
@@ -349,8 +347,8 @@ export const useFrogGame = () => {
     return next
   }
 
-  // 答对停留 1 秒、答错停留 3 秒后自动进入下一张
-  const AUTO_DELAY = { correct: 1000, wrong: 3000 }
+  // 答对后短暂停顿自动进入下一张；答错则停在结果面板，等待玩家手动点“下一轮”。
+  const CORRECT_ADVANCE_DELAY = 700
 
   const selectCard = (index) => {
     if (revealed.value || dealing.value) return
@@ -368,11 +366,11 @@ export const useFrogGame = () => {
     // 记录本轮揭晓状态，返回上一张时能还原答案
     const entry = roundLog.value[cursor.value]
     if (entry) entry.selectedIndex = index
-    // 无需手动点“下一轮”，停留片刻后自动翻下一张
-    autoDelay.value = isCorrect ? AUTO_DELAY.correct : AUTO_DELAY.wrong
-    awaitingAuto.value = true
-    if (advanceTimer.value) clearTimeout(advanceTimer.value)
-    advanceTimer.value = setTimeout(() => advance(), autoDelay.value)
+    // 答对自动翻下一张；答错不自动，留给玩家慢慢看答案
+    if (isCorrect) {
+      if (advanceTimer.value) clearTimeout(advanceTimer.value)
+      advanceTimer.value = setTimeout(() => advance(), CORRECT_ADVANCE_DELAY)
+    }
   }
 
   // 进入下一张：若已到末尾则发新牌，否则回看历史中的下一轮
@@ -381,7 +379,6 @@ export const useFrogGame = () => {
       clearTimeout(advanceTimer.value)
       advanceTimer.value = null
     }
-    awaitingAuto.value = false
     cursor.value += 1
     if (cursor.value >= roundLog.value.length) {
       const ok = await dealRound()
@@ -408,7 +405,6 @@ export const useFrogGame = () => {
       clearTimeout(advanceTimer.value)
       advanceTimer.value = null
     }
-    awaitingAuto.value = false
     if (cursor.value <= 0) return
     cursor.value -= 1
     setDisplay(roundLog.value[cursor.value])
@@ -426,8 +422,6 @@ export const useFrogGame = () => {
     accuracy,
     activeTypes,
     allCards,
-    awaitingAuto,
-    autoDelay,
     bestStreak,
     canGoBack,
     canGoForward,

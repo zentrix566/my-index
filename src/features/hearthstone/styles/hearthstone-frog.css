@@ -232,13 +232,63 @@
   line-height: 1.7;
 }
 
+/* 牌桌容器：左侧返回按钮 + 中间三张卡牌 */
+.frog-table {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px, 2vw, 18px);
+  max-width: 980px;
+  margin: 28px auto 4px;
+}
+
 .frog-row {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: clamp(14px, 3vw, 36px);
   align-items: center;
+  flex: 1 1 auto;
   max-width: 900px;
-  margin: 28px auto 4px;
+  margin: 0;
+}
+
+/* 左侧“返回上一张”导航 */
+.frog-nav {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 14px 8px;
+  color: var(--frog-text-soft);
+  font-size: 12px;
+  cursor: pointer;
+  background: var(--frog-surface);
+  border: 1px solid var(--frog-border);
+  border-radius: 14px;
+  transition: background 180ms ease, color 180ms ease, border-color 180ms ease, opacity 180ms ease;
+}
+
+.frog-nav svg {
+  width: 20px;
+  height: 20px;
+  stroke-width: 2;
+}
+
+.frog-nav--prev span {
+  writing-mode: vertical-rl;
+  letter-spacing: 0.05em;
+}
+
+.frog-nav:not(:disabled):hover {
+  color: var(--frog-text);
+  background: var(--frog-surface-strong);
+  border-color: var(--frog-border-strong, var(--frog-border));
+}
+
+.frog-nav:disabled {
+  cursor: not-allowed;
+  opacity: 0.35;
 }
 
 /* ---------- 单张卡 ---------- */
@@ -594,42 +644,12 @@
   stroke-width: 2.5;
 }
 
-/* 揭晓后的操作区：返回上一张 + 下一轮 */
+/* 揭晓后的操作区：下一轮 */
 .frog-result__actions {
   display: flex;
   flex-wrap: wrap;
   gap: 10px;
   margin-top: 4px;
-}
-
-/* 自动翻牌倒计时提示条 */
-.frog-auto {
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-  margin-top: 2px;
-  width: 100%;
-  grid-column: 1 / -1;
-}
-
-.frog-auto__text {
-  font-size: 12.5px;
-  color: var(--frog-text);
-  opacity: 0.75;
-}
-
-.frog-auto__bar {
-  display: block;
-  height: 4px;
-  width: 0;
-  border-radius: 999px;
-  background: linear-gradient(90deg, var(--frog-gold), #9ec353);
-  animation: frog-auto-fill var(--frog-auto-delay, 1000ms) linear forwards;
-}
-
-@keyframes frog-auto-fill {
-  from { width: 0; }
-  to { width: 100%; }
 }
 
 .frog-status {
@@ -1088,6 +1108,15 @@
 
   .frog-stage {
     padding: 20px 12px 18px;
+  }
+
+  .frog-table {
+    display: block;
+    margin: 18px auto 0;
+  }
+
+  .frog-nav {
+    display: none;
   }
 
   .frog-row {
