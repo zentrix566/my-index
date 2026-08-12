@@ -229,6 +229,11 @@ export const useFrogGame = () => {
   const roundLog = ref([])      // 已发牌的每一轮快照（含揭晓状态），支持上/下一张回看
   const cursor = ref(0)         // 当前展示的是第几轮
   const advanceTimer = ref(null)
+  const countdown = ref(0)      // 答对后的可见倒计时（秒），仅用于展示
+  const paused = ref(false)     // 答对后倒计时是否被暂停（暂停时停在本题供查看）
+  let countdownInterval = null
+  let countdownDeadline = 0     // 倒计时归零的绝对时间戳
+  let countdownRemaining = 0    // 暂停时记住剩余毫秒，便于恢复
   const displayToken = ref(0)   // 每次切换展示的牌桌都 +1，强制卡牌组件重挂载
 
   // 勾选的混淆类型：默认只开数值三项，稀有度/名称/效果/随从类型默认关闭
@@ -348,7 +353,58 @@ export const useFrogGame = () => {
   }
 
   // 答对后短暂停顿自动进入下一张；答错则停在结果面板，等待玩家手动点“下一轮”。
-  const CORRECT_ADVANCE_DELAY = 700
+  const CORRECT_ADVANCE_DELAY = 5000
+
+  // 清理“答对后”的定时翻牌与倒计时展示（手动点“下一轮/上一张”或组件卸载时调用）
+  const clearPendingAdvance = () => {
+    if (advanceTimer.value) {
+      clearTimeout(advanceTimer.value)
+      advanceTimer.value = null
+    }
+    if (countdownInterval) {
+      clearInterval(countdownInterval)
+      countdownInterval = null
+    }
+    countdown.value = 0
+    paused.value = false
+  }
+
+  // 每秒（250ms 一次）推进倒计时的心跳，归零时自动翻下一张；暂停时直接跳过
+  const tickCountdown = () => {
+    if (paused.value) return
+    const left = countdownDeadline - Date.now()
+    if (left <= 0) {
+      countdown.value = 0
+      if (countdownInterval) {
+        clearInterval(countdownInterval)
+        countdownInterval = null
+      }
+      advance()
+      return
+    }
+    countdown.value = Math.ceil(left / 1000)
+  }
+
+  // 答对后启动 5 秒倒计时：到点自动翻下一张，期间可暂停停在本题查看
+  const startCorrectCountdown = () => {
+    clearPendingAdvance()
+    countdownRemaining = CORRECT_ADVANCE_DELAY
+    countdownDeadline = Date.now() + countdownRemaining
+    paused.value = false
+    countdown.value = Math.ceil(countdownRemaining / 1000)
+    countdownInterval = setInterval(tickCountdown, 250)
+  }
+
+  // 暂停倒计时：冻结在本题供玩家查看，不再自动翻下一张（之后用“下一轮”手动进入）
+  const pauseCountdown = () => {
+    if (!countdown.value || paused.value) return
+    countdownRemaining = Math.max(0, countdownDeadline - Date.now())
+    paused.value = true
+    if (countdownInterval) {
+      clearInterval(countdownInterval)
+      countdownInterval = null
+    }
+  }
 
   const selectCard = (index) => {
     if (revealed.value || dealing.value) return
@@ -366,19 +422,13 @@ export const useFrogGame = () => {
     // 记录本轮揭晓状态，返回上一张时能还原答案
     const entry = roundLog.value[cursor.value]
     if (entry) entry.selectedIndex = index
-    // 答对自动翻下一张；答错不自动，留给玩家慢慢看答案
-    if (isCorrect) {
-      if (advanceTimer.value) clearTimeout(advanceTimer.value)
-      advanceTimer.value = setTimeout(() => advance(), CORRECT_ADVANCE_DELAY)
-    }
+    // 答对自动翻下一张（5 秒倒计时，可暂停）；答错不自动，留给玩家慢慢看答案
+    if (isCorrect) startCorrectCountdown()
   }
 
   // 进入下一张：若已到末尾则发新牌，否则回看历史中的下一轮
   const advance = async () => {
-    if (advanceTimer.value) {
-      clearTimeout(advanceTimer.value)
-      advanceTimer.value = null
-    }
+    clearPendingAdvance()
     cursor.value += 1
     if (cursor.value >= roundLog.value.length) {
       const ok = await dealRound()
@@ -401,10 +451,7 @@ export const useFrogGame = () => {
 
   // 返回上一张（回看历史中已揭晓的轮次）
   const goBack = () => {
-    if (advanceTimer.value) {
-      clearTimeout(advanceTimer.value)
-      advanceTimer.value = null
-    }
+    clearPendingAdvance()
     if (cursor.value <= 0) return
     cursor.value -= 1
     setDisplay(roundLog.value[cursor.value])
@@ -415,17 +462,22 @@ export const useFrogGame = () => {
   const currentRoundNum = computed(() => roundLog.value[cursor.value]?.roundNum ?? round.value)
 
   onBeforeUnmount(() => {
-    if (advanceTimer.value) clearTimeout(advanceTimer.value)
+    clearPendingAdvance()
   })
 
   return {
     accuracy,
     activeTypes,
     allCards,
+    advance,
     bestStreak,
+    countdown,
+    correctAdvanceDelay: CORRECT_ADVANCE_DELAY,
     canGoBack,
     canGoForward,
     correct,
+    pauseCountdown,
+    paused,
     currentRoundNum,
     dealing,
     displayToken,

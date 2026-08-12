@@ -652,6 +652,42 @@
   margin-top: 4px;
 }
 
+/* 答对后的可见倒计时：进度条按 5 秒铺满，下方显示剩余秒数 */
+.frog-countdown {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: 100%;
+  grid-column: 1 / -1;
+  margin-top: 2px;
+}
+
+.frog-countdown__bar {
+  display: block;
+  height: 4px;
+  width: 100%;
+  transform-origin: left center;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--frog-gold), #9ec353);
+  animation: frog-count-fill var(--frog-count-ms, 5000ms) linear forwards;
+}
+
+@keyframes frog-count-fill {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+/* 暂停时隐藏进度条，仅保留提示文案与“继续”按钮 */
+.frog-countdown--paused .frog-countdown__bar {
+  display: none;
+}
+
+.frog-countdown__text {
+  font-size: 12.5px;
+  color: var(--frog-text);
+  opacity: 0.78;
+}
+
 .frog-status {
   display: flex;
   min-height: 300px;
