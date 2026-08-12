@@ -69,7 +69,7 @@
 
         <!-- 牌桌 -->
         <div class="frog-stage">
-          <div class="frog-round"><span></span> 第 {{ round || 1 }} 轮 <span></span></div>
+          <div class="frog-round"><span></span> 第 {{ currentRoundNum }} 轮 <span></span></div>
           <h2>哪张牌，被蛙生动了手脚？</h2>
           <p class="frog-stage__intro">篡改只会发生在一处，且一定来自另一张真实卡牌的同一位置。</p>
 
@@ -88,7 +88,7 @@
             <div class="frog-row">
               <FrogCard
                 v-for="(card, index) in roundCards"
-                :key="`${round}-${card.id}`"
+                :key="`r${displayToken}-${card.id}`"
                 :card="card"
                 :index="index"
                 :mutation="mutation"
@@ -125,10 +125,22 @@
                   <ins>{{ explanation.changed }}</ins>
                 </p>
               </div>
-              <button class="frog-btn" type="button" :disabled="dealing" @click="startRound">
-                {{ dealing ? '发牌中…' : '下一轮' }}
-                <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
-              </button>
+
+              <div v-if="awaitingAuto" class="frog-auto" :style="{ '--frog-auto-delay': autoDelay + 'ms' }">
+                <span class="frog-auto__text">{{ Math.ceil(autoDelay / 1000) }} 秒后自动进入下一张…</span>
+                <span class="frog-auto__bar"></span>
+              </div>
+
+              <div class="frog-result__actions">
+                <button class="frog-btn frog-btn--ghost" type="button" :disabled="!canGoBack" @click="goBack">
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                  返回上一张
+                </button>
+                <button class="frog-btn" type="button" :disabled="dealing" @click="advance">
+                  {{ dealing ? '发牌中…' : (canGoForward ? '下一张' : '下一轮') }}
+                  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6" /></svg>
+                </button>
+              </div>
             </aside>
           </template>
         </div>
@@ -154,10 +166,17 @@ const {
   accuracy,
   activeTypes,
   allCards,
+  awaitingAuto,
+  autoDelay,
+  canGoBack,
+  canGoForward,
   correct,
+  currentRoundNum,
   dealing,
+  displayToken,
   error,
   explanation,
+  goBack,
   loadCards,
   loading,
   mutation,

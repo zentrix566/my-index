@@ -594,6 +594,44 @@
   stroke-width: 2.5;
 }
 
+/* 揭晓后的操作区：返回上一张 + 下一轮 */
+.frog-result__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 4px;
+}
+
+/* 自动翻牌倒计时提示条 */
+.frog-auto {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  margin-top: 2px;
+  width: 100%;
+  grid-column: 1 / -1;
+}
+
+.frog-auto__text {
+  font-size: 12.5px;
+  color: var(--frog-text);
+  opacity: 0.75;
+}
+
+.frog-auto__bar {
+  display: block;
+  height: 4px;
+  width: 0;
+  border-radius: 999px;
+  background: linear-gradient(90deg, var(--frog-gold), #9ec353);
+  animation: frog-auto-fill var(--frog-auto-delay, 1000ms) linear forwards;
+}
+
+@keyframes frog-auto-fill {
+  from { width: 0; }
+  to { width: 100%; }
+}
+
 .frog-status {
   display: flex;
   min-height: 300px;
@@ -1077,9 +1115,12 @@
     grid-template-columns: auto 1fr;
   }
 
-  .frog-result .frog-btn {
+  .frog-result__actions {
     grid-column: 1 / -1;
-    width: 100%;
+  }
+
+  .frog-result__actions .frog-btn {
+    flex: 1 1 auto;
   }
 
   .frog-pool__count {

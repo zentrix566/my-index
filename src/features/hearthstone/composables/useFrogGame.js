@@ -9,7 +9,7 @@
  * 两份数据均由 scripts/generate-standard-minions.mjs 从 cards-db.json 生成。
  * 卡图不入仓库，统一走 /hearthstone-cards/... 相对路径由服务端反代 OSS。
  */
-import { computed, ref, shallowRef } from 'vue'
+import { computed, onBeforeUnmount, ref, shallowRef } from 'vue'
 
 /** 可被篡改的卡面字段 */
 export const mutationTypes = [
@@ -225,6 +225,14 @@ export const useFrogGame = () => {
   const dealing = ref(false)
   const error = ref('')
 
+  // 翻牌历史与自动进入下一张
+  const roundLog = ref([])      // 已发牌的每一轮快照（含揭晓状态），支持上/下一张回看
+  const cursor = ref(0)         // 当前展示的是第几轮
+  const advanceTimer = ref(null)
+  const awaitingAuto = ref(false)
+  const autoDelay = ref(1000)
+  const displayToken = ref(0)   // 每次切换展示的牌桌都 +1，强制卡牌组件重挂载
+
   // 勾选的混淆类型：默认只开数值三项，稀有度/名称/效果/随从类型默认关闭
   const activeTypes = ref(['manaCost', 'attack', 'health'])
 
@@ -242,11 +250,12 @@ export const useFrogGame = () => {
     }
   })
 
-  const startRound = async () => {
-    if (allCards.value.length < 3) return
+  // 发一张新牌（不写历史）。成功返回 true，卡池不足/无供体返回 false
+  const dealRound = async () => {
+    if (allCards.value.length < 3) return false
     if (!activeTypes.value.length) {
       error.value = '请至少勾选一种混淆类型'
-      return
+      return false
     }
     dealing.value = true
     try {
@@ -261,7 +270,7 @@ export const useFrogGame = () => {
       }
       if (!picked) {
         error.value = '这一轮没能凑出合适的卡牌，请再试一次'
-        return
+        return false
       }
       // 只预载本轮真正会用到的 4 张图（3 张底图 + 1 张供体），不整包预热
       await preloadCardImages([...chosen.map((card) => card.image), picked.mutation.donor.image])
@@ -271,8 +280,34 @@ export const useFrogGame = () => {
       selectedIndex.value = null
       round.value += 1
       error.value = ''
+      displayToken.value += 1
+      return true
     } finally {
       dealing.value = false
+    }
+  }
+
+  // 把某一轮快照渲染到牌桌
+  const setDisplay = (snap) => {
+    roundCards.value = snap.roundCards
+    suspiciousIndex.value = snap.suspiciousIndex
+    mutation.value = snap.mutation
+    selectedIndex.value = snap.selectedIndex
+    displayToken.value += 1
+  }
+
+  // 开新局：清空历史并从第一张开始
+  const startRound = async () => {
+    const ok = await dealRound()
+    if (ok) {
+      roundLog.value = [{
+        roundCards: roundCards.value,
+        suspiciousIndex: suspiciousIndex.value,
+        mutation: mutation.value,
+        selectedIndex: null,
+        roundNum: round.value
+      }]
+      cursor.value = 0
     }
   }
 
@@ -314,11 +349,15 @@ export const useFrogGame = () => {
     return next
   }
 
+  // 答对停留 1 秒、答错停留 3 秒后自动进入下一张
+  const AUTO_DELAY = { correct: 1000, wrong: 3000 }
+
   const selectCard = (index) => {
     if (revealed.value || dealing.value) return
     selectedIndex.value = index
     rounds.value += 1
-    if (index === suspiciousIndex.value) {
+    const isCorrect = index === suspiciousIndex.value
+    if (isCorrect) {
       score.value += 100 + streak.value * 20
       streak.value += 1
       hits.value += 1
@@ -326,17 +365,79 @@ export const useFrogGame = () => {
     } else {
       streak.value = 0
     }
+    // 记录本轮揭晓状态，返回上一张时能还原答案
+    const entry = roundLog.value[cursor.value]
+    if (entry) entry.selectedIndex = index
+    // 无需手动点“下一轮”，停留片刻后自动翻下一张
+    autoDelay.value = isCorrect ? AUTO_DELAY.correct : AUTO_DELAY.wrong
+    awaitingAuto.value = true
+    if (advanceTimer.value) clearTimeout(advanceTimer.value)
+    advanceTimer.value = setTimeout(() => advance(), autoDelay.value)
   }
+
+  // 进入下一张：若已到末尾则发新牌，否则回看历史中的下一轮
+  const advance = async () => {
+    if (advanceTimer.value) {
+      clearTimeout(advanceTimer.value)
+      advanceTimer.value = null
+    }
+    awaitingAuto.value = false
+    cursor.value += 1
+    if (cursor.value >= roundLog.value.length) {
+      const ok = await dealRound()
+      if (ok) {
+        roundLog.value.push({
+          roundCards: roundCards.value,
+          suspiciousIndex: suspiciousIndex.value,
+          mutation: mutation.value,
+          selectedIndex: null,
+          roundNum: round.value
+        })
+        cursor.value = roundLog.value.length - 1
+      } else {
+        cursor.value -= 1
+      }
+    } else {
+      setDisplay(roundLog.value[cursor.value])
+    }
+  }
+
+  // 返回上一张（回看历史中已揭晓的轮次）
+  const goBack = () => {
+    if (advanceTimer.value) {
+      clearTimeout(advanceTimer.value)
+      advanceTimer.value = null
+    }
+    awaitingAuto.value = false
+    if (cursor.value <= 0) return
+    cursor.value -= 1
+    setDisplay(roundLog.value[cursor.value])
+  }
+
+  const canGoBack = computed(() => cursor.value > 0)
+  const canGoForward = computed(() => cursor.value < roundLog.value.length - 1)
+  const currentRoundNum = computed(() => roundLog.value[cursor.value]?.roundNum ?? round.value)
+
+  onBeforeUnmount(() => {
+    if (advanceTimer.value) clearTimeout(advanceTimer.value)
+  })
 
   return {
     accuracy,
     activeTypes,
     allCards,
+    awaitingAuto,
+    autoDelay,
     bestStreak,
+    canGoBack,
+    canGoForward,
     correct,
+    currentRoundNum,
     dealing,
+    displayToken,
     error,
     explanation,
+    goBack,
     hits,
     loadCards,
     loadData,
