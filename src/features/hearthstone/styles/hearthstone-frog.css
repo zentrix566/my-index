@@ -841,28 +841,6 @@
   background: var(--frog-surface-strong);
 }
 
-/* 主题切换按钮（与验收入口同排） */
-.frog-theme-toggle {
-  display: inline-flex;
-  gap: 6px;
-  align-items: center;
-  padding: 8px 14px;
-  color: var(--frog-muted);
-  font-size: 13px;
-  font-weight: 700;
-  background: var(--frog-surface);
-  border: 1px solid var(--frog-border);
-  border-radius: 999px;
-  cursor: pointer;
-  transition: filter 160ms ease, background 160ms ease, color 160ms ease;
-}
-
-.frog-theme-toggle:hover {
-  color: var(--frog-text);
-  background: var(--frog-surface-strong);
-  filter: brightness(1.08);
-}
-
 /* 混淆类型 / 验收台控制台 */
 .frog-config__hint-inline {
   color: var(--frog-muted);
