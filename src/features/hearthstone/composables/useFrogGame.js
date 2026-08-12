@@ -167,17 +167,15 @@ export const createMutationForType = (card, cards, type) => {
   const donors = cards.filter((candidate) => isCompatibleDonor(type, card, candidate))
   if (!donors.length) return null
 
-  // 数值类只做 ±1 微调：找一张恰好是「原值 ±1」的兼容供体，
-  // 贴片显示的卡面数字就只差 1，既不会被一眼看穿，也不会差太远。
-  // 但改动后的值不能太离谱：法力值封顶 10、所有数值都不允许到 0。
+  // 数值类只做加强：费用降 1 点、攻击/生命加 1 点。
+  // 贴片显示的卡面数字只差 1，既不会被一眼看穿，又保证"只加强不削弱"。
+  // 但改动后的值不能越界：法力值不低于 1 且不超 10、攻击/生命不超 30。
   if (numericTypes.includes(type)) {
-    const first = Math.random() < 0.5 ? 1 : -1
-    for (const sign of [first, -first]) {
-      const target = Number(card[type]) + sign
-      if (!isNumericTargetValid(type, target)) continue
-      const match = donors.find((candidate) => Number(candidate[type]) === target)
-      if (match) return { type, original: card[type], changed: target, donor: match, delta: sign }
-    }
+    const buffDelta = type === 'manaCost' ? -1 : 1
+    const target = Number(card[type]) + buffDelta
+    if (!isNumericTargetValid(type, target)) return null
+    const match = donors.find((candidate) => Number(candidate[type]) === target)
+    if (match) return { type, original: card[type], changed: target, donor: match, delta: buffDelta }
     return null
   }
 

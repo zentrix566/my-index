@@ -16,9 +16,26 @@
               当前还是测试版，欢迎逐类检查贴片效果。
             </p>
           </div>
-          <router-link to="/hearthstone/frog" class="frog-review-link frog-review-link--ghost">
-            去玩找茬
-          </router-link>
+          <div class="frog-head__actions">
+            <button
+              type="button"
+              class="frog-theme-toggle"
+              :aria-label="hsTheme === 'dark' ? '切换到明亮主题' : '切换到暗色主题'"
+              :title="hsTheme === 'dark' ? '切换到明亮主题' : '切换到暗色主题'"
+              @click="toggleTheme"
+            >
+              <svg v-if="hsTheme === 'dark'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+              </svg>
+              <svg v-else width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+              </svg>
+              {{ hsTheme === 'dark' ? '明亮' : '暗色' }}
+            </button>
+            <router-link to="/hearthstone/frog" class="frog-review-link frog-review-link--ghost">
+              去玩找茬
+            </router-link>
+          </div>
         </div>
 
         <!-- 验收控制台 -->
@@ -133,7 +150,7 @@ import {
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 import '../styles/hearthstone-frog.css'
 
-const { hsTheme } = useHearthstoneTheme()
+const { hsTheme, toggleTheme } = useHearthstoneTheme()
 const { allCards, loadData, loading, error, wildMode, toggleWild } = useFrogGame()
 
 // 这几类贴片效果还不够稳定，tab 上用虚线提示

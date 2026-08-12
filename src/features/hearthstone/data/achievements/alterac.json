@@ -53,7 +53,12 @@
       "relatedCards": [
         "开路者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "抉择？全选！",
+          "code": "AAEBAe2/BAAPxAboFZdouZQD3KID/60D+bUDm84DieAD0eEDrIAEr4AEh40EnKAEsKUEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用开路者触发16个不同的抉择效果。",
@@ -74,7 +79,12 @@
         "凶恶霜狼",
         "霜狼巢屋"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "狼宝宝！！",
+          "code": "AAECAe2/BAKJiwSUpQQOm84DieAD0eEDiuQDrIAEr4AEiY0EkY0E2p8EzaQEz6QE2qQE46QEuL4EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "召唤30只霜狼宝宝。",
@@ -105,7 +115,12 @@
       "relatedCards": [
         "暴烈枭兽"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "枭兽暴烈",
+          "code": "AAECAe2/BAb83gOK4AOJiwTvpATxpASlrQQM6LoDm84D8NQDieADouEDpOED0eEDj+QDr4AEyawEyqwEz6wEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用暴烈枭兽造成200点伤害或恢复200点生命值。",
@@ -152,7 +167,12 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "光荣地死吧，虫子",
+          "code": "AAEBAauwBAAPywTP8gK0/AKkhwOthwPNiQOItgObzQPNzgPl0QP30QPT7APW7APAoATNpAQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用法师，用你的英雄技能一次性造成8点伤害。",
@@ -207,7 +227,12 @@
       "relatedCards": [
         "监护者哈尔琳"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "承蒙关照",
+          "code": "AAECAauwBAT21gOoigS+rAT6rAQNwbgDx84Dzc4D5dEDheQD1OoD0OwDp/cDrvcD9PwDqIEEio0E/J4EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用监护者哈尔琳造成100点伤害。",
@@ -278,7 +303,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "这是陷阱！",
+          "code": "AAEBAa/XAwSG0wKY8AKnggOP4wMNrgb3DfixAt/SAp+lA/uvA6S5A+jhA/LhA6mNBKuNBOSfBJmtBAA="
+        }
+      ],
       "stages": [
         {
           "description": "触发75个猎人奥秘。",
@@ -309,7 +339,12 @@
       "relatedCards": [
         "宠物收集者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "全数抓住",
+          "code": "AAECAa/XAwaDuQP21gPb6gOoigTXowSZrQQM9roD9N8D0PkDlPwDqIEEqZ8Eqp8E458E5J8EnKAE2KMEwKwEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用宠物收集者召唤70只野兽。",
@@ -371,7 +406,12 @@
       "relatedCards": [
         "祝福"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "祝福你！",
+          "code": "AAEBAZ/HAgS1uwKwugPLzQOEowQN5QTRCvIM6r8C0cEC6NACk7oDm7oD4t4DmOsDr5EEiaMEiqMEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用祝福使随从获得200点攻击力。",
@@ -415,7 +455,12 @@
       "relatedCards": [
         "米达，纯净圣光"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "未来耀眼，戴好墨镜",
+          "code": "AAECAZ/HAgb21gO79wPn9wPK+QOoigTWrAQM1s4D+98DlugD6O8D9PYDiPcDv/kDxfkDyfkD0PkDrYoEiKMEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "召唤第4代米达，纯净圣光。",
@@ -483,12 +528,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "奥特兰克十大叛徒 卡组1",
+          "name": "奥特兰克十大叛徒",
           "code": "AAECAZurBATD4QOX5wOh+QP7igQNqssDpNED5dED590D890DvoAE9p8EnKAE7qAEuqQEu6QE+6UE7KcEAA=="
-        },
-        {
-          "name": "奥特兰克十大叛徒 卡组2",
-          "code": "AAEBAZurBARaxAG6igT7igQN9bsCt64DzrkDqssDx84D590DrusD/u4DofQDvYAEkZ8E9p8E958EAA=="
         }
       ],
       "stages": [
@@ -511,28 +552,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "！ 卡组1",
-          "code": "AAECAe2/BAKJiwSUpQQOm84DieAD0eEDiuQDrIAEr4AEiY0EkY0E2p8EzaQEz6QE2qQE46QEuL4EAA=="
-        },
-        {
-          "name": "！ 卡组2",
-          "code": "AAEBAe2/BAAPxAboFZdouZQD3KID/60D+bUDm84DieAD0eEDrIAEr4AEh40EnKAEsKUEAA=="
-        },
-        {
-          "name": "！ 卡组3",
-          "code": "AAECAcn1AgTI4QOtkQSwkQSXoAQNv7kDvb4D7NEDzdIDld4DiO8Dg/sDxYAEsZ8E56AE4qIE26ME+LUEAA=="
-        },
-        {
-          "name": "！ 卡组4",
-          "code": "AAEBAauwBAAPywTP8gK0/AKkhwOthwPNiQOItgObzQPNzgPl0QP30QPT7APW7APAoATNpAQA"
-        },
-        {
-          "name": "！ 卡组5",
-          "code": "AAEBAZ/HAgS1uwKwugPLzQOEowQN5QTRCvIM6r8C0cEC6NACk7oDm7oD4t4DmOsDr5EEiaMEiqMEAA=="
-        },
-        {
-          "name": "！ 卡组6",
-          "code": "AAEBAa/XAwSG0wKY8AKnggOP4wMNrgb3DfixAt/SAp+lA/uvA6S5A+jhA/LhA6mNBKuNBOSfBJmtBAA="
+          "name": "！",
+          "code": "AAECAZurBALD4QOm+QMOubgDz7kDqssD390D590Dn/QDofQDovQDo/UDpvUD9Z8E9p8EnKAE/qwEAA=="
         }
       ],
       "stages": [
@@ -560,7 +581,12 @@
         "冷齿雪人",
         "冰风雪人"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "远房表亲",
+          "code": "AAEBAZurBARaxAG6igT7igQN9bsCt64DzrkDqssDx84D590DrusD/u4DofQDvYAEkZ8E9p8E958EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时，拥有冷齿雪人和冰风雪人。",
@@ -662,7 +688,12 @@
       "relatedCards": [
         "别站在火里！"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "快跑呀，小姑娘",
+          "code": "AAECAZu1AwLI4QOkgQQO27gD4cwDzc4Dzs4Dqt4Dq94D4+4D9PYDqIEE8IUE3JIE4KQEwqwExKwEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用别站在火里对单个随从造成8点伤害。",
@@ -773,7 +804,12 @@
       "relatedCards": [
         "勇气之戒"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "至尊之戒",
+          "code": "AAECAZ3DAwT21gOL+AOoigTgiwQNysED+t4DlugDzOsD8PYD8/YD9PYDwPkDmZ8Ej6AE+aQE0KwE1awEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用勇气之戒使随从获得+1/+1，25次。",
@@ -802,11 +838,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "吓不倒它的 卡组1",
-          "code": "AAECAcn1AgT21gPFgASoigSwkQQNvb4DrMsD184D7NEDzdIDld4D+OMDg/sDoY0E56AE4qIE26ME+LUEAA=="
-        },
-        {
-          "name": "吓不倒它的 卡组2",
+          "name": "吓不倒它的",
           "code": "AAECAcn1AgT21gPFgASoigSwkQQNvb4DrMsD184D7NEDzdIDld4D+OMDg/sDoY0E56AE4qIE26ME+LUEAA=="
         }
       ],
@@ -840,7 +872,12 @@
       "relatedCards": [
         "痛苦诅咒"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "上痛！上诅咒！上钉刺！",
+          "code": "AAECAcn1AgLO4QOwkQQOv7kDvb4DrMsD184D7NEDzdIDztIDk+QDg/sDxYAEg6AE56AE26ME/KwEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用痛苦诅咒，使你的对手受到84点疲劳伤害。",
@@ -866,7 +903,12 @@
       "relatedCards": [
         "被亵渎的墓园"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "不努力就去死",
+          "code": "AAECAcn1AgT21gPFgASoigSwkQQNvb4DrMsD184D7NEDzdIDld4D+OMDg/sDoY0E56AE4qIE26ME+LUEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在被亵渎的墓园中牺牲100个随从。",
@@ -885,7 +927,12 @@
       "relatedCards": [
         "可怕的憎恶"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "都过来！",
+          "code": "AAECAcn1AgTI4QOtkQSwkQSXoAQNv7kDvb4D7NEDzdIDld4DiO8Dg/sDxYAEsZ8E56AE4qIE26ME+LUEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用可怕的憎恶荣誉消灭一个传说随从。",
@@ -988,7 +1035,12 @@
       "relatedCards": [
         "爪刃哨兵"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "选对边，抽翻天",
+          "code": "AAECAc7WAwL21gOoigQOz9ED1tEDzNIDztIDutUD+dUDx90D8+MD/e0DoO4DwvEDifcDppUE26AEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用爪刃哨兵抽50张牌。",
@@ -1038,7 +1090,12 @@
       "relatedCards": [
         "奔赴前线"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "德雷克大叔需要你！",
+          "code": "AAECAYwWAA+13gOW6AOV9gP09gORjQShjQSvjgTXkgSUlQSflQSIoAT8ogTfpATgpATjpAQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用奔赴前线使随从牌的法力值消耗减少100点。",
@@ -1057,7 +1114,12 @@
       "relatedCards": [
         "冰血要塞"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "我的要塞听我的",
+          "code": "AAECAYwWBLi5A5PQA6ruA7KKBA3pvgOO7QPV8QOV9gP09gPAigT5jAT6jASsoAT8ogTfpATjpAtgQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用冰血要塞造成100点伤害。",
@@ -1088,7 +1150,12 @@
       "relatedCards": [
         "猛力进攻"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "恣意猛攻",
+          "code": "AAECAYwWCMC5A92+A8jhA47tA9XxA8X1A+f3A7yKBAv+0QP31AO61QOW6AOV9gP09gO/+QPQ+QP4gASsoATRrAQA"
+        }
+      ],
       "stages": [
         {
           "description": "猛力进攻20个随从。",

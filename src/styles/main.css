@@ -11,13 +11,13 @@
   --warm: #b45309;
   --danger: #b91c1c;
   --shadow: 0 18px 50px rgba(28, 39, 60, 0.1);
-  /* 全站外壳：中性深蓝灰；功能模块只在局部使用自己的强调色 */
-  --header-bg: rgba(15, 23, 42, 0.94);
-  --header-border: rgba(129, 140, 248, 0.28);
-  --header-fg: #eef2ff;
-  --header-fg-soft: #c7d2fe;
-  --header-active-bg: rgba(129, 140, 248, 0.18);
-  --header-active-fg: #ffffff;
+  /* 全站外壳：白天模式用浅色顶栏，暗色模式见下方 [data-theme="dark"] */
+  --header-bg: rgba(236, 240, 246, 0.94);
+  --header-border: rgba(15, 23, 42, 0.1);
+  --header-fg: #0f172a;
+  --header-fg-soft: #475569;
+  --header-active-bg: rgba(37, 99, 235, 0.1);
+  --header-active-fg: #2563eb;
 }
 
 :root[data-theme="dark"] {

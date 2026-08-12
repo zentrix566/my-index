@@ -12,13 +12,30 @@
             <h1>炉石卡牌查询</h1>
             <p class="cl-sub">输入卡牌名称或 dbfId，查看卡图、效果与背景描述。开启右上角「开发模式」可显示入库自检（卡牌库 / manifest / OSS）与资源路径等调试信息。</p>
           </div>
-          <label class="cl-dev-toggle">
-            <span class="cl-dev-toggle-text">开发模式</span>
-            <span class="cl-switch">
-              <input type="checkbox" v-model="devMode" />
-              <span class="cl-switch-track"><span class="cl-switch-thumb"></span></span>
-            </span>
-          </label>
+          <div class="cl-head__actions">
+            <button
+              type="button"
+              class="cl-theme-toggle"
+              :aria-label="hsTheme === 'dark' ? '切换到明亮主题' : '切换到暗色主题'"
+              :title="hsTheme === 'dark' ? '切换到明亮主题' : '切换到暗色主题'"
+              @click="toggleTheme"
+            >
+              <svg v-if="hsTheme === 'dark'" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
+              </svg>
+              <svg v-else width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>
+              </svg>
+              {{ hsTheme === 'dark' ? '明亮' : '暗色' }}
+            </button>
+            <label class="cl-dev-toggle">
+              <span class="cl-dev-toggle-text">开发模式</span>
+              <span class="cl-switch">
+                <input type="checkbox" v-model="devMode" />
+                <span class="cl-switch-track"><span class="cl-switch-thumb"></span></span>
+              </span>
+            </label>
+          </div>
         </div>
 
         <div class="cl-card">
@@ -97,7 +114,7 @@ import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 import cardsDb from '../data/cards-db.json' with { type: 'json' }
 import { getLocalCardImages, normalizeRarity, getRarityColor, RARITY_LABELS } from '../utils/cardImages.js'
 
-const { hsTheme } = useHearthstoneTheme()
+const { hsTheme, toggleTheme } = useHearthstoneTheme()
 
 const query = ref('')
 const results = ref([])
@@ -183,6 +200,32 @@ function probeOss(card) {
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 18px;
+}
+.cl-head__actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+.cl-theme-toggle {
+  display: inline-flex;
+  gap: 6px;
+  align-items: center;
+  padding: 8px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6b7280;
+  background: transparent;
+  border: 1px solid #e5e7eb;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: color 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+.cl-theme-toggle:hover {
+  color: #111827;
+  border-color: #d1d5db;
+  background: #f3f4f6;
 }
 .cl-title-block {
   min-width: 0;
@@ -476,6 +519,16 @@ function probeOss(card) {
 }
 .hs-page[data-hs-theme='dark'] .cl-dev-toggle {
   color: #9aa4b2;
+}
+.hs-page[data-hs-theme='dark'] .cl-theme-toggle {
+  color: #9aa4b2;
+  border-color: #333a44;
+  background: transparent;
+}
+.hs-page[data-hs-theme='dark'] .cl-theme-toggle:hover {
+  color: #e6e8eb;
+  border-color: #4a5260;
+  background: rgba(255, 255, 255, 0.05);
 }
 .hs-page[data-hs-theme='dark'] .cl-switch-track {
   background: #333a44;
