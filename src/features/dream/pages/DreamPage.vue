@@ -5,6 +5,7 @@ import DreamForm from '../components/DreamForm.vue'
 import DreamResult from '../components/DreamResult.vue'
 import DreamHistory from '../components/DreamHistory.vue'
 import { streamDream } from '../api/dreamClient.js'
+import SmartBackLink from '../../../components/SmartBackLink.vue'
 
 const { theme } = useTheme()
 
@@ -151,10 +152,7 @@ onUnmounted(() => {
   <section class="section page-section dream-page" :data-theme="theme">
     <div class="hl-page">
       <header class="hl-hero">
-        <router-link to="/" class="hl-back" aria-label="返回首页">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-          返回首页
-        </router-link>
+        <SmartBackLink fallback="/projects" class="hl-back" label="返回项目索引" />
         <p class="hl-hero__eyebrow">人生模拟器</p>
         <h1 class="hl-hero__title">黄粱一梦</h1>
         <p class="hl-hero__sub">枕上片刻，梦中百年。写下你的年纪与野心，AI 为你烹一锅人间大梦。</p>

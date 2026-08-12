@@ -137,6 +137,7 @@ import { useRouter } from 'vue-router'
 import { useAuth } from '../../../auth/useAuth.js'
 import todoApi from '../api/todo.js'
 import TodoSidebar from '../components/TodoSidebar.vue'
+import { useFeedback } from '../../../composables/useFeedback.js'
 import { clearLastListId } from '../utils/lastList.js'
 
 const router = useRouter()
@@ -148,6 +149,7 @@ const icons = ['📁', '💼', '📚', '🏡', '🎯', '💪', '🛒', '💰', '
 
 const lists = ref([])
 const tasks = ref([])
+const { confirm: confirmAction, push: pushFeedback } = useFeedback()
 const loadError = ref('')
 
 const missingDefaults = computed(() => {
@@ -237,14 +239,19 @@ async function removeList(l) {
   const s = statOf(l.id)
   const total = s.pending + s.done + s.cancelled
   const extra = total ? `\n该组下 ${total} 个任务不会被删除，将移到「未分组」。` : ''
-  if (!confirm(`确定删除分组「${l.name}」？${extra}`)) return
+  const confirmed = await confirmAction({
+    title: '删除分组？',
+    message: `确定删除分组「${l.name}」？${extra}`,
+    confirmLabel: '删除分组'
+  })
+  if (!confirmed) return
   try {
     await todoApi.deleteList(l.id)
     clearLastListId(l.id)
     await Promise.all([loadLists(), loadTasks()])
-    toast('已删除')
+    pushFeedback('分组已删除', { type: 'success' })
   } catch (e) {
-    toast(e.message)
+    pushFeedback(e.message || '删除失败', { type: 'error' })
   }
 }
 

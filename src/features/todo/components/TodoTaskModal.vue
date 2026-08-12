@@ -43,23 +43,23 @@
       </div>
       <div class="todo-form-section">
         <span class="todo-form-section-label">归档与状态</span>
-      <div class="todo-field">
-        <label>状态</label>
-        <select v-model="form.status" class="todo-select">
-          <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
-        </select>
-      </div>
-      </div>
-      <div v-if="form.status === 'done'" class="todo-field">
-        <label>完成日期</label>
-        <input v-model="form.completedDate" type="date" class="todo-input" />
-      </div>
-      <div class="todo-field">
-        <label>分组</label>
-        <select v-model="form.listId" class="todo-select">
-          <option :value="''">未分组</option>
-          <option v-for="l in lists" :key="l.id" :value="l.id">{{ l.name }}</option>
-        </select>
+        <div class="todo-field">
+          <label>分组</label>
+          <select v-model="form.listId" class="todo-select">
+            <option :value="''">未分组</option>
+            <option v-for="l in lists" :key="l.id" :value="l.id">{{ l.name }}</option>
+          </select>
+        </div>
+        <div class="todo-field">
+          <label>状态</label>
+          <select v-model="form.status" class="todo-select">
+            <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
+          </select>
+        </div>
+        <div v-if="form.status === 'done'" class="todo-field">
+          <label>完成日期</label>
+          <input v-model="form.completedDate" type="date" class="todo-input" />
+        </div>
       </div>
       <p v-if="error" class="todo-error">{{ error }}</p>
       <div class="todo-modal-actions">
@@ -72,10 +72,10 @@
 
 <script setup>
 import { ref } from 'vue'
-import { getLastListId, setLastListId } from '../utils/lastList.js'
+import { getAvailableLastListId, setLastListId } from '../utils/lastList.js'
 import { TASK_STATUS_LIST } from '../constants.js'
 
-defineProps({
+const props = defineProps({
   lists: { type: Array, default: () => [] }
 })
 
@@ -99,7 +99,9 @@ function open(initial = null) {
     dueDate: initial?.dueDate || '',
     priority: initial?.priority || 'medium',
     status: initial?.status || 'pending',
-    listId: initial?.listId || getLastListId(),
+    listId: isEdit.value
+      ? initial?.listId || ''
+      : initial?.listId || getAvailableLastListId(props.lists),
     completedDate: initial?.completedAt ? initial.completedAt.slice(0, 10) : ''
   }
   visible.value = true
@@ -126,7 +128,7 @@ function submit() {
     listId: form.value.listId ? Number(form.value.listId) : null,
     completedAt: form.value.status === 'done' ? form.value.completedDate || null : null
   }
-  if (payload.listId) setLastListId(payload.listId)
+  if (!isEdit.value) setLastListId(payload.listId)
   emit('save', { payload, id: editId.value })
 }
 

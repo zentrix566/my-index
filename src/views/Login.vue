@@ -1,12 +1,9 @@
 <template>
   <div class="auth-page">
     <div class="auth-card">
-      <RouterLink class="auth-back" :to="backTarget">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="m15 18-6-6 6-6"/>
-        </svg>
+      <SmartBackLink class="auth-back" :fallback="backTarget">
         {{ backLabel }}
-      </RouterLink>
+      </SmartBackLink>
 
       <div class="auth-mark" aria-hidden="true">
         <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
@@ -114,10 +111,13 @@
 import { computed, ref } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '../auth/useAuth.js'
+import SmartBackLink from '../components/SmartBackLink.vue'
+import { useFeedback } from '../composables/useFeedback.js'
 
 const { user, login, register } = useAuth()
 const route = useRoute()
 const router = useRouter()
+const { push } = useFeedback()
 
 const safeRedirect = computed(() => {
   const target = Array.isArray(route.query.redirect) ? route.query.redirect[0] : route.query.redirect
@@ -128,6 +128,7 @@ const safeRedirect = computed(() => {
 const source = computed(() => {
   if (route.query.source === 'hearthstone' || safeRedirect.value.startsWith('/hearthstone')) return 'hearthstone'
   if (route.query.source === 'willpower' || safeRedirect.value.startsWith('/willpower')) return 'willpower'
+  if (route.query.source === 'todo' || safeRedirect.value.startsWith('/todo')) return 'todo'
   return 'site'
 })
 const loginContexts = {
@@ -144,6 +145,13 @@ const loginContexts = {
     registerText: '注册后即可跨设备保存和同步心魔记录。',
     backLabel: '返回抵御心魔',
     backTarget: '/willpower'
+  },
+  todo: {
+    eyebrow: 'Todo Planner',
+    loginText: '登录后继续管理日程，并自动回到刚才访问的任务页面。',
+    registerText: '注册后即可跨设备保存待办、分组和日历进度。',
+    backLabel: '返回日程管理',
+    backTarget: '/todo'
   },
   site: {
     eyebrow: 'Zentrix Account',
@@ -186,7 +194,8 @@ async function submit() {
     }
     // 未激活邮箱的新用户先去账号中心完善邮箱，其他用户返回登录前的页面。
     const target = user.value && !user.value.emailVerified ? '/settings' : safeRedirect.value
-    router.push(target)
+    push(mode.value === 'login' ? '登录成功，已返回原页面' : '账号创建成功', { type: 'success' })
+    await router.push(target)
   } catch (e) {
     error.value = e.message || '操作失败'
   } finally {
@@ -236,6 +245,7 @@ function toggle() {
   font-size: 13px;
   font-weight: 600;
   text-decoration: none;
+  cursor: pointer;
 }
 .auth-back:hover {
   color: #15803d;

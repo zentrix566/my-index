@@ -142,24 +142,10 @@
               <div
                 v-if="resultTone === 'success' && countdown > 0"
                 class="frog-countdown"
-                :class="{ 'frog-countdown--paused': paused }"
                 :style="{ '--frog-count-ms': countdown * 1000 + 'ms' }"
               >
                 <span class="frog-countdown__bar" :key="displayToken"></span>
-                <span class="frog-countdown__text">
-                  <template v-if="paused">已暂停，停在本题查看（点“下一轮”进入下一张）</template>
-                  <template v-else>{{ countdown }} 秒后自动进入下一张…（点“下一轮”立即跳过，或点“暂停”查看）</template>
-                </span>
-                <button
-                  class="frog-btn frog-btn--ghost frog-btn--sm"
-                  type="button"
-                  :disabled="dealing"
-                  @click="paused ? advance() : pauseCountdown()"
-                >
-                  <svg v-if="!paused" viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5v14M16 5v14"/></svg>
-                  <svg v-else viewBox="0 0 24 24" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg>
-                  {{ paused ? '下一轮' : '暂停' }}
-                </button>
+                <span class="frog-countdown__text">{{ countdown }} 秒后自动进入下一张…（点“下一轮”立即跳过）</span>
               </div>
 
               <div class="frog-result__actions">
@@ -208,8 +194,6 @@ const {
   loadCards,
   loading,
   mutation,
-  pauseCountdown,
-  paused,
   revealed,
   round,
   roundCards,

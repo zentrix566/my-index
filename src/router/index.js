@@ -115,6 +115,15 @@ const router = createRouter({
   }
 })
 
+router.beforeEach(() => {
+  window.dispatchEvent(new CustomEvent('route-loading'))
+})
+
+router.onError((error) => {
+  console.error('路由页面加载失败', error)
+  window.dispatchEvent(new CustomEvent('route-error'))
+})
+
 // 页面访问上报：每次路由切换后向后端发送 PV 统计
 router.afterEach((to) => {
   // 按路由设置页面标题，未指定时回退到默认标题

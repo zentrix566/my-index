@@ -173,7 +173,9 @@ import { useAuth } from '../../../auth/useAuth.js'
 import todoApi from '../api/todo.js'
 import TodoSidebar from '../components/TodoSidebar.vue'
 import TodoNewGroupModal from '../components/TodoNewGroupModal.vue'
-import { getLastListId, setLastListId } from '../utils/lastList.js'
+import { useFeedback } from '../../../composables/useFeedback.js'
+import { taskToCreatePayload } from '../utils/taskPayload.js'
+import { getAvailableLastListId, setLastListId } from '../utils/lastList.js'
 import { TASK_STATUS_LIST, statusStyle, TASK_STATUS_META, TASK_STATUS_WEIGHT } from '../constants.js'
 
 const router = useRouter()
@@ -182,6 +184,7 @@ const { user, init } = useAuth()
 const lists = ref([])
 const listMap = computed(() => new Map(lists.value.map((l) => [l.id, l])))
 const tasks = ref([])
+const { push: pushFeedback } = useFeedback()
 const loadError = ref('')
 const prioLabel = { low: '低', medium: '中', high: '高' }
 
@@ -324,13 +327,20 @@ async function loadTasks() {
 }
 
 async function removeTask(t) {
-  if (!confirm(`确定删除「${t.title}」？`)) return
   try {
     await todoApi.deleteTask(t.id)
     tasks.value = tasks.value.filter((x) => x.id !== t.id)
-    toast('已删除')
+    pushFeedback(`已删除「${t.title}」`, {
+      type: 'success',
+      actionLabel: '撤销',
+      action: async () => {
+        await todoApi.createTask(taskToCreatePayload(t))
+        await loadTasks()
+        pushFeedback('任务已恢复', { type: 'success' })
+      }
+    })
   } catch (e) {
-    toast(e.message)
+    pushFeedback(e.message || '删除失败', { type: 'error' })
   }
 }
 
@@ -357,7 +367,7 @@ const form = ref({ title: '', note: '', dueDate: '', priority: 'medium', status:
 function openNewTask() {
   editingId.value = null
   taskError.value = ''
-  form.value = { title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: filterList.value ? Number(filterList.value) : getLastListId(), completedDate: '' }
+  form.value = { title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: filterList.value ? Number(filterList.value) : getAvailableLastListId(lists.value), completedDate: '' }
   taskModal.value = true
 }
 function editTask(t) {
@@ -390,7 +400,7 @@ async function submitTask() {
       toast('已更新')
     } else {
       const r = await todoApi.createTask(payload)
-      if (payload.listId) setLastListId(payload.listId)
+      setLastListId(payload.listId)
       tasks.value.unshift(r.task)
       toast('已新建')
     }

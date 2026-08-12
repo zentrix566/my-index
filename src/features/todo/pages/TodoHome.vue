@@ -173,7 +173,15 @@
               <option value="high">高</option>
             </select>
           </div>
-          <div class="todo-field">
+        </div>
+        <div class="todo-field">
+          <label>分组</label>
+          <select v-model="form.listId" class="todo-select">
+            <option :value="''">未分组</option>
+            <option v-for="l in lists" :key="l.id" :value="l.id">{{ l.name }}</option>
+          </select>
+        </div>
+        <div class="todo-field">
           <label>状态</label>
           <select v-model="form.status" class="todo-select">
             <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
@@ -182,14 +190,6 @@
         <div v-if="form.status === 'done'" class="todo-field">
           <label>完成日期</label>
           <input v-model="form.completedDate" type="date" class="todo-input" />
-        </div>
-        </div>
-          <div class="todo-field">
-          <label>分组</label>
-          <select v-model="form.listId" class="todo-select">
-            <option :value="''">未分组</option>
-            <option v-for="l in lists" :key="l.id" :value="l.id">{{ l.name }}</option>
-          </select>
         </div>
         <p v-if="taskError" class="todo-error">{{ taskError }}</p>
         <div class="todo-modal-actions">
@@ -211,10 +211,12 @@ import { useRoute, useRouter } from 'vue-router'
 import { toPng } from 'html-to-image'
 import { useAuth } from '../../../auth/useAuth.js'
 import todoApi from '../api/todo.js'
-import { getLastListId, setLastListId } from '../utils/lastList.js'
+import { getAvailableLastListId, setLastListId } from '../utils/lastList.js'
 import { TASK_STATUS_LIST, statusStyle, TASK_STATUS_META } from '../constants.js'
 import TodoSidebar from '../components/TodoSidebar.vue'
 import TodoNewGroupModal from '../components/TodoNewGroupModal.vue'
+import { useFeedback } from '../../../composables/useFeedback.js'
+import { taskToCreatePayload } from '../utils/taskPayload.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -222,6 +224,7 @@ const { user, init } = useAuth()
 
 const lists = ref([])
 const tasks = ref([])
+const { push: pushFeedback } = useFeedback()
 const loadError = ref('')
 
 // ===== 视图与标题 =====
@@ -418,13 +421,20 @@ async function toggleDone(t) {
 }
 
 async function removeTask(t) {
-  if (!confirm(`确定删除「${t.title}」？`)) return
   try {
     await todoApi.deleteTask(t.id)
     tasks.value = tasks.value.filter((x) => x.id !== t.id)
-    toast('已删除')
+    pushFeedback(`已删除「${t.title}」`, {
+      type: 'success',
+      actionLabel: '撤销',
+      action: async () => {
+        await todoApi.createTask(taskToCreatePayload(t))
+        await loadTasks()
+        pushFeedback('任务已恢复', { type: 'success' })
+      }
+    })
   } catch (e) {
-    toast(e.message)
+    pushFeedback(e.message || '删除失败', { type: 'error' })
   }
 }
 
@@ -444,7 +454,9 @@ function openNewTask() {
     dueDate: showDate.value ? dateKey : '',
     priority: 'medium',
     status: 'pending',
-    listId: view.value.startsWith('list:') ? Number(view.value.slice(5)) : '',
+    listId: view.value.startsWith('list:')
+      ? Number(view.value.slice(5))
+      : getAvailableLastListId(lists.value),
     completedDate: ''
   }
   taskModal.value = true
@@ -487,7 +499,7 @@ async function submitTask() {
       toast('已更新')
     } else {
       const r = await todoApi.createTask(payload)
-      if (payload.listId) setLastListId(payload.listId)
+      setLastListId(payload.listId)
       // 若当前视图应包含该任务则插入；否则仅提示
       tasks.value.unshift(r.task)
       toast('已新建')

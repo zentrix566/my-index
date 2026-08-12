@@ -101,27 +101,63 @@
       </nav>
     </header>
 
-    <main id="main-content" tabindex="-1">
-      <RouterView />
+    <nav v-if="moduleContext" class="module-context" :data-tone="moduleContext.tone" aria-label="当前位置">
+      <div class="module-context-inner">
+        <RouterLink to="/projects">项目索引</RouterLink>
+        <span aria-hidden="true">/</span>
+        <RouterLink :to="moduleContext.home" class="module-context-current">
+          <AppIcon :name="moduleContext.icon" />
+          {{ moduleContext.label }}
+        </RouterLink>
+        <span v-if="moduleContext.page" aria-hidden="true">/</span>
+        <span v-if="moduleContext.page" class="module-context-page">{{ moduleContext.page }}</span>
+      </div>
+    </nav>
+
+    <div class="route-progress" :class="{ active: routeLoading }" role="progressbar" :aria-hidden="!routeLoading">
+      <span></span>
+    </div>
+
+    <main id="main-content" tabindex="-1" :aria-busy="routeLoading">
+      <RouterView v-slot="{ Component }">
+        <Suspense @pending="startRouteLoading" @resolve="finishRouteLoading">
+          <div class="route-view">
+            <component :is="Component" />
+          </div>
+          <template #fallback>
+            <div class="route-skeleton" role="status" aria-label="正在加载页面">
+              <span class="route-skeleton-title"></span>
+              <span v-for="index in 3" :key="index" class="route-skeleton-card"></span>
+            </div>
+          </template>
+        </Suspense>
+      </RouterView>
     </main>
 
     <footer class="site-footer">
       <p>© {{ year }} Zentrix. Built as a Vue-powered personal index.</p>
     </footer>
+    <p class="sr-only" aria-live="polite">{{ routeAnnouncement }}</p>
+    <AppFeedback />
   </div>
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from './auth/useAuth.js'
 import { useTheme } from './composables/useTheme.js'
 import { projects } from './data/projects.js'
 import { vueApps } from './data/vueApps.js'
+import AppFeedback from './components/AppFeedback.vue'
+import AppIcon from './components/AppIcon.vue'
+import { useFeedback } from './composables/useFeedback.js'
 
 const year = new Date().getFullYear()
 const isMenuOpen = ref(false)
 const headerHidden = ref(false)
+const routeLoading = ref(false)
+const routeAnnouncement = ref('')
 const lastScrollY = ref(0)
 const workMenu = ref(null)
 const personalMenu = ref(null)
@@ -130,6 +166,7 @@ const route = useRoute()
 const router = useRouter()
 const { user, init, logout } = useAuth()
 const { theme, toggleTheme } = useTheme()
+const { push } = useFeedback()
 const workProjectLinks = projects.filter((project) => project.group === '工作项目')
 
 // 顶栏「个人项目」下拉只展示精选入口，其余统一收进「更多项目」
@@ -145,6 +182,14 @@ const loginTarget = computed(() => ({
   path: '/login',
   query: route.path === '/login' ? {} : { redirect: route.fullPath }
 }))
+const moduleContext = computed(() => {
+  const path = route.path
+  const title = String(route.meta?.title || '').split('|')[0].trim()
+  if (path.startsWith('/todo')) return { label: '日程管理', home: '/todo', icon: 'todo', tone: 'blue', page: path === '/todo' ? '' : title }
+  if (path.startsWith('/willpower')) return { label: '抵御心魔', home: '/willpower', icon: 'shield', tone: 'green', page: path === '/willpower' ? '' : title }
+  if (path.startsWith('/hearthstone')) return { label: '炉石工具', home: '/hearthstone', icon: 'cards', tone: 'violet', page: path === '/hearthstone' ? '' : title }
+  return null
+})
 
 const toggleMenu = () => {
   isMenuOpen.value = !isMenuOpen.value
@@ -152,6 +197,14 @@ const toggleMenu = () => {
 
 const closeMenu = () => {
   isMenuOpen.value = false
+}
+
+const startRouteLoading = () => {
+  routeLoading.value = true
+}
+
+const finishRouteLoading = () => {
+  routeLoading.value = false
 }
 
 const navigationMenus = { work: workMenu, personal: personalMenu, account: accountMenu }
@@ -182,6 +235,7 @@ const handleKeydown = (event) => {
 }
 
 const handleDocumentClick = (event) => {
+  if (event.target.closest('.menu-toggle')) return
   if (!event.target.closest('.nav-dropdown')) closeNavigationMenus()
 }
 
@@ -201,7 +255,27 @@ const handleScroll = () => {
   lastScrollY.value = y
 }
 
-watch(() => route.fullPath, closeNavigationMenus)
+watch(() => route.fullPath, async () => {
+  closeNavigationMenus()
+  routeLoading.value = false
+  await nextTick()
+  const heading = document.querySelector('#main-content h1')
+  heading?.setAttribute('tabindex', '-1')
+  heading?.classList.add('route-focus-target')
+  ;(heading || document.getElementById('main-content'))?.focus({ preventScroll: true })
+  routeAnnouncement.value = `已进入${heading?.textContent?.trim() || document.title}`
+})
+
+const handleRouteLoading = () => { routeLoading.value = true }
+const handleRouteError = () => {
+  routeLoading.value = false
+  push('页面加载失败，请检查网络后重试', {
+    type: 'error',
+    actionLabel: '重新加载',
+    duration: 0,
+    action: () => window.location.reload()
+  })
+}
 
 onMounted(() => {
   init()
@@ -209,11 +283,15 @@ onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true })
   window.addEventListener('keydown', handleKeydown)
   document.addEventListener('click', handleDocumentClick)
+  window.addEventListener('route-loading', handleRouteLoading)
+  window.addEventListener('route-error', handleRouteError)
 })
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll)
   window.removeEventListener('keydown', handleKeydown)
   document.removeEventListener('click', handleDocumentClick)
+  window.removeEventListener('route-loading', handleRouteLoading)
+  window.removeEventListener('route-error', handleRouteError)
 })
 </script>
 
@@ -221,4 +299,5 @@ onBeforeUnmount(() => {
 .site-header--hidden {
   transform: translateY(-100%);
 }
+.route-view { display: contents; }
 </style>

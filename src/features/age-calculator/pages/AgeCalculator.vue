@@ -7,7 +7,7 @@
         <p>输入出生年份和某个特定年份，直接算出当时的年龄。不做任何校验，算出来是多少就显示多少，每次结果都会保留在下方方便查看。</p>
       </div>
 
-      <RouterLink to="/vue-apps" class="back">← 返回个人项目</RouterLink>
+      <SmartBackLink fallback="/projects" class="back" label="返回项目索引" />
 
       <form class="age-form" @submit.prevent="calculate">
         <label>
@@ -46,6 +46,7 @@
 
 <script setup>
 import { ref } from 'vue'
+import SmartBackLink from '../../../components/SmartBackLink.vue'
 
 // 原始输入值，不做任何清洗或校验
 const birthYear = ref('')

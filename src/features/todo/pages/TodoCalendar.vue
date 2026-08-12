@@ -182,10 +182,13 @@ import todoApi from '../api/todo.js'
 import TodoSidebar from '../components/TodoSidebar.vue'
 import TodoTaskModal from '../components/TodoTaskModal.vue'
 import TodoNewGroupModal from '../components/TodoNewGroupModal.vue'
+import { useFeedback } from '../../../composables/useFeedback.js'
+import { taskToCreatePayload } from '../utils/taskPayload.js'
 import { TASK_STATUS_LIST, statusStyle, TASK_STATUS_META, isActiveStatus } from '../constants.js'
 
 const route = useRoute()
 const router = useRouter()
+const { push: pushFeedback } = useFeedback()
 const { user, init } = useAuth()
 
 const lists = ref([])
@@ -471,13 +474,20 @@ async function setDayStatus(t, next) {
 }
 
 async function removeTask(t) {
-  if (!confirm(`确定删除「${t.title}」？`)) return
   try {
     await todoApi.deleteTask(t.id)
-    toast('已删除')
     await refreshCal()
+    pushFeedback(`已删除「${t.title}」`, {
+      type: 'success',
+      actionLabel: '撤销',
+      action: async () => {
+        await todoApi.createTask(taskToCreatePayload(t))
+        await refreshCal()
+        pushFeedback('任务已恢复', { type: 'success' })
+      }
+    })
   } catch (e) {
-    toast(e.message)
+    pushFeedback(e.message || '删除失败', { type: 'error' })
   }
 }
 
