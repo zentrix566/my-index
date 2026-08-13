@@ -53,9 +53,9 @@
 </template>
 
 <script setup>
-import { onMounted, ref } from 'vue'
+import { onMounted, onUnmounted, ref } from 'vue'
 import { useAuth } from '../../../auth/useAuth.js'
-import todoApi from '../api/todo.js'
+import todoApi, { TODO_TASKS_CHANGED_EVENT } from '../api/todo.js'
 
 defineProps({
   lists: { type: Array, default: () => [] }
@@ -66,9 +66,7 @@ const { user, init } = useAuth()
 const todayPendingCount = ref(null)
 const todayDoneCount = ref(null)
 
-onMounted(async () => {
-  await init()
-  if (!user.value) return
+async function loadTaskCounts() {
   try {
     const [pending, done] = await Promise.all([todoApi.listTasks('today_todo'), todoApi.listTasks('today_done')])
     todayPendingCount.value = (pending.tasks || []).length
@@ -76,5 +74,20 @@ onMounted(async () => {
   } catch {
     // 导航数量只作辅助展示，加载失败不影响页面主体。
   }
+}
+
+function handleTasksChanged() {
+  loadTaskCounts()
+}
+
+onMounted(async () => {
+  window.addEventListener(TODO_TASKS_CHANGED_EVENT, handleTasksChanged)
+  await init()
+  if (!user.value) return
+  await loadTaskCounts()
+})
+
+onUnmounted(() => {
+  window.removeEventListener(TODO_TASKS_CHANGED_EVENT, handleTasksChanged)
 })
 </script>

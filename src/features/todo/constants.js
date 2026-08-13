@@ -36,6 +36,28 @@ export const TASK_STATUS_LIST = TASK_STATUS_ORDER.map((key) => ({
   ...TASK_STATUS_META[key]
 }))
 
+const CALENDAR_TASK_STATUS_ORDER = [
+  'done',
+  'pending',
+  'in_progress',
+  'deferred',
+  'waiting',
+  'cancelled'
+]
+const CALENDAR_TASK_STATUS_WEIGHT = Object.fromEntries(
+  CALENDAR_TASK_STATUS_ORDER.map((key, index) => [key, index])
+)
+
+/** 日历内按已完成、待办、其余状态排列，同状态保持接口原有顺序。 */
+export function sortCalendarTasks(tasks = []) {
+  return [...tasks].sort((a, b) => {
+    const fallbackWeight = CALENDAR_TASK_STATUS_ORDER.length
+    const aWeight = CALENDAR_TASK_STATUS_WEIGHT[a.status] ?? fallbackWeight
+    const bWeight = CALENDAR_TASK_STATUS_WEIGHT[b.status] ?? fallbackWeight
+    return aWeight - bWeight
+  })
+}
+
 export const isDoneStatus = (status) => status === 'done'
 export const isCancelledStatus = (status) => status === 'cancelled'
 export const isActiveStatus = (status) =>

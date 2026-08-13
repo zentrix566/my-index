@@ -184,7 +184,13 @@ import TodoTaskModal from '../components/TodoTaskModal.vue'
 import TodoNewGroupModal from '../components/TodoNewGroupModal.vue'
 import { useFeedback } from '../../../composables/useFeedback.js'
 import { taskToCreatePayload } from '../utils/taskPayload.js'
-import { TASK_STATUS_LIST, statusStyle, TASK_STATUS_META, isActiveStatus } from '../constants.js'
+import {
+  TASK_STATUS_LIST,
+  statusStyle,
+  TASK_STATUS_META,
+  isActiveStatus,
+  sortCalendarTasks
+} from '../constants.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -302,6 +308,14 @@ function switchMode(next) {
 
 // 月网格
 const calData = ref({})
+
+function sortCalendarDays(days = {}) {
+  return Object.fromEntries(Object.entries(days).map(([key, day]) => [
+    key,
+    { ...day, tasks: sortCalendarTasks(day.tasks || []) }
+  ]))
+}
+
 const cells = computed(() => {
   const [y, m] = month.value.split('-').map(Number)
   const first = new Date(y, m - 1, 1)
@@ -393,7 +407,7 @@ const weekDays = computed(() => {
 async function loadMonth() {
   try {
     const r = await todoApi.calendar(month.value)
-    calData.value = r.days || {}
+    calData.value = sortCalendarDays(r.days)
   } catch (e) {
     loadError.value = e.message
   }
@@ -416,7 +430,7 @@ async function loadWeek() {
       else if (t.status === 'cancelled') map[k].cancelled += 1
       else map[k].active += 1
     }
-    calData.value = map
+    calData.value = sortCalendarDays(map)
   } catch (e) {
     loadError.value = e.message
   }

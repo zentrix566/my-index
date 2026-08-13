@@ -27,6 +27,13 @@ async function request(url, options = {}) {
 }
 
 const BASE = '/api/todo'
+export const TODO_TASKS_CHANGED_EVENT = 'todo:tasks-changed'
+
+function notifyTasksChanged() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new Event(TODO_TASKS_CHANGED_EVENT))
+  }
+}
 
 export const todoApi = {
   // 分组
@@ -53,14 +60,20 @@ export const todoApi = {
   listTasks(view) {
     return request(`${BASE}/tasks?view=${encodeURIComponent(view)}`)
   },
-  createTask(payload) {
-    return request(`${BASE}/tasks`, { method: 'POST', body: JSON.stringify(payload) })
+  async createTask(payload) {
+    const data = await request(`${BASE}/tasks`, { method: 'POST', body: JSON.stringify(payload) })
+    notifyTasksChanged()
+    return data
   },
-  updateTask(id, payload) {
-    return request(`${BASE}/tasks/${id}`, { method: 'PATCH', body: JSON.stringify(payload) })
+  async updateTask(id, payload) {
+    const data = await request(`${BASE}/tasks/${id}`, { method: 'PATCH', body: JSON.stringify(payload) })
+    notifyTasksChanged()
+    return data
   },
-  deleteTask(id) {
-    return request(`${BASE}/tasks/${id}`, { method: 'DELETE' })
+  async deleteTask(id) {
+    const data = await request(`${BASE}/tasks/${id}`, { method: 'DELETE' })
+    notifyTasksChanged()
+    return data
   },
 
   // 单日明细（日历点某天）
