@@ -1,15 +1,28 @@
 #!/usr/bin/env node
-/** 根据三份客户端映射表生成字段一致的前端外观清单。 */
+/** 根据三份客户端映射表生成字段一致的前端外观清单（皮肤/幸运币/卡背各自独立文件）。 */
 import { readFile, writeFile } from 'node:fs/promises'
 import { join, resolve } from 'node:path'
 import { fileURLToPath } from 'node:url'
 
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
 const dataDirectory = join(repoRoot, 'src/features/hearthstone/data')
-const manifestPath = join(dataDirectory, 'cosmetics.json')
+const heroSkinsPath = join(dataDirectory, 'hero-skins.json')
+const coinsPath = join(dataDirectory, 'coins.json')
+const cardBacksPath = join(dataDirectory, 'card-backs.json')
+const heroSkinMapPath = join(dataDirectory, 'hero-skin-map.json')
+const coinMapPath = join(dataDirectory, 'cosmetic-coin-map.json')
+const cardBackMapPath = join(dataDirectory, 'card-back-map.json')
 
 function previousItemsById(items) {
   return new Map(items.map((item) => [item.id, item]))
+}
+
+async function readJsonSafe(path) {
+  try {
+    return JSON.parse(await readFile(path, 'utf8'))
+  } catch {
+    return []
+  }
 }
 
 function sharedDetails(mapping, previous = {}) {
@@ -25,51 +38,62 @@ function sharedDetails(mapping, previous = {}) {
   }
 }
 
-const previous = JSON.parse(await readFile(manifestPath, 'utf8'))
-const heroSkins = JSON.parse(await readFile(join(dataDirectory, 'hero-skin-map.json'), 'utf8'))
-const coins = JSON.parse(await readFile(join(dataDirectory, 'cosmetic-coin-map.json'), 'utf8'))
-const cardBacks = JSON.parse(await readFile(join(dataDirectory, 'card-back-map.json'), 'utf8'))
-const previousHeroSkins = previousItemsById(previous.heroSkins)
-const previousCoins = previousItemsById(previous.coins)
-const previousCardBacks = previousItemsById(previous.cardBacks)
+const heroSkinsMap = JSON.parse(await readFile(heroSkinMapPath, 'utf8'))
+const coinsMap = JSON.parse(await readFile(coinMapPath, 'utf8'))
+const cardBacksMap = JSON.parse(await readFile(cardBackMapPath, 'utf8'))
 
-const manifest = {
-  heroSkins: heroSkins.map((mapping) => {
-    const id = `hero-skins-${mapping.cardId.toLocaleLowerCase()}`
-    return {
-      id,
-      cardId: mapping.cardId,
-      dbfId: mapping.dbfId,
-      cosmeticHeroId: mapping.cosmeticHeroId,
-      heroClass: mapping.heroClass,
-      officialName: mapping.officialName,
-      ...sharedDetails(mapping, previousHeroSkins.get(id))
-    }
-  }),
-  coins: coins.map((mapping) => {
-    const id = `coins-${mapping.cardId.toLocaleLowerCase()}`
-    return {
-      id,
-      cardId: mapping.cardId,
-      dbfId: mapping.dbfId,
-      cosmeticCoinId: mapping.cosmeticCoinId,
-      officialName: mapping.officialName,
-      ...sharedDetails(mapping, previousCoins.get(id))
-    }
-  }),
-  cardBacks: cardBacks.filter((mapping) => mapping.imageUrl).map((mapping) => {
-    const id = `card-backs-${mapping.cardBackId}`
-    return {
-      id,
-      cardBackId: mapping.cardBackId,
-      officialName: mapping.officialName,
-      prefabName: mapping.prefabName,
-      prefabGuid: mapping.prefabGuid,
-      textureName: mapping.textureName,
-      ...sharedDetails(mapping, previousCardBacks.get(id))
-    }
-  })
+const previousHeroSkins = previousItemsById(await readJsonSafe(heroSkinsPath))
+const previousCoins = previousItemsById(await readJsonSafe(coinsPath))
+const previousCardBacks = previousItemsById(await readJsonSafe(cardBacksPath))
+
+const heroSkins = heroSkinsMap.map((mapping) => {
+  const id = `hero-skins-${mapping.cardId.toLocaleLowerCase()}`
+  return {
+    id,
+    cardId: mapping.cardId,
+    dbfId: mapping.dbfId,
+    cosmeticHeroId: mapping.cosmeticHeroId,
+    heroClass: mapping.heroClass,
+    officialName: mapping.officialName,
+    ...sharedDetails(mapping, previousHeroSkins.get(id))
+  }
+})
+const coins = coinsMap.map((mapping) => {
+  const id = `coins-${mapping.cardId.toLocaleLowerCase()}`
+  return {
+    id,
+    cardId: mapping.cardId,
+    dbfId: mapping.dbfId,
+    cosmeticCoinId: mapping.cosmeticCoinId,
+    officialName: mapping.officialName,
+    ...sharedDetails(mapping, previousCoins.get(id))
+  }
+})
+const cardBacks = cardBacksMap.filter((mapping) => mapping.imageUrl).map((mapping) => {
+  const id = `card-backs-${mapping.cardBackId}`
+  return {
+    id,
+    cardBackId: mapping.cardBackId,
+    officialName: mapping.officialName,
+    prefabName: mapping.prefabName,
+    prefabGuid: mapping.prefabGuid,
+    textureName: mapping.textureName,
+    ...sharedDetails(mapping, previousCardBacks.get(id))
+  }
+})
+
+// 保留映射表里没有、但手动加入的条目（如淘金者雷斯卡），避免同步时被整体覆盖丢弃
+function preserve(previous, fresh) {
+  const freshIds = new Set(fresh.map((item) => item.id))
+  const kept = [...previous.values()].filter((item) => !freshIds.has(item.id))
+  return kept.length ? [...fresh, ...kept] : fresh
 }
 
-await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
-console.log(`外观清单已同步：英雄皮肤 ${manifest.heroSkins.length}、幸运币 ${manifest.coins.length}、卡背 ${manifest.cardBacks.length}`)
+const finalHeroSkins = preserve(previousHeroSkins, heroSkins)
+const finalCoins = preserve(previousCoins, coins)
+const finalCardBacks = preserve(previousCardBacks, cardBacks)
+
+await writeFile(heroSkinsPath, `${JSON.stringify(finalHeroSkins, null, 2)}\n`, 'utf8')
+await writeFile(coinsPath, `${JSON.stringify(finalCoins, null, 2)}\n`, 'utf8')
+await writeFile(cardBacksPath, `${JSON.stringify(finalCardBacks, null, 2)}\n`, 'utf8')
+console.log(`外观清单已同步：英雄皮肤 ${finalHeroSkins.length}、幸运币 ${finalCoins.length}、卡背 ${finalCardBacks.length}`)

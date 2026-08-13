@@ -12,10 +12,13 @@ import {
 } from '../src/features/hearthstone/utils/cosmetics.js'
 
 test('外观主清单与映射表使用一致的图片和详情字段', async () => {
-  const catalog = JSON.parse(await readFile(
-    new URL('../src/features/hearthstone/data/cosmetics.json', import.meta.url),
-    'utf8'
-  ))
+  const load = (file) => readFile(new URL(file, import.meta.url), 'utf8').then(JSON.parse)
+  const [heroSkins, coins, cardBacks] = await Promise.all([
+    load('../src/features/hearthstone/data/hero-skins.json'),
+    load('../src/features/hearthstone/data/coins.json'),
+    load('../src/features/hearthstone/data/card-backs.json')
+  ])
+  const catalog = { heroSkins, coins, cardBacks }
   const sharedFields = [
     'id', 'officialName', 'flavorText', 'howToGet', 'availability',
     'localImagePath', 'ossObjectKey', 'imageUrl', 'source', 'sourceUrl'

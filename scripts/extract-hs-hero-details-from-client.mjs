@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url'
 
 const scriptPath = fileURLToPath(import.meta.url)
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
-const manifestPath = join(repoRoot, 'src/features/hearthstone/data/cosmetics.json')
+const manifestPath = join(repoRoot, 'src/features/hearthstone/data/hero-skins.json')
 const mappingPath = join(repoRoot, 'src/features/hearthstone/data/hero-skin-map.json')
 const defaultGameDirectory = 'E:/Hearthstone'
 const defaultSourceDirectory = 'E:/github/my-heartstone/hearthstone_cosmetics'
@@ -117,7 +117,7 @@ async function main() {
   const recordsByDbfId = new Map(table.Records.map((record) => [record.m_cardId, record]))
   const heroRoot = join(sourceDirectory, 'hero-skins')
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
-  const manifestByCardId = new Map(manifest.heroSkins.map((item) => [item.id.replace(/^hero-skins-/, '').toLocaleUpperCase(), item]))
+  const manifestByCardId = new Map(manifest.map((item) => [item.id.replace(/^hero-skins-/, '').toLocaleUpperCase(), item]))
   const mappings = []
   let updated = 0
   let withFlavorText = 0

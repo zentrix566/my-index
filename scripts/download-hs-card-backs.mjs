@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 
 const scriptPath = fileURLToPath(import.meta.url)
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
-const manifestPath = join(repoRoot, 'src/features/hearthstone/data/cosmetics.json')
+const manifestPath = join(repoRoot, 'src/features/hearthstone/data/card-backs.json')
 
 function loadEnv() {
   const envPath = join(repoRoot, '.env')
@@ -91,9 +91,7 @@ async function main() {
     if ((index + 1) % 25 === 0) console.log(`卡背进度：${index + 1}/${cardBacks.length}`)
   }
 
-  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
-  manifest.cardBacks = manifestItems
-  await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+  await writeFile(manifestPath, `${JSON.stringify(manifestItems, null, 2)}\n`, 'utf8')
   console.log(`卡背下载完成：${manifestItems.length}`)
   console.log(`本地目录：${directory}`)
 }

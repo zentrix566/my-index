@@ -175,6 +175,12 @@
         <button
           type="button"
           :disabled="pagination.currentPage <= 1"
+          aria-label="首页"
+          @click="currentPage = 1"
+        >首页</button>
+        <button
+          type="button"
+          :disabled="pagination.currentPage <= 1"
           aria-label="上一页"
           @click="currentPage -= 1"
         >上一页</button>
@@ -188,6 +194,29 @@
           aria-label="下一页"
           @click="currentPage += 1"
         >下一页</button>
+        <button
+          type="button"
+          :disabled="pagination.currentPage >= pagination.pageCount"
+          aria-label="末页"
+          @click="currentPage = pagination.pageCount"
+        >末页</button>
+        <span class="hs-jump-page">
+          跳至
+          <input
+            type="number"
+            min="1"
+            :max="pagination.pageCount"
+            v-model.number="jumpInput"
+            @keyup.enter="goToPage"
+            aria-label="跳转到指定页码"
+          />
+          页
+          <button
+            type="button"
+            class="hs-jump-page-btn"
+            @click="goToPage"
+          >跳转</button>
+        </span>
       </nav>
 
       <Teleport to="body">
@@ -233,13 +262,6 @@
                   <dd>{{ selectedItem.availability }}</dd>
                 </div>
               </dl>
-              <a
-                v-if="selectedItem.sourceUrl"
-                :href="selectedItem.sourceUrl"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="hs-cosmetic-source-link"
-              >查看资料来源</a>
               <button
                 v-if="user"
                 type="button"
@@ -260,7 +282,9 @@
 <script setup>
 import { computed, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import catalog from '../data/cosmetics.json'
+import heroSkins from '../data/hero-skins.json'
+import coins from '../data/coins.json'
+import cardBacks from '../data/card-backs.json'
 import { useAuth } from '../../../auth/useAuth.js'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 import { useHearthstoneProfile } from '../composables/useHearthstoneProfile.js'
@@ -310,50 +334,15 @@ const DEATH_KNIGHT_DISPLAY_ORDER = [
   'HERO_11e', 'HERO_11as', 'HERO_11aq', 'HERO_11x', 'HERO_11j', 'HERO_11ax', 'HERO_11y', 'HERO_11ai',
   'HERO_11h', 'HERO_11bi', 'HERO_11k', 'HERO_11ac', 'HERO_11u_Arfus', 'HERO_11b', 'HERO_11g', 'HERO_11l', 'HERO_11ay'
 ]
-const DEATH_KNIGHT_EXTRA_SKINS = {
-  HERO_11x: {
-    id: 'hero-skins-hero_11x',
-    cardId: 'HERO_11x',
-    dbfId: null,
-    heroClass: '死亡骑士',
-    officialName: '淘金者雷斯卡',
-    flavorText: '如果有机会捞钱，为什么要去度假？',
-    howToGet: '可以在上架期间在商店购买。',
-    availability: '',
-    // 该皮肤未被当前 HearthstoneJSON 图库收录，使用从商店宣传图核对后的本地竖版头像。
-    localImagePath: 'hero-skins/death-knight/HERO_11x.png',
-    ossObjectKey: 'hearthstone-cosmetics/hero-skins/death-knight/HERO_11x.png',
-    imageUrl: '/hearthstone-cosmetics/hero-skins/death-knight/HERO_11x.png',
-    source: 'Hearthstone 商店',
-    sourceUrl: 'https://www.hearthstonetopdecks.com/shop-update-august-27-2024/'
-  }
-}
-const DEATH_KNIGHT_NAME_OVERRIDES = {
-  HERO_11ah: '严寒冷花因葛',
-  HERO_11an: '抱骨犬阿尔福斯',
-  HERO_11g: '斯嘉丽'
-}
-const DEATH_KNIGHT_PORTRAIT_OVERRIDES = {
-  HERO_11: '/hearthstone-cosmetics/hero-skins/death-knight/HERO_11-portrait.png'
-}
-const coinByCardId = new Map(catalog.coins.map((item) => [item.cardId, item]))
-const heroSkinByCardId = new Map(catalog.heroSkins.map((item) => [item.cardId, item]))
+const coinByCardId = new Map(coins.map((item) => [item.cardId, item]))
+const heroSkinByCardId = new Map(heroSkins.map((item) => [item.cardId, item]))
 const collectionCatalog = {
-  ...catalog,
-  coins: [DEFAULT_COIN, ...COIN_DISPLAY_ORDER.map((cardId) => coinByCardId.get(cardId)).filter(Boolean)],
   heroSkins: [
-    ...catalog.heroSkins.filter((item) => item.heroClass !== '死亡骑士'),
-    ...DEATH_KNIGHT_DISPLAY_ORDER.map((cardId) => {
-      const item = heroSkinByCardId.get(cardId) || DEATH_KNIGHT_EXTRA_SKINS[cardId]
-      return item
-        ? {
-            ...item,
-            officialName: DEATH_KNIGHT_NAME_OVERRIDES[cardId] || item.officialName,
-            imageUrl: DEATH_KNIGHT_PORTRAIT_OVERRIDES[cardId] || item.imageUrl
-          }
-        : null
-    }).filter(Boolean)
-  ]
+    ...heroSkins.filter((item) => item.heroClass !== '死亡骑士'),
+    ...DEATH_KNIGHT_DISPLAY_ORDER.map((cardId) => heroSkinByCardId.get(cardId)).filter(Boolean)
+  ].filter((item) => !item.hidden),
+  coins: [DEFAULT_COIN, ...COIN_DISPLAY_ORDER.map((cardId) => coinByCardId.get(cardId)).filter(Boolean)].filter((item) => !item.hidden),
+  cardBacks: cardBacks.filter((item) => !item.hidden)
 }
 
 const router = useRouter()
@@ -372,6 +361,7 @@ const activeHeroClass = ref(HERO_CLASS_ORDER[0])
 const query = ref('')
 const statusFilter = ref('all')
 const currentPage = ref(1)
+const jumpInput = ref('')
 const saveError = ref('')
 const selectedItem = ref(null)
 const detailsDialog = ref(null)
@@ -434,20 +424,20 @@ function readIdList(payload, keys) {
 }
 
 function getImportedIds(payload) {
-  const cardBackById = new Map(catalog.cardBacks.map((item) => [Number(item.cardBackId), item.id]))
+  const cardBackById = new Map(cardBacks.map((item) => [Number(item.cardBackId), item.id]))
   const coinByDbfId = new Map(collectionCatalog.coins.map((item) => [Number(item.dbfId), item.id]))
   const cardBackSource = readIdList(payload, ['cardBackIds', 'cardBacks'])
   const coinSource = readIdList(payload, ['coinDbfIds', 'coins'])
   const heroSkinSource = readIdList(payload, ['heroSkinDbfIds', 'heroSkins'])
-  const cardBacks = new Set(cardBackSource.map((id) => {
+  const importedCardBacks = new Set(cardBackSource.map((id) => {
     const value = String(id)
-    return cardBackById.get(Number(id)) || (catalog.cardBacks.some((item) => item.id === value) ? value : '')
+    return cardBackById.get(Number(id)) || (cardBacks.some((item) => item.id === value) ? value : '')
   }).filter(Boolean))
-  const coins = new Set(coinSource.map((id) => {
+  const importedCoins = new Set(coinSource.map((id) => {
     const value = String(id)
     return coinByDbfId.get(Number(id)) || (collectionCatalog.coins.some((item) => item.id === value) ? value : '')
   }).filter(Boolean))
-  return { cardBacks, coins, heroSkins: new Set(), cardBackSource, coinSource, heroSkinSource }
+  return { cardBacks: importedCardBacks, coins: importedCoins, heroSkins: new Set(), cardBackSource, coinSource, heroSkinSource }
 }
 
 async function previewFirestoneImport(event) {
@@ -527,6 +517,17 @@ watch([activeType, activeHeroClass, query, statusFilter], () => {
 watch(() => pagination.value.currentPage, (page) => {
   if (currentPage.value !== page) currentPage.value = page
 })
+
+function goToPage() {
+  const raw = Number(jumpInput.value)
+  if (!Number.isFinite(raw) || raw < 1) {
+    jumpInput.value = ''
+    return
+  }
+  const target = Math.min(Math.max(1, Math.floor(raw)), pagination.value.pageCount)
+  currentPage.value = target
+  jumpInput.value = ''
+}
 </script>
 
 <style scoped src="../styles/hearthstone-collection.css"></style>

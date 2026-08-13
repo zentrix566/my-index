@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url'
 
 const scriptPath = fileURLToPath(import.meta.url)
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
-const manifestPath = join(repoRoot, 'src/features/hearthstone/data/cosmetics.json')
+const manifestPath = join(repoRoot, 'src/features/hearthstone/data/card-backs.json')
 const mappingPath = join(repoRoot, 'src/features/hearthstone/data/card-back-map.json')
 const defaultGameDirectory = 'E:/Hearthstone'
 const defaultSourceDirectory = 'E:/github/my-heartstone/hearthstone_cosmetics'
@@ -248,10 +248,8 @@ async function importCardBacks(options, extracted) {
 
   cardBacks.sort((left, right) => Number(left.id.split('-').at(-1)) - Number(right.id.split('-').at(-1)))
   mappings.sort((left, right) => left.cardBackId - right.cardBackId)
-  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
-  manifest.cardBacks = cardBacks
   await writeFile(mappingPath, `${JSON.stringify(mappings, null, 2)}\n`, 'utf8')
-  await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+  await writeFile(manifestPath, `${JSON.stringify(cardBacks, null, 2)}\n`, 'utf8')
   const report = {
     gameDirectory: options.gameDirectory,
     clientRecords: records.length,

@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 
 const scriptPath = fileURLToPath(import.meta.url)
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
-const manifestPath = join(repoRoot, 'src/features/hearthstone/data/cosmetics.json')
+const manifestPath = join(repoRoot, 'src/features/hearthstone/data/coins.json')
 const coinMappingPath = join(repoRoot, 'src/features/hearthstone/data/cosmetic-coin-map.json')
 const sourceUrl = 'https://api.hearthstonejson.com/v1/latest/zhCN/cards.json'
 const imageBaseUrl = 'https://art.hearthstonejson.com/v1/render/latest/zhCN/512x'
@@ -102,7 +102,6 @@ async function main() {
   const sourceCards = await fetchJson(sourceUrl)
   const cards = sourceCards.filter(isCosmeticCoin).sort((a, b) => a.dbfId - b.dbfId)
   const displayNames = buildDisplayNames(cards)
-  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
   const coins = []
   let downloaded = 0
 
@@ -136,8 +135,7 @@ async function main() {
     console.log(`[${index + 1}/${cards.length}] ${metadata.name}（${card.id}）`)
   }
 
-  manifest.coins = coins
-  await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
+  await writeFile(manifestPath, `${JSON.stringify(coins, null, 2)}\n`, 'utf8')
   console.log(`幸运币下载完成：总计 ${coins.length}，本次新增或覆盖 ${downloaded}`)
   console.log(`本地目录：${coinDirectory}`)
 }

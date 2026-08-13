@@ -45,7 +45,9 @@ const sourceRoot = resolve(process.env.HS_COSMETICS_SOURCE_DIR || 'E:/github/my-
 const heroSkins = JSON.parse(await readFile(join(dataDirectory, 'hero-skin-map.json'), 'utf8'))
 const coins = JSON.parse(await readFile(join(dataDirectory, 'cosmetic-coin-map.json'), 'utf8'))
 const cardBacks = JSON.parse(await readFile(join(dataDirectory, 'card-back-map.json'), 'utf8'))
-const manifest = JSON.parse(await readFile(join(dataDirectory, 'cosmetics.json'), 'utf8'))
+const manifestHeroSkins = JSON.parse(await readFile(join(dataDirectory, 'hero-skins.json'), 'utf8'))
+const manifestCoins = JSON.parse(await readFile(join(dataDirectory, 'coins.json'), 'utf8'))
+const manifestCardBacks = JSON.parse(await readFile(join(dataDirectory, 'card-backs.json'), 'utf8'))
 const report = {
   generatedAt: new Date().toISOString(),
   sourceRoot,
@@ -55,10 +57,10 @@ const report = {
     cardBacks: summarize(cardBacks, sourceRoot)
   },
   manifest: {
-    heroSkins: manifest.heroSkins.length,
-    coins: manifest.coins.length,
-    cardBacks: manifest.cardBacks.length,
-    missingLocalImages: Object.values(manifest).flat().filter((item) => {
+    heroSkins: manifestHeroSkins.length,
+    coins: manifestCoins.length,
+    cardBacks: manifestCardBacks.length,
+    missingLocalImages: [...manifestHeroSkins, ...manifestCoins, ...manifestCardBacks].filter((item) => {
       const path = decodedImagePath(sourceRoot, item.imageUrl)
       return !path || !existsSync(path)
     }).map((item) => item.id)

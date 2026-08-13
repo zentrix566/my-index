@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 
 const scriptPath = fileURLToPath(import.meta.url)
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
-const manifestPath = join(repoRoot, 'src/features/hearthstone/data/cosmetics.json')
+const manifestPath = join(repoRoot, 'src/features/hearthstone/data/hero-skins.json')
 const sourceUrl = 'https://api.hearthstonejson.com/v1/latest/zhCN/cards.json'
 const imageBaseUrl = 'https://art.hearthstonejson.com/v1/render/latest/zhCN/512x'
 const acquisitionPattern = /(?:购买|获得|解锁|拥有|完成|参与|达到|预购|奖励|商店|活动|通行证)/
@@ -130,10 +130,21 @@ async function main() {
     if ((index + 1) % 25 === 0 || index + 1 === cards.length) console.log(`英雄皮肤进度：${index + 1}/${cards.length}`)
   })
 
-  const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
-  manifest.heroSkins = results.filter(Boolean)
-  await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
-  console.log(`英雄皮肤下载完成：可用 ${manifest.heroSkins.length}，缺图 ${missingImages.length}，本次新增或覆盖 ${downloaded}`)
+  const newHeroSkins = results.filter(Boolean)
+  let finalHeroSkins = newHeroSkins
+  try {
+    const previous = JSON.parse(await readFile(manifestPath, 'utf8'))
+    if (Array.isArray(previous)) {
+      const newCardIds = new Set(newHeroSkins.map((item) => item.cardId))
+      const preserved = previous.filter((item) => !newCardIds.has(item.cardId))
+      if (preserved.length) {
+        finalHeroSkins = [...newHeroSkins, ...preserved]
+        console.log(`保留上游未收录的手动皮肤：${preserved.map((item) => item.officialName).join('、')}`)
+      }
+    }
+  } catch {}
+  await writeFile(manifestPath, `${JSON.stringify(finalHeroSkins, null, 2)}\n`, 'utf8')
+  console.log(`英雄皮肤下载完成：可用 ${finalHeroSkins.length}，缺图 ${missingImages.length}，本次新增或覆盖 ${downloaded}`)
   if (missingImages.length) console.log(`上游缺图：${missingImages.join(', ')}`)
   console.log(`本地目录：${heroRoot}`)
 }
