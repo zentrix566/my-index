@@ -454,30 +454,6 @@
   transform: translateX(-50%);
 }
 
-.hs-hero-portrait-name {
-  position: absolute;
-  z-index: 2;
-  right: 10%;
-  bottom: 4%;
-  left: 10%;
-  display: block;
-  overflow: hidden;
-  padding: 2px 5px 3px;
-  border: 1px solid #a77a2d;
-  border-radius: 2px;
-  color: #f5e3ad;
-  background: linear-gradient(#2e261f, #100d0b);
-  box-shadow: 0 1px 1px #000, inset 0 1px rgba(255, 231, 164, 0.25);
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: clamp(10px, 1.1vw, 14px);
-  font-weight: 700;
-  line-height: 1.1;
-  text-align: center;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  text-shadow: 0 1px 2px #000;
-}
-
 .hs-cosmetic-card.type-heroSkins:hover .hs-hero-portrait-crop img {
   transform: translateX(-50%) scale(1.025);
 }

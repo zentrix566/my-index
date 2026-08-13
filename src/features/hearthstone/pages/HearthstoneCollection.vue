@@ -97,8 +97,8 @@
           :class="{ active: statusFilter === 'missing' }"
           @click="browseUnowned"
         >从未收藏开始浏览</button>
-        <a v-if="user" class="hs-btn hs-btn-ghost" href="/downloads/Firestone-collection-exporter.zip" download>下载 Firestone 导出工具</a>
-        <button v-if="user" type="button" class="hs-btn hs-btn-ghost" @click="importFileInput?.click()">选择导出的 JSON 文件</button>
+        <span v-if="user" class="hs-btn hs-btn-ghost is-disabled" aria-disabled="true" title="正在测试中">下载 Firestone 导出工具（测试中）</span>
+        <button v-if="user" type="button" class="hs-btn hs-btn-ghost" disabled title="正在测试中">选择导出的 JSON 文件（测试中）</button>
         <input ref="importFileInput" class="hs-firestone-file-input" type="file" accept="application/json,.json" @change="previewFirestoneImport" />
       </div>
 
@@ -151,7 +151,6 @@
             <span class="hs-cosmetic-image-wrap">
               <span v-if="item.cosmeticType === 'heroSkins'" class="hs-hero-portrait-crop">
                 <img :src="item.imageUrl" :alt="item.officialName" loading="lazy" decoding="async" />
-                <span class="hs-hero-portrait-name">{{ item.officialName }}</span>
               </span>
               <img v-else :src="item.imageUrl" :alt="item.officialName" loading="lazy" decoding="async" />
             </span>
@@ -214,7 +213,6 @@
             >
               <span v-if="selectedItem.cosmeticType === 'heroSkins'" class="hs-hero-portrait-crop">
                 <img :src="selectedItem.imageUrl" :alt="selectedItem.officialName" />
-                <span class="hs-hero-portrait-name">{{ selectedItem.officialName }}</span>
               </span>
               <img v-else :src="selectedItem.imageUrl" :alt="selectedItem.officialName" />
             </div>
@@ -279,6 +277,85 @@ import {
   sortOwnedCosmeticsFirst
 } from '../utils/cosmetics.js'
 
+// 与游戏“幸运币”收藏页一致：基础幸运币 + 54 个当前外观币。
+// 四个旧扩展奖励币（FP1/GVG/AT/LOE）保留在原始资料中，但不在此收藏页展示。
+const COIN_DISPLAY_ORDER = [
+  'DMF_COIN1', 'ULD_COIN', 'DRG_COIN', 'BT_COIN', 'BAR_COIN3', 'DMF_COIN2', 'BAR_COIN2', 'BAR_COIN1', 'DAL_COIN',
+  'SW_COIN1', 'SW_COIN2', 'AV_COIN1', 'AV_COIN2', 'TSC_COIN1', 'TSC_COIN2', 'REV_COIN2', 'REV_COIN1',
+  'RLK_COIN1', 'RLK_COIN2', 'ETC_COIN1', 'ETC_COIN2', 'TTN_COIN1', 'TTN_COIN2', 'WW_COIN1', 'WW_COIN2',
+  'MUDAN_COIN1', 'TOY_COIN3', 'TOY_COIN1', 'TOY_COIN2', 'VAC_COIN1', 'VAC_COIN2', 'GDB_COIN2', 'GDB_COIN1',
+  'EDR_COIN1', 'EDR_COIN2', 'DINO_COIN1', 'TLC_COIN2', 'TLC_COIN1', 'TIME_COIN4', 'TIME_COIN2', 'TIME_COIN1',
+  'TIME_EVENT_COIN', 'CATA_COIN1', 'CATA_COIN4', 'CATA_COIN5', 'CATA_COIN3', 'JAIL_COIN3', 'JAIL_COIN1',
+  'DFT_ALEX_COIN1', 'DINO_COIN2', 'TIME_COIN3', 'CATA_COIN2', 'CATA_COIN6', 'JAIL_COIN2'
+]
+const DEFAULT_COIN = {
+  id: 'coins-game_005',
+  cardId: 'GAME_005',
+  dbfId: 5,
+  officialName: '幸运币',
+  flavorText: '最基础的幸运币。',
+  howToGet: '默认拥有。',
+  availability: '',
+  imageUrl: 'https://art.hearthstonejson.com/v1/render/latest/zhCN/512x/GAME_005.png',
+  source: 'Hearthstone 基础卡',
+  sourceUrl: ''
+}
+const DEATH_KNIGHT_DISPLAY_ORDER = [
+  // 以用户提供的游戏截图、文件名顺序为准；已拥有项目会稳定地排在这一顺序前段。
+  'HERO_11', 'HERO_11n', 'HERO_11am', 'HERO_11p_LichKing', 'HERO_11t_Lanathel_hls', 'HERO_11ab',
+  'HERO_11ar', 'HERO_11af', 'HERO_11v', 'HERO_11ad', 'HERO_11al', 'HERO_11s_Scarlet_hls',
+  'HERO_11bd', 'HERO_11o_ReskathePitBoss', 'HERO_11ao', 'HERO_11aa', 'HERO_11r_SaiShadestorm', 'HERO_11q_LichKing',
+  'HERO_11bc', 'HERO_11c', 'HERO_11ah', 'HERO_11ae', 'HERO_11aw', 'HERO_11z', 'HERO_11ag', 'HERO_11w',
+  'HERO_11m', 'HERO_11aj', 'HERO_11f', 'HERO_11d', 'HERO_11a', 'HERO_11an', 'HERO_11i', 'HERO_11az',
+  'HERO_11e', 'HERO_11as', 'HERO_11aq', 'HERO_11x', 'HERO_11j', 'HERO_11ax', 'HERO_11y', 'HERO_11ai',
+  'HERO_11h', 'HERO_11bi', 'HERO_11k', 'HERO_11ac', 'HERO_11u_Arfus', 'HERO_11b', 'HERO_11g', 'HERO_11l', 'HERO_11ay'
+]
+const DEATH_KNIGHT_EXTRA_SKINS = {
+  HERO_11x: {
+    id: 'hero-skins-hero_11x',
+    cardId: 'HERO_11x',
+    dbfId: null,
+    heroClass: '死亡骑士',
+    officialName: '淘金者雷斯卡',
+    flavorText: '如果有机会捞钱，为什么要去度假？',
+    howToGet: '可以在上架期间在商店购买。',
+    availability: '',
+    // 该皮肤未被当前 HearthstoneJSON 图库收录，使用从商店宣传图核对后的本地竖版头像。
+    localImagePath: 'hero-skins/death-knight/HERO_11x.png',
+    ossObjectKey: 'hearthstone-cosmetics/hero-skins/death-knight/HERO_11x.png',
+    imageUrl: '/hearthstone-cosmetics/hero-skins/death-knight/HERO_11x.png',
+    source: 'Hearthstone 商店',
+    sourceUrl: 'https://www.hearthstonetopdecks.com/shop-update-august-27-2024/'
+  }
+}
+const DEATH_KNIGHT_NAME_OVERRIDES = {
+  HERO_11ah: '严寒冷花因葛',
+  HERO_11an: '抱骨犬阿尔福斯',
+  HERO_11g: '斯嘉丽'
+}
+const DEATH_KNIGHT_PORTRAIT_OVERRIDES = {
+  HERO_11: '/hearthstone-cosmetics/hero-skins/death-knight/HERO_11-portrait.png'
+}
+const coinByCardId = new Map(catalog.coins.map((item) => [item.cardId, item]))
+const heroSkinByCardId = new Map(catalog.heroSkins.map((item) => [item.cardId, item]))
+const collectionCatalog = {
+  ...catalog,
+  coins: [DEFAULT_COIN, ...COIN_DISPLAY_ORDER.map((cardId) => coinByCardId.get(cardId)).filter(Boolean)],
+  heroSkins: [
+    ...catalog.heroSkins.filter((item) => item.heroClass !== '死亡骑士'),
+    ...DEATH_KNIGHT_DISPLAY_ORDER.map((cardId) => {
+      const item = heroSkinByCardId.get(cardId) || DEATH_KNIGHT_EXTRA_SKINS[cardId]
+      return item
+        ? {
+            ...item,
+            officialName: DEATH_KNIGHT_NAME_OVERRIDES[cardId] || item.officialName,
+            imageUrl: DEATH_KNIGHT_PORTRAIT_OVERRIDES[cardId] || item.imageUrl
+          }
+        : null
+    }).filter(Boolean)
+  ]
+}
+
 const router = useRouter()
 const { user, init: initAuth } = useAuth()
 const { hsTheme } = useHearthstoneTheme()
@@ -300,19 +377,19 @@ const selectedItem = ref(null)
 const detailsDialog = ref(null)
 const importFileInput = ref(null)
 const importPreview = ref(null)
-const globalItems = getGlobalCosmeticItems(catalog)
+const globalItems = getGlobalCosmeticItems(collectionCatalog)
 const currentType = computed(() => COSMETIC_TYPES.find((type) => type.id === activeType.value))
 const normalizedQuery = computed(() => query.value.trim())
 const isGlobalSearch = computed(() => Boolean(normalizedQuery.value))
-const currentItems = computed(() => (catalog[activeType.value] || []).map((item) => ({
+const currentItems = computed(() => (collectionCatalog[activeType.value] || []).map((item) => ({
   ...item,
   cosmeticType: activeType.value,
   cosmeticTypeLabel: currentType.value.label
 })))
 const ownedIds = computed(() => new Set(Object.values(profile.value.collection).flat()))
-const stats = computed(() => getCollectionStats(catalog, profile.value.collection))
+const stats = computed(() => getCollectionStats(collectionCatalog, profile.value.collection))
 const heroClassStats = computed(() =>
-  getHeroClassStats(catalog.heroSkins, profile.value.collection.heroSkins)
+  getHeroClassStats(collectionCatalog.heroSkins, profile.value.collection.heroSkins)
 )
 const filteredItems = computed(() => {
   const sourceItems = isGlobalSearch.value
@@ -358,7 +435,7 @@ function readIdList(payload, keys) {
 
 function getImportedIds(payload) {
   const cardBackById = new Map(catalog.cardBacks.map((item) => [Number(item.cardBackId), item.id]))
-  const coinByDbfId = new Map(catalog.coins.map((item) => [Number(item.dbfId), item.id]))
+  const coinByDbfId = new Map(collectionCatalog.coins.map((item) => [Number(item.dbfId), item.id]))
   const cardBackSource = readIdList(payload, ['cardBackIds', 'cardBacks'])
   const coinSource = readIdList(payload, ['coinDbfIds', 'coins'])
   const heroSkinSource = readIdList(payload, ['heroSkinDbfIds', 'heroSkins'])
@@ -368,7 +445,7 @@ function getImportedIds(payload) {
   }).filter(Boolean))
   const coins = new Set(coinSource.map((id) => {
     const value = String(id)
-    return coinByDbfId.get(Number(id)) || (catalog.coins.some((item) => item.id === value) ? value : '')
+    return coinByDbfId.get(Number(id)) || (collectionCatalog.coins.some((item) => item.id === value) ? value : '')
   }).filter(Boolean))
   return { cardBacks, coins, heroSkins: new Set(), cardBackSource, coinSource, heroSkinSource }
 }
