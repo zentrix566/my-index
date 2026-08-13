@@ -16,6 +16,9 @@ export default defineConfig(({ mode }) => {
     '/hearthstone-cards': ossOrigin
       ? { target: ossOrigin, changeOrigin: true }
       : { target: 'http://localhost:3000', changeOrigin: true },
+    // 外观原图由本地 Node 服务优先读取，未命中时再由 Node 回源 OSS。
+    // 不直接代理 OSS，否则未上传 OSS 的本地图片会全部返回 404。
+    '/hearthstone-cosmetics': { target: 'http://localhost:3000', changeOrigin: true },
     // 站点静态资源（如江阴地图底图）：与卡牌图同一条数据路径，仅代理落点不同
     '/site-assets': ossOrigin
       ? { target: ossOrigin, changeOrigin: true }

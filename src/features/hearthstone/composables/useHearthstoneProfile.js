@@ -7,6 +7,11 @@ import { MAX_PINNED_ACHIEVEMENTS } from '../utils/constants.js'
 
 const DEFAULT_PROFILE = Object.freeze({
   pinnedAchievementIds: [],
+  collection: {
+    heroSkins: [],
+    coins: [],
+    cardBacks: []
+  },
   preferences: {
     hardcore: false,
     defaultExpansionId: '',
@@ -31,6 +36,11 @@ function normalizeProfile(value) {
   return {
     pinnedAchievementIds: [...new Set(rawPinnedIds.filter((id) => typeof id === 'string'))]
       .slice(0, MAX_PINNED_ACHIEVEMENTS),
+    collection: {
+      heroSkins: normalizeIds(value?.collection?.heroSkins),
+      coins: normalizeIds(value?.collection?.coins),
+      cardBacks: normalizeIds(value?.collection?.cardBacks)
+    },
     preferences: {
       hardcore: value?.preferences?.hardcore === true,
       defaultExpansionId:
@@ -41,6 +51,12 @@ function normalizeProfile(value) {
     },
     updatedAt: value?.updatedAt || null
   }
+}
+
+function normalizeIds(value) {
+  return Array.isArray(value)
+    ? [...new Set(value.filter((id) => typeof id === 'string'))]
+    : []
 }
 
 async function load({ force = false } = {}) {

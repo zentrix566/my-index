@@ -59,6 +59,12 @@
           </svg>
           查看卡牌
         </button>
+        <button type="button" class="hs-btn hs-btn-ghost" @click="$emit('navigate', '/hearthstone/collection')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <rect width="16" height="16" x="4" y="4" rx="2"/><path d="M9 4v16"/><path d="m14 9 2 2 3-3"/>
+          </svg>
+          外观收藏
+        </button>
         <button type="button" class="hs-btn hs-btn-ghost" @click="$emit('navigate', '/hearthstone/frog')">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="m9 9 6 6"/><path d="m15 9-6 6"/>

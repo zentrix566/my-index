@@ -10,3 +10,4 @@ export const loadEventCalculatorPage = () => loadWithStyles(() => import('./page
 export const loadFrogSuspectCardPage = () => loadWithStyles(() => import('./pages/FrogSuspectCard.vue'))
 export const loadFrogReviewPage = () => loadWithStyles(() => import('./pages/FrogReviewPage.vue'))
 export const loadCardLookupPage = () => loadWithStyles(() => import('./pages/CardLookup.vue'))
+export const loadHearthstoneCollectionPage = () => loadWithStyles(() => import('./pages/HearthstoneCollection.vue'))

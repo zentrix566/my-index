@@ -7,6 +7,7 @@ export {
   loadFrogReviewPage,
   loadFrogSuspectCardPage,
   loadHearthstoneAchievementsPage,
+  loadHearthstoneCollectionPage,
   loadTavernPassXpPage,
   loadEventCalculatorPage,
   loadCardLookupPage

@@ -40,7 +40,8 @@ import {
 import { getAchievementMeta, hasAchievementMeta } from './achievements-meta.js'
 import {
   MAX_PINNED_ACHIEVEMENTS,
-  normalizePinnedAchievementIds
+  normalizePinnedAchievementIds,
+  normalizeCosmeticCollection
 } from './hearthstone-profile.js'
 import {
   AI_FIXED_DAILY,
@@ -270,6 +271,7 @@ app.put('/api/hearthstone/profile', requireAuth, trackHearthstone, async (req, r
     body.pinnedAchievementIds ??
     (typeof body.pinnedAchievementId === 'string' ? [body.pinnedAchievementId] : [])
   const preferences = body.preferences || {}
+  const submittedCollection = body.collection || {}
 
   if (!Array.isArray(submittedPinnedIds)) {
     return res.status(400).json({ error: '置顶成就格式错误' })
@@ -287,6 +289,9 @@ app.put('/api/hearthstone/profile', requireAuth, trackHearthstone, async (req, r
   if (!preferences || typeof preferences !== 'object' || Array.isArray(preferences)) {
     return res.status(400).json({ error: '偏好设置格式错误' })
   }
+  if (!submittedCollection || typeof submittedCollection !== 'object' || Array.isArray(submittedCollection)) {
+    return res.status(400).json({ error: '收藏数据格式错误' })
+  }
 
   const hardcore = preferences.hardcore === true
   const compactMode = preferences.compactMode === true
@@ -299,7 +304,8 @@ app.put('/api/hearthstone/profile', requireAuth, trackHearthstone, async (req, r
   try {
     const saved = await saveHearthstoneProfile(req.userId, {
       pinnedAchievementIds,
-      preferences: { hardcore, compactMode, defaultExpansionId }
+      preferences: { hardcore, compactMode, defaultExpansionId },
+      collection: normalizeCosmeticCollection(submittedCollection)
     })
     res.json(saved)
   } catch (err) {
@@ -758,7 +764,18 @@ async function handleOssProxy(req, res) {
 }
 
 // 炉石卡牌图反代
+const cosmeticsSourceRoot = process.env.HS_COSMETICS_SOURCE_DIR ||
+  'E:/github/my-heartstone/hearthstone_cosmetics'
+if (fs.existsSync(cosmeticsSourceRoot)) {
+  app.use('/hearthstone-cosmetics', express.static(path.resolve(cosmeticsSourceRoot), {
+    fallthrough: true,
+    index: false,
+    maxAge: 0
+  }))
+}
+
 app.get('/hearthstone-cards/*', handleOssProxy)
+app.get('/hearthstone-cosmetics/*', handleOssProxy)
 // 站点静态资源反代（如江阴地图底图）：前端用相对路径 /site-assets/*，由服务端回源 OSS
 app.get('/site-assets/*', handleOssProxy)
 

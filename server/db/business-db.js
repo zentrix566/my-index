@@ -5,7 +5,10 @@
 import pg from 'pg'
 import path from 'node:path'
 import { getAchievementMeta } from '../achievements-meta.js'
-import { normalizePinnedAchievementIds } from '../hearthstone-profile.js'
+import {
+  normalizeCosmeticCollection,
+  normalizePinnedAchievementIds
+} from '../hearthstone-profile.js'
 
 const { Pool } = pg
 const isLocalDevMode =
@@ -74,6 +77,42 @@ CREATE TABLE IF NOT EXISTS hearthstone_profiles (
   preferences_json       JSONB NOT NULL DEFAULT '{}'::jsonb,
   updated_at             TIMESTAMPTZ NOT NULL DEFAULT now()
 );
+
+CREATE TABLE IF NOT EXISTS hearthstone_cosmetic_collection (
+  user_id        INT NOT NULL,
+  cosmetic_type  TEXT NOT NULL CHECK (cosmetic_type IN ('heroSkins', 'coins', 'cardBacks')),
+  cosmetic_id    TEXT NOT NULL,
+  created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
+  PRIMARY KEY (user_id, cosmetic_type, cosmetic_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_hearthstone_cosmetics_user_type
+  ON hearthstone_cosmetic_collection(user_id, cosmetic_type);
+
+INSERT INTO hearthstone_cosmetic_collection(user_id, cosmetic_type, cosmetic_id)
+SELECT profile.user_id, source.cosmetic_type, source.cosmetic_id
+FROM hearthstone_profiles AS profile
+CROSS JOIN LATERAL (
+  SELECT 'heroSkins' AS cosmetic_type, jsonb_array_elements_text(
+    CASE WHEN jsonb_typeof(profile.preferences_json->'collection'->'heroSkins') = 'array'
+      THEN profile.preferences_json->'collection'->'heroSkins' ELSE '[]'::jsonb END
+  ) AS cosmetic_id
+  UNION ALL
+  SELECT 'coins', jsonb_array_elements_text(
+    CASE WHEN jsonb_typeof(profile.preferences_json->'collection'->'coins') = 'array'
+      THEN profile.preferences_json->'collection'->'coins' ELSE '[]'::jsonb END
+  )
+  UNION ALL
+  SELECT 'cardBacks', jsonb_array_elements_text(
+    CASE WHEN jsonb_typeof(profile.preferences_json->'collection'->'cardBacks') = 'array'
+      THEN profile.preferences_json->'collection'->'cardBacks' ELSE '[]'::jsonb END
+  )
+) AS source
+ON CONFLICT DO NOTHING;
+
+UPDATE hearthstone_profiles
+SET preferences_json = preferences_json - 'collection'
+WHERE preferences_json ? 'collection';
 
 CREATE TABLE IF NOT EXISTS ai_advisor_usage (
   user_key    TEXT NOT NULL,
@@ -186,17 +225,26 @@ export async function getHearthstoneProfile(userId) {
     'SELECT pinned_achievement_id, preferences_json, updated_at FROM hearthstone_profiles WHERE user_id = $1',
     [userId]
   )
+  const { rows: collectionRows } = await db.query(
+    `SELECT cosmetic_type, cosmetic_id FROM hearthstone_cosmetic_collection
+     WHERE user_id = $1 ORDER BY cosmetic_type, created_at, cosmetic_id`,
+    [userId]
+  )
+  const collection = normalizeCosmeticCollection()
+  for (const item of collectionRows) collection[item.cosmetic_type].push(item.cosmetic_id)
   const row = rows[0]
-  if (!row) return { pinnedAchievementIds: [], preferences: {}, updatedAt: null }
+  if (!row) return { pinnedAchievementIds: [], preferences: {}, collection, updatedAt: null }
   const preferences =
     typeof row.preferences_json === 'string' ? JSON.parse(row.preferences_json) : (row.preferences_json || {})
   const pinnedAchievementIds = normalizePinnedAchievementIds(
     preferences.pinnedAchievementIds ?? row.pinned_achievement_id
   )
   delete preferences.pinnedAchievementIds
+  delete preferences.collection
   return {
     pinnedAchievementIds,
     preferences,
+    collection,
     updatedAt: row.updated_at instanceof Date ? row.updated_at.toISOString() : row.updated_at
   }
 }
@@ -204,23 +252,54 @@ export async function getHearthstoneProfile(userId) {
 export async function saveHearthstoneProfile(userId, profile) {
   if (isLocalDevMode) return (await getLocalBusinessStore()).saveHearthstoneProfile(userId, profile)
   const pinnedAchievementIds = normalizePinnedAchievementIds(profile.pinnedAchievementIds)
+  const collection = normalizeCosmeticCollection(profile.collection)
   const storedPreferences = { ...(profile.preferences || {}), pinnedAchievementIds }
-  const { rows } = await db.query(
-    `INSERT INTO hearthstone_profiles(user_id, pinned_achievement_id, preferences_json, updated_at)
-     VALUES($1, $2, $3::jsonb, now())
-     ON CONFLICT(user_id) DO UPDATE SET
-       pinned_achievement_id = EXCLUDED.pinned_achievement_id,
-       preferences_json = EXCLUDED.preferences_json,
-       updated_at = now()
-     RETURNING pinned_achievement_id, preferences_json, updated_at`,
-    [userId, pinnedAchievementIds[0] || null, JSON.stringify(storedPreferences)]
-  )
-  const row = rows[0]
+  const collectionTypes = []
+  const collectionIds = []
+  for (const [type, ids] of Object.entries(collection)) {
+    for (const id of ids) {
+      collectionTypes.push(type)
+      collectionIds.push(id)
+    }
+  }
+  const client = await db.connect()
+  let row
+  try {
+    await client.query('BEGIN')
+    const result = await client.query(
+      `INSERT INTO hearthstone_profiles(user_id, pinned_achievement_id, preferences_json, updated_at)
+       VALUES($1, $2, $3::jsonb, now())
+       ON CONFLICT(user_id) DO UPDATE SET
+         pinned_achievement_id = EXCLUDED.pinned_achievement_id,
+         preferences_json = EXCLUDED.preferences_json,
+         updated_at = now()
+       RETURNING pinned_achievement_id, preferences_json, updated_at`,
+      [userId, pinnedAchievementIds[0] || null, JSON.stringify(storedPreferences)]
+    )
+    row = result.rows[0]
+    await client.query('DELETE FROM hearthstone_cosmetic_collection WHERE user_id = $1', [userId])
+    if (collectionIds.length) {
+      await client.query(
+        `INSERT INTO hearthstone_cosmetic_collection(user_id, cosmetic_type, cosmetic_id)
+         SELECT $1, source.cosmetic_type, source.cosmetic_id
+         FROM UNNEST($2::text[], $3::text[]) AS source(cosmetic_type, cosmetic_id)`,
+        [userId, collectionTypes, collectionIds]
+      )
+    }
+    await client.query('COMMIT')
+  } catch (error) {
+    await client.query('ROLLBACK')
+    throw error
+  } finally {
+    client.release()
+  }
   const preferences = row.preferences_json || {}
   delete preferences.pinnedAchievementIds
+  delete preferences.collection
   return {
     pinnedAchievementIds,
     preferences,
+    collection,
     updatedAt: row.updated_at instanceof Date ? row.updated_at.toISOString() : row.updated_at
   }
 }

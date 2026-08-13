@@ -1,7 +1,10 @@
 import fs from 'node:fs'
 import path from 'node:path'
 import Database from 'better-sqlite3'
-import { normalizePinnedAchievementIds } from '../hearthstone-profile.js'
+import {
+  normalizeCosmeticCollection,
+  normalizePinnedAchievementIds
+} from '../hearthstone-profile.js'
 
 // 两个独立 store：认证库（用户/令牌/模块使用）与业务库（炉石进度/AI 额度）。
 // 本地开发用两个 sqlite 文件分别模拟，对应生产环境的独立认证库与业务库。
@@ -68,6 +71,17 @@ CREATE TABLE IF NOT EXISTS hearthstone_profiles (
   preferences_json TEXT NOT NULL DEFAULT '{}',
   updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
+
+CREATE TABLE IF NOT EXISTS hearthstone_cosmetic_collection (
+  user_id INTEGER NOT NULL,
+  cosmetic_type TEXT NOT NULL CHECK (cosmetic_type IN ('heroSkins', 'coins', 'cardBacks')),
+  cosmetic_id TEXT NOT NULL,
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (user_id, cosmetic_type, cosmetic_id)
+);
+
+CREATE INDEX IF NOT EXISTS idx_hearthstone_cosmetics_user_type
+  ON hearthstone_cosmetic_collection(user_id, cosmetic_type);
 
 CREATE TABLE IF NOT EXISTS ai_advisor_usage (
   user_key TEXT NOT NULL,
@@ -268,6 +282,29 @@ export function createLocalBusinessStore(filePath) {
   const database = openSqlite(filePath)
   database.exec(BUSINESS_SCHEMA)
 
+  const migrateLegacyCollection = database.transaction(() => {
+    const insert = database.prepare(`
+      INSERT OR IGNORE INTO hearthstone_cosmetic_collection(user_id, cosmetic_type, cosmetic_id)
+      VALUES(?, ?, ?)
+    `)
+    const update = database.prepare(`
+      UPDATE hearthstone_profiles SET preferences_json = ? WHERE user_id = ?
+    `)
+    for (const row of database.prepare(`
+      SELECT user_id, preferences_json FROM hearthstone_profiles
+    `).all()) {
+      const preferences = JSON.parse(row.preferences_json || '{}')
+      if (!Object.hasOwn(preferences, 'collection')) continue
+      const collection = normalizeCosmeticCollection(preferences.collection)
+      for (const [type, ids] of Object.entries(collection)) {
+        for (const id of ids) insert.run(row.user_id, type, id)
+      }
+      delete preferences.collection
+      update.run(JSON.stringify(preferences), row.user_id)
+    }
+  })
+  migrateLegacyCollection()
+
   const st = {
     upsertProgress: database.prepare(`
       INSERT INTO achievement_progress(
@@ -290,6 +327,17 @@ export function createLocalBusinessStore(filePath) {
     getHearthstoneProfile: database.prepare(`
       SELECT pinned_achievement_id, preferences_json, updated_at
       FROM hearthstone_profiles WHERE user_id = ?
+    `),
+    getCosmeticCollection: database.prepare(`
+      SELECT cosmetic_type, cosmetic_id FROM hearthstone_cosmetic_collection
+      WHERE user_id = ? ORDER BY cosmetic_type, created_at, cosmetic_id
+    `),
+    deleteCosmeticCollection: database.prepare(`
+      DELETE FROM hearthstone_cosmetic_collection WHERE user_id = ?
+    `),
+    insertCosmeticCollection: database.prepare(`
+      INSERT INTO hearthstone_cosmetic_collection(user_id, cosmetic_type, cosmetic_id)
+      VALUES(?, ?, ?)
     `),
     saveHearthstoneProfile: database.prepare(`
       INSERT INTO hearthstone_profiles(
@@ -322,6 +370,20 @@ export function createLocalBusinessStore(filePath) {
   const saveProgressBatch = database.transaction((userId, entries) => {
     for (const entry of entries) saveProgressEntry(userId, entry)
   })
+  const saveProfile = database.transaction((userId, profile) => {
+    const pinnedAchievementIds = normalizePinnedAchievementIds(profile.pinnedAchievementIds)
+    const collection = normalizeCosmeticCollection(profile.collection)
+    const row = st.saveHearthstoneProfile.get(
+      userId,
+      pinnedAchievementIds[0] || null,
+      JSON.stringify({ ...(profile.preferences || {}), pinnedAchievementIds })
+    )
+    st.deleteCosmeticCollection.run(userId)
+    for (const [type, ids] of Object.entries(collection)) {
+      for (const id of ids) st.insertCosmeticCollection.run(userId, type, id)
+    }
+    return { row, pinnedAchievementIds, collection }
+  })
 
   return {
     close() {
@@ -346,24 +408,25 @@ export function createLocalBusinessStore(filePath) {
     },
     getHearthstoneProfile(userId) {
       const row = st.getHearthstoneProfile.get(Number(userId))
-      if (!row) return { pinnedAchievementIds: [], preferences: {}, updatedAt: null }
+      const collection = normalizeCosmeticCollection()
+      for (const item of st.getCosmeticCollection.all(Number(userId))) {
+        collection[item.cosmetic_type].push(item.cosmetic_id)
+      }
+      if (!row) return { pinnedAchievementIds: [], preferences: {}, collection, updatedAt: null }
       const preferences = JSON.parse(row.preferences_json || '{}')
       const pinnedAchievementIds = normalizePinnedAchievementIds(
         preferences.pinnedAchievementIds ?? row.pinned_achievement_id
       )
       delete preferences.pinnedAchievementIds
-      return { pinnedAchievementIds, preferences, updatedAt: row.updated_at }
+      delete preferences.collection
+      return { pinnedAchievementIds, preferences, collection, updatedAt: row.updated_at }
     },
     saveHearthstoneProfile(userId, profile) {
-      const pinnedAchievementIds = normalizePinnedAchievementIds(profile.pinnedAchievementIds)
-      const row = st.saveHearthstoneProfile.get(
-        Number(userId),
-        pinnedAchievementIds[0] || null,
-        JSON.stringify({ ...(profile.preferences || {}), pinnedAchievementIds })
-      )
+      const { row, pinnedAchievementIds, collection } = saveProfile(Number(userId), profile)
       const preferences = JSON.parse(row.preferences_json || '{}')
       delete preferences.pinnedAchievementIds
-      return { pinnedAchievementIds, preferences, updatedAt: row.updated_at }
+      delete preferences.collection
+      return { pinnedAchievementIds, preferences, collection, updatedAt: row.updated_at }
     },
     getAiUsage(userKey, day) {
       const row = st.getAiUsage.get(userKey, day)

@@ -1,0 +1,139 @@
+{
+  "generatedAt": "2026-08-13T06:24:27.265Z",
+  "sourceRoot": "E:\\github\\my-heartstone\\hearthstone_cosmetics",
+  "mappings": {
+    "heroSkins": {
+      "total": 744,
+      "withOssObjectKey": 744,
+      "withImageUrl": 744,
+      "localImageExists": 744,
+      "withFlavorText": 736,
+      "withHowToGet": 685
+    },
+    "coins": {
+      "total": 58,
+      "withOssObjectKey": 58,
+      "withImageUrl": 58,
+      "localImageExists": 58,
+      "withFlavorText": 58,
+      "withHowToGet": 58
+    },
+    "cardBacks": {
+      "total": 380,
+      "withOssObjectKey": 374,
+      "withImageUrl": 374,
+      "localImageExists": 374,
+      "withFlavorText": 380,
+      "withHowToGet": 373
+    }
+  },
+  "manifest": {
+    "heroSkins": 744,
+    "coins": 58,
+    "cardBacks": 374,
+    "missingLocalImages": []
+  },
+  "missingHeroFlavorText": [
+    "HERO_04d",
+    "HERO_08c",
+    "HERO_02aj",
+    "HERO_01ba",
+    "HERO_03bg_meta",
+    "HERO_08cc",
+    "HERO_01bn_meta",
+    "HERO_02bx_meta"
+  ],
+  "missingHeroHowToGet": [
+    "HERO_01",
+    "HERO_05",
+    "HERO_06",
+    "HERO_08",
+    "HERO_04",
+    "HERO_09",
+    "HERO_07",
+    "HERO_03",
+    "HERO_02",
+    "HERO_05a",
+    "HERO_01a",
+    "HERO_08a",
+    "HERO_08b",
+    "HERO_09a",
+    "HERO_07b",
+    "HERO_04c",
+    "HERO_02b",
+    "HERO_09b",
+    "HERO_02c",
+    "HERO_06b",
+    "HERO_10",
+    "HERO_01b",
+    "HERO_02d",
+    "HERO_03b",
+    "HERO_05b",
+    "HERO_06c",
+    "HERO_07c",
+    "HERO_09c",
+    "HERO_08d",
+    "HERO_10a",
+    "HERO_05c",
+    "HERO_06d",
+    "HERO_04e",
+    "HERO_05d",
+    "HERO_08f",
+    "HERO_04f",
+    "HERO_10b",
+    "HERO_03f",
+    "HERO_07g",
+    "HERO_06i",
+    "HERO_06j",
+    "HERO_05l",
+    "HERO_02m",
+    "HERO_11",
+    "HERO_11a",
+    "HERO_03m",
+    "HERO_07p",
+    "HERO_04u",
+    "HERO_08ad",
+    "HERO_02aj",
+    "HERO_01ba",
+    "HERO_08bn",
+    "HERO_04bk",
+    "HERO_07bl",
+    "HERO_03bg_meta",
+    "HERO_08cc",
+    "HERO_09bq",
+    "HERO_01bn_meta",
+    "HERO_02bx_meta"
+  ],
+  "cardBacksWithoutImages": [
+    {
+      "cardBackId": 0,
+      "officialName": "怀旧经典",
+      "prefabName": "Card_Back_Default"
+    },
+    {
+      "cardBackId": 131,
+      "officialName": "怪物猎人",
+      "prefabName": "Card_Back_MonsterHunter"
+    },
+    {
+      "cardBackId": 153,
+      "officialName": "挑战之王",
+      "prefabName": "Card_Back_TRL_Reward"
+    },
+    {
+      "cardBackId": 159,
+      "officialName": "纯净领域",
+      "prefabName": "Card_Back_iOS_Silver"
+    },
+    {
+      "cardBackId": 160,
+      "officialName": "军团计划",
+      "prefabName": "Card_Back_Android_Fel"
+    },
+    {
+      "cardBackId": 161,
+      "officialName": "机械梦想",
+      "prefabName": "Card_Back_PC_Master"
+    }
+  ]
+}
