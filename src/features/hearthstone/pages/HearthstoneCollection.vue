@@ -9,9 +9,6 @@
         </div>
         <div class="hs-collection-actions">
           <button type="button" class="hs-btn hs-btn-ghost" @click="router.push('/hearthstone')">返回成就</button>
-          <button type="button" class="hs-btn hs-btn-ghost" @click="toggleTheme">
-            {{ hsTheme === 'dark' ? '明亮主题' : '暗色主题' }}
-          </button>
         </div>
       </header>
 
@@ -78,8 +75,7 @@
       </nav>
 
       <div class="hs-collection-toolbar">
-        <label>
-          <span class="hs-visually-hidden">搜索收藏</span>
+        <label class="hs-collection-search">
           <input
             v-model="query"
             type="search"
@@ -95,13 +91,36 @@
             <option value="missing">未拥有</option>
           </select>
         </label>
+        <button
+          type="button"
+          class="hs-btn hs-btn-ghost hs-browse-unowned"
+          :class="{ active: statusFilter === 'missing' }"
+          @click="browseUnowned"
+        >从未收藏开始浏览</button>
+        <a v-if="user" class="hs-btn hs-btn-ghost" href="/downloads/Firestone-collection-exporter.zip" download>下载 Firestone 导出工具</a>
+        <button v-if="user" type="button" class="hs-btn hs-btn-ghost" @click="importFileInput?.click()">选择导出的 JSON 文件</button>
+        <input ref="importFileInput" class="hs-firestone-file-input" type="file" accept="application/json,.json" @change="previewFirestoneImport" />
       </div>
+
+      <section v-if="importPreview" class="hs-firestone-import" aria-live="polite">
+        <div>
+          <strong>Firestone 收藏导入预览</strong>
+          <p>文件内有 {{ importPreview.sourceCardBacks }} 个卡背记录、{{ importPreview.sourceCoins }} 个幸运币记录、{{ importPreview.sourceHeroSkins }} 个英雄皮肤记录。</p>
+          <p>网站识别到 {{ importPreview.detectedCardBacks }} 个卡背、{{ importPreview.detectedCoins }} 个幸运币、{{ importPreview.detectedHeroSkins }} 个英雄皮肤。</p>
+          <p>确认后将新增 {{ importPreview.cardBacks }} 个卡背、{{ importPreview.coins }} 个幸运币、{{ importPreview.heroSkins }} 个英雄皮肤。</p>
+          <small v-if="importPreview.unsupportedHeroSkins">另有 {{ importPreview.unsupportedHeroSkins }} 个战棋英雄皮肤 ID；当前网站未收录战棋皮肤，暂不导入。</small>
+        </div>
+        <div class="hs-firestone-import-actions">
+          <button type="button" class="hs-btn hs-btn-ghost" @click="importPreview = null">取消</button>
+          <button type="button" class="hs-btn hs-btn-primary" :disabled="profileSaving" @click="confirmFirestoneImport">确认导入</button>
+        </div>
+      </section>
 
       <p id="cosmetic-search-scope" class="hs-search-scope" aria-live="polite">
         <template v-if="isGlobalSearch">
           正在全部收藏中搜索“{{ normalizedQuery }}”，找到 {{ filteredItems.length }} 个结果
         </template>
-        <template v-else>仅按名称搜索全部英雄皮肤、幸运币和卡背</template>
+        <template v-else>仅按名称搜索全部英雄皮肤、幸运币和卡背。先下载并运行导出工具，再选择生成的 JSON 文件即可预览导入。</template>
       </p>
 
       <div v-if="profileLoading" class="hs-collection-empty" role="status">正在加载收藏…</div>
@@ -132,6 +151,7 @@
             <span class="hs-cosmetic-image-wrap">
               <span v-if="item.cosmeticType === 'heroSkins'" class="hs-hero-portrait-crop">
                 <img :src="item.imageUrl" :alt="item.officialName" loading="lazy" decoding="async" />
+                <span class="hs-hero-portrait-name">{{ item.officialName }}</span>
               </span>
               <img v-else :src="item.imageUrl" :alt="item.officialName" loading="lazy" decoding="async" />
             </span>
@@ -194,6 +214,7 @@
             >
               <span v-if="selectedItem.cosmeticType === 'heroSkins'" class="hs-hero-portrait-crop">
                 <img :src="selectedItem.imageUrl" :alt="selectedItem.officialName" />
+                <span class="hs-hero-portrait-name">{{ selectedItem.officialName }}</span>
               </span>
               <img v-else :src="selectedItem.imageUrl" :alt="selectedItem.officialName" />
             </div>
@@ -260,7 +281,7 @@ import {
 
 const router = useRouter()
 const { user, init: initAuth } = useAuth()
-const { hsTheme, toggleTheme } = useHearthstoneTheme()
+const { hsTheme } = useHearthstoneTheme()
 const {
   profile,
   loading: profileLoading,
@@ -277,6 +298,8 @@ const currentPage = ref(1)
 const saveError = ref('')
 const selectedItem = ref(null)
 const detailsDialog = ref(null)
+const importFileInput = ref(null)
+const importPreview = ref(null)
 const globalItems = getGlobalCosmeticItems(catalog)
 const currentType = computed(() => COSMETIC_TYPES.find((type) => type.id === activeType.value))
 const normalizedQuery = computed(() => query.value.trim())
@@ -317,6 +340,84 @@ function openDetails(item) {
 
 function closeDetails() {
   selectedItem.value = null
+}
+
+function browseUnowned() {
+  query.value = ''
+  statusFilter.value = 'missing'
+  currentPage.value = 1
+}
+
+function readIdList(payload, keys) {
+  for (const key of keys) {
+    const value = payload?.[key] ?? payload?.collection?.[key]
+    if (Array.isArray(value)) return value
+  }
+  return []
+}
+
+function getImportedIds(payload) {
+  const cardBackById = new Map(catalog.cardBacks.map((item) => [Number(item.cardBackId), item.id]))
+  const coinByDbfId = new Map(catalog.coins.map((item) => [Number(item.dbfId), item.id]))
+  const cardBackSource = readIdList(payload, ['cardBackIds', 'cardBacks'])
+  const coinSource = readIdList(payload, ['coinDbfIds', 'coins'])
+  const heroSkinSource = readIdList(payload, ['heroSkinDbfIds', 'heroSkins'])
+  const cardBacks = new Set(cardBackSource.map((id) => {
+    const value = String(id)
+    return cardBackById.get(Number(id)) || (catalog.cardBacks.some((item) => item.id === value) ? value : '')
+  }).filter(Boolean))
+  const coins = new Set(coinSource.map((id) => {
+    const value = String(id)
+    return coinByDbfId.get(Number(id)) || (catalog.coins.some((item) => item.id === value) ? value : '')
+  }).filter(Boolean))
+  return { cardBacks, coins, heroSkins: new Set(), cardBackSource, coinSource, heroSkinSource }
+}
+
+async function previewFirestoneImport(event) {
+  const file = event.target.files?.[0]
+  event.target.value = ''
+  if (!file) return
+  try {
+    const payload = JSON.parse(await file.text())
+    const imported = getImportedIds(payload)
+    importPreview.value = {
+      cardBackIds: imported.cardBacks,
+      coinIds: imported.coins,
+      heroSkinIds: imported.heroSkins,
+      sourceCardBacks: imported.cardBackSource.length,
+      sourceCoins: imported.coinSource.length,
+      sourceHeroSkins: imported.heroSkinSource.length,
+      detectedCardBacks: imported.cardBacks.size,
+      detectedCoins: imported.coins.size,
+      detectedHeroSkins: imported.heroSkins.size,
+      cardBacks: [...imported.cardBacks].filter((id) => !profile.value.collection.cardBacks.includes(id)).length,
+      coins: [...imported.coins].filter((id) => !profile.value.collection.coins.includes(id)).length,
+      heroSkins: [...imported.heroSkins].filter((id) => !profile.value.collection.heroSkins.includes(id)).length,
+      unsupportedHeroSkins: Array.isArray(payload?.battlegroundsHeroSkinDbfIds) ? payload.battlegroundsHeroSkinDbfIds.length : 0
+    }
+    saveError.value = ''
+  } catch {
+    saveError.value = '无法识别导入文件。请选择由 Firestone 收藏导出工具生成的 JSON 文件。'
+  }
+}
+
+async function confirmFirestoneImport() {
+  if (!importPreview.value || profileSaving.value) return
+  const preview = importPreview.value
+  saveError.value = ''
+  try {
+    await save({
+      ...profile.value,
+      collection: {
+        heroSkins: [...new Set([...profile.value.collection.heroSkins, ...preview.heroSkinIds])],
+        coins: [...new Set([...profile.value.collection.coins, ...preview.coinIds])],
+        cardBacks: [...new Set([...profile.value.collection.cardBacks, ...preview.cardBackIds])]
+      }
+    })
+    importPreview.value = null
+  } catch (error) {
+    saveError.value = error.message || '收藏导入失败，请重试'
+  }
 }
 
 useDialogFocus(computed(() => Boolean(selectedItem.value)), detailsDialog, closeDetails)

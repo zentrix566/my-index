@@ -128,8 +128,10 @@
 
 .hs-collection-toolbar {
   display: flex;
-  justify-content: space-between;
-  gap: 12px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-start;
+  gap: 16px;
   margin-top: 16px;
 }
 
@@ -143,8 +145,20 @@
 }
 
 .hs-collection-toolbar input {
-  width: min(420px, 70vw);
+  width: min(360px, 70vw);
   padding: 0 14px;
+}
+
+.hs-collection-search { display: block; margin-right: 4px; }
+
+.hs-firestone-file-input {
+  position: fixed;
+  top: -100vh;
+  left: -100vw;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
 }
 
 .hs-collection-filter {
@@ -382,17 +396,41 @@
 
 .hs-hero-portrait-crop {
   position: absolute;
-  inset: 4% 8%;
+  inset: 2% 10% 4%;
   display: block;
   overflow: hidden;
-  border: 5px solid #1c1917;
-  border-radius: 50% 50% 8% 8% / 58% 58% 10% 10%;
-  background: #15120f;
+  border: 5px solid #171310;
+  border-radius: 50% 50% 5% 5% / 34% 34% 4% 4%;
+  background: #100e0c;
   box-shadow:
-    0 0 0 4px #b68a36,
-    0 0 0 7px #4a3820,
-    0 8px 18px rgba(0, 0, 0, 0.48),
+    0 0 0 3px #d8af55,
+    0 0 0 6px #5e461f,
+    0 0 0 8px #261b13,
+    0 9px 18px rgba(0, 0, 0, 0.58),
     inset 0 0 18px rgba(0, 0, 0, 0.75);
+}
+
+.hs-firestone-import {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-top: 14px;
+  padding: 14px 16px;
+  border: 1px solid var(--hs-gold);
+  border-radius: 12px;
+  color: var(--hs-text);
+  background: var(--hs-surface-card);
+}
+
+.hs-firestone-import p { margin: 5px 0; }
+.hs-firestone-import small { color: var(--hs-muted); }
+.hs-firestone-import-actions { display: flex; flex: 0 0 auto; gap: 8px; }
+
+.hs-browse-unowned.active {
+  border-color: var(--hs-gold);
+  color: #2a1d0c;
+  background: var(--hs-gold);
 }
 
 .hs-hero-portrait-crop::after {
@@ -401,9 +439,7 @@
   inset: 0;
   pointer-events: none;
   border-radius: inherit;
-  box-shadow:
-    inset 0 0 0 2px rgba(255, 231, 164, 0.4),
-    inset 0 -28px 34px rgba(17, 12, 8, 0.48);
+  box-shadow: inset 0 0 0 1px rgba(255, 232, 166, 0.65), inset 0 -32px 34px rgba(17, 12, 8, 0.62);
 }
 
 .hs-hero-portrait-crop img,
@@ -416,6 +452,30 @@
   height: auto;
   object-fit: initial;
   transform: translateX(-50%);
+}
+
+.hs-hero-portrait-name {
+  position: absolute;
+  z-index: 2;
+  right: 10%;
+  bottom: 4%;
+  left: 10%;
+  display: block;
+  overflow: hidden;
+  padding: 2px 5px 3px;
+  border: 1px solid #a77a2d;
+  border-radius: 2px;
+  color: #f5e3ad;
+  background: linear-gradient(#2e261f, #100d0b);
+  box-shadow: 0 1px 1px #000, inset 0 1px rgba(255, 231, 164, 0.25);
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(10px, 1.1vw, 14px);
+  font-weight: 700;
+  line-height: 1.1;
+  text-align: center;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  text-shadow: 0 1px 2px #000;
 }
 
 .hs-cosmetic-card.type-heroSkins:hover .hs-hero-portrait-crop img {
@@ -444,13 +504,13 @@
 .hs-cosmetic-card.type-coins .hs-cosmetic-image-wrap > img {
   object-fit: contain;
   filter: drop-shadow(0 13px 10px rgba(0, 0, 0, 0.52));
-  transform: rotate(-1.5deg) scale(1.04);
+  transform: scale(1.04);
 }
 
 .hs-cosmetic-card.type-cardBacks .hs-cosmetic-image-wrap > img {
   object-fit: contain;
-  filter: drop-shadow(10px 14px 9px rgba(0, 0, 0, 0.5));
-  transform: rotateY(-5deg) rotate(1.5deg) scale(1.08);
+  filter: drop-shadow(0 14px 9px rgba(0, 0, 0, 0.5));
+  transform: scale(1.08);
 }
 
 .hs-cosmetic-card.type-coins:hover .hs-cosmetic-image-wrap > img {
@@ -458,7 +518,7 @@
 }
 
 .hs-cosmetic-card.type-cardBacks:hover .hs-cosmetic-image-wrap > img {
-  transform: rotateY(0) rotate(0) scale(1.11);
+  transform: scale(1.11);
 }
 
 .hs-cosmetic-image-wrap img {
@@ -788,13 +848,13 @@
 .hs-cosmetic-modal-card.detail-coins .hs-cosmetic-modal-image img {
   width: min(100%, 340px);
   filter: drop-shadow(14px 20px 12px rgba(0, 0, 0, 0.58));
-  transform: rotate(2deg);
+  transform: none;
 }
 
 .hs-cosmetic-modal-card.detail-cardBacks .hs-cosmetic-modal-image img {
   width: min(100%, 360px);
   filter: drop-shadow(16px 20px 11px rgba(0, 0, 0, 0.58));
-  transform: perspective(800px) rotateY(-7deg) rotate(2deg);
+  transform: none;
 }
 
 .hs-cosmetic-modal-card.detail-coins .hs-cosmetic-modal-content,
