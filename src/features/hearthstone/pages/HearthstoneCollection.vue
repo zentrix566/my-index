@@ -91,6 +91,13 @@
             <option value="missing">未拥有</option>
           </select>
         </label>
+        <label class="hs-collection-pagesize">
+          <span>每页</span>
+          <select v-model.number="currentPageSize" aria-label="每页显示数量">
+            <option v-for="opt in PAGE_SIZE_OPTIONS" :key="opt" :value="opt">{{ opt }}</option>
+          </select>
+          <span>个</span>
+        </label>
         <button
           type="button"
           class="hs-btn hs-btn-ghost hs-browse-unowned"
@@ -148,11 +155,29 @@
             :aria-label="`查看${item.cosmeticTypeLabel}“${item.officialName}”详情`"
             @click="openDetails(item)"
           >
-            <span class="hs-cosmetic-image-wrap">
+            <span
+              class="hs-cosmetic-image-wrap"
+              :class="{ 'is-loaded': loadedSet.has(item.id), 'is-error': errorSet.has(item.id) }"
+            >
               <span v-if="item.cosmeticType === 'heroSkins'" class="hs-direct-hero-image">
-                <img :src="item.imageUrl" :alt="item.officialName" loading="lazy" decoding="async" />
+                <img
+                  :src="thumbnailUrlFor(item)"
+                  :alt="item.officialName"
+                  loading="eager"
+                  decoding="async"
+                  @load="onImgLoad(item.id)"
+                  @error="onImgError(item.id)"
+                />
               </span>
-              <img v-else :src="item.imageUrl" :alt="item.officialName" loading="lazy" decoding="async" />
+              <img
+                v-else
+                :src="thumbnailUrlFor(item)"
+                :alt="item.officialName"
+                loading="eager"
+                decoding="async"
+                @load="onImgLoad(item.id)"
+                @error="onImgError(item.id)"
+              />
             </span>
             <strong class="hs-cosmetic-name">{{ item.officialName }}</strong>
             <small>{{ item.cosmeticTypeLabel }}<template v-if="item.heroClass"> · {{ item.heroClass }}</template></small>
@@ -237,10 +262,30 @@
           >
             <button type="button" class="hs-cosmetic-modal-close" aria-label="关闭详情" @click="closeDetails">×</button>
             <div class="hs-cosmetic-modal-image">
-              <span v-if="selectedItem.cosmeticType === 'heroSkins'" class="hs-direct-hero-image">
-                <img :src="selectedItem.imageUrl" :alt="selectedItem.officialName" />
+              <span
+                class="hs-cosmetic-image-wrap"
+                :class="{ 'is-loaded': loadedSet.has(selectedItem.id), 'is-error': errorSet.has(selectedItem.id) }"
+              >
+                <span v-if="selectedItem.cosmeticType === 'heroSkins'" class="hs-direct-hero-image">
+                  <img
+                    :src="selectedItem.imageUrl"
+                    :alt="selectedItem.officialName"
+                    loading="eager"
+                    decoding="async"
+                    @load="onImgLoad(selectedItem.id)"
+                    @error="onImgError(selectedItem.id)"
+                  />
+                </span>
+                <img
+                  v-else
+                  :src="selectedItem.imageUrl"
+                  :alt="selectedItem.officialName"
+                  loading="eager"
+                  decoding="async"
+                  @load="onImgLoad(selectedItem.id)"
+                  @error="onImgError(selectedItem.id)"
+                />
               </span>
-              <img v-else :src="selectedItem.imageUrl" :alt="selectedItem.officialName" />
             </div>
             <div class="hs-cosmetic-modal-content">
               <p class="hs-cosmetic-modal-type">{{ selectedItem.cosmeticTypeLabel }}<template v-if="selectedItem.heroClass"> · {{ selectedItem.heroClass }}</template></p>
@@ -364,7 +409,62 @@ const selectedItem = ref(null)
 const detailsDialog = ref(null)
 const importFileInput = ref(null)
 const importPreview = ref(null)
+// 图片加载状态：用于淡入与骨架占位，避免逐张硬刷出
+const loadedSet = ref(new Set())
+const errorSet = ref(new Set())
+
+// 列表用缩略图（384 WebP），详情弹窗仍用原图
+function thumbnailUrlFor(item) {
+  const key = item.ossObjectKey || String(item.imageUrl || '').replace(/^\//, '')
+  const m = key.match(/^(hearthstone-cosmetics\/.+?)\/([^/]+)\.(png|jpe?g)$/i)
+  if (!m) return item.imageUrl
+  return `/${m[1]}/384/${m[2]}.webp`
+}
 const globalItems = getGlobalCosmeticItems(collectionCatalog)
+
+// 每页显示个数：按收藏类型分别记忆，默认英雄皮肤 6、幸运币 8、卡背 8、全局搜索 8
+const PAGE_SIZE_STORAGE_KEY = 'hs-collection-page-sizes'
+const DEFAULT_PAGE_SIZES = Object.freeze({ heroSkins: 6, coins: 8, cardBacks: 8, global: 8 })
+const PAGE_SIZE_OPTIONS = Object.freeze([6, 8, 12, 24, 48])
+
+function loadPageSizes() {
+  try {
+    const raw = localStorage.getItem(PAGE_SIZE_STORAGE_KEY)
+    if (!raw) return { ...DEFAULT_PAGE_SIZES }
+    const parsed = JSON.parse(raw)
+    const merged = { ...DEFAULT_PAGE_SIZES }
+    for (const key of Object.keys(DEFAULT_PAGE_SIZES)) {
+      const value = Number(parsed?.[key])
+      if (Number.isFinite(value) && value >= 1) merged[key] = Math.floor(value)
+    }
+    return merged
+  } catch {
+    return { ...DEFAULT_PAGE_SIZES }
+  }
+}
+
+const pageSizeByType = ref(loadPageSizes())
+
+function persistPageSizes() {
+  try {
+    localStorage.setItem(PAGE_SIZE_STORAGE_KEY, JSON.stringify(pageSizeByType.value))
+  } catch {
+    // 存储不可用时静默忽略
+  }
+}
+
+const currentPageSize = computed({
+  get() {
+    const key = isGlobalSearch.value ? 'global' : activeType.value
+    return pageSizeByType.value[key] ?? getCosmeticPageSize(key)
+  },
+  set(value) {
+    const key = isGlobalSearch.value ? 'global' : activeType.value
+    const size = Math.max(1, Math.floor(Number(value) || getCosmeticPageSize(key)))
+    pageSizeByType.value = { ...pageSizeByType.value, [key]: size }
+    persistPageSizes()
+  }
+})
 const currentType = computed(() => COSMETIC_TYPES.find((type) => type.id === activeType.value))
 const normalizedQuery = computed(() => query.value.trim())
 const isGlobalSearch = computed(() => Boolean(normalizedQuery.value))
@@ -391,8 +491,29 @@ const filteredItems = computed(() => {
   })
   return sortOwnedCosmeticsFirst(matchingItems, ownedIds.value)
 })
-const pageSize = computed(() => getCosmeticPageSize(isGlobalSearch.value ? 'global' : activeType.value))
+const pageSize = computed(() => currentPageSize.value)
 const pagination = computed(() => paginateCosmetics(filteredItems.value, currentPage.value, pageSize.value))
+
+function onImgLoad(id) {
+  const next = new Set(loadedSet.value)
+  next.add(id)
+  loadedSet.value = next
+}
+
+function onImgError(id) {
+  const loaded = new Set(loadedSet.value)
+  loaded.add(id)
+  loadedSet.value = loaded
+  const errored = new Set(errorSet.value)
+  errored.add(id)
+  errorSet.value = errored
+}
+
+// 翻页/切换类型/筛选/改每页个数时重置图片加载态，保证新一页重新淡入并释放旧状态
+function resetImageLoadState() {
+  loadedSet.value = new Set()
+  errorSet.value = new Set()
+}
 
 function isOwned(item) {
   return new Set(profile.value.collection[item.cosmeticType] || []).has(item.id)
@@ -514,6 +635,12 @@ watch(user, (value) => {
 }, { immediate: true })
 watch([activeType, activeHeroClass, query, statusFilter], () => {
   currentPage.value = 1
+  resetImageLoadState()
+})
+
+watch(currentPageSize, () => {
+  currentPage.value = 1
+  resetImageLoadState()
 })
 watch(() => pagination.value.currentPage, (page) => {
   if (currentPage.value !== page) currentPage.value = page
