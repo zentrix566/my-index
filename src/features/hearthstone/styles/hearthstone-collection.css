@@ -420,7 +420,7 @@
 }
 
 .hs-cosmetic-card.type-heroSkins .hs-cosmetic-image-wrap {
-  width: min(100%, 250px);
+  width: 100%;
   margin-inline: auto;
   overflow: visible;
   aspect-ratio: 9 / 10;
@@ -503,7 +503,7 @@
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
 }
 .hs-cosmetic-modal-image .hs-direct-hero-image {
   display: grid;

@@ -149,10 +149,7 @@
             @click="openDetails(item)"
           >
             <span class="hs-cosmetic-image-wrap">
-              <span v-if="isDirectImage(item)" class="hs-direct-hero-image">
-                <img :src="item.imageUrl" :alt="item.officialName" loading="lazy" decoding="async" />
-              </span>
-              <span v-else-if="item.cosmeticType === 'heroSkins'" class="hs-hero-portrait-crop">
+              <span v-if="item.cosmeticType === 'heroSkins'" class="hs-direct-hero-image">
                 <img :src="item.imageUrl" :alt="item.officialName" loading="lazy" decoding="async" />
               </span>
               <img v-else :src="item.imageUrl" :alt="item.officialName" loading="lazy" decoding="async" />
@@ -239,14 +236,8 @@
             tabindex="-1"
           >
             <button type="button" class="hs-cosmetic-modal-close" aria-label="关闭详情" @click="closeDetails">×</button>
-            <div
-              class="hs-cosmetic-modal-image"
-              :class="{ 'hero-portrait-modal': selectedItem.cosmeticType === 'heroSkins' && !isDirectImage(selectedItem) }"
-            >
-              <span v-if="isDirectImage(selectedItem)" class="hs-direct-hero-image">
-                <img :src="selectedItem.imageUrl" :alt="selectedItem.officialName" />
-              </span>
-              <span v-else-if="selectedItem.cosmeticType === 'heroSkins'" class="hs-hero-portrait-crop">
+            <div class="hs-cosmetic-modal-image">
+              <span v-if="selectedItem.cosmeticType === 'heroSkins'" class="hs-direct-hero-image">
                 <img :src="selectedItem.imageUrl" :alt="selectedItem.officialName" />
               </span>
               <img v-else :src="selectedItem.imageUrl" :alt="selectedItem.officialName" />
@@ -310,20 +301,20 @@ import {
 // 与游戏“幸运币”收藏页一致：基础幸运币 + 54 个当前外观币。
 // 四个旧扩展奖励币（FP1/GVG/AT/LOE）保留在原始资料中，但不在此收藏页展示。
 const COIN_DISPLAY_ORDER = [
-  'DMF_COIN1', 'ULD_COIN', 'DRG_COIN', 'BT_COIN', 'BAR_COIN3', 'DMF_COIN2', 'BAR_COIN2', 'BAR_COIN1', 'DAL_COIN',
-  'SW_COIN1', 'SW_COIN2', 'AV_COIN1', 'AV_COIN2', 'TSC_COIN1', 'TSC_COIN2', 'REV_COIN2', 'REV_COIN1',
-  'RLK_COIN1', 'RLK_COIN2', 'ETC_COIN1', 'ETC_COIN2', 'TTN_COIN1', 'TTN_COIN2', 'WW_COIN1', 'WW_COIN2',
-  'MUDAN_COIN1', 'TOY_COIN3', 'TOY_COIN1', 'TOY_COIN2', 'VAC_COIN1', 'VAC_COIN2', 'GDB_COIN2', 'GDB_COIN1',
-  'EDR_COIN1', 'EDR_COIN2', 'DINO_COIN1', 'TLC_COIN2', 'TLC_COIN1', 'TIME_COIN4', 'TIME_COIN2', 'TIME_COIN1',
-  'TIME_EVENT_COIN', 'CATA_COIN1', 'CATA_COIN4', 'CATA_COIN5', 'CATA_COIN3', 'JAIL_COIN3', 'JAIL_COIN1',
-  'DFT_ALEX_COIN1', 'DINO_COIN2', 'TIME_COIN3', 'CATA_COIN2', 'CATA_COIN6', 'JAIL_COIN2'
+  'DMF_COIN1', 'DMF_COIN2', 'BAR_COIN1', 'BAR_COIN2', 'BAR_COIN3', 'SW_COIN1', 'SW_COIN2', 'BT_COIN',
+  'DRG_COIN', 'ULD_COIN', 'DAL_COIN', 'AV_COIN1', 'AV_COIN2', 'TSC_COIN1', 'TSC_COIN2', 'REV_COIN1',
+  'REV_COIN2', 'RLK_COIN1', 'RLK_COIN2', 'ETC_COIN1', 'ETC_COIN2', 'TTN_COIN1', 'TTN_COIN2', 'WW_COIN1',
+  'WW_COIN2', 'TOY_COIN3', 'TOY_COIN1', 'TOY_COIN2', 'GDB_COIN1', 'GDB_COIN2', 'VAC_COIN1', 'VAC_COIN2',
+  'MUDAN_COIN1', 'EDR_COIN1', 'EDR_COIN2', 'TIME_COIN1', 'TIME_COIN2', 'TIME_EVENT_COIN', 'TLC_COIN1', 'TLC_COIN2',
+  'TIME_COIN3', 'DINO_COIN1', 'DINO_COIN2', 'TIME_COIN4', 'DFT_ALEX_COIN1', 'CATA_COIN1', 'CATA_COIN2', 'CATA_COIN4',
+  'JAIL_COIN1', 'JAIL_COIN2', 'CATA_COIN5', 'CATA_COIN6', 'CATA_COIN3', 'JAIL_COIN3'
 ]
 const DEFAULT_COIN = {
   id: 'coins-game_005',
   cardId: 'GAME_005',
   dbfId: 5,
   officialName: '幸运币',
-  flavorText: '最基础的幸运币。',
+  flavorText: '不管你是花掉它还是留在手里，总有一枚幸运币留给后手的你。',
   howToGet: '默认拥有。',
   availability: '',
   imageUrl: 'https://art.hearthstonejson.com/v1/render/latest/zhCN/512x/GAME_005.png',
@@ -331,14 +322,14 @@ const DEFAULT_COIN = {
   sourceUrl: ''
 }
 const DEATH_KNIGHT_DISPLAY_ORDER = [
-  // 以用户提供的游戏截图、文件名顺序为准；已拥有项目会稳定地排在这一顺序前段。
-  'HERO_11', 'HERO_11n', 'HERO_11am', 'HERO_11p_LichKing', 'HERO_11t_Lanathel_hls', 'HERO_11ab',
-  'HERO_11ar', 'HERO_11af', 'HERO_11v', 'HERO_11ad', 'HERO_11al', 'HERO_11s_Scarlet_hls',
-  'HERO_11bd', 'HERO_11o_ReskathePitBoss', 'HERO_11ao', 'HERO_11aa', 'HERO_11r_SaiShadestorm', 'HERO_11q_LichKing',
-  'HERO_11bc', 'HERO_11c', 'HERO_11ah', 'HERO_11ae', 'HERO_11aw', 'HERO_11z', 'HERO_11ag', 'HERO_11w',
-  'HERO_11m', 'HERO_11aj', 'HERO_11f', 'HERO_11d', 'HERO_11a', 'HERO_11an', 'HERO_11i', 'HERO_11az',
-  'HERO_11e', 'HERO_11as', 'HERO_11aq', 'HERO_11x', 'HERO_11j', 'HERO_11ax', 'HERO_11y', 'HERO_11ai',
-  'HERO_11h', 'HERO_11bi', 'HERO_11k', 'HERO_11ac', 'HERO_11u_Arfus', 'HERO_11b', 'HERO_11g', 'HERO_11l', 'HERO_11ay'
+  // 按 dbfId 升序，与数据文件排序保持一致
+  'HERO_11', 'HERO_11a', 'HERO_11b', 'HERO_11c', 'HERO_11d', 'HERO_11g', 'HERO_11e', 'HERO_11f',
+  'HERO_11h', 'HERO_11i', 'HERO_11j', 'HERO_11m', 'HERO_11n', 'HERO_11k', 'HERO_11l', 'HERO_11o_ReskathePitBoss',
+  'HERO_11p_LichKing', 'HERO_11q_LichKing', 'HERO_11r_SaiShadestorm', 'HERO_11s_Scarlet_hls', 'HERO_11t_Lanathel_hls', 'HERO_11u_Arfus', 'HERO_11v', 'HERO_11w',
+  'HERO_11x', 'HERO_11z', 'HERO_11y', 'HERO_11aa', 'HERO_11ab', 'HERO_11ac', 'HERO_11ad', 'HERO_11ae',
+  'HERO_11af', 'HERO_11ag', 'HERO_11ah', 'HERO_11aj', 'HERO_11ai', 'HERO_11am', 'HERO_11al', 'HERO_11an',
+  'HERO_11ao', 'HERO_11aq', 'HERO_11ar', 'HERO_11as', 'HERO_11aw', 'HERO_11ax', 'HERO_11ay', 'HERO_11az',
+  'HERO_11bc', 'HERO_11bd', 'HERO_11bi'
 ]
 const coinByCardId = new Map(coins.map((item) => [item.cardId, item]))
 const heroSkinByCardId = new Map(heroSkins.map((item) => [item.cardId, item]))
@@ -407,12 +398,9 @@ function isOwned(item) {
   return new Set(profile.value.collection[item.cosmeticType] || []).has(item.id)
 }
 
-// 神枪手阿兰娜（Deadeye Aranna, HERO_10aj_Aranna）使用全幅原图，
-// 不走英雄头像圆形裁剪框，改为直接展示整张图片。
-const DIRECT_IMAGE_CARD_IDS = new Set(['HERO_10aj_Aranna'])
-function isDirectImage(item) {
-  return Boolean(item) && DIRECT_IMAGE_CARD_IDS.has(item.cardId)
-}
+// 英雄皮肤统一展示全幅原图（来自 Hearthstone Wiki 的高清立绘），
+// 不走英雄头像圆形裁剪框。
+
 
 function openDetails(item) {
   selectedItem.value = item
