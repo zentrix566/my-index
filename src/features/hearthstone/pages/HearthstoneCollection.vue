@@ -149,7 +149,10 @@
             @click="openDetails(item)"
           >
             <span class="hs-cosmetic-image-wrap">
-              <span v-if="item.cosmeticType === 'heroSkins'" class="hs-hero-portrait-crop">
+              <span v-if="isDirectImage(item)" class="hs-direct-hero-image">
+                <img :src="item.imageUrl" :alt="item.officialName" loading="lazy" decoding="async" />
+              </span>
+              <span v-else-if="item.cosmeticType === 'heroSkins'" class="hs-hero-portrait-crop">
                 <img :src="item.imageUrl" :alt="item.officialName" loading="lazy" decoding="async" />
               </span>
               <img v-else :src="item.imageUrl" :alt="item.officialName" loading="lazy" decoding="async" />
@@ -238,9 +241,12 @@
             <button type="button" class="hs-cosmetic-modal-close" aria-label="关闭详情" @click="closeDetails">×</button>
             <div
               class="hs-cosmetic-modal-image"
-              :class="{ 'hero-portrait-modal': selectedItem.cosmeticType === 'heroSkins' }"
+              :class="{ 'hero-portrait-modal': selectedItem.cosmeticType === 'heroSkins' && !isDirectImage(selectedItem) }"
             >
-              <span v-if="selectedItem.cosmeticType === 'heroSkins'" class="hs-hero-portrait-crop">
+              <span v-if="isDirectImage(selectedItem)" class="hs-direct-hero-image">
+                <img :src="selectedItem.imageUrl" :alt="selectedItem.officialName" />
+              </span>
+              <span v-else-if="selectedItem.cosmeticType === 'heroSkins'" class="hs-hero-portrait-crop">
                 <img :src="selectedItem.imageUrl" :alt="selectedItem.officialName" />
               </span>
               <img v-else :src="selectedItem.imageUrl" :alt="selectedItem.officialName" />
@@ -399,6 +405,13 @@ const pagination = computed(() => paginateCosmetics(filteredItems.value, current
 
 function isOwned(item) {
   return new Set(profile.value.collection[item.cosmeticType] || []).has(item.id)
+}
+
+// 神枪手阿兰娜（Deadeye Aranna, HERO_10aj_Aranna）使用全幅原图，
+// 不走英雄头像圆形裁剪框，改为直接展示整张图片。
+const DIRECT_IMAGE_CARD_IDS = new Set(['HERO_10aj_Aranna'])
+function isDirectImage(item) {
+  return Boolean(item) && DIRECT_IMAGE_CARD_IDS.has(item.cardId)
 }
 
 function openDetails(item) {

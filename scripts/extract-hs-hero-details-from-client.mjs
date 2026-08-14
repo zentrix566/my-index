@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-/** 从本机 Hearthstone 客户端补全英雄皮肤的简体中文描述和获取方式。 */
+/** 从本机 Hearthstone 客户端补全英雄皮肤的简体中文描述、获取方式与客户端内部 ID，并直接写回 hero-skins.json。 */
 import { existsSync, readFileSync } from 'node:fs'
 import { copyFile, mkdir, readFile, readdir, rm, writeFile } from 'node:fs/promises'
 import { spawn } from 'node:child_process'
@@ -9,7 +9,6 @@ import { fileURLToPath } from 'node:url'
 const scriptPath = fileURLToPath(import.meta.url)
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
 const manifestPath = join(repoRoot, 'src/features/hearthstone/data/hero-skins.json')
-const mappingPath = join(repoRoot, 'src/features/hearthstone/data/hero-skin-map.json')
 const defaultGameDirectory = 'E:/Hearthstone'
 const defaultSourceDirectory = 'E:/github/my-heartstone/hearthstone_cosmetics'
 const defaultAssetStudioPath = join(
@@ -118,7 +117,6 @@ async function main() {
   const heroRoot = join(sourceDirectory, 'hero-skins')
   const manifest = JSON.parse(await readFile(manifestPath, 'utf8'))
   const manifestByCardId = new Map(manifest.map((item) => [item.id.replace(/^hero-skins-/, '').toLocaleUpperCase(), item]))
-  const mappings = []
   let updated = 0
   let withFlavorText = 0
   let withHowToGet = 0
@@ -135,21 +133,6 @@ async function main() {
       const details = record
         ? splitHeroClientDescription(record.m_description?.m_locValues?.[zhCnIndex])
         : { flavorText: metadata.flavorText || '', howToGet: metadata.howToGet || '' }
-      const relativeImagePath = `hero-skins/${heroFolder}/${metadata.cardId}.png`
-      const ossObjectKey = `hearthstone-cosmetics/${relativeImagePath}`
-      mappings.push({
-        cardId: metadata.cardId,
-        dbfId: metadata.dbfId,
-        cosmeticHeroId: record?.m_ID ?? null,
-        heroClass: metadata.hero,
-        officialName: metadata.name,
-        flavorText: details.flavorText,
-        howToGet: details.howToGet,
-        localImagePath: relativeImagePath,
-        ossObjectKey,
-        imageUrl: `/${ossObjectKey.split('/').map(encodeURIComponent).join('/')}`,
-        source: record ? 'Hearthstone 客户端 CARD_HERO' : '客户端当前版本未匹配到 CARD_HERO'
-      })
       if (!record) continue
       metadata.flavorText = details.flavorText
       metadata.howToGet = details.howToGet
@@ -159,6 +142,7 @@ async function main() {
       if (manifestItem) {
         manifestItem.flavorText = details.flavorText
         manifestItem.howToGet = details.howToGet
+        manifestItem.cosmeticHeroId = record?.m_ID ?? null
       }
       updated += 1
       if (details.flavorText) withFlavorText += 1
@@ -166,12 +150,9 @@ async function main() {
     }
   }
 
-  mappings.sort((left, right) => left.dbfId - right.dbfId)
-  await writeFile(mappingPath, `${JSON.stringify(mappings, null, 2)}\n`, 'utf8')
   await writeFile(manifestPath, `${JSON.stringify(manifest, null, 2)}\n`, 'utf8')
   console.log(`英雄皮肤资料补全完成：更新 ${updated}，风味描述 ${withFlavorText}，获取方式 ${withHowToGet}`)
   console.log(`本地目录：${heroRoot}`)
-  console.log(`映射表：${mappingPath}`)
 }
 
 if (process.argv[1] && resolve(process.argv[1]) === scriptPath) {

@@ -58,7 +58,7 @@ npm run dev:local
 
 ## 常用命令
 
-运行语法检查、自动化测试和生产构建：
+运行语法检查和生产构建：
 
 ```bash
 npm run check

@@ -42,7 +42,7 @@ function summarize(items, sourceRoot) {
 
 loadEnv()
 const sourceRoot = resolve(process.env.HS_COSMETICS_SOURCE_DIR || 'E:/github/my-heartstone/hearthstone_cosmetics')
-const heroSkins = JSON.parse(await readFile(join(dataDirectory, 'hero-skin-map.json'), 'utf8'))
+const heroSkins = JSON.parse(await readFile(join(dataDirectory, 'hero-skins.json'), 'utf8'))
 const coins = JSON.parse(await readFile(join(dataDirectory, 'cosmetic-coin-map.json'), 'utf8'))
 const cardBacks = JSON.parse(await readFile(join(dataDirectory, 'card-back-map.json'), 'utf8'))
 const manifestHeroSkins = JSON.parse(await readFile(join(dataDirectory, 'hero-skins.json'), 'utf8'))

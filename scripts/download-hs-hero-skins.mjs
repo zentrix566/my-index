@@ -86,6 +86,15 @@ async function main() {
   const args = parseArgs(process.argv)
   const sourceRoot = resolve(args.source || process.env.HS_COSMETICS_SOURCE_DIR || 'E:/github/my-heartstone/hearthstone_cosmetics')
   const heroRoot = join(sourceRoot, 'hero-skins')
+  let previous = []
+  let previousById = new Map()
+  try {
+    const loaded = JSON.parse(await readFile(manifestPath, 'utf8'))
+    if (Array.isArray(loaded)) {
+      previous = loaded
+      previousById = new Map(loaded.map((item) => [item.cardId, item]))
+    }
+  } catch {}
   const response = await fetch(sourceUrl)
   if (!response.ok) throw new Error(`中文英雄皮肤资料请求失败：HTTP ${response.status}`)
   const cards = (await response.json()).filter(isConstructedHeroSkin).sort((a, b) => a.dbfId - b.dbfId)
@@ -116,7 +125,7 @@ async function main() {
       id: `hero-skins-${card.id.toLocaleLowerCase()}`,
       cardId: card.id,
       dbfId: card.dbfId,
-      cosmeticHeroId: null,
+      cosmeticHeroId: previousById.get(card.id)?.cosmeticHeroId ?? null,
       heroClass,
       officialName: card.name,
       flavorText: metadata.flavorText, howToGet: metadata.howToGet,
@@ -132,17 +141,14 @@ async function main() {
 
   const newHeroSkins = results.filter(Boolean)
   let finalHeroSkins = newHeroSkins
-  try {
-    const previous = JSON.parse(await readFile(manifestPath, 'utf8'))
-    if (Array.isArray(previous)) {
-      const newCardIds = new Set(newHeroSkins.map((item) => item.cardId))
-      const preserved = previous.filter((item) => !newCardIds.has(item.cardId))
-      if (preserved.length) {
-        finalHeroSkins = [...newHeroSkins, ...preserved]
-        console.log(`保留上游未收录的手动皮肤：${preserved.map((item) => item.officialName).join('、')}`)
-      }
+  if (previous.length) {
+    const newCardIds = new Set(newHeroSkins.map((item) => item.cardId))
+    const preserved = previous.filter((item) => !newCardIds.has(item.cardId))
+    if (preserved.length) {
+      finalHeroSkins = [...newHeroSkins, ...preserved]
+      console.log(`保留上游未收录的手动皮肤：${preserved.map((item) => item.officialName).join('、')}`)
     }
-  } catch {}
+  }
   await writeFile(manifestPath, `${JSON.stringify(finalHeroSkins, null, 2)}\n`, 'utf8')
   console.log(`英雄皮肤下载完成：可用 ${finalHeroSkins.length}，缺图 ${missingImages.length}，本次新增或覆盖 ${downloaded}`)
   if (missingImages.length) console.log(`上游缺图：${missingImages.join(', ')}`)

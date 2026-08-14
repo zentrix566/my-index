@@ -493,6 +493,30 @@
   transform: translateX(-50%) scale(1.025);
 }
 
+/* 神枪手阿兰娜等全幅原图：直接展示整张，不走英雄头像圆形裁剪框 */
+.hs-direct-hero-image {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.hs-direct-hero-image img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+.hs-cosmetic-modal-image .hs-direct-hero-image {
+  display: grid;
+  place-items: center;
+  width: 100%;
+}
+.hs-cosmetic-modal-image .hs-direct-hero-image img {
+  width: auto;
+  max-width: 100%;
+  max-height: 480px;
+  height: auto;
+}
+
 .hs-cosmetic-card.type-coins .hs-cosmetic-image-wrap {
   width: min(100%, 230px);
   margin-inline: auto;
