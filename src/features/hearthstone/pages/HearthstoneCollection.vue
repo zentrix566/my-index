@@ -106,6 +106,7 @@
         >从未收藏开始浏览</button>
         <a v-if="user" class="hs-btn hs-btn-ghost" :href="COLLECTOR_DOWNLOAD_URL" download>下载收藏采集工具</a>
         <button v-if="user" type="button" class="hs-btn hs-btn-ghost" @click="importFileInput.click()">选择采集的 JSON 文件</button>
+        <button v-if="user" type="button" class="hs-btn hs-btn-ghost hs-bulk-clear" @click="openBulkClear">批量设为未拥有</button>
         <input ref="importFileInput" class="hs-firestone-file-input" type="file" accept="application/json,.json" @change="previewImport" />
       </div>
 
@@ -118,12 +119,41 @@
           <small v-if="importPreview.unmatchedCardBacks || importPreview.unmatchedCoins || importPreview.unmatchedHeroSkins">
             另有 {{ importPreview.unmatchedCardBacks + importPreview.unmatchedCoins + importPreview.unmatchedHeroSkins }} 个 ID 在网站目录暂无名称（多为最新内容未更新或本地目录缺项），不影响已拥有高亮。
           </small>
+          <small v-if="importPreview.removedCardBacks || importPreview.removedCoins || importPreview.removedHeroSkins">
+            将一并清理 {{ importPreview.removedCardBacks + importPreview.removedCoins + importPreview.removedHeroSkins }} 个已不存在于当前目录的旧 ID（卡背/皮肤目录重建后遗留的标记），避免误命中同名新条目。
+          </small>
         </div>
         <div class="hs-firestone-import-actions">
           <button type="button" class="hs-btn hs-btn-ghost" @click="importPreview = null">取消</button>
           <button type="button" class="hs-btn hs-btn-primary" :disabled="profileSaving" @click="confirmImport">确认导入</button>
         </div>
       </section>
+
+      <Teleport to="body">
+        <div
+          v-if="bulkClearOpen"
+          class="hs-page hs-cosmetic-modal"
+          :data-hs-theme="hsTheme"
+          @click.self="bulkClearOpen = false"
+        >
+          <article
+            class="hs-cosmetic-modal-card bulk-clear-card"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="bulk-clear-title"
+          >
+            <h2 id="bulk-clear-title">确认批量设为未拥有？</h2>
+            <p>
+              将把「{{ currentType.label }}」下已拥有的 <strong>{{ bulkClearCount }}</strong> 个外观全部设为未拥有。
+              此操作不可撤销，确定要继续吗？
+            </p>
+            <div class="hs-firestone-import-actions">
+              <button type="button" class="hs-btn hs-btn-ghost" :disabled="profileSaving" @click="bulkClearOpen = false">取消</button>
+              <button type="button" class="hs-btn hs-btn-primary" :disabled="profileSaving" @click="confirmBulkClear">确认设为未拥有</button>
+            </div>
+          </article>
+        </div>
+      </Teleport>
 
       <p id="cosmetic-search-scope" class="hs-search-scope" aria-live="polite">
         <template v-if="isGlobalSearch">
@@ -384,6 +414,24 @@ const collectionCatalog = {
   cardBacks: cardBacks.filter((item) => !item.hidden)
 }
 
+// 当前目录中存在的外观 ID 集合。导入/加载时清理 profile 中的「孤儿 ID」：
+// catalog 重建后遗留的旧 ID（与新条目同名但语义已变）会让"已拥有"误命中。
+const validHeroSkinIds = new Set(collectionCatalog.heroSkins.map((item) => item.id))
+const validCoinIds = new Set(collectionCatalog.coins.map((item) => item.id))
+const validCardBackIds = new Set(collectionCatalog.cardBacks.map((item) => item.id))
+
+function removeOrphanIds(ids, validIds) {
+  return (Array.isArray(ids) ? ids : []).filter((id) => validIds.has(id))
+}
+
+function cleanProfileCollection(collection) {
+  return {
+    heroSkins: removeOrphanIds(collection?.heroSkins, validHeroSkinIds),
+    coins: removeOrphanIds(collection?.coins, validCoinIds),
+    cardBacks: removeOrphanIds(collection?.cardBacks, validCardBackIds)
+  }
+}
+
 const router = useRouter()
 const { user, init: initAuth } = useAuth()
 const { hsTheme } = useHearthstoneTheme()
@@ -470,8 +518,22 @@ const currentItems = computed(() => (collectionCatalog[activeType.value] || []).
   cosmeticType: activeType.value,
   cosmeticTypeLabel: currentType.value.label
 })))
-const ownedIds = computed(() => new Set(Object.values(profile.value.collection).flat()))
-const stats = computed(() => getCollectionStats(collectionCatalog, profile.value.collection))
+const ownedIds = computed(() => {
+  const all = Object.values(profile.value.collection).flat()
+  // 基础幸运币默认拥有，但不在 profile.coins 中，统一纳入「已拥有」集合以保证排序/统计一致。
+  if (!profile.value.collection.coins.includes(DEFAULT_COIN.id)) all.push(DEFAULT_COIN.id)
+  return new Set(all)
+})
+const stats = computed(() => {
+  const result = getCollectionStats(collectionCatalog, profile.value.collection)
+  // 基础幸运币不在 profile.coins 中，但属于永远拥有的默认币，统一补入统计，避免「已拥有」数少 1。
+  if (!profile.value.collection.coins.includes(DEFAULT_COIN.id)) {
+    result.byType.coins.owned += 1
+    result.owned += 1
+    result.percentage = result.total ? Math.round((result.owned / result.total) * 100) : 0
+  }
+  return result
+})
 const heroClassStats = computed(() =>
   getHeroClassStats(collectionCatalog.heroSkins, profile.value.collection.heroSkins)
 )
@@ -554,6 +616,8 @@ function resetImageLoadState() {
 }
 
 function isOwned(item) {
+  // 基础幸运币（GAME_005）是默认拥有的，不在 profile.coins 中，但应始终显示为已拥有。
+  if (item?.id === DEFAULT_COIN.id) return true
   return new Set(profile.value.collection[item.cosmeticType] || []).has(item.id)
 }
 
@@ -638,6 +702,7 @@ async function previewImport(event) {
     }
     const imported = getImportedIds(payload)
     const prof = profile.value.collection
+    const cleanedProf = cleanProfileCollection(prof)
     importPreview.value = {
       cardBackIds: imported.cardBacks,
       coinIds: imported.coins,
@@ -648,12 +713,15 @@ async function previewImport(event) {
       detectedCardBacks: imported.cardBacks.size,
       detectedCoins: imported.coins.size,
       detectedHeroSkins: imported.heroSkins.size,
-      cardBacks: [...imported.cardBacks].filter((id) => !prof.cardBacks.includes(id)).length,
-      coins: [...imported.coins].filter((id) => !prof.coins.includes(id)).length,
-      heroSkins: [...imported.heroSkins].filter((id) => !prof.heroSkins.includes(id)).length,
+      cardBacks: [...imported.cardBacks].filter((id) => !cleanedProf.cardBacks.includes(id)).length,
+      coins: [...imported.coins].filter((id) => !cleanedProf.coins.includes(id)).length,
+      heroSkins: [...imported.heroSkins].filter((id) => !cleanedProf.heroSkins.includes(id)).length,
       unmatchedCardBacks: imported.unmatched.cardBacks,
       unmatchedCoins: imported.unmatched.coins,
-      unmatchedHeroSkins: imported.unmatched.heroSkins
+      unmatchedHeroSkins: imported.unmatched.heroSkins,
+      removedHeroSkins: prof.heroSkins.length - cleanedProf.heroSkins.length,
+      removedCoins: prof.coins.length - cleanedProf.coins.length,
+      removedCardBacks: prof.cardBacks.length - cleanedProf.cardBacks.length
     }
     saveError.value = ''
   } catch {
@@ -666,12 +734,15 @@ async function confirmImport() {
   const preview = importPreview.value
   saveError.value = ''
   try {
+    // 先剔除 profile 中已不存在于当前目录的孤儿 ID，再合并新导入的 ID，
+    // 避免卡背/皮肤目录重建后旧标记被同名新条目错误继承。
+    const cleaned = cleanProfileCollection(profile.value.collection)
     await save({
       ...profile.value,
       collection: {
-        heroSkins: [...new Set([...profile.value.collection.heroSkins, ...preview.heroSkinIds])],
-        coins: [...new Set([...profile.value.collection.coins, ...preview.coinIds])],
-        cardBacks: [...new Set([...profile.value.collection.cardBacks, ...preview.cardBackIds])]
+        heroSkins: [...new Set([...cleaned.heroSkins, ...preview.heroSkinIds])],
+        coins: [...new Set([...cleaned.coins, ...preview.coinIds])],
+        cardBacks: [...new Set([...cleaned.cardBacks, ...preview.cardBackIds])]
       }
     })
     importPreview.value = null
@@ -700,9 +771,53 @@ async function toggleOwned(item) {
   }
 }
 
+// 导入后发现数据有误时，可一键将当前类型的全部已拥有外观设为未拥有（二次确认防误操作）。
+const bulkClearOpen = ref(false)
+const bulkClearCount = computed(() => {
+  const type = activeType.value
+  // 默认幸运币不在 profile.coins 中，仅统计实际存储的已拥有项
+  if (type === 'coins') return profile.value.collection.coins.length
+  return profile.value.collection[type].length
+})
+
+function openBulkClear() {
+  if (!user.value || profileSaving.value) return
+  if (!bulkClearCount.value) {
+    saveError.value = `「${currentType.value.label}」当前没有已拥有的外观，无需操作。`
+    return
+  }
+  bulkClearOpen.value = true
+}
+
+async function confirmBulkClear() {
+  if (profileSaving.value) return
+  const type = activeType.value
+  saveError.value = ''
+  try {
+    await save({
+      ...profile.value,
+      collection: { ...profile.value.collection, [type]: [] }
+    })
+    bulkClearOpen.value = false
+  } catch (error) {
+    saveError.value = error.message || '批量操作失败，请重试'
+  }
+}
+
 initAuth()
 watch(user, (value) => {
-  if (value) load({ force: true }).catch(() => {})
+  if (!value) return
+  load({ force: true })
+    .then((loaded) => {
+      // 加载后自动清理孤儿 ID：catalog 重建后遗留的旧 ID 会让"已拥有"误命中。
+      // 清理后若有变动，悄悄回写一次，避免用户每次进收藏页都看到旧统计。
+      const cleaned = cleanProfileCollection(loaded.collection)
+      const removed = (loaded.collection.heroSkins.length - cleaned.heroSkins.length)
+        + (loaded.collection.coins.length - cleaned.coins.length)
+        + (loaded.collection.cardBacks.length - cleaned.cardBacks.length)
+      if (removed > 0) save({ ...loaded, collection: cleaned }).catch(() => {})
+    })
+    .catch(() => {})
 }, { immediate: true })
 watch([activeType, activeHeroClass, query, statusFilter], () => {
   currentPage.value = 1
