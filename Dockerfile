@@ -16,6 +16,9 @@ RUN npm ci
 
 COPY index.html vite.config.js ./
 COPY favicon.svg ./
+# public/ 须进入构建上下文：vite build 会把 public/ 整体拷进 dist/，
+# 采集工具下载包 hs-cosmetics-collector-vX.Y.Z.zip 即位于 public/，缺失会导致线上下载到 SPA 回退页（约 2KB）。
+COPY public/ ./public/
 COPY src/ ./src/
 
 # 卡牌图 OSS 基地址：构建时经 docker build-arg 传入（Vite 在 build 时把 import.meta.env.VITE_* 编译进产物）。
