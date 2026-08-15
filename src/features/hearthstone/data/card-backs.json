@@ -1595,6 +1595,7 @@
     "prefabName": "Card_Back_Random",
     "prefabGuid": "237b35e60a18ec740a6ddfbb142bb462",
     "officialName": "随机卡背",
+    "hidden": true,
     "flavorText": "旅店老板允诺：他将亲自帮你随机挑选你已拥有的卡背。",
     "howToGet": "如果你想每次游戏时亮出不同的卡背，那就快使用这张随机卡背吧！",
     "availability": "",
