@@ -9,6 +9,10 @@
     <LangVersion>latest</LangVersion>
     <SelfContained>false</SelfContained>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <!-- 发布版本号；build-release.ps1 会读取此值并生成 hs-cosmetics-collector-v{Version}.zip -->
+    <Version>1.0.0</Version>
+    <AssemblyVersion>1.0.0.0</AssemblyVersion>
+    <FileVersion>1.0.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

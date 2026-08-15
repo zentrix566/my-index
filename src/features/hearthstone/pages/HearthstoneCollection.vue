@@ -142,14 +142,19 @@
             aria-modal="true"
             aria-labelledby="bulk-clear-title"
           >
-            <h2 id="bulk-clear-title">确认批量设为未拥有？</h2>
+            <h2 id="bulk-clear-title">
+              <span class="hs-bulk-clear-icon" aria-hidden="true">⚠</span>
+              确认批量设为未拥有？
+            </h2>
             <p>
-              将把「{{ currentType.label }}」下已拥有的 <strong>{{ bulkClearCount }}</strong> 个外观全部设为未拥有。
-              此操作不可撤销，确定要继续吗？
+              将把「<strong>{{ currentType.label }}</strong>」下已拥有的
+              <strong class="hs-bulk-clear-count">{{ bulkClearCount }}</strong>
+              个外观全部设为未拥有。
             </p>
-            <div class="hs-firestone-import-actions">
+            <p class="hs-bulk-clear-warn">此操作不可撤销，确定要继续吗？</p>
+            <div class="hs-firestone-import-actions hs-bulk-clear-actions">
               <button type="button" class="hs-btn hs-btn-ghost" :disabled="profileSaving" @click="bulkClearOpen = false">取消</button>
-              <button type="button" class="hs-btn hs-btn-primary" :disabled="profileSaving" @click="confirmBulkClear">确认设为未拥有</button>
+              <button type="button" class="hs-btn hs-btn-danger" :disabled="profileSaving" @click="confirmBulkClear">确认设为未拥有</button>
             </div>
           </article>
         </div>
@@ -403,8 +408,9 @@ const DEATH_KNIGHT_DISPLAY_ORDER = [
 const heroSkinByCardId = new Map(heroSkins.map((item) => [item.cardId, item]))
 // 采集器 heroSkins.ids 是 cardId（如 HERO_01），映射到目录的 profile id（如 hero-skins-hero_01）
 const heroSkinIdByCardId = new Map(heroSkins.map((item) => [String(item.cardId), item.id]))
-// 收藏采集工具（Windows 桌面程序）下载地址；部署时可用 VITE_COLLECTOR_DOWNLOAD_URL 覆盖。
-const COLLECTOR_DOWNLOAD_URL = import.meta.env.VITE_COLLECTOR_DOWNLOAD_URL || '/hs-cosmetics-collector.zip'
+// 收藏采集工具（Windows 桌面程序）下载地址；文件名带版本号便于核对下载版本。
+// 部署时可用 VITE_COLLECTOR_DOWNLOAD_URL 覆盖。版本号须与 tools/hs-cosmetics-collector/build-release.ps1 生成的一致。
+const COLLECTOR_DOWNLOAD_URL = import.meta.env.VITE_COLLECTOR_DOWNLOAD_URL || '/hs-cosmetics-collector-v1.0.0.zip'
 const collectionCatalog = {
   heroSkins: [
     ...heroSkins.filter((item) => item.heroClass !== '死亡骑士'),

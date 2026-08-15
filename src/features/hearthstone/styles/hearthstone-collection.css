@@ -1088,4 +1088,121 @@
   .hs-cosmetic-modal-content {
     padding: 24px 20px;
   }
+
+  .bulk-clear-card {
+    width: min(420px, 100%);
+    padding: 28px 26px 22px;
+  }
+
+  .hs-bulk-clear-icon {
+    margin-right: 6px;
+  }
+}
+
+/* ============================================================
+   批量设为未拥有 二次确认弹窗
+   覆盖 .hs-cosmetic-modal-card 的双列/米黄样式，改为单列暗色炉石风
+   ============================================================ */
+.bulk-clear-card {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: min(420px, 100%);
+  padding: 30px 28px 24px;
+  border: 4px solid #312c27;
+  border-radius: 18px;
+  color: #f4ecd6;
+  background:
+    radial-gradient(circle at 50% 0%, rgba(196, 30, 58, 0.18), transparent 55%),
+    linear-gradient(155deg, #2c2520, #161310);
+  box-shadow:
+    0 0 0 3px #98743a,
+    0 24px 60px rgba(0, 0, 0, 0.7);
+  text-align: center;
+  font-weight: 600;
+}
+
+.bulk-clear-card h2 {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+  margin: 0;
+  padding-bottom: 14px;
+  border-bottom: 1px solid rgba(212, 160, 23, 0.32);
+  color: #f7e6b8;
+  font-size: 19px;
+  font-weight: 800;
+  letter-spacing: 0.01em;
+}
+
+.bulk-clear-card .hs-bulk-clear-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  color: #ffd9a3;
+  background: linear-gradient(135deg, #c41e3a, #6b1a25);
+  box-shadow:
+    inset 0 1px rgba(255, 255, 255, 0.25),
+    0 2px 4px rgba(0, 0, 0, 0.5);
+  font-size: 16px;
+}
+
+.bulk-clear-card p {
+  margin: 0;
+  color: #e7dcc1;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.bulk-clear-card p strong {
+  color: #fff3c8;
+}
+
+.bulk-clear-card .hs-bulk-clear-count {
+  display: inline-block;
+  min-width: 26px;
+  padding: 1px 9px;
+  margin: 0 3px;
+  border-radius: 8px;
+  color: #fff;
+  background: linear-gradient(135deg, #c41e3a, #7a1e2d);
+  font-weight: 800;
+}
+
+.bulk-clear-card .hs-bulk-clear-warn {
+  padding: 10px 12px;
+  border-radius: 8px;
+  color: #ffd9a3;
+  background: rgba(196, 30, 58, 0.18);
+  border: 1px solid rgba(196, 30, 58, 0.42);
+  font-size: 13px;
+}
+
+.bulk-clear-card .hs-bulk-clear-actions {
+  justify-content: center;
+  margin-top: 6px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(212, 160, 23, 0.18);
+}
+
+.hs-btn-danger {
+  color: #fff;
+  border-color: rgba(255, 110, 110, 0.55);
+  background: linear-gradient(135deg, #c41e3a, #6b1a25);
+  box-shadow: 0 8px 20px rgba(196, 30, 58, 0.32);
+}
+
+.hs-btn-danger:hover:not(:disabled) {
+  border-color: rgba(255, 130, 130, 0.7);
+  background: linear-gradient(135deg, #e63946, #8b1e2d);
+  transform: translateY(-1px);
+}
+
+.hs-btn-danger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  transform: none;
 }
