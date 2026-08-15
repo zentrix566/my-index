@@ -1,0 +1,25 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net48</TargetFramework>
+    <AssemblyName>HsCosmeticsCollector</AssemblyName>
+    <RootNamespace>HsCosmeticsCollector</RootNamespace>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>disable</ImplicitUsings>
+    <LangVersion>latest</LangVersion>
+    <SelfContained>false</SelfContained>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- 仅用于编译期解析 .NET Framework 4.8 引用程序集；UnitySpy 在运行时通过 lib/ 加载，无需编译期引用 -->
+    <PackageReference Include="Microsoft.NETFramework.ReferenceAssemblies.net48" Version="1.0.3" PrivateAssets="all" />
+    <!-- net48 不含 System.Text.Json，显式引入（netstandard2.0 目标，兼容） -->
+    <PackageReference Include="System.Text.Json" Version="8.0.5" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- 运行时加载的炉石内存读取库（来自 Firestone 插件目录，已复制到 lib/） -->
+    <None Include="lib\UnitySpy.dll" CopyToOutputDirectory="PreserveNewest" />
+    <None Include="lib\UnitySpy.HearthstoneLib.dll" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+</Project>

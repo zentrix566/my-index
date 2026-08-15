@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>炉石外观收藏导入器</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --card:#ffffff; --line:#e3e6ea; --text:#1f2329; --muted:#8a9099;
+    --accent:#2f6df6; --own:#e8f3ec; --own-line:#3a9d6b; --badge:#3a9d6b;
+    --warn:#b8860b;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,"Segoe UI",Roboto,"PingFang SC","Microsoft YaHei",sans-serif;
+    background:var(--bg);color:var(--text);line-height:1.5;}
+  header{padding:20px 24px;background:linear-gradient(135deg,#2f6df6,#1b4fc0);color:#fff;}
+  header h1{margin:0 0 4px;font-size:20px;}
+  header p{margin:0;opacity:.9;font-size:13px;}
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 16px 60px;}
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px;margin-bottom:18px;}
+  .panel h2{margin:0 0 12px;font-size:15px;}
+  .drop{border:2px dashed var(--line);border-radius:10px;padding:18px;text-align:center;color:var(--muted);}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:12px;}
+  .filebox{border:1px solid var(--line);border-radius:10px;padding:12px;background:#fafbfc;}
+  .filebox label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
+  .filebox input{width:100%;font-size:12px;}
+  .filebox .st{font-size:12px;margin-top:6px;color:var(--muted);}
+  .filebox .st.ok{color:var(--badge);}
+  .btn{display:inline-block;margin-top:12px;background:var(--accent);color:#fff;border:none;
+    padding:10px 18px;border-radius:8px;font-size:14px;cursor:pointer;}
+  .btn:disabled{background:#b9c4d6;cursor:not-allowed;}
+  .tabs{display:flex;gap:8px;margin:6px 0 14px;flex-wrap:wrap;}
+  .tab{padding:8px 14px;border:1px solid var(--line);border-radius:20px;background:#fff;cursor:pointer;font-size:13px;}
+  .tab.active{background:var(--accent);color:#fff;border-color:var(--accent);}
+  .summary{font-size:13px;color:var(--muted);margin-bottom:12px;}
+  .summary b{color:var(--text);}
+  .classgroup{margin-bottom:16px;}
+  .classgroup h3{font-size:14px;margin:0 0 8px;}
+  .items{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px;}
+  .item{border:1px solid var(--line);border-radius:8px;padding:8px 10px;font-size:12.5px;background:#fff;position:relative;}
+  .item.own{background:var(--own);border-color:var(--own-line);}
+  .item.prog{background:#fff7e6;border-color:#e0a93b;}
+  .item.lock{background:#fff;border-color:var(--line);opacity:.7;}
+  .item .nm{font-weight:600;line-height:1.35;}
+  .item .ht{color:var(--muted);font-size:11px;margin-top:3px;}
+  .badge{position:absolute;top:6px;right:6px;font-size:10px;background:var(--badge);color:#fff;
+    border-radius:10px;padding:1px 6px;}
+  .achcat{border:1px solid var(--line);border-radius:10px;padding:12px;margin-bottom:10px;}
+  .achcat .top{display:flex;justify-content:space-between;font-size:13px;margin-bottom:6px;}
+  .bar{height:8px;background:#eef0f3;border-radius:6px;overflow:hidden;}
+  .bar > i{display:block;height:100%;background:var(--accent);}
+  .empty{color:var(--warn);font-size:13px;}
+  .achdetail{margin-top:8px;}
+  .achdetail h3{font-size:14px;margin:14px 0 8px;}
+  .achfilter{display:flex;gap:10px;align-items:center;margin-bottom:10px;flex-wrap:wrap;}
+  .achfilter select, .achfilter input{padding:6px 8px;border:1px solid var(--line);border-radius:8px;font-size:13px;}
+  footer{text-align:center;color:var(--muted);font-size:12px;padding:20px;}
+  code{background:#eef0f3;padding:1px 5px;border-radius:4px;font-size:12px;}
+</style>
+</head>
+<body>
+<header>
+  <h1>炉石外观收藏导入器</h1>
+  <p>用「采集器」生成 2 个 JSON（cosmetics.json + achievements.json）→ 在此上传 → 立即查看你的卡背 / 幸运币 / 英雄皮肤 / 成就明细</p>
+</header>
+
+<div class="wrap">
+  <div class="panel">
+    <h2>① 上传采集器产物（2 个文件）</h2>
+    <div class="grid">
+      <div class="filebox">
+        <label>外观收藏 · cosmetics.json</label>
+        <input type="file" id="f-cosmetics" accept=".json" />
+        <div class="st" id="st-cosmetics">未选择</div>
+      </div>
+      <div class="filebox">
+        <label>成就明细 · achievements.json</label>
+        <input type="file" id="f-achievements" accept=".json" />
+        <div class="st" id="st-achievements">未选择</div>
+      </div>
+    </div>
+    <button class="btn" id="renderBtn" disabled>② 生成我的收藏</button>
+    <div class="summary" id="globalMsg" style="margin-top:10px;"></div>
+  </div>
+
+  <div class="panel" id="resultPanel" style="display:none;">
+    <div class="tabs">
+      <div class="tab active" data-tab="cardBacks">卡背</div>
+      <div class="tab" data-tab="coins">幸运币</div>
+      <div class="tab" data-tab="heroSkins">英雄皮肤</div>
+      <div class="tab" data-tab="achievements">成就</div>
+    </div>
+    <div id="resultBody"></div>
+  </div>
+</div>
+
+<footer>数据全部在你的浏览器本地处理，不会上传到任何服务器。</footer>
+
+<script>
+const CATALOG = __CATALOG_PLACEHOLDER__;
+const CLASS_ORDER = ['圣骑士','德鲁伊','恶魔猎手','战士','术士','死亡骑士','法师','潜行者','牧师','猎人','萨满祭司'];
+const owned = { cosmetics:null, achievements:null };
+const fileMap = { cosmetics:'f-cosmetics', achievements:'f-achievements' };
+
+for (const kind of Object.keys(fileMap)) {
+  document.getElementById(fileMap[kind]).addEventListener('change', e => {
+    const f = e.target.files[0];
+    if (!f) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      try {
+        const obj = JSON.parse(ev.target.result);
+        if (kind === 'cosmetics' && !(obj.cardBacks && obj.coins && obj.heroSkins))
+          throw new Error('cosmetics.json 结构不对（需含 cardBacks/coins/heroSkins）');
+        owned[kind] = obj;
+        const st = document.getElementById('st-'+kind);
+        st.textContent = '已载入: ' + f.name;
+        st.classList.add('ok');
+      } catch (err) {
+        alert('解析失败 ('+f.name+'): ' + err.message);
+      }
+      updateBtn();
+    };
+    reader.readAsText(f);
+  });
+}
+
+function updateBtn(){
+  const all = Object.values(owned).every(v => v !== null);
+  document.getElementById('renderBtn').disabled = !all;
+  if (all) document.getElementById('globalMsg').textContent = '2 个文件已就绪，点击生成。';
+}
+
+document.getElementById('renderBtn').addEventListener('click', render);
+document.querySelectorAll('.tab').forEach(t => t.addEventListener('click', () => {
+  document.querySelectorAll('.tab').forEach(x => x.classList.remove('active'));
+  t.classList.add('active');
+  showTab(t.dataset.tab);
+}));
+
+function nameOf(c){ return c.officialName || c.name || c.cardId || c.dbfId || '(无名)'; }
+
+function render(){
+  document.getElementById('resultPanel').style.display = 'block';
+  showTab('cardBacks');
+}
+
+function showTab(kind){
+  const body = document.getElementById('resultBody');
+  if (kind === 'cardBacks') return renderCardBacks(body);
+  if (kind === 'coins') return renderCoins(body);
+  if (kind === 'heroSkins') return renderHeroSkins(body);
+  if (kind === 'achievements') return renderAchievements(body);
+}
+
+function renderCardBacks(body){
+  const sec = owned.cosmetics.cardBacks || {};
+  const cat = CATALOG.cardBacks || [];
+  const ids = new Set((sec.ids||[]).map(Number));
+  const count = sec.count ?? ids.size;
+  let html = `<div class="summary">已拥有 <b>${ids.size}</b>（内存读 ${count}） / 目录共 <b>${cat.length}</b> 个卡背</div><div class="items">`;
+  const matched = new Set();
+  for (const c of cat){
+    const own = ids.has(c.cardBackId);
+    if (own) matched.add(c.cardBackId);
+    html += `<div class="item ${own?'own':''}">${own?'<span class="badge">已拥有</span>':''}
+      <div class="nm">${escapeHtml(nameOf(c))}</div>
+      <div class="ht">ID ${c.cardBackId}</div></div>`;
+  }
+  const missing = [...ids].filter(id => !matched.has(id));
+  if (missing.length) html += `<div style="grid-column:1/-1" class="empty">以下已拥有卡背目录暂无名称：${missing.join(', ')}</div>`;
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+function renderCoins(body){
+  const sec = owned.cosmetics.coins || {};
+  const cat = CATALOG.coins || [];
+  const ids = new Set((sec.ids||[]).map(Number));
+  const count = sec.count ?? ids.size;
+  let html = `<div class="summary">已拥有 <b>${ids.size}</b>（内存读 ${count}） / 目录共 <b>${cat.length}</b> 个幸运币</div><div class="items">`;
+  const matched = new Set();
+  for (const c of cat){
+    const own = ids.has(c.dbfId);
+    if (own) matched.add(c.dbfId);
+    html += `<div class="item ${own?'own':''}">${own?'<span class="badge">已拥有</span>':''}
+      <div class="nm">${escapeHtml(nameOf(c))}</div>
+      <div class="ht">dbfId ${c.dbfId}</div></div>`;
+  }
+  const missing = [...ids].filter(id => !matched.has(id));
+  if (missing.length) html += `<div style="grid-column:1/-1" class="empty">以下已拥有幸运币目录暂无名称：${missing.join(', ')}</div>`;
+  html += '</div>';
+  body.innerHTML = html;
+}
+
+function renderHeroSkins(body){
+  const sec = owned.cosmetics.heroSkins || {};
+  const cat = CATALOG.heroSkins || [];
+  const ids = new Set((sec.ids||[]).map(String));
+  const count = sec.count ?? ids.size;
+  const byClass = {};
+  for (const c of cat){
+    const cls = c.heroClass || '未知';
+    (byClass[cls] = byClass[cls] || []).push(c);
+  }
+  let html = `<div class="summary">已拥有 <b>${ids.size}</b>（内存读 ${count}） / 目录共 <b>${cat.length}</b> 个英雄皮肤</div>`;
+  for (const cls of CLASS_ORDER.concat(Object.keys(byClass).filter(c => !CLASS_ORDER.includes(c)))){
+    const list = byClass[cls]; if (!list) continue;
+    const ownCount = list.filter(c => ids.has(String(c.cardId))).length;
+    html += `<div class="classgroup"><h3>${cls}（已拥有 ${ownCount}/${list.length}）</h3><div class="items">`;
+    for (const c of list){
+      const own = ids.has(String(c.cardId));
+      html += `<div class="item ${own?'own':''}">${own?'<span class="badge">已拥有</span>':''}
+        <div class="nm">${escapeHtml(nameOf(c))}</div>
+        <div class="ht">${escapeHtml(c.cardId||'')}</div></div>`;
+    }
+    html += '</div></div>';
+  }
+  const matched = new Set(cat.filter(c => ids.has(String(c.cardId))).map(c => String(c.cardId)));
+  const missing = [...ids].filter(id => !matched.has(id));
+  if (missing.length) html += `<div class="empty">以下已拥有皮肤目录暂无：${missing.join(', ')}</div>`;
+  body.innerHTML = html;
+}
+
+function renderAchievements(body){
+  const a = owned.achievements || {};
+  const cats = a.categories || [];
+  const items = Array.isArray(a.items) ? a.items : [];
+  let html = '';
+  html += `<div class="summary">官方总完成 <b>${a.totalCompleted ?? '—'}</b>`;
+  if (a.itemsTotal != null) html += ` · 内存逐条：完成 <b>${a.itemsCompleted ?? '—'}</b> / 共 <b>${a.itemsTotal}</b>`;
+  html += `</div>`;
+  if (cats.length){
+    for (const c of cats){
+      const done = c.CompletedAchievements ?? c.completed ?? 0;
+      const total = c.TotalAchievements ?? c.total ?? 0;
+      const pct = total ? Math.round(done/total*100) : 0;
+      const pts = c.Points ?? c.points ?? '';
+      html += `<div class="achcat"><div class="top"><span>${escapeHtml(c.name||c.Name||'')}</span>
+        <span>${done}/${total}${pts!==''?' · '+pts+'pt':''}</span></div>
+        <div class="bar"><i style="width:${pct}%"></i></div></div>`;
+    }
+  } else {
+    html += '<div class="empty">成就文件无分类数据。</div>';
+  }
+  if (items.length){
+    const done = items.filter(x=>x.isComplete).length;
+    const notStarted = items.filter(x=>x.status===1).length;
+    const inProg = items.filter(x=>x.status===2).length;
+    const complete = items.filter(x=>x.status===3).length;
+    const claimed = items.filter(x=>x.status===4).length;
+    html += `<div class="achdetail"><h3>逐条成就明细（${items.length} 条）</h3>
+      <div class="achfilter">
+        <label>筛选：</label>
+        <select id="achFilter">
+          <option value="all">全部 (${items.length})</option>
+          <option value="complete">已完成/已领奖 (${done})</option>
+          <option value="claimed">已领奖 status=4 (${claimed})</option>
+          <option value="inprog">进行中 status=2 (${inProg})</option>
+          <option value="notstarted">未开始 status=1 (${notStarted})</option>
+        </select>
+        <span><input type="search" id="achSearch" placeholder="按成就 ID 搜索" /></span>
+      </div>
+      <div class="items" id="achItems"></div></div>`;
+    body.innerHTML = html;
+    renderAchItems('all', '');
+    document.getElementById('achFilter').addEventListener('change', e => renderAchItems(e.target.value, document.getElementById('achSearch').value));
+    document.getElementById('achSearch').addEventListener('input', e => renderAchItems(document.getElementById('achFilter').value, e.target.value));
+    return;
+  }
+  body.innerHTML = html;
+}
+
+function renderAchItems(filter, q){
+  const a = owned.achievements || {};
+  const items = Array.isArray(a.items) ? a.items : [];
+  const box = document.getElementById('achItems');
+  if (!box) return;
+  let list = items;
+  if (filter === 'complete') list = items.filter(x=>x.status===3 || x.status===4);
+  else if (filter === 'claimed') list = items.filter(x=>x.status===4);
+  else if (filter === 'inprog') list = items.filter(x=>x.status===2);
+  else if (filter === 'notstarted') list = items.filter(x=>x.status===1);
+  if (q && q.trim()){ const n = q.trim(); list = list.filter(x => String(x.id).includes(n)); }
+  let html = '';
+  if (!list.length){ html = '<div class="empty">无匹配成就。</div>'; }
+  for (const it of list){
+    const cls = it.isComplete ? 'own' : (it.status===2 ? 'prog' : 'lock');
+    html += `<div class="item ${cls}"><div class="nm">成就 #${it.id}</div>
+      <div class="ht">${escapeHtml(it.statusText||'')}${it.progress!=null?' · 进度 '+it.progress:''}</div></div>`;
+  }
+  box.innerHTML = html;
+}
+
+function escapeHtml(s){
+  return String(s==null?'':s).replace(/[&<>"']/g, m => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+}
+</script>
+</body>
+</html>

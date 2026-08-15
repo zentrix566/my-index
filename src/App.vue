@@ -120,7 +120,7 @@
 
     <main id="main-content" tabindex="-1" :aria-busy="routeLoading">
       <RouterView v-slot="{ Component }">
-        <Suspense @pending="startRouteLoading" @resolve="finishRouteLoading">
+        <Suspense>
           <div class="route-view">
             <component :is="Component" />
           </div>
@@ -199,12 +199,49 @@ const closeMenu = () => {
   isMenuOpen.value = false
 }
 
-const startRouteLoading = () => {
-  routeLoading.value = true
+// 顶栏进度条节奏：仅由 router 守卫的 route-loading/route-finish 事件驱动，
+// 取消之前与 <Suspense @pending @resolve> 的耦合——异步组件 chunk 缓存命中时
+// Suspense 会瞬间回到 resolve，肉眼看就是进度条反复闪。改为：
+//   1. 路由进入时 delay 一段时间再亮（避开缓存命中的瞬时过程）
+//   2. 关闭时强制撑到最小可见时长，避免一闪而过造成的"反复跑"错觉
+//   3. 同窗口内多次触发只显示最后一次，避免抖动
+const PROGRESS_SHOW_DELAY_MS = 80
+const PROGRESS_MIN_VISIBLE_MS = 280
+let progressShowTimer = null
+let progressHideTimer = null
+let progressShownAt = 0
+
+const beginRouteProgress = () => {
+  clearTimeout(progressHideTimer)
+  progressHideTimer = null
+  if (progressShowTimer) return
+  if (routeLoading.value) return
+  progressShowTimer = setTimeout(() => {
+    progressShowTimer = null
+    if (routeLoading.value) return
+    routeLoading.value = true
+    progressShownAt = Date.now()
+  }, PROGRESS_SHOW_DELAY_MS)
 }
 
-const finishRouteLoading = () => {
-  routeLoading.value = false
+const finishRouteProgress = () => {
+  // 还在延迟显示阶段就结束了（chunk 缓存命中），直接放弃这次显示
+  if (progressShowTimer) {
+    clearTimeout(progressShowTimer)
+    progressShowTimer = null
+    return
+  }
+  if (!routeLoading.value) return
+  const elapsed = Date.now() - progressShownAt
+  const remaining = PROGRESS_MIN_VISIBLE_MS - elapsed
+  if (remaining > 0) {
+    progressHideTimer = setTimeout(() => {
+      progressHideTimer = null
+      routeLoading.value = false
+    }, remaining)
+  } else {
+    routeLoading.value = false
+  }
 }
 
 const navigationMenus = { work: workMenu, personal: personalMenu, account: accountMenu }
@@ -257,7 +294,7 @@ const handleScroll = () => {
 
 watch(() => route.fullPath, async () => {
   closeNavigationMenus()
-  routeLoading.value = false
+  finishRouteProgress()
   await nextTick()
   const heading = document.querySelector('#main-content h1')
   heading?.setAttribute('tabindex', '-1')
@@ -266,9 +303,8 @@ watch(() => route.fullPath, async () => {
   routeAnnouncement.value = `已进入${heading?.textContent?.trim() || document.title}`
 })
 
-const handleRouteLoading = () => { routeLoading.value = true }
 const handleRouteError = () => {
-  routeLoading.value = false
+  finishRouteProgress()
   push('页面加载失败，请检查网络后重试', {
     type: 'error',
     actionLabel: '重新加载',
@@ -283,14 +319,18 @@ onMounted(() => {
   window.addEventListener('scroll', handleScroll, { passive: true })
   window.addEventListener('keydown', handleKeydown)
   document.addEventListener('click', handleDocumentClick)
-  window.addEventListener('route-loading', handleRouteLoading)
+  window.addEventListener('route-loading', beginRouteProgress)
+  window.addEventListener('route-finish', finishRouteProgress)
   window.addEventListener('route-error', handleRouteError)
 })
 onBeforeUnmount(() => {
   window.removeEventListener('scroll', handleScroll)
   window.removeEventListener('keydown', handleKeydown)
   document.removeEventListener('click', handleDocumentClick)
-  window.removeEventListener('route-loading', handleRouteLoading)
+  clearTimeout(progressShowTimer)
+  clearTimeout(progressHideTimer)
+  window.removeEventListener('route-loading', beginRouteProgress)
+  window.removeEventListener('route-finish', finishRouteProgress)
   window.removeEventListener('route-error', handleRouteError)
 })
 </script>

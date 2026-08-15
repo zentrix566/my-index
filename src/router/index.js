@@ -130,6 +130,8 @@ router.onError((error) => {
 router.afterEach((to) => {
   // 按路由设置页面标题，未指定时回退到默认标题
   document.title = to.meta?.title || 'Zentrix | 个人索引'
+  // 通知顶栏进度条收尾，详见 App.vue 的 begin/finishRouteProgress
+  window.dispatchEvent(new CustomEvent('route-finish'))
   // 不统计重定向路由本身
   if (to.matched.length === 0) return
   const path = to.fullPath || '/'

@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>炉石外观收藏查看器</title>
+<style>
+  :root {
+    --bg: #0f1420; --panel: #1a2230; --panel2: #222c3d; --line: #2e3a4f;
+    --text: #e7edf5; --muted: #93a1b5; --accent: #4ea1ff; --gold: #f5c542;
+    --owned: #37c871; --lock: #6b7a90; --radius: 12px;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: linear-gradient(160deg, #0c1018, #121a28);
+    color: var(--text); font-family: -apple-system, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+    min-height: 100vh;
+  }
+  .wrap { max-width: 1180px; margin: 0 auto; padding: 24px 18px 60px; }
+  header h1 { font-size: 22px; margin: 0 0 4px; letter-spacing: .5px; }
+  header p { margin: 0; color: var(--muted); font-size: 13px; }
+  .tabs { display: flex; gap: 8px; margin: 20px 0 14px; flex-wrap: wrap; }
+  .tab {
+    padding: 8px 16px; border-radius: 999px; border: 1px solid var(--line);
+    background: var(--panel); color: var(--muted); cursor: pointer; font-size: 14px;
+    transition: .15s;
+  }
+  .tab.active { background: var(--accent); color: #06101f; border-color: var(--accent); font-weight: 600; }
+  .toolbar {
+    display: flex; gap: 10px; flex-wrap: wrap; align-items: center;
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    padding: 12px 14px; margin-bottom: 16px;
+  }
+  .toolbar select, .toolbar input {
+    background: var(--panel2); color: var(--text); border: 1px solid var(--line);
+    border-radius: 8px; padding: 7px 10px; font-size: 13px; outline: none;
+  }
+  .toolbar input[type=search] { min-width: 200px; flex: 1; }
+  .seg { display: inline-flex; border: 1px solid var(--line); border-radius: 8px; overflow: hidden; }
+  .seg button {
+    background: var(--panel2); color: var(--muted); border: none; padding: 7px 12px;
+    cursor: pointer; font-size: 13px;
+  }
+  .seg button.on { background: var(--accent); color: #06101f; font-weight: 600; }
+  .stat { margin-left: auto; color: var(--muted); font-size: 13px; }
+  .stat b { color: var(--text); }
+  /* 成就进度 */
+  .ach-summary { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 16px 18px; margin-bottom: 16px; }
+  .ach-total { font-size: 15px; margin-bottom: 14px; }
+  .ach-total b { color: var(--gold); font-size: 20px; }
+  .ach-row { display: grid; grid-template-columns: 92px 1fr 110px; align-items: center; gap: 12px; padding: 8px 0; }
+  .ach-name { font-size: 13.5px; font-weight: 600; }
+  .ach-bar { height: 10px; background: var(--panel2); border-radius: 999px; overflow: hidden; }
+  .ach-fill { height: 100%; background: linear-gradient(90deg, var(--accent), var(--gold)); border-radius: 999px; }
+  .ach-num { font-size: 12.5px; color: var(--muted); text-align: right; }
+  .ach-num b { color: var(--text); }
+  /* 英雄皮肤按职业分布 */
+  .class-summary { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 16px; display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px 16px; }
+  .class-row { font-size: 12.5px; }
+  .class-row .cl { display: flex; justify-content: space-between; margin-bottom: 4px; }
+  .class-row .cl b { color: var(--text); }
+  .class-row .cl span { color: var(--muted); }
+  .class-bar { height: 7px; background: var(--panel2); border-radius: 999px; overflow: hidden; }
+  .class-fill { height: 100%; background: linear-gradient(90deg, var(--gold), var(--owned)); border-radius: 999px; }
+  .grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px;
+  }
+  .card {
+    background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius);
+    overflow: hidden; transition: .15s; position: relative;
+  }
+  .card:hover { transform: translateY(-3px); border-color: var(--accent); }
+  .card.owned { border-color: var(--owned); }
+  .thumb {
+    aspect-ratio: 1 / 1; background: var(--panel2); display: flex; align-items: center;
+    justify-content: center; position: relative; overflow: hidden;
+  }
+  .thumb img { width: 100%; height: 100%; object-fit: contain; }
+  .ph {
+    font-size: 30px; font-weight: 700; color: #cdd9ea; text-align: center; padding: 8px;
+    line-height: 1.2; word-break: break-all;
+  }
+  .badge {
+    position: absolute; top: 8px; right: 8px; font-size: 12px; padding: 3px 8px;
+    border-radius: 999px; font-weight: 600;
+  }
+  .badge.owned { background: var(--owned); color: #04130a; }
+  .badge.lock { background: rgba(107,122,144,.25); color: var(--lock); }
+  .meta { padding: 9px 11px 11px; }
+  .name { font-size: 13.5px; font-weight: 600; line-height: 1.35; }
+  .sub { font-size: 11.5px; color: var(--muted); margin-top: 4px; }
+  .class-chip { display: inline-block; font-size: 11px; padding: 1px 7px; border-radius: 6px;
+    background: var(--panel2); color: var(--gold); margin-top: 5px; }
+  .import {
+    margin-top: 22px; background: var(--panel); border: 1px solid var(--line);
+    border-radius: var(--radius); padding: 16px;
+  }
+  .import h3 { margin: 0 0 10px; font-size: 15px; }
+  .import textarea {
+    width: 100%; min-height: 96px; background: var(--panel2); color: var(--text);
+    border: 1px solid var(--line); border-radius: 8px; padding: 10px; font-size: 13px;
+    font-family: ui-monospace, Menlo, Consolas, monospace; resize: vertical;
+  }
+  .import .row { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; align-items: center; }
+  .btn {
+    background: var(--accent); color: #06101f; border: none; border-radius: 8px;
+    padding: 8px 16px; font-size: 13px; font-weight: 600; cursor: pointer;
+  }
+  .btn.ghost { background: var(--panel2); color: var(--text); border: 1px solid var(--line); }
+  .hint { color: var(--muted); font-size: 12.5px; }
+  .msg { font-size: 12.5px; color: var(--gold); margin-left: 6px; }
+  .loading { color: var(--muted); padding: 40px; text-align: center; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>炉石外观收藏查看器</h1>
+    <p>卡背 · 英雄皮肤 · 幸运币 · 成就 —— 浏览 / 筛选 / 标记拥有。拥有状态由 hs-cosmetics-collector 自动从游戏内存采集（4 个独立文件），也可手动导入你自己的清单。</p>
+  </header>
+
+  <div class="tabs" id="tabs"></div>
+
+  <div class="toolbar" id="toolbar">
+    <div class="seg" id="filterSeg">
+      <button data-f="all" class="on">全部</button>
+      <button data-f="owned">已拥有</button>
+      <button data-f="locked">未拥有</button>
+    </div>
+    <select id="sort">
+      <option value="default">排序：默认(dbfId)</option>
+      <option value="name">名称</option>
+    </select>
+    <input type="search" id="search" placeholder="搜索名称…" />
+    <div class="stat" id="stat"></div>
+  </div>
+
+  <div class="class-summary" id="classSummary" style="display:none"></div>
+  <div class="grid" id="grid"><div class="loading">加载中…</div></div>
+
+  <div class="import">
+    <h3>导入你的拥有列表</h3>
+    <p class="hint">粘贴每行一个标识（支持 cardId / cardBackId / dbfId / 名称，例如 <code>DAL_COIN</code>、<code>379</code>、<code>HERO_01</code>、<code>暗月幸运币</code>）。留空则匹配不到。点“应用”后保存为本地拥有清单。</p>
+    <textarea id="importBox" placeholder="DAL_COIN&#10;379&#10;HERO_01&#10;暗月幸运币"></textarea>
+    <div class="row">
+      <button class="btn" id="applyBtn">应用拥有列表</button>
+      <button class="btn ghost" id="exportBtn">导出当前清单</button>
+      <button class="btn ghost" id="clearBtn">清空拥有</button>
+      <span class="msg" id="importMsg"></span>
+    </div>
+  </div>
+</div>
+
+<script>
+const TYPES = [
+  { key: 'coins', label: '幸运币' },
+  { key: 'cardBacks', label: '卡背' },
+  { key: 'heroSkins', label: '英雄皮肤' },
+  { key: 'achievements', label: '成就' }
+]
+let catalog = null
+let owned = { coins: [], cardBacks: [], heroSkins: [] }
+let curType = 'coins'
+let curFilter = 'all'
+
+const $ = (s) => document.querySelector(s)
+const tabsEl = $('#tabs')
+const gridEl = $('#grid')
+const statEl = $('#stat')
+
+// 构建 tab
+TYPES.forEach((t, i) => {
+  const b = document.createElement('button')
+  b.className = 'tab' + (i === 0 ? ' active' : '')
+  b.textContent = t.label
+  b.onclick = () => { curType = t.key; [...tabsEl.children].forEach(c => c.classList.remove('active')); b.classList.add('active'); render() }
+  tabsEl.appendChild(b)
+})
+
+// filter seg
+$('#filterSeg').addEventListener('click', (e) => {
+  const b = e.target.closest('button'); if (!b) return
+  curFilter = b.dataset.f
+  [...e.currentTarget.children].forEach(c => c.classList.remove('on'))
+  b.classList.add('on')
+  render()
+})
+$('#sort').onchange = render
+$('#search').oninput = render
+
+function phText (item) {
+  const s = (item.name || '?').trim()
+  return s.length <= 4 ? s : s.slice(0, 4)
+}
+
+function matchesQuery (item, q) {
+  if (!q) return true
+  return (item.name || '').toLowerCase().includes(q) ||
+         String(item.id).toLowerCase().includes(q) ||
+         String(item.dbfId ?? '').includes(q)
+}
+
+function render () {
+  if (!catalog) return
+  if (curType === 'achievements') return renderAchievements()
+  $('#toolbar').style.display = ''
+  const items = catalog[curType]
+  const ownedSet = new Set(owned[curType].map(String))
+  // 兼容多字段：硬币用 dbfId 匹配（游戏内存返回的是 dbfId），卡背/皮肤用 cardId
+  const isOwnedItem = (it) => {
+    if (ownedSet.has(String(it.id))) return true
+    if (it.dbfId != null && ownedSet.has(String(it.dbfId))) return true
+    if (curType === 'heroSkins' && it.cosmeticHeroId != null && ownedSet.has(String(it.cosmeticHeroId))) return true
+    return false
+  }
+  const q = $('#search').value.trim().toLowerCase()
+  const sortMode = $('#sort').value
+
+  let list = items.filter(it => matchesQuery(it, q))
+  if (curFilter === 'owned') list = list.filter(it => isOwnedItem(it))
+  if (curFilter === 'locked') list = list.filter(it => !isOwnedItem(it))
+
+  if (sortMode === 'name') list = [...list].sort((a, b) => a.name.localeCompare(b.name, 'zh'))
+  else list = [...list].sort((a, b) => a.sortKey - b.sortKey)
+
+  const total = items.length
+  const ownedCount = items.filter(it => isOwnedItem(it)).length
+  const realOwned = (owned.counts && owned.counts[curType] != null) ? owned.counts[curType] : ownedCount
+  statEl.innerHTML = `共 <b>${total}</b> · 已拥有 <b>${realOwned}</b>${realOwned !== ownedCount ? ` <span style="color:var(--muted)">(目录匹配 ${ownedCount})</span>` : ''} · 显示 <b>${list.length}</b>`
+
+  // 英雄皮肤：显示按职业分布小结
+  const sumEl = $('#classSummary')
+  if (curType === 'heroSkins') {
+    const byClass = {}
+    for (const it of items) {
+      const cls = it.heroClass || '未知'
+      byClass[cls] = byClass[cls] || { total: 0, owned: 0 }
+      byClass[cls].total++
+      if (isOwnedItem(it)) byClass[cls].owned++
+    }
+    sumEl.innerHTML = Object.entries(byClass)
+      .map(([cls, v]) => {
+        const pct = v.total ? Math.round(v.owned / v.total * 100) : 0
+        return `<div class="class-row"><div class="cl"><b>${cls}</b><span>${v.owned}/${v.total}</span></div><div class="class-bar"><div class="class-fill" style="width:${pct}%"></div></div></div>`
+      }).join('')
+    sumEl.style.display = ''
+  } else {
+    sumEl.style.display = 'none'
+    sumEl.innerHTML = ''
+  }
+
+  if (!list.length) { gridEl.innerHTML = '<div class="loading">无匹配项</div>'; return }
+  gridEl.innerHTML = ''
+  for (const it of list) {
+    const isOwned = isOwnedItem(it)
+    const card = document.createElement('div')
+    card.className = 'card' + (isOwned ? ' owned' : '')
+    const img = it.image ? `<img src="${location.origin}${it.image}" alt="" onerror="this.style.display='none';this.parentNode.querySelector('.ph').style.display='flex'">` : ''
+    card.innerHTML = `
+      <div class="thumb">
+        ${img}
+        <div class="ph" style="display:${it.image ? 'none' : 'flex'}">${phText(it)}</div>
+        <span class="badge ${isOwned ? 'owned' : 'lock'}">${isOwned ? '✓ 已拥有' : '🔒 未拥有'}</span>
+      </div>
+      <div class="meta">
+        <div class="name">${it.name || it.id}</div>
+        ${it.heroClass ? `<span class="class-chip">${it.heroClass}</span>` : ''}
+        ${it.howToGet ? `<div class="sub">${it.howToGet}</div>` : ''}
+      </div>`
+    gridEl.appendChild(card)
+  }
+}
+
+function renderAchievements () {
+  $('#toolbar').style.display = 'none'
+  const ach = owned.achievements
+  if (!ach || !ach.categories) {
+    gridEl.innerHTML = '<div class="loading">无成就数据。请先运行 hs-cosmetics-collector 采集器（炉石运行时）。</div>'
+    statEl.innerHTML = ''
+    return
+  }
+  const cats = ach.categories
+  const totalAll = cats.reduce((s, c) => s + (c.TotalAchievements || 0), 0)
+  const doneAll = cats.reduce((s, c) => s + (c.CompletedAchievements || 0), 0)
+  const ptsAll = cats.reduce((s, c) => s + (c.Points || 0), 0)
+  const availAll = cats.reduce((s, c) => s + (c.AvailablePoints || 0), 0)
+  const pctAll = totalAll ? Math.round(doneAll / totalAll * 100) : 0
+
+  let html = `<div class="ach-summary">`
+  html += `<div class="ach-total">已达成成就 <b>${ach.totalCompleted ?? doneAll}</b> · 完成度 ${pctAll}%（${doneAll}/${totalAll}） · 成就点数 <b>${ptsAll}</b>/${availAll}</div>`
+  html += `<div class="ach-bar"><div class="ach-fill" style="width:${pctAll}%"></div></div>`
+  html += `</div>`
+
+  html += `<div class="ach-list">`
+  for (const c of cats) {
+    const done = c.CompletedAchievements || 0
+    const total = c.TotalAchievements || 0
+    const pct = total ? Math.round(done / total * 100) : 0
+    html += `<div class="ach-row">
+      <div class="ach-name">${c.name || c.id}</div>
+      <div class="ach-bar"><div class="ach-fill" style="width:${pct}%"></div></div>
+      <div class="ach-num"><b>${done}</b>/${total} · ${c.Points||0}pt</div>
+    </div>`
+  }
+  html += `</div>`
+
+  gridEl.innerHTML = html
+  statEl.innerHTML = ''
+}
+
+async function load () {
+  const [c, o] = await Promise.all([
+    fetch('/api/catalog').then(r => r.json()),
+    fetch('/api/owned').then(r => r.json()).catch(() => ({ coins: [], cardBacks: [], heroSkins: [] }))
+  ])
+  catalog = c; owned = o; render()
+}
+
+// 导入：把文本解析成三类 id 集合
+async function applyImport () {
+  const text = $('#importBox').value
+  const tokens = text.split(/[\n,，\s]+/).map(s => s.trim()).filter(Boolean)
+  const c = catalog
+  const result = { coins: new Set(), cardBacks: new Set(), heroSkins: new Set() }
+  let unmatched = 0
+  for (const tk of tokens) {
+    const lower = tk.toLowerCase()
+    let hit = false
+    for (const type of Object.keys(c)) {
+      const found = c[type].find(it =>
+        String(it.id).toLowerCase() === lower ||
+        String(it.dbfId ?? '').toLowerCase() === lower ||
+        (it.name || '').toLowerCase().includes(lower) ||
+        lower.includes((it.name || '').toLowerCase())
+      )
+      if (found) { result[type].add(String(found.id)); hit = true; break }
+    }
+    if (!hit) unmatched++
+  }
+  const payload = {
+    coins: [...result.coins], cardBacks: [...result.cardBacks], heroSkins: [...result.heroSkins],
+    achievements: owned.achievements ?? null
+  }
+  const r = await fetch('/api/owned', {
+    method: 'POST', headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(payload)
+  }).then(r => r.json())
+  owned = r.owned
+  const total = payload.coins.length + payload.cardBacks.length + payload.heroSkins.length
+  $('#importMsg').textContent = `已应用 ${total} 项，无法识别 ${unmatched} 项`
+  render()
+}
+
+$('#applyBtn').onclick = applyImport
+$('#clearBtn').onclick = async () => {
+  const keepAch = owned.achievements ?? null
+  await fetch('/api/owned', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ coins: [], cardBacks: [], heroSkins: [], achievements: keepAch }) })
+  owned = { coins: [], cardBacks: [], heroSkins: [], achievements: keepAch }
+  $('#importMsg').textContent = '已清空外观（成就保留）'
+  render()
+}
+$('#exportBtn').onclick = () => {
+  const blob = new Blob([JSON.stringify(owned, null, 2)], { type: 'application/json' })
+  const a = document.createElement('a')
+  a.href = URL.createObjectURL(blob)
+  a.download = 'owned-cosmetics.json'
+  a.click()
+}
+
+load()
+</script>
+</body>
+</html>

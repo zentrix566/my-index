@@ -600,8 +600,11 @@ function contactAuthor() {
   window.location.href = `mailto:${AUTHOR_EMAIL}?subject=${encodeURIComponent('炉石成就查看器 - 反馈/建议')}`
 }
 
-const userAch = useAchievementProgress() // 默认加载当前用户进度到 progressData
-userAch.init()
+// 成就进度：进入页面 / 登录态变化时，由下方 watch(user) 统一触发刷新（reloadProgress），
+// 未登录则保持空进度（服务器返回空对象 → 全部未完成，用于匿名浏览）。
+// 注意：不要在此处再调 userAch.init()，否则会与 watch 的 reloadProgress 重复拉取，
+// 导致「进首页时刷新进度跑两次」。
+const userAch = useAchievementProgress()
 // 进度数据源：登录显示自己的进度；未登录时服务端 /api/achievements/progress 返回空对象，
 // 即「全部成就、全部未完成」，用于匿名浏览与导出全部成就（不再展示 owner 示例账号进度）。
 const displayProgress = computed(() => userAch.progress.value)

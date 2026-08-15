@@ -104,22 +104,24 @@
           :class="{ active: statusFilter === 'missing' }"
           @click="browseUnowned"
         >从未收藏开始浏览</button>
-        <span v-if="user" class="hs-btn hs-btn-ghost is-disabled" aria-disabled="true" title="正在测试中">下载 Firestone 导出工具（测试中）</span>
-        <button v-if="user" type="button" class="hs-btn hs-btn-ghost" disabled title="正在测试中">选择导出的 JSON 文件（测试中）</button>
-        <input ref="importFileInput" class="hs-firestone-file-input" type="file" accept="application/json,.json" @change="previewFirestoneImport" />
+        <a v-if="user" class="hs-btn hs-btn-ghost" :href="COLLECTOR_DOWNLOAD_URL" download>下载收藏采集工具</a>
+        <button v-if="user" type="button" class="hs-btn hs-btn-ghost" @click="importFileInput.click()">选择采集的 JSON 文件</button>
+        <input ref="importFileInput" class="hs-firestone-file-input" type="file" accept="application/json,.json" @change="previewImport" />
       </div>
 
       <section v-if="importPreview" class="hs-firestone-import" aria-live="polite">
         <div>
-          <strong>Firestone 收藏导入预览</strong>
+          <strong>收藏采集导入预览</strong>
           <p>文件内有 {{ importPreview.sourceCardBacks }} 个卡背记录、{{ importPreview.sourceCoins }} 个幸运币记录、{{ importPreview.sourceHeroSkins }} 个英雄皮肤记录。</p>
           <p>网站识别到 {{ importPreview.detectedCardBacks }} 个卡背、{{ importPreview.detectedCoins }} 个幸运币、{{ importPreview.detectedHeroSkins }} 个英雄皮肤。</p>
           <p>确认后将新增 {{ importPreview.cardBacks }} 个卡背、{{ importPreview.coins }} 个幸运币、{{ importPreview.heroSkins }} 个英雄皮肤。</p>
-          <small v-if="importPreview.unsupportedHeroSkins">另有 {{ importPreview.unsupportedHeroSkins }} 个战棋英雄皮肤 ID；当前网站未收录战棋皮肤，暂不导入。</small>
+          <small v-if="importPreview.unmatchedCardBacks || importPreview.unmatchedCoins || importPreview.unmatchedHeroSkins">
+            另有 {{ importPreview.unmatchedCardBacks + importPreview.unmatchedCoins + importPreview.unmatchedHeroSkins }} 个 ID 在网站目录暂无名称（多为最新内容未更新或本地目录缺项），不影响已拥有高亮。
+          </small>
         </div>
         <div class="hs-firestone-import-actions">
           <button type="button" class="hs-btn hs-btn-ghost" @click="importPreview = null">取消</button>
-          <button type="button" class="hs-btn hs-btn-primary" :disabled="profileSaving" @click="confirmFirestoneImport">确认导入</button>
+          <button type="button" class="hs-btn hs-btn-primary" :disabled="profileSaving" @click="confirmImport">确认导入</button>
         </div>
       </section>
 
@@ -127,7 +129,7 @@
         <template v-if="isGlobalSearch">
           正在全部收藏中搜索“{{ normalizedQuery }}”，找到 {{ filteredItems.length }} 个结果
         </template>
-        <template v-else>仅按名称搜索全部英雄皮肤、幸运币和卡背。先下载并运行导出工具，再选择生成的 JSON 文件即可预览导入。</template>
+        <template v-else>仅按名称搜索全部英雄皮肤、幸运币和卡背。先下载并运行收藏采集工具，再选择生成的 cosmetics.json 即可预览导入。</template>
       </p>
 
       <div v-if="profileLoading" class="hs-collection-empty" role="status">正在加载收藏…</div>
@@ -322,7 +324,7 @@
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { computed, ref, watch, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
 import heroSkins from '../data/hero-skins.json'
 import coins from '../data/coins.json'
@@ -343,17 +345,9 @@ import {
   sortOwnedCosmeticsFirst
 } from '../utils/cosmetics.js'
 
-// 与游戏“幸运币”收藏页一致：基础幸运币 + 54 个当前外观币。
-// 四个旧扩展奖励币（FP1/GVG/AT/LOE）保留在原始资料中，但不在此收藏页展示。
-const COIN_DISPLAY_ORDER = [
-  'DMF_COIN1', 'DMF_COIN2', 'BAR_COIN1', 'BAR_COIN2', 'BAR_COIN3', 'SW_COIN1', 'SW_COIN2', 'BT_COIN',
-  'DRG_COIN', 'ULD_COIN', 'DAL_COIN', 'AV_COIN1', 'AV_COIN2', 'TSC_COIN1', 'TSC_COIN2', 'REV_COIN1',
-  'REV_COIN2', 'RLK_COIN1', 'RLK_COIN2', 'ETC_COIN1', 'ETC_COIN2', 'TTN_COIN1', 'TTN_COIN2', 'WW_COIN1',
-  'WW_COIN2', 'TOY_COIN3', 'TOY_COIN1', 'TOY_COIN2', 'GDB_COIN1', 'GDB_COIN2', 'VAC_COIN1', 'VAC_COIN2',
-  'MUDAN_COIN1', 'EDR_COIN1', 'EDR_COIN2', 'TIME_COIN1', 'TIME_COIN2', 'TIME_EVENT_COIN', 'TLC_COIN1', 'TLC_COIN2',
-  'TIME_COIN3', 'DINO_COIN1', 'DINO_COIN2', 'TIME_COIN4', 'DFT_ALEX_COIN1', 'CATA_COIN1', 'CATA_COIN2', 'CATA_COIN4',
-  'JAIL_COIN1', 'JAIL_COIN2', 'CATA_COIN5', 'CATA_COIN6', 'CATA_COIN3', 'JAIL_COIN3'
-]
+// 幸运币按 dbfId 升序排列（基础幸运币 DEFAULT_COIN 前置，dbfId=5 最小天然排最前）。
+// 注：dbfId 与「加入游戏时间」并不一致（如暗月 dbf=64827 < 怪盗军团 dbf=73372，但后者发布更早），
+// 故这种排法只是稳定的近似，并非游戏内真实顺序。四个旧扩展奖励币(FP1/GVG/AT/LOE)标记 hidden，已被过滤排除。
 const DEFAULT_COIN = {
   id: 'coins-game_005',
   cardId: 'GAME_005',
@@ -376,14 +370,17 @@ const DEATH_KNIGHT_DISPLAY_ORDER = [
   'HERO_11ao', 'HERO_11aq', 'HERO_11ar', 'HERO_11as', 'HERO_11aw', 'HERO_11ax', 'HERO_11ay', 'HERO_11az',
   'HERO_11bc', 'HERO_11bd', 'HERO_11bi'
 ]
-const coinByCardId = new Map(coins.map((item) => [item.cardId, item]))
 const heroSkinByCardId = new Map(heroSkins.map((item) => [item.cardId, item]))
+// 采集器 heroSkins.ids 是 cardId（如 HERO_01），映射到目录的 profile id（如 hero-skins-hero_01）
+const heroSkinIdByCardId = new Map(heroSkins.map((item) => [String(item.cardId), item.id]))
+// 收藏采集工具（Windows 桌面程序）下载地址；部署时可用 VITE_COLLECTOR_DOWNLOAD_URL 覆盖。
+const COLLECTOR_DOWNLOAD_URL = import.meta.env.VITE_COLLECTOR_DOWNLOAD_URL || '/hs-cosmetics-collector.zip'
 const collectionCatalog = {
   heroSkins: [
     ...heroSkins.filter((item) => item.heroClass !== '死亡骑士'),
     ...DEATH_KNIGHT_DISPLAY_ORDER.map((cardId) => heroSkinByCardId.get(cardId)).filter(Boolean)
   ].filter((item) => !item.hidden),
-  coins: [DEFAULT_COIN, ...COIN_DISPLAY_ORDER.map((cardId) => coinByCardId.get(cardId)).filter(Boolean)].filter((item) => !item.hidden),
+  coins: [DEFAULT_COIN, ...coins.filter((item) => !item.hidden).sort((a, b) => Number(a.dbfId) - Number(b.dbfId))],
   cardBacks: cardBacks.filter((item) => !item.hidden)
 }
 
@@ -509,10 +506,51 @@ function onImgError(id) {
   errorSet.value = errored
 }
 
-// 翻页/切换类型/筛选/改每页个数时重置图片加载态，保证新一页重新淡入并释放旧状态
+// 图片加载兜底：同源 OSS 反代冷启动时，受浏览器同源并发上限(~6)影响，
+// 首屏一批(每页默认 8 张)缩略图会被排队、可能长时间挂起。若 IMG_LOAD_TIMEOUT_MS
+// 内既未 load 也未 error，则强制结束骨架转圈（标记占位），避免永久转圈。
+const IMG_LOAD_TIMEOUT_MS = 8000
+let imgLoadTimer = null
+
+function clearImgLoadTimer() {
+  if (imgLoadTimer) {
+    clearTimeout(imgLoadTimer)
+    imgLoadTimer = null
+  }
+}
+
+function armImgLoadTimeout(ids) {
+  clearImgLoadTimer()
+  if (!ids.length) return
+  const idSet = new Set(ids)
+  imgLoadTimer = setTimeout(() => {
+    const pending = [...idSet].filter((id) => !loadedSet.value.has(id))
+    if (!pending.length) return
+    const nextLoaded = new Set(loadedSet.value)
+    const nextErr = new Set(errorSet.value)
+    pending.forEach((id) => {
+      nextLoaded.add(id)
+      nextErr.add(id)
+    })
+    loadedSet.value = nextLoaded
+    errorSet.value = nextErr
+  }, IMG_LOAD_TIMEOUT_MS)
+}
+
+// 翻页/切换类型/筛选/改每页个数/改页码时重置图片加载态。
+// 关键：只保留「当前页仍存在且之前已完成加载/失败」的 id，避免改每页个数等操作时，
+// 已经显示出来的图被错误清回骨架——浏览器不会为「复用且已缓存」的 <img> 重新触发 load 事件，
+// 这正是「之前显示的前 N 张突然不显示、只剩新加的几张正常」的根因。
+// 同时剔除已不在当前页的旧 id，避免跨页/切类型后状态残留累积。
 function resetImageLoadState() {
-  loadedSet.value = new Set()
-  errorSet.value = new Set()
+  const ids = pagination.value.items.map((it) => it.id)
+  const idSet = new Set(ids)
+  const nextLoaded = new Set([...loadedSet.value].filter((id) => idSet.has(id)))
+  const nextErr = new Set([...errorSet.value].filter((id) => idSet.has(id)))
+  loadedSet.value = nextLoaded
+  errorSet.value = nextErr
+  // 仅为尚未加载完成（新出现的）图启动兜底计时，已加载的不再重复计时
+  armImgLoadTimeout(ids)
 }
 
 function isOwned(item) {
@@ -541,6 +579,8 @@ function readIdList(payload, keys) {
   for (const key of keys) {
     const value = payload?.[key] ?? payload?.collection?.[key]
     if (Array.isArray(value)) return value
+    // 采集器格式：{ cardBacks: { count, ids: [...] } }
+    if (value && Array.isArray(value.ids)) return value.ids
   }
   return []
 }
@@ -548,27 +588,56 @@ function readIdList(payload, keys) {
 function getImportedIds(payload) {
   const cardBackById = new Map(cardBacks.map((item) => [Number(item.cardBackId), item.id]))
   const coinByDbfId = new Map(collectionCatalog.coins.map((item) => [Number(item.dbfId), item.id]))
-  const cardBackSource = readIdList(payload, ['cardBackIds', 'cardBacks'])
-  const coinSource = readIdList(payload, ['coinDbfIds', 'coins'])
-  const heroSkinSource = readIdList(payload, ['heroSkinDbfIds', 'heroSkins'])
+  const cardBackSource = readIdList(payload, ['cardBacks', 'cardBackIds'])
+  const coinSource = readIdList(payload, ['coins', 'coinDbfIds', 'coinIds'])
+  const heroSkinSource = readIdList(payload, ['heroSkins', 'heroSkinIds', 'heroSkinDbfIds'])
+  let cbUnmatched = 0
+  let coUnmatched = 0
+  let hsUnmatched = 0
   const importedCardBacks = new Set(cardBackSource.map((id) => {
     const value = String(id)
-    return cardBackById.get(Number(id)) || (cardBacks.some((item) => item.id === value) ? value : '')
+    const mapped = cardBackById.get(Number(id)) || (cardBacks.some((item) => item.id === value) ? value : '')
+    if (!mapped) cbUnmatched++
+    return mapped
   }).filter(Boolean))
   const importedCoins = new Set(coinSource.map((id) => {
     const value = String(id)
-    return coinByDbfId.get(Number(id)) || (collectionCatalog.coins.some((item) => item.id === value) ? value : '')
+    const mapped = coinByDbfId.get(Number(id)) || (collectionCatalog.coins.some((item) => item.id === value) ? value : '')
+    if (!mapped) coUnmatched++
+    return mapped
   }).filter(Boolean))
-  return { cardBacks: importedCardBacks, coins: importedCoins, heroSkins: new Set(), cardBackSource, coinSource, heroSkinSource }
+  const importedHeroSkins = new Set(heroSkinSource.map((id) => {
+    const value = String(id)
+    const mapped = heroSkinIdByCardId.get(value) || (heroSkins.some((item) => item.id === value) ? value : '')
+    if (!mapped) hsUnmatched++
+    return mapped
+  }).filter(Boolean))
+  return {
+    cardBacks: importedCardBacks,
+    coins: importedCoins,
+    heroSkins: importedHeroSkins,
+    cardBackSource,
+    coinSource,
+    heroSkinSource,
+    unmatched: { cardBacks: cbUnmatched, coins: coUnmatched, heroSkins: hsUnmatched }
+  }
 }
 
-async function previewFirestoneImport(event) {
+async function previewImport(event) {
   const file = event.target.files?.[0]
   event.target.value = ''
   if (!file) return
   try {
     const payload = JSON.parse(await file.text())
+    // 收藏页只导入外观（cosmetics.json）。若误传成就文件，给出引导。
+    const isAchievementsFile = payload && !payload.cardBacks && !payload.coins && !payload.heroSkins &&
+      Array.isArray(payload.items)
+    if (isAchievementsFile) {
+      saveError.value = '这是成就数据（achievements.json）。收藏页只需 cosmetics.json；成就明细请在本地查看器查看。'
+      return
+    }
     const imported = getImportedIds(payload)
+    const prof = profile.value.collection
     importPreview.value = {
       cardBackIds: imported.cardBacks,
       coinIds: imported.coins,
@@ -579,18 +648,20 @@ async function previewFirestoneImport(event) {
       detectedCardBacks: imported.cardBacks.size,
       detectedCoins: imported.coins.size,
       detectedHeroSkins: imported.heroSkins.size,
-      cardBacks: [...imported.cardBacks].filter((id) => !profile.value.collection.cardBacks.includes(id)).length,
-      coins: [...imported.coins].filter((id) => !profile.value.collection.coins.includes(id)).length,
-      heroSkins: [...imported.heroSkins].filter((id) => !profile.value.collection.heroSkins.includes(id)).length,
-      unsupportedHeroSkins: Array.isArray(payload?.battlegroundsHeroSkinDbfIds) ? payload.battlegroundsHeroSkinDbfIds.length : 0
+      cardBacks: [...imported.cardBacks].filter((id) => !prof.cardBacks.includes(id)).length,
+      coins: [...imported.coins].filter((id) => !prof.coins.includes(id)).length,
+      heroSkins: [...imported.heroSkins].filter((id) => !prof.heroSkins.includes(id)).length,
+      unmatchedCardBacks: imported.unmatched.cardBacks,
+      unmatchedCoins: imported.unmatched.coins,
+      unmatchedHeroSkins: imported.unmatched.heroSkins
     }
     saveError.value = ''
   } catch {
-    saveError.value = '无法识别导入文件。请选择由 Firestone 收藏导出工具生成的 JSON 文件。'
+    saveError.value = '无法识别导入文件。请选择采集工具生成的 cosmetics.json。'
   }
 }
 
-async function confirmFirestoneImport() {
+async function confirmImport() {
   if (!importPreview.value || profileSaving.value) return
   const preview = importPreview.value
   saveError.value = ''
@@ -635,16 +706,23 @@ watch(user, (value) => {
 }, { immediate: true })
 watch([activeType, activeHeroClass, query, statusFilter], () => {
   currentPage.value = 1
-  resetImageLoadState()
 })
 
 watch(currentPageSize, () => {
   currentPage.value = 1
-  resetImageLoadState()
 })
+
 watch(() => pagination.value.currentPage, (page) => {
   if (currentPage.value !== page) currentPage.value = page
 })
+
+// 任意分页结果变化（首屏渲染、翻页、筛选、改每页个数）都重置并兜底图片加载态，
+// 避免切页后旧加载态串页，也保证首屏能重新计时超时兜底。
+watch(pagination, () => {
+  resetImageLoadState()
+}, { immediate: true })
+
+onBeforeUnmount(clearImgLoadTimer)
 
 function goToPage() {
   const raw = Number(jumpInput.value)

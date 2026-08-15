@@ -78,3 +78,23 @@ scripts/_*.mjs
 # 炉石卡牌图库旧管线脚本（已被 fetch-hs-cards.mjs / upload-hs-cards-to-oss.mjs 取代），不入库
 scripts/analyze-hs-dupes.mjs
 scripts/fetch-card-images.mjs
+
+# 炉石外观采集工具（C# 项目）编译产物与第三方 DLL，不入库
+tools/hs-cosmetics-collector/bin/
+tools/hs-cosmetics-collector/obj/
+tools/hs-cosmetics-collector/dist/
+tools/hs-cosmetics-collector/lib/
+
+# 炉石外观分发包（含 exe/dll），不入库
+tools/hs-cosmetics-dist/
+tools/hs-cosmetics-dist.zip
+
+# 导入器构建产物（由 build-importer.mjs 生成），不入库
+tools/hs-cosmetics-viewer/dist-importer/
+
+# 采集器写入的个人游戏数据（含已拥有外观/成就），绝不入库
+tools/hs-cosmetics-viewer/data/
+tools/hs-cosmetics-viewer/owned-with-names.md
+
+# 带日期的一次性上传脚本，不入库
+scripts/upload-card-backs-20*.mjs
