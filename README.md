@@ -130,6 +130,15 @@ node scripts/download-card-backs-wiki.mjs
 node scripts/gen-card-back-gallery.mjs
 ```
 
+## 炉石外观采集工具（Windows）
+
+`tools/hs-cosmetics-collector/` 是一个 C# Windows 控制台程序，读取《炉石传说》游戏内存生成 `cosmetics.json`，供网站端预览并导入已拥有外观。
+
+- **运行环境**：电脑系统为 Windows，需 **.NET Framework 4.8**（Windows 10 / 11 一般已自带，无需额外安装）。
+- **缺少运行库时**：若双击 `hs-cosmetics-collector.exe` 报错「找不到 .NET Framework」或「需要 .NET Framework 4.8」，请前往微软官网下载并安装 .NET Framework 4.8 运行时：
+  - 下载地址：<https://dotnet.microsoft.com/download/dotnet-framework/net48>
+- **重新构建发布包**（可选，开发者用）：需本机安装 .NET SDK 及 net48 目标包，运行 `tools/hs-cosmetics-collector/build-release.ps1` 生成带版本号的 `hs-cosmetics-collector-vX.Y.Z.zip`，构建后请将生成的 zip 提交到仓库以更新下载。
+
 ## Docker
 
 ```bash
