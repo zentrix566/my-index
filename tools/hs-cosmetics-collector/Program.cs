@@ -18,8 +18,41 @@ namespace HsCosmeticsCollector
     {
         static int Main(string[] args)
         {
-            Console.WriteLine("=== 炉石外观收藏采集器 (MindVision / 游戏内存) ===");
+            PrintBanner();
+            int exitCode;
+            try
+            {
+                exitCode = RunCollector(args);
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Error.WriteLine();
+                Console.Error.WriteLine("[错误] 程序运行中出现未捕获的异常：");
+                Console.Error.WriteLine("  " + ex.Message);
+                if (ex.InnerException != null)
+                    Console.Error.WriteLine("  内部异常: " + ex.InnerException.Message);
+                Console.Error.WriteLine("  请将以上信息截图反馈。");
+                Console.ResetColor();
+                exitCode = 99;
+            }
+            PressAnyKeyToExit();
+            return exitCode;
+        }
 
+        static void PrintBanner()
+        {
+            Console.ForegroundColor = ConsoleColor.DarkCyan;
+            Console.WriteLine("==============================================");
+            Console.WriteLine("      炉石外观收藏采集器 (MindVision)");
+            Console.WriteLine("==============================================");
+            Console.ResetColor();
+            Console.WriteLine("读取游戏内存，导出你已拥有的卡背 / 幸运币 / 英雄皮肤。");
+            Console.WriteLine();
+        }
+
+        static int RunCollector(string[] args)
+        {
             string libDir = Path.Combine(AppContext.BaseDirectory, "lib");
             string hsLibPath = Path.Combine(libDir, "UnitySpy.HearthstoneLib.dll");
             if (!File.Exists(hsLibPath))
@@ -434,19 +467,8 @@ namespace HsCosmeticsCollector
                 WriteJson(Path.Combine(dataDir, "achievements.json"), payload);
             }
 
-            Console.WriteLine($"已写入 2 个文件到: {dataDir}");
-            Console.WriteLine($"  cosmetics.json: 卡背 {cardBackIds.Count} / 幸运币 {coinIds.Count} / 英雄皮肤 {heroSkins.Count}");
-            Console.WriteLine($"  卡背 {cardBackIds.Count} 个 / 幸运币 {coinIds.Count} 个 / 英雄皮肤 {heroSkins.Count} 个" +
-                (achievements != null ? $" / 成就完成 {((Dictionary<string, object?>?)achievements)?["totalCompleted"]}" : ""));
-            if (heroByClass.Count > 0)
-            {
-                Console.WriteLine("  英雄皮肤按职业(已拥有/总数):");
-                foreach (var kv in heroByClass)
-                {
-                    var d = (Dictionary<string, int>)kv.Value;
-                    Console.WriteLine($"    {kv.Key}: {d["owned"]}/{d["total"]}");
-                }
-            }
+            int? achTotal = achievements is Dictionary<string, object?> ad ? ToInt(ad["totalCompleted"]) : null;
+            PrintCompletion(dataDir, cardBackIds.Count, coinIds.Count, heroSkins.Count, heroByClass, achTotal);
             Console.WriteLine("完成后刷新查看器页面即可看到「已拥有」标记。");
 
             try { ((IDisposable)mv).Dispose(); } catch { }
@@ -836,6 +858,43 @@ namespace HsCosmeticsCollector
                 new System.Text.Json.JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
             File.WriteAllText(path, json);
             Console.WriteLine("  写入: " + path);
+        }
+
+        // 采集成功后的醒目摘要（彩色 + 分隔线 + 各类数量 + 输出目录）
+        static void PrintCompletion(string dataDir, int cardBack, int coin, int hero,
+            Dictionary<string, object> heroByClass, int? achTotal)
+        {
+            Console.WriteLine();
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========== 采集完成 ==========");
+            Console.ResetColor();
+            Console.WriteLine($"  输出目录 : {dataDir}");
+            Console.WriteLine($"  卡背     : {cardBack}");
+            Console.WriteLine($"  幸运币   : {coin}");
+            Console.WriteLine($"  英雄皮肤 : {hero}");
+            if (heroByClass != null && heroByClass.Count > 0)
+            {
+                Console.WriteLine("  英雄皮肤按职业(已拥有/总数):");
+                foreach (var kv in heroByClass)
+                {
+                    var d = (Dictionary<string, int>)kv.Value;
+                    Console.WriteLine($"    {kv.Key}: {d["owned"]}/{d["total"]}");
+                }
+            }
+            if (achTotal != null)
+                Console.WriteLine($"  成就完成 : {achTotal}");
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("================================");
+            Console.ResetColor();
+        }
+
+        // 等待用户按键再退出，避免双击运行时一闪而过看不到结果或报错
+        static void PressAnyKeyToExit()
+        {
+            Console.WriteLine();
+            Console.WriteLine("按任意键退出...");
+            try { Console.ReadKey(true); }
+            catch { try { Console.ReadLine(); } catch { } }
         }
     }
 }

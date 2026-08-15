@@ -38,7 +38,7 @@ dotnet build -c Release
 
 1. **启动炉石传说**，进入任意界面（最好打开一次「收藏」界面，确保收藏已初始化）。
 2. 运行 `HsCosmeticsCollector.exe`（保持炉石开着）。
-3. 控制台会打印抓到的数量，并写入 `tools/hs-cosmetics-viewer/data/owned.json`。
+3. 控制台会打印抓到的数量并显示「采集完成」摘要，运行结束后停留，按任意键才退出（双击运行时不再一闪而过），结果写入 `tools/hs-cosmetics-viewer/data/`。
 4. 打开外观收藏查看器（刷新页面），即可看到卡背/幸运币/英雄皮肤的「已拥有」标记，以及「成就」标签页的完成度。
 
 ## 诊断模式（可选）
@@ -95,3 +95,5 @@ HsCosmeticsCollector.exe diagachieve   # 打印成就分类与 Stats 字段，�
 - 控制台打印 `0 个` 但候选方法里能看到 `GetCollectionXxx`：说明 id 提取字段名不对，
   把控制台输出与 `raw` 内容贴出来，调整 `Program.cs` 里的 `priority` 字段优先级即可。
 - Firestone 大版本更新后 DLL 可能变化：重新复制 `lib/` 里的两个 DLL。
+- 程序运行结束后窗口停留、按任意键才关闭：这是预期行为（避免双击运行时一闪而过看不到结果或报错）。
+- 若采集中途报错，程序会以**红色文字**显示原因并停留窗口，把提示截图反馈即可。
