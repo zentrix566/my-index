@@ -40,8 +40,13 @@ finally {
 # 收集要打包的文件
 $binDir = Join-Path $projectDir 'bin' 'Release' 'net48'
 if (-not (Test-Path $binDir)) { throw "找不到构建输出目录: $binDir" }
+# 说明文件：优先 README.txt，回退 README.md（兼容不同命名习惯），都没有则仅告警
 $readme = Join-Path $projectDir 'README.txt'
-if (-not (Test-Path $readme)) { throw "找不到 README.txt: $readme" }
+if (-not (Test-Path $readme)) {
+  $md = Join-Path $projectDir 'README.md'
+  if (Test-Path $md) { $readme = $md }
+}
+if (-not (Test-Path $readme)) { Write-Warning '未找到 README.txt / README.md，打包将不含说明文件' }
 
 # 目标 zip：仓库 public/ 目录（前端下载资源）
 $repoRoot = (Resolve-Path (Join-Path $projectDir '..' '..')).Path
@@ -55,7 +60,7 @@ $tmpDir = Join-Path $env:TEMP "hs-collector-publish-$version"
 if (Test-Path $tmpDir) { Remove-Item $tmpDir -Recurse -Force }
 New-Item -ItemType Directory -Path $tmpDir | Out-Null
 Copy-Item -Path (Join-Path $binDir '*') -Destination $tmpDir -Recurse -Force
-Copy-Item -Path $readme -Destination $tmpDir -Force
+if (Test-Path $readme) { Copy-Item -Path $readme -Destination $tmpDir -Force }
 
 # 生成 zip（先删旧）
 if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
