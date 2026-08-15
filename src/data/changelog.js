@@ -15,7 +15,8 @@ export const changelog = [
       '采集工具发布包文件名改为带版本号（hs-cosmetics-collector-vX.Y.Z.zip），便于核对下载版本；新增 build-release.ps1 一键构建并生成带版本号发布包，exe 已配置炉石主题图标。',
       '修正卡背可见性：随机卡背（cardBackId 158，Card_Back_Random）标记为 hidden，从收藏页过滤，与游戏内不可见/不可选的状态保持一致。',
       '补充采集工具说明文档：在 README 明确采集工具运行需 .NET Framework 4.8（Windows 10/11 一般已自带），并给出微软官方下载地址，双击 exe 报「找不到 .NET Framework」时可直接安装运行库。',
-      '修复采集工具线上下载：Dockerfile 构建阶段补拷 public/，使发布包进入生产镜像，避免下载请求被 SPA 回退成约 2KB 的首页；重新构建部署后下载恢复为完整压缩包。'
+      '修复采集工具线上下载：Dockerfile 构建阶段补拷 public/，使发布包进入生产镜像，避免下载请求被 SPA 回退成约 2KB 的首页；重新构建部署后下载恢复为完整压缩包。',
+      '特别感谢 xx 与 卩乜=乇厶夂𠀋 在炉石外观收藏项目上提出的建议与提供的帮助。'
     ]
   },
   {
