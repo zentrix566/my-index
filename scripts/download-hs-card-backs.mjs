@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 
 const scriptPath = fileURLToPath(import.meta.url)
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
-const manifestPath = join(repoRoot, 'src/features/hearthstone/data/card-backs.json')
+const manifestPath = join(repoRoot, 'public/hearthstone/card-backs.json')
 
 function loadEnv() {
   const envPath = join(repoRoot, '.env')

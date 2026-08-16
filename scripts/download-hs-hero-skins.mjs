@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 
 const scriptPath = fileURLToPath(import.meta.url)
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
-const manifestPath = join(repoRoot, 'src/features/hearthstone/data/hero-skins.json')
+const manifestPath = join(repoRoot, 'public/hearthstone/hero-skins.json')
 const sourceUrl = 'https://api.hearthstonejson.com/v1/latest/zhCN/cards.json'
 const imageBaseUrl = 'https://art.hearthstonejson.com/v1/render/latest/zhCN/512x'
 const acquisitionPattern = /(?:购买|获得|解锁|拥有|完成|参与|达到|预购|奖励|商店|活动|通行证)/

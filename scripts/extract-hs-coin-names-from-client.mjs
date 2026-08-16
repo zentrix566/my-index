@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url'
 
 const scriptPath = fileURLToPath(import.meta.url)
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
-const manifestPath = join(repoRoot, 'src/features/hearthstone/data/coins.json')
+const manifestPath = join(repoRoot, 'public/hearthstone/coins.json')
 const mappingPath = join(repoRoot, 'src/features/hearthstone/data/cosmetic-coin-map.json')
 const defaultGameDirectory = 'E:/Hearthstone'
 const defaultSourceDirectory = 'E:/github/my-heartstone/hearthstone_cosmetics'

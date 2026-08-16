@@ -2,7 +2,7 @@
 /**
  * 生成「炉石卡牌蛙生」用的随从卡数据集（标准 + 狂野）。
  *
- * 数据来源：src/features/hearthstone/data/cards-db.json（暴雪国服构筑卡接口快照，
+ * 数据来源：public/hearthstone/cards-db.json（暴雪国服构筑卡接口快照，
  * 由 scripts/fetch-hs-cards.mjs 生成，已含 OSS 图片相对路径 ossFull / ossCrop）。
  *
  * 通用过滤规则：
@@ -31,7 +31,7 @@ import { fileURLToPath } from 'node:url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
-const DB_FILE = path.join(ROOT, 'src/features/hearthstone/data/cards-db.json')
+const DB_FILE = path.join(ROOT, 'public/hearthstone/cards-db.json')
 const STANDARD_OUT = path.join(ROOT, 'src/features/hearthstone/data/standard-minions.json')
 const WILD_OUT = path.join(ROOT, 'src/features/hearthstone/data/wild-minions.json')
 
@@ -85,7 +85,7 @@ const filterMinions = (predicate) => Object.values(db)
 const buildPayload = (mode, sets, minions) => ({
   mode,
   generatedAt: new Date().toISOString(),
-  source: 'src/features/hearthstone/data/cards-db.json',
+  source: 'public/hearthstone/cards-db.json',
   sets,
   total: minions.length,
   cards: minions

@@ -7,7 +7,7 @@ import { fileURLToPath } from 'node:url'
 
 const scriptPath = fileURLToPath(import.meta.url)
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
-const manifestPath = join(repoRoot, 'src/features/hearthstone/data/coins.json')
+const manifestPath = join(repoRoot, 'public/hearthstone/coins.json')
 const coinMappingPath = join(repoRoot, 'src/features/hearthstone/data/cosmetic-coin-map.json')
 const sourceUrl = 'https://api.hearthstonejson.com/v1/latest/zhCN/cards.json'
 const imageBaseUrl = 'https://art.hearthstonejson.com/v1/render/latest/zhCN/512x'

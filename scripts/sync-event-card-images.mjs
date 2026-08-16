@@ -38,7 +38,7 @@ try {
 const DRY_RUN = process.env.OSS_DRY_RUN === '1'
 const DATA_DIR = join(repoRoot, 'src/features/hearthstone/data')
 const DECK_IMG = join(DATA_DIR, 'deck-card-images.json')
-const CARDS_DB = join(DATA_DIR, 'cards-db.json')
+const CARDS_DB = join(repoRoot, 'public/hearthstone/cards-db.json')
 const WILD = 'E:/github/my-heartstone/hearthstone_cards/wild'
 const EVENT_JSON = process.env.EVENT_JSON || '/tmp/event_cards.json'
 const TMP = join(repoRoot, '.tmp-event-sync')

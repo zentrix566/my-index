@@ -13,6 +13,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..')
 const OWNED_DIR = path.join(ROOT, 'tools/hs-cosmetics-viewer/data')
 const CATALOG_DIR = path.join(ROOT, 'src/features/hearthstone/data')
+const PUBLIC_CATALOG_DIR = path.join(ROOT, 'public/hearthstone')
 const OUT = path.join(ROOT, 'tools/hs-cosmetics-viewer/owned-with-names.md')
 
 function readJson (p) { return JSON.parse(fs.readFileSync(p, 'utf8')) }
@@ -26,8 +27,8 @@ const ach = (() => { try { return readJson(path.join(OWNED_DIR, 'achievements.js
 // 注意：card-backs.json(374条) 不完整，漏掉了 0/131/153/159/160/161 等；
 // 改用更完整的 card-back-map.json(380条)，6 个 ID 全部有名称。
 const catCb = readJson(path.join(CATALOG_DIR, 'card-back-map.json'))
-const catCo = readJson(path.join(CATALOG_DIR, 'coins.json'))
-const catHs = readJson(path.join(CATALOG_DIR, 'hero-skins.json'))
+const catCo = readJson(path.join(PUBLIC_CATALOG_DIR, 'coins.json'))
+const catHs = readJson(path.join(PUBLIC_CATALOG_DIR, 'hero-skins.json'))
 
 const cbMap = new Map()
 for (const c of catCb) cbMap.set(String(c.cardBackId), c)

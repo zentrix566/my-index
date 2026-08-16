@@ -9,6 +9,7 @@ import { fileURLToPath } from 'node:url'
 const scriptDir = fileURLToPath(new URL('.', import.meta.url))
 const repoRoot = resolve(scriptDir, '..')
 const dataDirectory = join(repoRoot, 'src/features/hearthstone/data')
+const publicCatalogDir = join(repoRoot, 'public/hearthstone')
 const prefix = 'hearthstone-cosmetics'
 const supportedImage = /\.(?:avif|gif|jpe?g|png|webp)$/i
 
@@ -124,9 +125,9 @@ for (const definition of definitions) {
 for (const list of Object.values(manifest)) {
   list.sort((a, b) => `${a.heroClass || ''}${a.officialName}`.localeCompare(`${b.heroClass || ''}${b.officialName}`, 'zh-CN'))
 }
-await writeFile(join(dataDirectory, 'hero-skins.json'), `${JSON.stringify(manifest.heroSkins, null, 2)}\n`, 'utf8')
-await writeFile(join(dataDirectory, 'coins.json'), `${JSON.stringify(manifest.coins, null, 2)}\n`, 'utf8')
-await writeFile(join(dataDirectory, 'card-backs.json'), `${JSON.stringify(manifest.cardBacks, null, 2)}\n`, 'utf8')
+await writeFile(join(publicCatalogDir, 'hero-skins.json'), `${JSON.stringify(manifest.heroSkins, null, 2)}\n`, 'utf8')
+await writeFile(join(publicCatalogDir, 'coins.json'), `${JSON.stringify(manifest.coins, null, 2)}\n`, 'utf8')
+await writeFile(join(publicCatalogDir, 'card-backs.json'), `${JSON.stringify(manifest.cardBacks, null, 2)}\n`, 'utf8')
 console.log(`已生成收藏清单：英雄皮肤 ${manifest.heroSkins.length}、幸运币 ${manifest.coins.length}、卡背 ${manifest.cardBacks.length}`)
 
 if (process.env.OSS_DRY_RUN === '1') {

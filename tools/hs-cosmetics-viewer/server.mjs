@@ -4,7 +4,7 @@
 //
 // 运行：  node server.mjs
 // 可选环境变量：
-//   HS_DATA_DIR           主项目 data 目录，默认 E:/github/my-index/src/features/hearthstone/data
+//   HS_DATA_DIR           外观目录数据目录，默认 E:/github/my-index/public/hearthstone
 //   HS_COSMETICS_SOURCE_DIR  本地 cosmetics 图片根目录(若存在则直接静态服务)
 //   OSS_ORIGIN            OSS 源站(如 https://bucket.oss-cn-xx.aliyuncs.com)，
 //                         设置后 /hearthstone-cosmetics/* 自动反代回源，图片即可显示
@@ -18,7 +18,7 @@ import { fileURLToPath } from 'node:url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const PORT = Number(process.env.PORT) || 5178
 const DATA_DIR = process.env.HS_DATA_DIR ||
-  'E:/github/my-index/src/features/hearthstone/data'
+  'E:/github/my-index/public/hearthstone'
 const COSMETICS_SOURCE_DIR = process.env.HS_COSMETICS_SOURCE_DIR || ''
 const OSS_ORIGIN = process.env.OSS_ORIGIN || ''
 const OWNED_DIR = path.join(__dirname, 'data')

@@ -6,8 +6,9 @@ import { fileURLToPath } from 'node:url'
 
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
 const dataDirectory = join(repoRoot, 'src/features/hearthstone/data')
-const coinsPath = join(dataDirectory, 'coins.json')
-const cardBacksPath = join(dataDirectory, 'card-backs.json')
+const publicCatalogDir = join(repoRoot, 'public/hearthstone')
+const coinsPath = join(publicCatalogDir, 'coins.json')
+const cardBacksPath = join(publicCatalogDir, 'card-backs.json')
 const coinMapPath = join(dataDirectory, 'cosmetic-coin-map.json')
 const cardBackMapPath = join(dataDirectory, 'card-back-map.json')
 

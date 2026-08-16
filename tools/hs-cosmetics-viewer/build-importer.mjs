@@ -11,13 +11,14 @@ import { fileURLToPath } from 'node:url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const ROOT = path.resolve(__dirname, '..', '..') // 仓库根 E:/github/my-index
 const CATALOG_DIR = path.join(ROOT, 'src', 'features', 'hearthstone', 'data')
+const PUBLIC_CATALOG_DIR = path.join(ROOT, 'public', 'hearthstone')
 const OUT_DIR = path.join(__dirname, 'dist-importer')
 
 function readJson (p) { return JSON.parse(fs.readFileSync(p, 'utf8')) }
 
 const cardBacks = readJson(path.join(CATALOG_DIR, 'card-back-map.json'))
-const coins = readJson(path.join(CATALOG_DIR, 'coins.json'))
-const heroSkins = readJson(path.join(CATALOG_DIR, 'hero-skins.json'))
+const coins = readJson(path.join(PUBLIC_CATALOG_DIR, 'coins.json'))
+const heroSkins = readJson(path.join(PUBLIC_CATALOG_DIR, 'hero-skins.json'))
 
 const arr = a => Array.isArray(a) ? a : [].concat(...Object.values(a))
 const catalog = {

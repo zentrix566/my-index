@@ -17,6 +17,11 @@
         <button type="button" @click="router.push({ path: '/login', query: { redirect: '/hearthstone/collection', source: 'hearthstone' } })">登录 / 注册</button>
       </div>
       <div v-else-if="saveError" class="hs-collection-notice error" role="alert">{{ saveError }}</div>
+      <div v-if="catalogStatus === 'loading'" class="hs-collection-notice" role="status">外观目录加载中…</div>
+      <div v-else-if="catalogStatus === 'error'" class="hs-collection-notice error" role="alert">
+        外观目录加载失败（{{ catalogError }}）。
+        <button type="button" @click="loadCatalog">重新加载</button>
+      </div>
 
       <nav class="hs-collection-tabs" aria-label="收藏类型">
         <button
@@ -361,9 +366,7 @@
 <script setup>
 import { computed, ref, watch, onBeforeUnmount } from 'vue'
 import { useRouter } from 'vue-router'
-import heroSkins from '../data/hero-skins.json'
-import coins from '../data/coins.json'
-import cardBacks from '../data/card-backs.json'
+import { COLLECTOR_DOWNLOAD_URL } from '../utils/constants.js'
 import { useAuth } from '../../../auth/useAuth.js'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 import { useHearthstoneProfile } from '../composables/useHearthstoneProfile.js'
@@ -379,6 +382,41 @@ import {
   searchCosmetics,
   sortOwnedCosmeticsFirst
 } from '../utils/cosmetics.js'
+
+// 外观目录（皮肤/卡背/幸运币，约 800KB）放 public/hearthstone/ 按需 fetch：
+// 不进 JS 构建包，且数据未变时浏览器可按缓存头长效复用，发版无需重新下载。
+const heroSkins = ref([])
+const coins = ref([])
+const cardBacks = ref([])
+const catalogStatus = ref('loading') // loading | ready | error
+const catalogError = ref('')
+
+async function fetchJson(url) {
+  const resp = await fetch(url, { cache: 'force-cache' })
+  if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
+  return resp.json()
+}
+
+async function loadCatalog() {
+  catalogStatus.value = 'loading'
+  catalogError.value = ''
+  try {
+    const [heroSkinData, coinData, cardBackData] = await Promise.all([
+      fetchJson('/hearthstone/hero-skins.json'),
+      fetchJson('/hearthstone/coins.json'),
+      fetchJson('/hearthstone/card-backs.json')
+    ])
+    heroSkins.value = heroSkinData
+    coins.value = coinData
+    cardBacks.value = cardBackData
+    catalogStatus.value = 'ready'
+  } catch (cause) {
+    catalogStatus.value = 'error'
+    catalogError.value = cause instanceof Error ? cause.message : String(cause)
+  }
+}
+
+void loadCatalog()
 
 // 幸运币按 dbfId 升序排列（基础幸运币 DEFAULT_COIN 前置，dbfId=5 最小天然排最前）。
 // 注：dbfId 与「加入游戏时间」并不一致（如暗月 dbf=64827 < 怪盗军团 dbf=73372，但后者发布更早），
@@ -405,26 +443,23 @@ const DEATH_KNIGHT_DISPLAY_ORDER = [
   'HERO_11ao', 'HERO_11aq', 'HERO_11ar', 'HERO_11as', 'HERO_11aw', 'HERO_11ax', 'HERO_11ay', 'HERO_11az',
   'HERO_11bc', 'HERO_11bd', 'HERO_11bi'
 ]
-const heroSkinByCardId = new Map(heroSkins.map((item) => [item.cardId, item]))
+const heroSkinByCardId = computed(() => new Map(heroSkins.value.map((item) => [item.cardId, item])))
 // 采集器 heroSkins.ids 是 cardId（如 HERO_01），映射到目录的 profile id（如 hero-skins-hero_01）
-const heroSkinIdByCardId = new Map(heroSkins.map((item) => [String(item.cardId), item.id]))
-// 收藏采集工具（Windows 桌面程序）下载地址；文件名带版本号便于核对下载版本。
-// 部署时可用 VITE_COLLECTOR_DOWNLOAD_URL 覆盖。版本号须与 tools/hs-cosmetics-collector/build-release.ps1 生成的一致。
-const COLLECTOR_DOWNLOAD_URL = import.meta.env.VITE_COLLECTOR_DOWNLOAD_URL || '/hs-cosmetics-collector-v1.0.0.zip'
-const collectionCatalog = {
+const heroSkinIdByCardId = computed(() => new Map(heroSkins.value.map((item) => [String(item.cardId), item.id])))
+const collectionCatalog = computed(() => ({
   heroSkins: [
-    ...heroSkins.filter((item) => item.heroClass !== '死亡骑士'),
-    ...DEATH_KNIGHT_DISPLAY_ORDER.map((cardId) => heroSkinByCardId.get(cardId)).filter(Boolean)
+    ...heroSkins.value.filter((item) => item.heroClass !== '死亡骑士'),
+    ...DEATH_KNIGHT_DISPLAY_ORDER.map((cardId) => heroSkinByCardId.value.get(cardId)).filter(Boolean)
   ].filter((item) => !item.hidden),
-  coins: [DEFAULT_COIN, ...coins.filter((item) => !item.hidden).sort((a, b) => Number(a.dbfId) - Number(b.dbfId))],
-  cardBacks: cardBacks.filter((item) => !item.hidden)
-}
+  coins: [DEFAULT_COIN, ...coins.value.filter((item) => !item.hidden).sort((a, b) => Number(a.dbfId) - Number(a.dbfId))],
+  cardBacks: cardBacks.value.filter((item) => !item.hidden)
+}))
 
 // 当前目录中存在的外观 ID 集合。导入/加载时清理 profile 中的「孤儿 ID」：
 // catalog 重建后遗留的旧 ID（与新条目同名但语义已变）会让"已拥有"误命中。
-const validHeroSkinIds = new Set(collectionCatalog.heroSkins.map((item) => item.id))
-const validCoinIds = new Set(collectionCatalog.coins.map((item) => item.id))
-const validCardBackIds = new Set(collectionCatalog.cardBacks.map((item) => item.id))
+const validHeroSkinIds = computed(() => new Set(collectionCatalog.value.heroSkins.map((item) => item.id)))
+const validCoinIds = computed(() => new Set(collectionCatalog.value.coins.map((item) => item.id)))
+const validCardBackIds = computed(() => new Set(collectionCatalog.value.cardBacks.map((item) => item.id)))
 
 function removeOrphanIds(ids, validIds) {
   return (Array.isArray(ids) ? ids : []).filter((id) => validIds.has(id))
@@ -432,9 +467,9 @@ function removeOrphanIds(ids, validIds) {
 
 function cleanProfileCollection(collection) {
   return {
-    heroSkins: removeOrphanIds(collection?.heroSkins, validHeroSkinIds),
-    coins: removeOrphanIds(collection?.coins, validCoinIds),
-    cardBacks: removeOrphanIds(collection?.cardBacks, validCardBackIds)
+    heroSkins: removeOrphanIds(collection?.heroSkins, validHeroSkinIds.value),
+    coins: removeOrphanIds(collection?.coins, validCoinIds.value),
+    cardBacks: removeOrphanIds(collection?.cardBacks, validCardBackIds.value)
   }
 }
 
@@ -471,7 +506,7 @@ function thumbnailUrlFor(item) {
   if (!m) return item.imageUrl
   return `/${m[1]}/384/${m[2]}.webp`
 }
-const globalItems = getGlobalCosmeticItems(collectionCatalog)
+const globalItems = computed(() => getGlobalCosmeticItems(collectionCatalog.value))
 
 // 每页显示个数：按收藏类型分别记忆，默认英雄皮肤 6、幸运币 8、卡背 8、全局搜索 8
 const PAGE_SIZE_STORAGE_KEY = 'hs-collection-page-sizes'
@@ -519,7 +554,7 @@ const currentPageSize = computed({
 const currentType = computed(() => COSMETIC_TYPES.find((type) => type.id === activeType.value))
 const normalizedQuery = computed(() => query.value.trim())
 const isGlobalSearch = computed(() => Boolean(normalizedQuery.value))
-const currentItems = computed(() => (collectionCatalog[activeType.value] || []).map((item) => ({
+const currentItems = computed(() => (collectionCatalog.value[activeType.value] || []).map((item) => ({
   ...item,
   cosmeticType: activeType.value,
   cosmeticTypeLabel: currentType.value.label
@@ -531,7 +566,7 @@ const ownedIds = computed(() => {
   return new Set(all)
 })
 const stats = computed(() => {
-  const result = getCollectionStats(collectionCatalog, profile.value.collection)
+  const result = getCollectionStats(collectionCatalog.value, profile.value.collection)
   // 基础幸运币不在 profile.coins 中，但属于永远拥有的默认币，统一补入统计，避免「已拥有」数少 1。
   if (!profile.value.collection.coins.includes(DEFAULT_COIN.id)) {
     result.byType.coins.owned += 1
@@ -541,11 +576,11 @@ const stats = computed(() => {
   return result
 })
 const heroClassStats = computed(() =>
-  getHeroClassStats(collectionCatalog.heroSkins, profile.value.collection.heroSkins)
+  getHeroClassStats(collectionCatalog.value.heroSkins, profile.value.collection.heroSkins)
 )
 const filteredItems = computed(() => {
   const sourceItems = isGlobalSearch.value
-    ? searchCosmetics(globalItems, normalizedQuery.value)
+    ? searchCosmetics(globalItems.value, normalizedQuery.value)
     : currentItems.value
   const matchingItems = sourceItems.filter((item) => {
     const owned = isOwned(item)
@@ -657,7 +692,7 @@ function readIdList(payload, keys) {
 
 function getImportedIds(payload) {
   const cardBackById = new Map(cardBacks.map((item) => [Number(item.cardBackId), item.id]))
-  const coinByDbfId = new Map(collectionCatalog.coins.map((item) => [Number(item.dbfId), item.id]))
+  const coinByDbfId = new Map(collectionCatalog.value.coins.map((item) => [Number(item.dbfId), item.id]))
   const cardBackSource = readIdList(payload, ['cardBacks', 'cardBackIds'])
   const coinSource = readIdList(payload, ['coins', 'coinDbfIds', 'coinIds'])
   const heroSkinSource = readIdList(payload, ['heroSkins', 'heroSkinIds', 'heroSkinDbfIds'])
@@ -672,13 +707,13 @@ function getImportedIds(payload) {
   }).filter(Boolean))
   const importedCoins = new Set(coinSource.map((id) => {
     const value = String(id)
-    const mapped = coinByDbfId.get(Number(id)) || (collectionCatalog.coins.some((item) => item.id === value) ? value : '')
+    const mapped = coinByDbfId.get(Number(id)) || (collectionCatalog.value.coins.some((item) => item.id === value) ? value : '')
     if (!mapped) coUnmatched++
     return mapped
   }).filter(Boolean))
   const importedHeroSkins = new Set(heroSkinSource.map((id) => {
     const value = String(id)
-    const mapped = heroSkinIdByCardId.get(value) || (heroSkins.some((item) => item.id === value) ? value : '')
+    const mapped = heroSkinIdByCardId.value.get(value) || (heroSkins.value.some((item) => item.id === value) ? value : '')
     if (!mapped) hsUnmatched++
     return mapped
   }).filter(Boolean))
@@ -737,6 +772,11 @@ async function previewImport(event) {
 
 async function confirmImport() {
   if (!importPreview.value || profileSaving.value) return
+  // 目录数据是清理孤儿 ID 的依据：未就绪时 validIds 为空集，直接导入会清掉全部收藏
+  if (catalogStatus.value !== 'ready') {
+    saveError.value = '外观目录尚未加载完成，请稍后或点击重试后再导入。'
+    return
+  }
   const preview = importPreview.value
   saveError.value = ''
   try {

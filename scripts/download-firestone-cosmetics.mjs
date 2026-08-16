@@ -13,7 +13,7 @@ const artBaseUrl = 'https://art.hearthstonejson.com/v1/render/latest/zhCN/512x'
 const firestoneCardBackDataUrl = 'https://static.zerotoheroes.com/hearthstone/data/card-backs.json'
 const firestoneCardBackImageUrl = (id) => `https://static.firestoneapp.com/cardbacks/512/${id}.png`
 const localCardBackMapPath = new URL('../src/features/hearthstone/data/card-back-map.json', import.meta.url)
-const localHeroSkinMapPath = new URL('../src/features/hearthstone/data/hero-skins.json', import.meta.url)
+const localHeroSkinMapPath = new URL('../public/hearthstone/hero-skins.json', import.meta.url)
 const localCoinMapPath = new URL('../src/features/hearthstone/data/cosmetic-coin-map.json', import.meta.url)
 
 const heroFolders = {

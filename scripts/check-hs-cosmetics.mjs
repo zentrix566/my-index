@@ -7,6 +7,7 @@ import { fileURLToPath } from 'node:url'
 
 const repoRoot = resolve(fileURLToPath(new URL('.', import.meta.url)), '..')
 const dataDirectory = join(repoRoot, 'src/features/hearthstone/data')
+const publicCatalogDir = join(repoRoot, 'public/hearthstone')
 const reportPath = join(dataDirectory, 'cosmetics-audit.json')
 
 function loadEnv() {
@@ -42,12 +43,12 @@ function summarize(items, sourceRoot) {
 
 loadEnv()
 const sourceRoot = resolve(process.env.HS_COSMETICS_SOURCE_DIR || 'E:/github/my-heartstone/hearthstone_cosmetics')
-const heroSkins = JSON.parse(await readFile(join(dataDirectory, 'hero-skins.json'), 'utf8'))
+const heroSkins = JSON.parse(await readFile(join(publicCatalogDir, 'hero-skins.json'), 'utf8'))
 const coins = JSON.parse(await readFile(join(dataDirectory, 'cosmetic-coin-map.json'), 'utf8'))
 const cardBacks = JSON.parse(await readFile(join(dataDirectory, 'card-back-map.json'), 'utf8'))
-const manifestHeroSkins = JSON.parse(await readFile(join(dataDirectory, 'hero-skins.json'), 'utf8'))
-const manifestCoins = JSON.parse(await readFile(join(dataDirectory, 'coins.json'), 'utf8'))
-const manifestCardBacks = JSON.parse(await readFile(join(dataDirectory, 'card-backs.json'), 'utf8'))
+const manifestHeroSkins = JSON.parse(await readFile(join(publicCatalogDir, 'hero-skins.json'), 'utf8'))
+const manifestCoins = JSON.parse(await readFile(join(publicCatalogDir, 'coins.json'), 'utf8'))
+const manifestCardBacks = JSON.parse(await readFile(join(publicCatalogDir, 'card-backs.json'), 'utf8'))
 const report = {
   generatedAt: new Date().toISOString(),
   sourceRoot,

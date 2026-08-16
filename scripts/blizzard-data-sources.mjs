@@ -16,7 +16,7 @@ export const DATA_SOURCES = {
     runtimeUsed: true
   },
   cardsDb: {
-    file: 'src/features/hearthstone/data/cards-db.json',
+    file: 'public/hearthstone/cards-db.json',
     description:
       '暴雪国服构筑卡接口快照，供图片上传和未来卡片检索使用，不参与卡组代码解析。',
     generator: 'scripts/fetch-hs-cards.mjs',

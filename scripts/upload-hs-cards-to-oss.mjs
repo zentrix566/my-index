@@ -2,7 +2,7 @@
 /**
  * 把 fetch-hs-cards.mjs 生成的卡牌图上传到阿里云 OSS。
  *
- * 数据源：src/features/hearthstone/data/cards-db.json（每条含 ossFull/ossCrop 相对路径 + dbfId 命名）。
+ * 数据源：public/hearthstone/cards-db.json（每条含 ossFull/ossCrop 相对路径 + dbfId 命名）。
  * 本地文件 = HS_LOCAL_ROOT + oss 路径去掉前缀（/hearthstone-cards/）后的部分。
  *   e.g. ossFull = /hearthstone-cards/决战荒芜之地/full/蹩脚海盗_40608.png
  *        => 本地 E:/github/我的炉石2/hs-cards/决战荒芜之地/full/蹩脚海盗_40608.png
@@ -47,7 +47,7 @@ const accessKeyId = process.env.OSS_ACCESS_KEY_ID
 const accessKeySecret = process.env.OSS_ACCESS_KEY_SECRET
 const prefix = (process.env.OSS_PREFIX || 'hearthstone-cards').replace(/^\/+|\/+$/g, '')
 const SRC_DIR = resolve(process.env.OSS_SOURCE_DIR || 'E:/github/我的炉石2/hs-cards-id')
-const DB_PATH = join(repoRoot, 'src/features/hearthstone/data/cards-db.json')
+const DB_PATH = join(repoRoot, 'public/hearthstone/cards-db.json')
 const DRY_RUN = process.env.OSS_DRY_RUN === '1'
 const skipExisting = process.env.OSS_SKIP_EXISTING !== '0'
 const CHECK_CONCURRENCY = Number(process.env.OSS_CHECK_CONCURRENCY) || 20

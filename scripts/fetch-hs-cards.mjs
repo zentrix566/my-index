@@ -345,8 +345,8 @@ async function main() {
   if (DRY_RUN) {
     log(`[DRY-RUN] cards-db.json 将写入 ${cardsMap.size} 条（未实际写入）`)
   } else {
-    await writeFile(join(DATA_DIR, 'cards-db.json'), JSON.stringify(db))
-    log(`cards-db.json 写入 ${cardsMap.size} 条`)
+    await writeFile(join(repoRoot, 'public/hearthstone/cards-db.json'), JSON.stringify(db))
+    log(`cards-db.json 写入 ${cardsMap.size} 条 → public/hearthstone/cards-db.json`)
   }
 
   // 成就相关卡名集合：成就清单只放这些卡，避免把全量卡牌灌进 achievement-card-images.json

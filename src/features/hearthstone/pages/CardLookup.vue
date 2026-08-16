@@ -30,11 +30,18 @@
               class="cl-input"
               type="text"
               placeholder="例如：蛙生 / 邪恶的虚鳞纳迦 / 129959"
+              :disabled="dbStatus !== 'ready'"
               @keyup.enter="lookup"
             />
-            <button type="button" class="cl-btn cl-primary" @click="lookup">查询</button>
+            <button type="button" class="cl-btn cl-primary" :disabled="dbStatus !== 'ready'" @click="lookup">
+              {{ dbStatus === 'loading' ? '加载卡牌库…' : '查询' }}
+            </button>
           </div>
-          <p v-if="error" class="cl-error" role="alert">{{ error }}</p>
+          <p v-if="dbStatus === 'error'" class="cl-error" role="alert">
+            卡牌库加载失败（{{ dbError }}）。
+            <button type="button" class="cl-btn" @click="loadCardsDb">重新加载</button>
+          </p>
+          <p v-else-if="error" class="cl-error" role="alert">{{ error }}</p>
           <p v-else class="cl-hint">支持按名称（模糊匹配）或纯数字 dbfId 精确查询。</p>
         </div>
 
@@ -92,12 +99,33 @@
 </template>
 
 <script setup>
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
-import cardsDb from '../data/cards-db.json' with { type: 'json' }
 import { getLocalCardImages, normalizeRarity, getRarityColor, RARITY_LABELS } from '../utils/cardImages.js'
 
 const { hsTheme } = useHearthstoneTheme()
+
+// 卡牌库约 5.5MB，放在 public/hearthstone/cards-db.json 按需 fetch：
+// 不进 JS 构建包，且浏览器可按缓存头长效复用（数据未变时发版无需重新下载）。
+const cardsDb = ref(null)
+const dbStatus = ref('loading') // loading | ready | error
+const dbError = ref('')
+
+async function loadCardsDb() {
+  dbStatus.value = 'loading'
+  dbError.value = ''
+  try {
+    const resp = await fetch('/hearthstone/cards-db.json', { cache: 'force-cache' })
+    if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
+    cardsDb.value = await resp.json()
+    dbStatus.value = 'ready'
+  } catch (cause) {
+    dbStatus.value = 'error'
+    dbError.value = cause instanceof Error ? cause.message : String(cause)
+  }
+}
+
+onMounted(loadCardsDb)
 
 const query = ref('')
 const results = ref([])
@@ -118,7 +146,7 @@ function rarityLabelOf(card) {
 function findCards(raw) {
   const q = (raw || '').trim()
   if (!q) return []
-  const vals = Object.values(cardsDb)
+  const vals = Object.values(cardsDb.value || {})
   if (/^\d+$/.test(q)) {
     return vals.filter((c) => String(c.id) === q)
   }
@@ -129,6 +157,11 @@ function findCards(raw) {
 
 function lookup() {
   error.value = ''
+  if (dbStatus.value !== 'ready') {
+    error.value = dbStatus.value === 'loading' ? '卡牌库加载中，请稍候再试。' : '卡牌库加载失败，请点击「重新加载」后重试。'
+    results.value = []
+    return
+  }
   const matches = findCards(query.value)
   if (!matches.length) {
     error.value = '未找到匹配的卡牌，可能尚未登记到卡牌库。请检查名称或 dbfId。'
