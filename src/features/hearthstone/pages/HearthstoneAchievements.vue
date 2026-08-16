@@ -235,12 +235,25 @@
           </button>
         </div>
       </details>
+      <!-- 游戏内进度：与炉石收藏页一致，操作行直接给出下载/导入入口 -->
+      <a class="hs-btn hs-btn-ghost" :href="COLLECTOR_DOWNLOAD_URL" download>下载采集工具</a>
+      <button v-if="user" type="button" class="hs-btn hs-btn-ghost" @click="triggerGameImport">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="m7 10 5 5 5-5"/><path d="M12 15V3"/></svg>
+        导入游戏内进度
+      </button>
       <input
         ref="fileInput"
         class="hs-visually-hidden"
         type="file"
         accept="application/json,.json"
         @change="onImportFile"
+      />
+      <input
+        ref="gameImportFileInput"
+        class="hs-visually-hidden"
+        type="file"
+        accept="application/json,.json"
+        @change="onGameImportFile"
       />
       <template v-if="user">
         <template v-if="!batchMode">
@@ -282,6 +295,31 @@
         </div>
       </div>
     </div>
+
+    <section v-if="gameImportPreview" class="hs-firestone-import" aria-live="polite">
+      <div>
+        <strong>游戏内成就导入预览</strong>
+        <p>文件内有 {{ gameImportPreview.stats.sourceItems }} 条游戏成就记录，其中 {{ gameImportPreview.stats.sourceCompleted }} 条已完成。</p>
+        <p>
+          网站成就库匹配到 {{ gameImportPreview.stats.matched }} 个成就，确认后将新增
+          {{ gameImportPreview.stats.stageHits }} 个完成阶段<template v-if="gameImportPreview.stats.countUpdates">，并更新 {{ gameImportPreview.stats.countUpdates }} 个成就的累计进度</template>。
+        </p>
+        <p v-if="gameImportPreview.stats.newlyCompleted">其中 {{ gameImportPreview.stats.newlyCompleted }} 个成就将达成全部阶段。</p>
+        <small v-if="gameImportPreview.stats.unmatchedItems">
+          另有 {{ gameImportPreview.stats.unmatchedItems }} 条记录属于游戏内其他类别成就（生涯 / 游戏玩法 / 冒险模式等）或本站未收录内容，不在本次导入范围。
+        </small>
+        <small>导入只会推进进度，不会清除已手动勾选的阶段或回退累计次数。</small>
+      </div>
+      <div class="hs-firestone-import-actions">
+        <button type="button" class="hs-btn hs-btn-ghost" @click="cancelGameImport">取消</button>
+        <button
+          type="button"
+          class="hs-btn hs-btn-primary"
+          :disabled="gameImporting || !gameImportPreview.stats.matched || !gameImportPreview.stats.stageHits && !gameImportPreview.stats.countUpdates"
+          @click="confirmGameImport"
+        >{{ gameImporting ? '导入中…' : '确认导入' }}</button>
+      </div>
+    </section>
 
     <div v-if="progressLoading" class="hs-progress-status" role="status">正在加载成就进度…</div>
         <div v-else-if="progressError" class="hs-progress-status hs-progress-error" role="alert">
@@ -505,6 +543,7 @@ import { getClassOrder, matchesClass, getClassName, CORE_EXPANSION_IDS } from '.
 import { useAchievementProgress } from '../composables/useAchievementProgress.js'
 import { usePersistentRef } from '../composables/usePersistentRef.js'
 import { useAchievementBackup } from '../composables/useAchievementBackup.js'
+import { useAchievementGameImport } from '../composables/useAchievementGameImport.js'
 import { useAchievementFeedback } from '../composables/useAchievementFeedback.js'
 import { useAchievementSprint } from '../composables/useAchievementSprint.js'
 import { useAchievementCatalog } from '../composables/useAchievementCatalog.js'
@@ -526,7 +565,7 @@ import { saveAchievementProgress } from '../api/progress.js'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 import { useHearthstoneProfile } from '../composables/useHearthstoneProfile.js'
 import { useDialogFocus } from '../composables/useDialogFocus.js'
-import { MAX_PINNED_ACHIEVEMENTS } from '../utils/constants.js'
+import { MAX_PINNED_ACHIEVEMENTS, COLLECTOR_DOWNLOAD_URL } from '../utils/constants.js'
 
 const DeckDetailModal = defineAsyncComponent(
   () => import('../components/DeckDetailModal.vue')
@@ -1111,6 +1150,22 @@ const {
   user,
   progress: displayProgress,
   applyLocalProgress,
+  showToast
+})
+
+const {
+  fileInput: gameImportFileInput,
+  importPreview: gameImportPreview,
+  importing: gameImporting,
+  triggerImport: triggerGameImport,
+  onImportFile: onGameImportFile,
+  cancelImport: cancelGameImport,
+  confirmImport: confirmGameImport
+} = useAchievementGameImport({
+  achievements: allAchievements,
+  progress: displayProgress,
+  applyLocalProgress,
+  user,
   showToast
 })
 

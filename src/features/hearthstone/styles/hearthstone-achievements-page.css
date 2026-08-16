@@ -476,3 +476,21 @@
 .hs-page[data-hs-theme="dark"] .hs-backup-menu .hs-guide-menu-item small {
   color: var(--hs-muted, #a89880);
 }
+
+/* 游戏内成就导入预览面板（与炉石收藏页的采集导入面板保持一致的观感） */
+.hs-firestone-import {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin: 14px 0;
+  padding: 14px 16px;
+  border: 1px solid var(--hs-gold, #d4a017);
+  border-radius: 12px;
+  color: var(--hs-text, inherit);
+  background: var(--hs-surface-card, rgba(255, 255, 255, 0.04));
+}
+
+.hs-firestone-import p { margin: 5px 0; }
+.hs-firestone-import small { color: var(--hs-muted, #a89880); }
+.hs-firestone-import-actions { display: flex; flex: 0 0 auto; gap: 8px; }
