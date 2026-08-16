@@ -179,8 +179,12 @@ export function useAchievementGameImport({
       for (const [slug, entry] of Object.entries(importPreview.value.entries)) {
         const existing = current[slug] || {}
         const stages = { ...(existing.stages || {}), ...(entry.stages || {}) }
+        // count 必须是合法整数：服务端校验 typeof prog.count === 'number' && 安全整数 && >=0。
+        // 非「累计/按职业/按物品」类成就（一次性、普通）由 stages 驱动完成，转换器不会写入 count，
+        // 但服务端要求每条进度都带 count，故此处兜底为「已有值优先、否则 0」，避免缺字段被拒。
+        const baseCount = Number.isFinite(existing.count) ? Math.trunc(existing.count) : 0
         const next = { ...existing, stages }
-        if (entry.count != null) next.count = Math.max(existing.count ?? 0, entry.count)
+        next.count = entry.count != null ? Math.max(baseCount, Math.trunc(entry.count)) : baseCount
         merged[slug] = next
         delta[slug] = next
       }
