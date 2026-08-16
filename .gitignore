@@ -84,6 +84,8 @@ tools/hs-cosmetics-collector/bin/
 tools/hs-cosmetics-collector/obj/
 tools/hs-cosmetics-collector/dist/
 tools/hs-cosmetics-collector/lib/
+# build-release.ps1 的 Roslyn 编译器缓存与运行时依赖提取目录
+tools/hs-cosmetics-collector/.build/
 
 # 炉石外观分发包（含 exe/dll），不入库
 tools/hs-cosmetics-dist/

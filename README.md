@@ -6,8 +6,8 @@
 
 ## 当前内容
 
-- **炉石成就追踪增强**：支持本地规则型冲刺推荐、AI 建议核心/全部版本范围切换、个人中心成就图合成分享，以及按职业浏览时使用硬核模式纳入全部版本；按职业浏览与我的成就已取消版本分组（跨版本平铺总览，版本按发布时间从新到旧），"我的成就 - 按职业"与"待完成清单"采用一致的分组（一次性成就 / 累计-次数 / 累计-点数，组内剩余从低到高、已完成排在组尾，分组默认收起可展开），硬核模式与三个视图切换同排显示并对全部视图生效。
-- **炉石外观收藏**：集中管理英雄皮肤、幸运币和卡背，支持按职业浏览、名称搜索、独立进度、已拥有优先及未拥有黑白显示；登录后收藏状态持久化到独立明细表，外观图片使用英文目录存储于 OSS，并提供下载、客户端提取、清单检查与增量上传脚本。收藏分页支持首页、末页与跳至指定页，每页显示个数可按外观类型分别设置并自动记忆，暂缺图片的外观可标记隐藏避免裂图；列表使用 WebP 缩略图并采用占位加淡入的加载方式，图片加载超时自动兜底防永久转圈，详情弹窗仍显示原图。收藏采集工具（`tools/hs-cosmetics-collector/`，C# Windows 程序）读取游戏内存生成 `cosmetics.json`，网站端选择文件即可预览并导入已拥有外观，导入时自动剔除目录重建后遗留的旧 ID；导入后发现标记有误时，可用「批量设为未拥有」一键清空当前类型的已拥有项并带二次确认，便于重新采集导入。采集器下载包文件名带版本号（`hs-cosmetics-collector-vX.Y.Z.zip`），可用 `tools/hs-cosmetics-collector/build-release.ps1` 一键构建并生成带版本号的发布包（该脚本构建需本机安装 .NET SDK 及 net48 目标包，构建后请将生成的 zip 提交到仓库以更新下载）。
+- **炉石成就追踪增强**：支持本地规则型冲刺推荐、AI 建议核心/全部版本范围切换、个人中心成就图合成分享，以及按职业浏览时使用硬核模式纳入全部版本；按职业浏览与我的成就已取消版本分组（跨版本平铺总览，版本按发布时间从新到旧），"我的成就 - 按职业"与"待完成清单"采用一致的分组（一次性成就 / 累计-次数 / 累计-点数，组内剩余从低到高、已完成排在组尾，分组默认收起可展开），硬核模式与三个视图切换同排显示并对全部视图生效。支持导入采集器导出的 `achievements.json` 一键同步游戏内成就进度（经 `achievement-id-map.json` 将游戏数字 ID 映射为站内成就，预览确认后合并，只推进不回退）。
+- **炉石外观收藏**：集中管理英雄皮肤、幸运币和卡背，支持按职业浏览、名称搜索、独立进度、已拥有优先及未拥有黑白显示；登录后收藏状态持久化到独立明细表，外观图片使用英文目录存储于 OSS，并提供下载、客户端提取、清单检查与增量上传脚本。收藏分页支持首页、末页与跳至指定页，每页显示个数可按外观类型分别设置并自动记忆，暂缺图片的外观可标记隐藏避免裂图；列表使用 WebP 缩略图并采用占位加淡入的加载方式，图片加载超时自动兜底防永久转圈，详情弹窗仍显示原图。收藏采集工具（`tools/hs-cosmetics-collector/`，C# Windows 图形界面程序）读取游戏内存生成 `cosmetics.json` 与 `achievements.json`，网站端选择文件即可预览并导入已拥有外观与成就进度，导入时自动剔除目录重建后遗留的旧 ID；导入后发现标记有误时，可用「批量设为未拥有」一键清空当前类型的已拥有项并带二次确认，便于重新采集导入。收藏页与卡牌查询页的大体量目录数据（皮肤/幸运币/卡背/卡牌库，合计约 6.3MB）放在 `public/hearthstone/` 按需加载并被浏览器长效缓存，页面脚本体积缩减 95% 以上，发版不会让用户重复下载未变化的数据。采集器下载包文件名带版本号（`hs-cosmetics-collector-vX.Y.Z.zip`），可用 `tools/hs-cosmetics-collector/build-release.ps1` 一键构建并生成带版本号的发布包与 SHA256（本机无 .NET SDK 时脚本自动下载 Roslyn 编译器，构建后请将生成的 zip 提交到仓库以更新下载）。
 - **炉石卡牌图库与检索数据**：基于暴雪国服官方 API 全量重建卡牌图（按「卡名_卡id」命名消除同名歧义，全图 png / 缩略图 jpg 按真实格式上传云端），生成 `cards-db.json` 供图片上传和未来卡片检索使用；卡组代码解析统一读取由 HearthstoneJSON 最新 zhCN 全量库生成的 `dbfid-cardnames.json`，覆盖可收藏卡、衍生卡、英雄与历史卡牌。成就搜索（含待完成清单）现已跨全版本（含硬核与更多版本），并支持按成就内容匹配（阶段描述、关联卡牌）而不只是标题。
 - **全局账号中心（统一账号）**：炉石与抵御心魔共用同一套注册登录体系，主导航及项目内部均保留登录入口；登录后可从任意页面进入账号中心或退出。账号中心集中管理邮箱、密码和全站偏好，并按模块进入炉石档案与心魔档案。
 - **全站主题**：主站、账号页面、炉石和抵御心魔统一使用白天/黑夜主题，顶部主题开关会同步所有模块的显示模式。
@@ -130,14 +130,17 @@ node scripts/download-card-backs-wiki.mjs
 node scripts/gen-card-back-gallery.mjs
 ```
 
-## 炉石外观采集工具（Windows）
+## 炉石收藏与成就采集工具（Windows）
 
-`tools/hs-cosmetics-collector/` 是一个 C# Windows 控制台程序，读取《炉石传说》游戏内存生成 `cosmetics.json`，供网站端预览并导入已拥有外观。
+`tools/hs-cosmetics-collector/` 是一个 C# Windows 图形界面程序（WinForms），趁游戏运行时读取《炉石传说》内存，一键导出 `cosmetics.json`（已拥有的卡背/幸运币/英雄皮肤）与 `achievements.json`（成就逐条进度），供网站「炉石收藏」与「炉石成就」页面导入。
 
+- **使用**：启动炉石 → 双击 `HsCosmeticsCollector.exe` → 等顶部两个状态灯变绿 → 点「开始采集」→ 按摘要提示把两个 JSON 在网站导入（成就导入只推进进度、不回退已有勾选）。
 - **运行环境**：电脑系统为 Windows，需 **.NET Framework 4.8**（Windows 10 / 11 一般已自带，无需额外安装）。
 - **缺少运行库时**：若双击 `hs-cosmetics-collector.exe` 报错「找不到 .NET Framework」或「需要 .NET Framework 4.8」，请前往微软官网下载并安装 .NET Framework 4.8 运行时：
   - 下载地址：<https://dotnet.microsoft.com/download/dotnet-framework/net48>
-- **重新构建发布包**（可选，开发者用）：需本机安装 .NET SDK 及 net48 目标包，运行 `tools/hs-cosmetics-collector/build-release.ps1` 生成带版本号的 `hs-cosmetics-collector-vX.Y.Z.zip`，构建后请将生成的 zip 提交到仓库以更新下载。
+- **杀毒误报**：程序需读取游戏内存，未签名的小工具可能被杀软启发式误判，加白名单即可；下载后可按发布说明核对 SHA256。exe 已嵌入图标、完整版本信息与 manifest 以降低误报概率。
+- **成就 ID 映射**：游戏内成就数字 ID 与站内成就的对应表由 `node scripts/build-achievement-id-map.mjs --hs-data <hs-achievement-data.json 路径>` 生成（`src/features/hearthstone/data/achievement-id-map.json`）。
+- **重新构建发布包**（可选，开发者用）：运行 `tools/hs-cosmetics-collector/build-release.ps1` 生成带版本号的 `hs-cosmetics-collector-vX.Y.Z.zip` 并输出 SHA256；本机没有 .NET SDK 时脚本会自动下载 Roslyn 编译器编译。构建后请将生成的 zip 提交到仓库以更新下载。
 
 ## Docker
 
@@ -164,7 +167,7 @@ docker run -d -p 8080:80 my-index
 │   └── main.js
 ├── scripts/             # 数据/资源维护脚本（炉石卡牌抓取、dbfId 索引刷新与查询、OSS 上传、卡背下载与核对、外观采集验证等）
 ├── tools/               # 炉石外观采集工具（C# Windows 程序）与导入器查看器（Node 服务 + HTML 模板）
-├── public/              # Vite 静态资源（含采集工具下载包）
+├── public/              # Vite 静态资源（采集工具下载包、卡牌查询用的 cards-db.json）
 ├── index.html            # Vite 入口
 ├── vite.config.js
 ├── Dockerfile            # 多阶段构建镜像

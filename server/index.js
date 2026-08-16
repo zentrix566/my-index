@@ -1,3 +1,6 @@
+// .env 必须在其他模块 import 之前加载：db/auth 等在模块顶层就读 process.env，
+// 而 ESM 的 import 提升会让写在 import 之间的语句失效，因此放在第一个 import 的位置。
+import './load-env.js'
 import express from 'express'
 import compression from 'compression'
 import path from 'path'
@@ -5,9 +8,6 @@ import fs from 'fs'
 import os from 'node:os'
 import crypto from 'node:crypto'
 import { fileURLToPath } from 'url'
-// 本地 `npm run dev` 直接 `node server/index.js` 启动时，.env 不会被自动加载；
-// 这里补一次（生产 Docker 镜像里无 .env，loadEnvFile 抛错被静默跳过，安全）。
-try { process.loadEnvFile('.env') } catch { /* 无 .env 时跳过 */ }
 import { writeLog, appLog, cleanOldLogs } from './logger.js'
 import { lookup } from './geoip.js'
 import cookieParser from 'cookie-parser'
@@ -55,28 +55,8 @@ import { validateDreamPayload, streamDream } from './dream.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
-// 生产兜底：若进程环境未注入密钥等变量，则尝试从项目根目录 .env 读取（缺失则静默跳过）。
-// 仅在对应变量尚不存在时才写入，确保 k8s / 进程注入的环境变量优先于 .env 文件。
-try {
-  const envPath = path.resolve(__dirname, '../.env')
-  if (fs.existsSync(envPath)) {
-    const envText = fs.readFileSync(envPath, 'utf8')
-    for (const raw of envText.split('\n')) {
-      const line = raw.trim()
-      if (!line || line.startsWith('#')) continue
-      const m = line.match(/^([\w.-]+)\s*=\s*(.*)$/)
-      if (!m) continue
-      const key = m[1]
-      let val = m[2].trim()
-      if ((val.startsWith('"') && val.endsWith('"')) || (val.startsWith("'") && val.endsWith("'"))) {
-        val = val.slice(1, -1)
-      }
-      if (process.env[key] === undefined) process.env[key] = val
-    }
-  }
-} catch {
-  /* 无 .env 或解析失败时跳过，不阻断启动 */
-}
+// .env 的加载已移至文件顶部第一个 import（./load-env.js）：
+// db/auth 模块在顶层就读取环境变量，加载时机必须早于它们被执行。
 
 const isProd = process.env.NODE_ENV === 'production'
 const PORT = Number(process.env.PORT) || (isProd ? 80 : 3000)
@@ -890,6 +870,10 @@ for (const signal of ['SIGINT', 'SIGTERM']) {
 }
 
 bootstrap().catch((err) => {
-  appLog('ERROR', `服务启动失败: ${err.message}`)
+  // PG 连接失败常抛 AggregateError（message 为空，明细在 errors 里），逐级展开保证不打出空白原因
+  const detail = err instanceof AggregateError && err.errors?.length
+    ? err.errors.map((e) => e?.message || e?.code || String(e)).join('; ')
+    : (err?.message || err?.stack || String(err))
+  appLog('ERROR', `服务启动失败: ${detail}`)
   void shutdown('BOOTSTRAP_ERROR')
 })
