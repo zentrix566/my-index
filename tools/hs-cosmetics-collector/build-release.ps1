@@ -64,9 +64,9 @@ function Invoke-RoslynBuild {
   }
   if (-not (Test-Path $csc)) { throw "Roslyn 下载失败：找不到 $csc" }
 
-  # 框架引用程序集（32 位目录与 UnitySpy x86 匹配；缺失时退回 Framework64）
-  $fwDir = 'C:\Windows\Microsoft.NET\Framework\v4.0.30319'
-  if (-not (Test-Path (Join-Path $fwDir 'System.Windows.Forms.dll'))) { $fwDir = 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319' }
+  # 框架引用程序集（x64 主机；UnitySpy 为托管 AnyCPU，可加载进 64 位进程；缺失时退回 Framework）
+  $fwDir = 'C:\Windows\Microsoft.NET\Framework64\v4.0.30319'
+  if (-not (Test-Path (Join-Path $fwDir 'System.Windows.Forms.dll'))) { $fwDir = 'C:\Windows\Microsoft.NET\Framework\v4.0.30319' }
 
   # 运行时依赖 DLL：优先 bin 现有，其次从旧发布 zip 提取
   $depsDir = Join-Path $buildDir 'runtime-deps'
@@ -129,7 +129,7 @@ function Invoke-RoslynBuild {
   ) + ($depNames | Where-Object { $_ -like '*.dll' } | ForEach-Object { Join-Path $binDir $_ })
   $cscArgs = @(
     '/target:winexe',
-    '/platform:anycpu32bitpreferred',   # UnitySpy 为 x86，需 32 位优先（与 dotnet build net48 默认一致）
+    '/platform:x64',   # 炉石传说是 64 位进程；宿主必须 x64 才能读取其模块（32 位会报 Failed to read modules）
     '/langversion:latest', '/nullable:enable', '/utf8output', '/optimize+', '/deterministic',
     "/win32icon:$(Join-Path $projectDir 'icon.ico')",
     "/win32manifest:$(Join-Path $projectDir 'app.manifest')",
@@ -145,8 +145,13 @@ function Invoke-RoslynBuild {
 }
 
 Write-Host "==> 构建 Release (v$version) ..." -ForegroundColor Cyan
-$dotnet = Get-Command dotnet -ErrorAction SilentlyContinue
-$ok = if ($dotnet) { Invoke-DotnetBuild } else { Write-Host "==> 未检测到 dotnet SDK，改用 Roslyn 编译" -ForegroundColor Yellow; Invoke-RoslynBuild }
+# 检测「可用 SDK」而非仅 dotnet 命令（仅装了 dotnet 宿主而无 SDK 时，dotnet build 会失败，需退回 Roslyn）
+$hasSdk = $false
+try {
+  $sdkVer = & dotnet --version 2>$null
+  $hasSdk = ($LASTEXITCODE -eq 0) -and (-not [string]::IsNullOrWhiteSpace($sdkVer))
+} catch { $hasSdk = $false }
+$ok = if ($hasSdk) { Invoke-DotnetBuild } else { Write-Host "==> 未检测到可用的 .NET SDK，改用 Roslyn 编译" -ForegroundColor Yellow; Invoke-RoslynBuild }
 if (-not $ok) { throw '编译失败' }
 
 if (-not (Test-Path (Join-Path $binDir 'HsCosmeticsCollector.exe'))) { throw "找不到构建输出目录: $binDir" }
