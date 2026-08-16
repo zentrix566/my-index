@@ -1,7 +1,10 @@
 <Project Sdk="Microsoft.NET.Sdk">
+
   <PropertyGroup>
-    <OutputType>Exe</OutputType>
+    <!-- WinExe：双击运行不再弹出黑色控制台窗口，界面为 WinForms 图形程序 -->
+    <OutputType>WinExe</OutputType>
     <TargetFramework>net48</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
     <AssemblyName>HsCosmeticsCollector</AssemblyName>
     <RootNamespace>HsCosmeticsCollector</RootNamespace>
     <Nullable>enable</Nullable>
@@ -9,10 +12,18 @@
     <LangVersion>latest</LangVersion>
     <SelfContained>false</SelfContained>
     <ApplicationIcon>icon.ico</ApplicationIcon>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <!-- 完整的版本信息资源（文件属性 / 杀软启发式信誉评估的正向信号） -->
+    <AssemblyTitle>炉石收藏与成就采集器</AssemblyTitle>
+    <Product>炉石收藏与成就采集器</Product>
+    <Company>zentrix566</Company>
+    <Description>读取炉石传说游戏内存，导出已拥有的卡背、幸运币、英雄皮肤与成就进度 JSON，供网站收藏页/成就页导入。</Description>
+    <Copyright>Copyright © 2026 zentrix566</Copyright>
+    <NeutralLanguage>zh-CN</NeutralLanguage>
     <!-- 发布版本号；build-release.ps1 会读取此值并生成 hs-cosmetics-collector-v{Version}.zip -->
-    <Version>1.0.0</Version>
-    <AssemblyVersion>1.0.0.0</AssemblyVersion>
-    <FileVersion>1.0.0.0</FileVersion>
+    <Version>1.2.0</Version>
+    <AssemblyVersion>1.2.0.0</AssemblyVersion>
+    <FileVersion>1.2.0.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

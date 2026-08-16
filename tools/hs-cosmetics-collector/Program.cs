@@ -4,20 +4,45 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Windows.Forms;
 
 namespace HsCosmeticsCollector
 {
     /// <summary>
     /// 炉石外观收藏采集器：趁炉石传说运行期间，通过 Firestone 的 UnitySpy.HearthstoneLib
-    /// （MindVision，读取游戏内存）抓取你「已拥有」的卡背 / 幸运币 / 英雄皮肤，
-    /// 写入 hs-cosmetics-viewer 的 owned.json，供查看器直接渲染。
+    /// （MindVision，读取游戏内存）抓取你「已拥有」的卡背 / 幸运币 / 英雄皮肤 / 成就进度，
+    /// 写入 cosmetics.json + achievements.json，供网站收藏页 / 成就页导入。
     ///
     /// 采用运行时反射，不依赖 Firestone fork 的具体方法名/类型，适配不同版本。
+    /// 默认启动 WinForms 图形界面；带命令行参数（diag* 诊断等）时走原控制台逻辑。
     /// </summary>
     class Program
     {
+        // GUI 模式下最近一次采集结果（PrintCompletion 填充），供界面展示摘要与「打开输出文件夹」
+        public sealed class CollectorResult
+        {
+            public string DataDir = "";
+            public int CardBacks;
+            public int Coins;
+            public int HeroSkins;
+            public int? Achievements;
+        }
+
+        public static CollectorResult? LastResult;
+
+        [STAThread]
         static int Main(string[] args)
         {
+            // 无参数：双击运行 → 图形界面（普通用户日常路径）
+            if (args.Length == 0)
+            {
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
+                Application.Run(new CollectorForm());
+                return 0;
+            }
+
+            // 带参数：控制台 / 诊断模式（输出重定向到 stdout，便于排障收集日志）
             PrintBanner();
             int exitCode;
             try
@@ -36,7 +61,6 @@ namespace HsCosmeticsCollector
                 Console.ResetColor();
                 exitCode = 99;
             }
-            PressAnyKeyToExit();
             return exitCode;
         }
 
@@ -51,7 +75,7 @@ namespace HsCosmeticsCollector
             Console.WriteLine();
         }
 
-        static int RunCollector(string[] args)
+        public static int RunCollector(string[] args)
         {
             string libDir = Path.Combine(AppContext.BaseDirectory, "lib");
             string hsLibPath = Path.Combine(libDir, "UnitySpy.HearthstoneLib.dll");
@@ -806,7 +830,7 @@ namespace HsCosmeticsCollector
             return null;
         }
 
-        static string FindFirestoneLib()
+        public static string FindFirestoneLib()
         {
             try
             {
@@ -860,10 +884,18 @@ namespace HsCosmeticsCollector
             Console.WriteLine("  写入: " + path);
         }
 
-        // 采集成功后的醒目摘要（彩色 + 分隔线 + 各类数量 + 输出目录）
-        static void PrintCompletion(string dataDir, int cardBack, int coin, int hero,
+        // 采集成功后的醒目摘要（彩色 + 分隔线 + 各类数量 + 输出目录），同时填充 LastResult 供 GUI 使用
+        public static void PrintCompletion(string dataDir, int cardBack, int coin, int hero,
             Dictionary<string, object> heroByClass, int? achTotal)
         {
+            LastResult = new CollectorResult
+            {
+                DataDir = dataDir,
+                CardBacks = cardBack,
+                Coins = coin,
+                HeroSkins = hero,
+                Achievements = achTotal
+            };
             Console.WriteLine();
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("========== 采集完成 ==========");
@@ -886,15 +918,6 @@ namespace HsCosmeticsCollector
             Console.ForegroundColor = ConsoleColor.Green;
             Console.WriteLine("================================");
             Console.ResetColor();
-        }
-
-        // 等待用户按键再退出，避免双击运行时一闪而过看不到结果或报错
-        static void PressAnyKeyToExit()
-        {
-            Console.WriteLine();
-            Console.WriteLine("按任意键退出...");
-            try { Console.ReadKey(true); }
-            catch { try { Console.ReadLine(); } catch { } }
         }
     }
 }
