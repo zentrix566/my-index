@@ -691,7 +691,7 @@ function readIdList(payload, keys) {
 }
 
 function getImportedIds(payload) {
-  const cardBackById = new Map(cardBacks.map((item) => [Number(item.cardBackId), item.id]))
+  const cardBackById = new Map(cardBacks.value.map((item) => [Number(item.cardBackId), item.id]))
   const coinByDbfId = new Map(collectionCatalog.value.coins.map((item) => [Number(item.dbfId), item.id]))
   const cardBackSource = readIdList(payload, ['cardBacks', 'cardBackIds'])
   const coinSource = readIdList(payload, ['coins', 'coinDbfIds', 'coinIds'])
@@ -701,7 +701,7 @@ function getImportedIds(payload) {
   let hsUnmatched = 0
   const importedCardBacks = new Set(cardBackSource.map((id) => {
     const value = String(id)
-    const mapped = cardBackById.get(Number(id)) || (cardBacks.some((item) => item.id === value) ? value : '')
+    const mapped = cardBackById.get(Number(id)) || (cardBacks.value.some((item) => item.id === value) ? value : '')
     if (!mapped) cbUnmatched++
     return mapped
   }).filter(Boolean))
