@@ -82,7 +82,7 @@
       "recommendedDecks": [
         {
           "name": "5尺5寸雪",
-          "code": "AAEBAdeEBQL4rAP21gMOtASEuwLIhwOfmwPzrwPl0QOF5APU6gOu9wP0/APyxAWYnQayngaBvwYAAA=="
+          "code": "AAEBAY0WCNYR2sUC+KwDwbgD0OwD95sGy+EGhuYGC7T8Ap+bA/+dA+XRA4XkA673A4qNBPyeBPGABuepBsvQBgAA"
         }
       ],
       "stages": [
@@ -92,7 +92,8 @@
           "points": 100,
           "quota": 6
         }
-      ]
+      ],
+      "guide": "提示: 断点：“我真的天才 带了这个拆一半元素 碎裂巨岩迈沙顿”！"
     },
     {
       "id": "dragons-004",
@@ -107,7 +108,7 @@
       "recommendedDecks": [
         {
           "name": "感谢庇护",
-          "code": "AAEBAdK+BQK09gPSuQYOrrADzOsD9PYDyaAEyu0EuMUF3NAFzpwGtJ4Gwb8G6ckG7ckGpeEG5OoGAAA="
+          "code": "AAEBAb+PBATIBOIRxM8C2f4CDe3SAqbwAtj+As+GA66wA8zrA4uNBPmkBNzQBbyPBuuYBsG/BsO/BgAA"
         }
       ],
       "stages": [
@@ -117,7 +118,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "提示: 这个太简单了，断点没传。我随便组了一个，凑合用"
     },
     {
       "id": "dragons-005",
@@ -132,7 +134,7 @@
       "recommendedDecks": [
         {
           "name": "专业预测",
-          "code": "AAEBAdG+BQAP5QTRwQLmiAPnrAOTugPLzQPXzgPi3gP73wOH9wOtigS7xwXt9wWLlQbxqQYAAA=="
+          "code": "AAEBAZ/HAgblBNYRhRfTpQOXoAT0yAUM8M8C56wD184D+98D7OEDh/cDhJ8EnKAEhoMF75sGzpwGlqAGAAA"
         }
       ],
       "stages": [
@@ -142,7 +144,8 @@
           "points": 100,
           "quota": 3
         }
-      ]
+      ],
+      "guide": "核心牌: 拉祖尔的信使"
     },
     {
       "id": "dragons-006",
@@ -157,7 +160,7 @@
       "recommendedDecks": [
         {
           "name": "魔术蜡烛",
-          "code": "AAEBAdW+BQSvkQPArgPT8wPMoAUN5dED590D/u4DvYAE9p8E958EoZMF38MFv/cFpPoFyJQGracGtrUGAAA="
+          "code": "AAEBAcKPBAjEAagI3+MC7PwCwK4D5dEDw+EDltQEC976AufdA/afBLezBInSBN/DBeDQBcD4BZagBqXhBoriBgAA"
         }
       ],
       "stages": [
@@ -167,7 +170,8 @@
           "points": 100,
           "quota": 12
         }
-      ]
+      ],
+      "guide": "核心牌: 蜡烛巨龙"
     },
     {
       "id": "dragons-007",
@@ -250,7 +254,7 @@
       "recommendedDecks": [
         {
           "name": "真的好多鸦",
-          "code": "AAEBAda+BQTHD/KWA9ejBP3EBQ2czQLrngOWsQP2ugOU/AOpnwTjnwTknwSZrQTq8gXopQbOwAb+5QYAAQABuwX9xAUA"
+          "code": "AAEBAa/XAwTWEYUXpLkDwoAEDdPNAsn4AtePA+ueA52lA5axA5PRA/DsA8j5A9ejBOjoBeilBty4BgAA"
         }
       ],
       "stages": [
@@ -260,7 +264,8 @@
           "points": 100,
           "quota": 8
         }
-      ]
+      ],
+      "guide": "核心牌: 恐惧渡鸦"
     }
   ]
 }

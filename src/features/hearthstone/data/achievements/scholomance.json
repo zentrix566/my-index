@@ -27,8 +27,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "万能献血者",
-          "code": "AAEBAdKLBQayigSnjQSlrQSq3QT3wwWogAYM2cYD1M0DyNID8rEEvsoEr94EquIEheUE8OwF7p4G7akG9uUGAAA="
+          "name": "万能献血者 1",
+          "code": "AAEBAdPwBgag7gOK9wP8wAa6zgbJ6Aar6gYRibwDyNID2d4DgJ8EyZ8EtKAEx6wEnMcE9MMF1tAF5ZUG1sAG38AG9sAG3tQG9eUG9uUGAAA"
+        },
+        {
+          "name": "万能献血者 2",
+          "code": "AAEBAc7WAwb96gOK9wP8wAa6zgbJ6Aar6gYRibwDyNID2d4DgJ8EyZ8EtKAEx6wEnMcE9MMF1tAF5ZUG1sAG38AG9sAG3tQG9eUG9uUGAAA"
         }
       ],
       "stages": [
@@ -38,7 +42,8 @@
           "points": 100,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "思路: 嗜血传令官+杂毛 / 打法: 起手全力找嗜血传令官，送杂毛养即可 / 核心牌: 嗜血传令官"
     },
     {
       "id": "scholomance-002",
@@ -53,7 +58,7 @@
       "recommendedDecks": [
         {
           "name": "请勿高声！",
-          "code": "AAEBAc6LBQL1zgOJiwQO5AivogPougO60AOJ4AOvgASwgASwpQSuwASaoAbvqQbzygai4gb35QYAAA=="
+          "code": "AAEBAdeqBgL1zgOJiwQOj/YCutADiuADrp8EsKUErsAE2/oF2JwGmqAG76kG2bEG1boG88oG9+UGAAA"
         }
       ],
       "stages": [
@@ -63,7 +68,8 @@
           "points": 100,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "思路: 13费打出3费演讲者吉德拉+10费优胜劣汰 / 打法: 不断跳费，过程中大地坠饰占领冷齿矿洞定向过组件，13费打出演讲者吉德拉+优胜劣汰"
     },
     {
       "id": "scholomance-003",
@@ -77,8 +83,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "内有恶犬",
-          "code": "AAEBAc6LBQKJiwTuuAYO0g/55gL7/gKT0QOp1ATB3wTrowW7lQa8lQbanAbqqAaHsQapsQai4gYAAA=="
+          "name": "内有恶犬 1",
+          "code": "AAEBAYoWBMn4Ao/jA6eNBNDkBA3d0gLpogOT0QPlpATU5ASnpAWP5AXf7QXq8gXS+AXLjgbqpQb+5QYAAA"
+        },
+        {
+          "name": "内有恶犬 2",
+          "code": "AAEBAa/XAwiuEPv+Av+6A4/jA6eNBMrtBOrKBf7lBgvpogOT0QPlpASZrQSnpAWP5AXf7QXq8gXqpQbcuAbawQYAAA"
         }
       ],
       "stages": [
@@ -88,7 +98,8 @@
           "points": 100,
           "quota": 5
         }
-      ]
+      ],
+      "guide": "思路: 范达尔·雷矛将5费以上野兽减3费满足条件 / 打法: 全力找范达尔·雷矛，动物保镖，苟活打出即可 / 核心牌: 动物保镖"
     },
     {
       "id": "scholomance-004",
@@ -102,8 +113,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "假想好友",
-          "code": "AAEBAdW+BQLMoAWxwQYO/MECx5sD5dED/tsD/u4DofQDvYAE9p8E958Et7MEv/cF7p4GracGjNYGAAA="
+          "name": "假想好友 1",
+          "code": "AAEBAY0WAA/H0wL7rAPl0QP43QOt7gOWtwXe+AXf/gXxmwbymwayngbTngbBnwbMogbt5gYAAA"
+        },
+        {
+          "name": "假想好友 2",
+          "code": "AAEBAf3VAwTzrwPyxAXe+AWyngYNx9MC5dED+N0Dre4DssEElrcFsf4F3/4F8ZsG054GwZ8GzKIG7eYGAAA"
         }
       ],
       "stages": [
@@ -113,7 +128,8 @@
           "points": 100,
           "quota": 7
         }
-      ]
+      ],
+      "guide": "思路: 攒元素链打出溢流熔岩铺7个接幻觉药水 / 打法: 起手全力找溢流熔岩，抽法术，攒元素链启动即可 / 核心牌: 幻觉药水  注意：要置入手牌，要手牌能塞下7张"
     },
     {
       "id": "scholomance-005",
@@ -128,7 +144,7 @@
       "recommendedDecks": [
         {
           "name": "随我朗读",
-          "code": "AAEBAdG+BQTRwQLD0QOoigTPxgUN8gyh/gL7zgO70QPh5AOi6AP09gOj9wOf1AS5xAW4xQXOnAbXugYAAA=="
+          "code": "AAEBAcOfAwbD0QOoigSXoATquASElgXBxgUMnAKVpgOVzQO61QPM6wO/+QOhoASEsgTLxAXrmAbOnAaPzwYAAA"
         }
       ],
       "stages": [
@@ -138,7 +154,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "思路: 干鳞警官复制法术，雷象洗传说法术送掉，奥露拉+传说法术 / 打法: 先拍干鳞警官后圣礼骑士拿两张，雷象法术扫帚送掉洗一张，奥露拉法术完成"
     },
     {
       "id": "scholomance-006",
@@ -153,7 +170,7 @@
       "recommendedDecks": [
         {
           "name": "永不录取",
-          "code": "AAEBAZT9Bga/uQPXzgPP0QPn0QP/2QTvmwYMnakD66wDrMsDzdIDld4Dk+QDg/sDxYAE56AEkIMG8KkGlbMGAAA="
+          "code": "AAEBAa35AwbWEefRA4P7A6iKBJegBJbUBAzy0AKdqQPXzgOT5APFgAScoATI6wXvmwbOnAaEngajoAaTywYAAA"
         }
       ],
       "stages": [
@@ -163,7 +180,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "思路: 教导主任加丁+随从，回手随从变成的挂掉的学生，拍下挂掉的学生 / 打法: 4教导主任加丁+3佐拉+2酒仙，下回合加丁+学生，大帝减费可提前完成"
     },
     {
       "id": "scholomance-007",
@@ -177,8 +195,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "刀叉相配",
-          "code": "AAEBAdW+BQSFF8ygBe7DBbHBBg31uwKL0APl0QPn3QP+7gOh9AO9gAT2nwT3nwS3swTfwwWtpwaM1gYAAA=="
+          "name": "刀叉相配 1",
+          "code": "AAEBAZrxBgAPvQSAEsy5A4vQA+fdA6nrA72ABPafBLqkBN/DBb/3Bcj7BciUBu6eBq2nBgAA"
+        },
+        {
+          "name": "刀叉相配 2",
+          "code": "AAEBAZvDAwbl0QLOuQPD4QPMoAXuwwW4xQUM9bsCi9AD590D9p8E958Et7ME9N0E38MFv/cF75sG7p4G6ckGAAA"
         }
       ],
       "stages": [
@@ -188,7 +210,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "思路: 挂小刀通过钢铁舞者不断回手刷 / 打法: 起手全力找挖掘宝藏和钢铁舞者，4费留个1/1,1/2,2/1的刀拍下舞者碰运气 / 核心牌: 钢铁舞者"
     },
     {
       "id": "scholomance-008",
@@ -203,7 +226,7 @@
       "recommendedDecks": [
         {
           "name": "语声鼎沸",
-          "code": "AAEBAYHPBgLQzgOR4QMOwAHLBPSrA5XNA5GgBJ2gBKajBez2BdD4BYOVBtOVBvKbBoieBobmBgAA"
+          "code": "AAEBAY0WDMAB1hGNuwOSywPQzgOu9wOoigSXoATK3gSvxAXQ+AXluAYJn5sDhc0Dzc4Dh+QDio0E/J4Egb8GgMoGy+EGAAA"
         }
       ],
       "stages": [
@@ -213,7 +236,8 @@
           "points": 100,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "思路: 霜语+法强随从和法术 / 打法: 利用大帝减费一次性拍出霜语+法强，或者霜语+小法强占场慢慢叠法强"
     },
     {
       "id": "scholomance-009",
@@ -252,7 +276,16 @@
       "relatedCards": [
         "仪式重槌"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "学术荣誉 1",
+          "code": "AAEBAcOfAwKHrQOT0AMOp84C2f4Cz4YD6rkDkNADzOsDi/gDi40E7p8EktQExscF3NAF+JQGzpwGAAA"
+        },
+        {
+          "name": "学术荣誉 2",
+          "code": "AAEBAZm4BAbSBMvNA4uNBO6fBM6cBoajBgynzgLZ/gLPhgPquQOQ0APM6wOL+AOS1ATGxwXc0AW8jwbBvwYAAA"
+        }
+      ],
       "stages": [
         {
           "description": "用仪式重槌召唤一个11/11的学员。",
@@ -260,7 +293,8 @@
           "points": 100,
           "quota": 11
         }
-      ]
+      ],
+      "guide": "思路: 蛛魔拆解者将9费法术加到11费满足条件 / 打法: 前期过渡，8费清场，9费提刀，10费蛛魔拆解者+痴醉歌迷隐藏，11费希望圣契 / 核心牌: 仪式重槌"
     },
     {
       "id": "scholomance-011",
@@ -276,7 +310,7 @@
       "recommendedDecks": [
         {
           "name": "雷象不会遗忘",
-          "code": "AAEBAdeEBQ6sAbQEvAiEuwKfmwP/nQP0qwPxrwPU6gOu9wOQlgXs9gWxoAbnqQYIwAHIhwPimwPBuAO61QOF5AOBvwaG5gYAAA=="
+          "code": "AAEBAZrxBhi9BMYF9bsC98ECm8gCr5EDua4DqesDrusDofQDkZ8Ekp8E9p8E+awEt7ME9N0EwaEF0aMFv/cFyJQG2aIG7qkGjNYGyegGCN4HzrkDutUD590D958EyPsFracG88kGAAA"
         }
       ],
       "stages": [
@@ -286,7 +320,8 @@
           "points": 100,
           "quota": 15
         }
-      ]
+      ],
+      "guide": "思路: 雷象隐藏跨回合刷15不同法术 / 打法: 攒牌雷象隐藏，两回合刷完"
     }
   ]
 }

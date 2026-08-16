@@ -53,12 +53,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "护甲被坎 卡组1",
-          "code": "AAEBAdK+BQKvkwXipAUO+Ub4vwLdwgLZ/gL6/gLQigPkigPjvgO04QOZ6gOU7gOBlgWDlgWdlgUA"
+          "name": "护甲被坎 1",
+          "code": "AAECAc6LBQaJiwTp0ASB1ASY1AS+mAXipAUMr4AEiZ8Erp8E2p8Ez6wErsAEwd8EhO8EtpgFu5gFvJgF2qEFAA=="
         },
         {
-          "name": "护甲被坎 卡组2",
-          "code": "AAECAc6LBQaJiwTp0ASB1ASY1AS+mAXipAUMr4AEiZ8Erp8E2p8Ez6wErsAEwd8EhO8EtpgFu5gFvJgF2qEFAA=="
+          "name": "护甲被坎 2",
+          "code": "AAECAc6LBQaoigSunwSY1ASZ9QS+mAXipAUMr4AErsAEssEE1t4E3e0EhO8EkpMFsZgFupgFoJkFopkF4sUFAA=="
         }
       ],
       "stages": [
@@ -80,7 +80,8 @@
           "points": 20,
           "quota": 200
         }
-      ]
+      ],
+      "guide": "Ps：枯萎可以吸自己的随从，一样可以加进度，但也一样看脸。 / 攻略就是起手留枯萎和月光指引，然后铺场亡灵随从，遇到合适的目标就修血再用枯萎吸死。 / 攻略就是正常的主流德鲁伊打法，过牌跳费就完事了。组件到手，10费就赢了，边做成就边上分，古夫大帝就是这般无敌。 / 累积型成就，很简单的。现在主流的30卡otk德就很好做，10费以后，就可以铜须血誓阿努布鲁坎3卡凌迟对手了。这么强大的主流套路，新版本不爽下太可惜了。只要多玩几把，这个成就就白给了。上面的亡灵德也可以做，**小佛丁和阿努布鲁坎的卡位还是有的，融合怪也能找阿努布鲁坎。 / 累积型成就，有严重的恶性bug，每次完成后未必加进度，作者我测试很多种情况后没有找到规律，可以说进不进进度全靠运气，几率差不多50%，所以大家做这个成就时默认成就要求要消灭50个随从就好了。用亡语德，带上大量过牌即可，应该中立成就大部分都是亡灵，所以可以一起做，作者我顺带还做了阿努布鲁坎的成就。 / 他真的，我枯死，用枯萎消灭25个随从。"
     },
     {
       "id": "lich-king-003",
@@ -104,7 +105,8 @@
           "points": 10,
           "quota": 7
         }
-      ]
+      ],
+      "guide": "白给型成就，上面的亡灵德卡组带上无尽虫群就可以直接做。低费随从送了7个以上后，把自己场上的怪都送了，再使用无尽虫群就完事了。如果单纯为了做这个成就，那还是30跳费德更快，起手找跳费鳞片无尽虫群就好了，7费鳞片送掉7个雏龙，下回合使用无尽虫群就完事了。 / 攻略就是起手找6费7费的2张法术和2费的矿洞，然后就是跳费过牌。先7再6就完事了，记得用这2卡时都是空城就好了"
     },
     {
       "id": "lich-king-004",
@@ -116,7 +118,12 @@
       "relatedCards": [
         "死亡甲虫"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "死亡虫击",
+          "code": "AAEBAc6LBQT9At/7AvetA4mLBA38rQP/rQOW4AOM5APs9QOy3QTrowX53wXZ/wW1mgasngbzygbJ0AYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用死亡甲虫消灭敌方英雄。",
@@ -130,7 +137,8 @@
           "points": 20,
           "quota": 4
         }
-      ]
+      ],
+      "guide": "攻略就是起手找跳费，然后铺场抢血，最后用死亡甲虫斩杀对手。 / 累积型成就，不算难。为了效率用了树人德卡组，毕竟这是德鲁伊少有的快攻卡组了。带上跳费牌尽快到11费触发死亡甲虫的效果。"
     },
     {
       "id": "lich-king-005",
@@ -142,12 +150,12 @@
       "relatedCards": [],
       "recommendedDecks": [
         {
-          "name": "费用互助 卡组1",
-          "code": "AAECAdeEBQSgigTv0wSmkwXUoQUN0OwDp/cDio0E/J4E2tAEhJMFxZMFypMFgJYFkJYFqpgFq5gFgqIFAA=="
+          "name": "费用互助 1",
+          "code": "AAEBAdeEBQLgzAOT4QMOywSWBZjEAp+bA4y5A4G/A8fOA9DsA9HsA6f3A673A4qNBPyeBMreBAA="
         },
         {
-          "name": "费用互助 卡组2",
-          "code": "AAEBAdeEBQLgzAOT4QMOywSWBZjEAp+bA4y5A4G/A8fOA9DsA9HsA6f3A673A4qNBPyeBMreBAA="
+          "name": "费用互助 2",
+          "code": "AAECAdeEBQSgigTv0wSmkwXUoQUN0OwDp/cDio0E/J4E2tAEhJMFxZMFypMFgJYFkJYFqpgFq5gFgqIFAA=="
         }
       ],
       "stages": [
@@ -157,7 +165,8 @@
           "points": 20,
           "quota": 200
         }
-      ]
+      ],
+      "guide": "攻略就是起手找法力洪流还有愚人套牌，然后就一直过牌用法术即可。 / 攻略就是起手找能量塑形师和法力虹吸，然后就使用减费过的法术就好了 / 累积型成就，这个成就和其他法师可以一起做，用各种减费就好了。在狂野可以用愚人套牌和法力洪流的效果，更快更舒服。不过作者我还是建议和其他法师成就一起做。这次标准狂野卡组一起发了，标准的可以顺带做其他成就，狂野的愚人法就更快。"
     },
     {
       "id": "lich-king-006",
@@ -170,7 +179,11 @@
       ],
       "recommendedDecks": [
         {
-          "name": "风流罗曼斯",
+          "name": "风流罗曼斯 1",
+          "code": "AAECAdeEBQKL5wOmkwUO1OoD0OwDp/cDrvcDqIEEio0E/J4Eyt4EhJMFxZMFypMFqpgFq5gFgqIFAA=="
+        },
+        {
+          "name": "风流罗曼斯 2",
           "code": "AAECAdeEBQSgigSoigSjkAWmkwUN0OwDp/cDrvcD/J4E3LkE2tAEhJMFxZMFypMFgJYFkJYFqpgFq5gFAA=="
         }
       ],
@@ -181,7 +194,8 @@
           "points": 20,
           "quota": 15
         }
-      ]
+      ],
+      "guide": "Ps：硬币也算的。 / 奥术箭！奥术箭！使用奥术箭造成300点伤害 / 攻略就是起手找***和守护者艾格文，然后就是过牌控场，留奥术箭等8费一波流。 / 攻略就是起手找大法师罗曼斯或者小佛丁，然后不断使用衍生的法术，用完15个再使用大法师罗曼斯就完事了。 / 累积型成就，带上各种过牌，然后衍生大量奥术箭，配合新学徒和***新橙，就可以在8费爆发一波。 / 一次性成就，满编各种生成衍生法术的卡就好了，这类衍生法术用满15张再使用大法师罗曼斯就好了。"
     },
     {
       "id": "lich-king-007",
@@ -228,7 +242,12 @@
       "relatedCards": [
         "撕裂现实"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "现实由我掌控",
+          "code": "AAEBAdeEBQSPzgP09gPlsASzngYN1eECn5IEoZIE3bkEpqMF4MMF6MUF0PgF3vgF65gG8psGzpwGz54GAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用撕裂现实将8个不同扩展包的法术牌置入你的手牌。",
@@ -242,7 +261,8 @@
           "points": 20,
           "quota": 16
         }
-      ]
+      ],
+      "guide": "攻略就是起手找撕裂现实和加大音量。然后反复使用撕裂现实，直到完成这个成就为止。 / 累积型成就，很简单。就是反复使用撕裂现实就好了。卡组里带满复制和检索法术的牌就好了。"
     },
     {
       "id": "lich-king-009",
@@ -302,8 +322,12 @@
       "relatedCards": [],
       "recommendedDecks": [
         {
-          "name": "箭芒御宇",
+          "name": "箭芒御宇 1",
           "code": "AAECAda+BQSXoATT5ASwkgXUoQUNxfkDqp8EzOQE0OQE0uQEp5AFjZIFmpIFqZMFrpMF9ZwFj6QFnaQFAA=="
+        },
+        {
+          "name": "箭芒御宇 2",
+          "code": "AAECAda+BQTl7wPbkQSXoASW1AQN9PYDw4AEqIEEqZ8E458E5J8EnKAEu6AEma0Ep5AFmpIFrpMFj6QFAA=="
         }
       ],
       "stages": [
@@ -325,7 +349,8 @@
           "points": 20,
           "quota": 300
         }
-      ]
+      ],
+      "guide": "标记，带走在锐眼侦察兵的帮助下，用你的英雄消灭20个随从 / 攻略就是其实找咒术之箭还有奥术猎的2个随从。不断堆叠法强，然后用这些奥术法术打伤害吧。2个附魔师站场伤害特别高。 / 攻略就是起手找锐眼侦察兵和武器，然后尽可能收回锐眼侦察兵 / 累积型成就，带上各种武器和过牌。然后挂上武器，等对手下随从，再用锐眼侦察兵，接着武器打死那个随从，有条件的话再收回锐眼侦察兵。差不多8把游戏就完成了。 / 累积型成就，很简单，就是奥术猎的构建，和上面咒术之箭的成就可以一起做，满编各种奥术伤害法术和法强随从，配合法强和附魔师，尽可能多造成伤害。"
     },
     {
       "id": "lich-king-012",
@@ -336,7 +361,12 @@
       "relatedCards": [
         "可靠伙伴"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "群兽巡游",
+          "code": "AAEBAda+BQKstgbcuAYO48ICicMCisMC39ICveED5J8Ema0Ekt8ErqQFxMcF6vIF/agGgOYGguYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用可靠伙伴召唤价值50点法力值的野兽。",
@@ -350,7 +380,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "ps：可靠伙伴召唤的复制不加进度，所以无需等到10费回合再用。 / 攻略就是起手找可靠伙伴，然后7费准时使用可靠伙伴召唤10费的野兽就好了。 / 累积型成就，很简单。卡组只带10费的野兽.你说宝石鹦鹉，那是顺带做宝石鹦鹉成就带的，托维尔守卫和模糊的陌生人也是如此，你们换成其他卡就好了。"
     },
     {
       "id": "lich-king-013",
@@ -372,7 +403,8 @@
           "points": 20,
           "quota": 25
         }
-      ]
+      ],
+      "guide": "攻略就是起手找洞察和634，然后不断复活就好了。25次真不多，毕竟都有复生，1次就是2个亡灵 / 一次性成就，很简单，就用我们的老朋友洞察牧就好了，这个版本大量成就都是亡语怪，所以洞察牧特别好用，复活复活再复活，我们的墓地我们的家。但其实新版本不少亡灵成就，作者我都是用洞察牧做的，所以这个成就可以最后做，绝大多数情况都是做其他成就时顺带做好了这个。所以这个卡组只是给大家看的，是作者我新版本开始前用的"
     },
     {
       "id": "lich-king-016",
@@ -383,7 +415,12 @@
       "relatedCards": [
         "野蛮残食"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "大脑营养",
+          "code": "AAEBAdG+BQLXzgOH9wMO5QTRCtHBAtjBAoL3AsvNA+LeA/vfA62KBKS2BOCkBaLpBe33BfGpBgAA"
+        }
+      ],
       "stages": [
         {
           "description": "用野蛮残食恢复50点生命值。",
@@ -397,7 +434,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "攻略就是起手找洞察或者造物协议，然后就是心火牧的打法。造个大怪，用鲜活梦魇复制出1个1血的大怪，在对满血的大怪使用野蛮残食就好了。 / 累积型成就，很难。因为回血才加进度，满血不加，所以还是得用心火牧做。可惜哀黄削了，所以难度大增。"
     },
     {
       "id": "lich-king-015",
@@ -410,8 +448,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "恐吓战术",
+          "name": "恐吓战术 1",
           "code": "AAEBAdG+BQLoiwTUoQUO0cECqeICl4cDk7oDp8sD184D4t4D+98DjIEErYoEhoMFpJEFhpMFhqQFAA=="
+        },
+        {
+          "name": "恐吓战术 2",
+          "code": "AAEBAdG+BQSfqQPIvgPXzgPvkQUN0cEC6NACl4cDk7oD4t4D+98Dh/cDrYoEiqMEyKwEobYEorYE+dsEAA=="
         }
       ],
       "stages": [
@@ -433,7 +475,8 @@
           "points": 20,
           "quota": 120
         }
-      ]
+      ],
+      "guide": "Ps：格子不够时会出现部分被纠缠的手牌无法使用的情况，所以要记得腾格子。 / Ps：手牌满了以后发现一样加进度，所以不需要腾手牌。 / 攻略就是起手找洞察和纠缠梦魇，然后尽量只使用被纠缠的手牌。手牌不足就用太阳之井等卡补充。英雄卡可以一次性纠缠大量手牌 / 攻略就是起手找洞察拉希奥的角和女武神，然后不停用黑暗幻象即可，发现10种后就完事了。 / 累积型成就，白给型成就，洞察牧梅开二度，用纸笔记录一下发现的法术就好了。 / 累积型成就，洞察牧帽子戏法，不断触发亡语再使用被纠缠的手牌就好了。比较坑爹的是纠缠梦魇的亡语是一对一的，所以不管触发了几次亡语，每张被纠缠的手牌都只能召唤1个 / 视力满分，从黑暗幻象中发现10张不同的暗影法术牌"
     },
     {
       "id": "lich-king-014",
@@ -504,7 +547,8 @@
           "points": 20,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "Ps：考虑到对手残血会跑，而殒命暗影变形需要时间，所以斩杀阶段最好直伤先手，然后随从踢脸，最后殒命暗影变的直伤补刀斩杀，这样很多对手就来不及跑了 / 攻略就是正常的奇迹贼打法，迅速过牌和抢血，然后用1张直伤，再用1殒命暗影变的直伤斩杀对手就好了，一共要10次，也是耗时严重的成就，好在奇迹贼强无敌马速快。 / 累积型成就，很难，因为除了人机，大部分对手残血就会跑路，不给你斩杀他的机会。这里就用现在强无敌的主流卡组奇迹贼了，带上2个邪恶挥刺就好了。"
     },
     {
       "id": "lich-king-020",
@@ -542,8 +586,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "最毒的淬毒",
+          "name": "最毒的淬毒 1",
           "code": "AAECAdW+BQL58QTMoAUOqusD/u4DvYAElp8E9p8E958EuqQE+awEt7ME3NoE5o8F3aAF36AFwaEFAA=="
+        },
+        {
+          "name": "最毒的淬毒 2",
+          "code": "AAECAdW+BQSh+QOXoATMoAXooAUNqusDvYAElp8EuqQE+6UE+awE1bYE+fEE5o8F3aAF36AF4KAF56AFAA=="
         }
       ],
       "stages": [
@@ -565,7 +613,8 @@
           "points": 20,
           "quota": 50
         }
-      ]
+      ],
+      "guide": "Ps：淬毒渗透者的战吼可以打自己人，所以对手没随从时可以杀自己人，一样加进度 / 攻略就是起手找暗影帷幕和淬毒渗透者，然后就尽量使用淬毒渗透者消灭更多随从就好了。 / 攻略就是起手找药剂相关的卡，然后运气和耐心的考验开始了。 / 累积型成就，超级恶心人，可以说是新版本唯一阴间成就，因为除了药水腰带，其他给药剂的卡都是随机的，所以后期很难调出你没用过的药水。做这个成就时一定要用纸笔记录，列出15种药剂，然后使用一种划掉一种。一般来说最后没用的5种都是同色药剂，特别难搞定。这个时候就需要手里留1瓶药剂，再用药水腰带，第一次发现就找到同色的药剂就好了，没有只能继续重复这个过程了。只能说需要很多耐心和时间。建议和其他盗贼成就一起做。 / 累积型成就，还是挺简单的，我和上面的药剂成就一起做的。满编暗影帷幕就好了。送掉亡灵可以触发战吼，没亡灵送就直接战场好了，也能消灭几个对手随从。 / 摇，不要搅，使用15张不同的调好的药剂"
     },
     {
       "id": "lich-king-022",
@@ -603,7 +652,11 @@
       ],
       "recommendedDecks": [
         {
-          "name": "彼界好友",
+          "name": "彼界好友 1",
+          "code": "AAECAdOLBQKo7gOG+gMO9PYDlZIE3JIEoaAE1bIE4LUEh7cEssEExc4EvPAE8ZEF9JEFhZIF4sUFAA=="
+        },
+        {
+          "name": "彼界好友 2",
           "code": "AAECAdOLBQKoigSXoAQOiPQD9PYDzvkDoaAEmbAEh7cEhdQE8ZEF9JEF+5EFhZIFuJgFqqEF4sUFAA=="
         }
       ],
@@ -626,7 +679,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "攻略就是起手找彼界来客和637女巫小佛丁。过牌苟活，尽量留随从在手牌里。然后配合邮箱舞者送对手的硬币超展开，使用彼界来客。 / 攻略就是起手找天灾巨魔和能给它亡语的卡，要一起用，好让天灾巨魔带上亡语。 / 累积型成就，特别恶心，大哥萨纯纯的娱乐卡组，萨满的过牌苟活能力有捉急，只能用龙火法类似的构建了。带满各种过牌和亡语随从。这个卡组作者我顺带做了天灾巨魔的成就，不需要的话可以换成其他可交易的低费随从 / 累积型成就，有点难度，毕竟能给随从亡语的卡就那么几张，萨满的过牌又是最惨的。最好就是每个天灾巨魔都只配1个亡语效果再送掉。 / 亡语随心配，天灾巨魔死亡时具有亡语，完成25次"
     },
     {
       "id": "lich-king-021",
@@ -648,7 +702,8 @@
           "points": 20,
           "quota": 6
         }
-      ]
+      ],
+      "guide": "攻略就是起手找腐鳃，然后铺场就完事了。 / 一次性成就，很简单，萨满铺场还是很快的，不行还有食人鱼群可以配合。只要自己场上有6个随从，再用腐鳃就搞定了。狂野可以444鱼人配合下水道鱼人，10费正好6怪加腐鳃"
     },
     {
       "id": "lich-king-024",
@@ -659,7 +714,12 @@
       "relatedCards": [
         "炽焰变幻"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "荣耀之火",
+          "code": "AAEBAdOLBQT21gPf4QOx2QTe6QUNshT5pQPhzAOq3gP6tASG1ASq2QToowWzjQbrmAacngbBngar4QYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用炽焰变幻将一个随从变形成为传说随从，完成3次。",
@@ -673,7 +733,8 @@
           "points": 20,
           "quota": 5
         }
-      ]
+      ],
+      "guide": "攻略就是起手找222鱼人和222娜迦。炽焰变幻尽可能对高费随从使用就好了，毕竟高费随从励传说比较多。 / 累积型成就，很简单。因为当时作者我再做深渊魔物的成就，所以就用了图腾萨卡组。"
     },
     {
       "id": "lich-king-025",
@@ -722,7 +783,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "Ps：必须斩杀对手才算，对手投降就不算了，所以最好使用阿纳克洛斯的回合直接斩杀对手，避免夜长梦多 / 攻略就是起手留法庭秩序小佛丁或者阿纳克洛斯，开局铺场打伤害，等直伤和阿纳克洛斯到手再开始斩杀对手。 / 一次性成就，很简单，龙骑卡组就可以了，带上武器和直伤，把对手打成残血，再下阿纳克洛斯，然后本回合或者下回合斩杀对手就搞定了。"
     },
     {
       "id": "lich-king-027",
@@ -731,7 +793,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "血库",
+          "code": "AAEBAdK+BQKvkwXipAUO+Ub4vwLdwgLZ/gL6/gLQigPkigPjvgO04QOZ6gOU7gOBlgWDlgWdlgUA"
+        }
+      ],
       "stages": [
         {
           "description": "使用圣骑士，受到来自你自己的卡牌的100点伤害。",
@@ -751,7 +818,8 @@
           "points": 20,
           "quota": 300
         }
-      ]
+      ],
+      "guide": "攻略就是起手找水晶学就好了，然后不断用这些卡卖血就好了。 / 累积型成就，很简单，这个成就有bug，不过是良性bug，其实根本没限定职业，用其他职业卖血也加进度，所以做德鲁伊护甲被坎成就就可以完成大半了，剩下的再用这个专业卡组做，满编各种卖血卡，卖就完事了。"
     },
     {
       "id": "lich-king-028",
@@ -762,7 +830,12 @@
       "relatedCards": [
         "纯净馆长"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "展馆之威",
+          "code": "AAEBAdK+BQbJzgLL7wL8uAOwsgSvkwWFpQUM97wCxaEDjeEDq4AE070E4tME8u0EhKUFuscF8egF+JQGyKIGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用纯净馆长一次抽3张牌。",
@@ -776,7 +849,8 @@
           "points": 20,
           "quota": 6
         }
-      ]
+      ],
+      "guide": "攻略就是起手找纯净馆长。然后尽快使用纯净馆长就好了，没啥技巧，就看纯净馆长什么时候上手。 / 一次性成就，有点难度。玩光铸骑的同时，把双种族的随从都带上，这样会简单很多。"
     },
     {
       "id": "lich-king-029",
@@ -801,7 +875,8 @@
           "points": 20,
           "quota": 16
         }
-      ]
+      ],
+      "guide": "攻略就是起手找流形泥浆怪免票入场黑暗之门，然后凑齐一组就使用流形泥浆怪，再用低费解牌自己消灭，然后再等下一组。2组都用完就投降换新的亡灵继续刷。 / 累积型成就，很简单，继续用我们的老朋友黑门术就好了。就带2个流形泥浆怪和2种亡灵就好了。然后加过进度的亡灵换成其他亡灵继续就好了，8次游戏就完事了。"
     },
     {
       "id": "lich-king-030",
@@ -825,7 +900,8 @@
           "points": 20,
           "quota": 6
         }
-      ]
+      ],
+      "guide": "攻略就是正常的**术打法，就是起手可以留噬魂者。然后过牌苟活，交易邪恶船运，组件齐了就可以启动，噬魂者塔姆辛2连咒瓶，再把街头扫把自己的小鬼清掉就完事了。 / 一次性成就，白给型成就，很简单，正常的**术就可以做，担心提前炸死对手，可以把**换成其他过牌。"
     },
     {
       "id": "lich-king-031",
@@ -861,7 +937,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "攻略就是起手留灵魂弹幕和免票入场黑暗之门就好了，多用221复制几个就更好了。 / 累积型成就，白给型成就，很简单，因为现在古尔丹在狂野已经独断万古了，用的卡组就是满编此卡的弃牌术，玩个几把弃牌术，这个成就就搞定了。作者我用的是我们的老朋友黑门术，但用弃牌术边上分边做成就不是更好，反正100点伤害真心不多，所以这次还是用主流的弃牌术卡组就好了。"
     },
     {
       "id": "lich-king-032",
@@ -872,7 +949,12 @@
       "relatedCards": [
         "鳍形鬼状"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "鳍鬼莫测",
+          "code": "AAEBAZT9BgKXoAT/2QQO58sC8tACkO4CnakDk+QDvfEDg/sDxYAE56AEw6QFuMUFo6AG8KkGlMoGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "一次使2个小鬼鱼人获得鳍形鬼状的亡语。",
@@ -886,7 +968,8 @@
           "points": 20,
           "quota": 4
         }
-      ]
+      ],
+      "guide": "攻略就是起手找鳍形鬼状。一直过牌苟活。手里有2张1张火焰之灾祸1张恶魔法阵时就可以启动了。先恶魔法阵，再鳍形鬼状，接着火焰之灾祸，最后再一张鳍形鬼状就完事了。 / 一次使4个小鬼鱼人获得鳍形鬼状的亡语。 / 一次性成就，很简单。毕竟狂野有火焰之灾祸，自灭满门很容易。"
     },
     {
       "id": "lich-king-033",
@@ -911,7 +994,8 @@
           "points": 20,
           "quota": 80
         }
-      ]
+      ],
+      "guide": "攻略就是起手留吸血鬼之血，然后发现尽量选择吸血鬼之血，再尽量有3尸体再使用吸血鬼之血。 / 累积型成就，白给型成就，玩几把3红死骑就很快完成了。作者我这里用了专业卡组，就是满编了各种发现罢了。"
     },
     {
       "id": "lich-king-035",
@@ -947,7 +1031,8 @@
           "points": 20,
           "quota": 80
         }
-      ]
+      ],
+      "guide": "攻略就是起身找凋零毒牙和墓地守卫，凋零毒牙对手场上有怪就可以用，墓地守卫就4尸体再用。 / 累积型成就，这个成就有bug，不过是良性bug，也许是程序员偷懒的关系，4费的墓地守卫召唤的**也算成就进度，毕竟同名卡。本来靠凋零毒牙自身的效果来做是很难的，毕竟要求对手铺满场还是很麻烦的事，还很危险。但有这个bug就简单太多太多了，只要4尸体就可以1卡4进度。"
     },
     {
       "id": "lich-king-034",
@@ -971,7 +1056,8 @@
           "points": 20,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "Ps：疲劳牌也算，所以为了成就疲劳死也可以 / 攻略就是起手找死亡侍僧和亡者大军，然后过牌控场，如果能有一次性让死亡侍僧过5张以上的牌也可以下。 / 一次性成就，有点难度，作者我用2绿1蓝的构建，除非打人机，一般来说是很难让死亡侍僧战场的。所以最保险的做法就是配合亡者大军。就是空出自己的格子，然后8费3+5组合，来2次就正好抽10张牌了。"
     },
     {
       "id": "lich-king-036",
@@ -982,7 +1068,12 @@
       "relatedCards": [
         "冰霜女王辛达苟萨"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "冰龙降临",
+          "code": "AAEBAf7gBgSW1AShqgWxwQaWywYNnKAEssEE9eMEnaoF6v8FkIMG75sG4KgGy7AG/roGpMAGqMAG3eUGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用冰霜女王辛达苟萨的效果消灭15个随从。",
@@ -996,7 +1087,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "攻略就是起手找冰霜女王辛达苟萨或者434，前提提刀，还有准备好就绪的霜鳞海妖，这样就可以多次触发冰霜女王辛达苟萨的效果。 / 累积型成就，很简单。通过回手卡反复召唤冰霜女王辛达苟萨，再加上一些冰冻随从的卡就成了该成就的特化卡组。"
     },
     {
       "id": "lich-king-037",
@@ -1010,11 +1102,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "灵魂幸存者 卡组1",
-          "code": "AAECAdKLBQaHiwSDnwT7vwSVkgWdpAXipAUMwvEDifcDivcDgJ8Etp8E1p8EtKAEmLoEhpIFiZIFi5IFkJIFAA=="
-        },
-        {
-          "name": "灵魂幸存者 卡组2",
+          "name": "灵魂幸存者",
           "code": "AAECAdKLBQSHiwSXoAT7vwSVkgUN/e0DwvED9PYDivcDgJ8Etp8E1p8EoaAEs6AEtKAE8rEEh7cEwMoEAA=="
         }
       ],
@@ -1025,7 +1113,8 @@
           "points": 20,
           "quota": 50
         }
-      ]
+      ],
+      "guide": "Ps：从对手那里复制来的受缚之魂没用的，所以别想着周卓了，还有受缚之魂是起手绝对不会有的，所以不用换牌去找。 / 攻略就是起手留低费过牌，一直抽牌一直爽就完事了，然后抽到受缚之魂就用，争取17局搞定。 / 累积型成就，很耗时间，因为最少也要17局游戏才能完成。只能慢慢来，可以和召唤邪犬的成就一起做，法术瞎就好了。如果邪犬成就完成了，就没必要法术瞎了，过牌随从都带上，就一直过牌就好了。"
     },
     {
       "id": "lich-king-038",
@@ -1049,7 +1138,8 @@
           "points": 20,
           "quota": 2
         }
-      ]
+      ],
+      "guide": "白给型成就，虽然流放瞎就是垃圾，标准也没啥厉害的流放卡，但这个成就真不难。带满各种流放和过牌就好了。作者我最初的设想是狂野带866气球商人和2张复仇重击者，然后其他全法术的构建，但想想没必要，就标准做了这个成就。 / 攻略就是起手留过牌和复仇重击者，然后一直用流放，再打出2张0费的复仇重击者就完事了。"
     },
     {
       "id": "lich-king-039",
@@ -1060,7 +1150,12 @@
       "relatedCards": [
         "魔鬼交易"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "信了它的邪",
+          "code": "AAECAdKLBQaHiwSDnwT7vwSVkgWdpAXipAUMwvEDifcDivcDgJ8Etp8E1p8EtKAEmLoEhpIFiZIFi5IFkJIFAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用魔鬼交易召唤30个邪犬。",
@@ -1080,7 +1175,8 @@
           "points": 20,
           "quota": 90
         }
-      ]
+      ],
+      "guide": "攻略就是起手留魔鬼交易，然后每次使用前尽量空出3个格子就好了。 / 累积型成就，很简单，和灵魂幸存者成就一起做就好了，而且很大概率都是这个成就也做完的。"
     },
     {
       "id": "lich-king-040",
@@ -1091,7 +1187,12 @@
       "relatedCards": [
         "邪鳞唤醒师"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "激情唤醒",
+          "code": "AAEBAdKLBQL9tgOEsgQO4LwDztIDy90DzPkDgIUE8rEEkKUFsvUF4fgFpYEGiZAG7akGwrAGr+EGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用邪鳞唤醒师召唤15个恶魔。",
@@ -1105,7 +1206,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "攻略就是起手找无底海渊和邪鳞唤醒者。复制多个邪鳞唤醒者反复召唤牌库里的大恶魔。如果牌库里没恶魔了，就先用恶魔交易再使用邪鳞唤醒者。 / 累积型成就，不算难。利用好邪能学说和萨索瓦尔就能一局比赛加很多的进度。"
     },
     {
       "id": "lich-king-041",
@@ -1177,7 +1279,12 @@
       "relatedCards": [
         "搅局破法者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "破法之道",
+          "code": "AAEBAce+BQadDbyKBOWwBIu3BJbUBJjUBAyw4QOO7QOU7wOV9gP5jAT6jASIoASJoA"
+        }
+      ],
       "stages": [
         {
           "description": "用搅局破法者使你的对手弃掉50张法术牌。",
@@ -1185,7 +1292,8 @@
           "points": 20,
           "quota": 50
         }
-      ]
+      ],
+      "guide": "攻略就是起手找搅局破法者，然后过牌控场，如果对手是法术卡组，就可以早早地使用搅局破法者，赌对手解不掉。如果遇到没法术的对手，就要送香蕉给对手了。 / 累积型成就，很恶心，经常遇到一手全随从的对手，然后还能右手第一张法术解掉你的搅局破法者，所以送香蕉的卡必须满编，然后遇到脚本就可以狠狠地加进度，2个搅局破法者站场，就可以每回合消耗掉2张香蕉，避免被对手用掉。"
     },
     {
       "id": "lich-king-044",
@@ -1196,7 +1304,12 @@
       "relatedCards": [
         "训练课程"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "练无止境",
+          "code": "AAEBAbyRBQTAuQP6jASs0QX6yQYN+YwEiKAEiaAE/KIEjtQEpaUFkPsFofsFhYIGi5QG7KkG1boG88oGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在一次训练课程中使用三张随从牌，完成15次。",
@@ -1210,7 +1323,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "攻略就是起手找跳费，然后过牌苟活。到了高费回合打出训练课程和奔赴前线的组合，想使用3张随从牌还是很容易的。摄像师手里有2个训练课程时再使用，收益最大化。 / 累积型成就，很恶心。就算10费了，一次想使用3张随从牌都有难度，所以作者我带上了跳费和奔赴前线。还带上了摄影师争取多打出几次训练课程。"
     },
     {
       "id": "lich-king-045",
@@ -1223,7 +1337,11 @@
       ],
       "recommendedDecks": [
         {
-          "name": "太阳升起",
+          "name": "太阳升起 1",
+          "code": "AAEBAdG+BQKnywPoiwQO6r8C0cECqeICl4cDk7oD184D4t4D+98DjIEErYoEhoMFpJEFiZMFoJkFAA=="
+        },
+        {
+          "name": "太阳升起 2",
           "code": "AAECAdeEBQTo9wPv0wSp3gTUoQUNlugD0OwDzfIDio0E/J4ExKAExaAE3LkE2tAEyt4EhJMFopkFl6QFAA=="
         }
       ],
@@ -1246,7 +1364,8 @@
           "points": 20,
           "quota": 200
         }
-      ]
+      ],
+      "guide": "攻略就是起手找洞察和骨鸡蛋，然后不断复活触发亡语就好了，地标可以buff0攻的蛋去送，英雄卡可以加一大波进度。 / 看！是小鸡！从骨鸡蛋中孵化出60只亡灵小鸡 / 累积型成就，很简单，洞察牧已经就绪，其实作者我是做其他成就是顺带做完这个成就的。 / 累积型成就，很简单，因为是中立法术，所以所有卡组都可以带，所有发现法术的卡都可以发现。做其他成就时都带上太阳之井就好了。 / 这套全是发现的法师卡组，可以发现很多次太阳之井，足够了。攻略就是一直发现"
     },
     {
       "id": "lich-king-046",
@@ -1280,7 +1399,8 @@
           "points": 20,
           "quota": 300
         }
-      ]
+      ],
+      "guide": "攻略就是正常的跳费德打法，跳费过牌苟活，然后触发后就使用手里的法力渴求就好了。 / 累积型成就，很简单。这个成就在做其他成就时就可以顺带做大半了，所以剩下的用古夫大帝就好了，满编全部法力渴求的牌，然后跳费再用，还是很快的。"
     },
     {
       "id": "lich-king-047",
@@ -1341,7 +1461,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "攻略就是起手找传送导师免票入场和黑暗之门，然后传送导师换对手场上最高费的随从。如果对手卡组都是低费，就用暗月换给对手，再用传送导师对暗月使用。 / 累积型成就，很简单，黑门术已经就绪，其实作者我是做其他成就是顺带做完这个成就的。"
     },
     {
       "id": "lich-king-049",
@@ -1366,7 +1487,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "攻略就是起手找虚魂下士和洞察，然后配合沉默和复活，让虚魂下士尽可能消灭对手随从。 / 累积型成就，很简单，洞察牧已经就绪，其实作者我是做其他成就是顺带做完这个成就的。"
     },
     {
       "id": "lich-king-050",
@@ -1421,7 +1543,8 @@
           "points": 20,
           "quota": 40
         }
-      ]
+      ],
+      "guide": "攻略就是起手找法庭秩序还有小佛丁，然后使用洛瑟玛·塞隆后，再用被它buff过的随从，40个随从真不多。 / 耗时6小时的新版本全成就攻略完成了，大家晚安，也是最后的告别了。有缘再见吧，营地的大家，还有所有炉石成就党。 / 累积型成就，很简单，用骑士就好了。其实作者我是做其他成就是顺带做完这个成就的。做其他成就时完全可以带上1张洛瑟玛·塞隆，顺带做这个成就。"
     },
     {
       "id": "lich-king-052",
@@ -1435,8 +1558,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "日常护肤",
+          "name": "日常护肤 1",
           "code": "AAEBAdG+BQLoiwSGpAUO+hHRwQKp4gKXhwOTugOnywPXzgPi3gP73wOMgQStigT54wSGgwWJkwUA"
+        },
+        {
+          "name": "日常护肤 2",
+          "code": "AAEBAdG+BQLoiwTIrAQO+hHqvwLRwQLo0AKXhwPmiAOTugPXzgPi3gP73wOtigSZ9QSGgwWGpAUA"
         }
       ],
       "stages": [
@@ -1446,7 +1573,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "暴怒过猛，天灾暴怒者死亡，完成75次 / 攻略就是起手找洞察和裂肤石像鬼，然后不断复活触发它的亡语就好了，它的普通攻击也加进度，所以铺一地后狂乱可以加大量进度，100点伤害太少太少了，2把差不多就搞定了。 / 攻略就是起手找洞察和天灾暴怒者亡者复活，然后不断使用天灾暴怒者就好了。 / 累积型成就，很简单，洞察牧已经就绪，其实作者我是做其他成就是顺带做完这个成就的。 / 累积型成就，很简单，洞察牧已经就绪，其实作者我是做其他成就是顺带做完这个成就的。就用亡者复活还有灵媒术回收就好了。"
     },
     {
       "id": "lich-king-053",
@@ -1480,7 +1608,8 @@
           "points": 20,
           "quota": 600
         }
-      ]
+      ],
+      "guide": "累积型成就，白给型成就，做完其他成就，这个成就早就完成了，所以不解释，发个全亡灵随从的卡组凑合一下。"
     },
     {
       "id": "lich-king-054",
@@ -1504,7 +1633,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "攻略就是起手找洞察和魔药播撒者，然后不断复活触发它的亡语，终于运气好的时候变对手手里的传说随从，毕竟现在的卡组橙卡比例可是很高的。 / 一次性成就，很简单，洞察牧已经就绪，其实作者我是做其他成就是顺带做完这个成就的。"
     },
     {
       "id": "lich-king-055",
@@ -1528,7 +1658,8 @@
           "points": 20,
           "quota": 9
         }
-      ]
+      ],
+      "guide": "攻略就是起手找肢体商贩和月光指引，然后肢体商贩站场，多召唤几个亡灵就完事了 / 一次性成就，用亡灵德就可以做了，用月光指引和融合怪多找几个肢体商贩就好了。多个肢体商贩战场就更快完成这个成就。"
     },
     {
       "id": "lich-king-056",
@@ -1552,7 +1683,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "Ps：要斩杀对手才算成功，对手投降是不算的 / 攻略就是正常的30卡otk古夫德的打法，就是斩杀前先把666用了再送掉就好了。 / 一次性成就，有bug，就是翻译问题，真正的要求是你被白骨领主霜语强化过后斩杀对手才算完成这个成就。第一次作者我用了黑门术变节了666，熬了3回合不算，还以为要亲手斩杀对手才算，自爆不算。第二次作者我就用古夫大帝用暗月送对手666，结果失误了配合铜须，666回来了，然后就被对手杀了666，结果我反手大帝斩杀对手就跳成就了，也算是阴差阳错大胜利。"
     },
     {
       "id": "lich-king-057",
@@ -1588,7 +1720,12 @@
       "relatedCards": [
         "战争之骑士瑞文戴尔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "青马死神",
+          "code": "AAEBAda+BQSe/AL21gPFpQWD5gYN39ICw4AEqZ8E458E5J8Ema0E6vIFvpwG6qUG3LgGzsAG/uUGguYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用战争之骑士瑞文戴尔的骑士消灭敌方英雄。",
@@ -1602,7 +1739,8 @@
           "points": 20,
           "quota": 4
         }
-      ]
+      ],
+      "guide": "ps：根本吧友的测试，用瑞文戴尔直接普通攻击砍死对手也算，但效率远不如火箭炮，所以这种解法意义不大。 / 攻略就是起手找445排序或者观赏鸟类或者主人的召唤。尽早打出445排序橙，然后就可以抽到火箭炮和瑞文戴尔了。送掉瑞文戴尔再使用火箭炮就搞定了，这样的赢法赢4次就完事了。 / 累积型成就，很简单。因为猎人有火箭炮，所以这个成就肯定用猎人做了。 / 写这个攻略耗时1个小时，终于写完了，真心累啊。希望能帮助到大家。好了，作者我的全成就攻略贴未来还会继续，下次就要等很长时间了。毕竟其他成就都是没经验的，大家应该兴趣不大，也不用着急做。预告一下，是新版本深暗领域的全成就攻略。"
     },
     {
       "id": "lich-king-059",
@@ -1613,7 +1751,12 @@
       "relatedCards": [
         "沉沦的大主教"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "法尽其用",
+          "code": "AAEBAda+BQLHD9y4Bg6JwwKKwwKczQLf0gLylgPknwSZrQSS3wTVwQXq8gW+nAbqpQaA5gaC5gYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用沉沦的大主教召唤40个僵尸。",
@@ -1627,7 +1770,8 @@
           "points": 20,
           "quota": 80
         }
-      ]
+      ],
+      "guide": "ps：没剩余的法力水晶时别触发沉沦的大主教的亡语。 / 攻略就是起手找沉沦的大主教，然后通过假死装死九命兽魂反复触发沉沦的大主教就可以了。 / 累积型成就，很简单。因为猎人能反复触发亡语，所以这个成就就用猎人做了。"
     }
   ]
 }

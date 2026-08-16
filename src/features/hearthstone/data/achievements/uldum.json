@@ -38,7 +38,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "场上6个怪的时候，用紫罗兰教师的特效卡死蜂群；或者日食蜂群打一个4血怪"
     },
     {
       "id": "uldum-002",
@@ -75,8 +76,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "匣中之谜",
-          "code": "AAEBAdeEBQbY7APo9wOgigT/ogSHvwb14gYM1eECwqEDiLYD0+wDuMUF6MUF65gGzpwGwr4G6ckG7ckG5OoGAAA="
+          "name": "匣中之谜 1",
+          "code": "AAEBAY0WBsAB1hH21gPv0wSW1ATxgAYMwqEDio0EopIE/J4E3bkE6MUF0PgF65gGsc4Gj88Gy9AGhuYGAAA"
+        },
+        {
+          "name": "匣中之谜 2",
+          "code": "AAEBAaXDAwTAAdYRuaUD0fgFDf+dA8KhA4XkA9DsA6f3A4qNBJ+SBKKSBPyeBOjFBdD4BYW/BobmBgAA"
         }
       ],
       "stages": [
@@ -86,7 +91,8 @@
           "points": 100,
           "quota": 4
         }
-      ]
+      ],
+      "guide": "思路: 通过随从，法术牌复制多个匣子完成成就（6费鹦鹉放匣子不计数） / 打法: 为求稳可多复制几个再打，免得被匣子破坏手牌 / 核心牌: 迷之匣"
     },
     {
       "id": "uldum-004",
@@ -123,12 +129,12 @@
       "relatedCards": [],
       "recommendedDecks": [
         {
-          "name": "卫生团队 卡组1",
-          "code": "AAEBAdG+BQbWnQOppQPXzgOH9wOkkQWZwAYM5QTRCtHBAtjBAsvNA+LeA/vfA62KBKS2BKLpBe33BfGpBgAA"
+          "name": "卫生团队 1",
+          "code": "AAEBAYwWCqikA/bWA/7bA6qKBKWtBIWCBouUBq+oBvrJBsnoBg/4vAKkpAPP3gOY7QPYpASO1AS+4gTW0AWh+wXejQaQlwacngafngbsqQbzygYAAA"
         },
         {
-          "name": "卫生团队 卡组2",
-          "code": "AAEBAda+BQiFF9bsApuFA/7bA++iBZqiBo7BBuLjBgupnwTjnwTknwSZrQTq8gW+nAaLvwbOwAbQwAb3yQaV4gYAAA=="
+          "name": "卫生团队 2",
+          "code": "AAEBAbyRBQiFF6ikA/O7A/bWA6qKBKWtBIWCBsnoBhDUBPi8AqSkA6S2A/7bA8/eA5jtA9ikBI7UBL7iBPDNBdbQBd6NBpCXBpyeBuypBgAA"
         }
       ],
       "stages": [
@@ -138,7 +144,8 @@
           "points": 100,
           "quota": 7
         }
-      ]
+      ],
+      "guide": "思路: 通过腐蚀和buff，使狂欢小丑达到30以上生命时打出 / 打法: 先跳费攒buff牌，高费打出博学者普克尔特，腐蚀狂欢小丑，自己怪太大就先用清理污染送掉再拍狂欢小丑"
     },
     {
       "id": "uldum-006",
@@ -152,8 +159,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "连击连连",
-          "code": "AAEBAdW+BQL1uwL7igQOxAH7ogPn3QPr9gPO+QO3swT0wQW4xQWQgwaNlgatpwbAqAa2tQaM1gYAAA=="
+          "name": "连击连连 1",
+          "code": "AAEBAcrJBgLWEcygBQ77ogPHzgPn3QPz3QOo6wPr9gP2nwT3nwS3swTBoQWQgwa5hgbpyQaM1gYAAA"
+        },
+        {
+          "name": "连击连连 2",
+          "code": "AAEBAZvDAwLWEcygBQ71uwL7ogPHzgOk0QPn3QPr9gP2nwT3nwS3swTBoQWQgwa5hgbpyQaM1gYAAA"
         }
       ],
       "stages": [
@@ -163,7 +174,8 @@
           "points": 100,
           "quota": 8
         }
-      ]
+      ],
+      "guide": "思路: 连环腿大师获得连击牌通过大帝减费后一回合打出 / 打法: 前期通过原野联络人过牌，中期连环腿大师刷连击，保大帝减两轮费用后一回合打出 / 核心牌: 连环腿"
     },
     {
       "id": "uldum-007",
@@ -177,8 +189,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "反正不怪我",
-          "code": "AAEBAdOLBQKyFKrZBA63bIvOApCnA/DUA+PuA9ySBOmjBcOPBuyVBs6cBtSeBqelBqSnBqbABgAA"
+          "name": "反正不怪我 1",
+          "code": "AAEBAZu1AwLWEY31BQ71Der6ApCnA/DUA+C1BIXUBPGRBc3uBZyeBp+eBuaeBqelBqinBo/PBgAA"
+        },
+        {
+          "name": "反正不怪我 2",
+          "code": "AAEBAfWfAwLWEY31BQ71DZCnA/DUA/2fBLy2BIXUBPGRBfTyBcr4BZyeBuaeBqinBqTABoDiBgAA"
         }
       ],
       "stages": [
@@ -188,7 +204,8 @@
           "points": 100,
           "quota": 5
         }
-      ]
+      ],
+      "guide": "思路: 地震术震4个普通怪+1个亡语招2个怪完成成就 / 打法: 前期过牌占场，中期大帝减费，最终4个普通怪+1个亡语怪打地震术 / 核心牌: 地震术"
     },
     {
       "id": "uldum-008",
@@ -202,8 +219,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "术士式停火",
-          "code": "AAEBAZT9BgAP8tAC/6QDg/sDhKAEiLAEzuQFzvoFxJ4Go6AGnLMGnrgGw7gGp8oGk8sG8OYGAAA="
+          "name": "术士式停火 1",
+          "code": "AAEBAa35AwTWEfbWA6iKBICeBg24A/LQAv+kA4H7A4+fBIiwBMjrBfX4Bfr5BYSeBqOgBsO4BpPLBgAA"
+        },
+        {
+          "name": "术士式停火 2",
+          "code": "AAEBAfqUAwjWEcW8ApPkA4T7A5egBNujBICeBqjhBgu4A/LQAv+kA+2sA4+fBIiwBMjrBfr5BaOgBsO4BpPLBgAA"
         }
       ],
       "stages": [
@@ -213,7 +234,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "思路: 通过亡语对对方英雄造成伤害的亡语牌达成双方同时死亡 / 打法: 前期占场，打脸同时通过抽牌卖血，最终回合裂隙屠夫+憎恶打自己6打对方2，有水雷可以打更多，大帝减费会更好操作 / 核心牌: 裂隙屠夫"
     },
     {
       "id": "uldum-009",
@@ -227,8 +249,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "高效骇客",
-          "code": "AAEBAbyRBQT3qAP21gO1+AX6yQYNiIcD1p0DwLkD99QDiKAEjLcEjtQEpaUFi5QG7KkG1boG88oGouIGAAA="
+          "name": "高效骇客 1",
+          "code": "AAEBAYwWAveoA4WCBg7/A/mzAr7DAs/nAsC5A/e7A47UBJzvBKH7Bc6cBpyeBp+eBuypBo6/BgAA"
+        },
+        {
+          "name": "高效骇客 2",
+          "code": "AAEBAYwWCP8D1hHWnQP3qAOXoASc7wS1+AWh+wUL+bMCvsMCz+cCwLkD97sDjtQEhYIGzpwGnJ4Gn54G7KkGAAA"
         }
       ],
       "stages": [
@@ -238,7 +264,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "思路: 愚者之灾加耐久一回合砍5刀完成任务（砍的回合再挂任务） / 打法: 快速过牌提刀加耐久，最终回合挂任务砍5刀完成成就 / 核心牌: 侵入系统"
     },
     {
       "id": "uldum-010",
@@ -252,8 +279,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "你看牌了吗？",
-          "code": "AAEBAbyRBR7YAsMWkvgC/KMDk6gDwLkDk9ADju0DqIoE+YwEiKAEnKAEjtQEkNQEltQEpaUF/cQFtPgFofsFi5QG75sGn54Gh6AG7KkG0LAGw7oG1boG+skG88oGouIGAAABA5OoA/3EBbK4Bv3EBcnBBv3EBQAA"
+          "name": "你看牌了吗？ 1",
+          "code": "AAEBAcrJBgT7igTBoQWKqAa2tQYNk6gD5dED590D9p8E958Et7ME38MFv/cFyJQG7p4GlqAGoLMGpeEGAAA"
+        },
+        {
+          "name": "你看牌了吗？ 2",
+          "code": "AAEBAcKPBArWEfW7Auf6AuXRA/uKBJbUBN/DBcmABtmiBsnoBg/EAYAS4PoCgKYDk6gD4t0D590DofQDvYAEt7MEndQEwaEFlqAG8skGpeEGAAA"
         }
       ],
       "stages": [
@@ -263,7 +294,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "思路: 拨号贼玩法，前期通过拨号机器人快速出一件不留占场，然后快速过牌，通过索尼娅起跳幻觉药水操作（也可以通过各种复制洗牌库慢慢将魔古信徒抽上来） / 打法: 按照组牌思路打即可 / 核心牌: 莱"
     }
   ]
 }

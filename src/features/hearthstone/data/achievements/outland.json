@@ -27,8 +27,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "万年折磨",
-          "code": "AAEBAdKLBQTIgASU1ASq3QT3wwUN2cYDjPcD8rEEvsoEwMoEr94EsN4EquIEheUE8OwFj5AG7p4G7akGAAA="
+          "name": "万年折磨 1",
+          "code": "AAEBAdPwBgT21gOU1ATh+AX8wAYNjb0DzNIDzdID99UDivcDg58Etp8Es6AEtKAEi5IF4/gF1sAG38AGAAA"
+        },
+        {
+          "name": "万年折磨 2",
+          "code": "AAEBAc7WAwT3wwPV3gOXoASU1AQN2dMDyd0DivcDtp8Es6AEtKAEi5IF8OwF4/gFmoAGpYEG7J4G38AGAAA"
         }
       ],
       "stages": [
@@ -38,7 +42,8 @@
           "points": 100,
           "quota": 8
         }
-      ]
+      ],
+      "guide": "思路: 打出恶魔变形苟活挂机 / 打法: 打出恶魔变形苟活挂机 / 核心牌: 恶魔变形"
     },
     {
       "id": "outland-002",
@@ -52,8 +57,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "真菌过敏",
-          "code": "AAEBAc6LBQaZ0wKb6AL21gOJiwT++AWvqAYM5AjlugObzgPw1AOJ4AOvgASunwTW3gSt4QWaoAbvqQbzygYAAA=="
+          "name": "真菌过敏 1",
+          "code": "AAEBAdeqBgaZ0wKb6AL21gOJiwSaoAbDugYM5AiP9gLlugPw1AOvgASunwSwpQSuwAT64gSt4QXZsQajuwYAAA"
+        },
+        {
+          "name": "真菌过敏 2",
+          "code": "AAEBAaa4AwSZ0wKb6AL21gOJiwQN5AiP9gL5tQPlugPw1AOvgASunwSwpQSuwAT64gSt4QXDugajuwYAAA"
         }
       ],
       "stages": [
@@ -63,7 +72,8 @@
           "points": 100,
           "quota": 3
         }
-      ]
+      ],
+      "guide": "思路: 带满武器英雄牌，7费打出博学者普克尔特+真菌宝藏combo / 打法: 起手全力找博学者普克尔特，真菌宝藏，跳到7费打出完成成就 / 核心牌: 真菌宝藏"
     },
     {
       "id": "outland-003",
@@ -77,8 +87,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "深层智慧",
-          "code": "AAEBAda+BQLGiQPjnwQO39ICp/cC/7oD+7sDqZ8E5J8Ema0EmbAEp5AF6vIF6qUG8aUG0MAGguYGAAA="
+          "name": "深层智慧 1",
+          "code": "AAEBAYoWCNYRhtMC9tYDyPkD25EE1/kFi9YG/uUGC/+6A/u7A+OfBO2xBKekBejoBd/tBeryBcj2BdL4BeqlBgAA"
+        },
+        {
+          "name": "深层智慧 2",
+          "code": "AAEBAda+BQbWEYbTAo/jA9uRBJ3UBNf5BQzJ+AL/ugP7uwPI+QPjnwSZrQSnpAXo6AXf7QXq8gXqpQbcuAYAAA"
         }
       ],
       "stages": [
@@ -88,7 +102,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "思路: 大帝减费纳格兰大冲撞+北郡农民+拾荒者的智慧 / 打法: 大帝减费key牌，如果牛站住场更省事 / 核心牌: 裂蹄牛"
     },
     {
       "id": "outland-004",
@@ -122,8 +137,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "必读书目",
-          "code": "AAEBAdK+BQTj4wKh4gSN/gWI5gYNs8EC2f4CrrAD/bgD67kD7LkDzOsD8PYDgeIEwOIEvI8G+JQGkqAGAAA="
+          "name": "必读书目 1",
+          "code": "AAEBAcOfAwbZ/gLGxwXx6AXrgAb4lAaI5gYMyrgD/bgD67kD7LkDlc0DwNEDzOsDwOIEvI8GzpwGkqAG0akGAAA"
+        },
+        {
+          "name": "必读书目 2",
+          "code": "AAEBAZ3DAwbZ/gLM6wPA4gTrgAbOnAaI5gYMyrgD/bgD67kD7LkDlc0DwNED8egFlPUFvI8G+JQGkqAG0akGAAA"
         }
       ],
       "stages": [
@@ -133,7 +152,8 @@
           "points": 100,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "思路: 给圣契减费，贴够10个圣契，清空手牌，通过女伯爵莉亚德琳回手10个一次贴出 / 打法: 全力找过牌，圣契减费，女伯爵莉亚德琳，贴够10个打出女伯爵回收即可 / 核心牌: 智慧圣契"
     },
     {
       "id": "outland-006",
@@ -147,8 +167,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "记忆复苏",
-          "code": "AAEBAdG+BQKlCaSdBg7lBNHBAuqMA5O6A8vNA9fOA/vfA5nrA4f3A62KBISfBKK2BO33BfGpBgAA"
+          "name": "记忆复苏 1",
+          "code": "AAEBAd7hBgSFF5egBJbUBKSdBg3RwQKn9wKTugOwugOEnwTWoASGgwW5xAXrmAbvmwbOnAbBnwaWoAYAAA"
+        },
+        {
+          "name": "记忆复苏 2",
+          "code": "AAEBAZ/HAgSFF5egBJbUBKSdBg3RwQKn9wKTugOwugOEnwTWoASGgwWFjgbrmAbvmwbOnAbBnwaWoAYAAA"
         }
       ],
       "stages": [
@@ -158,7 +182,8 @@
           "points": 100,
           "quota": 6
         }
-      ]
+      ],
+      "guide": "思路: 通过皮普复制6个复苏达成成就 / 打法: 起手全力找皮普，法术只有3个，复制3个复苏皮普复制后6费打出即可"
     },
     {
       "id": "outland-007",
@@ -172,8 +197,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "终极攻击",
-          "code": "AAEBAdW+BQTSuQPH+QO6pATMoAUNqssD590D/u4D0/MDofQDvYAE958Et7MEv/cFyJQGracGtrUGjNYGAAA="
+          "name": "终极攻击 1",
+          "code": "AAEBAcrJBgTMuQPSuQPH+QPZogYN3+MClc0D4t0D590D/u4D0/MD958Et7MEyJQGracGtrUG6ckGjNYGAAA"
+        },
+        {
+          "name": "终极攻击 2",
+          "code": "AAEBAZvDAwTf4wKzhQPSuQPi3QMN9bsClc0D590D0/MDt7MEwPgFkIMGjZYGtrUG6ckG8skGjNYGpeEGAAA"
         }
       ],
       "stages": [
@@ -183,7 +212,8 @@
           "points": 100,
           "quota": 3
         }
-      ]
+      ],
+      "guide": "思路: 快速找到阿卡玛送了洗进去抽出来攻击 / 打法: 全力找可疑交易，然后将终极阿卡玛抽上来打出攻击3次即可 / 核心牌: 阿卡玛"
     },
     {
       "id": "outland-008",
@@ -197,8 +227,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "摩天图腾",
-          "code": "AAEBAdOLBQSBBN/hA++iBailBg2yFPuqAt6CA52jA5a5A/TfA7LBBN7pBbONBs6cBpyeBqSnBtHQBgAA"
+          "name": "摩天图腾 1",
+          "code": "AAEBAZu1AwjWEdqlA/bWA9/hA7bcBLbtBJ+eBqelBgvvAYEE9qoClrkDqtkEveUE1tAF9PIFw48GnJ4Gq+EGAAA"
+        },
+        {
+          "name": "摩天图腾 2",
+          "code": "AAEBAdOLBQTWEdqlA9/hA7HZBA3vAYEE9qoClrkDk"
         }
       ],
       "stages": [
@@ -208,7 +242,8 @@
           "points": 100,
           "quota": 20
         }
-      ]
+      ],
+      "guide": "思路: 上图腾给图腾巨像减费，攒加攻法术，最终打出图腾巨像+加攻法术+图腾映像达成成就 / 打法: 按组牌思路正常打即可 / 核心牌: 图腾映像"
     },
     {
       "id": "outland-009",
@@ -221,7 +256,7 @@
       "recommendedDecks": [
         {
           "name": "不止是微痛",
-          "code": "AAEBAZT9BgKPggOE+wMO58sC8tAC7awDuLYDy7kD184DzvkDhKAEkIMGxJ4Go6AGxKIGw7gG4uYGAAA="
+          "code": "AAEBAa35AwSPggOXoATHwgWUygYN3cIC8tACue8C+v4C7awDy7kD9PYDvZ8EhKAEzpwGhJ4GxJ4Gw7gGAAA"
         }
       ],
       "stages": [
@@ -231,7 +266,8 @@
           "points": 100,
           "quota": 5
         }
-      ]
+      ],
+      "guide": "思路: 黑眼+小费用打自己血回费 / 打法: 4，5费黑眼+小费用牌打自己血回费凑够8费用即可"
     },
     {
       "id": "outland-010",
@@ -245,8 +281,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "操纵比赛",
-          "code": "AAEBAbyRBQT38wKGqAO7uQOfngYNwLkDju0DhqAEiKAEjLcEpaUF69AFtPgFtfgFhYIGh6AG7KkGjr8GAAA="
+          "name": "操纵比赛 1",
+          "code": "AAEBAYwWBNYR9tYDju0D+skGDffzAru5A47UBKH7BZyeBp+eBpGoBuypBo6/BvPKBsHhBqLiBuPrBgAA"
+        },
+        {
+          "name": "操纵比赛 2",
+          "code": "AAEBAQcE1hHAuQOFjgb6yQYN9/MCu7kD99QDju0DjtQEtfgFofsFnJ4G7KkGw7oG88oGouIG4+sGAAA"
         }
       ],
       "stages": [
@@ -256,7 +296,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "思路: 给对方招剧毒随从，通过人类步兵使战槌挑战者免疫 / 打法: 不断跳费，10费打出人类步兵+沼泽幼龙+战槌挑战者 完成成就 / 核心牌: 战槌挑战者"
     },
     {
       "id": "outland-011",
@@ -270,8 +311,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "规整伤害",
-          "code": "AAEBAdW+BQjpvgPl0QP7igT2nwS3swTMoAXg0AWKqAYLxAHf4wL+7gP3nwS6pATI+wW9ngatpwazqQa2tQbpyQYAAA=="
+          "name": "规整伤害 1",
+          "code": "AAEBAZu1AwbWEYUXltQEncUFzpwGpMAGDJMEutICk7kD6b4DhdQEq+0E6aMF2dAF4NAFwfkFnJ4GiuIGAAA"
+        },
+        {
+          "name": "规整伤害 2",
+          "code": "AAEBAZu1AwbWEYUXltQE9PIFwfkFpMAGDJMEutICk7kD6b4DhdQEq+0E6aMF2dAF4NAFnJ4GpKcGiuIGAAA"
         }
       ],
       "stages": [
@@ -281,7 +326,8 @@
           "points": 100,
           "quota": 1024
         }
-      ]
+      ],
+      "guide": "思路: 7个莫尔葛工匠翻128倍配合打8法术砸莫尔葛工匠完成 / 打法: 最终场上7个莫尔葛工匠即可，可以食肉格块吃莫尔葛工匠无面复制格块解怪，最终回合先把格块用法术砸掉即可 / 核心牌: 1024莫尔葛工匠"
     }
   ]
 }

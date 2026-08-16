@@ -48,8 +48,12 @@
       "relatedCards": [],
       "recommendedDecks": [
         {
-          "name": "亮出锐爪",
+          "name": "亮出锐爪 1",
           "code": "AAEBAe2/BALmBdaZAw7BBJoI3BWXaPzNAoTmAvmtA+W6A+a6A5vOA6LhA4rkA7igBLmgBAA="
+        },
+        {
+          "name": "亮出锐爪 2",
+          "code": "AAECAe2/BAKm4QPC7AMOm84DudIDiuADlugDuewDku4DiPQDyfUD7PUD9PYDgfcDhPcDoaAE1qAEAA=="
         }
       ],
       "stages": [
@@ -71,7 +75,8 @@
           "points": 20,
           "quota": 600
         }
-      ]
+      ],
+      "guide": "ps：只需要获得攻击力，不需要你攻击的。所以遇到挂机脚本别打脸，就一直刷攻击力就好了。 / 攻略就是起手留施肥和过牌，然后依靠艾露恩神谕者铺场再日蚀施肥，然后就是送掉这些随从疲劳死自己就完事了。狂野可以复制大量大法师再施肥，最后剧毒之种一波疲劳死自己完成这个成就。 / 攻略就是起手找橡树的召唤还有保护甲板，之后就是不停变脸和使用加攻击的牌。发现类的法术就找加攻击的。萌芽分裂复制大法师瓦格斯或者狂野争夺者都没事。野蛮咆哮可以换成新的任务，但影响不大，而且任务也不被大法师加成，所以换不换无所谓的。 / 累积型成就，满编各种加攻卡就完事了 / 法术德加橡树体系很快的 / 润物无声，为100个随从施肥。这个成就是有严重bug的。真正的要求是触发施肥效果抽牌100次。不知道有多少读者和读者我一样被坑了，白做了大半天。这还不是网易的翻译问题，多半的暴雪的阿三程序员的锅。"
     },
     {
       "id": "stormwind-004",
@@ -120,7 +125,8 @@
           "points": 20,
           "quota": 75
         }
-      ]
+      ],
+      "guide": "标准似乎就找老婆和新版本的松鼠是德鲁伊可以用的，所以这个成就要去狂野做 / 双雷象加伊瑟拉就完事了 / 一次就是21张 / 攻略就是起手就是当任务德做任务为主，后期就是双雷象战场一直向牌库里洗牌就完事了。楼主我那一次就是双雷象战场，然后伊瑟拉，下回合教授变得伊瑟拉，再下回合萨索瓦尔洗伊瑟拉，接着又下伊瑟拉。然后最后一回合连抽50张梦境之门，一局游戏就做完这个成就了。因此其它给牌库塞卡的随从可以换成苟活解场的组件，光是伊瑟拉就足够了。"
     },
     {
       "id": "stormwind-005",
@@ -131,7 +137,12 @@
       "relatedCards": [
         "点燃"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "烧烤热源",
+          "code": "AAECAauwBAKSywOL5wMOwbgD6b4Dhc0Dzc4DpNED99EDkeEDh+QD0OwD0ewDsvcDtPcD9PwD/J4EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张点燃造成10点伤害。",
@@ -139,7 +150,8 @@
           "points": 20,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "ps：别手贱点圣盾上面。 / 攻略就是起手找工匠还有点燃再加上过牌。单工匠需要5伤的点燃，双工匠只需要3伤的点燃就够了。 / 作者我是用上面那个大法师成就做好这个成就的 / 其实作者我本来准备做这个成就的是恶魔工匠，卡组如下"
     },
     {
       "id": "stormwind-006",
@@ -169,7 +181,12 @@
       "relatedCards": [
         "星空墨水套装"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "书法课程",
+          "code": "AAEBAauwBAKSrAKWxwIOigHJA8sE6xPX4QKgmwPsrwPosAPR7AOl7wO58QOn9wP8ngT+ngQA"
+        }
+      ],
       "stages": [
         {
           "description": "使用星空墨水套装，使法术牌的法力值消耗减少75点。",
@@ -189,7 +206,8 @@
           "points": 20,
           "quota": 300
         }
-      ]
+      ],
+      "guide": "攻略就是起手找武器还有过牌，用冰环末日前期控场，然后装好武器用各种法术触发武器效果就好。766可以装备牌库里的武器，442海盗可以回收武器反复使用。作者我没有213狗头人拾荒者还有麦迪文的残影，所以只能这样了，有这些卡的读者可以换上，这样可以有更多的武器来加快成就的进度。 / 这里有个良性bug / 其实只需要触发这个武器的效果60次就能完成成就了，也就是说减费到5费以下的法术也算减费了5点的"
     },
     {
       "id": "stormwind-008",
@@ -327,7 +345,12 @@
       "relatedCards": [
         "寻求指引"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "瞬间实现",
+          "code": "AAECAZ/HAgjIvgP21gOf6wPU7QOm7wPI7wPd9gOoigQLuuED+OMDlugDmesD6O8DwPkDyfkDzPkDzfkDrYoEoaAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在将净化的碎片洗入牌库的同一回合抽到净化的碎片。",
@@ -335,7 +358,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "ps：这个卡组泄牌很慢，小心爆牌。当初作者我还是带瓦王的，结果爆牌了，就换成加护甲的恶魔了。 / 比较麻烦的成就，因为任务牧的强度太低太低 / 如果不是py或者遇到挂机脚本，这个成就基本上是做不到的 / 攻略就是想办法遇到挂机脚本，不然天梯上基本没法做这个成就。正常做任务，然后攒点暗中生长和安瑟教士。下577的回合就用，卡组里法术就这几张，所以基本上一次就能找到被净化的碎片。"
     },
     {
       "id": "stormwind-014",
@@ -367,7 +391,7 @@
       "recommendedDecks": [
         {
           "name": "追随黑暗",
-          "code": "AAECAZ/HAgLIvgPOvgMOk7oDm7oD3swD184D4t4D+98DyuED++MDlugDmOsDm+sDrYoEhZ8E56IEAA=="
+          "code": "AAECAZ/HAgLIvgP21gMOk7oDm7oDp8sD3swD184D4t4D+98DyuED++MDm+sDoPcDrYoEhZ8EwZ8EAA=="
         }
       ],
       "stages": [
@@ -389,7 +413,8 @@
           "points": 20,
           "quota": 180
         }
-      ]
+      ],
+      "guide": "攻略就是正常当集结牧玩，时间成熟时下博学者尽快拿到2个雷象坐骑，不过很有可能早就发现到了2张雷象坐骑。减费完成后，就是对一个随从使用雷象坐骑再用暗言术灭再使用第二张雷象坐骑就完事了。 / 狂野宇宙法点点点就完事了，这里就直接跳过卡组了，网上有很多照抄就完事了 / 杂技表演，对泽瑞拉的雷象使用雷象坐骑。想要一回合完成的话，自然是需要大量减费的。所以集结牧最为合适。"
     },
     {
       "id": "stormwind-016",
@@ -452,7 +477,12 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "王牌特工",
+          "code": "AAECAZurBAKm+QP3nwQOubgDz7kDqssDpNED390D590Dn/QDofQDovQDo/UDpvUDzfkD9Z8E9p8EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中使用所有种类的间谍小工具。",
@@ -460,7 +490,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "ps：小心爆牌，所以下577时注意自己手牌数量。暗影步可以亡羊补牢，但还是要先倾斜自己的手牌。 / 就是让你成功做完盗贼的任务，再用577.最后再把5种小道具都用一次就完事了"
     },
     {
       "id": "stormwind-019",
@@ -471,7 +502,12 @@
       "relatedCards": [
         "锁喉"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "绝不流血",
+          "code": "AAECAZurBAAP4L4Dx84D590Dq+sDrusD/u4D0/MDjvQDofQD6/YD9PYDkZ8E9p8E958EoKAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用锁喉和流血造成100点伤害。",
@@ -491,7 +527,8 @@
           "points": 20,
           "quota": 400
         }
-      ]
+      ],
+      "guide": "ps：流血伤害没法鞭尸的，所以有可能的话尽可能造成更多的超**害。不过奇迹贼马速最快，也就不必太过可以，也就多打一把的事。 / 攻略就是起手找加基森还有过牌，然后攒一波牌，特别是幸运币，再八爪鱼减费，最后加基森一波过牌斩杀对手。期间要用121虚灵打自己人加法强，暗影步也是用来回手它用的。法强流血伤害爆炸。 / 使用标准第一马王奇迹贼就可以了，56费即可斩杀，无惧7费准时投降的脚本 / 作者我把原先奇迹贼里打伤害用的影袭和邪恶挥刺都换了，毕竟为了成就不需要其它伤害牌了。"
     },
     {
       "id": "stormwind-020",
@@ -527,7 +564,16 @@
       "relatedCards": [
         "强行透支"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "债务减免 1",
+          "code": "AAECAZu1AwKczgOG+gMO27gDmLkD97sD4cwD8NQDiuQD6ucDlugD+uwDwfYD9PYDyfkDhfoD+Z8EAA=="
+        },
+        {
+          "name": "债务减免 2",
+          "code": "AAECAZu1AwKu0gOG+gMOn80D/tED8NQDqt4D4eQDre4D4+4D1vUDwPYD9PYDyfkDzvkD0vkDoaAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张强行透支解锁9个或更多的法力水晶。",
@@ -535,7 +581,8 @@
           "points": 20,
           "quota": 9
         }
-      ]
+      ],
+      "guide": "攻略就是起手找214任务橙。不比强求配合邮箱舞者和甩笔侏儒的。其它战吼也是可以配合的。反正要刷好机会呢。8费法术是打挂机脚本时用来清自己场面腾位置用的。214真好不死，所以就带上了。 / 攻略就是起手找花呗农夫还有强行透支。最快做成就的办法就是223学徒复制花呗，这样马上就可以过载一大堆。还有一个办法就是使用337恐惧卫士配合永恒之火一波把过载拉满。 / 携带大量过载牌就好了 / 因为过载水晶是跨回合的 / 所以可以在高费回合分2个回合过载合计9个法力水晶再使用强行透支就完事了 / 勇气伯发。出发伯尔纳效果100次。这个成就挺恶心的。本来想着214萨满橙+邮箱舞者+甩笔侏儒可以无限连，结果动画时间超慢，真心坑啊。"
     },
     {
       "id": "stormwind-022",
@@ -547,7 +594,12 @@
       "relatedCards": [
         "小巧玩具"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "小小传说",
+          "code": "AAECAZu1AwSczgP21gOG+gOoigQNmLkD4cwDn80D/tEDqt4DiuQDlugD1vUD4/YD9PYDyfkDzvkDoaAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用小巧玩具召唤25个传说随从。",
@@ -555,7 +607,8 @@
           "points": 20,
           "quota": 25
         }
-      ]
+      ],
+      "guide": "ps：熊猫人进口商是找不到小巧玩具的。作者我带她是为了顺带做中立成就，大家可以换下她。 / 攻略就是起手找博学者和小佛丁，尽快吧小巧玩具抽到手里。发现卡都用来发现小巧玩具。 / 这个成就其实不算难，标准卡池5费随从很多的 / 带上223学徒还有大量发现卡，多做几次就完事了"
     },
     {
       "id": "stormwind-023",
@@ -726,7 +779,12 @@
       "relatedCards": [
         "恐惧战马"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "我的小马驹",
+          "code": "AAECAcn1AgK/uQOE+wMOtbkDtrkDy7kDzdIDld4Dk+QDiO8Diu8DvfEDgPsDgfsDg/sDsZ8E56AEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中使塔姆辛的恐惧战马回归战场8次。",
@@ -734,7 +792,8 @@
           "points": 20,
           "quota": 8
         }
-      ]
+      ],
+      "guide": "ps：任务给的577效果是无法鞭尸的，所以最好用卖血的古尔丹之手斩杀对手，这样就可以尽快做完成就。 / 攻略就是起手留过牌还有武器，然后让黑眼灵魂窃贼减费，再下了这2个随从开始无限费启动，一波过牌卖血做完任务，然后就是下了577开始斩杀对手。如果做小马驹成就时就要慢点了，尽可能召唤2个恐惧战马，这样4个回合就可以完成成就了。完成小马驹成就后就可以换成其他卡了。至于符文秘银杖可是任务术的标配是不会换的。 / 这3个成就可以用标准第二马王任务术卡组一起完成的。马速之快可以无视7费准时投降的脚本。一般56费就可以斩杀了。 / 最后能在狂野遇到挂机的千甲德，这样做完任务下了577后就可以一直挂机了，这样一把就可以完成任务了。"
     },
     {
       "id": "stormwind-030",
@@ -841,7 +900,12 @@
       "relatedCards": [
         "固执的商贩"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "屡禁不止",
+          "code": "AAECAc7WAwLR3QP39gMO1tED3dMD+dUDx90D2d4D/e0DivcDi/cDxfkDyfkD0vkDnKAErKAEtKAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "召唤75个固执的商贩。",
@@ -849,7 +913,8 @@
           "points": 20,
           "quota": 75
         }
-      ]
+      ],
+      "guide": "攻略就是留武器和过牌。然后控制好手牌让出彩艺人和贵族能复制到商贩无面或者小熊猫。有刀的时候用交易把商贩洗回牌库里避免浪费刀的亡语，之后就是使用商贩，无面商贩，回手商贩再上这几个重复动作了，75次也不算多。 / 携带大量复制的卡和回手的牌就好了"
     },
     {
       "id": "stormwind-035",
@@ -860,7 +925,20 @@
       "relatedCards": [
         "一决胜负"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "复仇不易 1",
+          "code": "AAEBAc7WAwTx+wL97QP39gO1igQNkbMC1tED3dMD+dUDx90D2d4D8+MD9PYDivcDi/cDxfkD0PkDtKAEAA=="
+        },
+        {
+          "name": "复仇不易 2",
+          "code": "AAECAc7WAwLW0QP39gMO3dMD+dUDxd0Dx90D2d4D8+MDwvED9PYDivcDi/cDsPkDxfkD0PkDtKAEAA=="
+        },
+        {
+          "name": "复仇不易 3",
+          "code": "AAECAc7WAwLW0QP39gMO3dMDutUD+dUDx90D2d4D8+MD9PYDivcDi/cDsPkDxfkD0PkDrKAEtKAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用库尔特鲁斯和他的任务线，使卡牌的法力值消耗减少250点。",
@@ -880,7 +958,8 @@
           "points": 20,
           "quota": 1000
         }
-      ]
+      ],
+      "guide": "ps：别手贱打圣盾上面哦。 / ps：作者我没有血神哈卡，所以卡组里那张机械克苏恩要换成血神哈卡的。 / 抽出愤怒，使用雄狮之怒，一次攻击造成10点伤害。用上面那个卡组做吧，把无面雷象换成加攻击的怒火冷酷追击就好了。 / 攻略就是起手做完任务，下了577橙，然后再把血神哈卡召唤出来送死。再下了紫罗兰让自己免疫，最后下蓝龙一波把血抽光就可以完成这个成就了。这个卡组效率就比我用来做成就的卡组快多了，建议大家试试这个卡组。 / 攻略就是做完任务拿起武器，然后不断过牌和使用加攻击力的牌，最后攻击破10了以后攻击一次就完事了。 / 其实最好的办法是在狂野用蓝龙抽哈卡的血，作者我真不知道抽到就施放的卡也会被减费啊。 / 因为暴雪要没新卡的关系，所以可交易是特有机制，不会像其他卡牌一样返回牌库重置，因此反复交易对做这个成就是没用的 / 楼主我是用雷象洗滑翔的方法做这个成就的，卡组如下 / 这个卡组就是通过无面复制多个雷象战场，然后复制大量滑翔和其它法术进牌库，然后反复滑翔减费用的。作者我用了这个卡组刷了一个下午才做完这个成就，太坑爹了。然后楼主我才知道还有简单很多很多的办法。"
     },
     {
       "id": "stormwind-036",
@@ -1046,7 +1125,12 @@
       "relatedCards": [
         "劳累的驮骡"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "药水还在它背上",
+          "code": "AAECAa/XAwLY+QOXoAQO/7oDtuEDj+QD6ukD8OwDiPQD9PYDyPkDxPsDxfsDqZ8EoaAEu6AEvaAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "触发劳累的驮骡的复制效果15次。",
@@ -1066,7 +1150,8 @@
           "points": 20,
           "quota": 75
         }
-      ]
+      ],
+      "guide": "攻略就是起手找过牌，然后就是一直复制驮骡进牌库再抽就完事了。记得泄牌，手牌满了就没法复制触发效果了。 / 猎人有大量复制进牌库的牌还有抽野兽的牌，所以很容易做这个成就的 / 而且作者我在做这个成就时，发现这样的卡组强度还是不错的，有小丑德的味"
     },
     {
       "id": "stormwind-043",
@@ -1183,7 +1268,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "黑门术很容易做这个成就 / 其实洞察牧也可以做，就是多打一张龙族嫌疑的事。也是0费的光明之翼。 / 起手找黑暗之门，祈祷光明之翼不上手就好。手牌8张以上就用黑暗之门抽光明之翼，再用光明之翼就完事了。"
     },
     {
       "id": "stormwind-048",
@@ -1247,7 +1333,12 @@
       "relatedCards": [
         "热情的柜员"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "公会银行",
+          "code": "AAECAZ/HAgAPk7oDlroDp8sD184D4t4D+98D+OMDm+sDhvcDh/cDiPcDzfkDrYoEhJ8EhZ8EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用热情的柜员储存50张牌。",
@@ -1255,7 +1346,8 @@
           "points": 20,
           "quota": 50
         }
-      ]
+      ],
+      "guide": "洞察牧做很快的"
     },
     {
       "id": "stormwind-051",
@@ -1266,7 +1358,12 @@
       "relatedCards": [
         "瓦里安，暴风城国王"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "王者归来",
+          "code": "AAECAZ3DAwj8uAPA0QP21gP76AOR7APZ+QOoigSqigQLysEDzOsD4+sDh/QD8PYD8/YDjfgDqvgDx/kDlaAEyaAEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "召唤具有嘲讽，突袭和圣盾的瓦里安，暴风城国王。",
@@ -1274,7 +1371,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "ps：瓦王的效果检测是同时的。卡组里就一张奇利亚斯也可以让瓦王三属性齐全。 / 攻略就是起手找博学者和小佛丁或者瓦王，卡组里有着大量突袭嘲讽和圣盾的随从。所以使用瓦王后可以轻松三属性齐全完成成就。 / 现在的最强卡组污手骑就可以做这个任务了"
     },
     {
       "id": "stormwind-052",
@@ -1285,7 +1383,12 @@
       "relatedCards": [
         "艾尔文野猪"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "斯人已逝",
+          "code": "AAECAa/XAwTUugP/ugPhzgP9+AMNudADjeQD6ukDn+wD2+0D9PYDyPkDzfkD0/kDlPwDqZ8Eqp8Eu6AEAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用锯齿符文剑消灭对手。",
@@ -1293,7 +1396,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "攻略就是找过牌和做任务，做任务的目的是为了自己点杀野猪用的。最好的打法就是下多个野猪，再用血魔吃了。然后用集群撕咬送掉血魔。回手的血魔再下又可以吃一次野猪大餐了。这样的组合技打出后，基本上千万箴言之剑就有了，一刀爆头带走对手吧。 / 任务猎做这个成就，大量复制艾尔文野猪再送死就好了 / 然后控制好对手血量，争取一刀带走对手完成成就"
     },
     {
       "id": "stormwind-053",
@@ -1304,7 +1408,12 @@
       "relatedCards": [
         "顽固的嫌疑人"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "普通嫌疑犯",
+          "code": "AAECAZ/HAgAPk7oDlroDp8sD184D4t4D+98D+OMDm+sD4PEDhvcDh/cDiPcDrYoEhJ8EhZ8EAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用顽固的嫌疑人召唤一个传说随从。",
@@ -1312,7 +1421,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "攻略就是起手找洞察和嫌疑人，然后不断复制送死就好了。标准3费传说很多的。所以这个成就很容易 / 其实做这类成就一般都是用黑门术和洞察牧，都是定向检索随从用的卡，还有亡者复生来回收。黑门术是用在快速完成的成就。洞察牧则是用在需要拖回合数或者多次复制的成就上的。这个嫌疑犯的成就就需要多多复制，所以就用洞察牧了。"
     },
     {
       "id": "stormwind-054",

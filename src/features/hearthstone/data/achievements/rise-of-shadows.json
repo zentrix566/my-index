@@ -27,8 +27,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "绿地疯长",
-          "code": "AAEBAc6LBQTqugOJiwSgoAaxwQYNX+QI05wD6LoDlc0D8NQDieADr4AEsKUEmqAG88oGouIG9+UGAAA="
+          "name": "绿地疯长 1",
+          "code": "AAEBAdeqBgKJiwSA1AQO5Ai/8gK5lAPTnAPuugOvgASwpQSB1ATb+gXVugbzygb45Qb65Qb75QYAAA"
+        },
+        {
+          "name": "绿地疯长 2",
+          "code": "AAEBAaa4AwKJiwSB1AQO5Ai/8gK5lAPTnAPougPuugOvgASunwSwpQSA1ATb+gXVugbzygb45QYAAA"
         }
       ],
       "stages": [
@@ -38,7 +42,8 @@
           "points": 100,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "思路: 森林的援助+3个解怪法术+森林的援助 / 打法: 起手找古夫，苟活+跳费，费用够打出combo / 核心牌: 森林的援助"
     },
     {
       "id": "rise-of-shadows-002",
@@ -72,8 +77,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "法术飓风！！",
-          "code": "AAEBAYHPBg6sAbQEvAiEuwKfmwP/nQP0qwPxrwOu9wOQlgWCogWxoAbEogbnqQYIwAHIhwPimwOF5APU6gOKjQSBvwaG5gYAAA=="
+          "name": "法术飓风！！ 1",
+          "code": "AAEBAY0WBMAB1hGEuwKG5gYNrAG0/ALIhwOfmwPimwPBuAOF5AOn9wOu9wOKjQT8ngSxoAaBvwYAAA"
+        },
+        {
+          "name": "法术飓风！！ 2",
+          "code": "AAEBAf3VAwjAAdYRyIcD4MwD1OoDkJYF0fgFhuYGC7T8Ap+bA+KbA/+dA4XkA6f3A673A4qNBPyeBLGgBoG/BgAA"
         }
       ],
       "stages": [
@@ -83,7 +92,8 @@
           "points": 100,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "思路: 咒术洪流减费后囤牌一波用掉完成成就 / 打法: 按组牌思路打即可 / 核心牌: 法力飓风"
     },
     {
       "id": "rise-of-shadows-004",
@@ -95,8 +105,12 @@
       "relatedCards": [],
       "recommendedDecks": [
         {
-          "name": "柔者长存",
-          "code": "AAEBAdK+BQLdCvbWAw6zAbds/68CwP0C+ZMDhpwDns0Dy80Dz9EDktQEwOIEjZYFi+wFtZ4GAAA="
+          "name": "柔者长存 1",
+          "code": "AAEBAcOfAwTWEcvNA5yfBOPrBg24xwKGnAOezQOL+AON+APunwSS1ATA4gSMgwWi+gWWlgaGowah4QYAAA"
+        },
+        {
+          "name": "柔者长存 2",
+          "code": "AAEBAZ3DAwbWEcvNA5yfBNWsBOqpBuPrBgzSBIMFhpwDi/gD7p8E57gEktQEwOIEovoFlpYGhqMGoeEGAAA"
         }
       ],
       "stages": [
@@ -106,7 +120,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "思路: 人类步兵+决斗拉0费怪 / 打法: 苟活，拍大帝减费，费用够人类步兵+决斗完成成就 / 牌序: 类步兵，决斗"
     },
     {
       "id": "rise-of-shadows-005",
@@ -120,8 +135,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "重磅复活",
-          "code": "AAEBAdG+BQAP+hHqvwLRwQKZmwPXzgPi3gP73wOtigSNsgTgpAXt9wWjnQaXoAaaoAaAuAYAAA=="
+          "name": "重磅复活 1",
+          "code": "AAEBAd7hBgLPxgWq6gYO0cECtM4CmZsDk7oD4t4D+98DrYoEhJ8EjbIEorYE+dsE7fcFo50GkLQGAAA"
+        },
+        {
+          "name": "重磅复活 2",
+          "code": "AAEBAaSrBATwzwLLzQPi3gOEnwQN1grRwQKZmwOTugP73wOH9wOtigSKowTIrASNsgSitgTt9wWQtAYAAA"
         }
       ],
       "stages": [
@@ -131,7 +150,8 @@
           "points": 100,
           "quota": 60
         }
-      ]
+      ],
+      "guide": "思路: 带上高费随从，正常打出或法术召唤，送掉，复活 / 打法: 按组牌思路打即可 / 核心牌: 群体复活"
     },
     {
       "id": "rise-of-shadows-006",
@@ -145,8 +165,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "弃子妙手",
-          "code": "AAEBAdW+BQLMoAWxwQYO/MECx5sD5dED/tsD/u4DofQDvYAE9p8E958Et7MEv/cF7p4GracGjNYGAAA="
+          "name": "弃子妙手 1",
+          "code": "AAEBAcrJBgLWEdadAw7HmwPn3QOp6wP3nwS3swT03QTBoQXTsgW/9wXI+wXIlAbZogatpwbQuAYAAA"
+        },
+        {
+          "name": "弃子妙手 2",
+          "code": "AAEBAZvDAwLWEdmiBg7eB4qtAvW7AoyAA8SJA8ebA9ipA+fdA5GfBPefBLezBNejBb/3BdC4BgAA"
         }
       ],
       "stages": [
@@ -156,7 +180,8 @@
           "points": 100,
           "quota": 6
         }
-      ]
+      ],
+      "guide": "思路: 过牌，拍大帝减费，疯狂召唤师+战略转移，手牌不够打出幻变的卡牌包补空缺 / 打法: 按照组牌思路打即可 / 思路: 先下7个怪铺满场，手牌不足可以使用幻变的卡牌包瞬间塞满手牌，然后使用战略转移。"
     },
     {
       "id": "rise-of-shadows-007",
@@ -170,12 +195,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "反派独白 卡组1",
-          "code": "AAEBAdOLBQAPshTexAL2/QKtkQPWnQPj7gP09gO23ATe6QWzjQaFjgbOnAacngakpwamwAYAAA=="
+          "name": "反派独白 1",
+          "code": "AAEBAZu1AwbWEem+A/bWA5XoA5egBKelBgyBBK2RA9adA6bLA/DUA/2fBIXUBJyeBp+eBr+eBuaeBqSnBgAA"
         },
         {
-          "name": "反派独白 卡组2",
-          "code": "AAEBAda+BQaFF/GWA/KWA/34A8GsBJqSBQzslgON5APb7QOU/APCgASqnwTjnwS7oASnkAW+nAbOwAbQwAYAAA=="
+          "name": "反派独白 2",
+          "code": "AAEBAfrwBgTWEem+A5XoA5egBA2BBK2RA9adA6bLA/DUA/2fBIXUBJyeBp+eBr+eBuaeBqSnBqTABgAA"
         }
       ],
       "stages": [
@@ -185,7 +210,8 @@
           "points": 100,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "思路: 莫尔葛工匠+疯狂召唤师+哈加莎的阴谋大帝减费后一回合完成 / 打法: 过牌，抽key牌，减费后完成，也可提前配合法强完成 / 核心牌: 哈加莎的阴谋"
     },
     {
       "id": "rise-of-shadows-008",
@@ -199,8 +225,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "是我抽到哒！",
-          "code": "AAEBAZT9BgTamwOoigSXoASxwQYNswG3bN7EAvLQAs/RA+HkA/T2A8aABKGgBIvsBc6cBs+eBqOgBgAA"
+          "name": "是我抽到哒！ 1",
+          "code": "AAEBAa35AwTWEY+CA9qbA/r5BQ3y0AKdqQPY7QPr7QOI9APFgASPnwT0xgXI6wX1+AWWlwaEngajoAYAAA"
+        },
+        {
+          "name": "是我抽到哒！ 2",
+          "code": "AAEBAa35AwTWEY+CA9qbA5PkAw3y0AKdqQPY7QPr7QOI9AOPnwTI6wX6+QWn+gWWlwaEngajoAaTywYAAA"
         }
       ],
       "stages": [
@@ -210,7 +240,8 @@
           "points": 100,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "思路: 空牌库手牌只留情势反转+劳累的驮骡，打出情势反转完成成就 / 打法: 找到key牌后快速清牌库和其余手牌，用光后打出情势反转完成成就"
     },
     {
       "id": "rise-of-shadows-009",

@@ -46,8 +46,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "棱镜骑",
+          "name": "乌瑟尔先手 1",
           "code": "AAECAdK+BQLkmAbSuQYOyaAEuMUFkIMGmY4G9ZUG65gGzpwGz54Gy58Gw78G6ckG7ckG78kGpeEGAAA="
+        },
+        {
+          "name": "乌瑟尔先手 2",
+          "code": "AAECAdK+BQS9jwbkmAbPngbSuQYNyaAEuMUFre0Fuf4FkIMGhY4GzpwGy58Gw78G6ckG7ckGpeEG7eYGAAA="
         }
       ],
       "stages": [
@@ -57,7 +61,8 @@
           "points": 20,
           "quota": 3
         }
-      ]
+      ],
+      "guide": "”召唤的歹徒，且你的对手一个都没有 / 攻略就是起手找荒芜之地劫掠者或者烧烤大师。然后一边控场一边攒手牌。等到手牌满了，就把自己场上的随从送光，最后使用荒芜之地劫掠者就完事了。 / 攻略就是起手找决战和棱彩光束，打出1次这样的组合，成就就完成了。如果你的场面足够解掉3个33，那就不需要棱彩光束了。 / 嘿！吼！我们登场喽！ / 一次性成就，很简单。和上面的棱彩光束成就可以一起做，所以卡组都不用改。理论来说对手满场这个成就就能直接完成，但我没试过，所以不清楚是否可行。 / 一次性成就，很简单。只要你满手牌且空场时使用就好了。所以携带了大量使用后不亏牌的低费随从，这样手牌数量一直都是满的。 / 一次召唤7个荒芜之地劫掠者。"
     },
     {
       "id": "bl-021",
@@ -70,7 +75,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "棱镜骑",
+          "name": "折射效应",
           "code": "AAECAdK+BQLkmAbSuQYOyaAEuMUFkIMGmY4G9ZUG65gGzpwGz54Gy58Gw78G6ckG7ckG78kGpeEGAAA="
         }
       ],
@@ -93,7 +98,8 @@
           "points": 20,
           "quota": 150
         }
-      ]
+      ],
+      "guide": "攻略就是起手找法术和222娜迦，然后铺场控制对面随从的血量，通过决战和棱彩光束的组合，很快就能做完这个成就了。 / 累积型成就，不算难。因为标准有决战这张卡，所以没必要去狂野找644做成就了。决战配合棱彩光束可是超强组合，为此还被设计师削弱了。"
     },
     {
       "id": "bl-001",
@@ -106,7 +112,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "仙人掌德",
+          "name": "小小仙人掌",
           "code": "AAECAc6LBQL83wW6zgYOqeAFp/oF2voFu5UGvJUGvZUG65gGzpwG2JwG2pwG6qgG0roGpLsGouIGAAA="
         }
       ],
@@ -117,7 +123,8 @@
           "points": 20,
           "quota": 16
         }
-      ]
+      ],
+      "guide": "攻略就是起手找仙人掌构造术或者安戈洛宣传单，配合222娜迦可以搞到多张仙人掌构造术，然后发现16种不同的2费随从就完事了。记性不好的玩家，用纸笔记录一下。 / 累积型成就，很简单。一直使用仙人掌构造术就好了，16次就搞定。所以卡组携带了222娜迦和定向检索法术的宣传单。"
     },
     {
       "id": "bl-002",
@@ -130,7 +137,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "接龙德",
+          "name": "接龙不断",
           "code": "AAECAc6LBQKxwQa6zgYOp/oF2voFu5UGvJUGvZUG+ZcGzpwG15wG2pwG4KgG6qgG76kGh7EG88oGAAA="
         }
       ],
@@ -141,7 +148,8 @@
           "points": 20,
           "quota": 7
         }
-      ]
+      ],
+      "guide": "攻略就是起手找434或者巨龙魔像，然后跳费攒龙牌。手里有7张龙牌时，送掉自己场上的所有随从，再使用巨龙魔像，最后点回合结束就完事了。 / 一次性成就，真的很简单。就是龙德的构建，携带大量的龙牌。还有定向检索巨龙魔像的434。"
     },
     {
       "id": "bl-003",
@@ -154,7 +162,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "故事德",
+          "name": "最佳睡前故事",
           "code": "AAECAc6LBQLSuga6zgYOp/oF2voF8foFmIAGu5UGvJUG+ZcG65gGzpwG2pwG6qgG76kG88oGouIGAAA="
         }
       ],
@@ -177,7 +185,8 @@
           "points": 20,
           "quota": 75
         }
-      ]
+      ],
+      "guide": "攻略就是起手找巨龙传说和安戈洛宣传单，然后跳费使用巨龙传说创建的牌。无脑选5费以下的龙就可以了，毕竟做成就效率很重要。 / 累积型成就，很简单。卡组携带222娜迦和安戈洛宣传单，有几率获得多个巨龙传说。虽然可以减少法术牌数量提高准确率，但跳费还是太香了，所以考虑再三还是变成了现在的卡组。"
     },
     {
       "id": "bl-028",
@@ -238,7 +247,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "盲打瞎",
+          "name": "闭眼盲打",
           "code": "AAEBAdKLBQKW1ATIjwYO5OQF4fgFxfkFkIMGhY4GhpAGiZAGjZAG65gG6Z4G17gGwr4G9OUG1/MGAAA="
         }
       ],
@@ -261,7 +270,8 @@
           "points": 20,
           "quota": 90
         }
-      ]
+      ],
+      "guide": "攻略就是起手找盲眼神射手和绿洲歹徒，然后就是正常的娜迦瞎打法，娜迦和法术交替使用，不断触发盲眼神射手的效果就好了。 / 累积型成就，很简单。直接使用娜迦瞎的构建就好了。当年娜迦瞎就是t0卡组，盲眼神射手因此被削了2次。唯一可惜的是，2个盲眼神射手不能同时出效果，不然效率直接翻倍了。"
     },
     {
       "id": "bl-031",
@@ -274,7 +284,11 @@
       ],
       "recommendedDecks": [
         {
-          "name": "矿镐战",
+          "name": "三个钻石+两个木棍 1",
+          "code": "AAECAbyRBQKxwQb6yQYOhqAEjtQEofsFyoMGko4GwpEG6JgGnJ4Gh6AG4KgG7KkG1boG88oGouIGAAA="
+        },
+        {
+          "name": "三个钻石+两个木棍 2",
           "code": "AAECAbyRBQLVugb6yQYOuMUF5eQF3o0Gu5EGkJcG8ZwGv6IGkagGo7sGpLsG9skG88oGweEGm/IGAAA="
         }
       ],
@@ -285,7 +299,8 @@
           "points": 20,
           "quota": 6
         }
-      ]
+      ],
+      "guide": "ps：经过测试神铜须的双倍战吼进度还是+1，所以就没必要宇宙战构建了。 / 恶人好斗 / 攻略就是起手找荒芜之地乱斗打手或者434，然后发掘2次后一直使用荒芜之地打手就好了。 / 攻略就是起手找矿镐战斧或者乐器技师。提刀后一直下嘲讽随从，然后砍6刀就完事了。 / 荒芜之地打手赢得25场她发起的乱斗。 / 累积型成就，很简单。带上各类发掘卡，565发掘因为检索就不带了。用426和434的组合，可以获取大量荒芜之地打手。 / 一次性成就，很简单。嘲讽卡带满，一直砍就完事了。"
     },
     {
       "id": "bl-032",
@@ -410,8 +425,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "清理术",
+          "name": "彻底清理 1",
           "code": "AAECAZT9BgL5xgWAngYO9MYFyOsF9fgFhY4GlZcGl5cGmJcGzpwGhJ4Go6AGq6AGpqgG8KkGlbMGAAA="
+        },
+        {
+          "name": "彻底清理 2",
+          "code": "AAECAZT9BgSW1ASnqAaxwQaTywYNnKAEuMUF9MYFkIMGyoMG2JgG75sGzpwGo6AG+KMGpqgG4KgG8KkGAAA="
         }
       ],
       "stages": [
@@ -433,7 +452,8 @@
           "points": 20,
           "quota": 150
         }
-      ]
+      ],
+      "guide": "攻略就是起手找列车难题和列车司机杰里或者434，发掘2次后列车司机杰里就可以召唤满场的列车了，左拉和小熊猫可以回收列车司机杰里。然后一直用列车攻击就好了。 / 攻略就是起手找淤泥桶相关的牌，然后当淤泥术打。给牌库底塞一堆淤泥桶，再用混乱化形摧毁。手里的淤泥桶配合426一次性用光。 / 累积型成就，很简单。带上所有矿车相关的卡就好了，所以采用了挖掘术的构建。 / 累积型成就，很简单。就是正常的污泥术构建，随便打打就完成了。 / 用矿车攻击120次。"
     },
     {
       "id": "bl-025",
@@ -446,7 +466,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "白骨DK",
+          "name": "伦理问题",
           "code": "AAECAf7gBgTDvgakwAaowAaWywYNh/YEyoMG0IMG9YwG94wGhY4G85EGkqAGu7EG/7oGv74GpsAGkMsGAAA="
         }
       ],
@@ -457,7 +477,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "攻略就是起手找白骨堆，送掉白骨堆后一直用发掘卡复活白骨堆就好了。 / 累积型成就，很麻烦。带上各种挖掘卡一直复活白骨堆就好了。"
     },
     {
       "id": "bl-026",
@@ -470,7 +491,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "传说DK",
+          "name": "续写传说",
           "code": "AAECAf7gBgaoigT/lwbDvgakwAaowAaWywYMh/YEyoMG9YwG94wGhY4G85EGkqAG4KgGu7EG/7oGpsAGkMsGAAA="
         }
       ],
@@ -481,7 +502,8 @@
           "points": 20,
           "quota": 1
         }
-      ]
+      ],
+      "guide": "攻略就是起手找矿坑老板或者小弗丁或者434.然后解场给矿坑老板减费，等对手召唤传说随从抢过来就好了。还可以用发掘出来的艾泽里特鼠复活矿坑老板提高容错率。 / 一次性成就，很简单。只要对手召唤了传说随从，基本就能完成这个成就了。"
     },
     {
       "id": "bl-027",
@@ -494,7 +516,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "尸死DK",
+          "name": "尸死无生",
           "code": "AAECAf7gBga0gAW5sQbDvgakwAaowAaWywYMh/YEhY4Gg5IGkZcGkqAGu7EG/7oGv74GpsAGrsoGkMsG5OUGAAA="
         }
       ],
@@ -517,7 +539,8 @@
           "points": 20,
           "quota": 20
         }
-      ]
+      ],
+      "guide": "ps：别手贱打圣盾。 / 攻略就是起手找残骸遍野，然后一直送随从攒残骸就好了。残骸数20以上时使用残骸遍野就好了。 / 一次性成就，很简单。由于现在dk攒残骸很容易，所以没必要去狂野找224帮忙了，直接快速堆残骸的卡拉满就好了。"
     },
     {
       "id": "bl-004",
@@ -530,7 +553,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "岩浆法",
+          "name": "岩浆横流",
           "code": "AAECAdeEBQL3mwb9sAYOlrcF8sQFsf4F3/4F1JUG75sG8ZsGmJ0Gsp4G054GzKIG4qYGtKcG7eYGAAA="
         }
       ],
@@ -541,7 +564,8 @@
           "points": 20,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "攻略就是起手找溢流熔岩，然后每回合都使用其他元素牌。最后场上留1个格子使用溢流熔岩就好了。 / 累积型成就，很简单，就算变成一次性成就都很容易做。元素法强度可以的，而且元素浓度很高，做这个成就太简单了。"
     },
     {
       "id": "bl-005",
@@ -554,7 +578,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "观星法",
+          "name": "夜观星空",
           "code": "AAECAYHPBgLQ+AX14gYO4MMFuMUF6MUF3vgFkIMGkY4G65gG8psGzpwGz54GxKIG5bgGwr4G6ckGAAA="
         }
       ],
@@ -565,7 +589,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "攻略就是起手找观星和加大音量，然后一直使用观星直到牌库里没有奥术法术就投降下一把。 / 累积型成就，很简单。用加大音量可以搞到大量观星。然后算好费用再使用观星就好了。"
     },
     {
       "id": "bl-006",
@@ -578,7 +603,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "使命法",
+          "name": "遗物学会的使命",
           "code": "AAECAdeEBQj9xAWs0QWL7AXRgwbkmAb4mwbM4Qb14gYLn9QE4MMFuMUF2dAF3vgFhY4GzpwGz54G054G6ckGy+EGAAEB95sG/cQFAez2Bf3EBQA="
         }
       ],
@@ -601,7 +626,8 @@
           "points": 20,
           "quota": 200
         }
-      ]
+      ],
+      "guide": "ps：快枪里的伤害牌要用来解自己场上的快枪随从，不然很快就会卡格子。 / 攻略就是起手找血望者，悬赏公告栏和枪臂，然后攒幸运币。到了高费回合用掉所有幸运币，依次打出血望者，悬赏公告栏，枪臂，然后除了666快枪龙还有缺水都会变成0费，一直用就完事了，手速越快就好。通过照相还能再来一次。 / 累积型成就，没合适的卡组就很难，找到合适的卡组就简单很多很多。我采用了枪臂和悬赏公告栏的组合。"
     },
     {
       "id": "bl-013",
@@ -614,7 +640,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "许愿贼",
+          "name": "美好愿井",
           "code": "AAECAdW+BQAP9p8E958E38MFuMUFv/cFyPsFkIMGuYYGyJQGzpQGjZYG4KgGtrUG6ckGjNYGAAA="
         }
       ],
@@ -625,7 +651,8 @@
           "points": 20,
           "quota": 5
         }
-      ]
+      ],
+      "guide": "攻略就是起手找许愿井或者434，然后攒5枚幸运币。使用许愿井再使用5枚幸运币就完事了。 / 一次性成就，很简单。各种给幸运币的卡带满就好了。"
     },
     {
       "id": "bl-014",
@@ -638,7 +665,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "飞镖贼",
+          "name": "好运常在",
           "code": "AAECAdW+BQLuwwWtpwYO9p8E958E38MFv/cFyPsFyYAGuYYGyJQGvZ4G7p4G2aIGwr4G8skGjNYGAAA="
         }
       ],
@@ -649,7 +676,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "ps：焦油飞溅会让伤害翻倍，所以一定要计算好血量。 / 攻略就是起手找飞镖投掷和潮地学徒或者挖掘宝藏，然后机会合适就用，利用潮地学徒反复回收飞镖投掷。 / 累积型成就，很简单。通过控场让对手场上只有1个3血以上的随从再使用飞镖投掷就好了。"
     },
     {
       "id": "bl-015",
@@ -662,7 +690,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "古董贼",
+          "name": "古董杀手",
           "code": "AAECAdW+BQLI+wXQlAYO9p8E958E38MFuMUFv/cFofwFyoMG0IMGyJQGyZQGypQGtrUG6ckGjNYGAAA="
         }
       ],
@@ -685,7 +713,8 @@
           "points": 20,
           "quota": 40
         }
-      ]
+      ],
+      "guide": "ps：普通攻击消灭随从也算，所以敌方随从的补刀工作都交给古董投手负责。 / 攻略就是起手找古董投手和发掘卡，然后发掘2次后就可以一直用古董投手解场了。 / 累积型成就，很简单。发掘贼的构建本来就要带大量回手卡，正常打回手的是蝎子，做成就就改成回手古董投手了。"
     },
     {
       "id": "bl-010",
@@ -698,7 +727,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "飞车牧",
+          "name": "脱离正轨",
           "code": "AAECAdG+BQAPougDrYoEucQFuMUF+/gFkIMGyoMGhY4GhpgG65gGzpwGz54GlqAG17oG3PMGAAA="
         }
       ],
@@ -709,7 +738,8 @@
           "points": 20,
           "quota": 40
         }
-      ]
+      ],
+      "guide": "攻略就是起手找飞车劫掠和暗中生长。找准机会使用飞车劫掠（对手用幸运币的回合就可以直接用了，太贪了很可能适得其反），然后使用飞车劫掠创建的牌。 / 累积型成就，有点麻烦。能遇到盗贼这样一回合使用n张牌的对手就好了。为了给手牌腾格子，低费随从带满。"
     },
     {
       "id": "bl-011",
@@ -722,7 +752,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "伊莉斯牧",
+          "name": "伊莉斯之力",
           "code": "AAECAdG+BR6oigStigSEnwSFnwSvwwW/xAW7xwXP9gXt9wX++AWh+gXJgAaLlQbRmwblnAamnQaSngaaoAbVogavqAbDqAbxqQaZwAaQwQa6wQbawQbe2Abn5gbo5gbh6wYAAAA="
         }
       ],
@@ -733,7 +763,8 @@
           "points": 20,
           "quota": 24
         }
-      ]
+      ],
+      "guide": "攻略就是起手找伊利斯，把其他高费随从洗回牌库。然后尽快打出伊利斯就好了。 / 一次性成就，非常简单。成就达成条件和描述不同，不需要正好24点，24点以上就好了。所以宇宙牧高费随从多带一些就好了。为了提高伊利斯的上手，去掉了伊利斯以外8费以上所有随从，只带6到7费的随从和小弗丁。这样小弗丁就可以定向抽到伊利斯了。"
     },
     {
       "id": "bl-012",
@@ -748,7 +779,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "材料牧",
+          "name": "俭以防匮",
           "code": "AAECAdG+BQAPougDrYoEoukF+/gFkIMGhY4G9pUG6ZgG65gGw5wGzpwGo50Gpp0G8akGwr4GAAA="
         }
       ],
@@ -771,7 +802,8 @@
           "points": 20,
           "quota": 300
         }
-      ]
+      ],
+      "guide": "攻略就是起手找神圣泉水，影叶入侵，萤火虫群，然后尽可能奶1打1召唤1个就好了。 / 累积型成就，很简单。神圣泉水，影叶入侵，萤火虫群带满就完事了。"
     },
     {
       "id": "bl-007",
@@ -784,7 +816,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "骷髅猎",
+          "name": "死亡之谷",
           "code": "AAEBAda+BQLHD5S1BA6AB5zNAv+6A5T8A6mfBNejBMG5BOT1Bc2OBv2UBr6cBuqlBs7ABv7lBgAA"
         }
       ],
@@ -795,7 +827,8 @@
           "points": 20,
           "quota": 8
         }
-      ]
+      ],
+      "guide": "攻略就是起手找骷髅牛或者帽子。然后通过buff牌让骷髅牛能复活，还有各种复活野兽或者亡语的卡，很快就能召唤8头骷髅牛了。 / 一次性成就，很简单。猎人和定向检索随从的卡，还有大量buff牌和复活亡语或者野兽的牌。狂野都带上，一局对战召唤10+骷髅牛都不成问题。"
     },
     {
       "id": "bl-008",
@@ -808,7 +841,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "迷彩猎",
+          "name": "看不到我",
           "code": "AAECAda+BQAP2qwFuMUF5soFhY4Gzo4G344G65gGzpwGz54G/6UGjMEGi9YGjtYGtOEG7eYGAAA="
         }
       ],
@@ -819,7 +852,8 @@
           "points": 20,
           "quota": 8
         }
-      ]
+      ],
+      "guide": "ps：因此想要突袭，必须对手场上有随从，且贴在我方还在睡觉中的随从，这样才有几率出突袭，因此大家切记这一点。 / 攻略就是起手找迷彩坐骑，唯一要注意的就是额外效果的优化，这点很致命，明明是优化，却让多个成就难度大增。现在突袭无用的场景，是绝对不会出突袭的。所以很多玩家可能和我一样卡成7/8的进度，缺的就是突袭。 / 累积型成就，很恶心人。带上222娜迦的全随从卡组，然后一直用迷彩坐骑就好了。"
     },
     {
       "id": "bl-009",
@@ -832,8 +866,12 @@
       ],
       "recommendedDecks": [
         {
-          "name": "翼猎",
-          "code": "AAECAda+BR6coASW1ATmygXqygXf7QXq8gXz8gXk9QXI9gXS+AXX+QWAggaFjgbOjgbUjgbfjgbvmwbxpQb+pQavqAaGvwbQwAaMwQavwQa3wQa6wQa6zgan0waL1gbX8wYAAAA="
+          "name": "死亡之翼降临之日 1",
+          "code": "AAECAda+BR6coASW1ATmygXqygXf7QXq8gXz8gXk9QXI9gXS+AXX+QWAggaFjgbOjgbUjgbfjgbvmwbxpQb+pQavqAaGvwbQwAaMwQavwQa3wQa6wQa6zgan0waL1gbX8wYAAAA"
+        },
+        {
+          "name": "死亡之翼降临之日 2",
+          "code": "AAEBAda+BQaW1ATUjgbQwAaV4gbi4wbj6wYM080C1p0DxfsDw4AEqZ8E5PUFzo4Gh54GkaEGzsAGuOEG/uUGAAA"
         }
       ],
       "stages": [
@@ -855,7 +893,8 @@
           "points": 20,
           "quota": 80
         }
-      ]
+      ],
+      "guide": "ps：普通攻击消灭随从也算，所以敌方随从的补刀工作都交给迷失者塞尔杜林负责。 / 攻略就是起手找迷失者赛尔杜林，然后抓准时机时机，尽可能打死更多的敌方随从。 / 累积型成就，很麻烦。只能使用宇宙猎，通过熊猫和左拉可以多次使用，配合888可以变成8攻。"
     },
     {
       "id": "bl-016",
@@ -868,7 +907,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "青蛙萨",
+          "name": "蛤利戴来啦",
           "code": "AAECAdOLBR6oigT9nwSF1AT9xAW+0AWv0QX26AXe6QXN7gX08gWH+wX5jAavjQbDjwarnQatnQacngafngbmnganpQakpwaopwbTpwavqAbgqAbDvgakwAamwAaowAaA4gYAAAEDn54G/cQF1KUG/cQF06cG/cQFAAA="
         }
       ],
@@ -879,7 +918,8 @@
           "points": 20,
           "quota": 9
         }
-      ]
+      ],
+      "guide": "攻略就是起手找荷利戴医生或者434小弗丁童话林地。尽快使用荷利戴医生，并且每回合都用蛙杖攻击，然后记得给青蛙留格子就好了。 / 一次性成就，有点难。宇宙萨的构建，带上沙画元素，牛里也带上沙画元素。然后配合风怒一直砍就完事了。"
     },
     {
       "id": "bl-017",
@@ -892,7 +932,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "陪伴萨",
+          "name": "鳞潜羽翔",
           "code": "AAECAdOLBQAP5eQF3ukFyoMGs40GhY4Gw48G7JUG65gGzpwGnJ4Gz54Gy58GpKcGpsAG0dAGAAA="
         }
       ],
@@ -903,7 +943,8 @@
           "points": 20,
           "quota": 8
         }
-      ]
+      ],
+      "guide": "攻略就是起手找222鱼人或者可靠陪伴，然后可靠陪伴只贴有种族的随从，每个种族的随从只需要贴一次。贴过的种族随从可以去掉换成没贴过的种族随从。记性不好的玩家用纸笔记录一下就好了。 / 累积型成就，28+2的随从卡组，通过222鱼人和222娜迦的组合，可以搞到很多张可靠陪伴，然后贴贴贴就完事了。"
     },
     {
       "id": "bl-018",
@@ -956,7 +997,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "余震萨",
+          "name": "深岩断裂带",
           "code": "AAECAdOLBQAP5eQF3ukFyoMGs40GhY4G7JUG65gGzpwGnJ4Gn54Gz54Gy58GpKcGpsAG0dAGAAA="
         }
       ],
@@ -973,7 +1014,8 @@
           "points": 20,
           "quota": 200
         }
-      ]
+      ],
+      "guide": "攻略就是起手找余震和222鱼人，然后等场上随从多了再用余震就好了。 / 累积型成就，很简单。28+2的随从卡组，通过222鱼人和222娜迦的组合，可以搞到很多张余震，然后铺场再用余震就完事了。"
     },
     {
       "id": "bl-035",
@@ -990,7 +1032,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "塑岩猎",
+          "name": "岩形物语",
           "code": "AAECAda+BQAPqZ8E5J8E6OgF3+0F6vIF5PUFvpwGkJ4G6qUG8aUG4KgG3LgGi9YG/uUGguYGAAA="
         }
       ],
@@ -1007,7 +1049,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "攻略就是起手找地幔塑型者或者帽子和434，地幔塑型者上手后狂用法术减到0费再使用。 / 累积型成就，很简单。猎人有定向检索随从的卡，再加上434的定向检索。地幔塑型者上手很容易。"
     },
     {
       "id": "bl-036",
@@ -1020,8 +1063,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "映像牧",
-          "code": "AAEBAdG+BQAP+hHqvwLRwQKZmwPXzgPi3gP73wOtigSNsgTgpAXt9wWjnQaXoAaaoAaAuAYAAA=="
+          "name": "在下，鄙人，和我",
+          "code": "AAECAdG+BQSXoAT23Qaq6gbk6gYNougDrYoEoaAEnNQE7fcFzpwGm54Gl6AGmqAGrrYGi9wGnNwGyOUGAAA"
         }
       ],
       "stages": [
@@ -1041,7 +1084,8 @@
       "dualClasses": [
         "德鲁伊",
         "牧师"
-      ]
+      ],
+      "guide": "源文档仅提供卡组代码，未附额外思路。"
     },
     {
       "id": "bl-037",
@@ -1054,7 +1098,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "易怒战",
+          "name": "易燃易怒",
           "code": "AAECAbyRBQLkmAbLnwYOuMUF5eQFkPsFl/sFofsFuf4F65gG75sGzpwGnJ4Gz54G054G6Z4Gv6IGAAA="
         }
       ],
@@ -1075,7 +1119,8 @@
       "dualClasses": [
         "恶魔猎手",
         "战士"
-      ]
+      ],
+      "guide": "攻略就是起手找灼燃之心和蒸汽守卫，然后一直对3血以上的随从室友灼燃之心就好了。 / 累积型成就，很简单。因为战士有定向检索法术的随从，所以28+2的随从卡组又可以用了。222娜迦真乃成就神卡，这次又可以配合333蒸汽守卫了。"
     },
     {
       "id": "bl-038",
@@ -1088,7 +1133,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "冷血法",
+          "name": "如此冷血",
           "code": "AAECAdeEBQAPq58E4MMF6MUFxscF2dAFi+wF3vgFkIMG65gGzpwGmJ0Gz54G0J4G054GxKIGAAA="
         }
       ],
@@ -1109,7 +1154,8 @@
       "dualClasses": [
         "法师",
         "术士"
-      ]
+      ],
+      "guide": "ps：可以对自己的随从使用。 / 累积型成就，很简单。因为法师有倒带和232机器人的关系，所以就用法师做了。 / 起手找灵魂冻结或者放大音量。然后尽可能对着3个连在一起的随从使用就好了。"
     },
     {
       "id": "bl-039",
@@ -1122,7 +1168,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "水晶牧",
+          "name": "疗愈水晶",
           "code": "AAECAdG+BQa5xAXMxgXPxgXP9gWknQbX0gYMougDy6AEu8cFoukF7fcF+/gF6ZgGpp0GlqAGmcAGzsAGzNUGAAA="
         }
       ],
@@ -1143,7 +1189,8 @@
       "dualClasses": [
         "牧师",
         "潜行者"
-      ]
+      ],
+      "guide": "攻略就是起手找隐藏宝石，然后buff它让它一直蹲坑，直到成就完成。 / 一次性成就，非常简单。常规的过疗牧玩几把就能完成了。因为完成太快了，所以我都没测试出过疗算不算恢复，所以还是带上暗影花茶这样的卖血卡比较保险。"
     },
     {
       "id": "bl-040",
@@ -1156,8 +1203,16 @@
       ],
       "recommendedDecks": [
         {
-          "name": "化石猎",
-          "code": "AAECAda+BQLf7QX95QYOqZ8E5J8EuMUF6OgF6vIFzpwGh54G6qUG4KgG3LgGzsAGjMEGi9YGguYGAAA="
+          "name": "古生物砖家 1",
+          "code": "AAEBAdG+BQAP+hHqvwLRwQKZmwPXzgPi3gP73wOtigSNsgTgpAXt9wWjnQaXoAaaoAaAuAYAAA"
+        },
+        {
+          "name": "古生物砖家 2",
+          "code": "AAECAda+BQLf7QX95QYOqZ8E5J8EuMUF6OgF6vIFzpwGh54G6qUG4KgG3LgGzsAGjMEGi9YGguYGAAA"
+        },
+        {
+          "name": "古生物砖家 3",
+          "code": "AAEBAda+BQT1gAOs0QWL1gbi4wYNswG3bM/RA/T2A6mfBKGgBIvsBeuYBs6cBoeeBq62BsK+BpXiBgAA"
         }
       ],
       "stages": [
@@ -1177,7 +1232,8 @@
       "dualClasses": [
         "死亡骑士",
         "猎人"
-      ]
+      ],
+      "guide": "对总计消耗120点法力值的随从施放破碎映像。 / 攻略就是起手找错位化石，然后错位化石尽可能选低费随从就好了。 / 攻略就是起手找破损映像和娜迦巨人，对娜迦巨人使用就好了。6次就搞定了，特别快。 / 累积型成就，很简单，用之前发过的打包牧就能做了。 / 累积型成就，有点烦。猎人过牌比dk快多了，所以就用猎人做这个成就了。 / 在下，鄙人，和我"
     },
     {
       "id": "bl-041",
@@ -1224,7 +1280,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "磁力骑",
+          "name": "磁善援手",
           "code": "AAEBAdK+BQSUD4UXltQEscEGDdf+AtL5A5K1BOG1BLLBBNrTBIHiBJWqBdnQBY71Bbn+Bc6cBsywBgAA"
         }
       ],
@@ -1245,7 +1301,8 @@
       "dualClasses": [
         "死亡骑士",
         "圣骑士"
-      ]
+      ],
+      "guide": "但狂野的复制手段就多种多样了，还有铜须，所以我是狂野做的。 / 攻略就是起手找义肢假手和服务呼叫铃，尽快把2个义肢假手都抽到手里，然后再用左拉贵族等方法把义肢假手贴给机械就完事了。 / 一次性成就，有些难度。其实标准也能做，但骑士的过牌真不行，所以还是狂野做了。标准就是8费回合使用义肢假手不磁力，然后左拉复制一个，再小熊猫回手，这样就有3个义肢假手了，等10费回合对1个1费的机械贴上3个义肢假手就完事了。"
     },
     {
       "id": "bl-043",
@@ -1258,7 +1315,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "芬利萨",
+          "name": "腥腥相惜",
           "code": "AAECAdOLBQLl5AWTngYO3ukFyoMGs40GhY4G7JUG65gGzpwGnJ4Gz54Gy58GpKcGzrAGpsAG0dAGAAA="
         }
       ],
@@ -1279,7 +1336,8 @@
       "dualClasses": [
         "圣骑士",
         "萨满祭司"
-      ]
+      ],
+      "guide": "攻略就是起手找芬利，222鱼人和魔菇采掘。发掘2次后就等对手铺场多点再使用芬利就好了。 / 累积型成就，不算难。222娜迦和222鱼人的组合就是这么好用。"
     },
     {
       "id": "bl-044",
@@ -1292,7 +1350,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "彩糖德",
+          "name": "暴跳彩糖",
           "code": "AAECAc6LBQTBlQaxwQa6wQa6zgYNrp8E2voFu5UGvJUG15wG2JwG2pwGoqAG6qgG76kGh7EG0roG88oGAAA="
         }
       ],
@@ -1313,7 +1371,8 @@
       "dualClasses": [
         "德鲁伊",
         "术士"
-      ]
+      ],
+      "guide": "ps：普通攻击消灭随从也算，所以敌方随从的补刀工作都交给穴居人宝石投掷者负责。 / 攻略就是起手找跳费，然后高费回合再使用穴居人宝石投掷者解场。配合426有几率多搞到几张穴居人宝石投掷者，但压轴在高费回合有一定难度，所以不要太贪了。 / 累积型成就，很简单。毕竟穴居人宝石投掷者在德鲁伊手里伤害爆炸，消灭几个随从不在话下。"
     },
     {
       "id": "bl-045",
@@ -1368,7 +1427,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "警长术",
+          "name": "不得经过起点",
           "code": "AAECAZT9BgT5xgWhkgaAngaVswYNhKAEzvoFxJ4G0J4Go6AGpqgGnLMGnrgGw7gGkb8GlcoGp8oG8OYGAAA="
         }
       ],
@@ -1385,7 +1444,8 @@
           "points": 20,
           "quota": 40
         }
-      ]
+      ],
+      "guide": "ps：地标可以关自己的随从。 / 攻略就是起手找桶沿警长和游学生，自残10血使用警长产生地标，然后用游学生复制地标，后续一直用地标关随从就好了。 / 累积型成就，不算难。自残术卡组本来就带警长，再带上2个游学生复制地标就好了。"
     },
     {
       "id": "bl-047",
@@ -1439,7 +1499,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "石母法",
+          "name": "石母的召唤",
           "code": "AAECAdeEBQLNogb9sAYOlrcF8sQF3vgFsf4F3/4F75sG8ZsG9ZsGmJ0Gsp4G054GzKIG4KgG7eYGAAA="
         }
       ],
@@ -1456,7 +1516,8 @@
           "points": 20,
           "quota": 50
         }
-      ]
+      ],
+      "guide": "攻略就是起手找石母或者434，配合流水档案管理员可以提前使用石母。溢流岩浆会出现卡格子的情况，沙龙酒仙用处也没有，其实都可以换成4费以下的元素。 / 累积型成就，并不难。就用元素法的构建，带上434检索石墓就好了。"
     },
     {
       "id": "bl-049",
@@ -1508,7 +1569,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "食人魔贼",
+          "name": "好人，坏人，食人",
           "code": "AAECAdW+BQLuwwWzmQYO9p8E958E38MFuMUFkIMGyJQGrZkGrpkGr5kG75sG7p4GtrUG6ckGjNYGAAA="
         }
       ],
@@ -1531,7 +1592,8 @@
           "points": 20,
           "quota": 120
         }
-      ]
+      ],
+      "guide": "攻略就是起手留食人魔帮的随从和小弗丁。后续就是正常的食人魔贼的打法，不断用食人魔帮随从攻击。后期用食人魔帮首领复活大量风怒食人魔攻击，再用暗影步等卡回手食人魔帮首领就好了。 / 累积型成就，不难。就用曾经风靡一时的食人魔贼卡组就好了。通过反复使用食人魔帮首领，很快就能做完这个成就了。"
     },
     {
       "id": "bl-051",
@@ -1574,7 +1636,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "正午牧",
+          "name": "正午时分",
           "code": "AAEBAdG+BQKspQO7xAUO+hHRwQLo0AKZmwOfqQPXzgP73wOg9wOMgQStigSkkQWGpAXt9wWbngYAAA=="
         }
       ],
@@ -1585,7 +1647,8 @@
           "points": 20,
           "quota": 12
         }
-      ]
+      ],
+      "guide": "攻略就是起手找正午决斗者或者其他检索随从的卡。然后通过亡者复生，起尸术反复触发正午决斗者的效果就好了。 / 累积型成就，不算难。用我们的老朋友洞察牧就好了。带上大量复活卡和高费卡，一直复活正午决斗者就好了。"
     },
     {
       "id": "bl-053",
@@ -1598,7 +1661,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "蛇油法",
+          "name": "治命灵药",
           "code": "AAECAdeEBQTr9AW0pwbjzwaW1gYNre0F7PYF3vgFv/4F2P4FpP8FhY4Gg5UG8psGsp4GtqcGy9AGhuYGAAA="
         }
       ],
@@ -1609,7 +1672,8 @@
           "points": 20,
           "quota": 1
         }
-      ]
+      ],
+      "guide": "攻略就是起手找奇迹推销员，然后留着蛇油。之后就是正常的多系法打法，复制多个西芙，最后用蛇油斩杀对手就好了。 / 一次性成就，不算难。毕竟当时风靡一时的多系法就是靠蛇油斩杀对手的。"
     },
     {
       "id": "bl-054",
@@ -1618,7 +1682,12 @@
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "血石传奇",
+          "code": "AAECAdeEBQL3mwb9sAYOlrcF8sQFsf4F3/4F1JUG75sG8ZsGmJ0Gsp4G054GzKIG4qYGtKcG7eYGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用5种不同的发掘出来的传说级艾泽里特野兽牌。",
@@ -1626,7 +1695,8 @@
           "points": 20,
           "quota": 5
         }
-      ]
+      ],
+      "guide": "攻略就是上面那些成就都做完就能完成这个成就了，所以没有写这个攻略的必要了。 / 攻略就是正常的元素法打法，别急着斩杀对手，保证每回合至少使用1个元素随从，持续10回合就完事了。 / 累积型成就，很简单。发掘职业一共有7个，只要5个职业挖出4宝并使用就好了。 / 连环灾异 / 连续在10个回合中均使用元素牌。 / 一次性成就，很简单。元素法正常打，别斩杀对手，10费回合或者11费回合就能完成这个成就了。"
     },
     {
       "id": "bl-055",
@@ -1639,7 +1709,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "通缉贼",
+          "name": "通缉：不论死活",
           "code": "AAECAdW+BQLQlAbkmAYO9p8E958EuMUFkIMGyoMG0YMGhY4GyJQGyZQGjZYGzpwG2aIGtrUGjNYGAAA="
         }
       ],
@@ -1650,7 +1720,8 @@
           "points": 20,
           "quota": 1
         }
-      ]
+      ],
+      "guide": "攻略就是起手找奇迹推销员，武器，枪臂，悬赏公告栏，保留奇迹推销员给的蛇油别交易。等费用和卡都足够时就启动，先使用悬赏公告栏，然后依次使用蛇油武器枪臂和枪臂创建的快抢牌。这样成就就搞定了。 / 写这个攻略耗时8个小时，终于写完了，真心累啊。希望能帮助到大家。好了，作者我的全成就攻略贴未来还会继续，下次就要等很长时间了。毕竟其他成就都是没经验的，大家应该兴趣不大，也不用着急做。预告一下，是泰坦诸神的全成就攻略。 / 一次性成就，难度尚可。盗贼的对应卡费用最低，再加上有大量的幸运币，所以这个成就还是盗贼做最舒服。"
     },
     {
       "id": "bl-056",
@@ -1665,7 +1736,11 @@
       ],
       "recommendedDecks": [
         {
-          "name": "伴侣贼",
+          "name": "天生一对 1",
+          "code": "AAECAdeEBQAP4MMF6MUF3vgFkIMGyoMG0IMGlYcG65gG85sGzpwGmJ0Gz54G0J4G054Ghb8GAAA="
+        },
+        {
+          "name": "天生一对 2",
           "code": "AAECAdW+BQLuwwWxwQYO9p8E958E38MFuMUFwPgFkIMGvoMGyJQG75sG0JwG7p4GtrUG6ckGpeEGAAA="
         }
       ],
@@ -1682,7 +1757,8 @@
           "points": 20,
           "quota": 60
         }
-      ]
+      ],
+      "guide": "发掘300个宝藏。 / 攻略就是起手找3种伴侣，然后通过回手反复触发他们的战吼效果。 / 攻略就是起手找法术，然后通过倒带，222娜迦和232机械可以复制多个发掘法术，地标也能找。一直发掘就好了。 / 累积型成就，不算难，就是很烦，毕竟要发掘300次。为了加快效率，就采用法师卡组了，法师发现法术的能力最强，很适合发掘。 / 累积型成就，很简单。毕竟几乎所有成就卡组都会带223贪婪的伴侣。所以这个成就在做其他成就时顺带就会完成了。真要做的话，就选有大量回手的盗贼卡组，反复回手触发效果就好了。 / 挖呀挖呀挖"
     },
     {
       "id": "bl-057",
@@ -1693,7 +1769,7 @@
       "relatedCards": [],
       "recommendedDecks": [
         {
-          "name": "宇宙战",
+          "name": "救世雷诺",
           "code": "AAECAbyRBSiGoASIoASJoASO1ASQ1AT9xAXwzQW0+AWQ+wWh+wXYgQaFggaQgwaLlAaplQb3lwacngafngbNngbRngaHoAaPowbHpAavqAbsqQbQsAbDugbVugakuwbCvgaOvwauwAa6wQb6yQbzygaPzwan0wbk5gbx5gbJ6AYAAAEGltQE/cQFz54G/cQF9bMGx6QG97MGx6QGvb4G/cQF7t4Gx6QGAAA="
         }
       ],
@@ -1704,7 +1780,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "攻略就是正常的宇宙战打法，一切为了胜利。 / 累积型成就，有些烦。因为要求胜利，所以就用现在高胜率的40宇宙战了。"
     },
     {
       "id": "bl-058",
@@ -1717,7 +1794,7 @@
       ],
       "recommendedDecks": [
         {
-          "name": "淘金猎",
+          "name": "淘金热潮",
           "code": "AAECAda+BQAPqZ8E5J8E3+0F6vIFyPYF0vgFy44GvpwGzpwG6qUG8aUG3LgGzsAG/uUGguYGAAA="
         }
       ],
@@ -1728,7 +1805,8 @@
           "points": 20,
           "quota": 1
         }
-      ]
+      ],
+      "guide": "攻略就是起手找淘金客或者帽子观赏鸟类主人的召唤，然后使用淘金客，等着它触发彩蛋就完事了。 / 一次性成就，很简单。这其实是淘金客的一个彩蛋，能把它抽到的普通卡有几率变成金卡，触发几率还是很高的。所以为了做这个成就，卡组要全部使用普通卡，理论来说全金卡组是做不了这个成就的。"
     },
     {
       "id": "bl-059",
