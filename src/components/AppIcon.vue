@@ -18,8 +18,8 @@
     <template v-else-if="name === 'game'">
       <path d="M8 8h8a5 5 0 0 1 4.7 6.7l-1 2.8a2 2 0 0 1-3.2.8L14 16h-4l-2.5 2.3a2 2 0 0 1-3.2-.8l-1-2.8A5 5 0 0 1 8 8Z"/><path d="M7 12v4M5 14h4M16 13h.01M18 15h.01"/>
     </template>
-    <template v-else-if="name === 'domino'">
-      <rect x="7" y="2" width="10" height="20" rx="2"/><path d="M7 12h10"/><circle cx="12" cy="7" r="1"/><circle cx="12" cy="17" r="1"/>
+    <template v-else-if="name === 'subway'">
+      <rect x="5" y="3" width="14" height="14" rx="3"/><path d="M5 11h14"/><circle cx="9" cy="14" r="1"/><circle cx="15" cy="14" r="1"/><path d="m8 17 2 3M16 17l-2 3"/>
     </template>
     <template v-else-if="name === 'terminal'">
       <rect x="3" y="4" width="18" height="16" rx="2"/><path d="m7 9 3 3-3 3M13 15h4"/>

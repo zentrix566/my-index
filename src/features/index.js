@@ -1,7 +1,7 @@
 export { loadAIOpsPage } from './aiops/index.js'
 export { loadCountdownPage } from './countdown/index.js'
 export { loadCrazyPeoplePage } from './crazy-people/index.js'
-export { loadDominoPage } from './domino/index.js'
+export { loadSubwayPage } from './subway/index.js'
 export {
   loadDeckCodeViewerPage,
   loadFrogReviewPage,

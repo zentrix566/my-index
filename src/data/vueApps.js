@@ -1,5 +1,5 @@
 // 我自己做的个人项目索引：新增页面只需在这里追加一项
-const PERSONAL_APP_ORDER = ['/hearthstone', '/todo', '/hearthstone/frog', '/dream', '/willpower']
+const PERSONAL_APP_ORDER = ['/hearthstone', '/todo', '/hearthstone/frog', '/dream', '/willpower', '/subway']
 const personalAppRank = new Map(PERSONAL_APP_ORDER.map((path, index) => [path, index]))
 
 export const vueApps = [
@@ -60,11 +60,11 @@ export const vueApps = [
     tags: ['Canvas', '互动', '小游戏']
   },
   {
-    to: '/domino',
-    title: '多米诺骨牌 · 连锁倒下',
-    kicker: '互动 · 动画',
-    summary: '鼠标画一条路线生成骨牌，点推倒，连锁波顺着曲线一节节倒下。',
-    tags: ['互动', '动画', 'Canvas']
+    to: '/subway',
+    title: '北京地铁 · 站站距离',
+    kicker: '工具 · 交通',
+    summary: '覆盖北京全部运营线路与车站，支持站站最短距离规划、手动指定换乘线路，以及按线路浏览逐站距离。纯本地计算，无需联网。',
+    tags: ['地铁', '北京', '路线', '距离']
   },
   {
     to: '/aiops',

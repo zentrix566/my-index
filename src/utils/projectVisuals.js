@@ -7,7 +7,7 @@ const visualMap = {
   '/hearthstone/deck': { icon: 'cards', tone: 'violet' },
   '/hearthstone/lookup': { icon: 'search', tone: 'violet' },
   '/crazy-people': { icon: 'game', tone: 'rose' },
-  '/domino': { icon: 'domino', tone: 'amber' },
+  '/subway': { icon: 'subway', tone: 'blue' },
   '/aiops': { icon: 'terminal', tone: 'cyan' },
   '/countdown': { icon: 'clock', tone: 'blue' },
   '/age-calculator': { icon: 'calculator', tone: 'cyan' },

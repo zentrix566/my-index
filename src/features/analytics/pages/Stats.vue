@@ -184,7 +184,6 @@ const ROUTE_NAMES = {
   '/countdown': '人生倒计时',
   '/aiops': 'AIOps 智能运维控制台',
   '/crazy-people': '疯狂的人',
-  '/domino': '多米诺骨牌',
   '/hearthstone': '炉石传说成就',
   '/hearthstone/deck': '炉石卡组代码解析',
   '/hearthstone/xp': '战令经验计算器',
