@@ -37,7 +37,7 @@
         <input
           v-model="lineSeqText"
           class="line-seq"
-          placeholder="如 17,3,2（依次乘坐的线路，逗号分隔）"
+          placeholder="如 1,2,3,4（依次乘坐的线路，逗号分隔）"
           @input="buildPlan"
         />
         <p class="hint">线路之间需有换乘站；起点须在首条线上、终点在末条线上。系统会在该顺序下自动挑选最优换乘站。</p>
@@ -277,7 +277,7 @@ function planByLines(s, e, text) {
     .split(/[,，、\s]+/)
     .map((x) => x.trim())
     .filter(Boolean)
-  if (!parts.length) return { ok: false, msg: '请填写线路顺序，例如 17,3,2' }
+  if (!parts.length) return { ok: false, msg: '请填写线路顺序，例如 1,2,3,4' }
   const seq = []
   const seqNames = []
   for (const p of parts) {
@@ -409,7 +409,7 @@ const plan = ref(null)
 const error = ref('')
 const expandedSegs = ref(new Set())
 const manualMode = ref(false)
-const lineSeqText = ref('')
+const lineSeqText = ref('1,2,3,4')
 
 function buildSegs(D) {
   const segs = []
