@@ -593,7 +593,13 @@ function isLightColor(hex) {
 }
 function lineStyle(name) {
   const bg = lineColor(name)
-  return { background: bg, color: isLightColor(bg) ? '#1f2430' : '#ffffff' }
+  const light = isLightColor(bg)
+  return {
+    background: bg,
+    color: light ? '#1f2430' : '#ffffff',
+    // 浅色线路在白底卡片上边界易糊，加一圈细描边保证辨识度（仅地铁子项目内部，不影响主站）
+    boxShadow: light ? 'inset 0 0 0 1px rgba(0, 0, 0, 0.18)' : 'none',
+  }
 }
 
 function fmt(m) {
