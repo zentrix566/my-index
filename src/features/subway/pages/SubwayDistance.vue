@@ -702,6 +702,12 @@ function fmt(m) {
   gap: 28px;
   margin: 22px 0 14px;
   flex-wrap: wrap;
+  padding: 18px 22px;
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-left: 4px solid var(--color-primary);
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
 }
 .sum-item {
   display: flex;
