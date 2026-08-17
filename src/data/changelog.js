@@ -4,7 +4,7 @@ export const changelog = [
   {
     date: '2026-08-17',
     title: '北京地铁 · 站站距离上线，多米诺骨牌与人生倒计时下线',
-    category: 'site',
+    category: 'other',
     route: '/subway',
     changes: [
       '新增「北京地铁 · 站站距离」：输入起点与终点站，自动规划换乘最少的路线，逐段展示两站间实际距离与累计里程（基于北京全网线经纬度 haversine 计算，数据本地内置，无需联网）。',

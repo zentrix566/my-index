@@ -19,12 +19,12 @@
     <div class="inputs">
       <div class="field">
         <label>出发站</label>
-        <StationAutocomplete v-model="start" :stations="stationNames" placeholder="如 未来科学城北" />
+        <StationAutocomplete v-model="start" :stations="stationNames" placeholder="如 蓟门桥" />
       </div>
       <button class="swap" title="交换起终点" @click="swap">⇄</button>
       <div class="field">
         <label>到达站</label>
-        <StationAutocomplete v-model="end" :stations="stationNames" placeholder="如 工人体育场" />
+        <StationAutocomplete v-model="end" :stations="stationNames" placeholder="如 天安门东" />
       </div>
     </div>
 
@@ -401,8 +401,8 @@ function dijkstra(startName, endName) {
 const stationNames = Object.keys(byName).sort((a, b) => a.localeCompare(b, 'zh'))
 const stationCount = stationNames.length
 
-const start = ref('未来科学城北')
-const end = ref('工人体育场')
+const start = ref('蓟门桥')
+const end = ref('天安门东')
 const mode = ref('plan')
 const selectedLine = ref(0)
 const plan = ref(null)
@@ -560,6 +560,17 @@ function fmt(m) {
 
 <style scoped>
 .subway {
+  /* 复用 my-vue-project 的蓝白清新主题，避免被 my-index 全局主题覆盖 */
+  --color-bg: #f5f7fa;
+  --color-text: #1f2430;
+  --color-muted: #6b7280;
+  --color-primary: #2f6fed;
+  --color-card: #ffffff;
+  --color-border: #e5e7eb;
+  --color-danger: #d4452f;
+  --radius: 12px;
+  --shadow-card: 0 6px 20px rgba(0, 0, 0, 0.08);
+  background: var(--color-bg);
   max-width: 860px;
   margin: 0 auto;
   padding: 32px 20px 60px;
