@@ -181,7 +181,6 @@ const maxHourly = computed(() => {
 const ROUTE_NAMES = {
   '/': '首页',
   '/projects': '项目列表',
-  '/countdown': '人生倒计时',
   '/aiops': 'AIOps 智能运维控制台',
   '/crazy-people': '疯狂的人',
   '/hearthstone': '炉石传说成就',

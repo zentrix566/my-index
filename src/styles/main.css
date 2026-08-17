@@ -1188,131 +1188,6 @@ a.content-card:hover {
   margin-bottom: 18px;
 }
 
-.countdown-page {
-  padding-bottom: 28px;
-  padding-top: 24px;
-}
-
-.countdown-capture {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  box-shadow: var(--shadow);
-  display: grid;
-  gap: 10px;
-  padding: 18px;
-}
-
-.countdown-capture-header {
-  align-items: end;
-  display: flex;
-  gap: 20px;
-  justify-content: space-between;
-}
-
-.countdown-capture-header h1 {
-  font-size: clamp(1.8rem, 3.5vw, 2.6rem);
-  letter-spacing: 0;
-  line-height: 1.05;
-  margin: 6px 0;
-}
-
-.countdown-capture-header p:not(.eyebrow),
-.capture-date {
-  color: var(--muted);
-}
-
-.capture-date {
-  background: var(--surface-soft);
-  border: 1px solid var(--line);
-  border-radius: 999px;
-  flex: 0 0 auto;
-  font-size: 0.9rem;
-  font-weight: 800;
-  padding: 7px 12px;
-}
-
-.countdown-form {
-  display: grid;
-  gap: 10px;
-  margin-bottom: 0;
-}
-
-.compact-form {
-  align-items: end;
-  grid-template-columns: 180px 110px minmax(260px, 1fr) minmax(260px, 1fr);
-}
-
-.countdown-form label {
-  color: var(--text);
-  display: grid;
-  font-weight: 750;
-  gap: 8px;
-}
-
-.countdown-form input,
-.countdown-form select {
-  background: var(--surface);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  color: var(--text);
-  min-height: 40px;
-  padding: 8px 10px;
-}
-
-.custom-countdown-fields {
-  display: grid;
-  gap: 10px;
-  grid-template-columns: minmax(0, 1.2fr) minmax(160px, 0.8fr);
-}
-
-.form-hint {
-  color: var(--muted);
-  font-size: 0.92rem;
-}
-
-.countdown-results {
-  display: grid;
-  gap: 12px;
-}
-
-.screenshot-grid {
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-}
-
-.countdown-card {
-  background: var(--bg);
-  border: 1px solid var(--line);
-  border-radius: 8px;
-  display: grid;
-  gap: 6px;
-  min-height: 158px;
-  padding: 15px;
-}
-
-.countdown-card h2 {
-  font-size: 1.15rem;
-}
-
-.countdown-card p,
-.countdown-card span {
-  color: var(--muted);
-}
-
-.countdown-card strong {
-  color: var(--primary);
-  font-size: clamp(1.35rem, 2.6vw, 2rem);
-  line-height: 1.15;
-}
-
-.countdown-card.expired strong {
-  color: var(--danger);
-}
-
-.capture-note {
-  border-top: 1px solid var(--line);
-  padding-top: 10px;
-}
 
 .training-grid {
   display: grid;
@@ -1733,10 +1608,7 @@ a.content-card:hover {
   .training-grid,
   .training-stats,
   .compact-form,
-  .screenshot-grid,
-  .custom-countdown-fields {
-    grid-template-columns: 1fr;
-  }
+  .screenshot-grid
 
   .section {
     padding: 64px 18px;
@@ -1749,10 +1621,6 @@ a.content-card:hover {
   .training-header,
   .wide-panel .panel-heading,
   .calendar-title-row,
-  .countdown-capture-header {
-    align-items: flex-start;
-    flex-direction: column;
-  }
 
   .training-actions {
     justify-content: flex-start;

@@ -9,7 +9,6 @@ const visualMap = {
   '/crazy-people': { icon: 'game', tone: 'rose' },
   '/subway': { icon: 'subway', tone: 'blue' },
   '/aiops': { icon: 'terminal', tone: 'cyan' },
-  '/countdown': { icon: 'clock', tone: 'blue' },
   '/age-calculator': { icon: 'calculator', tone: 'cyan' },
   'aiops-mcp-analyzer': { icon: 'terminal', tone: 'cyan' },
   'cicd-architecture': { icon: 'pipeline', tone: 'blue' },

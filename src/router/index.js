@@ -1,7 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import {
   loadAIOpsPage,
-  loadCountdownPage,
   loadCrazyPeoplePage,
   loadDeckCodeViewerPage,
   loadSubwayPage,
@@ -54,8 +53,6 @@ const routes = [
   { path: '/projects/opsagentai', redirect: '/projects/cicd-architecture' },
   { path: '/projects/:slug', name: 'project-detail', component: ProjectDetail },
   { path: '/vue-apps', redirect: '/projects' },
-  { path: '/lab', redirect: '/countdown' },
-  { path: '/countdown', name: 'countdown', component: loadCountdownPage },
   { path: '/aiops', name: 'aiops', component: loadAIOpsPage },
   { path: '/crazy-people', name: 'crazy-people', component: loadCrazyPeoplePage },
   { path: '/age-calculator', name: 'age-calculator', component: loadAgeCalculatorPage, meta: { title: '年龄计算器 | Zentrix' } },

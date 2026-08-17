@@ -74,13 +74,6 @@ export const vueApps = [
     tags: ['AIOps', 'MCP', 'DeepSeek']
   },
   {
-    to: '/countdown',
-    title: '人生倒计时',
-    kicker: '工具 · 计算器',
-    summary: '输入生日与性别，计算距 35 岁斩杀线、退休与预期寿命还剩多久。',
-    tags: ['倒计时', '计算器']
-  },
-  {
     to: '/age-calculator',
     title: '年龄计算器',
     kicker: '工具 · 计算器',
