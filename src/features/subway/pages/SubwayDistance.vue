@@ -236,14 +236,14 @@ function onLineDist(li, nameA, nameB) {
   const ia = sts.findIndex((s) => s.n === nameA)
   const ib = sts.findIndex((s) => s.n === nameB)
   if (!lines[li].loop) {
-    const lo = Math.min(ia, ib)
-    const hi = Math.max(ia, ib)
-    let d = 0
+    const step = ia < ib ? 1 : -1
     const p = []
-    for (let x = lo; x <= hi; x++) {
+    let d = 0
+    for (let x = ia; x !== ib; x += step) {
       p.push(sts[x].n)
-      if (x > lo) d += hav(sts[x - 1], sts[x])
+      d += hav(sts[x], sts[x + step])
     }
+    p.push(sts[ib].n)
     return { dist: d, path: p }
   }
   const fwd = []
