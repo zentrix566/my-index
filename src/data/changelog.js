@@ -3,6 +3,15 @@
 export const changelog = [
   {
     date: '2026-08-17',
+    title: '首页移动端布局修复',
+    category: 'site',
+    route: '/',
+    changes: [
+      '修复首页在移动端（窄屏 ≤840px）布局错乱：主样式 @media (max-width: 840px) 媒体查询中 .hero-layout 等布局类选择器列表缺失规则块，导致移动端未切换为单列、hero 文字被挤成竖排显示；现已补回单列布局规则，移动端首页正常显示。'
+    ]
+  },
+  {
+    date: '2026-08-17',
     title: '北京地铁 · 站站距离上线，多米诺骨牌与人生倒计时下线',
     category: 'other',
     route: '/subway',
