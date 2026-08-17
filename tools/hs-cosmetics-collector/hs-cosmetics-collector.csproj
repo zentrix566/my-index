@@ -25,9 +25,9 @@
     <Copyright>Copyright © 2026 zentrix566</Copyright>
     <NeutralLanguage>zh-CN</NeutralLanguage>
     <!-- 发布版本号；build-release.ps1 会读取此值并生成 hs-cosmetics-collector-v{Version}.zip -->
-    <Version>1.3.0</Version>
-    <AssemblyVersion>1.3.0.0</AssemblyVersion>
-    <FileVersion>1.3.0.0</FileVersion>
+    <Version>1.3.1</Version>
+    <AssemblyVersion>1.3.1.0</AssemblyVersion>
+    <FileVersion>1.3.1.0</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>

@@ -124,7 +124,7 @@ node scripts/gen-card-back-gallery.mjs
 
 ## 炉石收藏与成就采集工具（Windows）
 
-`tools/hs-cosmetics-collector/` 是一个 C# Windows 图形界面程序（WinForms），趁游戏运行时读取《炉石传说》内存，一键导出 `cosmetics.json`（已拥有的卡背/幸运币/英雄皮肤）与 `achievements.json`（成就逐条进度），供网站「炉石收藏」与「炉石成就」页面导入。
+`tools/hs-cosmetics-collector/` 是一个 C# Windows 图形界面程序（WinForms），趁游戏运行时读取《炉石传说》内存，一键导出带时间戳的 `cosmetics-YYYYMMDD-HHMMSS.json`（已拥有的卡背/幸运币/英雄皮肤）与 `achievements-YYYYMMDD-HHMMSS.json`（成就逐条进度，同一次采集共用一个时间戳成对出现），并自动同步最新一份固定名 `cosmetics.json` / `achievements.json`，供网站「炉石收藏」与「炉石成就」页面导入。
 
 - **使用**：启动炉石 → 双击 `HsCosmeticsCollector.exe` → 等顶部两个状态灯变绿 → 点「开始采集」→ 按摘要提示把两个 JSON 在网站导入（成就导入只推进进度、不回退已有勾选）。
 - **运行环境**：电脑系统为 Windows，需 **.NET Framework 4.8**（Windows 10 / 11 一般已自带，无需额外安装）。

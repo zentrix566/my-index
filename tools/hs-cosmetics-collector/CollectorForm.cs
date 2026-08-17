@@ -209,7 +209,7 @@ namespace HsCosmeticsCollector
                 _summaryLabel.Text =
                     $"采集完成：卡背 {r.CardBacks} 个、幸运币 {r.Coins} 个、英雄皮肤 {r.HeroSkins} 个" +
                     (r.Achievements != null ? $"、成就完成 {r.Achievements} 项。" : "。") +
-                    $"点「打开网站导入页」，收藏页选 cosmetics.json，成就页的「导入游戏内进度」选 achievements.json。";
+                    $"点「打开网站导入页」，收藏页选带时间后缀的 cosmetics-*.json（或 cosmetics.json），成就页「导入游戏内进度」选 achievements-*.json。";
                 _summaryLabel.Visible = true;
                 _openFolderButton.Enabled = Directory.Exists(r.DataDir);
                 AppendLog("");

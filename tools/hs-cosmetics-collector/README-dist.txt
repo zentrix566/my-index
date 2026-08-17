@@ -26,13 +26,15 @@
    输出会写入 stdout（可重定向到文件）。
 
 【产物】
-运行后，输出文件夹（界面上会显示路径，一般在本文件夹下）会多出 2 个文件：
-   cosmetics.json      外观收藏（卡背/幸运币/英雄皮肤已拥有的 ID 列表，合并在一个文件里）
-   achievements.json   成就（totalCompleted 官方总完成数 / categories 分类完成度 /
-                        items 逐条明细：每个成就的 id / status / statusText / progress / isComplete）
+运行后，输出文件夹（界面上会显示路径，一般在本文件夹下）会多出以下文件：
+   cosmetics-YYYYMMDD-HHMMSS.json       外观收藏（带时间戳，每次采集独立文件，便于保留历史）
+   achievements-YYYYMMDD-HHMMSS.json    成就（与 cosmetics 同一时间戳成对出现）
+   以及自动同步的最新副本（方便随时导入，等价于最近一次 *-时间戳 文件）：
+   cosmetics.json       外观收藏最新一份
+   achievements.json    成就最新一份
 导入位置（需登录网站）：
-   - 「炉石收藏」页面 → 选择采集的 JSON 文件 → 导入 cosmetics.json
-   - 「炉石成就」页面 → 导出与备份 → 导入游戏内进度 → 选择 achievements.json
+   - 「炉石收藏」页面 → 选择采集的 JSON 文件 → 导入 cosmetics-*.json（或 cosmetics.json）
+   - 「炉石成就」页面 → 导出与备份 → 导入游戏内进度 → 选择 achievements-*.json（或 achievements.json）
    成就导入只会推进进度，不会清除你已手动勾选的内容。
 
 【关于杀毒软件 / Windows SmartScreen 误报】

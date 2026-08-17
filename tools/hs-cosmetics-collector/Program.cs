@@ -11,7 +11,7 @@ namespace HsCosmeticsCollector
     /// <summary>
     /// 炉石外观收藏采集器：趁炉石传说运行期间，通过 Firestone 的 UnitySpy.HearthstoneLib
     /// （MindVision，读取游戏内存）抓取你「已拥有」的卡背 / 幸运币 / 英雄皮肤 / 成就进度，
-    /// 写入 cosmetics.json + achievements.json，供网站收藏页 / 成就页导入。
+    /// 写出带时间戳的 cosmetics-*.json + achievements-*.json（并同步固定名 latest），供网站收藏页 / 成就页导入。
     ///
     /// 采用运行时反射，不依赖 Firestone fork 的具体方法名/类型，适配不同版本。
     /// 默认启动 WinForms 图形界面；带命令行参数（diag* 诊断等）时走原控制台逻辑。
@@ -460,8 +460,10 @@ namespace HsCosmeticsCollector
                 return 5;
             }
             var stamp = DateTime.Now.ToString("o");
+            // 文件名时间戳：每次采集产出独立文件，避免多次运行覆盖历史；另同步固定名 latest 供本地查看器/server 读取
+            var fileStamp = DateTime.Now.ToString("yyyyMMdd-HHmmss");
             var src = "MindVision (Hearthstone game memory)";
-            // 合并为 2 个文件：cosmetics.json（卡背/硬币/皮肤）+ achievements.json（成就明细）
+            // 合并为 2 个文件：cosmetics + achievements（均带时间戳，并维护 latest 副本）
             var cosmetics = new Dictionary<string, object?>
             {
                 ["source"] = src,
@@ -470,7 +472,9 @@ namespace HsCosmeticsCollector
                 ["coins"] = new Dictionary<string, object?> { ["count"] = coinIds.Count, ["ids"] = coinIds },
                 ["heroSkins"] = new Dictionary<string, object?> { ["count"] = heroSkins.Count, ["ids"] = heroSkins, ["byClass"] = heroByClass }
             };
-            WriteJson(Path.Combine(dataDir, "cosmetics.json"), cosmetics);
+            var cosmeticsFile = Path.Combine(dataDir, $"cosmetics-{fileStamp}.json");
+            WriteJson(cosmeticsFile, cosmetics);
+            CopyLatest(cosmeticsFile, Path.Combine(dataDir, "cosmetics.json"), "外观收藏");
 
             if (achievements != null || achItems != null)
             {
@@ -488,7 +492,9 @@ namespace HsCosmeticsCollector
                     payload["itemsCompleted"] = ai.TryGetValue("completed", out var c) ? c : null;
                     payload["items"] = ai.TryGetValue("items", out var it) ? it : new List<object>();
                 }
-                WriteJson(Path.Combine(dataDir, "achievements.json"), payload);
+                var achFile = Path.Combine(dataDir, $"achievements-{fileStamp}.json");
+                WriteJson(achFile, payload);
+                CopyLatest(achFile, Path.Combine(dataDir, "achievements.json"), "成就明细");
             }
 
             int? achTotal = achievements is Dictionary<string, object?> ad ? ToInt(ad["totalCompleted"]) : null;
@@ -882,6 +888,20 @@ namespace HsCosmeticsCollector
                 new System.Text.Json.JsonSerializerOptions { WriteIndented = true, Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping });
             File.WriteAllText(path, json);
             Console.WriteLine("  写入: " + path);
+        }
+
+        // 写出带时间戳文件的同时，复制一份固定名 latest，供依赖固定文件名的本地查看器/server 使用
+        static void CopyLatest(string srcFile, string latestFile, string label)
+        {
+            try
+            {
+                File.Copy(srcFile, latestFile, true);
+                Console.WriteLine("  已同步最新副本: " + latestFile);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"  [warn] {label} 最新副本同步失败（不影响带时间戳文件导入）: " + ex.Message);
+            }
         }
 
         // 采集成功后的醒目摘要（彩色 + 分隔线 + 各类数量 + 输出目录），同时填充 LastResult 供 GUI 使用
