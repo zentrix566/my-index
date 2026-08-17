@@ -73,7 +73,7 @@
             v-for="(ln, i) in plan.linesUsed"
             :key="i"
             class="line-chip"
-            :style="{ background: lineColor(ln) }"
+            :style="lineStyle(ln)"
             >{{ ln }}</span
           >
         </div>
@@ -81,7 +81,7 @@
         <ol class="steps">
           <template v-for="(seg, i) in plan.segs" :key="i">
             <li class="step">
-              <span class="line-badge" :style="{ background: lineColor(lines[seg.line].name) }">
+              <span class="line-badge" :style="lineStyle(lines[seg.line].name)">
                 {{ lines[seg.line].name }}
               </span>
               <div class="step-body">
@@ -97,7 +97,7 @@
                 </div>
                 <ul v-if="expandedSegs.has(i) && seg.hops.length" class="hop-list">
                   <li v-for="(h, hi) in seg.hops" :key="hi" class="hop">
-                    <span class="hop-dot" :style="{ background: lineColor(lines[seg.line].name) }"></span>
+                    <span class="hop-dot" :style="lineStyle(lines[seg.line].name)"></span>
                     <span class="hop-name">{{ h.from }} → {{ h.to }}</span>
                     <span class="hop-dist">{{ fmt(h.dist) }}</span>
                   </li>
@@ -125,7 +125,7 @@
       </div>
 
       <div v-if="browse" class="browse-info">
-        <span class="line-chip" :style="{ background: lineColor(browse.name) }">{{ browse.name }}</span>
+        <span class="line-chip" :style="lineStyle(browse.name)">{{ browse.name }}</span>
         <span class="muted">共 {{ browse.rows.length }} 段 · 全线约 {{ fmt(browse.total) }}</span>
       </div>
 
@@ -540,16 +540,58 @@ const browse = computed(() => {
   return { name: line.name, loop: line.loop, total: cum, rows }
 })
 
-// 线路配色
-const PALETTE = [
+// 线路官方主题色（北京地铁标准线路色，来自用户提供的配色表）
+const LINE_COLORS = {
+  '1号线八通线': '#C8102E',
+  '2号线': '#004E80',
+  '4号线大兴线': '#00A651',
+  '5号线': '#A83279',
+  '6号线': '#D09828',
+  '7号线': '#F29400',
+  '8号线': '#00A06E',
+  '9号线': '#00B6BC',
+  '10号线': '#0091D5',
+  '11号线': '#E64398',
+  '12号线': '#943E2D',
+  '13号线': '#F3D349',
+  '14号线': '#C78BBF',
+  '15号线': '#9E4D9C',
+  '16号线': '#62B446',
+  '17号线': '#009E99',
+  '19号线': '#D55E8D',
+  '亦庄线': '#D478B1',
+  '房山线': '#E87722',
+  '燕房线': '#E4402B',
+  '昌平线': '#E678A2',
+  'S1线': '#A94F2F',
+  '西郊线': '#D81E05',
+  '首都机场线': '#8078A4',
+  '大兴机场线': '#233B76',
+}
+// 未列在配色表中的线路（如 3号线、18号线）回退到原调色板，保证仍有区分度
+const FALLBACK_PALETTE = [
   '#a52a2a', '#c23a30', '#e6731c', '#f0a020', '#caa61b', '#7cae3f', '#2f9e44',
   '#1b9e8f', '#0e8fab', '#2f6fed', '#3b5bdb', '#5f3dc4', '#8e44ad', '#c0398b',
   '#d6336c', '#b08968', '#5c6b73', '#37474f', '#00796b', '#6a1b9a', '#ad1457',
   '#00695c', '#4527a0', '#283593', '#0277bd', '#00838f', '#558b2f',
 ]
 function lineColor(name) {
+  if (LINE_COLORS[name]) return LINE_COLORS[name]
   const idx = lines.findIndex((l) => l.name === name)
-  return PALETTE[idx % PALETTE.length]
+  return FALLBACK_PALETTE[idx % FALLBACK_PALETTE.length]
+}
+// 根据背景色亮度决定文字颜色，保证浅色线路（如 13 号线藤黄）上文字可读
+function isLightColor(hex) {
+  const c = hex.replace('#', '')
+  const r = parseInt(c.slice(0, 2), 16)
+  const g = parseInt(c.slice(2, 4), 16)
+  const b = parseInt(c.slice(4, 6), 16)
+  const L = (0.299 * r + 0.587 * g + 0.114 * b) / 255
+  return L > 0.6
+}
+function lineStyle(name) {
+  const bg = lineColor(name)
+  return { background: bg, color: isLightColor(bg) ? '#1f2430' : '#ffffff' }
 }
 
 function fmt(m) {
