@@ -41,7 +41,7 @@
       <div class="timeline-axis" aria-hidden="true"></div>
       <article v-for="(person, index) in visibleItems" :key="person.id" class="timeline-item" :class="[{ leader: person.leader, event: person.kind === 'event' }, index % 2 ? 'right' : 'left']">
         <div class="year"><span>{{ formatYear(person.year) }}</span><i></i></div>
-        <button class="person-card" @click="selected = person">
+        <button class="person-card" @click="selectItem($event, person)">
           <span class="person-region">{{ person.region }}</span>
           <strong>{{ person.name }}</strong>
           <span v-if="person.kind === 'event'" class="person-role">历史事件</span>
@@ -54,21 +54,23 @@
       <p v-if="visibleItems.length === 0" class="empty">当前地区还没有人物。</p>
     </section>
 
-    <div v-if="selected" class="detail-backdrop" @click="selected = null"></div>
-    <aside v-if="selected" class="detail">
-      <button class="close" aria-label="关闭详情" @click="selected = null">×</button>
-      <p class="detail-region">{{ selected.region }} · {{ formatYear(selected.year) }}</p>
-      <h2>{{ selected.name }}</h2>
-      <p v-if="selected.role" class="detail-role">{{ selected.role }}</p>
-      <dl v-if="selected.life" class="detail-meta"><div><dt>生卒</dt><dd>{{ selected.life }}<template v-if="selected.age">（享年{{ selected.age }}岁）</template></dd></div></dl>
-      <p class="detail-note">{{ selected.note || '未填写简评。' }}</p>
-      <button v-if="selected.custom" class="delete-button" @click="removePerson(selected.id)">删除此自添人物</button>
-    </aside>
+    <Teleport to="body">
+      <div v-if="selected" class="detail-backdrop" @click="selected = null"></div>
+      <aside v-if="selected" ref="detailEl" class="detail" :style="detailStyle">
+        <button class="close" aria-label="关闭详情" @click="selected = null">×</button>
+        <p class="detail-region">{{ selected.region }} · {{ formatYear(selected.year) }}</p>
+        <h2>{{ selected.name }}</h2>
+        <p v-if="selected.role" class="detail-role">{{ selected.role }}</p>
+        <dl v-if="selected.life" class="detail-meta"><div><dt>生卒</dt><dd>{{ selected.life }}<template v-if="selected.age">（享年{{ selected.age }}岁）</template></dd></div></dl>
+        <p class="detail-note">{{ selected.note || '未填写简评。' }}</p>
+        <button v-if="selected.custom" class="delete-button" @click="removePerson(selected.id)">删除此自添人物</button>
+      </aside>
+    </Teleport>
   </main>
 </template>
 
 <script setup>
-import { computed, ref, watch } from 'vue'
+import { Teleport, computed, nextTick, onUnmounted, ref, watch } from 'vue'
 import { RouterLink, useRoute, useRouter } from 'vue-router'
 import { items } from '../data/worldHistory.json'
 
@@ -78,6 +80,47 @@ const router = useRouter()
 const region = ref(typeof route.query.region === 'string' ? route.query.region : '全部')
 const scope = ref(region.value === '全部' ? '' : region.value)
 const selected = ref(null)
+const detailEl = ref(null)
+const detailAnchor = ref(null)
+const detailStyle = ref({})
+// 点击卡片时让弹窗跟随卡片元素：监听滚动/缩放，弹窗始终贴在被点击卡片旁边移动
+function selectItem(event, item) {
+  detailAnchor.value = event.currentTarget
+  selected.value = item
+  if (window.innerWidth <= 760) {
+    detailStyle.value = {}
+    return
+  }
+  nextTick(positionDetail)
+}
+function positionDetail() {
+  const el = detailEl.value
+  const card = detailAnchor.value
+  if (!el || !card) return
+  if (window.innerWidth <= 760) {
+    detailStyle.value = {}
+    return
+  }
+  const gap = 14
+  const { offsetWidth: w, offsetHeight: h } = el
+  const rect = card.getBoundingClientRect()
+  // 优先放卡片右侧；放不下放左侧；再放不下贴视口边缘
+  let left = rect.right + gap
+  let top = rect.top
+  if (left + w > window.innerWidth - gap) left = rect.left - w - gap
+  if (left < gap) left = gap
+  if (top + h > window.innerHeight - gap) top = Math.max(gap, window.innerHeight - h - gap)
+  if (top < gap) top = gap
+  detailStyle.value = { left: `${left}px`, top: `${top}px`, right: 'auto' }
+}
+const onDetailScroll = () => positionDetail()
+const onDetailResize = () => positionDetail()
+window.addEventListener('scroll', onDetailScroll, { passive: true })
+window.addEventListener('resize', onDetailResize)
+onUnmounted(() => {
+  window.removeEventListener('scroll', onDetailScroll)
+  window.removeEventListener('resize', onDetailResize)
+})
 const formOpen = ref(false)
 const formMessage = ref('')
 const draft = ref({ name: '', year: '', region: '', life: '', note: '' })
@@ -228,7 +271,7 @@ h1 { margin: 0; font-size: 32px; letter-spacing: .04em; }
 .custom-tag { position: absolute; top: 10px; right: 10px; padding: 2px 5px; border-radius: 5px; background: #e2eefc; color: #245785; font-size: 10px; }
 .empty { position: relative; text-align: center; color: var(--color-muted); }
 .detail-backdrop { position: fixed; inset: 0; z-index: 20; background: rgba(19, 25, 38, .3); }
-.detail { position: fixed; right: 20px; top: 90px; z-index: 21; width: min(360px, calc(100vw - 32px)); padding: 24px; border: 1px solid var(--color-border); border-radius: 14px; background: var(--color-card); box-shadow: 0 18px 48px rgba(0,0,0,.2); }
+.detail { position: fixed; z-index: 21; width: min(360px, calc(100vw - 32px)); padding: 24px; border: 1px solid var(--color-border); border-radius: 14px; background: var(--color-card); box-shadow: 0 18px 48px rgba(0,0,0,.2); }
 .close { position: absolute; right: 10px; top: 8px; border: 0; background: transparent; font-size: 24px; cursor: pointer; color: var(--color-muted); }
 .detail-region { margin: 0; color: #335787; font-size: 13px; font-weight: 800; }
 .detail h2 { margin: 6px 0; font-size: 26px; }

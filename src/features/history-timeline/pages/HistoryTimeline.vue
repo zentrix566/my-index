@@ -30,7 +30,7 @@
       <template v-for="item in visibleItems" :key="item.id">
         <article v-if="item.type === 'event'" :id="item.anchor || item.id" :class="['timeline-item', 'event', { match: itemMatches(item) }]">
           <div class="year"><span>{{ formatYear(item.year) }}</span><i></i></div>
-          <button class="person-card event-card" :style="{ '--era': item.era.color }" @click="selected = item">
+          <button class="person-card event-card" :style="{ '--era': item.era.color }" @click="selectItem($event, item)">
             <span class="person-region">{{ item.era.name }} · {{ formatYear(item.year) }}</span>
             <strong>{{ item.name }}</strong>
             <span class="person-role">历史事件</span>
@@ -40,7 +40,7 @@
         <article v-else :id="item.anchor || item.id" :class="['timeline-item', 'group', item.side, { match: itemMatches(item) }]">
           <div class="year"><span>{{ formatYear(item.year) }}</span><i></i></div>
           <div class="group-block">
-            <button v-if="item.ruler" class="person-card ruler-card" :style="{ '--era': item.era.color }" :id="item.ruler.id" @click="selected = item.ruler">
+            <button v-if="item.ruler" class="person-card ruler-card" :style="{ '--era': item.era.color }" :id="item.ruler.id" @click="selectItem($event, item.ruler)">
               <span class="person-region">{{ item.era.name }} · {{ item.group.label }}</span>
               <strong><span class="crown">👑</span>{{ item.ruler.name }}</strong>
               <span v-if="item.ruler.alias" class="ruler-alias">{{ item.ruler.alias }}</span>
@@ -51,13 +51,13 @@
             </button>
             <div v-if="item.allusions.length" class="allusion-block">
               <p class="allusion-title">📖 典故</p>
-              <button v-for="allusion in item.allusions" :key="allusion.id" class="allusion-card" :style="{ '--era': item.era.color }" @click="selected = allusion">
+              <button v-for="allusion in item.allusions" :key="allusion.id" class="allusion-card" :style="{ '--era': item.era.color }" @click="selectItem($event, allusion)">
                 <strong>{{ allusion.name }}</strong>
                 <span class="allusion-note">{{ allusion.note }}</span>
               </button>
             </div>
             <div v-if="item.figures.length" class="figure-cards">
-              <button v-for="person in item.figures" :key="person.id" class="person-card minister-card" :style="{ '--era': item.era.color }" :id="person.id" @click="selected = person">
+              <button v-for="person in item.figures" :key="person.id" class="person-card minister-card" :style="{ '--era': item.era.color }" :id="person.id" @click="selectItem($event, person)">
                 <span class="person-region">{{ item.era.name }} · {{ item.group.ruler || item.group.label }}</span>
                 <strong>{{ person.name }}</strong>
                 <span class="person-role">{{ person.role }}</span>
@@ -86,13 +86,15 @@
         <button class="ht-top" @click="scrollTop" aria-label="回到顶部选择朝代">Top ↑</button>
       </div>
     </Teleport>
-    <div v-if="selected" class="detail-backdrop" @click="selected = null"></div>
-    <aside v-if="selected" class="detail" :style="{ '--era': selected.era.color }"><button class="close" @click="selected = null">×</button><p class="detail-region">{{ selected.era.name }} · {{ formatYear(selected.year) }}</p><h2>{{ selected.isRuler ? '👑 ' : '' }}{{ selected.name }}</h2><p v-if="selected.alias" class="detail-alias">{{ selected.alias }}</p><p v-if="selected.isLast" class="last-emperor-badge">末帝</p><p class="detail-role"><template v-if="selected.isRuler">在位 {{ reignText(selected) }}<template v-if="reignYears(selected) !== null">（{{ reignYears(selected) > 0 ? reignYears(selected) + '年' : '不足一年' }}）</template></template><template v-else>{{ selected.role }}</template></p><dl v-if="selected.life" class="detail-meta"><div><dt>生卒</dt><dd>{{ selected.life }}<template v-if="selected.age">（享年{{ selected.age }}岁）</template></dd></div></dl><p class="detail-note">{{ selected.note || '未填写简评。' }}</p><div v-if="selected.isRuler || selected.type === 'figure'" class="reaction-actions"><button :class="{ active: reactionFor(selected.name) === 'like' }" @click="toggleReaction(selected.name, 'like')">喜欢</button><button :class="{ active: reactionFor(selected.name) === 'dislike' }" @click="toggleReaction(selected.name, 'dislike')">讨厌</button></div><button v-if="selected.custom" class="delete-button" @click="removePerson(selected.id)">删除此自添人物</button></aside>
+    <Teleport to="body">
+      <div v-if="selected" class="detail-backdrop" @click="selected = null"></div>
+      <aside v-if="selected" ref="detailEl" class="detail" :style="detailStyle"><button class="close" @click="selected = null">×</button><p class="detail-region">{{ selected.era.name }} · {{ formatYear(selected.year) }}</p><h2>{{ selected.isRuler ? '👑 ' : '' }}{{ selected.name }}</h2><p v-if="selected.alias" class="detail-alias">{{ selected.alias }}</p><p v-if="selected.isLast" class="last-emperor-badge">末帝</p><p class="detail-role"><template v-if="selected.isRuler">在位 {{ reignText(selected) }}<template v-if="reignYears(selected) !== null">（{{ reignYears(selected) > 0 ? reignYears(selected) + '年' : '不足一年' }}）</template></template><template v-else>{{ selected.role }}</template></p><dl v-if="selected.life" class="detail-meta"><div><dt>生卒</dt><dd>{{ selected.life }}<template v-if="selected.age">（享年{{ selected.age }}岁）</template></dd></div></dl><p class="detail-note">{{ selected.note || '未填写简评。' }}</p><div v-if="selected.isRuler || selected.type === 'figure'" class="reaction-actions"><button :class="{ active: reactionFor(selected.name) === 'like' }" @click="toggleReaction(selected.name, 'like')">喜欢</button><button :class="{ active: reactionFor(selected.name) === 'dislike' }" @click="toggleReaction(selected.name, 'dislike')">讨厌</button></div><button v-if="selected.custom" class="delete-button" @click="removePerson(selected.id)">删除此自添人物</button></aside>
+    </Teleport>
   </main>
 </template>
 
 <script setup>
-import { Teleport, computed, nextTick, ref, watch } from 'vue'
+import { Teleport, computed, nextTick, onUnmounted, ref, watch } from 'vue'
 import { RouterLink, useRouter } from 'vue-router'
 import { eras } from '../data/chineseHistory.json'
 import personDetails from '../data/personDetails.json'
@@ -109,6 +111,52 @@ const activeEraKey = ref(window.localStorage.getItem(ERA_KEY) || eras[0]?.key)
 const query = ref('')
 const fabRulerId = ref('')
 const selected = ref(null)
+const detailEl = ref(null)
+const detailAnchor = ref(null)
+const detailStyle = ref({})
+// 点击卡片时让弹窗跟随卡片元素：监听滚动/缩放，弹窗始终贴在被点击卡片旁边移动
+function selectItem(event, item) {
+  detailAnchor.value = event.currentTarget
+  selected.value = item
+  if (window.innerWidth <= 760) {
+    detailStyle.value = { '--era': item.era.color }
+    return
+  }
+  nextTick(positionDetail)
+}
+function positionDetail() {
+  const el = detailEl.value
+  const card = detailAnchor.value
+  if (!el || !card) return
+  if (window.innerWidth <= 760) {
+    detailStyle.value = { '--era': selected.value?.era?.color || '' }
+    return
+  }
+  const gap = 14
+  const { offsetWidth: w, offsetHeight: h } = el
+  const rect = card.getBoundingClientRect()
+  // 优先放卡片右侧；放不下放左侧；再放不下贴视口边缘
+  let left = rect.right + gap
+  let top = rect.top
+  if (left + w > window.innerWidth - gap) left = rect.left - w - gap
+  if (left < gap) left = gap
+  if (top + h > window.innerHeight - gap) top = Math.max(gap, window.innerHeight - h - gap)
+  if (top < gap) top = gap
+  detailStyle.value = {
+    '--era': selected.value?.era?.color || '',
+    left: `${left}px`,
+    top: `${top}px`,
+    right: 'auto'
+  }
+}
+const onDetailScroll = () => positionDetail()
+const onDetailResize = () => positionDetail()
+window.addEventListener('scroll', onDetailScroll, { passive: true })
+window.addEventListener('resize', onDetailResize)
+onUnmounted(() => {
+  window.removeEventListener('scroll', onDetailScroll)
+  window.removeEventListener('resize', onDetailResize)
+})
 const formOpen = ref(false)
 const formMessage = ref('')
 const draft = ref({ name: '', eraKey: 'dangdai', year: 2026, role: '', note: '' })
@@ -498,7 +546,7 @@ h1{margin:0;font-size:32px;letter-spacing:.04em}
 .timeline-item.match .person-card{border-color:var(--era);box-shadow:0 0 0 3px color-mix(in srgb,var(--era) 55%,transparent),0 6px 16px rgba(35,48,76,.18)}
 .timeline-item.match.event .year span{background:var(--era);color:#fff;padding:2px 6px;border-radius:4px}
 .detail-backdrop{position:fixed;inset:0;z-index:20;background:rgba(19,25,38,.3)}
-.detail{position:fixed;top:90px;right:20px;z-index:21;width:min(360px,calc(100vw - 32px));padding:24px;border:1px solid var(--color-border);border-radius:14px;background:var(--color-card);box-shadow:0 18px 48px rgba(0,0,0,.2)}
+.detail{position:fixed;z-index:21;width:min(360px,calc(100vw - 32px));padding:24px;border:1px solid var(--color-border);border-radius:14px;background:var(--color-card);box-shadow:0 18px 48px rgba(0,0,0,.2)}
 .close{position:absolute;top:8px;right:10px;border:0;background:transparent;color:var(--color-muted);font-size:24px;cursor:pointer}
 .detail-region{margin:0;color:var(--era);font-size:13px;font-weight:800}
 .detail h2{margin:6px 0;font-size:26px}
