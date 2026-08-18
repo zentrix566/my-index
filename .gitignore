@@ -5,6 +5,9 @@
 # 验证构建散文件（vite build --outDir .build-* 产物及冒烟测试抓取的响应），均不提交
 .build-*
 
+# 临时调试产物目录（Playwright 截图、生成的中间图片等），不提交
+outputs/
+
 # DevOps Actions directory
 devops-actions/
 
