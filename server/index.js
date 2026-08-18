@@ -543,6 +543,78 @@ app.post('/api/dream', async (req, res) => {
   }
 })
 
+// ========== 人物生平：服务端代理 DeepSeek（密钥仅服务端，前端不接触）==========
+// 公开接口：不要求登录；单 IP 每小时上限 30 次，防止被恶意刷爆 DeepSeek 额度。
+// 复用项目统一的 DEEPSEEK_API_KEY / DEEPSEEK_DREAM_MODEL / DEEPSEEK_BASE_URL，
+// 前端只负责拼 system+user 的 messages，模型与接口地址由服务端强制决定。
+const BIO_RATE_WINDOW_MS = 3_600_000
+const BIO_RATE_MAX = 30
+const bioRateMap = new Map() // ip -> { count, start }
+
+function checkBioRate(ip) {
+  const now = Date.now()
+  const rec = bioRateMap.get(ip)
+  if (!rec || now - rec.start >= BIO_RATE_WINDOW_MS) {
+    bioRateMap.set(ip, { count: 1, start: now })
+    return true
+  }
+  if (rec.count >= BIO_RATE_MAX) return false
+  rec.count += 1
+  return true
+}
+
+app.post('/api/biography', async (req, res) => {
+  const ip = req.ip || req.socket.remoteAddress || 'unknown'
+  if (!process.env.DEEPSEEK_API_KEY) {
+    return res.status(503).json({ error: 'AI 服务未配置（服务端缺少 DEEPSEEK_API_KEY）' })
+  }
+  if (!checkBioRate(ip)) {
+    return res.status(429).json({ error: '查询过于频繁，请稍后再试。' })
+  }
+  const body = req.body || {}
+  const messages = Array.isArray(body.messages) && body.messages.length > 0 ? body.messages : null
+  const name = typeof body.name === 'string' ? body.name.trim() : ''
+  if (!messages && !name) {
+    return res.status(400).json({ error: '请输入历史人物姓名' })
+  }
+  const model = process.env.DEEPSEEK_DREAM_MODEL || 'deepseek-chat'
+  const baseUrl = (process.env.DEEPSEEK_BASE_URL || 'https://api.deepseek.com').replace(/\/$/, '')
+  const payloadMessages = messages || [
+    { role: 'system', content: typeof body.system === 'string' ? body.system : '' },
+    { role: 'user', content: name }
+  ]
+  try {
+    const upstream = await fetch(`${baseUrl}/chat/completions`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${process.env.DEEPSEEK_API_KEY}`
+      },
+      body: JSON.stringify({
+        model,
+        messages: payloadMessages,
+        temperature: Number.isFinite(body.temperature) ? body.temperature : 0.1,
+        max_tokens: Number.isFinite(body.max_tokens) ? body.max_tokens : 1500
+      })
+    })
+    const raw = await upstream.text()
+    let data = null
+    try { data = raw ? JSON.parse(raw) : null } catch { /* 非 JSON，保留原始文本 */ }
+    if (!upstream.ok) {
+      const detail = data?.error?.message || data?.message || raw || '无响应内容'
+      appLog('ERROR', `人物生平代理失败: HTTP ${upstream.status} ${detail}`)
+      return res.status(502).json({ error: `AI 接口请求失败（HTTP ${upstream.status}）：${detail}` })
+    }
+    if (!data) {
+      return res.status(502).json({ error: `AI 接口返回了非 JSON 内容：${raw.slice(0, 200)}` })
+    }
+    res.json(data)
+  } catch (err) {
+    appLog('ERROR', `人物生平代理异常: ${err.message}`)
+    res.status(502).json({ error: err.message || '生平生成失败，请稍后重试' })
+  }
+})
+
 // ========== 静态文件服务 ==========
 
 // 健康检查

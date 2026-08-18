@@ -30,3 +30,5 @@ export {
   loadTodoGroups,
   loadTodoProfile
 } from './todo/index.js'
+export { loadHistoryTimelinePage, loadWorldTimelinePage } from './history-timeline/index.js'
+export { loadBiographyPage } from './biography/index.js'

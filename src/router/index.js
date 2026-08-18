@@ -25,7 +25,10 @@ import {
   loadTodoManage,
   loadTodoAi,
   loadTodoGroups,
-  loadTodoProfile
+  loadTodoProfile,
+  loadHistoryTimelinePage,
+  loadWorldTimelinePage,
+  loadBiographyPage
 } from '../features/index.js'
 
 // 路由级懒加载：每个页面单独成 chunk，首屏只加载当前路由所需的代码，
@@ -87,6 +90,11 @@ const routes = [
   { path: '/todo/changelog', redirect: '/changelog?category=todo' },
   { path: '/todo/login', redirect: '/login?redirect=/todo&source=todo' },
   { path: '/dream', name: 'dream', component: loadDreamPage, meta: { title: '黄粱一梦 | Zentrix' } },
+  // ========== 历史时间线（纯本地数据，无后端依赖）==========
+  { path: '/history', name: 'history', component: loadHistoryTimelinePage, meta: { title: '历史时间线 | Zentrix' } },
+  { path: '/world-history', name: 'world-history', component: loadWorldTimelinePage, meta: { title: '世界历史时间线 | Zentrix' } },
+  // ========== 人物生平（服务端代理 DeepSeek，密钥仅服务端）==========
+  { path: '/biography', name: 'biography', component: loadBiographyPage, meta: { title: '人物生平 | Zentrix' } },
   // 心魔独立认证已并入主站，/login 等统一走主站账号体系
   { path: '/willpower/login', redirect: '/login?redirect=/willpower&source=willpower' },
   { path: '/willpower/register', redirect: '/login?redirect=/willpower&source=willpower' },
