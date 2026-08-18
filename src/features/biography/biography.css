@@ -1,0 +1,167 @@
+/* 人物生平 · 纪年查询 */
+.biography-page {
+  padding-bottom: 48px;
+  padding-top: 32px;
+}
+
+.biography-container {
+  max-width: 760px;
+}
+
+.biography-header h1 {
+  font-size: clamp(1.9rem, 4vw, 2.8rem);
+  letter-spacing: 0;
+  line-height: 1.1;
+  margin: 6px 0 10px;
+}
+
+.biography-header p:not(.eyebrow) {
+  color: var(--muted);
+  margin: 0;
+}
+
+.biography-search {
+  display: flex;
+  gap: 10px;
+  margin: 24px 0 8px;
+}
+
+.biography-search input {
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, rgba(128, 128, 128, 0.22));
+  border-radius: 8px;
+  color: var(--text);
+  flex: 1;
+  font-size: 1rem;
+  min-height: 46px;
+  padding: 10px 14px;
+}
+
+.biography-search input:focus {
+  border-color: var(--primary, #2563eb);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.biography-search .button {
+  min-height: 46px;
+  padding: 10px 26px;
+  background: var(--primary, #2563eb);
+  color: #fff;
+  border: none;
+}
+
+.biography-search .button:disabled {
+  cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.biography-hint {
+  color: var(--muted);
+  font-size: 0.9rem;
+  margin-top: 12px;
+}
+
+.biography-loading,
+.biography-error {
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, rgba(128, 128, 128, 0.22));
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  margin-top: 20px;
+  padding: 28px;
+  text-align: center;
+}
+
+.biography-loading {
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.biography-loading p {
+  color: var(--muted);
+  margin: 0;
+}
+
+.biography-spinner {
+  animation: biography-spin 0.8s linear infinite;
+  border: 3px solid var(--line, rgba(128, 128, 128, 0.22));
+  border-top-color: var(--primary, #2563eb);
+  border-radius: 50%;
+  height: 32px;
+  width: 32px;
+}
+
+@keyframes biography-spin {
+  to { transform: rotate(360deg); }
+}
+
+.biography-error {
+  border-color: var(--danger, #b91c1c);
+  color: var(--danger, #b91c1c);
+}
+
+.biography-error p {
+  margin: 6px 0 0;
+  word-break: break-all;
+}
+
+.biography-result {
+  margin-top: 20px;
+}
+
+.biography-result-head {
+  align-items: center;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.biography-result-label {
+  color: var(--muted);
+  font-size: 0.88rem;
+  font-weight: 750;
+}
+
+.biography-copy-btn {
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, rgba(128, 128, 128, 0.22));
+  border-radius: 8px;
+  color: var(--primary, #2563eb);
+  cursor: pointer;
+  font-size: 0.88rem;
+  font-weight: 750;
+  min-height: 36px;
+  padding: 6px 16px;
+}
+
+.biography-copy-btn:hover {
+  background: var(--surface-soft, #eef4f6);
+}
+
+.biography-text {
+  background: var(--surface, #fff);
+  border: 1px solid var(--line, rgba(128, 128, 128, 0.22));
+  border-radius: 8px;
+  box-shadow: var(--shadow);
+  color: var(--text);
+  font-family: 'PingFang SC', 'Microsoft YaHei', -apple-system, sans-serif;
+  font-size: 1rem;
+  line-height: 1.9;
+  padding: 18px 20px;
+  resize: vertical;
+  width: 100%;
+}
+
+.biography-text:focus {
+  border-color: var(--primary, #2563eb);
+  outline: none;
+}
+
+@media (max-width: 600px) {
+  .biography-search {
+    flex-direction: column;
+  }
+}

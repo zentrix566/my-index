@@ -1,5 +1,5 @@
 // 我自己做的个人项目索引：新增页面只需在这里追加一项
-const PERSONAL_APP_ORDER = ['/hearthstone', '/todo', '/hearthstone/frog', '/dream', '/willpower', '/subway']
+const PERSONAL_APP_ORDER = ['/hearthstone', '/todo', '/history', '/biography', '/subway', '/hearthstone/frog', '/dream', '/willpower']
 const personalAppRank = new Map(PERSONAL_APP_ORDER.map((path, index) => [path, index]))
 
 export const vueApps = [
@@ -23,6 +23,13 @@ export const vueApps = [
     kicker: '自律 · 效率',
     summary: '按「今日待办 / 今日已完成」管理任务，支持自定义分组、月周日历、全量表格与 AI 日程分析，数据独立存储。',
     tags: ['待办', '分组', '日历', 'AI']
+  },
+  {
+    to: '/history',
+    title: '历史时间线',
+    kicker: '历史 · 时间轴',
+    summary: '以时间轴梳理中国历朝历代皇帝与大臣，并支持切换世界各地区历史；可关键词搜索、可添加自定义人物。纯本地数据，无需联网。',
+    tags: ['历史', '时间轴', '中国', '世界']
   },
   {
     to: '/dream',
@@ -79,5 +86,12 @@ export const vueApps = [
     kicker: '工具 · 计算器',
     summary: '输入出生年份与特定年份，支持公元前、跨纪元与停止输入后自动计算。',
     tags: ['年龄', '计算器']
+  },
+  {
+    to: '/biography',
+    title: '人物生平 · 纪年查询',
+    kicker: 'AI · 历史',
+    summary: '输入历史人物姓名，由 DeepSeek 输出可直接复制的纯文本年谱：生卒年、主要事迹及当时年纪、死因与终年。',
+    tags: ['AI', 'DeepSeek', '历史', '年谱']
   }
 ].sort((a, b) => (personalAppRank.get(a.to) ?? 100) - (personalAppRank.get(b.to) ?? 100))

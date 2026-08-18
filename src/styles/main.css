@@ -28,6 +28,13 @@
   --header-fg-soft: #475569;
   --header-active-bg: rgba(37, 99, 235, 0.1);
   --header-active-fg: #2563eb;
+  /* 兼容从 my-vue-project 迁入、使用 --color-* 命名的功能页（历史时间线等） */
+  --color-bg: #f5f7fa;
+  --color-text: #1f2430;
+  --color-muted: #6b7280;
+  --color-primary: #2f6fed;
+  --color-card: #ffffff;
+  --color-border: #e5e7eb;
 }
 
 :root[data-theme="dark"] {
@@ -53,6 +60,14 @@
   --header-fg-soft: #c7d2fe;
   --header-active-bg: rgba(129, 140, 248, 0.2);
   --header-active-fg: #ffffff;
+  /* 兼容从 my-vue-project 迁入、使用 --color-* 命名的功能页（历史时间线等）。
+     源设计为浅色，故暗色模式下仍沿用浅色取值，保证卡片/搜索框可见。 */
+  --color-bg: #f5f7fa;
+  --color-text: #1f2430;
+  --color-muted: #6b7280;
+  --color-primary: #2f6fed;
+  --color-card: #ffffff;
+  --color-border: #e5e7eb;
 }
 
 /* 顶栏下拉菜单（工作项目 / 个人项目 / 账号）暗色适配 */
