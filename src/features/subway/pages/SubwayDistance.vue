@@ -244,6 +244,7 @@ function onLineDist(li, nameA, nameB) {
       p.push(sts[x].n)
       if (x > lo) d += hav(sts[x - 1], sts[x])
     }
+    if (ia > ib) p.reverse()
     return { dist: d, path: p }
   }
   const fwd = []

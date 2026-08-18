@@ -1608,7 +1608,9 @@ a.content-card:hover {
   .training-grid,
   .training-stats,
   .compact-form,
-  .screenshot-grid
+  .screenshot-grid {
+    grid-template-columns: 1fr;
+  }
 
   .section {
     padding: 64px 18px;
@@ -1620,7 +1622,10 @@ a.content-card:hover {
 
   .training-header,
   .wide-panel .panel-heading,
-  .calendar-title-row,
+  .calendar-title-row {
+    align-items: flex-start;
+    flex-direction: column;
+  }
 
   .training-actions {
     justify-content: flex-start;
