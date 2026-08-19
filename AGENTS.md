@@ -1,10 +1,10 @@
 # AGENTS.md
 
-本文件供 AI 编程助手阅读，包含项目架构要点和运维流程，无需反向探索代码即可上手。
+本文件供 AI 编程助手阅读，包含项目架构要点、目录地图和运维流程，无需反向探索代码即可上手。
 
 ## 项目概述
 
-zentrix-index 是个人全栈站点（Vue 3 + Vite + Express），含炉石卡牌/成就/收藏等功能。生产环境通过 GitHub Actions 构建 Docker 镜像部署到 K3s，推送 main 分支即自动部署。
+zentrix-index 是个人全栈站点（Vue 3 + Vite + Express），含炉石卡牌/成就/收藏、Todo、意志力追踪、黄粱一梦（AI）、地铁/历史时间线等功能。生产环境通过 GitHub Actions 构建 Docker 镜像部署到 K3s，推送 main 分支即自动部署。
 
 ## Git 规则（强制）
 
@@ -13,6 +13,115 @@ zentrix-index 是个人全栈站点（Vue 3 + Vite + Express），含炉石卡�
 - commit message 用中文，格式 `<类型>: <描述>`；作者 zentrix566。
 - 不加任何 AI 联名作者信息。
 - 临时脚本用 `.build-tmp-*` 前缀命名，已被 `.gitignore` 忽略。
+
+## 目录地图
+
+```
+my-index/
+├── src/                        # 前端 Vue 3 应用
+│   ├── main.js                 # 入口
+│   ├── App.vue                 # 根组件
+│   ├── router/index.js         # 路由（全部懒加载 feature 页面）
+│   ├── auth/useAuth.js         # 客户端登录状态
+│   ├── components/             # 全站共享 UI 组件
+│   ├── composables/            # 全站共享 composable（主题、反馈等）
+│   ├── views/                  # 顶层页面（Home/Projects/About/Login/Settings/Admin 等）
+│   ├── data/                   # 静态站点数据（changelog、友链、项目列表）
+│   ├── styles/                 # 全局 CSS
+│   └── features/               # 各功能模块（每个有独立 index.js 懒加载入口）
+│       ├── hearthstone/        # ★ 最大模块：卡牌/成就/收藏/蛙生游戏/计算器
+│       ├── todo/               # Todo/日程管理（6 个页面 + API）
+│       ├── willpower/          # "抵御心魔"习惯追踪（7 个页面 + API）
+│       ├── dream/              # 黄粱一梦 AI 模拟器（DeepSeek 代理）
+│       ├── crazy-people/       # 浏览器小游戏
+│       ├── history-timeline/   # 中国/世界历史时间线
+│       ├── biography/          # 个人传记页
+│       ├── subway/             # 地铁距离查询
+│       ├── age-calculator/     # 年龄计算器
+│       ├── aiops/              # AIOps 控制台
+│       └── analytics/          # 统计页
+├── server/                     # Express 后端
+│   ├── index.js                # 主服务（路由、静态文件、OSS 反代、SPA 回退）
+│   ├── auth.js                 # 注册/登录/JWT/bcrypt
+│   ├── db.js                   # 数据层统一出口（auth-db + business-db）
+│   ├── db/                     # 数据库连接（PG 生产 / SQLite 本地）
+│   ├── routes/                 # API 路由（stats 等）
+│   ├── migrations/             # PostgreSQL schema 迁移
+│   ├── todo/                   # Todo 独立数据层 + 路由
+│   ├── willpower/              # 意志力独立数据层 + 路由 + 成就引擎
+│   ├── ai-advisor.js           # AI 建议服务端逻辑
+│   ├── dream.js                # 黄粱一梦 DeepSeek 代理
+│   ├── achievements-meta.js    # 启动时扫描成就 JSON 建 ID 索引
+│   ├── mailer.js               # SMTP 邮件
+│   ├── logger.js               # 文件日志（90 天轮转）
+│   └── local-dev.mjs           # 本地开发用 SQLite 替代 PG
+├── scripts/                    # 运维/数据脚本（约 50 个，见下方常用脚本）
+├── k8s/                        # Kubernetes 部署清单
+├── public/                     # Vite 静态资源（会打进 dist/）
+│   └── hearthstone/            # 收藏 JSON（card-backs/hero-skins/coins）
+├── tools/                      # 外部配套工具
+│   ├── hs-cosmetics-collector/ # C# 采集器（读游戏内存导出收藏/成就）
+│   ├── hs-cosmetics-viewer/    # 独立 HTML 导入预览器
+│   └── firestone-collection-exporter/  # Firestone 收藏导出 CLI
+├── data/                       # 本地 SQLite 数据库 + 备份
+├── dist/                       # 构建产物
+├── logs/                       # 运行时日志
+├── .github/workflows/deploy.yml # CI/CD：push main → Docker 构建 → K3s 部署
+├── vite.config.js              # Vite 配置 + 开发代理
+├── Dockerfile                  # 多阶段构建（Node 20-slim）
+└── package.json                # ESM，scripts 含约 20 个炉石相关命令
+```
+
+### hearthstone 模块结构
+
+这是最复杂的功能，单独展开：
+
+```
+src/features/hearthstone/
+├── index.js                    # 懒加载入口，导出 8 个页面路由
+├── pages/                      # 页面组件
+│   ├── HearthstoneAchievements.vue  # 成就主页（查看器+编辑器+分享）
+│   ├── CardLookup.vue          # 卡牌查询（按名称/dbfId）
+│   ├── DeckCodeViewer.vue      # 卡组代码解析
+│   ├── HearthstoneCollection.vue   # 外观收藏（皮肤/硬币/卡背）
+│   ├── FrogSuspectCard.vue     # 蛙生找茬游戏
+│   ├── FrogReviewPage.vue      # 蛙生验收台
+│   ├── EventCalculator.vue     # 活动计算器
+│   └── TavernPassCalculator.vue # 酒馆战棋通行证计算器
+├── components/                 # 约 20 个组件（成就卡、弹窗、筛选栏、卡图库等）
+├── composables/                # 核心逻辑
+│   ├── useCardDatabase.js      # ★ 共享卡牌库加载器（从 OSS 加载 cards-db.json）
+│   ├── useFrogGame.js          # 蛙生游戏逻辑
+│   ├── useAchievementCatalog.js # 成就目录加载/筛选
+│   ├── useAchievementProgress.js # 进度状态管理
+│   ├── useAchievementSprint.js  # 冲刺待办清单
+│   ├── useAchievementBackup.js  # 导出/导入进度
+│   ├── useAchievementGameImport.js # 从采集器 JSON 导入
+│   └── useHearthstoneProfile.js # 固定成就 + 显示偏好
+├── utils/                      # 工具函数
+│   ├── cardImages.js           # ★ 卡牌图片路径 + CARD_IMAGE_VERSION 版本号
+│   ├── achievementCardImages.js # 成就卡图路径
+│   ├── deckstring.js           # 卡组代码 base64/varint 解码
+│   ├── achievements.js         # 职业映射/搜索/分组
+│   ├── achievementRecommendations.js # 规则推荐排序
+│   ├── achievementShareImage.js # Canvas 分享图生成
+│   ├── cosmetics.js            # 外观类型定义
+│   ├── eventCalculator.js      # 活动计算器纯函数
+│   └── xpCalculator.js         # 通行证 XP 计算
+├── data/                       # 静态数据（import 进 JS 包）
+│   ├── achievements/*.json     # 26 个版本的成就定义
+│   ├── dbfid-cardnames.json    # dbfId→卡名（卡组解析用）
+│   ├── deck-card-images.json   # 卡名→图片路径（约 6000 条）
+│   ├── achievement-card-images.json # 成就关联卡图
+│   ├── achievement-id-map.json # slug↔游戏内数字 ID
+│   ├── expansions.js           # 版本索引
+│   ├── version-name-map.js     # 跨系统版本名映射
+│   ├── card-back-map.json      # 卡背映射（仅构建脚本用）
+│   └── cosmetic-*.json         # 外观相关映射
+├── api/                        # 前端 API 调用（progress.js, profile.js）
+├── ai/                         # AI 建议组件（实验性）
+└── styles/                     # 模块 CSS
+```
 
 ## 炉石数据架构
 
@@ -86,6 +195,21 @@ npm run upload:oss:data
 
 相关脚本：`scripts/upload-hs-cosmetics-to-oss.mjs`、`scripts/upload-cosmetic-thumbnails.mjs`、`scripts/upload-hs-card-backs-to-oss.mjs`。缩略图由 `scripts/gen-cosmetic-thumbnails.py`（Pillow）生成 384px WebP。
 
+## 常用脚本速查
+
+| 命令 | 作用 |
+|---|---|
+| `npm run dev` | 启动 Vite + Express 开发服务器 |
+| `npm run build` | 生产构建 |
+| `npm run check:syntax` | 语法检查（server/scripts/src） |
+| `node scripts/fetch-hs-cards.mjs` | 从暴雪 API 拉卡牌数据+图片 |
+| `HS_DATA_ONLY=1 node scripts/fetch-hs-cards.mjs` | 仅更新卡牌数据，不下载图片 |
+| `node scripts/check-hs-card-updates.mjs` | 对比暴雪 API 与本地数据差异 |
+| `npm run upload:oss:data` | 上传 cards-db.json 到 OSS |
+| `node scripts/upload-hs-cards-to-oss.mjs` | 上传卡牌图片到 OSS |
+| `npm run upload:oss:cosmetics` | 上传外观图片到 OSS |
+| `npm run refresh:hearthstone-cards` | 从 HearthstoneJSON 刷新 dbfId 索引 |
+
 ## 关键文件速查
 
 | 文件 | 作用 |
@@ -94,9 +218,8 @@ npm run upload:oss:data
 | `vite.config.js` | 开发代理（`/hearthstone-cards`、`/hearthstone-data` 等转到 OSS 或本地） |
 | `src/.../utils/cardImages.js` | 卡牌图片路径查表 + `CARD_IMAGE_VERSION` + `withCardImgVersion()` |
 | `src/.../composables/useCardDatabase.js` | 全站共享卡牌数据库加载器 |
-| `scripts/fetch-hs-cards.mjs` | 从暴雪 API 拉卡牌数据和图片，生成 cards-db.json（`HS_DATA_ONLY=1` 仅更新数据不下图） |
-| `scripts/check-hs-card-updates.mjs` | 对比暴雪 API 与本地 cards-db.json，列出数值/描述有变化的卡牌 |
-| `scripts/upload-hs-cards-to-oss.mjs` | 批量上传卡牌图片到 OSS |
+| `scripts/fetch-hs-cards.mjs` | 从暴雪 API 拉卡牌数据和图片，生成 cards-db.json |
+| `scripts/check-hs-card-updates.mjs` | 对比暴雪 API 与本地 cards-db.json 的数值差异 |
 | `scripts/upload-hs-data-to-oss.mjs` | 上传 cards-db.json 到 OSS（`npm run upload:oss:data`） |
 | `.env` | OSS 凭证等密钥（不入库，参考 `.env.example`） |
 | `.github/workflows/deploy.yml` | CI/CD：push main → Docker 构建 → K3s 部署 |
