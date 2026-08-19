@@ -111,6 +111,7 @@
 <script setup>
 import { ref, watch } from 'vue'
 import { getClassName } from '../utils/achievements.js'
+import { loadCardDetailsByName } from '../composables/useCardDatabase.js'
 
 const props = defineProps({
   recommendations: { type: Array, required: true },
@@ -126,8 +127,7 @@ const cardDetailsError = ref(false)
 async function loadCardDetails() {
   if (cardDetails.value || cardDetailsError.value) return
   try {
-    const module = await import('../data/achievement-card-details.json')
-    cardDetails.value = module.default
+    cardDetails.value = await loadCardDetailsByName()
   } catch {
     cardDetailsError.value = true
   }

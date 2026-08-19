@@ -831,6 +831,43 @@ app.get('/hearthstone-cosmetics/*', handleOssProxy)
 // 站点静态资源反代（如江阴地图底图）：前端用相对路径 /site-assets/*，由服务端回源 OSS
 app.get('/site-assets/*', handleOssProxy)
 
+// 炉石 JSON 数据反代（卡牌库等）：与图片不同，数据文件内容会随补丁更新，
+// 不做服务端内存/磁盘缓存，用 5 分钟浏览器缓存 + ETag 条件请求兼顾性能与时效性。
+// 更新 OSS 文件后最多 5 分钟全量生效，无需重新部署。
+const DATA_CACHE_MAX_AGE = 300
+const MAX_OSS_DATA_BYTES = 20 * 1024 * 1024
+app.get('/hearthstone-data/*', async (req, res) => {
+  if (!OSS_ORIGIN) return res.status(404).end()
+  if (req.path.includes('..')) return res.status(400).end()
+  if (!/\.json$/i.test(req.path)) return res.status(415).end()
+
+  const target = OSS_ORIGIN + req.path
+  const headers = {}
+  if (req.headers['if-none-match']) headers['If-None-Match'] = req.headers['if-none-match']
+
+  try {
+    const upstream = await fetch(target, { headers, signal: AbortSignal.timeout(OSS_FETCH_TIMEOUT_MS) })
+    if (upstream.status === 304) return res.status(304).end()
+    if (!upstream.ok || !upstream.body) {
+      return res.status([404].includes(upstream.status) ? 404 : 502).end()
+    }
+    const contentType = upstream.headers.get('content-type') || 'application/json'
+    if (!/^application\/json/i.test(contentType)) {
+      return res.status(415).end()
+    }
+    const buf = await readLimitedBody(upstream.body, MAX_OSS_DATA_BYTES)
+    const etag = upstream.headers.get('etag')
+    res.setHeader('Content-Type', contentType)
+    res.setHeader('Cache-Control', `public, max-age=${DATA_CACHE_MAX_AGE}`)
+    if (etag) res.setHeader('ETag', etag)
+    res.setHeader('Content-Length', buf.length)
+    res.end(buf)
+  } catch (err) {
+    appLog('ERROR', `数据代理失败: ${target} -> ${err.message}`)
+    res.status(502).end()
+  }
+})
+
 // 静态资源（带长期缓存）
 app.use(
   express.static(DIST_DIR, {

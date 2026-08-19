@@ -4,13 +4,12 @@
  * 玩法：每轮抽 3 张真实随从牌，其中一张的某个卡面元素（费用/攻击/生命/稀有度/
  * 名称/效果/种族）被另一张牌的同位置像素「贴片」覆盖，玩家要指出被动手脚的那张。
  *
- * 卡池：默认仅当前标准模式的可收藏随从（见 data/standard-minions.json）。
- * 打开「狂野模式」开关后，再并入 data/wild-minions.json 的全部可收藏随从。
- * 两份数据均由 scripts/generate-standard-minions.mjs 从 cards-db.json 生成。
- * 卡图不入仓库，统一走 /hearthstone-cards/... 相对路径由服务端反代 OSS。
+ * 卡池：运行时从 OSS 上的 cards-db.json（全量卡牌库）过滤得到，
+ * 标准模式取当前轮换内的可收藏随从，狂野模式取其余全部。
+ * 卡图统一走 /hearthstone-cards/... 相对路径，由服务端反代 OSS。
  */
 import { computed, onBeforeUnmount, ref, shallowRef } from 'vue'
-import { withCardImgVersion } from '../utils/cardImages.js'
+import { getFrogMinions } from './useCardDatabase.js'
 
 /** 可被篡改的卡面字段 */
 export const mutationTypes = [
@@ -211,7 +210,6 @@ export const useFrogGame = () => {
   const allCards = computed(() => (wildMode.value
     ? [...standardCards.value, ...wildCards.value]
     : standardCards.value))
-  const setSummary = shallowRef([])
   const roundCards = shallowRef([])
   const suspiciousIndex = ref(-1)
   const mutation = shallowRef(null)
@@ -317,9 +315,7 @@ export const useFrogGame = () => {
     loading.value = true
     error.value = ''
     try {
-      const { default: payload } = await import('../data/standard-minions.json')
-      standardCards.value = (payload.cards || []).map((c) => ({ ...c, image: withCardImgVersion(c.image) }))
-      setSummary.value = payload.sets || []
+      standardCards.value = await getFrogMinions('standard')
       if (standardCards.value.length < 3) throw new Error('可用随从牌不足三张')
     } catch (loadError) {
       error.value = loadError.message || '卡牌数据读取失败'
@@ -334,12 +330,11 @@ export const useFrogGame = () => {
     if (!error.value) await startRound()
   }
 
-  // 切换「狂野模式」：首次打开才懒加载狂野卡池；返回切换后的状态（失败回 false）
+  // 切换「狂野模式」：首次打开时从已加载的卡牌库过滤狂野卡池（无需二次网络请求）
   const toggleWild = async (next = !wildMode.value) => {
     if (next && !wildLoaded.value) {
       try {
-      const { default: payload } = await import('../data/wild-minions.json')
-      wildCards.value = (payload.cards || []).map((c) => ({ ...c, image: withCardImgVersion(c.image) }))
+        wildCards.value = await getFrogMinions('wild')
         wildLoaded.value = true
       } catch (loadError) {
         error.value = '狂野卡牌数据读取失败'
@@ -468,7 +463,6 @@ export const useFrogGame = () => {
     score,
     selectCard,
     selectedIndex,
-    setSummary,
     startRound,
     streak,
     suspiciousIndex,

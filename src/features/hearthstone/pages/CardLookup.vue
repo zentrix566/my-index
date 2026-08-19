@@ -102,11 +102,12 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 import { getLocalCardImages, normalizeRarity, getRarityColor, RARITY_LABELS, withCardImgVersion } from '../utils/cardImages.js'
+import { loadCardDatabase } from '../composables/useCardDatabase.js'
 
 const { hsTheme } = useHearthstoneTheme()
 
-// 卡牌库约 5.5MB，放在 public/hearthstone/cards-db.json 按需 fetch：
-// 不进 JS 构建包，且浏览器可按缓存头长效复用（数据未变时发版无需重新下载）。
+// 卡牌库约 5.3MB，从 OSS /hearthstone-data/cards-db.json 按需 fetch：
+// 不进 JS 构建包，多个页面共享同一次加载，服务端设 5 分钟缓存 + ETag。
 const cardsDb = ref(null)
 const dbStatus = ref('loading') // loading | ready | error
 const dbError = ref('')
@@ -115,9 +116,7 @@ async function loadCardsDb() {
   dbStatus.value = 'loading'
   dbError.value = ''
   try {
-    const resp = await fetch('/hearthstone/cards-db.json', { cache: 'force-cache' })
-    if (!resp.ok) throw new Error(`HTTP ${resp.status}`)
-    cardsDb.value = await resp.json()
+    cardsDb.value = await loadCardDatabase()
     dbStatus.value = 'ready'
   } catch (cause) {
     dbStatus.value = 'error'

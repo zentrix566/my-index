@@ -4,6 +4,10 @@ node_modules
 dist
 README.md
 
+# 卡牌数据库已迁移到 OSS（/hearthstone-data/cards-db.json），
+# 不需要打进 Docker 镜像（省 5.3MB），本地仍保留供脚本读取和上传 OSS
+public/hearthstone/cards-db.json
+
 # 本地构建/验证临时目录（.build-*、.hsbuild_* 等）与旧构建备份 dist-old：
 # 均为可再生的构建产物，不进 Docker 构建上下文，避免 800MB+ 垃圾拖慢 CI
 .build*
