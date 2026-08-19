@@ -59,6 +59,9 @@ const PAGE_CONCURRENCY = Number(process.env.HS_PAGE_CONCURRENCY) || 4
 const SET_NAME_OVERRIDES = { '3': '经典' }
 const DRY_RUN = process.env.HS_DRY_RUN === '1'
 const OFFLINE = process.env.HS_OFFLINE === '1'
+// 仅更新卡牌数据（数值/描述），不下载图片，仍写入 JSON 文件。
+// 补丁改数值时用这个，避免重新下载上万张图片。
+const DATA_ONLY = process.env.HS_DATA_ONLY === '1'
 const FIXTURE = process.env.HS_FIXTURE || ''
 const ONLY_SET = process.env.HS_SET || ''
 
@@ -246,7 +249,17 @@ function checkRelatedCards(byNameMap) {
 
 async function main() {
   const t0 = Date.now()
-  log(`=== 启动 fetch-hs-cards === API=${API_BASE} LOCAL_ROOT=${LOCAL_ROOT} LOG=${LOG_PATH} DRY_RUN=${DRY_RUN} OFFLINE=${OFFLINE} ONLY_SET=${ONLY_SET || '全部'}`)
+  log(`=== 启动 fetch-hs-cards === API=${API_BASE} LOCAL_ROOT=${LOCAL_ROOT} LOG=${LOG_PATH} DRY_RUN=${DRY_RUN} OFFLINE=${OFFLINE} DATA_ONLY=${DATA_ONLY} ONLY_SET=${ONLY_SET || '全部'}`)
+
+  // DATA_ONLY 模式：读取现有 cards-db.json，保留已确认的 OSS 图片路径，
+  // 避免不下载图片时扩展名猜测出错（极少数卡可能是 webp/gif）。
+  let existingDb = {}
+  if (DATA_ONLY) {
+    try {
+      existingDb = JSON.parse(readFileSync(join(repoRoot, 'public/hearthstone/cards-db.json'), 'utf8'))
+      log(`[DATA_ONLY] 已加载现有卡牌库 ${Object.keys(existingDb).length} 条，将保留其图片路径`)
+    } catch { log('[DATA_ONLY] 未找到现有卡牌库，图片路径将使用默认 .png/.jpg') }
+  }
   let sets, rawCards
   if (OFFLINE) {
     if (!FIXTURE || !existsSync(FIXTURE)) { console.error('离线模式需要 HS_FIXTURE 指向一个 /constructed 响应 fixture'); process.exit(1) }
@@ -299,9 +312,17 @@ async function main() {
     c.localCrop = join(LOCAL_ROOT, String(setName), 'crop', `${base}.jpg`)
     c.ossFull = `/hearthstone-cards/${setName}/full/${base}.png`
     c.ossCrop = `/hearthstone-cards/${setName}/crop/${base}.jpg`
-    if (!OFFLINE && !DRY_RUN) {
+    if (!OFFLINE && !DRY_RUN && !DATA_ONLY) {
       if (c.image) dlTasks.push({ url: c.image, card: c, kind: 'full', label: `${c.name}_${c.id}` })
       if (c.cropImage) dlTasks.push({ url: c.cropImage, card: c, kind: 'crop', label: `${c.name}_${c.id}(crop)` })
+    }
+    // DATA_ONLY 模式：保留现有卡牌库中已确认的 OSS 路径（可能是 webp/gif 等非默认扩展名）
+    if (DATA_ONLY) {
+      const existing = existingDb[String(c.id)]
+      if (existing) {
+        if (existing.ossFull) c.ossFull = existing.ossFull
+        if (existing.ossCrop) c.ossCrop = existing.ossCrop
+      }
     }
     cardsMap.set(String(c.id), c)
   }
@@ -317,7 +338,7 @@ async function main() {
     })
     log(`图片下载完成：成功 ${ok}，失败 ${fail}`)
   } else {
-    log(DRY_RUN ? '[DRY-RUN] 仅元数据分析，未下载图片' : '[OFFLINE] 未下载图片')
+    log(DRY_RUN ? '[DRY-RUN] 仅元数据分析，未下载图片' : DATA_ONLY ? '[DATA_ONLY] 跳过图片下载，仅更新数据' : '[OFFLINE] 未下载图片')
   }
 
   // 按名索引：同名取 set_priority 最高者（并列取 id 最大）作默认展示版

@@ -56,18 +56,21 @@ zentrix-index 是个人全栈站点（Vue 3 + Vite + Express），含炉石卡�
 数据文件走 5 分钟缓存 + ETag，**不需要重新构建部署**：
 
 ```bash
-# 1. 从暴雪 API 拉最新卡牌数据和图片（需外网）
-node scripts/fetch-hs-cards.mjs
+# 1. （可选）先检查上游暴雪 API 是否相比本地有更新
+node scripts/check-hs-card-updates.mjs
+# 输出有变化的卡牌（费用/攻击/生命/描述）、新增卡、移除卡
 
-# 2. 上传更新后的卡牌大图到 OSS（如有卡面变动）
-node scripts/upload-hs-cards-to-oss.mjs
-# 设 OSS_SKIP_EXISTING=0 可强制覆盖已有图片
+# 2. 从暴雪 API 拉最新卡牌数据（仅数据，不下载图片，约 5 秒）
+HS_DATA_ONLY=1 node scripts/fetch-hs-cards.mjs
+# 会更新 public/hearthstone/cards-db.json 和两份 name 索引清单
 
 # 3. 上传卡牌数据库到 OSS（hearthstone-data/ 前缀）
 npm run upload:oss:data
 ```
 
 上传后最多 5 分钟全量生效（用户强刷立即生效）。如果有新卡面图片，还需把 `cardImages.js` 里的 `CARD_IMAGE_VERSION` 改成当天日期并提交部署（图片用 immutable 缓存，必须改版本号才能刷新浏览器缓存）。
+
+**首次全量拉取**（需要下载图片时）去掉 `HS_DATA_ONLY=1`，直接 `node scripts/fetch-hs-cards.mjs`。
 
 ### 更新卡牌图片（补丁改卡面，数值不变）
 
@@ -91,7 +94,8 @@ npm run upload:oss:data
 | `vite.config.js` | 开发代理（`/hearthstone-cards`、`/hearthstone-data` 等转到 OSS 或本地） |
 | `src/.../utils/cardImages.js` | 卡牌图片路径查表 + `CARD_IMAGE_VERSION` + `withCardImgVersion()` |
 | `src/.../composables/useCardDatabase.js` | 全站共享卡牌数据库加载器 |
-| `scripts/fetch-hs-cards.mjs` | 从暴雪 API 拉卡牌数据和图片，生成 cards-db.json |
+| `scripts/fetch-hs-cards.mjs` | 从暴雪 API 拉卡牌数据和图片，生成 cards-db.json（`HS_DATA_ONLY=1` 仅更新数据不下图） |
+| `scripts/check-hs-card-updates.mjs` | 对比暴雪 API 与本地 cards-db.json，列出数值/描述有变化的卡牌 |
 | `scripts/upload-hs-cards-to-oss.mjs` | 批量上传卡牌图片到 OSS |
 | `scripts/upload-hs-data-to-oss.mjs` | 上传 cards-db.json 到 OSS（`npm run upload:oss:data`） |
 | `.env` | OSS 凭证等密钥（不入库，参考 `.env.example`） |

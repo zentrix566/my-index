@@ -20,7 +20,7 @@ export const STANDARD_SETS = [
   { id: 1957, name: '穿越时间流' },
   { id: 1952, name: '安戈洛龟途' },
   { id: 1946, name: '漫游翡翠梦境' },
-  { id: 1981, name: '活动' },
+  { id: 1941, name: '活动' },
   { id: 1637, name: '核心' }
 ]
 
