@@ -7,6 +7,18 @@ import cardImageManifest from '../data/deck-card-images.json' with { type: 'json
  *  由服务端（server/index.js）反向代理到 OSS——全程以本站域名开头、强制 Content-Disposition: inline
  *  （右键新标签直接查看、不下载），不拼 OSS 直链。 */
 
+/**
+ * 卡图版本号——补丁更新卡面时递增此值即可强制刷新浏览器缓存。
+ * 服务端以 req.path（不含 query）为缓存键，?v= 不会透传到 OSS，也不会产生重复缓存。
+ */
+export const CARD_IMAGE_VERSION = '20260819'
+
+/** 给 /hearthstone-cards/ 相对路径追加版本号 query，用于浏览器缓存刷新；非卡图 URL 原样返回。 */
+export function withCardImgVersion(url) {
+  if (!url || typeof url !== 'string' || !url.startsWith('/hearthstone-cards/')) return url
+  return url + (url.includes('?') ? '&' : '?') + 'v=' + CARD_IMAGE_VERSION
+}
+
 /** 稀有度到统一标识的映射（兼容 deckstring.js 的中文稀有度与 cards_meta 的 rarity_id） */
 const RARITY_MAP = {
   common: 'common',
@@ -35,7 +47,13 @@ const RARITY_COLORS = {
  * @returns {{ crop?: string, full?: string } | null}
  */
 export function getLocalCardImages(name) {
-  return cardImageManifest[name] || null
+  const entry = cardImageManifest[name]
+  if (!entry) return null
+  return {
+    ...entry,
+    crop: withCardImgVersion(entry.crop),
+    full: withCardImgVersion(entry.full)
+  }
 }
 
 /**
@@ -49,18 +67,18 @@ export function getLocalCardImages(name) {
 export function getWildCardImage(name) {
   const local = cardImageManifest[name]
   if (!local) return null
-  return local.full || local.crop || null
+  return withCardImgVersion(local.full || local.crop || null)
 }
 
 /** 仅取 wild/full 相对路径（成就关联卡主图优先用 full）。 */
 export function getWildCardFull(name) {
   const local = cardImageManifest[name]
-  return local?.full || null
+  return withCardImgVersion(local?.full || null)
 }
 /** 仅取 wild/crop 相对路径（full 缺失时回退缩略图作兜底）。 */
 export function getWildCardCrop(name) {
   const local = cardImageManifest[name]
-  return local?.crop || null
+  return withCardImgVersion(local?.crop || null)
 }
 
 /**
@@ -70,7 +88,7 @@ export function getWildCardCrop(name) {
  */
 export function getCardFullImage(name, cardId) {
   const local = cardImageManifest[name]
-  return local?.full || ''
+  return withCardImgVersion(local?.full || '')
 }
 
 /**
@@ -80,7 +98,7 @@ export function getCardFullImage(name, cardId) {
  */
 export function getCardCropImage(name, cardId) {
   const local = cardImageManifest[name]
-  return local?.crop || ''
+  return withCardImgVersion(local?.crop || '')
 }
 
 /**

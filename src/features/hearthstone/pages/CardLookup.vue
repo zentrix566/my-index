@@ -101,7 +101,7 @@
 <script setup>
 import { ref, computed, watch, onMounted } from 'vue'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
-import { getLocalCardImages, normalizeRarity, getRarityColor, RARITY_LABELS } from '../utils/cardImages.js'
+import { getLocalCardImages, normalizeRarity, getRarityColor, RARITY_LABELS, withCardImgVersion } from '../utils/cardImages.js'
 
 const { hsTheme } = useHearthstoneTheme()
 
@@ -172,6 +172,7 @@ function lookup() {
     const man = getLocalCardImages(c.name)
     return {
       ...c,
+      ossFull: withCardImgVersion(c.ossFull),
       registered: true,
       manifestOk: !!(man && (man.full || man.crop)),
       ossState: 'pending'

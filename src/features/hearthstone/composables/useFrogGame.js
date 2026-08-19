@@ -10,6 +10,7 @@
  * 卡图不入仓库，统一走 /hearthstone-cards/... 相对路径由服务端反代 OSS。
  */
 import { computed, onBeforeUnmount, ref, shallowRef } from 'vue'
+import { withCardImgVersion } from '../utils/cardImages.js'
 
 /** 可被篡改的卡面字段 */
 export const mutationTypes = [
@@ -317,7 +318,7 @@ export const useFrogGame = () => {
     error.value = ''
     try {
       const { default: payload } = await import('../data/standard-minions.json')
-      standardCards.value = payload.cards || []
+      standardCards.value = (payload.cards || []).map((c) => ({ ...c, image: withCardImgVersion(c.image) }))
       setSummary.value = payload.sets || []
       if (standardCards.value.length < 3) throw new Error('可用随从牌不足三张')
     } catch (loadError) {
@@ -337,8 +338,8 @@ export const useFrogGame = () => {
   const toggleWild = async (next = !wildMode.value) => {
     if (next && !wildLoaded.value) {
       try {
-        const { default: payload } = await import('../data/wild-minions.json')
-        wildCards.value = payload.cards || []
+      const { default: payload } = await import('../data/wild-minions.json')
+      wildCards.value = (payload.cards || []).map((c) => ({ ...c, image: withCardImgVersion(c.image) }))
         wildLoaded.value = true
       } catch (loadError) {
         error.value = '狂野卡牌数据读取失败'
