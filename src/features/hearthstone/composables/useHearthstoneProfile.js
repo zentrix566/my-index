@@ -82,6 +82,11 @@ async function load({ force = false } = {}) {
 }
 
 async function save(nextProfile) {
+  // 兜底：未加载完成时拒绝保存。此时 profile.value 为 DEFAULT 空壳，
+  // 一旦落库会 DELETE 掉服务端已有的全部收藏/置顶数据。
+  if (!loaded.value) {
+    throw new Error('个人配置尚未加载，请稍候重试')
+  }
   saving.value = true
   error.value = ''
   try {

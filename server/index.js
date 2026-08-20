@@ -332,16 +332,20 @@ app.put('/api/achievements/progress', requireAuth, trackHearthstone, async (req,
     return res.status(400).json({ error: '进度条目过多' })
   }
 
-  // 1) 纯内存校验 + 规整（不碰数据库），校验失败直接 400 返回
+  // 1) 纯内存校验 + 规整（不碰数据库），格式错误直接 400 返回。
+  //    注意：未知成就 ID 不再整批 400 拒绝，而是跳过该条、其余照常保存，
+  //    避免一次导入里混入个别旧版/非法 slug 就把全部进度一起挡在门外。
   const payload = []
+  const skipped = []
   for (const [achId, prog] of entries) {
     if (typeof achId !== 'string' || !/^[a-z0-9_-]+$/i.test(achId)) {
       setCost()
       return res.status(400).json({ error: `非法成就 ID: ${achId}` })
     }
     if (!hasAchievementMeta(achId)) {
-      setCost()
-      return res.status(400).json({ error: `未知成就 ID: ${achId}` })
+      // 跳过未知成就（如旧版本已下线的 slug），不阻断其余进度入库
+      skipped.push(achId)
+      continue
     }
     if (!prog || typeof prog !== 'object') {
       setCost()
@@ -386,6 +390,12 @@ app.put('/api/achievements/progress', requireAuth, trackHearthstone, async (req,
     })
   }
 
+  // 全部条目都是未知成就（没有一条可保存），视为客户端数据异常，整批拒绝
+  if (payload.length === 0) {
+    setCost()
+    return res.status(400).json({ error: '没有可保存的有效成就进度', skipped })
+  }
+
   try {
     if (payload.length === 1) {
       // 单条保存：单条 upsert 本身即原子，省去 BEGIN/COMMIT 两次数据库往返
@@ -402,7 +412,7 @@ app.put('/api/achievements/progress', requireAuth, trackHearthstone, async (req,
     const omitted = achievementIds.length > 20 ? `,另有${achievementIds.length - 20}条` : ''
     appLog('PROGRESS', `PUT user=${req.userId} 保存=${payload.length} 条 ids=${loggedIds}${omitted} 耗时=${Date.now() - t0}ms`)
     setCost()
-    res.json({ ok: true, saved: payload.length })
+    res.json({ ok: true, saved: payload.length, skipped })
   } catch (err) {
     const errorMessage = String(err?.message || 'unknown').replace(/[\r\n]+/g, ' ')
     const isDatabaseError = Boolean(err?.code)

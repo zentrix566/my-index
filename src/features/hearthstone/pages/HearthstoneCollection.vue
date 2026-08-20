@@ -807,7 +807,9 @@ async function confirmImport() {
 useDialogFocus(computed(() => Boolean(selectedItem.value)), detailsDialog, closeDetails)
 
 async function toggleOwned(item) {
-  if (!user.value || profileSaving.value) return
+  // 关键防护：profile 未加载完成时 profile.value 仍是 DEFAULT 空壳，
+  // 此时保存会用「空 collection + 当前一项」覆盖，DELETE 掉其余全部收藏。
+  if (!user.value || profileSaving.value || !profileLoaded.value) return
   const type = item.cosmeticType
   const current = profile.value.collection[type]
   const next = current.includes(item.id)
