@@ -34,8 +34,11 @@
         >
           <strong>{{ type.label }}</strong>
           <span class="hs-type-progress-copy">
-            {{ stats.byType[type.id].owned }}/{{ stats.byType[type.id].total }}
-            · {{ stats.byType[type.id].percentage }}%
+            <template v-if="dataReady">
+              {{ stats.byType[type.id].owned }}/{{ stats.byType[type.id].total }}
+              · {{ stats.byType[type.id].percentage }}%
+            </template>
+            <template v-else>加载中…</template>
           </span>
           <span
             class="hs-type-progress"
@@ -478,6 +481,7 @@ const { user, init: initAuth } = useAuth()
 const { hsTheme } = useHearthstoneTheme()
 const {
   profile,
+  loaded: profileLoaded,
   loading: profileLoading,
   saving: profileSaving,
   load,
@@ -578,6 +582,9 @@ const stats = computed(() => {
 const heroClassStats = computed(() =>
   getHeroClassStats(collectionCatalog.value.heroSkins, profile.value.collection.heroSkins)
 )
+// profile(API) 与 catalog(~800KB 本地 JSON) 均为异步加载，二者就绪前 stats 会先算出 0/0。
+// 用 dataReady 门控展示，避免首屏闪现误导性的「0/0 · 0%」（数据其实已在库里）。
+const dataReady = computed(() => profileLoaded.value && catalogStatus.value === 'ready')
 const filteredItems = computed(() => {
   const sourceItems = isGlobalSearch.value
     ? searchCosmetics(globalItems.value, normalizedQuery.value)
