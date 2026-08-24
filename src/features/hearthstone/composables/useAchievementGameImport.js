@@ -64,6 +64,13 @@ function translateGameExport(payload, achievementsBySlug, currentProgress) {
         maxProgress = item.progress
       }
     }
+    // 少数隐藏谜题在游戏数据中只有一个「最终完成」成就 ID，却在站内拆成多步展示。
+    // 只有该最终 ID 被游戏标为完成时，才补全所有步骤；进行中状态绝不会被扩展为完成。
+    const gameCompletionFillsStages = achievement.gameCompletionFillsStages === true &&
+      hsIds.some((id) => isGameItemDone(itemsById.get(id)))
+    if (gameCompletionFillsStages) {
+      for (let i = 0; i < achievement.stages.length; i++) stages[String(i)] = true
+    }
     if (!touched) continue
     matched += 1
 

@@ -53,6 +53,12 @@
           </svg>
           活动计算器
         </button>
+        <button type="button" class="hs-btn hs-btn-ghost" @click="$emit('navigate', '/hearthstone/alterac-puzzle')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M19 12h2M3 12h2m10.5-6.5 1.4-1.4M7.1 16.9l1.4-1.4m0-9.9L7.1 4.2m9.8 12.7-1.4-1.4"/><circle cx="12" cy="12" r="5"/>
+          </svg>
+          奥特兰克谜题
+        </button>
         <button type="button" class="hs-btn hs-btn-ghost" @click="$emit('navigate', '/hearthstone/lookup')">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>

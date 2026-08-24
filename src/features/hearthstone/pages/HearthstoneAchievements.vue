@@ -1,7 +1,7 @@
 ﻿<template>
   <section
     class="section page-section hs-page"
-    :class="{ 'hs-compact': compactMode }"
+    :class="{ 'hs-compact': compactMode, 'hs-mini-mode': miniMode }"
     :data-hs-theme="hsTheme"
   >
     <div class="container">
@@ -108,6 +108,12 @@
           </div>
         </div>
         <div class="hs-top-actions">
+          <button
+            type="button"
+            class="hs-tiny-btn hs-mini-mode-toggle"
+            :aria-pressed="miniMode"
+            @click="miniMode = !miniMode"
+          >{{ miniMode ? '完整卡片' : '迷你卡片' }}</button>
           <!-- 我的成就：子切换（按版本/按职业/待完成清单）移入顶栏左侧，填充奖杯行空白；展开/收起为独立按钮（同按版本浏览） -->
           <template v-if="viewMode === 'my'">
             <div class="hs-my-sub-switch">
@@ -363,29 +369,19 @@
               </button>
             </div>
           </div>
-          <div class="hs-pinned-list">
-            <article
+          <div class="hs-achievement-list hs-pinned-list">
+            <MyAchievementCard
               v-for="achievement in pinnedAchievements"
               :key="achievement.id"
-              class="hs-pinned-item"
-            >
-              <div class="hs-pinned-item-copy">
-                <span>{{ achievement._expansionName }} · {{ getClassName(achievement) }}</span>
-                <strong>{{ achievement.name }}</strong>
-                <small>{{ pinnedProgressText(achievement) }}</small>
-              </div>
-              <div class="hs-pinned-item-actions">
-                <button type="button" @click="openCardModal(achievement)">查看 / 编辑</button>
-                <button
-                  type="button"
-                  class="remove"
-                  :disabled="profileSaving"
-                  @click="togglePinnedAchievement(achievement)"
-                >
-                  取消置顶
-                </button>
-              </div>
-            </article>
+              :achievement="achievement"
+              show-remaining
+              editable
+              pinned
+              :pinning="profileSaving"
+              @click="openCardModal"
+              @toggle-pin="togglePinnedAchievement"
+              @share="openShareAchievement"
+            />
           </div>
         </section>
 
@@ -571,6 +567,7 @@ import AchievementExpansionSelector from '../components/AchievementExpansionSele
 import HardcoreModeToggle from '../components/HardcoreModeToggle.vue'
 import HearthstoneAchievementsHero from '../components/HearthstoneAchievementsHero.vue'
 import HearthstoneAchievementResults from '../components/HearthstoneAchievementResults.vue'
+import MyAchievementCard from '../components/MyAchievementCard.vue'
 import { AI_ADVISOR_ENABLED } from '../ai/config.js'
 import { rankAchievementRecommendations } from '../utils/achievementRecommendations.js'
 import { saveAchievementProgress } from '../api/progress.js'
@@ -801,6 +798,7 @@ async function logoutAndRefresh() {
 }
 const hardcore = usePersistentRef('hs:hardcore', false, { boolean: true })
 const compactMode = ref(false)
+const miniMode = usePersistentRef('hs:miniAchievementCards', false, { boolean: true })
 const viewMode = usePersistentRef(
   'hs:viewMode',
   route.query.view === 'my' ? 'my' : 'expansion'
@@ -985,6 +983,14 @@ const collapseAllSections = () => {
     for (const c of classGroupOrder.value) classViewCollapsed[c] = true
   }
 }
+
+// 搜索结果应立即可见：不论当前在哪个分组视图，都自动展开命中的分组。
+watch(query, (value) => {
+  if (!value.trim()) return
+  for (const heroClass of classGroupOrder.value) classViewCollapsed[heroClass] = false
+  for (const key of Object.keys(myClassCollapsed)) myClassCollapsed[key] = false
+  for (const key of Object.keys(sprintSectionCollapsed)) sprintSectionCollapsed[key] = false
+})
 
 // 仅在「我的-按版本 / 我的-按职业」时展示总览面板（含完成度进度条与剩余统计一句话说明）
 const showClassOverview = computed(

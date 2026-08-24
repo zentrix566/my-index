@@ -2039,12 +2039,25 @@
       "difficulty": "中等",
       "relatedCards": [],
       "recommendedDecks": [],
+      "gameCompletionFillsStages": true,
       "stages": [
         {
-          "description": "解开埋藏在奥特兰克的谜题。",
+          "description": "解开埋藏在奥特兰克的谜题（1/3）。",
+          "xpReward": 0,
+          "points": 0,
+          "quota": 1
+        },
+        {
+          "description": "解开埋藏在奥特兰克的谜题（2/3）。",
+          "xpReward": 0,
+          "points": 0,
+          "quota": 1
+        },
+        {
+          "description": "解开埋藏在奥特兰克的谜题（3/3）。",
           "xpReward": 0,
           "points": 100,
-          "quota": 0
+          "quota": 1
         }
       ]
     }

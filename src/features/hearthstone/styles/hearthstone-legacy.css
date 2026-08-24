@@ -228,6 +228,50 @@
   font-size: 14px;
 }
 
+/* 迷你卡片：快速浏览名称与当前目标；点击“详情”后只展开该卡片。 */
+.hs-mini-detail {
+  display: none;
+  margin-left: 7px;
+  padding: 2px 7px;
+  border: 1px solid rgba(107, 91, 79, 0.28);
+  border-radius: 999px;
+  color: #6b5b4f;
+  background: transparent;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.hs-page.hs-mini-mode .hs-achievement-list {
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 8px;
+}
+
+.hs-page.hs-mini-mode .hs-achievement-card {
+  padding: 10px 12px;
+}
+
+.hs-page.hs-mini-mode .hs-mini-detail {
+  display: inline-block;
+}
+
+.hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-card-badges,
+.hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-card-remaining,
+.hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-count-progress,
+.hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-related-cards,
+.hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-deck-section,
+.hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-guide-section {
+  display: none;
+}
+
+.hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-stage-list {
+  margin-top: 6px;
+}
+
+.hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-stage-list li:not(:first-child) {
+  display: none;
+}
+
 .hs-topbar {
   display: flex;
   align-items: center;

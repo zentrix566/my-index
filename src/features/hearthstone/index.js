@@ -12,3 +12,4 @@ export const loadFrogReviewPage = () => loadWithStyles(() => import('./pages/Fro
 export const loadCardLookupPage = () => loadWithStyles(() => import('./pages/CardLookup.vue'))
 export const loadHearthstoneCollectionPage = () => loadWithStyles(() => import('./pages/HearthstoneCollection.vue'))
 export const loadHearthstoneWheelPage = () => loadWithStyles(() => import('./pages/HearthstoneWheel.vue'))
+export const loadAlteracPuzzleAssistantPage = () => loadWithStyles(() => import('./pages/AlteracPuzzleAssistant.vue'))

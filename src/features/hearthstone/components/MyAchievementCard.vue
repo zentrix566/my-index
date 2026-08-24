@@ -45,6 +45,14 @@ const onCardClick = () => {
 // 已完成阶段显示满额（quota），避免「已完成却 0% 进度条」的显示矛盾
 const countValue = computed(() => getCount(props.achievement))
 const isCompleted = computed(() => isAchievementCompleted(props.achievement))
+// 多阶段成就只保留尚未完成的目标，避免已完成的长阶段列表挤占冲刺视线。
+const visibleStageEntries = computed(() => {
+  const stages = props.achievement.stages.map((stage, index) => ({ stage, index }))
+  const incompleteStages = stages.filter(({ index }) => !isStageCompleted(props.achievement, index))
+  // 冲刺时优先展示前 3 个未完成目标；全部完成后仅留下最终阶段作完成凭据。
+  return incompleteStages.length ? incompleteStages.slice(0, 3) : stages.slice(-1)
+})
+const miniExpanded = ref(false)
 // 累计成就恒显示进度条（即便 count=0 / 无进度记录也显示 0%）；一次性成就以阶段勾选列表呈现，
 // 不显示「值/目标」式进度条（其阶段 quota 常為 0，会误显 0/0；且一次性完成只由勾选决定，读 count 无意义）
 const showCountProgress = computed(() => props.achievement.type === '累计')
@@ -67,6 +75,10 @@ const progressText = computed(() => {
     return { quota: s.quota, done, value }
   })
 })
+// 与阶段说明保持一致，累计进度条也仅展示最接近完成的 3 个未完成目标。
+const activeProgressText = computed(() =>
+  progressText.value.filter((stage) => !stage.done).slice(0, 3)
+)
 // 收集类成就（按职业/物品勾选计数）：进度条本身不可点，给 hover 提示引导
 const isTrack = computed(() => !!props.achievement?.trackClasses || !!props.achievement?.trackItems)
 const trackProgressTitle = computed(() =>
@@ -111,7 +123,8 @@ const copyDeckCode = async (deck, event) => {
       'hs-completed': isAchievementCompleted(achievement),
       'hs-select-mode': selectMode,
       'hs-selected': selectMode && selected,
-      'hs-pinned': pinned
+      'hs-pinned': pinned,
+      'hs-mini-expanded': miniExpanded
     }"
     :role="cardInteractive ? 'button' : undefined"
     :tabindex="cardInteractive ? 0 : undefined"
@@ -133,6 +146,11 @@ const copyDeckCode = async (deck, event) => {
       <div class="hs-card-title-row">
           <h3 class="hs-card-title">
           <span class="hs-card-name">{{ achievement.name }}</span>
+          <button
+            class="hs-mini-detail"
+            type="button"
+            @click.stop="miniExpanded = !miniExpanded"
+          >{{ miniExpanded ? '收起' : '详情' }}</button>
           <button
             v-if="editable && !selectMode"
             class="hs-card-pin hs-pin-inline"
@@ -192,9 +210,9 @@ const copyDeckCode = async (deck, event) => {
         <span class="hs-almost-badge">{{ remainingBadge }}</span>
       </div>
 
-      <ul class="hs-stage-list">
+      <ul v-if="visibleStageEntries.length" class="hs-stage-list">
         <li
-          v-for="(stage, idx) in achievement.stages"
+          v-for="({ stage, index: idx }) in visibleStageEntries"
           :key="idx"
           class="hs-stage"
           :class="{ 'hs-stage-done': isStageCompleted(achievement, idx) }"
@@ -223,7 +241,7 @@ const copyDeckCode = async (deck, event) => {
 
       <!-- 累积进度显示（直接录入的 count 值，已完成阶段按满额显示） -->
       <div
-        v-if="showCountProgress"
+        v-if="showCountProgress && activeProgressText.length"
         class="hs-count-progress"
         :class="{ 'hs-count-track': isTrack }"
         :title="trackProgressTitle"
@@ -235,7 +253,7 @@ const copyDeckCode = async (deck, event) => {
         </div>
         <div class="hs-count-stage-list">
           <div
-            v-for="(p, idx) in progressText"
+            v-for="(p, idx) in activeProgressText"
             :key="idx"
             class="hs-count-stage"
             :class="{ 'hs-count-stage-done': p.done }"

@@ -10,7 +10,8 @@ export {
   loadTavernPassXpPage,
   loadEventCalculatorPage,
   loadCardLookupPage,
-  loadHearthstoneWheelPage
+  loadHearthstoneWheelPage,
+  loadAlteracPuzzleAssistantPage
 } from './hearthstone/index.js'
 export { loadDreamPage } from './dream/index.js'
 export { loadAgeCalculatorPage } from './age-calculator/index.js'

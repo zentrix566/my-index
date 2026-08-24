@@ -14,6 +14,7 @@ useDialogFocus(toRef(props, 'visible'), dialogElement, () => emit('close'))
 </script>
 
 <template>
+  <Teleport to="body">
   <div v-if="visible" class="hs-modal-overlay" @click.self="emit('close')">
     <div ref="dialogElement" class="hs-modal" role="dialog" aria-modal="true" aria-labelledby="hs-card-modal-title" tabindex="-1">
       <button class="hs-modal-close" type="button" @click="emit('close')" aria-label="关闭">
@@ -23,4 +24,5 @@ useDialogFocus(toRef(props, 'visible'), dialogElement, () => emit('close'))
       <CardGallery :cards="cards" />
     </div>
   </div>
+  </Teleport>
 </template>

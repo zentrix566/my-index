@@ -1,6 +1,14 @@
 <template>
+  <!-- 挂到 body，避免页面容器的 transform / 吸顶样式把 fixed 弹窗定位到页面下方。 -->
+  <Teleport to="body">
   <div v-if="visible" class="epm-overlay" @click.self="$emit('close')">
     <div ref="dialogElement" class="epm-modal" role="dialog" aria-modal="true" aria-labelledby="epm-title" tabindex="-1">
+      <button
+        class="epm-save epm-save-top"
+        type="button"
+        :disabled="saving"
+        @click="save"
+      >{{ saving ? '保存中…' : '保存' }}</button>
       <button class="epm-close" type="button" aria-label="关闭" @click="$emit('close')">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M18 6 6 18M6 6l12 12"/></svg>
       </button>
@@ -110,6 +118,7 @@
       </div>
     </div>
   </div>
+  </Teleport>
 </template>
 
 <script setup>
@@ -287,6 +296,14 @@ function save() {
   line-height: 1;
   color: #9ca3af;
   cursor: pointer;
+}
+.epm-save-top {
+  position: absolute;
+  top: 12px;
+  right: 68px;
+  min-width: 66px;
+  min-height: 44px;
+  padding: 0 12px;
 }
 .epm-title {
   margin: 0 0 4px;
@@ -632,6 +649,7 @@ function save() {
 .epm-max-hint b { color: #c7d2fe; }
 .epm-cancel,
 .epm-save { min-height: 44px; border-radius: 10px; }
+.epm-save-top { top: 12px; right: 68px; }
 .epm-cancel { border-color: rgba(148, 163, 184, 0.3); color: #cbd5e1; background: transparent; }
 .epm-save { background: linear-gradient(135deg, #15803d, #166534); }
 .epm-close:focus-visible,
@@ -654,6 +672,7 @@ function save() {
 .epm-class-chip:hover { border-color: rgba(148, 163, 184, 0.72); background: rgba(2, 6, 23, 0.5); }
 @media (max-width: 520px) {
   .epm-modal { padding: 24px 18px; border-radius: 15px; }
+  .epm-save-top { right: 64px; min-width: 58px; padding: 0 9px; }
   .epm-actions > * { flex: 1; }
 }
 </style>

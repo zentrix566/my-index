@@ -15,6 +15,7 @@ const { getMetric } = useAchievementProgress()
 const metric = computed(() => getMetric(props.achievement))
 
 const copiedDeckName = ref('')
+const miniExpanded = ref(false)
 
 const isClickable = (ach) =>
   ach.cards && ach.cards.length > 0 && ach.cards.some((c) => c.image || c.imageFallback)
@@ -54,7 +55,7 @@ const copyDeckCode = async (deck, event) => {
 <template>
   <article
     class="hs-achievement-card"
-    :class="{ 'hs-clickable': cardInteractive }"
+    :class="{ 'hs-clickable': cardInteractive, 'hs-mini-expanded': miniExpanded }"
     :role="cardInteractive ? 'button' : undefined"
     :tabindex="cardInteractive ? 0 : undefined"
     @click="activateCard"
@@ -65,6 +66,11 @@ const copyDeckCode = async (deck, event) => {
       <div class="hs-card-title-row">
         <h3 class="hs-card-title">
           <span class="hs-card-name">{{ achievement.name }}</span>
+          <button
+            class="hs-mini-detail"
+            type="button"
+            @click.stop="miniExpanded = !miniExpanded"
+          >{{ miniExpanded ? '收起' : '详情' }}</button>
           <button
             class="hs-card-share hs-pin-inline"
             type="button"
