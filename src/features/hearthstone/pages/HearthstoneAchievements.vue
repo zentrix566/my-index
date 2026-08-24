@@ -305,6 +305,18 @@
           {{ gameImportPreview.stats.stageHits }} 个完成阶段<template v-if="gameImportPreview.stats.countUpdates">，并更新 {{ gameImportPreview.stats.countUpdates }} 个成就的累计进度</template>。
         </p>
         <p v-if="gameImportPreview.stats.newlyCompleted">其中 {{ gameImportPreview.stats.newlyCompleted }} 个成就将达成全部阶段。</p>
+        <div v-if="gameImportPreview.stats.lowerProgressUpdateCount" class="hs-import-regression-warning">
+          <strong>发现 {{ gameImportPreview.stats.lowerProgressUpdateCount }} 个成就的导入值低于网站已有值</strong>
+          <ul>
+            <li v-for="item in gameImportPreview.stats.lowerProgressUpdates" :key="item.slug">
+              {{ item.name }}：{{ item.existing }} → {{ item.imported }}
+            </li>
+          </ul>
+          <label class="hs-import-regression-toggle">
+            <input v-model="allowLowerProgress" type="checkbox">
+            允许用导入数据覆盖网站已有进度（可能回退）
+          </label>
+        </div>
         <small v-if="gameImportPreview.stats.unmatchedItems">
           另有 {{ gameImportPreview.stats.unmatchedItems }} 条记录属于游戏内其他类别成就（生涯 / 游戏玩法 / 冒险模式等）或本站未收录内容，不在本次导入范围。
         </small>
@@ -315,7 +327,7 @@
         <button
           type="button"
           class="hs-btn hs-btn-primary"
-          :disabled="gameImporting || !gameImportPreview.stats.matched || !gameImportPreview.stats.stageHits && !gameImportPreview.stats.countUpdates"
+          :disabled="gameImporting || !gameImportPreview.stats.matched || (!gameImportPreview.stats.stageHits && !gameImportPreview.stats.countUpdates && (!gameImportPreview.stats.lowerProgressUpdateCount || !allowLowerProgress))"
           @click="confirmGameImport"
         >{{ gameImporting ? '导入中…' : '确认导入' }}</button>
       </div>
@@ -1159,6 +1171,7 @@ const {
   fileInput: gameImportFileInput,
   importPreview: gameImportPreview,
   importing: gameImporting,
+  allowLowerProgress,
   triggerImport: triggerGameImport,
   onImportFile: onGameImportFile,
   cancelImport: cancelGameImport,

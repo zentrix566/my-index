@@ -44,6 +44,7 @@ function translateGameExport(payload, achievementsBySlug, currentProgress) {
   let matched = 0
   let stageHits = 0
   let countUpdates = 0
+  const lowerProgressUpdates = []
   let newlyCompleted = 0
 
   for (const [slug, hsIds] of Object.entries(ID_MAP)) {
@@ -86,6 +87,14 @@ function translateGameExport(payload, achievementsBySlug, currentProgress) {
       countUpdates += 1
       hasNew = true
     }
+    if (entry.count != null && Number.isFinite(existing?.count) && existing.count > entry.count) {
+      lowerProgressUpdates.push({
+        slug,
+        name: achievement.name,
+        existing: Math.trunc(existing.count),
+        imported: Math.trunc(entry.count)
+      })
+    }
     if (achievement.stages.every((_, i) =>
       isStageDoneInEntry(existing, achievement, i) ||
       Boolean(stages[String(i)]) ||
@@ -93,7 +102,7 @@ function translateGameExport(payload, achievementsBySlug, currentProgress) {
     ) && !achievement.stages.every((_, i) => isStageDoneInEntry(existing, achievement, i))) {
       newlyCompleted += 1
     }
-    if (hasNew || !existing) entries[slug] = entry
+    if (hasNew || !existing || lowerProgressUpdates.some((item) => item.slug === slug)) entries[slug] = entry
   }
 
   const mappedIds = new Set(Object.values(ID_MAP).flat())
@@ -110,6 +119,8 @@ function translateGameExport(payload, achievementsBySlug, currentProgress) {
       matched,
       stageHits,
       countUpdates,
+      lowerProgressUpdates,
+      lowerProgressUpdateCount: lowerProgressUpdates.length,
       newlyCompleted,
       unmatchedItems
     }
@@ -130,6 +141,7 @@ export function useAchievementGameImport({
   const fileInput = ref(null)
   const importPreview = ref(null)
   const importing = ref(false)
+  const allowLowerProgress = ref(false)
 
   function triggerImport() {
     if (!user.value) {
@@ -155,6 +167,7 @@ export function useAchievementGameImport({
         )
       }
       importPreview.value = translated
+      allowLowerProgress.value = false
       if (!translated.stats.matched) {
         showToast('error', '文件内没有能匹配到网站成就库的记录')
       }
@@ -167,6 +180,7 @@ export function useAchievementGameImport({
 
   function cancelImport() {
     importPreview.value = null
+    allowLowerProgress.value = false
   }
 
   async function confirmImport() {
@@ -184,7 +198,9 @@ export function useAchievementGameImport({
         // 但服务端要求每条进度都带 count，故此处兜底为「已有值优先、否则 0」，避免缺字段被拒。
         const baseCount = Number.isFinite(existing.count) ? Math.trunc(existing.count) : 0
         const next = { ...existing, stages }
-        next.count = entry.count != null ? Math.max(baseCount, Math.trunc(entry.count)) : baseCount
+        next.count = entry.count != null
+          ? (allowLowerProgress.value ? Math.trunc(entry.count) : Math.max(baseCount, Math.trunc(entry.count)))
+          : baseCount
         merged[slug] = next
         delta[slug] = next
       }
@@ -197,6 +213,7 @@ export function useAchievementGameImport({
           (newlyCompleted ? `，其中 ${newlyCompleted} 个成就全部完成` : '')
       )
       importPreview.value = null
+      allowLowerProgress.value = false
     } catch (error) {
       showToast('error', `成就进度导入失败：${error.message || error}`)
     } finally {
@@ -208,6 +225,7 @@ export function useAchievementGameImport({
     fileInput,
     importPreview,
     importing,
+    allowLowerProgress,
     triggerImport,
     onImportFile,
     cancelImport,
