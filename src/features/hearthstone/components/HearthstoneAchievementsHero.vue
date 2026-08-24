@@ -65,6 +65,12 @@
           </svg>
           外观收藏
         </button>
+        <button type="button" class="hs-btn hs-btn-ghost" @click="$emit('navigate', '/hearthstone/wheel')">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <circle cx="12" cy="12" r="9"/><path d="m12 3 2.5 5.5L21 12l-6.5 3.5L12 21l-2.5-5.5L3 12l6.5-3.5Z"/>
+          </svg>
+          暗月宝藏
+        </button>
         <button type="button" class="hs-btn hs-btn-ghost" @click="$emit('navigate', '/hearthstone/frog')">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
             <path d="M5 3h14a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2Z"/><path d="m9 9 6 6"/><path d="m15 9-6 6"/>
