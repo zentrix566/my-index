@@ -96,6 +96,8 @@ function convertCubeFormula() {
           <p class="ap-kicker">奥特兰克的谜题 · 霏微雪花卡背</p>
           <h1>谜题通关助手</h1>
           <p>按游戏内阶段顺序给出入口与解法；第三关会根据你的实际进度给出下一步，避免误用炸药或金币爆手牌。</p>
+          <a class="ap-video-link" href="https://www.bilibili.com/video/BV1jL411A7Hx/" target="_blank" rel="noopener noreferrer">观看奥特兰克谜题视频攻略</a>
+          <p class="ap-disclaimer"><strong>免责声明：</strong>本助手基于公开视频、地图和社区攻略整理；作者尚未亲自验证泽瑞拉、库尔特鲁斯和凯瑞尔三个谜题的完整流程。请结合游戏内实际状态谨慎操作。</p>
         </div>
         <button type="button" class="ap-theme" @click="toggleTheme">{{ hsTheme === 'dark' ? '浅色' : '深色' }}</button>
       </header>
@@ -191,7 +193,9 @@ function convertCubeFormula() {
         </section>
 
         <div class="ap-warning"><strong>关键防呆：</strong>炸药只用于“开裂的墙壁”；不要把炸药交给鲍勃。每清完一座迷宫先交金币，避免手牌上限导致失败。</div>
+        <p class="ap-disclaimer"><strong>第三关额外提醒：</strong>每次开箱、使用炸药或交金币前请结合游戏内实际状态确认，避免因手牌超过 10 张而爆牌。</p>
         <div class="ap-links">
+          <a class="ap-link" href="https://www.bilibili.com/video/BV1jL411A7Hx/" target="_blank" rel="noopener noreferrer">观看谜题视频攻略</a>
           <a class="ap-link" href="https://docs.qq.com/sheet/DUmFwSHlIRkl2WmVi?tab=5lfc46" target="_blank" rel="noopener noreferrer">打开八座迷宫世界地图</a>
           <a class="ap-link" href="https://www.bilibili.com/video/BV1G94y1f7Q8/" target="_blank" rel="noopener noreferrer">打开 20–30 分钟视频路线</a>
         </div>
@@ -204,6 +208,7 @@ function convertCubeFormula() {
 .ap-container { max-width: 1080px; }
 .ap-header { display:flex; justify-content:space-between; gap:24px; margin-bottom:22px; }
 .ap-back,.ap-theme,.ap-reset,.ap-tabs button { border:1px solid var(--hs-border); border-radius:9px; color:var(--hs-text); background:var(--hs-surface); cursor:pointer; }
+.ap-video-link { display:inline-flex; margin-top:4px; color:var(--hs-link); font-size:14px; font-weight:800; }
 .ap-back { padding:6px 0; border:0; background:transparent; color:var(--hs-link); }
 .ap-theme,.ap-reset { align-self:flex-start; padding:9px 12px; }
 .ap-kicker { margin:10px 0 4px; color:var(--hs-primary); font-size:13px; font-weight:800; }
@@ -212,6 +217,6 @@ h1,h2,h3 { color:var(--hs-text); } h1 { margin:0; } .ap-header p:not(.ap-kicker)
 .ap-card { padding:22px; border:1px solid var(--hs-border); border-radius:14px; color:var(--hs-text-soft); background:var(--hs-surface); box-shadow:var(--hs-shadow); }.ap-card h2 { margin:0 0 12px; }.ap-card p,.ap-card li { line-height:1.7; }.ap-card ol { padding-left:22px; }
 .ap-link { display:inline-flex; margin-top:8px; color:var(--hs-link); font-weight:700; }.ap-moves { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:8px; }.ap-moves span,.ap-next,.ap-warning { padding:9px 11px; border-radius:8px; background:var(--hs-surface-soft); }
 .ap-solver { display:grid; gap:10px; margin:16px 0; padding:15px; border:1px solid var(--hs-border); border-radius:11px; background:var(--hs-surface-soft); }.ap-solver h3 { margin:0; font-size:16px; }.ap-solver label { display:grid; gap:6px; color:var(--hs-text); font-weight:700; }.ap-solver input { width:100%; box-sizing:border-box; padding:9px 10px; border:1px solid var(--hs-border); border-radius:8px; color:var(--hs-text); background:var(--hs-surface); }.ap-solve { justify-self:start; padding:9px 13px; border:0; border-radius:8px; color:#fff; background:var(--hs-primary); font-weight:800; cursor:pointer; }.ap-error { margin:0; color:#dc2626; font-weight:700; }.ap-solution { padding:11px; border-radius:8px; color:var(--hs-text); background:var(--hs-surface); }.ap-solution ol { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:5px 16px; margin:9px 0; }.ap-solution li { font-size:14px; }.ap-solution p { margin:8px 0 0; font-size:13px; }.ap-card-sequence { display:block; margin-top:9px; padding:9px; overflow-wrap:anywhere; border-radius:7px; color:var(--hs-primary); background:var(--hs-surface-soft); font-weight:900; letter-spacing:.04em; }
-.ap-maze-head { display:flex; justify-content:space-between; gap:16px; }.ap-progress { position:relative; height:30px; overflow:hidden; margin:18px 0; border-radius:999px; background:var(--hs-surface-soft); }.ap-progress div { height:100%; background:var(--hs-primary); transition:width .2s; }.ap-progress span { position:absolute; inset:0; display:grid; place-items:center; color:var(--hs-text); font-size:13px; font-weight:800; }.ap-next { margin-bottom:14px; color:var(--hs-text); }.ap-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }.ap-panel { display:grid; gap:9px; padding:14px; border:1px solid var(--hs-border); border-radius:10px; }.ap-panel h3 { margin:0 0 3px; font-size:15px; }.ap-panel label { display:flex; align-items:center; gap:7px; }.ap-panel input[type=number] { width:70px; margin-left:auto; padding:6px; border:1px solid var(--hs-border); border-radius:7px; color:var(--hs-text); background:var(--hs-surface-soft); }.ap-ok { margin:2px 0 0; color:#22a65b; font-weight:700; }.ap-warning { margin-top:14px; color:var(--hs-text); border-left:3px solid #f59e0b; }.ap-links { display:flex; gap:16px; flex-wrap:wrap; }
+.ap-maze-head { display:flex; justify-content:space-between; gap:16px; }.ap-progress { position:relative; height:30px; overflow:hidden; margin:18px 0; border-radius:999px; background:var(--hs-surface-soft); }.ap-progress div { height:100%; background:var(--hs-primary); transition:width .2s; }.ap-progress span { position:absolute; inset:0; display:grid; place-items:center; color:var(--hs-text); font-size:13px; font-weight:800; }.ap-next { margin-bottom:14px; color:var(--hs-text); }.ap-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }.ap-panel { display:grid; gap:9px; padding:14px; border:1px solid var(--hs-border); border-radius:10px; }.ap-panel h3 { margin:0 0 3px; font-size:15px; }.ap-panel label { display:flex; align-items:center; gap:7px; }.ap-panel input[type=number] { width:70px; margin-left:auto; padding:6px; border:1px solid var(--hs-border); border-radius:7px; color:var(--hs-text); background:var(--hs-surface-soft); }.ap-ok { margin:2px 0 0; color:#22a65b; font-weight:700; }.ap-warning { margin-top:14px; color:var(--hs-text); border-left:3px solid #f59e0b; }.ap-disclaimer { margin:12px 0 0; padding:10px 12px; border:1px solid color-mix(in srgb, #f59e0b 40%, var(--hs-border)); border-radius:8px; color:var(--hs-text-soft); font-size:13px; line-height:1.65; background:var(--hs-surface-soft); }.ap-links { display:flex; gap:16px; flex-wrap:wrap; }
 @media (max-width:640px) { .ap-header,.ap-maze-head { flex-direction:column; }.ap-grid,.ap-moves,.ap-solution ol { grid-template-columns:1fr; } }
 </style>
