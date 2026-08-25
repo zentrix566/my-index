@@ -26,7 +26,7 @@
 
 <script setup>
 const guideItems = [
-  { index: '01', title: '成就查看器', description: '按版本、职业、难度和完成状态浏览成就，登录后可保存进度、置顶目标和导入游戏进度。', to: '/hearthstone' },
+  { index: '01', title: '成就档案', description: '按版本、职业、难度和完成状态浏览成就，登录后可保存进度、置顶目标和导入游戏进度。', to: '/hearthstone' },
   { index: '02', title: '查看卡牌', description: '按名称或 dbfId 查询卡牌，查看费用、身材、效果和卡面信息。', to: '/hearthstone/lookup' },
   { index: '03', title: '卡组代码解析', description: '粘贴游戏内卡组代码，查看卡牌构成、法力曲线、合成造价并导出图片。', to: '/hearthstone/deck' },
   { index: '04', title: '外观收藏', description: '管理英雄皮肤、幸运币和卡背，导入采集结果后查看拥有情况与收藏进度。', to: '/hearthstone/collection' },

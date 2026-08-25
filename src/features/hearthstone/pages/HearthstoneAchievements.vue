@@ -8,6 +8,8 @@
       <HearthstoneAchievementsHero
         :user="user"
         :hs-theme="hsTheme"
+        :achievement-count="allAchievements.length"
+        :expansion-count="expansions.length"
         @navigate="router.push"
         @logout="logoutAndRefresh"
       />
@@ -25,91 +27,75 @@
       <!-- 视图模式切换 + 版本/职业选择：滚动时固定在顶部 -->
       <div class="hs-sticky-controls" ref="stickyRef">
       <header class="hs-topbar">
-        <div class="hs-brand">
-          <div class="hs-brand-mark" aria-hidden="true">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"/><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"/><path d="M4 22h16"/><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"/><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"/><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"/>
-            </svg>
-          </div>
-          <div>
-            <h2>炉石成就</h2>
-            <p>
-              <template v-if="viewMode === 'expansion'">共 {{ currentExpansionAchievements.length }} 个成就</template>
-              <template v-else-if="viewMode === 'class'">{{ currentClassName }} · 共 {{ filteredAchievements.length.toLocaleString() }} 个成就</template>
-              <template v-else>{{ myViewSubLabel }}</template>
-            </p>
-          </div>
-          <div
-            v-if="viewMode === 'expansion' && currentExpansion?.referenceLinks && currentExpansion.referenceLinks.length > 0"
-            class="hs-guide-dropdown hs-guide-dropdown-inline hs-guide-hover"
-          >
-            <button type="button" class="hs-guide-btn-inline">
-              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-                <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>
-              </svg>
-              攻略
-            </button>
-            <div class="hs-guide-menu">
-              <a
-                v-for="link in currentExpansion.referenceLinks"
-                :key="link.url"
-                :href="link.url"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="hs-guide-menu-item"
-              >{{ link.name }}</a>
-            </div>
+        <div class="hs-control-navigation">
+          <span class="hs-control-label">浏览方式</span>
+          <div class="hs-view-switch hs-view-switch-inline" role="tablist" aria-label="浏览方式">
+            <button :class="{ active: viewMode === 'expansion' }" type="button" role="tab" :aria-selected="viewMode === 'expansion'" @click="viewMode = 'expansion'">按版本</button>
+            <button :class="{ active: viewMode === 'class' }" type="button" role="tab" :aria-selected="viewMode === 'class'" @click="viewMode = 'class'">按职业</button>
+            <button :class="{ active: viewMode === 'my' }" type="button" role="tab" :aria-selected="viewMode === 'my'" @click="viewMode = 'my'">我的进度</button>
           </div>
         </div>
-        <div class="hs-viewer-metrics" aria-label="查看器数据概览">
-          <span><strong>{{ allAchievements.length }}</strong>收录成就</span>
-          <span><strong>{{ expansions.length }}</strong>游戏版本</span>
-        </div>
-        <div class="hs-hardcore-global">
+        <div class="hs-control-actions">
           <HardcoreModeToggle
             v-model="hardcore"
             :expansion-count="expansions.length"
             :core-expansion-count="originalExpansions.length"
             action="纳入"
           />
-        </div>
-        <div class="hs-view-switch hs-view-switch-inline" role="tablist" aria-label="浏览方式">
-          <button :class="{ active: viewMode === 'expansion' }" type="button" role="tab" :aria-selected="viewMode === 'expansion'" @click="viewMode = 'expansion'">按版本浏览</button>
-          <button :class="{ active: viewMode === 'class' }" type="button" role="tab" :aria-selected="viewMode === 'class'" @click="viewMode = 'class'">按职业浏览</button>
-          <button :class="{ active: viewMode === 'my' }" type="button" role="tab" :aria-selected="viewMode === 'my'" @click="viewMode = 'my'">我的成就</button>
-        </div>
-        <div class="hs-top-actions">
           <button
             type="button"
             class="hs-tiny-btn hs-mini-mode-toggle"
             :aria-pressed="miniMode"
             @click="miniMode = !miniMode"
           >{{ miniMode ? '完整卡片' : '迷你卡片' }}</button>
-          <!-- 我的成就：子切换（按版本/按职业/待完成清单）移入顶栏左侧，填充奖杯行空白；展开/收起为独立按钮（同按版本浏览） -->
+          <div
+            v-if="(viewMode === 'expansion' || (viewMode === 'my' && myGroupBy === 'expansion')) && currentExpansion?.referenceLinks?.length"
+            class="hs-guide-dropdown hs-guide-dropdown-inline hs-guide-hover"
+          >
+            <button type="button" class="hs-guide-btn-inline">攻略</button>
+            <div class="hs-guide-menu">
+              <a v-for="link in currentExpansion.referenceLinks" :key="link.url" :href="link.url" target="_blank" rel="noopener noreferrer" class="hs-guide-menu-item">{{ link.name }}</a>
+            </div>
+          </div>
+        </div>
+        <div class="hs-control-selection">
           <template v-if="viewMode === 'my'">
-            <div class="hs-my-sub-switch">
-              <button
-                :class="{ active: myGroupBy === 'expansion' }"
-                type="button"
-                @click="myGroupBy = 'expansion'"
-              >按版本</button>
-              <button
-                :class="{ active: myGroupBy === 'class' }"
-                type="button"
-                @click="myGroupBy = 'class'"
-              >按职业</button>
-              <button
-                :class="{ active: myGroupBy === 'sprint' }"
-                type="button"
-                @click="myGroupBy = 'sprint'"
-              >待完成清单</button>
+            <div class="hs-my-navigation">
+              <div class="hs-my-sub-switch">
+                <button
+                  :class="{ active: myGroupBy === 'expansion' }"
+                  type="button"
+                  @click="myGroupBy = 'expansion'"
+                >按版本</button>
+                <button
+                  :class="{ active: myGroupBy === 'class' }"
+                  type="button"
+                  @click="myGroupBy = 'class'"
+                >按职业</button>
+                <button
+                  :class="{ active: myGroupBy === 'sprint' }"
+                  type="button"
+                  @click="myGroupBy = 'sprint'"
+                >待完成清单</button>
+              </div>
+              <div v-if="showMySectionToggles" class="hs-section-toggles">
+                <button type="button" class="hs-tiny-btn" @click="expandAllSections">展开全部</button>
+                <button type="button" class="hs-tiny-btn" @click="collapseAllSections">收起全部</button>
+              </div>
             </div>
-            <div v-if="showMySectionToggles" class="hs-section-toggles">
-              <button type="button" class="hs-tiny-btn" @click="expandAllSections">展开全部</button>
-              <button type="button" class="hs-tiny-btn" @click="collapseAllSections">收起全部</button>
-            </div>
+            <AchievementExpansionSelector
+              v-if="myGroupBy === 'expansion'"
+              v-model="currentExpansionId"
+              :original-expansions="originalExpansions"
+              :added-expansions="addedExpansions"
+              :show-more-versions="showMoreVersions"
+            />
+            <AchievementClassTabs
+              v-else-if="myGroupBy === 'class'"
+              v-model="currentClass"
+              :classes="allClasses"
+            />
           </template>
-          <!-- 按版本浏览：版本选择（我的成就模式下版本/职业选择移到子切换下方） -->
           <AchievementExpansionSelector
             v-if="viewMode === 'expansion'"
             v-model="currentExpansionId"
@@ -147,23 +133,6 @@
           <span>后即可记录并保存你自己的完成进度。</span>
         </div>
         <div class="hs-my-controls">
-    <!-- 按版本：版本选择（在顶栏子切换下方）；硬核开启时含更多版本下拉 -->
-    <AchievementExpansionSelector
-      v-if="myGroupBy === 'expansion'"
-      v-model="currentExpansionId"
-      class="hs-my-selector"
-      :original-expansions="originalExpansions"
-      :added-expansions="addedExpansions"
-      :show-more-versions="showMoreVersions"
-    />
-    <!-- 按职业：职业选择（在子切换下方） -->
-    <AchievementClassTabs
-      v-else-if="myGroupBy === 'class'"
-      v-model="currentClass"
-      class="hs-my-selector"
-      :classes="allClasses"
-    />
-
     <!-- 我的成就：搜索框上移到导出 Excel 之上（sprint 待完成清单用 searchOnly 只显示搜索框） -->
     <FilterBar
       v-model:query="query"
@@ -838,7 +807,7 @@ const ruleRecommendations = computed(() =>
     getProgressInfo,
     getAchievementXp,
     pinnedIds: hearthstoneProfile.value.pinnedAchievementIds,
-    limit: 6
+    limit: 10
   })
 )
 watch(

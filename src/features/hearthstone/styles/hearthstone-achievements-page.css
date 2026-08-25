@@ -244,6 +244,122 @@
   overflow-y: auto;
 }
 
+/* ============ 成就档案：固定左侧导航与选择区 ============ */
+.hs-topbar {
+  display: grid;
+  grid-template-columns: max-content minmax(0, 1fr);
+  align-items: center;
+  gap: 12px 18px;
+  margin-bottom: 10px;
+  padding: 12px 16px;
+  border: 1px solid var(--hs-border);
+  border-radius: 14px;
+  background: var(--hs-surface-overlay);
+}
+
+.hs-control-navigation,
+.hs-control-actions,
+.hs-control-selection {
+  display: flex;
+  align-items: center;
+  min-width: 0;
+}
+
+.hs-control-navigation { gap: 12px; }
+.hs-control-label {
+  flex: 0 0 auto;
+  color: var(--hs-muted);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .08em;
+}
+
+.hs-view-switch-inline {
+  order: unset;
+  width: fit-content;
+  margin: 0;
+}
+
+.hs-control-actions {
+  justify-content: flex-start;
+  gap: 8px;
+}
+
+/* 与硬核开关统一为 44px 控件高度，避免按钮视觉上浮。 */
+.hs-control-actions .hs-tiny-btn,
+.hs-control-actions :deep(.hs-guide-btn-inline) {
+  min-height: 44px;
+}
+
+.hs-control-actions :deep(.hs-hardcore-global) {
+  order: unset;
+  margin: 0;
+}
+
+.hs-control-selection {
+  grid-column: 1 / -1;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  min-height: 42px;
+  padding-top: 10px;
+  border-top: 1px solid var(--hs-border);
+}
+
+.hs-control-selection :deep(.hs-selector-row),
+.hs-control-selection :deep(.hs-class-top) {
+  flex: 0 1 auto;
+}
+
+.hs-control-selection :deep(.hs-expansion-tabs) { margin: 0; }
+
+.hs-my-navigation {
+  display: flex;
+  flex: 0 0 100%;
+  align-items: center;
+  gap: 8px;
+}
+
+/* 顶部攻略菜单从按钮右侧展开，避免遮住下方的版本、职业和批量操作。 */
+.hs-control-actions :deep(.hs-guide-menu) {
+  top: 50%;
+  left: calc(100% + 8px);
+  transform: translateY(-50%);
+}
+
+.hs-control-actions :deep(.hs-guide-hover .hs-guide-menu::before) {
+  top: 0;
+  bottom: 0;
+  left: -9px;
+  right: auto;
+  width: 9px;
+  height: auto;
+}
+
+@media (max-width: 840px) {
+  .hs-topbar { grid-template-columns: 1fr; }
+  .hs-control-actions { justify-content: flex-start; }
+}
+
+@media (max-width: 540px) {
+  .hs-control-navigation { align-items: flex-start; flex-direction: column; gap: 6px; }
+  .hs-view-switch-inline { width: 100%; }
+  .hs-control-selection { align-items: flex-start; }
+  .hs-control-actions :deep(.hs-guide-menu) {
+    top: calc(100% + 6px);
+    left: 0;
+    transform: none;
+  }
+  .hs-control-actions :deep(.hs-guide-hover .hs-guide-menu::before) {
+    top: -7px;
+    right: 0;
+    bottom: auto;
+    left: 0;
+    width: auto;
+    height: 7px;
+  }
+}
+
 /* ===== 本次布局调整新增样式 ===== */
 /* 标题行内联攻略按钮（按版本浏览，与版本名/成就数同一行） */
 /* 攻略：标题行内联按钮（summary，去掉默认三角箭头） */

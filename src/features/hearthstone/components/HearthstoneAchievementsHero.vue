@@ -5,10 +5,14 @@
         <span class="hs-live-dot" aria-hidden="true"></span>
         Hearthstone Tracker
       </p>
-      <h1 id="hs-page-title">炉石传说成就查看器</h1>
+      <h1 id="hs-page-title">炉石传说成就档案</h1>
     </div>
 
     <div class="hs-hero-side">
+      <div class="hs-hero-metrics" aria-label="成就档案概览">
+        <div><strong>{{ achievementCount }}</strong><span>收录成就</span></div>
+        <div><strong>{{ expansionCount }}</strong><span>游戏版本</span></div>
+      </div>
       <div class="hs-intro-actions">
         <div class="hs-action-group hs-account-actions" aria-label="账号操作">
           <span v-if="user" class="hs-user-badge">
@@ -39,7 +43,9 @@ import HearthstoneToolNav from './HearthstoneToolNav.vue'
 
 defineProps({
   user: { type: Object, default: null },
-  hsTheme: { type: String, required: true }
+  hsTheme: { type: String, required: true },
+  achievementCount: { type: Number, required: true },
+  expansionCount: { type: Number, required: true }
 })
 
 defineEmits(['navigate', 'logout'])
