@@ -332,12 +332,17 @@ export function createLocalBusinessStore(filePath) {
       SELECT cosmetic_type, cosmetic_id FROM hearthstone_cosmetic_collection
       WHERE user_id = ? ORDER BY cosmetic_type, created_at, cosmetic_id
     `),
-    deleteCosmeticCollection: database.prepare(`
-      DELETE FROM hearthstone_cosmetic_collection WHERE user_id = ?
-    `),
     insertCosmeticCollection: database.prepare(`
-      INSERT INTO hearthstone_cosmetic_collection(user_id, cosmetic_type, cosmetic_id)
+      INSERT OR IGNORE INTO hearthstone_cosmetic_collection(user_id, cosmetic_type, cosmetic_id)
       VALUES(?, ?, ?)
+    `),
+    deleteCosmeticItem: database.prepare(`
+      DELETE FROM hearthstone_cosmetic_collection
+      WHERE user_id = ? AND cosmetic_type = ? AND cosmetic_id = ?
+    `),
+    deleteCosmeticType: database.prepare(`
+      DELETE FROM hearthstone_cosmetic_collection
+      WHERE user_id = ? AND cosmetic_type = ?
     `),
     saveHearthstoneProfile: database.prepare(`
       INSERT INTO hearthstone_profiles(
@@ -372,17 +377,18 @@ export function createLocalBusinessStore(filePath) {
   })
   const saveProfile = database.transaction((userId, profile) => {
     const pinnedAchievementIds = normalizePinnedAchievementIds(profile.pinnedAchievementIds)
-    const collection = normalizeCosmeticCollection(profile.collection)
     const row = st.saveHearthstoneProfile.get(
       userId,
       pinnedAchievementIds[0] || null,
       JSON.stringify({ ...(profile.preferences || {}), pinnedAchievementIds })
     )
-    st.deleteCosmeticCollection.run(userId)
-    for (const [type, ids] of Object.entries(collection)) {
+    return { row, pinnedAchievementIds }
+  })
+
+  const mergeCollection = database.transaction((userId, collection) => {
+    for (const [type, ids] of Object.entries(normalizeCosmeticCollection(collection))) {
       for (const id of ids) st.insertCosmeticCollection.run(userId, type, id)
     }
-    return { row, pinnedAchievementIds, collection }
   })
 
   return {
@@ -422,11 +428,22 @@ export function createLocalBusinessStore(filePath) {
       return { pinnedAchievementIds, preferences, collection, updatedAt: row.updated_at }
     },
     saveHearthstoneProfile(userId, profile) {
-      const { row, pinnedAchievementIds, collection } = saveProfile(Number(userId), profile)
-      const preferences = JSON.parse(row.preferences_json || '{}')
-      delete preferences.pinnedAchievementIds
-      delete preferences.collection
-      return { pinnedAchievementIds, preferences, collection, updatedAt: row.updated_at }
+      saveProfile(Number(userId), profile)
+      return this.getHearthstoneProfile(userId)
+    },
+    mergeHearthstoneCollection(userId, collection) {
+      mergeCollection(Number(userId), collection)
+      return this.getHearthstoneProfile(userId)
+    },
+    setHearthstoneCosmeticOwned(userId, type, id, owned) {
+      const numericUserId = Number(userId)
+      if (owned) st.insertCosmeticCollection.run(numericUserId, type, id)
+      else st.deleteCosmeticItem.run(numericUserId, type, id)
+      return this.getHearthstoneProfile(userId)
+    },
+    clearHearthstoneCollectionType(userId, type) {
+      st.deleteCosmeticType.run(Number(userId), type)
+      return this.getHearthstoneProfile(userId)
     },
     getAiUsage(userKey, day) {
       const row = st.getAiUsage.get(userKey, day)

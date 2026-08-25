@@ -17,6 +17,9 @@ export function fetchHearthstoneProfile() {
 export function saveHearthstoneProfile(profile) {
   return request('/api/hearthstone/profile', {
     method: 'PUT',
-    body: JSON.stringify(profile)
+    body: JSON.stringify({
+      pinnedAchievementIds: profile.pinnedAchievementIds,
+      preferences: profile.preferences
+    })
   })
 }

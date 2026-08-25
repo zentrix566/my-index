@@ -779,8 +779,7 @@ function pinnedProgressText(achievement) {
 }
 
 async function togglePinnedAchievement(achievement) {
-  // 关键防护：hearthstoneProfile 未加载完成时仍是 DEFAULT 空壳，
-  // 此时保存会用「空 collection」覆盖，DELETE 掉用户全部收藏。
+  // 档案未加载完成时不允许操作，避免用默认状态覆盖已有置顶。
   if (!user.value || profileSaving.value || !profileLoaded.value) return
   const currentIds = hearthstoneProfile.value.pinnedAchievementIds
   const removing = currentIds.includes(achievement.id)

@@ -1,7 +1,10 @@
 import { ref } from 'vue'
 import {
   fetchHearthstoneProfile,
-  saveHearthstoneProfile as saveProfileRequest
+  saveHearthstoneProfile as saveProfileRequest,
+  mergeHearthstoneCollection as mergeCollectionRequest,
+  setHearthstoneCosmeticOwned as setCosmeticOwnedRequest,
+  clearHearthstoneCollectionType as clearCollectionTypeRequest
 } from '../api/profile.js'
 import { MAX_PINNED_ACHIEVEMENTS } from '../utils/constants.js'
 
@@ -82,8 +85,7 @@ async function load({ force = false } = {}) {
 }
 
 async function save(nextProfile) {
-  // 兜底：未加载完成时拒绝保存。此时 profile.value 为 DEFAULT 空壳，
-  // 一旦落库会 DELETE 掉服务端已有的全部收藏/置顶数据。
+  // 未加载完成时拒绝保存，避免用默认空档案覆盖已存在的置顶与偏好。
   if (!loaded.value) {
     throw new Error('个人配置尚未加载，请稍候重试')
   }
@@ -102,6 +104,44 @@ async function save(nextProfile) {
   }
 }
 
+async function runCollectionMutation(request, fallbackMessage) {
+  if (!loaded.value) throw new Error('个人配置尚未加载，请稍候重试')
+  saving.value = true
+  error.value = ''
+  try {
+    const data = await request()
+    profile.value = normalizeProfile(data)
+    loaded.value = true
+    return profile.value
+  } catch (cause) {
+    error.value = cause.message || fallbackMessage
+    throw cause
+  } finally {
+    saving.value = false
+  }
+}
+
+function mergeCollection(collection) {
+  return runCollectionMutation(
+    () => mergeCollectionRequest(collection),
+    '导入收藏失败'
+  )
+}
+
+function setCollectionOwned(type, id, owned) {
+  return runCollectionMutation(
+    () => setCosmeticOwnedRequest(type, id, owned),
+    '保存收藏失败'
+  )
+}
+
+function clearCollectionType(type) {
+  return runCollectionMutation(
+    () => clearCollectionTypeRequest(type),
+    '批量清空收藏失败'
+  )
+}
+
 function clear() {
   profile.value = structuredClone(DEFAULT_PROFILE)
   loaded.value = false
@@ -112,5 +152,17 @@ function clear() {
 }
 
 export function useHearthstoneProfile() {
-  return { profile, loaded, loading, saving, error, load, save, clear }
+  return {
+    profile,
+    loaded,
+    loading,
+    saving,
+    error,
+    load,
+    save,
+    mergeCollection,
+    setCollectionOwned,
+    clearCollectionType,
+    clear
+  }
 }

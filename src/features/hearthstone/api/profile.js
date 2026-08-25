@@ -19,7 +19,43 @@ export async function saveHearthstoneProfile(profile) {
     method: 'PUT',
     headers: { 'Content-Type': 'application/json' },
     credentials: 'same-origin',
-    body: JSON.stringify(profile)
+    body: JSON.stringify({
+      pinnedAchievementIds: profile.pinnedAchievementIds,
+      preferences: profile.preferences
+    })
+  })
+  return parseResponse(response)
+}
+
+/** 增量合并收藏导入，已有收藏不会被删除。 */
+export async function mergeHearthstoneCollection(collection) {
+  const response = await fetch('/api/hearthstone/collection/import', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'same-origin',
+    body: JSON.stringify({ collection })
+  })
+  return parseResponse(response)
+}
+
+/** 设置一个收藏项的拥有状态。 */
+export async function setHearthstoneCosmeticOwned(type, id, owned) {
+  const response = await fetch('/api/hearthstone/collection/item', {
+    method: 'PUT',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'same-origin',
+    body: JSON.stringify({ type, id, owned })
+  })
+  return parseResponse(response)
+}
+
+/** 用户明确确认后清空一种收藏。 */
+export async function clearHearthstoneCollectionType(type) {
+  const response = await fetch(`/api/hearthstone/collection/${encodeURIComponent(type)}`, {
+    method: 'DELETE',
+    headers: { 'Content-Type': 'application/json' },
+    credentials: 'same-origin',
+    body: JSON.stringify({ confirm: true })
   })
   return parseResponse(response)
 }

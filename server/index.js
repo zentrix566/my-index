@@ -29,6 +29,9 @@ import {
   getProgress,
   getHearthstoneProfile,
   saveHearthstoneProfile,
+  mergeHearthstoneCollection,
+  setHearthstoneCosmeticOwned,
+  clearHearthstoneCollectionType,
   upsertProgress,
   bulkUpsertProgress,
   getUserByUsername,
@@ -40,7 +43,9 @@ import {
 import { getAchievementMeta, hasAchievementMeta } from './achievements-meta.js'
 import {
   MAX_PINNED_ACHIEVEMENTS,
+  MAX_COSMETICS_PER_TYPE,
   normalizePinnedAchievementIds,
+  normalizeCosmeticIds,
   normalizeCosmeticCollection
 } from './hearthstone-profile.js'
 import {
@@ -248,11 +253,14 @@ app.get('/api/hearthstone/profile', requireAuth, trackHearthstone, async (req, r
 
 app.put('/api/hearthstone/profile', requireAuth, trackHearthstone, async (req, res) => {
   const body = req.body || {}
+  // 兼容仍在运行的旧前端：即使请求携带 collection，也明确忽略，避免旧快照覆盖收藏。
+  if (Object.hasOwn(body, 'collection')) {
+    appLog('COLLECTION', `IGNORE_PROFILE_COLLECTION user=${req.userId}`)
+  }
   const submittedPinnedIds =
     body.pinnedAchievementIds ??
     (typeof body.pinnedAchievementId === 'string' ? [body.pinnedAchievementId] : [])
   const preferences = body.preferences || {}
-  const submittedCollection = body.collection || {}
 
   if (!Array.isArray(submittedPinnedIds)) {
     return res.status(400).json({ error: '置顶成就格式错误' })
@@ -270,10 +278,6 @@ app.put('/api/hearthstone/profile', requireAuth, trackHearthstone, async (req, r
   if (!preferences || typeof preferences !== 'object' || Array.isArray(preferences)) {
     return res.status(400).json({ error: '偏好设置格式错误' })
   }
-  if (!submittedCollection || typeof submittedCollection !== 'object' || Array.isArray(submittedCollection)) {
-    return res.status(400).json({ error: '收藏数据格式错误' })
-  }
-
   const hardcore = preferences.hardcore === true
   const compactMode = preferences.compactMode === true
   const defaultExpansionId =
@@ -285,12 +289,84 @@ app.put('/api/hearthstone/profile', requireAuth, trackHearthstone, async (req, r
   try {
     const saved = await saveHearthstoneProfile(req.userId, {
       pinnedAchievementIds,
-      preferences: { hardcore, compactMode, defaultExpansionId },
-      collection: normalizeCosmeticCollection(submittedCollection)
+      preferences: { hardcore, compactMode, defaultExpansionId }
     })
     res.json(saved)
   } catch (err) {
     sendInternalError(res, '保存个人配置失败')
+  }
+})
+
+const COSMETIC_COLLECTION_TYPES = new Set(['heroSkins', 'coins', 'cardBacks'])
+
+function collectionCount(collection) {
+  return Object.values(collection || {}).reduce(
+    (total, ids) => total + (Array.isArray(ids) ? ids.length : 0),
+    0
+  )
+}
+
+// 收藏导入只做增量合并，绝不删除数据库中已有记录。
+app.post('/api/hearthstone/collection/import', requireAuth, trackHearthstone, async (req, res) => {
+  const submitted = req.body?.collection
+  if (!submitted || typeof submitted !== 'object' || Array.isArray(submitted)) {
+    return res.status(400).json({ error: '收藏数据格式错误' })
+  }
+  for (const type of COSMETIC_COLLECTION_TYPES) {
+    const ids = submitted[type] ?? []
+    if (!Array.isArray(ids) || ids.length > MAX_COSMETICS_PER_TYPE) {
+      return res.status(400).json({ error: `${type} 收藏数据格式错误` })
+    }
+  }
+  const collection = normalizeCosmeticCollection(submitted)
+  if (!collectionCount(collection)) {
+    return res.status(400).json({ error: '没有可导入的收藏数据' })
+  }
+  try {
+    const saved = await mergeHearthstoneCollection(req.userId, collection)
+    appLog('COLLECTION', `IMPORT user=${req.userId} 提交=${collectionCount(collection)} 保存后=${collectionCount(saved.collection)}`)
+    res.json(saved)
+  } catch (err) {
+    sendInternalError(res, '导入收藏失败')
+  }
+})
+
+// 单项编辑只增删指定 ID，不使用客户端全量快照覆盖数据库。
+app.put('/api/hearthstone/collection/item', requireAuth, trackHearthstone, async (req, res) => {
+  const { type, id, owned } = req.body || {}
+  if (!COSMETIC_COLLECTION_TYPES.has(type)) {
+    return res.status(400).json({ error: '收藏类型错误' })
+  }
+  if (typeof id !== 'string' || normalizeCosmeticIds([id]).length !== 1) {
+    return res.status(400).json({ error: '收藏 ID 错误' })
+  }
+  if (typeof owned !== 'boolean') {
+    return res.status(400).json({ error: '收藏状态错误' })
+  }
+  try {
+    const saved = await setHearthstoneCosmeticOwned(req.userId, type, id, owned)
+    appLog('COLLECTION', `ITEM user=${req.userId} type=${type} id=${id} owned=${owned} 保存后=${collectionCount(saved.collection)}`)
+    res.json(saved)
+  } catch (err) {
+    sendInternalError(res, '保存收藏失败')
+  }
+})
+
+// 唯一允许批量删除的入口：必须明确类型并提交确认标记。
+app.delete('/api/hearthstone/collection/:type', requireAuth, trackHearthstone, async (req, res) => {
+  const { type } = req.params
+  if (!COSMETIC_COLLECTION_TYPES.has(type)) {
+    return res.status(400).json({ error: '收藏类型错误' })
+  }
+  if (req.body?.confirm !== true) {
+    return res.status(400).json({ error: '请明确确认批量清空操作' })
+  }
+  try {
+    const saved = await clearHearthstoneCollectionType(req.userId, type)
+    appLog('COLLECTION', `CLEAR_TYPE user=${req.userId} type=${type} 保存后=${collectionCount(saved.collection)}`)
+    res.json(saved)
+  } catch (err) {
+    sendInternalError(res, '批量清空收藏失败')
   }
 })
 

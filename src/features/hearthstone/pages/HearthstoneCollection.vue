@@ -127,9 +127,6 @@
           <small v-if="importPreview.unmatchedCardBacks || importPreview.unmatchedCoins || importPreview.unmatchedHeroSkins">
             另有 {{ importPreview.unmatchedCardBacks + importPreview.unmatchedCoins + importPreview.unmatchedHeroSkins }} 个 ID 在网站目录暂无名称（多为最新内容未更新或本地目录缺项），不影响已拥有高亮。
           </small>
-          <small v-if="importPreview.removedCardBacks || importPreview.removedCoins || importPreview.removedHeroSkins">
-            将一并清理 {{ importPreview.removedCardBacks + importPreview.removedCoins + importPreview.removedHeroSkins }} 个已不存在于当前目录的旧 ID（卡背/皮肤目录重建后遗留的标记），避免误命中同名新条目。
-          </small>
         </div>
         <div class="hs-firestone-import-actions">
           <button type="button" class="hs-btn hs-btn-ghost" @click="importPreview = null">取消</button>
@@ -458,24 +455,6 @@ const collectionCatalog = computed(() => ({
   cardBacks: cardBacks.value.filter((item) => !item.hidden)
 }))
 
-// 当前目录中存在的外观 ID 集合。导入/加载时清理 profile 中的「孤儿 ID」：
-// catalog 重建后遗留的旧 ID（与新条目同名但语义已变）会让"已拥有"误命中。
-const validHeroSkinIds = computed(() => new Set(collectionCatalog.value.heroSkins.map((item) => item.id)))
-const validCoinIds = computed(() => new Set(collectionCatalog.value.coins.map((item) => item.id)))
-const validCardBackIds = computed(() => new Set(collectionCatalog.value.cardBacks.map((item) => item.id)))
-
-function removeOrphanIds(ids, validIds) {
-  return (Array.isArray(ids) ? ids : []).filter((id) => validIds.has(id))
-}
-
-function cleanProfileCollection(collection) {
-  return {
-    heroSkins: removeOrphanIds(collection?.heroSkins, validHeroSkinIds.value),
-    coins: removeOrphanIds(collection?.coins, validCoinIds.value),
-    cardBacks: removeOrphanIds(collection?.cardBacks, validCardBackIds.value)
-  }
-}
-
 const router = useRouter()
 const { user, init: initAuth } = useAuth()
 const { hsTheme } = useHearthstoneTheme()
@@ -485,7 +464,9 @@ const {
   loading: profileLoading,
   saving: profileSaving,
   load,
-  save
+  mergeCollection,
+  setCollectionOwned,
+  clearCollectionType
 } = useHearthstoneProfile()
 
 const activeType = ref('heroSkins')
@@ -750,7 +731,6 @@ async function previewImport(event) {
     }
     const imported = getImportedIds(payload)
     const prof = profile.value.collection
-    const cleanedProf = cleanProfileCollection(prof)
     importPreview.value = {
       cardBackIds: imported.cardBacks,
       coinIds: imported.coins,
@@ -761,15 +741,12 @@ async function previewImport(event) {
       detectedCardBacks: imported.cardBacks.size,
       detectedCoins: imported.coins.size,
       detectedHeroSkins: imported.heroSkins.size,
-      cardBacks: [...imported.cardBacks].filter((id) => !cleanedProf.cardBacks.includes(id)).length,
-      coins: [...imported.coins].filter((id) => !cleanedProf.coins.includes(id)).length,
-      heroSkins: [...imported.heroSkins].filter((id) => !cleanedProf.heroSkins.includes(id)).length,
+      cardBacks: [...imported.cardBacks].filter((id) => !prof.cardBacks.includes(id)).length,
+      coins: [...imported.coins].filter((id) => !prof.coins.includes(id)).length,
+      heroSkins: [...imported.heroSkins].filter((id) => !prof.heroSkins.includes(id)).length,
       unmatchedCardBacks: imported.unmatched.cardBacks,
       unmatchedCoins: imported.unmatched.coins,
-      unmatchedHeroSkins: imported.unmatched.heroSkins,
-      removedHeroSkins: prof.heroSkins.length - cleanedProf.heroSkins.length,
-      removedCoins: prof.coins.length - cleanedProf.coins.length,
-      removedCardBacks: prof.cardBacks.length - cleanedProf.cardBacks.length
+      unmatchedHeroSkins: imported.unmatched.heroSkins
     }
     saveError.value = ''
   } catch {
@@ -779,7 +756,7 @@ async function previewImport(event) {
 
 async function confirmImport() {
   if (!importPreview.value || profileSaving.value) return
-  // 目录数据是清理孤儿 ID 的依据：未就绪时 validIds 为空集，直接导入会清掉全部收藏
+  // 目录未就绪时无法把采集器 ID 正确映射为站内收藏 ID。
   if (catalogStatus.value !== 'ready') {
     saveError.value = '外观目录尚未加载完成，请稍后或点击重试后再导入。'
     return
@@ -787,16 +764,10 @@ async function confirmImport() {
   const preview = importPreview.value
   saveError.value = ''
   try {
-    // 先剔除 profile 中已不存在于当前目录的孤儿 ID，再合并新导入的 ID，
-    // 避免卡背/皮肤目录重建后旧标记被同名新条目错误继承。
-    const cleaned = cleanProfileCollection(profile.value.collection)
-    await save({
-      ...profile.value,
-      collection: {
-        heroSkins: [...new Set([...cleaned.heroSkins, ...preview.heroSkinIds])],
-        coins: [...new Set([...cleaned.coins, ...preview.coinIds])],
-        cardBacks: [...new Set([...cleaned.cardBacks, ...preview.cardBackIds])]
-      }
+    await mergeCollection({
+      heroSkins: [...preview.heroSkinIds],
+      coins: [...preview.coinIds],
+      cardBacks: [...preview.cardBackIds]
     })
     importPreview.value = null
   } catch (error) {
@@ -807,20 +778,13 @@ async function confirmImport() {
 useDialogFocus(computed(() => Boolean(selectedItem.value)), detailsDialog, closeDetails)
 
 async function toggleOwned(item) {
-  // 关键防护：profile 未加载完成时 profile.value 仍是 DEFAULT 空壳，
-  // 此时保存会用「空 collection + 当前一项」覆盖，DELETE 掉其余全部收藏。
   if (!user.value || profileSaving.value || !profileLoaded.value) return
   const type = item.cosmeticType
   const current = profile.value.collection[type]
-  const next = current.includes(item.id)
-    ? current.filter((id) => id !== item.id)
-    : [...current, item.id]
+  const owned = !current.includes(item.id)
   saveError.value = ''
   try {
-    await save({
-      ...profile.value,
-      collection: { ...profile.value.collection, [type]: next }
-    })
+    await setCollectionOwned(type, item.id, owned)
   } catch (error) {
     saveError.value = error.message || '收藏保存失败，请重试'
   }
@@ -849,10 +813,7 @@ async function confirmBulkClear() {
   const type = activeType.value
   saveError.value = ''
   try {
-    await save({
-      ...profile.value,
-      collection: { ...profile.value.collection, [type]: [] }
-    })
+    await clearCollectionType(type)
     bulkClearOpen.value = false
   } catch (error) {
     saveError.value = error.message || '批量操作失败，请重试'
@@ -862,17 +823,7 @@ async function confirmBulkClear() {
 initAuth()
 watch(user, (value) => {
   if (!value) return
-  load({ force: true })
-    .then((loaded) => {
-      // 加载后自动清理孤儿 ID：catalog 重建后遗留的旧 ID 会让"已拥有"误命中。
-      // 清理后若有变动，悄悄回写一次，避免用户每次进收藏页都看到旧统计。
-      const cleaned = cleanProfileCollection(loaded.collection)
-      const removed = (loaded.collection.heroSkins.length - cleaned.heroSkins.length)
-        + (loaded.collection.coins.length - cleaned.coins.length)
-        + (loaded.collection.cardBacks.length - cleaned.cardBacks.length)
-      if (removed > 0) save({ ...loaded, collection: cleaned }).catch(() => {})
-    })
-    .catch(() => {})
+  load({ force: true }).catch(() => {})
 }, { immediate: true })
 watch([activeType, activeHeroClass, query, statusFilter], () => {
   currentPage.value = 1

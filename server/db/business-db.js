@@ -252,56 +252,71 @@ export async function getHearthstoneProfile(userId) {
 export async function saveHearthstoneProfile(userId, profile) {
   if (isLocalDevMode) return (await getLocalBusinessStore()).saveHearthstoneProfile(userId, profile)
   const pinnedAchievementIds = normalizePinnedAchievementIds(profile.pinnedAchievementIds)
-  const collection = normalizeCosmeticCollection(profile.collection)
   const storedPreferences = { ...(profile.preferences || {}), pinnedAchievementIds }
-  const collectionTypes = []
-  const collectionIds = []
-  for (const [type, ids] of Object.entries(collection)) {
-    for (const id of ids) {
-      collectionTypes.push(type)
-      collectionIds.push(id)
+  await db.query(
+    `INSERT INTO hearthstone_profiles(user_id, pinned_achievement_id, preferences_json, updated_at)
+     VALUES($1, $2, $3::jsonb, now())
+     ON CONFLICT(user_id) DO UPDATE SET
+       pinned_achievement_id = EXCLUDED.pinned_achievement_id,
+       preferences_json = EXCLUDED.preferences_json,
+       updated_at = now()`,
+    [userId, pinnedAchievementIds[0] || null, JSON.stringify(storedPreferences)]
+  )
+  // 个人档案（置顶/偏好）与收藏分开保存，普通档案更新绝不改动收藏表。
+  return getHearthstoneProfile(userId)
+}
+
+/** 增量合并一次收藏导入，不删除数据库中已有或暂时不在目录中的 ID。 */
+export async function mergeHearthstoneCollection(userId, submittedCollection) {
+  if (isLocalDevMode) return (await getLocalBusinessStore()).mergeHearthstoneCollection(userId, submittedCollection)
+  const collection = normalizeCosmeticCollection(submittedCollection)
+  const types = []
+  const ids = []
+  for (const [type, typeIds] of Object.entries(collection)) {
+    for (const id of typeIds) {
+      types.push(type)
+      ids.push(id)
     }
   }
-  const client = await db.connect()
-  let row
-  try {
-    await client.query('BEGIN')
-    const result = await client.query(
-      `INSERT INTO hearthstone_profiles(user_id, pinned_achievement_id, preferences_json, updated_at)
-       VALUES($1, $2, $3::jsonb, now())
-       ON CONFLICT(user_id) DO UPDATE SET
-         pinned_achievement_id = EXCLUDED.pinned_achievement_id,
-         preferences_json = EXCLUDED.preferences_json,
-         updated_at = now()
-       RETURNING pinned_achievement_id, preferences_json, updated_at`,
-      [userId, pinnedAchievementIds[0] || null, JSON.stringify(storedPreferences)]
+  if (ids.length) {
+    await db.query(
+      `INSERT INTO hearthstone_cosmetic_collection(user_id, cosmetic_type, cosmetic_id)
+       SELECT $1, source.cosmetic_type, source.cosmetic_id
+       FROM UNNEST($2::text[], $3::text[]) AS source(cosmetic_type, cosmetic_id)
+       ON CONFLICT DO NOTHING`,
+      [userId, types, ids]
     )
-    row = result.rows[0]
-    await client.query('DELETE FROM hearthstone_cosmetic_collection WHERE user_id = $1', [userId])
-    if (collectionIds.length) {
-      await client.query(
-        `INSERT INTO hearthstone_cosmetic_collection(user_id, cosmetic_type, cosmetic_id)
-         SELECT $1, source.cosmetic_type, source.cosmetic_id
-         FROM UNNEST($2::text[], $3::text[]) AS source(cosmetic_type, cosmetic_id)`,
-        [userId, collectionTypes, collectionIds]
-      )
-    }
-    await client.query('COMMIT')
-  } catch (error) {
-    await client.query('ROLLBACK')
-    throw error
-  } finally {
-    client.release()
   }
-  const preferences = row.preferences_json || {}
-  delete preferences.pinnedAchievementIds
-  delete preferences.collection
-  return {
-    pinnedAchievementIds,
-    preferences,
-    collection,
-    updatedAt: row.updated_at instanceof Date ? row.updated_at.toISOString() : row.updated_at
+  return getHearthstoneProfile(userId)
+}
+
+/** 只修改一个收藏项，避免用客户端快照覆盖其它收藏。 */
+export async function setHearthstoneCosmeticOwned(userId, type, id, owned) {
+  if (isLocalDevMode) return (await getLocalBusinessStore()).setHearthstoneCosmeticOwned(userId, type, id, owned)
+  if (owned) {
+    await db.query(
+      `INSERT INTO hearthstone_cosmetic_collection(user_id, cosmetic_type, cosmetic_id)
+       VALUES($1, $2, $3) ON CONFLICT DO NOTHING`,
+      [userId, type, id]
+    )
+  } else {
+    await db.query(
+      `DELETE FROM hearthstone_cosmetic_collection
+       WHERE user_id = $1 AND cosmetic_type = $2 AND cosmetic_id = $3`,
+      [userId, type, id]
+    )
   }
+  return getHearthstoneProfile(userId)
+}
+
+/** 用户明确确认后，只清空指定收藏类型。 */
+export async function clearHearthstoneCollectionType(userId, type) {
+  if (isLocalDevMode) return (await getLocalBusinessStore()).clearHearthstoneCollectionType(userId, type)
+  await db.query(
+    'DELETE FROM hearthstone_cosmetic_collection WHERE user_id = $1 AND cosmetic_type = $2',
+    [userId, type]
+  )
+  return getHearthstoneProfile(userId)
 }
 
 export async function transaction(fn) {
