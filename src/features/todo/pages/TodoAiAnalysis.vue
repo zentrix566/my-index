@@ -54,7 +54,7 @@
             <span class="todo-ai-entry-time">{{ fmtTime(entry.savedAt) }}</span>
             <button class="todo-btn tiny" type="button" @click="copyEntry(entry)">复制</button>
           </div>
-          <div class="todo-markdown" v-html="md.render(entry.report)"></div>
+          <MarkdownContent class-name="todo-markdown" :content="entry.report" />
         </div>
       </div>
       <div v-else-if="!busy" class="todo-empty">
@@ -64,20 +64,19 @@
     </div>
 
     <TodoNewGroupModal ref="groupModal" @created="loadLists" />
-    <div v-if="toastMsg" class="todo-toast">{{ toastMsg }}</div>
   </section>
 </template>
 
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
-import MarkdownIt from 'markdown-it'
+import MarkdownContent from '../../../components/MarkdownContent.vue'
 import { useAuth } from '../../../auth/useAuth.js'
 import todoApi from '../api/todo.js'
 import TodoSidebar from '../components/TodoSidebar.vue'
 import TodoNewGroupModal from '../components/TodoNewGroupModal.vue'
-
-const md = new MarkdownIt({ html: false, linkify: true, breaks: true })
+import { addLocalDays, formatDateKey, formatDateTime, formatMonthKey } from '../../../utils/date.js'
+import { useToast } from '../../../composables/useToast.js'
 
 const router = useRouter()
 const { user, init } = useAuth()
@@ -85,15 +84,6 @@ const { user, init } = useAuth()
 const lists = ref([])
 const loadError = ref('')
 const groupModal = ref(null)
-
-function localDateKey(date) {
-  const p = (n) => String(n).padStart(2, '0')
-  return `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())}`
-}
-function localMonthKey(date) {
-  const p = (n) => String(n).padStart(2, '0')
-  return `${date.getFullYear()}-${p(date.getMonth() + 1)}`
-}
 
 // 分析结果本地缓存：按 scope + 日期/月份 持久化，同一范围多次分析全部保留（不覆盖）
 const CACHE_PREFIX = 'todo:aiReports:'
@@ -104,8 +94,7 @@ function cacheKey() {
 function fmtTime(ts) {
   if (!ts) return ''
   const d = new Date(ts)
-  const p = (n) => String(n).padStart(2, '0')
-  return `${d.getFullYear()}-${p(d.getMonth() + 1)}-${p(d.getDate())} ${p(d.getHours())}:${p(d.getMinutes())}`
+  return formatDateTime(d)
 }
 
 // 历史记录：当前范围下的所有分析结果（新→旧）
@@ -164,8 +153,8 @@ const scopes = [
   { value: 'month', label: '月计划' }
 ]
 const scope = ref('day')
-const anchorDate = ref(localDateKey(new Date()))
-const anchorMonth = ref(localMonthKey(new Date()))
+const anchorDate = ref(formatDateKey())
+const anchorMonth = ref(formatMonthKey())
 
 const busy = ref(false)
 const aiError = ref('')
@@ -177,19 +166,13 @@ const rangeLabel = computed(() => {
     const [y, m, d] = anchorDate.value.split('-').map(Number)
     const dt = new Date(y, m - 1, d)
     const dow = (dt.getDay() + 6) % 7
-    const add = (n) => localDateKey(new Date(y, m - 1, d + n))
+    const add = (n) => formatDateKey(addLocalDays(new Date(y, m - 1, d), n))
     return `${add(-dow)} ~ ${add(6 - dow)}`
   }
   return anchorMonth.value
 })
 
-const toastMsg = ref('')
-let toastTimer = null
-function toast(msg) {
-  toastMsg.value = msg
-  if (toastTimer) clearTimeout(toastTimer)
-  toastTimer = setTimeout(() => (toastMsg.value = ''), 2500)
-}
+const { push: toast } = useToast()
 
 async function generate() {
   busy.value = true

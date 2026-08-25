@@ -139,6 +139,7 @@
     </footer>
     <p class="sr-only" aria-live="polite">{{ routeAnnouncement }}</p>
     <AppFeedback />
+    <ToastHost />
   </div>
 </template>
 
@@ -150,6 +151,7 @@ import { useTheme } from './composables/useTheme.js'
 import { projects } from './data/projects.js'
 import { vueApps } from './data/vueApps.js'
 import AppFeedback from './components/AppFeedback.vue'
+import ToastHost from './components/ToastHost.vue'
 import AppIcon from './components/AppIcon.vue'
 import { useFeedback } from './composables/useFeedback.js'
 

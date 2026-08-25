@@ -63,7 +63,7 @@
 
         <p v-if="aiError" class="wp-error">{{ aiError }}</p>
 
-        <div v-if="aiReport" class="wp-markdown" v-html="aiHtml"></div>
+        <MarkdownContent v-if="aiReport" class-name="wp-markdown" :content="aiReport" />
       </div>
     </div>
 
@@ -74,23 +74,17 @@
 <script setup>
 import { computed, onMounted, ref } from 'vue'
 import { useRouter } from 'vue-router'
-import MarkdownIt from 'markdown-it'
+import MarkdownContent from '../../../components/MarkdownContent.vue'
 import willpowerApi from '../api/willpower.js'
 import { useAuth } from '../../../auth/useAuth.js'
 import WpNav from '../components/WpNav.vue'
 import WpToastHost from '../components/WpToastHost.vue'
-
-const md = new MarkdownIt({ html: false, linkify: true, breaks: true })
+import { formatDateKey } from '../../../utils/date.js'
 
 const router = useRouter()
 const { user, init } = useAuth()
 
 const loadError = ref('')
-
-function localDateKey(date) {
-  const p = (n) => String(n).padStart(2, '0')
-  return `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())}`
-}
 
 // ========== AI 分析 ==========
 const aiScopes = [
@@ -101,14 +95,13 @@ const aiScopes = [
   { value: 'range', label: '时间段' }
 ]
 const aiScope = ref('today')
-const aiDate = ref(localDateKey(new Date()))
-const aiFrom = ref(localDateKey(new Date(Date.now() - 30 * 86400000)))
-const aiTo = ref(localDateKey(new Date()))
+const aiDate = ref(formatDateKey())
+const aiFrom = ref(formatDateKey(new Date(Date.now() - 30 * 86400000)))
+const aiTo = ref(formatDateKey())
 const aiBusy = ref(false)
 const aiError = ref('')
 const aiReport = ref('')
 const aiQuota = ref(null)
-const aiHtml = computed(() => (aiReport.value ? md.render(aiReport.value) : ''))
 
 // 缓存的历史报告
 const cachedReports = ref([])

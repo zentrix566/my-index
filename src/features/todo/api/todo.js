@@ -5,26 +5,7 @@
  */
 
 import { sortTodoLists } from '../constants.js'
-
-async function readJson(resp) {
-  const text = await resp.text()
-  if (!text) return {}
-  try {
-    return JSON.parse(text)
-  } catch {
-    throw new Error('服务响应格式异常，请确认后端服务已正常启动')
-  }
-}
-
-async function request(url, options = {}) {
-  const resp = await fetch(url, {
-    headers: { 'Content-Type': 'application/json' },
-    ...options
-  })
-  const data = await readJson(resp)
-  if (!resp.ok) throw new Error(data.error || '请求失败，请稍后重试')
-  return data
-}
+import { request } from '../../../api/http.js'
 
 const BASE = '/api/todo'
 export const TODO_TASKS_CHANGED_EVENT = 'todo:tasks-changed'

@@ -124,6 +124,7 @@ import { useToast } from '../composables/useToast.js'
 import WpNav from '../components/WpNav.vue'
 import WpToastHost from '../components/WpToastHost.vue'
 import { formatBeijing } from '../utils/time.js'
+import { formatDateKey } from '../../../utils/date.js'
 
 const router = useRouter()
 const { user, init } = useAuth()
@@ -133,7 +134,7 @@ const weekLabels = ['一', '二', '三', '四', '五', '六', '日']
 
 const demons = ref([])
 const byDay = ref([])
-const todayKey = ref(localDateKey(new Date()))
+const todayKey = ref(formatDateKey())
 const cursor = ref({ year: new Date().getFullYear(), month: new Date().getMonth() })
 const selectedDate = ref(todayKey.value)
 const dayResistances = ref([])
@@ -141,11 +142,6 @@ const dayPositives = ref([])
 const daySummary = ref({ success: 0, fail: 0, pending: 0, positive: 0 })
 const dayLoading = ref(false)
 const loadError = ref('')
-
-function localDateKey(date) {
-  const p = (n) => String(n).padStart(2, '0')
-  return `${date.getFullYear()}-${p(date.getMonth() + 1)}-${p(date.getDate())}`
-}
 
 const dayStats = computed(() => {
   const map = new Map()
@@ -162,7 +158,7 @@ const cells = computed(() => {
   const list = []
   for (let i = 0; i < leading; i += 1) list.push({ date: '', dayNum: '' })
   for (let d = 1; d <= daysInMonth; d += 1) {
-    const date = localDateKey(new Date(year, month, d))
+    const date = formatDateKey(new Date(year, month, d))
     const stat = dayStats.value.get(date)
     list.push({ date, dayNum: d, success: stat?.success || 0, fail: stat?.fail || 0, positive: stat?.positive || 0 })
   }

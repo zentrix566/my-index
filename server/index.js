@@ -52,6 +52,7 @@ import {
   todayKey
 } from './ai-advisor.js'
 import { validateDreamPayload, streamDream } from './dream.js'
+import { sendInternalError } from './validation.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
@@ -233,7 +234,7 @@ app.get('/api/achievements/progress', trackHearthstone, async (req, res) => {
     res.set('X-Progress-Size', String(rawSize))
     res.json(data)
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    sendInternalError(res, '读取进度失败，请稍后重试')
   }
 })
 
@@ -241,7 +242,7 @@ app.get('/api/hearthstone/profile', requireAuth, trackHearthstone, async (req, r
   try {
     res.json(await getHearthstoneProfile(req.userId))
   } catch (err) {
-    res.status(500).json({ error: err.message || '读取个人配置失败' })
+    sendInternalError(res, '读取个人配置失败')
   }
 })
 
@@ -289,7 +290,7 @@ app.put('/api/hearthstone/profile', requireAuth, trackHearthstone, async (req, r
     })
     res.json(saved)
   } catch (err) {
-    res.status(500).json({ error: err.message || '保存个人配置失败' })
+    sendInternalError(res, '保存个人配置失败')
   }
 })
 
@@ -306,7 +307,7 @@ app.get('/api/achievements/example', async (req, res) => {
     appLog('PROGRESS', `example 所有者="${ownerName}" 条目=${Object.keys(data).length}`)
     res.json(data)
   } catch (err) {
-    res.status(500).json({ error: err.message })
+    sendInternalError(res, '读取示例进度失败，请稍后重试')
   }
 })
 
@@ -437,7 +438,7 @@ app.get('/api/ai-advisor/quota', requireAuth, trackHearthstone, async (req, res)
       freeLimit: AI_FREE_DAILY
     })
   } catch (err) {
-    res.status(500).json({ error: err.message || '查询额度失败' })
+    sendInternalError(res, '查询额度失败')
   }
 })
 
@@ -502,7 +503,7 @@ app.post('/api/ai-advisor', requireAuth, trackHearthstone, async (req, res) => {
     })
   } catch (err) {
     appLog('ERROR', `AI 建议失败: ${err.message}`)
-    res.status(500).json({ error: err.message || 'AI 请求失败' })
+    sendInternalError(res, 'AI 请求失败，请稍后重试')
   }
 })
 
@@ -544,9 +545,9 @@ app.post('/api/dream', async (req, res) => {
   } catch (err) {
     appLog('ERROR', `黄粱一梦生成失败: ${err.message}`)
     if (!res.headersSent) {
-      res.status(502).json({ error: err.message || '梦境生成失败，请稍后重试' })
+      res.status(502).json({ error: '梦境生成失败，请稍后重试' })
     } else {
-      res.write(`data: ${JSON.stringify({ error: err.message || '梦境生成中断' })}\n\n`)
+      res.write(`data: ${JSON.stringify({ error: '梦境生成中断，请稍后重试' })}\n\n`)
       res.write('data: [DONE]\n\n')
       res.end()
     }
@@ -613,15 +614,15 @@ app.post('/api/biography', async (req, res) => {
     if (!upstream.ok) {
       const detail = data?.error?.message || data?.message || raw || '无响应内容'
       appLog('ERROR', `人物生平代理失败: HTTP ${upstream.status} ${detail}`)
-      return res.status(502).json({ error: `AI 接口请求失败（HTTP ${upstream.status}）：${detail}` })
+      return res.status(502).json({ error: 'AI 接口请求失败，请稍后重试' })
     }
     if (!data) {
-      return res.status(502).json({ error: `AI 接口返回了非 JSON 内容：${raw.slice(0, 200)}` })
+      return res.status(502).json({ error: 'AI 接口返回格式异常，请稍后重试' })
     }
     res.json(data)
   } catch (err) {
     appLog('ERROR', `人物生平代理异常: ${err.message}`)
-    res.status(502).json({ error: err.message || '生平生成失败，请稍后重试' })
+    res.status(502).json({ error: '生平生成失败，请稍后重试' })
   }
 })
 

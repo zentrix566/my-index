@@ -58,6 +58,7 @@ import {
   upsertPositiveActivity
 } from './db.js'
 import { callDeepSeek } from '../ai-advisor.js'
+import { isDateKey, sendInternalError } from '../validation.js'
 
 const router = express.Router()
 
@@ -796,12 +797,11 @@ function addDaysLocal(dateKey, delta) {
 /** 把 scope 解析成 [from, to] 闭区间与中文标签。 */
 function resolveReportRange(scope, date, from, to) {
   const dk = todayKey()
-  const reDate = /^\d{4}-\d{2}-\d{2}$/
   if (scope === 'today') {
     return { from: dk, to: dk, label: `今天（${dk}）` }
   }
   if (scope === 'date') {
-    if (!reDate.test(date || '')) return null
+    if (!isDateKey(date)) return null
     return { from: date, to: date, label: `指定日期 ${date}` }
   }
   if (scope === 'last_week') {
@@ -817,7 +817,7 @@ function resolveReportRange(scope, date, from, to) {
     return { from: first, to: dk, label: `本月（${first} ~ ${dk}）` }
   }
   if (scope === 'range') {
-    if (!reDate.test(from || '') || !reDate.test(to || '')) return null
+    if (!isDateKey(from) || !isDateKey(to)) return null
     if (from > to) return null
     return { from, to, label: `时间段（${from} ~ ${to}）` }
   }
@@ -975,7 +975,7 @@ router.post('/ai-report', requireAuth, async (req, res) => {
     })
   } catch (err) {
     appLog('ERROR', `AI 报告生成失败: uid=${userId}, scope=${scope}, error=${err?.message}`)
-    res.status(500).json({ error: err.message || 'AI 分析失败，请稍后重试' })
+    sendInternalError(res, 'AI 分析失败，请稍后重试')
   }
 })
 

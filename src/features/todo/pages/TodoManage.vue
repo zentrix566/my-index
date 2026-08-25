@@ -161,7 +161,6 @@
     </div>
 
     <TodoNewGroupModal ref="groupModal" @created="loadLists" />
-    <div v-if="toastMsg" class="todo-toast">{{ toastMsg }}</div>
   </section>
 </template>
 
@@ -177,6 +176,8 @@ import { useFeedback } from '../../../composables/useFeedback.js'
 import { taskToCreatePayload } from '../utils/taskPayload.js'
 import { getAvailableLastListId, setLastListId } from '../utils/lastList.js'
 import { TASK_STATUS_LIST, statusStyle, TASK_STATUS_META, TASK_STATUS_WEIGHT } from '../constants.js'
+import { useToast } from '../../../composables/useToast.js'
+import { formatBeijingDateKey } from '../../../utils/date.js'
 
 const router = useRouter()
 const { user, init } = useAuth()
@@ -273,9 +274,7 @@ function fmtTime(iso) {
 }
 /** 今天（北京时间）日期键 YYYY-MM-DD，与后端 todayKey() 一致。 */
 function beijingTodayKey() {
-  const d = new Date(Date.now() + 8 * 3600 * 1000)
-  const p = (n) => String(n).padStart(2, '0')
-  return `${d.getUTCFullYear()}-${p(d.getUTCMonth() + 1)}-${p(d.getUTCDate())}`
+  return formatBeijingDateKey()
 }
 function doneDate(t) { return t.status === 'done' ? fmtDate(t.completedAt) : '—' }
 function doneTime(t) { return t.status === 'done' ? fmtTime(t.completedAt) : '—' }
@@ -301,13 +300,7 @@ function exportExcel() {
   toast('已导出 Excel')
 }
 
-const toastMsg = ref('')
-let toastTimer = null
-function toast(msg) {
-  toastMsg.value = msg
-  if (toastTimer) clearTimeout(toastTimer)
-  toastTimer = setTimeout(() => (toastMsg.value = ''), 2500)
-}
+const { push: toast } = useToast()
 
 async function loadLists() {
   try {

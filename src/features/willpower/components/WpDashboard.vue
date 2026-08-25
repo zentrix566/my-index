@@ -132,19 +132,18 @@
         <span v-if="aiQuota" class="wp-ai-quota">今日剩余 {{ aiQuota.limit - aiQuota.used }} / {{ aiQuota.limit }} 次</span>
       </div>
       <p v-if="aiError" class="wp-error" style="margin-top: 10px">{{ aiError }}</p>
-      <div v-if="aiReport" class="wp-markdown" v-html="aiHtml" style="margin-top: 14px"></div>
+      <MarkdownContent v-if="aiReport" class-name="wp-markdown" :content="aiReport" style="margin-top: 14px" />
     </div>
   </div>
 </template>
 
 <script setup>
 import { computed, onMounted, ref } from 'vue'
-import MarkdownIt from 'markdown-it'
+import MarkdownContent from '../../../components/MarkdownContent.vue'
 import willpowerApi from '../api/willpower.js'
 import { useAuth } from '../../../auth/useAuth.js'
 import { useToast } from '../composables/useToast.js'
 
-const md = new MarkdownIt({ html: false, linkify: true, breaks: true })
 const { init } = useAuth()
 const { push: toast } = useToast()
 
@@ -203,7 +202,6 @@ const aiError = ref('')
 const aiReport = ref('')
 const aiScope = ref('')
 const aiQuota = ref(null)
-const aiHtml = computed(() => (aiReport.value ? md.render(aiReport.value) : ''))
 
 async function generateAi(scope) {
   aiBusy.value = true

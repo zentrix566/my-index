@@ -78,7 +78,7 @@
                 </div>
                 <div class="cl-field">
                   <h4>效果</h4>
-                  <p class="cl-text" v-html="card.text || '—'"></p>
+                  <p class="cl-text" v-html="safeCardText(card.text || '—')"></p>
                 </div>
                 <div class="cl-field">
                   <h4>背景描述</h4>
@@ -139,6 +139,25 @@ function rarityColorOf(card) {
 }
 function rarityLabelOf(card) {
   return RARITY_LABELS[normalizeRarity(card.rarityId)] || '其他'
+}
+
+// 卡牌数据可能带有炉石格式标签，只保留展示所需标签，避免直接信任上游 HTML。
+function safeCardText(value) {
+  const tags = []
+  const tokenized = String(value).replace(/<\/?(b|i|u|br)\s*\/?>/gi, (tag, name) => {
+    const normalized = tag.toLowerCase().startsWith('</')
+      ? `</${name.toLowerCase()}>`
+      : name.toLowerCase() === 'br' ? '<br>' : `<${name.toLowerCase()}>`
+    const index = tags.push(normalized) - 1
+    return `__CARD_TAG_${index}__`
+  })
+  const escaped = tokenized
+    .replaceAll('&', '&amp;')
+    .replaceAll('<', '&lt;')
+    .replaceAll('>', '&gt;')
+    .replaceAll('"', '&quot;')
+    .replaceAll("'", '&#039;')
+  return escaped.replace(/__CARD_TAG_(\d+)__/g, (_, index) => tags[Number(index)] || '')
 }
 
 // 按名称（模糊）或 dbfId（精确）在卡牌库中查找，返回所有匹配

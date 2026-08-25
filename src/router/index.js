@@ -32,6 +32,7 @@ import {
   loadWorldTimelinePage,
   loadBiographyPage
 } from '../features/index.js'
+import { useAuth } from '../auth/useAuth.js'
 
 // 路由级懒加载：每个页面单独成 chunk，首屏只加载当前路由所需的代码，
 // 避免炉石等大型页面把整包（4.8MB）拖进首页/关于页等轻量页面。
@@ -74,23 +75,23 @@ const routes = [
   { path: '/hearthstone/frog/review', name: 'hearthstone-frog-review', component: loadFrogReviewPage, meta: { title: '卡牌修改验收台 | Zentrix' } },
   { path: '/hearthstone/lookup', name: 'hearthstone-lookup', component: loadCardLookupPage, meta: { title: '炉石卡牌查询 | Zentrix' } },
   { path: '/stats', redirect: '/admin?tab=stats' },
-  { path: '/willpower', name: 'willpower', component: loadWillpowerHome, meta: { title: '抵御心魔 | Zentrix' } },
-  { path: '/willpower/achievements', name: 'willpower-achievements', component: loadWillpowerAchievements, meta: { title: '成就殿堂 | 抵御心魔' } },
-  { path: '/willpower/positive', name: 'willpower-positive', component: loadWillpowerPositive, meta: { title: '今日正能量 | 抵御心魔' } },
-  { path: '/willpower/calendar', name: 'willpower-calendar', component: loadWillpowerCalendar, meta: { title: '抵御日历 | 抵御心魔' } },
-  { path: '/willpower/data', name: 'willpower-data', component: loadWillpowerData, meta: { title: '数据看板 | 抵御心魔' } },
-  { path: '/willpower/ai', name: 'willpower-ai', component: loadWillpowerAiAnalysis, meta: { title: 'AI 分析 | 抵御心魔' } },
+  { path: '/willpower', name: 'willpower', component: loadWillpowerHome, meta: { requiresAuth: true, title: '抵御心魔 | Zentrix' } },
+  { path: '/willpower/achievements', name: 'willpower-achievements', component: loadWillpowerAchievements, meta: { requiresAuth: true, title: '成就殿堂 | 抵御心魔' } },
+  { path: '/willpower/positive', name: 'willpower-positive', component: loadWillpowerPositive, meta: { requiresAuth: true, title: '今日正能量 | 抵御心魔' } },
+  { path: '/willpower/calendar', name: 'willpower-calendar', component: loadWillpowerCalendar, meta: { requiresAuth: true, title: '抵御日历 | 抵御心魔' } },
+  { path: '/willpower/data', name: 'willpower-data', component: loadWillpowerData, meta: { requiresAuth: true, title: '数据看板 | 抵御心魔' } },
+  { path: '/willpower/ai', name: 'willpower-ai', component: loadWillpowerAiAnalysis, meta: { requiresAuth: true, title: 'AI 分析 | 抵御心魔' } },
   { path: '/willpower/changelog', redirect: '/changelog?category=willpower' },
-  { path: '/willpower/profile', name: 'willpower-profile', component: loadWillpowerProfile, meta: { title: '心魔档案 | 抵御心魔' } },
+  { path: '/willpower/profile', name: 'willpower-profile', component: loadWillpowerProfile, meta: { requiresAuth: true, title: '心魔档案 | 抵御心魔' } },
   // ========== 日程管理（统一登录，独立数据库）==========
-  { path: '/todo', name: 'todo', component: loadTodoHome, meta: { title: '日程管理 | Zentrix' } },
-  { path: '/todo/done', name: 'todo-done', component: loadTodoHome },
-  { path: '/todo/list/:listId', name: 'todo-list', component: loadTodoHome },
-  { path: '/todo/calendar', name: 'todo-calendar', component: loadTodoCalendar, meta: { title: '日历视图 | 日程管理' } },
-  { path: '/todo/manage', name: 'todo-manage', component: loadTodoManage, meta: { title: '日程管理 | 日程管理' } },
-  { path: '/todo/ai', name: 'todo-ai', component: loadTodoAi, meta: { title: '日程 AI 分析 | 日程管理' } },
-  { path: '/todo/groups', name: 'todo-groups', component: loadTodoGroups, meta: { title: '分组设置 | 日程管理' } },
-  { path: '/todo/profile', name: 'todo-profile', component: loadTodoProfile, meta: { title: '个人中心 | 日程管理' } },
+  { path: '/todo', name: 'todo', component: loadTodoHome, meta: { requiresAuth: true, title: '日程管理 | Zentrix' } },
+  { path: '/todo/done', name: 'todo-done', component: loadTodoHome, meta: { requiresAuth: true } },
+  { path: '/todo/list/:listId', name: 'todo-list', component: loadTodoHome, meta: { requiresAuth: true } },
+  { path: '/todo/calendar', name: 'todo-calendar', component: loadTodoCalendar, meta: { requiresAuth: true, title: '日历视图 | 日程管理' } },
+  { path: '/todo/manage', name: 'todo-manage', component: loadTodoManage, meta: { requiresAuth: true, title: '日程管理 | 日程管理' } },
+  { path: '/todo/ai', name: 'todo-ai', component: loadTodoAi, meta: { requiresAuth: true, title: '日程 AI 分析 | 日程管理' } },
+  { path: '/todo/groups', name: 'todo-groups', component: loadTodoGroups, meta: { requiresAuth: true, title: '分组设置 | 日程管理' } },
+  { path: '/todo/profile', name: 'todo-profile', component: loadTodoProfile, meta: { requiresAuth: true, title: '个人中心 | 日程管理' } },
   { path: '/todo/changelog', redirect: '/changelog?category=todo' },
   { path: '/todo/login', redirect: '/login?redirect=/todo&source=todo' },
   { path: '/dream', name: 'dream', component: loadDreamPage, meta: { title: '黄粱一梦 | Zentrix' } },
@@ -126,8 +127,17 @@ const router = createRouter({
   }
 })
 
-router.beforeEach(() => {
+const auth = useAuth()
+
+router.beforeEach(async (to) => {
   window.dispatchEvent(new CustomEvent('route-loading'))
+  if (!to.meta.requiresAuth) return true
+  await auth.init()
+  if (auth.user.value) return true
+  return {
+    path: '/login',
+    query: { redirect: to.fullPath, source: to.path.startsWith('/todo') ? 'todo' : 'willpower' }
+  }
 })
 
 router.onError((error) => {

@@ -62,6 +62,7 @@ import { useAuth } from '../../../auth/useAuth.js'
 import todoApi from '../api/todo.js'
 import TodoSidebar from '../components/TodoSidebar.vue'
 import TodoNewGroupModal from '../components/TodoNewGroupModal.vue'
+import { formatBeijingDateKey, formatDateKey } from '../../../utils/date.js'
 
 const router = useRouter()
 const { user, init } = useAuth()
@@ -78,15 +79,12 @@ const totalTasks = computed(() => activeTasks.value.length + doneTasks.value.len
 const progress = computed(() => totalTasks.value ? Math.round(doneTasks.value.length / totalTasks.value * 100) : 0)
 
 function beijingTodayKey() {
-  const now = new Date(Date.now() + 8 * 3600 * 1000)
-  const pad = (value) => String(value).padStart(2, '0')
-  return `${now.getUTCFullYear()}-${pad(now.getUTCMonth() + 1)}-${pad(now.getUTCDate())}`
+  return formatBeijingDateKey()
 }
 function addDays(key, offset) {
   const [year, month, day] = key.split('-').map(Number)
   const date = new Date(year, month - 1, day + offset)
-  const pad = (value) => String(value).padStart(2, '0')
-  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+  return formatDateKey(date)
 }
 
 async function loadLists() {

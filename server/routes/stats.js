@@ -1,5 +1,6 @@
 import express from 'express'
 import { requireOwner } from '../auth.js'
+import { sendInternalError } from '../validation.js'
 import {
   getStats,
   getTopPages,
@@ -43,7 +44,7 @@ function asyncRoute(handler) {
     try {
       await handler(req, res)
     } catch (error) {
-      res.status(500).json({ error: error.message })
+      sendInternalError(res, '统计数据读取失败，请稍后重试')
     }
   }
 }

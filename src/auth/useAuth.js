@@ -4,21 +4,14 @@
  * 同源 fetch 自动携带 Cookie，无需手动设置 credentials。
  */
 import { ref } from 'vue'
+import { parseResponse } from '../api/http.js'
 
 const user = ref(null)
 const initialized = ref(false)
 const initializing = ref(false)
 let initPromise = null
 
-async function readJsonResponse(resp) {
-  const text = await resp.text()
-  if (!text) return {}
-  try {
-    return JSON.parse(text)
-  } catch {
-    throw new Error('服务响应格式错误，请确认后端服务已正常启动')
-  }
-}
+const readJsonResponse = parseResponse
 
 async function init() {
   if (initialized.value || initializing.value) return initPromise

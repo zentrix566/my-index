@@ -35,6 +35,12 @@
   --color-primary: #2f6fed;
   --color-card: #ffffff;
   --color-border: #e5e7eb;
+  /* 全站语义化组件变量；业务模块只覆盖自己的强调色。 */
+  --color-surface: var(--surface);
+  --color-surface-soft: var(--surface-soft);
+  --color-text-muted: var(--muted);
+  --color-radius-sm: var(--radius-sm);
+  --color-radius-md: var(--radius-md);
 }
 
 :root[data-theme="dark"] {

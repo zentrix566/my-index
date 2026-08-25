@@ -170,7 +170,6 @@
 
     <TodoNewGroupModal ref="groupModal" @created="loadLists" />
 
-    <div v-if="toastMsg" class="todo-toast">{{ toastMsg }}</div>
   </section>
 </template>
 
@@ -184,6 +183,8 @@ import TodoTaskModal from '../components/TodoTaskModal.vue'
 import TodoNewGroupModal from '../components/TodoNewGroupModal.vue'
 import { useFeedback } from '../../../composables/useFeedback.js'
 import { taskToCreatePayload } from '../utils/taskPayload.js'
+import { useToast } from '../../../composables/useToast.js'
+import { formatBeijingDateKey, formatBeijingMonthKey, formatDateKey } from '../../../utils/date.js'
 import {
   TASK_STATUS_LIST,
   statusStyle,
@@ -205,18 +206,13 @@ const prioLabel = { low: '低', medium: '中', high: '高' }
 const dow = ['一', '二', '三', '四', '五', '六', '日']
 
 function beijingToday() {
-  const d = new Date(Date.now() + 8 * 3600 * 1000)
-  const pad = (n) => String(n).padStart(2, '0')
-  return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`
+  return formatBeijingDateKey()
 }
 function beijingMonth() {
-  const d = new Date(Date.now() + 8 * 3600 * 1000)
-  const pad = (n) => String(n).padStart(2, '0')
-  return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}`
+  return formatBeijingMonthKey()
 }
 function fmtKey(y, m, d) {
-  const pad = (n) => String(n).padStart(2, '0')
-  return `${y}-${pad(m)}-${pad(d)}`
+  return formatDateKey(new Date(y, m - 1, d))
 }
 /** 在 YYYY-MM-DD 上加减天数 */
 function addDaysKey(key, n) {
@@ -283,8 +279,7 @@ function shift(delta) {
   if (mode.value === 'month') {
     const [y, m] = month.value.split('-').map(Number)
     const d = new Date(y, m - 1 + delta, 1)
-    const pad = (n) => String(n).padStart(2, '0')
-    month.value = `${d.getFullYear()}-${pad(d.getMonth() + 1)}`
+    month.value = formatBeijingMonthKey(d)
   } else {
     weekOffset.value += delta
   }
@@ -457,13 +452,7 @@ async function refreshCal() {
   }
 }
 
-const toastMsg = ref('')
-let toastTimer = null
-function toast(msg) {
-  toastMsg.value = msg
-  if (toastTimer) clearTimeout(toastTimer)
-  toastTimer = setTimeout(() => (toastMsg.value = ''), 2500)
-}
+const { push: toast } = useToast()
 
 async function loadLists() {
   try {

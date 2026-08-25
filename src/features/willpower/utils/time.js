@@ -5,19 +5,13 @@
  * - 展示一律用 formatBeijing / toBeijingInput 显式按北京时区格式化，与浏览器所在时区无关。
  */
 
-export const BEIJING_TZ = 'Asia/Shanghai'
-const BEIJING_OFFSET_MS = 8 * 3600 * 1000
+import { formatBeijingIso } from '../../../utils/date.js'
 
-const pad = (n) => String(n).padStart(2, '0')
-const pad3 = (n) => String(n).padStart(3, '0')
+export const BEIJING_TZ = 'Asia/Shanghai'
 
 /** 当前北京时间，ISO 字符串带 +08:00 偏移。 */
 export function nowBeijingIso() {
-  const d = new Date(Date.now() + BEIJING_OFFSET_MS)
-  return (
-    `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}` +
-    `T${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}.${pad3(d.getUTCMilliseconds())}+08:00`
-  )
+  return formatBeijingIso()
 }
 
 /** 把任意 ISO / 时间戳格式化为北京时间的「MM-DD HH:mm」。无效返回空串。 */

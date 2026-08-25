@@ -201,7 +201,6 @@
 
     <TodoNewGroupModal ref="groupModal" @created="loadLists" />
 
-    <div v-if="toastMsg" class="todo-toast">{{ toastMsg }}</div>
   </section>
 </template>
 
@@ -217,6 +216,8 @@ import TodoSidebar from '../components/TodoSidebar.vue'
 import TodoNewGroupModal from '../components/TodoNewGroupModal.vue'
 import { useFeedback } from '../../../composables/useFeedback.js'
 import { taskToCreatePayload } from '../utils/taskPayload.js'
+import { useToast } from '../../../composables/useToast.js'
+import { formatBeijingDateKey, formatBeijingIso } from '../../../utils/date.js'
 
 const route = useRoute()
 const router = useRouter()
@@ -283,19 +284,11 @@ function pickSlogan() {
 
 // ===== 日期（北京时间）=====
 function beijingToday() {
-  const d = new Date(Date.now() + 8 * 3600 * 1000)
-  const pad = (n) => String(n).padStart(2, '0')
-  return `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}`
+  return formatBeijingDateKey()
 }
 /** 当前北京时间的 ISO 字符串（带 +08:00），与后端 nowIso() 同格式。 */
 function beijingNowIso() {
-  const d = new Date(Date.now() + 8 * 3600 * 1000)
-  const pad = (n) => String(n).padStart(2, '0')
-  const pad3 = (n) => String(n).padStart(3, '0')
-  return (
-    `${d.getUTCFullYear()}-${pad(d.getUTCMonth() + 1)}-${pad(d.getUTCDate())}` +
-    `T${pad(d.getUTCHours())}:${pad(d.getUTCMinutes())}:${pad(d.getUTCSeconds())}.${pad3(d.getUTCMilliseconds())}+08:00`
-  )
+  return formatBeijingIso()
 }
 function fmtDateCn(dateKey) {
   const [y, m, d] = dateKey.split('-').map(Number)
@@ -324,13 +317,7 @@ const priorityCounts = computed(() => tasks.value.reduce((counts, task) => {
 }, { high: 0, medium: 0, low: 0 }))
 
 // ===== 轻量 toast =====
-const toastMsg = ref('')
-let toastTimer = null
-function toast(msg) {
-  toastMsg.value = msg
-  if (toastTimer) clearTimeout(toastTimer)
-  toastTimer = setTimeout(() => (toastMsg.value = ''), 2500)
-}
+const { push: toast } = useToast()
 
 // ===== 加载 =====
 async function loadLists() {

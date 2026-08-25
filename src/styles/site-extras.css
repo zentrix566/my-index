@@ -238,3 +238,28 @@
   font-weight: 800;
   margin-top: auto;
 }
+
+.toast-host {
+  position: fixed;
+  right: 18px;
+  bottom: 18px;
+  z-index: 1000;
+  display: grid;
+  gap: 10px;
+  width: min(360px, calc(100vw - 36px));
+  pointer-events: none;
+}
+.toast-item {
+  pointer-events: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  background: var(--surface);
+  color: var(--text);
+  box-shadow: var(--shadow-md);
+  text-align: left;
+  cursor: pointer;
+}
+.toast-item--success { border-color: color-mix(in srgb, #16a34a 45%, var(--line)); }
+.toast-item--error { border-color: color-mix(in srgb, var(--danger) 45%, var(--line)); }
+.toast-item--info { border-color: color-mix(in srgb, var(--primary) 45%, var(--line)); }

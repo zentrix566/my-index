@@ -136,6 +136,32 @@ src/features/hearthstone/
 └── styles/                     # 模块 CSS
 ```
 
+## 全站公共架构规范
+
+新增功能或修改现有页面前，先检查是否可以复用以下公共层；除非有明确的业务差异，不要在 feature 目录内重新实现一套相同逻辑。
+
+### 公共层职责
+
+| 公共能力 | 统一入口 | 约定 |
+|---|---|---|
+| 前端 HTTP / JSON 请求 | `src/api/http.js` | 统一处理同源 Cookie、JSON 解析、非 2xx 错误；feature API 只定义业务方法 |
+| 日期与时间 | `src/utils/date.js` | 普通日期使用本地日历工具；Todo / Willpower 的自然日使用北京时间工具；不要在页面内重复手写 `padStart` 和 UTC+8 偏移 |
+| 全站提示 | `src/composables/useToast.js` + `src/components/ToastHost.vue` | 成功、失败、信息提示统一使用 Toast；不要在页面内新增 `toastMsg` / `toastTimer` |
+| Markdown 输出 | `src/components/MarkdownContent.vue` | 统一使用 `markdown-it` 且关闭原始 HTML；AI 报告、AI 对话输出优先复用该组件 |
+| 项目入口卡片 | `src/components/ContentCard.vue` | 项目列表、个人工具列表复用同一结构；模块自己的业务卡片不强行套用 |
+| 登录保护 | `src/router/index.js` 的 `meta.requiresAuth` | 需要登录的路由必须声明 `requiresAuth: true`，统一由 router guard 跳转登录页；页面内的鉴权代码只作为兼容兜底 |
+| UI 语义变量 | `src/styles/main.css` | 优先使用 `--color-*`、`--radius-*`、`--shadow-*` 等语义变量；模块只覆盖品牌色和特殊交互色 |
+
+### 复用与拆分规则
+
+- 同一段逻辑在两个 feature 中出现时，先评估是否属于全站公共能力；属于公共能力就放到 `src/api/`、`src/components/`、`src/composables/` 或 `src/utils/`。
+- API 文件只负责 URL、请求方法和业务参数转换，不重复实现响应解析、错误解析和 Cookie 处理。
+- 日期工具必须明确时区语义。`formatDateKey()` 是浏览器本地日期，`formatBeijingDateKey()` 是业务自然日；不能为了减少函数数量而混用。
+- Markdown 只能渲染可信的、经过安全配置的内容。外部数据或卡牌文本需要白名单过滤，不能直接把原始字符串交给 `v-html`。
+- 公共组件负责结构、无障碍属性和基础交互；模块页面负责业务数据、模块主题和特殊布局。
+- 新增模块样式时优先使用全局语义变量；如果必须新增变量，命名要表达用途，不要使用难以迁移的页面专属颜色值。
+- 修改公共层后必须运行 `npm run check:syntax` 和 `npm run build`，并检查至少一个使用该公共层的实际页面。
+
 ## 炉石数据架构
 
 所有炉石图片和数据托管在阿里云 OSS（bucket `my-hearthstone-20260723`，region `cn-beijing`），前端不直连 OSS，全部通过本站相对路径经 Express 反代。

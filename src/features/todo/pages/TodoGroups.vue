@@ -127,7 +127,6 @@
       </div>
     </div>
 
-    <div v-if="toastMsg" class="todo-toast">{{ toastMsg }}</div>
   </section>
 </template>
 
@@ -139,6 +138,7 @@ import todoApi from '../api/todo.js'
 import TodoSidebar from '../components/TodoSidebar.vue'
 import { useFeedback } from '../../../composables/useFeedback.js'
 import { clearLastListId } from '../utils/lastList.js'
+import { useToast } from '../../../composables/useToast.js'
 
 const router = useRouter()
 const { user, init } = useAuth()
@@ -172,13 +172,7 @@ function statOf(listId) {
   return { pending, done, cancelled }
 }
 
-const toastMsg = ref('')
-let toastTimer = null
-function toast(msg) {
-  toastMsg.value = msg
-  if (toastTimer) clearTimeout(toastTimer)
-  toastTimer = setTimeout(() => (toastMsg.value = ''), 2500)
-}
+const { push: toast } = useToast()
 
 async function loadLists() {
   const r = await todoApi.listLists()

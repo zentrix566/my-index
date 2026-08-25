@@ -1,6 +1,6 @@
 <script setup>
 import { ref, computed, onMounted, watch } from 'vue'
-import MarkdownIt from 'markdown-it'
+import MarkdownContent from '../../../components/MarkdownContent.vue'
 
 const props = defineProps({
   // 是否开启硬核模式：true 纳入全部版本，false 仅核心 9 个有经验版本
@@ -8,8 +8,6 @@ const props = defineProps({
   // 当前作用域覆盖的版本总数（核心 = 核心版本数，硬核 = 全部版本数），用于向用户澄清范围
   scopeVersions: { type: Number, default: 0 }
 })
-
-const md = new MarkdownIt({ html: false, linkify: true, breaks: true })
 
 // 弹窗内可独立切换硬核模式：初始化自父组件开关，保证与「我的成就 / 按职业浏览」的硬核状态一致，
 // 同时允许在对话中临时切换并立刻生效（每次提问都带上当前值）。
@@ -55,14 +53,6 @@ onMounted(async () => {
     else if (resp.status === 401) needLogin.value = true
   } catch { /* 额度获取失败不阻断使用，后续请求会刷新 */ }
 })
-
-function renderMd(text) {
-  try {
-    return md.render(text || '')
-  } catch {
-    return (text || '').replace(/[&<>]/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]))
-  }
-}
 
 async function ask(question, type) {
   const q = (question || '').trim()
@@ -184,7 +174,7 @@ function clearChat() {
     <div class="ai-messages">
       <div v-for="(m, i) in messages" :key="i" class="ai-msg" :class="'ai-msg-' + m.role">
         <div class="ai-msg-role">{{ m.role === 'user' ? '你' : 'AI' }}</div>
-        <div v-if="m.role === 'assistant'" class="ai-msg-text ai-md" v-html="renderMd(m.text)"></div>
+        <MarkdownContent v-if="m.role === 'assistant'" class-name="ai-msg-text ai-md" :content="m.text" />
         <div v-else class="ai-msg-text">{{ m.text }}</div>
       </div>
       <div v-if="loading" class="ai-msg ai-msg-assistant">

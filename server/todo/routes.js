@@ -7,6 +7,7 @@ import express from 'express'
 import { appLog } from '../logger.js'
 import { requireAuth, trackModuleAccessMiddleware } from '../auth.js'
 import { callDeepSeek } from '../ai-advisor.js'
+import { isDateKey, isMonthKey, sendInternalError } from '../validation.js'
 import {
   TODO_CONST,
   VALID_STATUS,
@@ -175,7 +176,7 @@ router.post('/tasks', async (req, res) => {
     return res.status(400).json({ error: `任务标题需 1-${TODO_CONST.TITLE_MAX} 个字符` })
   }
   if (note !== undefined && typeof note !== 'string') return res.status(400).json({ error: '备注格式错误' })
-  if (dueDate !== undefined && dueDate !== null && !/^\d{4}-\d{2}-\d{2}$/.test(dueDate)) {
+  if (dueDate !== undefined && dueDate !== null && !isDateKey(dueDate)) {
     return res.status(400).json({ error: '日期格式应为 YYYY-MM-DD' })
   }
   const safePriority = priority === 'low' || priority === 'high' ? priority : 'medium'
@@ -223,7 +224,7 @@ router.patch('/tasks/:id', async (req, res) => {
       patch.note = note.slice(0, TODO_CONST.NOTE_MAX)
     }
     if (dueDate !== undefined) {
-      if (dueDate !== null && !/^\d{4}-\d{2}-\d{2}$/.test(dueDate)) {
+      if (dueDate !== null && !isDateKey(dueDate)) {
         return res.status(400).json({ error: '日期格式应为 YYYY-MM-DD' })
       }
       patch.dueDate = dueDate
@@ -420,14 +421,14 @@ router.post('/ai-analyze', async (req, res) => {
   let to
   try {
     if (scope === 'day') {
-      if (!/^\d{4}-\d{2}-\d{2}$/.test(date || '')) return res.status(400).json({ error: 'date 格式应为 YYYY-MM-DD' })
+      if (!isDateKey(date)) return res.status(400).json({ error: 'date 格式应为 YYYY-MM-DD' })
       from = date
       to = date
     } else if (scope === 'week') {
-      const anchor = /^\d{4}-\d{2}-\d{2}$/.test(date || '') ? date : todayKey()
+      const anchor = isDateKey(date) ? date : todayKey()
       ;({ from, to } = weekRangeOf(anchor))
     } else {
-      const mm = /^\d{4}-\d{2}$/.test(month || '') ? month : todayKey().slice(0, 7)
+      const mm = isMonthKey(month) ? month : todayKey().slice(0, 7)
       ;({ from, to } = monthRange(mm))
     }
   } catch {
@@ -467,7 +468,7 @@ router.post('/ai-analyze', async (req, res) => {
     res.json({ scope, from, to, report })
   } catch (err) {
     appLog('ERROR', `日程 AI 分析失败: uid=${req.userId}, scope=${scope}, error=${err?.message}`)
-    res.status(500).json({ error: err.message || 'AI 分析失败，请稍后重试' })
+    sendInternalError(res, 'AI 分析失败，请稍后重试')
   }
 })
 
