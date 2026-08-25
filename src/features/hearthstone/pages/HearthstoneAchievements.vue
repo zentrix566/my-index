@@ -8,12 +8,8 @@
       <HearthstoneAchievementsHero
         :user="user"
         :hs-theme="hsTheme"
-        :achievement-count="allAchievements.length"
-        :expansion-count="expansions.length"
         @navigate="router.push"
         @logout="logoutAndRefresh"
-        @toggle-theme="toggleTheme"
-        @contact="contactAuthor"
       />
 
       <!-- AI 成就建议：悬浮按钮（仅登录 + 我的成就视图），点击打开弹窗 -->
@@ -28,48 +24,6 @@
 
       <!-- 视图模式切换 + 版本/职业选择：滚动时固定在顶部 -->
       <div class="hs-sticky-controls" ref="stickyRef">
-      <div class="hs-view-row">
-        <div class="hs-view-switch" role="tablist" aria-label="浏览方式">
-          <button
-            :class="{ active: viewMode === 'expansion' }"
-            type="button"
-            role="tab"
-            :aria-selected="viewMode === 'expansion'"
-            @click="viewMode = 'expansion'"
-          >
-            按版本浏览
-          </button>
-          <button
-            :class="{ active: viewMode === 'class' }"
-            type="button"
-            role="tab"
-            :aria-selected="viewMode === 'class'"
-            @click="viewMode = 'class'"
-          >
-            按职业浏览
-          </button>
-          <button
-            :class="{ active: viewMode === 'my' }"
-            type="button"
-            role="tab"
-            :aria-selected="viewMode === 'my'"
-            @click="viewMode = 'my'"
-          >
-            我的成就
-          </button>
-        </div>
-
-        <!-- 硬核模式是全局范围开关，与浏览方式同排，但不属于 tablist。 -->
-        <div class="hs-hardcore-global">
-          <HardcoreModeToggle
-            v-model="hardcore"
-            :expansion-count="expansions.length"
-            :core-expansion-count="originalExpansions.length"
-            action="纳入"
-          />
-        </div>
-      </div>
-
       <header class="hs-topbar">
         <div class="hs-brand">
           <div class="hs-brand-mark" aria-hidden="true">
@@ -80,7 +34,7 @@
           <div>
             <h2>炉石成就</h2>
             <p>
-              <template v-if="viewMode === 'expansion'">{{ currentExpansion?.name }} · 共 {{ currentExpansionAchievements.length }} 个成就</template>
+              <template v-if="viewMode === 'expansion'">共 {{ currentExpansionAchievements.length }} 个成就</template>
               <template v-else-if="viewMode === 'class'">{{ currentClassName }} · 共 {{ filteredAchievements.length.toLocaleString() }} 个成就</template>
               <template v-else>{{ myViewSubLabel }}</template>
             </p>
@@ -106,6 +60,23 @@
               >{{ link.name }}</a>
             </div>
           </div>
+        </div>
+        <div class="hs-viewer-metrics" aria-label="查看器数据概览">
+          <span><strong>{{ allAchievements.length }}</strong>收录成就</span>
+          <span><strong>{{ expansions.length }}</strong>游戏版本</span>
+        </div>
+        <div class="hs-hardcore-global">
+          <HardcoreModeToggle
+            v-model="hardcore"
+            :expansion-count="expansions.length"
+            :core-expansion-count="originalExpansions.length"
+            action="纳入"
+          />
+        </div>
+        <div class="hs-view-switch hs-view-switch-inline" role="tablist" aria-label="浏览方式">
+          <button :class="{ active: viewMode === 'expansion' }" type="button" role="tab" :aria-selected="viewMode === 'expansion'" @click="viewMode = 'expansion'">按版本浏览</button>
+          <button :class="{ active: viewMode === 'class' }" type="button" role="tab" :aria-selected="viewMode === 'class'" @click="viewMode = 'class'">按职业浏览</button>
+          <button :class="{ active: viewMode === 'my' }" type="button" role="tab" :aria-selected="viewMode === 'my'" @click="viewMode = 'my'">我的成就</button>
         </div>
         <div class="hs-top-actions">
           <button
@@ -641,12 +612,7 @@ function scrollToControls() {
 }
 
 // ============ 主题切换（明亮 / 暗色），默认明亮 ============
-const { hsTheme, toggleTheme } = useHearthstoneTheme()
-// 作者邮箱
-const AUTHOR_EMAIL = '1987247500@qq.com'
-function contactAuthor() {
-  window.location.href = `mailto:${AUTHOR_EMAIL}?subject=${encodeURIComponent('炉石成就查看器 - 反馈/建议')}`
-}
+const { hsTheme } = useHearthstoneTheme()
 
 // 成就进度：进入页面 / 登录态变化时，由下方 watch(user) 统一触发刷新（reloadProgress），
 // 未登录则保持空进度（服务器返回空对象 → 全部未完成，用于匿名浏览）。

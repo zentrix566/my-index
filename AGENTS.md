@@ -234,6 +234,17 @@ npm run upload:oss:data
 
 相关脚本：`scripts/upload-hs-cosmetics-to-oss.mjs`、`scripts/upload-cosmetic-thumbnails.mjs`、`scripts/upload-hs-card-backs-to-oss.mjs`。缩略图由 `scripts/gen-cosmetic-thumbnails.py`（Pillow）生成 384px WebP。
 
+### 新增炉石成就
+
+成就总数由 `src/features/hearthstone/data/achievements/*.json` 中所有版本的 `achievements` 数组实时汇总，不要在页面里手动修改“收录成就”数字。
+
+1. **确认归属版本**：已有版本直接修改对应 JSON；新版本先创建独立 JSON，并在 `src/features/hearthstone/data/expansions.js` 中 import 后加入 `expansions`。如果是新增版本，还要根据是否属于原有版本维护 `CORE_EXPANSION_IDS` / `ADDED_EXPANSION_ORDER`。
+2. **添加成就对象**：使用全局唯一的站内 slug（例如 `vh-010`），填写 `name`、`heroClass`、`type`、`difficulty`、`stages` 等字段。累计成就的阶段必须提供正确的 `quota`；需要卡牌详情时补充 `relatedCards`，需要攻略或卡组时补充 `guide` / `recommendedDecks`。
+3. **检查数据关联**：如果 `relatedCards` 使用了新卡名，确认卡牌名称索引和卡图映射也已更新；否则成就数量会增加，但关联卡牌可能没有图片或详情。
+4. **更新游戏导入映射**：若需要支持采集器导入游戏内进度，准备最新的 `hs-achievement-data.json` 后执行 `node scripts/build-achievement-id-map.mjs --hs-data <hs-achievement-data.json 路径>`，检查未匹配清单。
+5. **本地验证**：运行 `npm run check:syntax` 和 `npm run build`，打开成就页确认版本数量、成就数量、筛选结果和成就详情均正常。
+6. **提交前检查**：确认 ID 没有重复、阶段顺序和 quota 正确、中文字段无误；不要直接删除旧成就 ID，以免历史用户进度失去对应目标。若只是暂时下线某个工具，应先隐藏入口并保留路由与页面代码，观察后再决定是否删除。
+
 ## 常用脚本速查
 
 | 命令 | 作用 |

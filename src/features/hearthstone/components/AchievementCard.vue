@@ -71,17 +71,6 @@ const copyDeckCode = async (deck, event) => {
             type="button"
             @click.stop="miniExpanded = !miniExpanded"
           >{{ miniExpanded ? '收起' : '详情' }}</button>
-          <button
-            class="hs-card-share hs-pin-inline"
-            type="button"
-            :aria-label="`分享 ${achievement.name} 的成就卡片`"
-            @click.stop="emit('share', achievement)"
-          >
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-              <path d="M4 12v7a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-7"/><path d="m16 6-4-4-4 4"/><path d="M12 2v13"/>
-            </svg>
-            <span>分享</span>
-          </button>
         </h3>
         <div class="hs-card-badges">
           <span class="hs-badge hs-version-badge">{{ achievement._expansionName }}</span>

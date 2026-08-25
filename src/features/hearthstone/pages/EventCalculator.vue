@@ -4,7 +4,15 @@
       <header class="hs-ev-head">
         <div>
           <p class="eyebrow"><span class="hs-live-dot" aria-hidden="true"></span> Hearthstone Tracker</p>
-          <h1>活动计算器</h1>
+            <h1>活动计算器</h1>
+            <label class="hs-ev-period-select">
+              <span>活动期数</span>
+              <select v-model="selectedEventId">
+                <option v-for="item in eventOptions" :key="item.id" :value="item.id">
+                  {{ item.name }}（{{ item.startDate }}）
+                </option>
+              </select>
+            </label>
           <p class="hs-ev-sub">
             按每周任务、每日任务与游玩收益，测算活动路线满级所需的<b>总时长 / 局数</b>，
             并在日历上标出<b>预计满级日期</b>。计算方式固定，活动轮换时只需改名称与周任务即可复用。
@@ -277,49 +285,68 @@
 import { ref, computed, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import { toPng } from 'html-to-image'
-import { DEFAULT_EVENT, EVENT_CALC_NOTE } from '../data/events.js'
+import { EVENTS, DEFAULT_EVENT, EVENT_CALC_NOTE } from '../data/events.js'
 import { computeEvent, fmtDate, parseDate, daysBetween } from '../utils/eventCalculator.js'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 
 const router = useRouter()
 const { hsTheme, toggleTheme } = useHearthstoneTheme()
 
-// ===== 本地持久化（刷新不丢） =====
-function persisted(key, initial) {
-  let val
-  try {
-    const raw = localStorage.getItem('hs:evt:' + key)
-    val = raw != null ? JSON.parse(raw) : initial
-  } catch {
-    val = initial
-  }
-  const r = ref(val)
-  watch(r, (v) => {
-    try { localStorage.setItem('hs:evt:' + key, JSON.stringify(v)) } catch { /* ignore */ }
-  }, { deep: true })
-  return r
+// ===== 本地持久化（按活动期数隔离，刷新不丢） =====
+const eventOptions = EVENTS
+const EVENT_STORAGE_PREFIX = 'hs:evt:'
+const LEGACY_EVENT_KEY = EVENT_STORAGE_PREFIX + 'event'
+
+function cloneEvent(value) {
+  return JSON.parse(JSON.stringify(value))
 }
 
-// ===== 状态：单个活动配置对象 =====
-const event = persisted('event', JSON.parse(JSON.stringify(DEFAULT_EVENT)))
-// 兼容旧缓存：缺奖励里程碑字段时以默认值补齐
-if (!Array.isArray(event.value.rewardTiers) || !event.value.rewardTiers.length) {
-  event.value.rewardTiers = JSON.parse(JSON.stringify(DEFAULT_EVENT.rewardTiers))
+function readJson(key) {
+  try {
+    const raw = localStorage.getItem(key)
+    return raw == null ? null : JSON.parse(raw)
+  } catch {
+    return null
+  }
 }
-// 兼容旧缓存：缺「今日任务已完成」开关时默认开启（今日点数已计入当前存量）
-if (typeof event.value.todayTaskDone !== 'boolean') {
-  event.value.todayTaskDone = true
-}
-// 兼容旧缓存：将默认奖励标签（奖励1~4）迁移为新版奖励名称，保留用户自定义标签与阈值
-const OLD_REWARD_LABELS = ['奖励1', '奖励2', '奖励3', '奖励4']
-const NEW_REWARD_LABELS = DEFAULT_EVENT.rewardTiers.map((t) => t.label)
-if (Array.isArray(event.value.rewardTiers)) {
-  event.value.rewardTiers = event.value.rewardTiers.map((t, i) =>
-    OLD_REWARD_LABELS[i] && t.label === OLD_REWARD_LABELS[i] && NEW_REWARD_LABELS[i]
-      ? { ...t, label: NEW_REWARD_LABELS[i] }
-      : t
+
+function normalizeEvent(raw, fallback) {
+  const value = { ...cloneEvent(fallback), ...(raw || {}) }
+  value.weeklyTasks = Array.isArray(raw?.weeklyTasks) ? raw.weeklyTasks : cloneEvent(fallback.weeklyTasks)
+  value.rewardTiers = Array.isArray(raw?.rewardTiers) && raw.rewardTiers.length
+    ? raw.rewardTiers
+    : cloneEvent(fallback.rewardTiers)
+  if (typeof value.todayTaskDone !== 'boolean') value.todayTaskDone = true
+
+  const oldLabels = ['奖励1', '奖励2', '奖励3', '奖励4']
+  value.rewardTiers = value.rewardTiers.map((tier, index) =>
+    oldLabels[index] && tier.label === oldLabels[index] && fallback.rewardTiers[index]
+      ? { ...tier, label: fallback.rewardTiers[index].label }
+      : tier
   )
+  return value
 }
+
+function loadEvent(id) {
+  const fallback = eventOptions.find((item) => item.id === id) || DEFAULT_EVENT
+  // 首次升级时把旧版单活动缓存迁移到第一期，保留用户已经填写的进度。
+  const stored = readJson(EVENT_STORAGE_PREFIX + id) || (id === eventOptions[0].id ? readJson(LEGACY_EVENT_KEY) : null)
+  const value = normalizeEvent(stored, fallback)
+  try { localStorage.setItem(EVENT_STORAGE_PREFIX + id, JSON.stringify(value)) } catch { /* ignore */ }
+  return value
+}
+
+const selectedEventId = ref(readJson(EVENT_STORAGE_PREFIX + 'active') || eventOptions[0].id)
+const event = ref(loadEvent(selectedEventId.value))
+
+watch(event, (value) => {
+  try { localStorage.setItem(EVENT_STORAGE_PREFIX + selectedEventId.value, JSON.stringify(value)) } catch { /* ignore */ }
+}, { deep: true })
+
+watch(selectedEventId, (id) => {
+  try { localStorage.setItem(EVENT_STORAGE_PREFIX + 'active', JSON.stringify(id)) } catch { /* ignore */ }
+  event.value = loadEvent(id)
+})
 
 // ===== 计算结果 =====
 const result = computed(() => computeEvent(event.value, new Date()))
@@ -652,6 +679,8 @@ function exportChart() {
 .hs-ev-head .eyebrow { display: inline-flex; align-items: center; gap: 6px; color: var(--ev-orange); font-weight: 700; font-size: 13px; margin: 0 0 6px; }
 .hs-live-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ev-orange); box-shadow: 0 0 0 3px var(--ev-orange-soft); }
 .hs-ev-head h1 { font-size: 28px; margin: 0 0 6px; }
+.hs-ev-period-select { display: inline-flex; align-items: center; gap: 8px; margin: 0 0 12px; color: var(--ev-muted); font-size: 13px; font-weight: 700; }
+.hs-ev-period-select select { min-height: 34px; padding: 5px 10px; border: 1px solid var(--ev-border); border-radius: 8px; color: var(--ev-text); background: var(--ev-input-bg); font: inherit; }
 .hs-ev-sub { margin: 0; max-width: 560px; color: var(--ev-muted); line-height: 1.6; font-size: 14px; }
 .hs-ev-sub b { color: var(--ev-orange); }
 .hs-ev-head-actions { display: flex; gap: 8px; align-items: center; }

@@ -13,3 +13,4 @@ export const loadCardLookupPage = () => loadWithStyles(() => import('./pages/Car
 export const loadHearthstoneCollectionPage = () => loadWithStyles(() => import('./pages/HearthstoneCollection.vue'))
 export const loadHearthstoneWheelPage = () => loadWithStyles(() => import('./pages/HearthstoneWheel.vue'))
 export const loadAlteracPuzzleAssistantPage = () => loadWithStyles(() => import('./pages/AlteracPuzzleAssistant.vue'))
+export const loadHearthstoneGuidePage = () => loadWithStyles(() => import('./pages/HearthstoneGuide.vue'))
