@@ -4,6 +4,12 @@
  */
 export const friendLinks = [
   {
+    name: 'Zentrix 个人主页',
+    url: 'https://zentrix566.github.io/',
+    kicker: '友情链接 · 个人主页',
+    summary: 'Zentrix 的个人主页，分享项目、作品与技术实践。'
+  },
+  {
     name: 'UpVibe Todo',
     url: 'https://todo.upvibe.site/',
     kicker: '友情链接 · Todo',
