@@ -2,7 +2,7 @@
 """批量生成炉石收藏缩略图（WebP，默认宽 384）。
 
 读取本地原图目录（默认 E:/github/my-heartstone/hearthstone_cosmetics），
-对 coins / card-backs / hero-skins 下所有图片生成 384px 宽的 WebP，
+对 coins / card-backs / hero-skins / pets 下所有图片生成 384px 宽的 WebP，
 输出到同级的 384/ 子目录（保留 hero-skins 的职业子目录结构）。
 
 本地 dev 直接由 server 的 express.static 服务该目录，无需上传即可预览；
@@ -18,7 +18,7 @@ from PIL import Image
 
 ROOT = sys.argv[1] if len(sys.argv) > 1 else r'E:/github/my-heartstone/hearthstone_cosmetics'
 WIDTH = int(sys.argv[2]) if len(sys.argv) > 2 else 384
-TYPES = ['coins', 'card-backs', 'hero-skins']
+TYPES = ['coins', 'card-backs', 'hero-skins', 'pets']
 
 
 def gen_one(src):

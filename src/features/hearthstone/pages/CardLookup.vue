@@ -4,10 +4,13 @@
       <div class="cl-wrap">
         <div class="cl-head">
           <div class="cl-title-block">
-            <router-link to="/hearthstone" class="cl-back" aria-label="返回炉石成就查看器">
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
-              返回炉石成就
-            </router-link>
+            <div class="cl-nav-links">
+              <router-link to="/hearthstone" class="cl-back" aria-label="返回炉石成就查看器">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg>
+                返回炉石成就
+              </router-link>
+              <router-link to="/hearthstone/collection" class="cl-collection-link">查看收藏</router-link>
+            </div>
             <p class="cl-eyebrow"><span class="hs-live-dot" aria-hidden="true"></span> Card Lookup</p>
             <h1>炉石卡牌查询</h1>
             <p class="cl-sub">输入卡牌名称或 dbfId，查看卡图、效果与背景描述。开启右上角「开发模式」可显示入库自检（卡牌库 / manifest / OSS）与资源路径等调试信息。</p>
@@ -22,30 +25,35 @@
         </div>
 
         <div class="cl-card">
-          <label class="cl-label" for="cl-q">卡牌名称 或 dbfId</label>
+          <div class="cl-mode-tabs" role="tablist" aria-label="查询类型">
+            <button type="button" :class="['cl-mode-tab', { active: queryMode === 'cards' }]" @click="queryMode = 'cards'">查看卡牌</button>
+            <button type="button" :class="['cl-mode-tab', { active: queryMode === 'cosmetics' }]" @click="queryMode = 'cosmetics'">查看收藏</button>
+          </div>
+          <label class="cl-label" for="cl-q">{{ queryMode === 'cards' ? '卡牌名称 或 dbfId' : '收藏名称' }}</label>
           <div class="cl-input-row">
             <input
               id="cl-q"
               v-model="query"
               class="cl-input"
               type="text"
-              placeholder="例如：蛙生 / 邪恶的虚鳞纳迦 / 129959"
-              :disabled="dbStatus !== 'ready'"
+              :placeholder="queryMode === 'cards' ? '例如：蛙生 / 邪恶的虚鳞纳迦 / 129959' : '例如：巫妖王 / 凯瑞甘 / 幸运币'"
+              :disabled="queryMode === 'cards' ? dbStatus !== 'ready' : catalogStatus !== 'ready'"
               @keyup.enter="lookup"
             />
-            <button type="button" class="cl-btn cl-primary" :disabled="dbStatus !== 'ready'" @click="lookup">
-              {{ dbStatus === 'loading' ? '加载卡牌库…' : '查询' }}
+            <button type="button" class="cl-btn cl-primary" :disabled="queryMode === 'cards' ? dbStatus !== 'ready' : catalogStatus !== 'ready'" @click="lookup">
+              {{ queryMode === 'cards' ? (dbStatus === 'loading' ? '加载卡牌库…' : '查询') : (catalogStatus === 'loading' ? '加载收藏…' : '查询') }}
             </button>
           </div>
-          <p v-if="dbStatus === 'error'" class="cl-error" role="alert">
+          <p v-if="queryMode === 'cards' && dbStatus === 'error'" class="cl-error" role="alert">
             卡牌库加载失败（{{ dbError }}）。
             <button type="button" class="cl-btn" @click="loadCardsDb">重新加载</button>
           </p>
+          <p v-else-if="queryMode === 'cosmetics' && catalogStatus === 'error'" class="cl-error" role="alert">收藏目录加载失败：{{ catalogError }}</p>
           <p v-else-if="error" class="cl-error" role="alert">{{ error }}</p>
-          <p v-else class="cl-hint">支持按名称（模糊匹配）或纯数字 dbfId 精确查询。</p>
+          <p v-else class="cl-hint">{{ queryMode === 'cards' ? '支持按名称（模糊匹配）或纯数字 dbfId 精确查询。' : '按名称搜索英雄皮肤、幸运币和卡背，图片直接从 OSS 加载。' }}</p>
         </div>
 
-        <div v-if="results.length" class="cl-results">
+        <div v-if="queryMode === 'cards' && results.length" class="cl-results">
           <p class="cl-count">共找到 {{ results.length }} 张匹配卡牌<span v-if="capped">（仅显示前 {{ LIMIT }} 张，请缩小关键词）</span></p>
           <div v-for="card in results" :key="card.id" class="cl-result">
             <div v-if="devMode" class="cl-checks">
@@ -93,6 +101,25 @@
             </div>
           </div>
         </div>
+        <div v-if="queryMode === 'cosmetics' && cosmeticResults.length" class="cl-results">
+          <p class="cl-count">共找到 {{ cosmeticResults.length }} 个收藏图片</p>
+          <div v-for="item in cosmeticResults" :key="item.id" class="cl-result">
+            <div class="cl-card-detail cl-cosmetic-detail">
+              <div class="cl-img">
+                <img :src="item.imageSrc" :alt="item.officialName" @error="item.imageState = 'fail'" />
+              </div>
+              <div class="cl-info">
+                <h2>{{ item.officialName }}</h2>
+                <div class="cl-meta">
+                  <span class="cl-chip">{{ item.cosmeticTypeLabel }}</span>
+                  <span v-if="item.heroClass || item.heroClasses" class="cl-chip">{{ Array.isArray(item.heroClasses) ? item.heroClasses.join(' / ') : item.heroClass }}</span>
+                  <span v-if="devMode && item.cardId" class="cl-chip">{{ item.cardId }}</span>
+                </div>
+                <div v-if="devMode" class="cl-field cl-cosmetic-path"><h4>图片相对路径</h4><p class="cl-path">{{ item.image }}</p></div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
@@ -124,15 +151,51 @@ async function loadCardsDb() {
   }
 }
 
-onMounted(loadCardsDb)
+onMounted(() => {
+  loadCardsDb()
+  loadCosmeticCatalog()
+})
 
 const query = ref('')
 const results = ref([])
+const cosmeticResults = ref([])
+const queryMode = ref('cards')
 const error = ref('')
 const LIMIT = 4
 const capped = computed(() => results.value.length >= LIMIT)
 // 开发模式：默认关闭，开启后显示入库自检与资源路径等调试信息
 const devMode = ref(false)
+const heroSkins = ref([])
+const coins = ref([])
+const cardBacks = ref([])
+const catalogStatus = ref('loading')
+const catalogError = ref('')
+const COSMETIC_CATALOG_VERSION = '20260826-2'
+
+async function fetchCatalogJson(url) {
+  const response = await fetch(url, { cache: 'no-store' })
+  if (!response.ok) throw new Error(`${url.split('?')[0]}：HTTP ${response.status}`)
+  return response.json()
+}
+
+async function loadCosmeticCatalog() {
+  catalogStatus.value = 'loading'
+  catalogError.value = ''
+  try {
+    const [skins, coinItems, backItems] = await Promise.all([
+      fetchCatalogJson(`/hearthstone-data/hero-skins.json?v=${COSMETIC_CATALOG_VERSION}`),
+      fetchCatalogJson(`/hearthstone-data/coins.json?v=${COSMETIC_CATALOG_VERSION}`),
+      fetchCatalogJson(`/hearthstone-data/card-backs.json?v=${COSMETIC_CATALOG_VERSION}`)
+    ])
+    heroSkins.value = skins.filter((item) => item.heroClass !== '双职业')
+    coins.value = coinItems
+    cardBacks.value = backItems
+    catalogStatus.value = 'ready'
+  } catch (cause) {
+    catalogStatus.value = 'error'
+    catalogError.value = cause instanceof Error ? cause.message : String(cause)
+  }
+}
 
 function rarityColorOf(card) {
   return getRarityColor(card.rarityId)
@@ -175,6 +238,7 @@ function findCards(raw) {
 
 function lookup() {
   error.value = ''
+  if (queryMode.value === 'cosmetics') return lookupCosmetics()
   if (dbStatus.value !== 'ready') {
     error.value = dbStatus.value === 'loading' ? '卡牌库加载中，请稍候再试。' : '卡牌库加载失败，请点击「重新加载」后重试。'
     results.value = []
@@ -197,6 +261,34 @@ function lookup() {
     }
   })
   if (devMode.value) results.value.forEach(probeOss)
+}
+
+function lookupCosmetics() {
+  if (catalogStatus.value !== 'ready') {
+    error.value = catalogStatus.value === 'loading' ? '收藏目录加载中，请稍候再试。' : `收藏目录加载失败：${catalogError.value}`
+    cosmeticResults.value = []
+    return
+  }
+  const keyword = query.value.trim().toLocaleLowerCase('zh-CN')
+  if (!keyword) {
+    error.value = '请输入收藏名称。'
+    cosmeticResults.value = []
+    return
+  }
+  const all = [
+    ...heroSkins.value.filter((item) => !item.hidden).map((item) => ({ ...item, cosmeticTypeLabel: '英雄皮肤', image: item.imageUrl })),
+    ...coins.value.filter((item) => !item.hidden).map((item) => ({ ...item, cosmeticTypeLabel: '幸运币', image: item.imageUrl })),
+    ...cardBacks.value.filter((item) => !item.hidden).map((item) => ({ ...item, cosmeticTypeLabel: '卡背', image: item.imageUrl }))
+  ]
+  cosmeticResults.value = all
+    .filter((item) => String(item.officialName || '').toLocaleLowerCase('zh-CN').includes(keyword))
+    .slice(0, LIMIT)
+    .map((item) => ({
+      ...item,
+      imageSrc: item.image,
+      imageState: 'pending'
+    }))
+  if (!cosmeticResults.value.length) error.value = '未找到匹配的收藏。'
 }
 
 // 开启开发模式时，对已有结果补跑 OSS 可达性探测（诊断信息）
@@ -250,6 +342,29 @@ function probeOss(card) {
 }
 .cl-back:hover {
   color: #2563eb;
+}
+.cl-nav-links {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.cl-nav-links .cl-back {
+  margin-bottom: 0;
+}
+.cl-collection-link {
+  padding: 5px 10px;
+  border: 1px solid #bfdbfe;
+  border-radius: 8px;
+  color: #1d4ed8;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  background: #eff6ff;
+}
+.cl-collection-link:hover {
+  background: #dbeafe;
 }
 .cl-eyebrow {
   display: flex;
@@ -333,6 +448,35 @@ function probeOss(card) {
   border-radius: 14px;
   padding: 18px;
   margin-bottom: 18px;
+}
+.cl-mode-tabs {
+  display: inline-flex;
+  gap: 3px;
+  margin-bottom: 16px;
+  padding: 3px;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  background: #f3f4f6;
+}
+.cl-mode-tab {
+  min-width: 84px;
+  padding: 7px 14px;
+  border: 0;
+  border-radius: 7px;
+  color: #6b7280;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
+}
+.cl-mode-tab:hover {
+  color: #1d4ed8;
+}
+.cl-mode-tab.active {
+  color: #1d4ed8;
+  background: #fff;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.12);
 }
 .cl-label {
   display: block;
@@ -464,6 +608,15 @@ function probeOss(card) {
   border: 1px solid #e5e7eb;
   background: #f3f4f6;
 }
+.cl-oss-link {
+  color: #2563eb;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.cl-oss-link:hover {
+  text-decoration: underline;
+}
 .cl-info {
   flex: 1;
   min-width: 0;
@@ -516,6 +669,14 @@ function probeOss(card) {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   color: #6b7280;
   word-break: break-all;
+}
+.cl-cosmetic-path h4 {
+  font-size: 14px;
+}
+.cl-cosmetic-path .cl-path {
+  font-size: 14px;
+  line-height: 1.6;
+  color: #374151;
 }
 
 /* 暗色主题适配 */
@@ -570,6 +731,20 @@ function probeOss(card) {
   background: #2c333d;
   color: #cbd5e1;
 }
+.hs-page[data-hs-theme='dark'] .cl-mode-tabs {
+  border-color: #333a44;
+  background: #23272f;
+}
+.hs-page[data-hs-theme='dark'] .cl-mode-tab {
+  color: #9aa4b2;
+}
+.hs-page[data-hs-theme='dark'] .cl-mode-tab:hover,
+.hs-page[data-hs-theme='dark'] .cl-mode-tab.active {
+  color: #bfdbfe;
+}
+.hs-page[data-hs-theme='dark'] .cl-mode-tab.active {
+  background: #303844;
+}
 .hs-page[data-hs-theme='dark'] .cl-text {
   color: #e6e8eb;
 }
@@ -582,5 +757,10 @@ function probeOss(card) {
 .hs-page[data-hs-theme='dark'] .cl-img > img {
   background: #23272f;
   border-color: #333a44;
+}
+.hs-page[data-hs-theme='dark'] .cl-collection-link {
+  border-color: #31588c;
+  color: #bfdbfe;
+  background: #172a46;
 }
 </style>

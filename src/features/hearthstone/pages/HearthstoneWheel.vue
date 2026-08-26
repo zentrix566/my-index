@@ -28,7 +28,7 @@
             <article v-for="prize in sidePrizes" :key="prize.id" role="button" tabindex="0" class="hs-treasure-card" :class="['rarity-' + prize.rarity, { active: activeId === prize.id, selected: selectedIds.includes(prize.id) }]" @click="showPrizeDetail(prize)" @keydown.enter="showPrizeDetail(prize)"><img v-if="prize.image" :src="prize.image" :alt="prize.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ prize.icon || '🎁' }}</span></article>
             <article v-for="prize in grandPrizes" :key="prize.id" role="button" tabindex="0" class="hs-treasure-grand" :class="['rarity-' + prize.rarity, { active: activeId === prize.id, selected: selectedIds.includes(prize.id) }]" @click="showPrizeDetail(prize)" @keydown.enter="showPrizeDetail(prize)"><img v-if="prize.image" :src="prize.image" :alt="prize.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ prize.icon || '🎁' }}</span><em>大奖</em></article>
             <div v-if="detailPrize" class="hs-detail-backdrop" aria-hidden="true" @click="detailPrize = null"></div>
-            <button v-if="detailPrize" type="button" class="hs-board-result" aria-label="关闭奖励详情" @click.stop="detailPrize = null"><img v-if="detailPrize.image" :src="detailPrize.image" :alt="detailPrize.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ detailPrize.icon || '🎁' }}</span><div><small>奖励详情</small><strong>{{ detailPrize.name }}</strong><span>点击关闭</span></div></button>
+            <button v-if="detailPrize" type="button" class="hs-board-result" :aria-label="`关闭${detailPrize.name}详情`" @click.stop="detailPrize = null"><img v-if="detailPrize.image" :src="detailPrize.image" :alt="detailPrize.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ detailPrize.icon || '🎁' }}</span><div><strong>{{ detailPrize.name }}</strong><span>点击关闭</span></div></button>
             <button v-if="result" type="button" class="hs-board-result" aria-label="关闭抽奖结果" @click="result = null"><img v-if="result.image" :src="result.image" :alt="result.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ result.icon || '🎁' }}</span><div><small>本次获得</small><strong>{{ result.name }}</strong><span>点击关闭</span></div></button>
           </div>
           <p class="hs-wheel-hint">已抽取 {{ drawCount }}/10 次 · 下一抽 {{ drawCount < 10 ? (drawCount === 0 ? '免费' : drawCosts[drawCount] + ' 奥术宝珠') : '已全部获得' }}</p>
@@ -221,4 +221,15 @@ function resetTreasure() {
 .hs-treasure-board.has-single-grand{grid-template-rows:145px 145px 145px 145px}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(3),.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(7){grid-row:3}.hs-treasure-board.has-single-grand .hs-treasure-card strong,.hs-treasure-board.has-single-grand .hs-treasure-grand strong{display:block;width:100%;overflow:hidden;font-size:clamp(9px,1.05vw,14px);line-height:1.2;white-space:nowrap;text-overflow:ellipsis}
 .hs-treasure-board.has-single-grand .hs-treasure-card small,.hs-treasure-board.has-single-grand .hs-treasure-grand small{display:block;width:100%;overflow:hidden;color:#c6d7bf;font-size:clamp(8px,.82vw,11px);line-height:1.15;white-space:nowrap;text-overflow:ellipsis}
 .hs-treasure-board.has-single-grand .hs-treasure-card{gap:0;padding:4px;overflow:hidden}.hs-treasure-board.has-single-grand .hs-treasure-card img{width:100%;height:100%;min-height:0;flex:1;object-fit:contain}.hs-treasure-board.has-single-grand .hs-treasure-card strong,.hs-treasure-board.has-single-grand .hs-treasure-card small{display:none}.hs-treasure-board.has-single-grand .hs-treasure-grand img{width:100%;height:100%;object-fit:contain}.hs-detail-backdrop{position:fixed;z-index:4;inset:0;background:transparent}.hs-treasure-board:not(.has-single-grand){width:min(96%,700px)}.hs-treasure-board:not(.has-single-grand) .hs-treasure-card img{height:125px}.hs-treasure-board:not(.has-single-grand) .hs-treasure-grand img{height:270px}.hs-board-result img{width:68%;height:min(72vh,500px);object-fit:contain}.hs-board-result .hs-prize-fallback{display:block;width:68%;font-size:180px;text-align:center}
+.hs-board-result { width: min(92%, 900px); }
+.hs-board-result { flex-direction: column; gap: 10px; }
+.hs-board-result > div { width: 100%; min-width: 0; }
+.hs-board-result img { width: min(82%, 520px); height: min(58vh, 500px); }
+.hs-board-result strong { white-space: nowrap; font-size: clamp(14px, 2.2vw, 22px); text-align: center; }
+.hs-board-result span { text-align: center; }
+@media (max-width: 760px) {
+  .hs-board-result { width: 94%; }
+  .hs-board-result img { width: 78%; height: min(48vh, 320px); }
+  .hs-board-result strong { font-size: 13px; }
+}
 </style>

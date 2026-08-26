@@ -25,16 +25,16 @@ export const TREASURE_EVENTS = [
     version: '33.4',
     endAt: '2026-09-09T00:00:00+08:00',
     prizes: [
-      { id: 'rabbitath-pet', name: '宠物：萨拉兔斯', note: '大奖', weight: 1, image: '', icon: '🐇', rarity: 'mythic', isGrand: true },
-      { id: 'colossal-mountain-dragon', name: '超巨摩天龙', note: '安戈洛龟途卡牌', weight: 300, image: '/hearthstone-cards/安戈洛龟途/full/超巨摩天龙_118238.png', icon: '🦖', rarity: 'common' },
-      { id: 'diamond-drakerys', name: '伟岸的德拉克雷斯', note: '安戈洛龟途卡牌', weight: 14, image: '/hearthstone-cards/安戈洛龟途/full/伟岸的德拉克雷斯_118404.png', icon: '💎', rarity: 'legendary' },
-      { id: 'ancient-pterrordax', name: '远古翼手龙', note: '安戈洛龟途卡牌', weight: 100, image: '/hearthstone-cards/安戈洛龟途/full/远古翼手龙_118232.png', icon: '🦎', rarity: 'rare' },
-      { id: 'ancient-raptor', name: '远古迅猛龙', note: '安戈洛龟途卡牌', weight: 100, image: '/hearthstone-cards/安戈洛龟途/full/远古迅猛龙_118224.png', icon: '🦖', rarity: 'rare' },
+      { id: 'rabbitath-pet', name: '宠物：萨拉兔斯', note: '大奖', weight: 1, image: '/hearthstone-cosmetics/pets/PET_4_1.png', icon: '🐇', rarity: 'mythic', isGrand: true },
+      { id: 'colossal-mountain-dragon', name: '异画超巨摩天龙', note: '安戈洛龟途卡牌', weight: 300, image: '/hearthstone-cards/安戈洛龟途/full/超巨摩天龙_118238.png', icon: '🦖', rarity: 'common' },
+      { id: 'diamond-drakerys', name: '钻石伟岸的德拉克雷斯', note: '安戈洛龟途卡牌', weight: 14, image: '/hearthstone-cards/安戈洛龟途/full/伟岸的德拉克雷斯_118404.png', icon: '💎', rarity: 'legendary' },
+      { id: 'ancient-pterrordax', name: '异画远古翼手龙', note: '安戈洛龟途卡牌', weight: 100, image: '/hearthstone-cards/安戈洛龟途/full/远古翼手龙_118232.png', icon: '🦎', rarity: 'rare' },
+      { id: 'ancient-raptor', name: '异画远古迅猛龙', note: '安戈洛龟途卡牌', weight: 100, image: '/hearthstone-cards/安戈洛龟途/full/远古迅猛龙_118224.png', icon: '🦖', rarity: 'rare' },
       { id: 'rabbitath-coin', name: '萨拉兔斯幸运币', note: '幸运币', weight: 110, image: '/hearthstone-cosmetics/coins/DINO_COIN2.png', icon: '🪙', rarity: 'rare' },
-      { id: 'faerin-lothar', name: '菲琳·洛萨及其配套卡背', note: '骑士英雄皮肤', weight: 50, image: '/hearthstone-cosmetics/hero-skins/paladin/HERO_04bg.png', icon: '⚔️', rarity: 'legendary' },
-      { id: 'owena', name: '奥威娜', note: '德鲁伊英雄皮肤', weight: 65, image: '/hearthstone-cosmetics/hero-skins/druid/HERO_06be.png', icon: '🌿', rarity: 'epic' },
-      { id: 'myrallis-crystalized-mirror-dragon', name: '米尔雷斯，晶化镜甲龙', note: '安戈洛龟途卡牌', weight: 25, image: '/hearthstone-cards/安戈洛龟途/full/米尔雷斯，晶化镜甲龙_118481.png', icon: '🐉', rarity: 'legendary' },
-      { id: 'titans-golden-pack', name: '1龟途金包', note: '安戈洛龟途金色卡包', weight: 280, image: '', icon: '📦', rarity: 'common' }
+      { id: 'faerin-lothar', name: '骑士新皮肤“菲琳·洛萨”及其配套卡背', note: '骑士英雄皮肤', weight: 50, image: '/hearthstone-cosmetics/hero-skins/paladin/HERO_04bg.png', icon: '⚔️', rarity: 'legendary' },
+      { id: 'owena', name: '德鲁伊新皮肤“奥威娜”', note: '德鲁伊英雄皮肤', weight: 65, image: '/hearthstone-cosmetics/hero-skins/druid/HERO_06be.png', icon: '🌿', rarity: 'epic' },
+      { id: 'myrallis-crystalized-mirror-dragon', name: '异画米尔雷斯，晶化镜甲龙', note: '安戈洛龟途卡牌', weight: 25, image: '/hearthstone-cards/安戈洛龟途/full/米尔雷斯，晶化镜甲龙_118481.png', icon: '🐉', rarity: 'legendary' },
+      { id: 'titans-golden-pack', name: '安戈洛龟途金色卡包*1', note: '安戈洛龟途金色卡包', weight: 280, image: '/hearthstone-cosmetics/treasure-packs/ANGORO_GOLDEN_PACK.png', icon: '📦', rarity: 'common' }
     ],
     drawCosts: [0, 120, 240, 360, 600, 840, 1160, 1580, 1980, 3280]
   }
