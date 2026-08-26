@@ -11,7 +11,7 @@
             <select v-model="selectedTreasureId">
               <option v-for="item in treasureOptions" :key="item.id" :value="item.id">{{ item.name }}</option>
             </select>
-            <small v-if="currentTreasure.endRemaining">结束倒计时：{{ currentTreasure.endRemaining }}</small>
+            <small v-if="currentTreasure.endAt">结束时间：{{ endTimeLabel }}</small>
           </label>
         </div>
         <button type="button" class="hs-btn hs-btn-ghost" @click="router.push('/hearthstone')">返回炉石</button>
@@ -21,7 +21,6 @@
         <aside class="hs-prize-panel">
           <div class="hs-panel-heading"><span>{{ currentTreasure.name }}</span><small>{{ prizes.length }} 个奖励</small></div>
           <div class="hs-prizes"><article v-for="prize in prizes" :key="prize.id" class="hs-prize" :class="'rarity-' + prize.rarity"><span class="hs-prize-icon">{{ prize.icon }}</span><div><strong>{{ prize.name }}</strong></div></article></div>
-          <div class="hs-wheel-wallet"><span>奥术宝珠</span><strong>∞</strong><small>无限体验</small></div>
         </aside>
         <main class="hs-wheel-stage" aria-live="polite">
           <div class="hs-action-bar"><button type="button" class="hs-spin-button" :disabled="spinning || !canSpin" @click="spin"><span>{{ spinning ? '宝藏转动中…' : canSpin ? (drawCount === 0 ? '免费抽取' : '抽取一次') : '已全部获得' }}</span><small v-if="drawCount > 0">{{ drawCount >= 10 ? '已全部获得' : `第 ${drawCount + 1} 抽 · ${drawCosts[drawCount] || 0} 奥术宝珠` }}</small></button><button type="button" class="hs-quick-button" :disabled="spinning || !canSpin" @click="quickDraw">快速抽奖：模拟到大奖</button><button type="button" class="hs-reset-button" :disabled="spinning" @click="resetTreasure">重置宝藏池</button></div>
@@ -98,6 +97,9 @@ const selectedIds = ref(initialTreasureState.selectedIds)
 const history = ref(initialTreasureState.history)
 const prizes = computed(() => currentTreasure.value.prizes)
 const drawCosts = computed(() => currentTreasure.value.drawCosts)
+const endTimeLabel = computed(() => new Intl.DateTimeFormat('zh-CN', {
+  year: 'numeric', month: 'numeric', day: 'numeric', hour: '2-digit', minute: '2-digit', hour12: false
+}).format(new Date(currentTreasure.value.endAt)))
 const canSpin = computed(() => drawCount.value < 10)
 const spentCost = computed(() => drawCosts.value.slice(0, drawCount.value).reduce((sum, cost) => sum + cost, 0))
 const remainingCost = computed(() => drawCosts.value.slice(drawCount.value).reduce((sum, cost) => sum + cost, 0))
@@ -218,5 +220,5 @@ function resetTreasure() {
 .hs-treasure-board.has-single-grand{grid-template-columns:repeat(5,1fr);grid-template-rows:110px 155px 155px 110px;gap:6px;padding:10px}.hs-treasure-board.has-single-grand .hs-treasure-grand{grid-column:2 / 5;grid-row:1 / 4}.hs-treasure-board.has-single-grand .hs-treasure-card img{height:112px}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(1){grid-column:1;grid-row:1}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(2){grid-column:1;grid-row:2}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(3){grid-column:1;grid-row:3}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(4){grid-column:2;grid-row:4}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(5){grid-column:3;grid-row:4}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(6){grid-column:4;grid-row:4}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(7){grid-column:5;grid-row:3}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(8){grid-column:5;grid-row:2}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(9){grid-column:5;grid-row:1}
 .hs-treasure-board.has-single-grand{grid-template-rows:145px 145px 145px 145px}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(3),.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(7){grid-row:3}.hs-treasure-board.has-single-grand .hs-treasure-card strong,.hs-treasure-board.has-single-grand .hs-treasure-grand strong{display:block;width:100%;overflow:hidden;font-size:clamp(9px,1.05vw,14px);line-height:1.2;white-space:nowrap;text-overflow:ellipsis}
 .hs-treasure-board.has-single-grand .hs-treasure-card small,.hs-treasure-board.has-single-grand .hs-treasure-grand small{display:block;width:100%;overflow:hidden;color:#c6d7bf;font-size:clamp(8px,.82vw,11px);line-height:1.15;white-space:nowrap;text-overflow:ellipsis}
-.hs-treasure-board.has-single-grand .hs-treasure-card{gap:0;padding:4px;overflow:hidden}.hs-treasure-board.has-single-grand .hs-treasure-card img{width:100%;height:100%;min-height:0;flex:1;object-fit:contain}.hs-treasure-board.has-single-grand .hs-treasure-card strong,.hs-treasure-board.has-single-grand .hs-treasure-card small{display:none}.hs-treasure-board.has-single-grand .hs-treasure-grand img{width:100%;height:100%;object-fit:contain}.hs-detail-backdrop{position:fixed;z-index:4;inset:0;background:transparent}.hs-board-result img{width:58%;height:min(65vh,420px);object-fit:contain}.hs-board-result .hs-prize-fallback{display:block;width:58%;font-size:150px;text-align:center}
+.hs-treasure-board.has-single-grand .hs-treasure-card{gap:0;padding:4px;overflow:hidden}.hs-treasure-board.has-single-grand .hs-treasure-card img{width:100%;height:100%;min-height:0;flex:1;object-fit:contain}.hs-treasure-board.has-single-grand .hs-treasure-card strong,.hs-treasure-board.has-single-grand .hs-treasure-card small{display:none}.hs-treasure-board.has-single-grand .hs-treasure-grand img{width:100%;height:100%;object-fit:contain}.hs-detail-backdrop{position:fixed;z-index:4;inset:0;background:transparent}.hs-treasure-board:not(.has-single-grand){width:min(96%,700px)}.hs-treasure-board:not(.has-single-grand) .hs-treasure-card img{height:125px}.hs-treasure-board:not(.has-single-grand) .hs-treasure-grand img{height:270px}.hs-board-result img{width:68%;height:min(72vh,500px);object-fit:contain}.hs-board-result .hs-prize-fallback{display:block;width:68%;font-size:180px;text-align:center}
 </style>
