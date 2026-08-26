@@ -13,7 +13,8 @@ const DEFAULT_PROFILE = Object.freeze({
   collection: {
     heroSkins: [],
     coins: [],
-    cardBacks: []
+    cardBacks: [],
+    pets: []
   },
   preferences: {
     hardcore: false,
@@ -42,7 +43,8 @@ function normalizeProfile(value) {
     collection: {
       heroSkins: normalizeIds(value?.collection?.heroSkins),
       coins: normalizeIds(value?.collection?.coins),
-      cardBacks: normalizeIds(value?.collection?.cardBacks)
+      cardBacks: normalizeIds(value?.collection?.cardBacks),
+      pets: normalizeIds(value?.collection?.pets)
     },
     preferences: {
       hardcore: value?.preferences?.hardcore === true,

@@ -74,7 +74,7 @@ CREATE TABLE IF NOT EXISTS hearthstone_profiles (
 
 CREATE TABLE IF NOT EXISTS hearthstone_cosmetic_collection (
   user_id INTEGER NOT NULL,
-  cosmetic_type TEXT NOT NULL CHECK (cosmetic_type IN ('heroSkins', 'coins', 'cardBacks')),
+  cosmetic_type TEXT NOT NULL CHECK (cosmetic_type IN ('heroSkins', 'coins', 'cardBacks', 'pets')),
   cosmetic_id TEXT NOT NULL,
   created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (user_id, cosmetic_type, cosmetic_id)

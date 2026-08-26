@@ -1,12 +1,82 @@
 [
   {
-    "id": "pets-rabbitath",
+    "id": "pets-pet_4_1",
     "officialName": "萨拉兔斯",
-    "availability": "暗月宝藏「萨拉兔斯」",
-    "howToGet": "暗月宝藏抽取获得。",
-    "imageUrl": "",
-    "source": "游戏内宠物外观",
-    "sourceUrl": "https://www.iyingdi.com/tz/post/5624544",
-    "assetStatus": "待补充游戏内宠物资源"
+    "imageUrl": "/hearthstone-cosmetics/pets/PET_4_1.png",
+    "ossObjectKey": "hearthstone-cosmetics/pets/PET_4_1.png",
+    "localImagePath": "pets/PET_4_1.png",
+    "flavorText": "萨拉兔斯宠物。",
+    "howToGet": "可在暗月宝藏活动中获得。",
+    "source": "炉石传说宠物"
+  },
+  {
+    "id": "pets-pet_7_1",
+    "officialName": "伊瑟拉",
+    "imageUrl": "/hearthstone-cosmetics/pets/PET_7_1.png",
+    "ossObjectKey": "hearthstone-cosmetics/pets/PET_7_1.png",
+    "localImagePath": "pets/PET_7_1.png",
+    "flavorText": "伊瑟拉宠物。",
+    "howToGet": "炉石传说宠物收藏。",
+    "source": "炉石传说宠物"
+  },
+  {
+    "id": "pets-pet_10_1",
+    "officialName": "克苏恩",
+    "imageUrl": "/hearthstone-cosmetics/pets/PET_10_1.png",
+    "ossObjectKey": "hearthstone-cosmetics/pets/PET_10_1.png",
+    "localImagePath": "pets/PET_10_1.png",
+    "flavorText": "克苏恩宠物。",
+    "howToGet": "炉石传说宠物收藏。",
+    "source": "炉石传说宠物"
+  },
+  {
+    "id": "pets-pet_12_1",
+    "officialName": "变迁之神亢祖",
+    "imageUrl": "/hearthstone-cosmetics/pets/PET_12_1.png",
+    "ossObjectKey": "hearthstone-cosmetics/pets/PET_12_1.png",
+    "localImagePath": "pets/PET_12_1.png",
+    "flavorText": "变迁之神亢祖宠物。",
+    "howToGet": "炉石传说宠物收藏。",
+    "source": "炉石传说宠物"
+  },
+  {
+    "id": "pets-pet_3_1",
+    "officialName": "暴龙王克鲁什",
+    "imageUrl": "/hearthstone-cosmetics/pets/PET_3_1.png",
+    "ossObjectKey": "hearthstone-cosmetics/pets/PET_3_1.png",
+    "localImagePath": "pets/PET_3_1.png",
+    "flavorText": "暴龙王克鲁什宠物。",
+    "howToGet": "炉石传说宠物收藏。",
+    "source": "炉石传说宠物"
+  },
+  {
+    "id": "pets-pet_9_1",
+    "officialName": "死亡之裔",
+    "imageUrl": "/hearthstone-cosmetics/pets/PET_9_1.png",
+    "ossObjectKey": "hearthstone-cosmetics/pets/PET_9_1.png",
+    "localImagePath": "pets/PET_9_1.png",
+    "flavorText": "死亡之裔宠物。",
+    "howToGet": "炉石传说宠物收藏。",
+    "source": "炉石传说宠物"
+  },
+  {
+    "id": "pets-pet_6_1",
+    "officialName": "阿尔福斯",
+    "imageUrl": "/hearthstone-cosmetics/pets/PET_6_1.png",
+    "ossObjectKey": "hearthstone-cosmetics/pets/PET_6_1.png",
+    "localImagePath": "pets/PET_6_1.png",
+    "flavorText": "阿尔福斯宠物。",
+    "howToGet": "炉石传说宠物收藏。",
+    "source": "炉石传说宠物"
+  },
+  {
+    "id": "pets-pet_8_1",
+    "officialName": "霍格",
+    "imageUrl": "/hearthstone-cosmetics/pets/PET_8_1.png",
+    "ossObjectKey": "hearthstone-cosmetics/pets/PET_8_1.png",
+    "localImagePath": "pets/PET_8_1.png",
+    "flavorText": "霍格宠物。",
+    "howToGet": "炉石传说宠物收藏。",
+    "source": "炉石传说宠物"
   }
 ]

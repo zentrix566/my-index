@@ -694,5 +694,17 @@
     "ossObjectKey": "hearthstone-cosmetics/coins/JAIL_COIN3.png",
     "imageUrl": "/hearthstone-cosmetics/coins/JAIL_COIN3.png",
     "source": "Hearthstone 客户端 COSMETIC_COIN"
+  },
+  {
+    "cardId": "JAIL_EVENT_COIN",
+    "dbfId": 130275,
+    "cosmeticCoinId": 86,
+    "officialName": "逃生幸运币",
+    "flavorText": "只需一点法力，就能决定命运：是重获自由，还是回到紫罗兰监狱。",
+    "howToGet": "参与特殊活动以获得该奖励。",
+    "localImagePath": "coins/JAIL_EVENT_COIN.png",
+    "ossObjectKey": "hearthstone-cosmetics/coins/JAIL_EVENT_COIN.png",
+    "imageUrl": "/hearthstone-cosmetics/coins/JAIL_EVENT_COIN.png",
+    "source": "HearthstoneJSON + Firestone"
   }
 ]

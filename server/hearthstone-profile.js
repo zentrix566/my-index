@@ -47,6 +47,7 @@ export function normalizeCosmeticCollection(value) {
   return {
     heroSkins: normalizeCosmeticIds(source.heroSkins),
     coins: normalizeCosmeticIds(source.coins),
-    cardBacks: normalizeCosmeticIds(source.cardBacks)
+    cardBacks: normalizeCosmeticIds(source.cardBacks),
+    pets: normalizeCosmeticIds(source.pets)
   }
 }

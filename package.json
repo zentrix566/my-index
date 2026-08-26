@@ -28,6 +28,7 @@
     "sync:hearthstone-cosmetics": "node scripts/sync-hs-cosmetics-manifest.mjs",
     "download:hearthstone-cosmetics": "npm run download:hearthstone-coins && npm run download:hearthstone-hero-skins && npm run download:hearthstone-card-backs",
     "upload:oss:cosmetics": "node scripts/upload-hs-cosmetics-to-oss.mjs",
+    "upload:oss:pets": "node scripts/upload-hs-pets-to-oss.mjs",
     "upload:oss:card-backs": "node scripts/upload-hs-card-backs-to-oss.mjs",
     "upload:oss:data": "node scripts/upload-hs-data-to-oss.mjs",
     "check:hs-updates": "node scripts/check-hs-card-updates.mjs"

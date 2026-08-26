@@ -171,7 +171,7 @@ src/features/hearthstone/
 | OSS 前缀 | 前端路径 | 服务端路由 | 缓存策略 | 用途 |
 |---|---|---|---|---|
 | `hearthstone-cards/` | `/hearthstone-cards/` | `handleOssProxy` | 1 年 immutable + 版本号 | 卡牌大图/缩略图 |
-| `hearthstone-cosmetics/` | `/hearthstone-cosmetics/` | `handleOssProxy` | 1 年 immutable + 版本号 | 英雄皮肤/硬币/卡背图 |
+| `hearthstone-cosmetics/` | `/hearthstone-cosmetics/` | `handleOssProxy` | 1 年 immutable + 版本号 | 英雄皮肤/硬币/卡背/宠物图 |
 | `hearthstone-data/` | `/hearthstone-data/` | 独立数据路由 | **5 分钟 + ETag，不做服务端缓存** | JSON 数据文件 |
 | `site-assets/` | `/site-assets/` | `handleOssProxy` | 1 年 immutable | 站点静态资源 |
 
@@ -230,9 +230,9 @@ npm run upload:oss:data
 # 3. 本地提交，让用户手动 push 触发部署
 ```
 
-### 更新外观收藏（英雄皮肤/硬币/卡背）
+### 更新外观收藏（英雄皮肤/硬币/卡背/宠物）
 
-相关脚本：`scripts/upload-hs-cosmetics-to-oss.mjs`、`scripts/upload-cosmetic-thumbnails.mjs`、`scripts/upload-hs-card-backs-to-oss.mjs`。缩略图由 `scripts/gen-cosmetic-thumbnails.py`（Pillow）生成 384px WebP。
+相关脚本：`scripts/upload-hs-cosmetics-to-oss.mjs`、`scripts/upload-cosmetic-thumbnails.mjs`、`scripts/upload-hs-card-backs-to-oss.mjs`。原图上传后必须执行 `scripts/gen-cosmetic-thumbnails.py` 生成 384px WebP，再执行 `scripts/upload-cosmetic-thumbnails.mjs` 上传缩略图；宠物目录也按同一规则处理。列表页默认读取 `384/<文件名>.webp`，只上传原图会导致界面显示“原画未上传”。
 
 ### 新增炉石成就
 

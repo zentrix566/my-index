@@ -157,4 +157,11 @@ for (const target of targets) {
   await client.put(target.key, target.filePath, { headers: { 'x-oss-object-acl': 'public-read' } })
   uploaded += 1
 }
+for (const fileName of ['hero-skins.json', 'coins.json', 'card-backs.json']) {
+  const filePath = join(publicCatalogDir, fileName)
+  await client.put(`hearthstone-data/${fileName}`, filePath, {
+    headers: { 'x-oss-object-acl': 'public-read', 'Content-Type': 'application/json; charset=utf-8' }
+  })
+  console.log(`已上传收藏目录：hearthstone-data/${fileName}`)
+}
 console.log(`上传完成：新增 ${uploaded}，总清单 ${targets.length}`)

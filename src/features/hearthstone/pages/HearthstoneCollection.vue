@@ -1,11 +1,11 @@
 <template>
-  <section class="section page-section hs-page hs-collection-page" :data-hs-theme="hsTheme">
+  <section class="section page-section hs-page hs-collection-page" :class="{ 'full-color-mode': fullColorMode }" :data-hs-theme="hsTheme">
     <div class="container">
       <header class="hs-collection-hero">
         <div>
           <p class="eyebrow">Hearthstone Collection</p>
           <h1>炉石外观收藏</h1>
-          <p>像游戏收藏册一样查看英雄皮肤、幸运币和卡背。已拥有保持彩色，未拥有显示为黑白。</p>
+          <p>像游戏收藏册一样查看英雄皮肤、幸运币、卡背和宠物。未拥有外观默认显示为黑白。</p>
         </div>
         <div class="hs-collection-actions">
           <button type="button" class="hs-btn hs-btn-ghost" @click="router.push('/hearthstone')">返回成就</button>
@@ -87,7 +87,7 @@
           <input
             v-model="query"
             type="search"
-            placeholder="按名称搜索全部皮肤、幸运币和卡背…"
+            placeholder="按名称搜索全部外观和宠物…"
             aria-describedby="cosmetic-search-scope"
           />
         </label>
@@ -98,6 +98,10 @@
             <option value="owned">已拥有</option>
             <option value="missing">未拥有</option>
           </select>
+        </label>
+        <label class="hs-collection-color-toggle">
+          <input v-model="fullColorMode" type="checkbox" />
+          <span>全彩模式</span>
         </label>
         <label class="hs-collection-pagesize">
           <span>每页</span>
@@ -169,7 +173,7 @@
         <template v-if="isGlobalSearch">
           正在全部收藏中搜索“{{ normalizedQuery }}”，找到 {{ filteredItems.length }} 个结果
         </template>
-        <template v-else>仅按名称搜索全部英雄皮肤、幸运币和卡背。先下载并运行收藏采集工具，再选择生成的 cosmetics-*.json（或 cosmetics.json）即可预览导入。</template>
+        <template v-else>仅按名称搜索全部英雄皮肤、幸运币、卡背和宠物。先下载并运行收藏采集工具，再选择生成的 cosmetics-*.json（或 cosmetics.json）即可预览导入。</template>
       </p>
 
       <div v-if="profileLoading" class="hs-collection-empty" role="status">正在加载收藏…</div>
@@ -201,7 +205,8 @@
               class="hs-cosmetic-image-wrap"
               :class="{ 'is-loaded': loadedSet.has(item.id), 'is-error': errorSet.has(item.id) }"
             >
-              <span v-if="item.cosmeticType === 'heroSkins'" class="hs-direct-hero-image">
+              <span v-if="errorSet.has(item.id)" class="hs-cosmetic-image-placeholder" aria-hidden="true">原画暂未上传</span>
+              <span v-else-if="item.cosmeticType === 'heroSkins'" class="hs-direct-hero-image">
                 <img
                   :src="thumbnailUrlFor(item)"
                   :alt="item.officialName"
@@ -222,7 +227,7 @@
               />
             </span>
             <strong class="hs-cosmetic-name">{{ item.officialName }}</strong>
-            <small>{{ item.cosmeticTypeLabel }}<template v-if="item.heroClass"> · {{ item.heroClass }}</template></small>
+            <small>{{ item.cosmeticTypeLabel }}<template v-if="getHeroClassLabel(item)"> · {{ getHeroClassLabel(item) }}</template></small>
           </button>
           <button
             v-if="user"
@@ -308,7 +313,8 @@
                 class="hs-cosmetic-image-wrap"
                 :class="{ 'is-loaded': loadedSet.has(selectedItem.id), 'is-error': errorSet.has(selectedItem.id) }"
               >
-                <span v-if="selectedItem.cosmeticType === 'heroSkins'" class="hs-direct-hero-image">
+                <span v-if="errorSet.has(selectedItem.id)" class="hs-cosmetic-image-placeholder" aria-hidden="true">原画暂未上传</span>
+                <span v-else-if="selectedItem.cosmeticType === 'heroSkins'" class="hs-direct-hero-image">
                   <img
                     :src="selectedItem.imageUrl"
                     :alt="selectedItem.officialName"
@@ -330,7 +336,7 @@
               </span>
             </div>
             <div class="hs-cosmetic-modal-content">
-              <p class="hs-cosmetic-modal-type">{{ selectedItem.cosmeticTypeLabel }}<template v-if="selectedItem.heroClass"> · {{ selectedItem.heroClass }}</template></p>
+              <p class="hs-cosmetic-modal-type">{{ selectedItem.cosmeticTypeLabel }}<template v-if="getHeroClassLabel(selectedItem)"> · {{ getHeroClassLabel(selectedItem) }}</template></p>
               <h2 :id="`cosmetic-title-${selectedItem.id}`">{{ selectedItem.officialName }}</h2>
               <dl>
                 <div>
@@ -376,6 +382,8 @@ import {
   getCosmeticPageSize,
   getCollectionStats,
   getGlobalCosmeticItems,
+  getHeroClasses,
+  getHeroClassLabel,
   getHeroClassStats,
   HERO_CLASS_ORDER,
   paginateCosmetics,
@@ -388,10 +396,12 @@ import {
 const heroSkins = ref([])
 const coins = ref([])
 const cardBacks = ref([])
+const pets = ref([])
 const catalogStatus = ref('loading') // loading | ready | error
 const catalogError = ref('')
 // 外观目录字段调整后递增，避免 force-cache 继续使用旧的职业分类数据。
-const COSMETIC_CATALOG_VERSION = '20260826'
+// 清单新增外观后递增版本，避免 force-cache 继续复用旧的 746/379/55 清单。
+const COSMETIC_CATALOG_VERSION = '20260826-3'
 
 async function fetchJson(url) {
   const resp = await fetch(url, { cache: 'force-cache' })
@@ -403,14 +413,16 @@ async function loadCatalog() {
   catalogStatus.value = 'loading'
   catalogError.value = ''
   try {
-    const [heroSkinData, coinData, cardBackData] = await Promise.all([
+    const [heroSkinData, coinData, cardBackData, petData] = await Promise.all([
       fetchJson(`/hearthstone/hero-skins.json?v=${COSMETIC_CATALOG_VERSION}`),
       fetchJson(`/hearthstone/coins.json?v=${COSMETIC_CATALOG_VERSION}`),
-      fetchJson(`/hearthstone/card-backs.json?v=${COSMETIC_CATALOG_VERSION}`)
+      fetchJson(`/hearthstone/card-backs.json?v=${COSMETIC_CATALOG_VERSION}`),
+      fetchJson(`/hearthstone/pets.json?v=${COSMETIC_CATALOG_VERSION}`)
     ])
     heroSkins.value = heroSkinData
     coins.value = coinData
     cardBacks.value = cardBackData
+    pets.value = petData
     catalogStatus.value = 'ready'
   } catch (cause) {
     catalogStatus.value = 'error'
@@ -431,7 +443,8 @@ const DEFAULT_COIN = {
   flavorText: '不管你是花掉它还是留在手里，总有一枚幸运币留给后手的你。',
   howToGet: '默认拥有。',
   availability: '',
-  imageUrl: 'https://art.hearthstonejson.com/v1/render/latest/zhCN/512x/GAME_005.png',
+  // 基础幸运币也统一走本站收藏图反代，避免页面出现第三方或 OSS 直链。
+  imageUrl: '/hearthstone-cosmetics/coins/CATA_COIN5.png',
   source: 'Hearthstone 基础卡',
   sourceUrl: ''
 }
@@ -443,18 +456,26 @@ const DEATH_KNIGHT_DISPLAY_ORDER = [
   'HERO_11x', 'HERO_11z', 'HERO_11y', 'HERO_11aa', 'HERO_11ab', 'HERO_11ac', 'HERO_11ad', 'HERO_11ae',
   'HERO_11af', 'HERO_11ag', 'HERO_11ah', 'HERO_11aj', 'HERO_11ai', 'HERO_11am', 'HERO_11al', 'HERO_11an',
   'HERO_11ao', 'HERO_11aq', 'HERO_11ar', 'HERO_11as', 'HERO_11aw', 'HERO_11ax', 'HERO_11ay', 'HERO_11az',
-  'HERO_11bc', 'HERO_11bd', 'HERO_11bi'
+  'HERO_11bc', 'HERO_11bd', 'HERO_11bi', 'HERO_11be', 'HERO_11be_necro'
 ]
 const heroSkinByCardId = computed(() => new Map(heroSkins.value.map((item) => [item.cardId, item])))
 // 采集器 heroSkins.ids 是 cardId（如 HERO_01），映射到目录的 profile id（如 hero-skins-hero_01）
-const heroSkinIdByCardId = computed(() => new Map(heroSkins.value.map((item) => [String(item.cardId), item.id])))
+const heroSkinIdByCardId = computed(() => {
+  const result = new Map()
+  for (const item of heroSkins.value) {
+    const key = String(item.cardId)
+    result.set(key, [...(result.get(key) || []), item.id])
+  }
+  return result
+})
 const collectionCatalog = computed(() => ({
   heroSkins: [
-    ...heroSkins.value.filter((item) => item.heroClass !== '死亡骑士'),
+    ...heroSkins.value.filter((item) => !getHeroClasses(item).includes('死亡骑士')),
     ...DEATH_KNIGHT_DISPLAY_ORDER.map((cardId) => heroSkinByCardId.value.get(cardId)).filter(Boolean)
   ].filter((item) => !item.hidden),
   coins: [DEFAULT_COIN, ...coins.value.filter((item) => !item.hidden).sort((a, b) => Number(a.dbfId) - Number(a.dbfId))],
-  cardBacks: cardBacks.value.filter((item) => !item.hidden)
+  cardBacks: cardBacks.value.filter((item) => !item.hidden),
+  pets: pets.value.filter((item) => !item.hidden)
 }))
 
 const router = useRouter()
@@ -475,6 +496,7 @@ const activeType = ref('heroSkins')
 const activeHeroClass = ref(HERO_CLASS_ORDER[0])
 const query = ref('')
 const statusFilter = ref('all')
+const fullColorMode = ref(localStorage.getItem('hs-collection-full-color') === '1')
 const currentPage = ref(1)
 const jumpInput = ref('')
 const saveError = ref('')
@@ -488,6 +510,7 @@ const errorSet = ref(new Set())
 
 // 列表用缩略图（384 WebP），详情弹窗仍用原图
 function thumbnailUrlFor(item) {
+  if (item.cosmeticType === 'pets' || item.ossObjectKey?.startsWith('hearthstone-cosmetics/pets/')) return item.imageUrl
   const key = item.ossObjectKey || String(item.imageUrl || '').replace(/^\//, '')
   const m = key.match(/^(hearthstone-cosmetics\/.+?)\/([^/]+)\.(png|jpe?g)$/i)
   if (!m) return item.imageUrl
@@ -497,7 +520,7 @@ const globalItems = computed(() => getGlobalCosmeticItems(collectionCatalog.valu
 
 // 每页显示个数：按收藏类型分别记忆，默认英雄皮肤 6、幸运币 8、卡背 8、全局搜索 8
 const PAGE_SIZE_STORAGE_KEY = 'hs-collection-page-sizes'
-const DEFAULT_PAGE_SIZES = Object.freeze({ heroSkins: 6, coins: 8, cardBacks: 8, global: 8 })
+const DEFAULT_PAGE_SIZES = Object.freeze({ heroSkins: 6, coins: 8, cardBacks: 8, pets: 8, global: 8 })
 const PAGE_SIZE_OPTIONS = Object.freeze([6, 8, 12, 24, 48])
 
 function loadPageSizes() {
@@ -574,7 +597,7 @@ const filteredItems = computed(() => {
     : currentItems.value
   const matchingItems = sourceItems.filter((item) => {
     const owned = isOwned(item)
-    if (!isGlobalSearch.value && activeType.value === 'heroSkins' && item.heroClass !== activeHeroClass.value) return false
+    if (!isGlobalSearch.value && activeType.value === 'heroSkins' && !getHeroClasses(item).includes(activeHeroClass.value)) return false
     if (statusFilter.value === 'owned' && !owned) return false
     if (statusFilter.value === 'missing' && owned) return false
     return true
@@ -701,10 +724,10 @@ function getImportedIds(payload) {
     if (!mapped) coUnmatched++
     return mapped
   }).filter(Boolean))
-  const importedHeroSkins = new Set(heroSkinSource.map((id) => {
+  const importedHeroSkins = new Set(heroSkinSource.flatMap((id) => {
     const value = String(id)
-    const mapped = heroSkinIdByCardId.value.get(value) || (heroSkins.value.some((item) => item.id === value) ? value : '')
-    if (!mapped) hsUnmatched++
+    const mapped = heroSkinIdByCardId.value.get(value) || (heroSkins.value.some((item) => item.id === value) ? [value] : [])
+    if (!mapped.length) hsUnmatched++
     return mapped
   }).filter(Boolean))
   return {
@@ -833,6 +856,10 @@ watch([activeType, activeHeroClass, query, statusFilter], () => {
 
 watch(currentPageSize, () => {
   currentPage.value = 1
+})
+
+watch(fullColorMode, (value) => {
+  try { localStorage.setItem('hs-collection-full-color', value ? '1' : '0') } catch {}
 })
 
 watch(() => pagination.value.currentPage, (page) => {

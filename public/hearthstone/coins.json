@@ -868,5 +868,20 @@
     "imageUrl": "/hearthstone-cosmetics/coins/DINO_COIN1.png",
     "source": "本地外观元数据",
     "sourceUrl": "https://hearthstone.wiki.gg/wiki/Special:Search?search=DINO_COIN1"
+  },
+  {
+    "id": "coins-jail_event_coin",
+    "cardId": "JAIL_EVENT_COIN",
+    "dbfId": 130275,
+    "cosmeticCoinId": 86,
+    "officialName": "逃生幸运币",
+    "flavorText": "只需一点法力，就能决定命运：是重获自由，还是回到紫罗兰监狱。",
+    "howToGet": "参与特殊活动以获得该奖励。",
+    "availability": "",
+    "localImagePath": "coins/JAIL_EVENT_COIN.png",
+    "ossObjectKey": "hearthstone-cosmetics/coins/JAIL_EVENT_COIN.png",
+    "imageUrl": "/hearthstone-cosmetics/coins/JAIL_EVENT_COIN.png",
+    "source": "HearthstoneJSON",
+    "sourceUrl": "https://hearthstone.wiki.gg/wiki/Special:Search?search=JAIL_EVENT_COIN"
   }
 ]

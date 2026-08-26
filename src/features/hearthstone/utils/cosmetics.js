@@ -1,7 +1,8 @@
 export const COSMETIC_TYPES = Object.freeze([
   { id: 'heroSkins', label: '英雄皮肤', emptyText: '还没有英雄皮肤图片' },
   { id: 'coins', label: '幸运币', emptyText: '还没有幸运币图片' },
-  { id: 'cardBacks', label: '卡背', emptyText: '还没有卡背图片' }
+  { id: 'cardBacks', label: '卡背', emptyText: '还没有卡背图片' },
+  { id: 'pets', label: '宠物', emptyText: '还没有宠物图片' }
 ])
 
 export const HERO_CLASS_ORDER = Object.freeze([
@@ -73,11 +74,20 @@ export function searchCosmetics(items, query) {
   )
 }
 
+export function getHeroClasses(item) {
+  if (Array.isArray(item?.heroClasses) && item.heroClasses.length) return item.heroClasses
+  return item?.heroClass ? [item.heroClass] : []
+}
+
+export function getHeroClassLabel(item) {
+  return getHeroClasses(item).join(' / ')
+}
+
 export function getHeroClassStats(items, ownedIds) {
   const owned = ownedIds instanceof Set ? ownedIds : new Set(ownedIds || [])
   return HERO_CLASS_ORDER.map((heroClass) => {
     const classItems = (Array.isArray(items) ? items : [])
-      .filter((item) => item.heroClass === heroClass)
+      .filter((item) => getHeroClasses(item).includes(heroClass))
     const ownedCount = classItems.reduce((count, item) => count + Number(owned.has(item.id)), 0)
     return {
       heroClass,
@@ -96,7 +106,8 @@ export function getCollectionStats(catalog, collection) {
   let total = 0
   let owned = 0
   for (const type of COSMETIC_TYPES) {
-    const items = Array.isArray(catalog?.[type.id]) ? catalog[type.id] : []
+    const sourceItems = Array.isArray(catalog?.[type.id]) ? catalog[type.id] : []
+    const items = sourceItems
     const ownedIds = new Set(Array.isArray(collection?.[type.id]) ? collection[type.id] : [])
     const typeOwned = items.reduce((count, item) => count + Number(ownedIds.has(item.id)), 0)
     byType[type.id] = {

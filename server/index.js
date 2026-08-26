@@ -297,7 +297,7 @@ app.put('/api/hearthstone/profile', requireAuth, trackHearthstone, async (req, r
   }
 })
 
-const COSMETIC_COLLECTION_TYPES = new Set(['heroSkins', 'coins', 'cardBacks'])
+const COSMETIC_COLLECTION_TYPES = new Set(['heroSkins', 'coins', 'cardBacks', 'pets'])
 
 function collectionCount(collection) {
   return Object.values(collection || {}).reduce(

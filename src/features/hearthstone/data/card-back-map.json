@@ -4938,5 +4938,44 @@
     "ossObjectKey": "hearthstone-cosmetics/card-backs/560.png",
     "imageUrl": "/hearthstone-cosmetics/card-backs/560.png",
     "source": "Hearthstone 客户端 CARD_BACK"
+  },
+  {
+    "cardBackId": 562,
+    "officialName": "祖拉玛特",
+    "prefabName": "",
+    "prefabGuid": "",
+    "textureName": "",
+    "flavorText": "湮灭一切。",
+    "howToGet": "可通过暗月宝藏获得。",
+    "localImagePath": "card-backs/562.png",
+    "ossObjectKey": "hearthstone-cosmetics/card-backs/562.png",
+    "imageUrl": "/hearthstone-cosmetics/card-backs/562.png",
+    "source": "Firestone"
+  },
+  {
+    "cardBackId": 563,
+    "officialName": "逃生飞艇",
+    "prefabName": "",
+    "prefabGuid": "",
+    "textureName": "",
+    "flavorText": "逃离紫罗兰监狱只是第一步，保持飞艇飞行才是难事……",
+    "howToGet": "参与特殊活动以获得该奖励。",
+    "localImagePath": "card-backs/563.png",
+    "ossObjectKey": "hearthstone-cosmetics/card-backs/563.png",
+    "imageUrl": "/hearthstone-cosmetics/card-backs/563.png",
+    "source": "Firestone"
+  },
+  {
+    "cardBackId": 564,
+    "officialName": "巫妖领主",
+    "prefabName": "",
+    "prefabGuid": "",
+    "textureName": "",
+    "flavorText": "力量从来不是没有代价的。",
+    "howToGet": "可通过暗月宝藏获得。",
+    "localImagePath": "card-backs/564.png",
+    "ossObjectKey": "hearthstone-cosmetics/card-backs/564.png",
+    "imageUrl": "/hearthstone-cosmetics/card-backs/564.png",
+    "source": "Firestone"
   }
 ]

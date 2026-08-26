@@ -21,11 +21,9 @@ const classFolders = {
   法师: 'mage', 圣骑士: 'paladin', 牧师: 'priest', 潜行者: 'rogue', 萨满祭司: 'shaman',
   术士: 'warlock', 战士: 'warrior'
 }
-// 死亡之翼是萨满/战士共用的 Mythic 皮肤，不应计入任一职业的单职业数量。
-const crossClassHeroSkins = new Map([
-  ['HERO_02bx', '双职业']
+const multiClassHeroClasses = new Map([
+  ['HERO_02bx', ['萨满祭司', '战士']]
 ])
-
 function loadEnv() {
   const envPath = join(repoRoot, '.env')
   if (!existsSync(envPath)) return
@@ -107,7 +105,8 @@ async function main() {
   let downloaded = 0
 
   await runPool(cards, 8, async (card, index) => {
-    const heroClass = crossClassHeroSkins.get(card.id) || classNames[card.cardClass]
+    const heroClass = classNames[card.cardClass]
+    const heroClasses = multiClassHeroClasses.get(card.id) || [heroClass]
     const heroFolder = classFolders[heroClass] || 'shaman'
     const directory = join(heroRoot, heroFolder)
     await mkdir(directory, { recursive: true })
@@ -125,25 +124,28 @@ async function main() {
     }
     if (imageResult.downloaded) downloaded += 1
     await writeFile(join(directory, `${card.id}.json`), `${JSON.stringify(metadata, null, 2)}\n`, 'utf8')
-    results[index] = {
-      id: `hero-skins-${card.id.toLocaleLowerCase()}`,
-      cardId: card.id,
-      dbfId: card.dbfId,
-      cosmeticHeroId: previousById.get(card.id)?.cosmeticHeroId ?? null,
-      heroClass,
-      officialName: card.name,
-      flavorText: metadata.flavorText, howToGet: metadata.howToGet,
-      availability: metadata.availability,
-      localImagePath: `hero-skins/${heroFolder}/${card.id}.png`,
-      ossObjectKey: `hearthstone-cosmetics/hero-skins/${heroFolder}/${card.id}.png`,
-      imageUrl: `/hearthstone-cosmetics/hero-skins/${heroFolder}/${card.id}.png`,
-      source: 'HearthstoneJSON',
-      sourceUrl: metadata.sourceUrl
-    }
+    results[index] = heroClasses.map((className) => {
+      const classFolder = classFolders[className] || heroFolder
+      return {
+        id: `hero-skins-${card.id.toLocaleLowerCase()}-${classFolder}`,
+        cardId: card.id,
+        dbfId: card.dbfId,
+        cosmeticHeroId: previousById.get(card.id)?.cosmeticHeroId ?? null,
+        heroClass: className,
+        officialName: card.name,
+        flavorText: metadata.flavorText, howToGet: metadata.howToGet,
+        availability: metadata.availability,
+        localImagePath: `hero-skins/${heroFolder}/${card.id}.png`,
+        ossObjectKey: `hearthstone-cosmetics/hero-skins/${heroFolder}/${card.id}.png`,
+        imageUrl: `/hearthstone-cosmetics/hero-skins/${heroFolder}/${card.id}.png`,
+        source: 'HearthstoneJSON',
+        sourceUrl: metadata.sourceUrl
+      }
+    })
     if ((index + 1) % 25 === 0 || index + 1 === cards.length) console.log(`英雄皮肤进度：${index + 1}/${cards.length}`)
   })
 
-  const newHeroSkins = results.filter(Boolean)
+  const newHeroSkins = results.filter(Boolean).flat()
   let finalHeroSkins = newHeroSkins
   if (previous.length) {
     const newCardIds = new Set(newHeroSkins.map((item) => item.cardId))

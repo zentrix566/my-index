@@ -1,7 +1,7 @@
 -- 炉石外观收藏明细：每个用户的每项皮肤、幸运币或卡背各占一行。
 CREATE TABLE IF NOT EXISTS hearthstone_cosmetic_collection (
   user_id        INT NOT NULL,
-  cosmetic_type  TEXT NOT NULL CHECK (cosmetic_type IN ('heroSkins', 'coins', 'cardBacks')),
+  cosmetic_type  TEXT NOT NULL CHECK (cosmetic_type IN ('heroSkins', 'coins', 'cardBacks', 'pets')),
   cosmetic_id    TEXT NOT NULL,
   created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
   PRIMARY KEY (user_id, cosmetic_type, cosmetic_id)
@@ -28,6 +28,11 @@ CROSS JOIN LATERAL (
   SELECT 'cardBacks', jsonb_array_elements_text(
     CASE WHEN jsonb_typeof(profile.preferences_json->'collection'->'cardBacks') = 'array'
       THEN profile.preferences_json->'collection'->'cardBacks' ELSE '[]'::jsonb END
+  )
+  UNION ALL
+  SELECT 'pets', jsonb_array_elements_text(
+    CASE WHEN jsonb_typeof(profile.preferences_json->'collection'->'pets') = 'array'
+      THEN profile.preferences_json->'collection'->'pets' ELSE '[]'::jsonb END
   )
 ) AS source
 ON CONFLICT DO NOTHING;

@@ -69,7 +69,7 @@
 
 .hs-collection-tabs {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 10px;
   margin-top: 18px;
 }
@@ -185,6 +185,22 @@
 
 .hs-collection-pagesize select {
   padding: 0 34px 0 12px;
+}
+
+.hs-collection-color-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  color: var(--hs-text-soft);
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.hs-collection-color-toggle input {
+  width: 17px;
+  height: 17px;
+  accent-color: var(--hs-gold);
 }
 
 .hs-search-scope {
@@ -385,7 +401,8 @@
 }
 
 .hs-cosmetic-card.type-coins,
-.hs-cosmetic-card.type-cardBacks {
+.hs-cosmetic-card.type-cardBacks,
+.hs-cosmetic-card.type-pets {
   position: relative;
   padding: 16px 14px 14px;
   overflow: hidden;
@@ -401,7 +418,8 @@
 }
 
 .hs-cosmetic-card.type-coins::before,
-.hs-cosmetic-card.type-cardBacks::before {
+.hs-cosmetic-card.type-cardBacks::before,
+.hs-cosmetic-card.type-pets::before {
   content: '';
   position: absolute;
   inset: 7px;
@@ -440,6 +458,19 @@
   overflow: hidden;
   border-radius: 10px;
   background: var(--hs-inset-bg);
+}
+
+.hs-cosmetic-image-placeholder {
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 150px;
+  padding: 20px;
+  color: var(--hs-muted);
+  font-size: 0.86rem;
+  letter-spacing: 0.08em;
+  text-align: center;
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.06), rgba(0, 0, 0, 0.16));
 }
 
 .hs-cosmetic-card.type-heroSkins .hs-cosmetic-image-wrap {
@@ -556,6 +587,20 @@
   perspective: 700px;
 }
 
+.hs-cosmetic-card.type-pets .hs-cosmetic-image-wrap {
+  width: min(100%, 230px);
+  min-height: 220px;
+  margin-inline: auto;
+  overflow: visible;
+  border-radius: 12px;
+  background: transparent;
+}
+
+.hs-cosmetic-card.type-pets .hs-cosmetic-image-wrap > img {
+  object-fit: contain;
+  filter: drop-shadow(0 13px 10px rgba(0, 0, 0, 0.52));
+}
+
 .hs-cosmetic-card.type-coins .hs-cosmetic-image-wrap > img {
   object-fit: contain;
   filter: drop-shadow(0 13px 10px rgba(0, 0, 0, 0.52));
@@ -574,6 +619,10 @@
 
 .hs-cosmetic-card.type-cardBacks:hover .hs-cosmetic-image-wrap > img {
   transform: scale(1.11);
+}
+
+.hs-cosmetic-card.type-pets:hover .hs-cosmetic-image-wrap > img {
+  transform: scale(1.04);
 }
 
 .hs-cosmetic-image-wrap img {
@@ -623,6 +672,14 @@
   filter: grayscale(1) contrast(0.8) brightness(0.68);
 }
 
+.hs-collection-page.full-color-mode .hs-cosmetic-card.missing img {
+  filter: none !important;
+}
+
+.hs-collection-page.full-color-mode .hs-cosmetic-card.missing {
+  --cosmetic-img-loaded-opacity: 1;
+}
+
 .hs-cosmetic-card.type-coins.missing .hs-cosmetic-image-wrap > img {
   filter:
     grayscale(1)
@@ -637,6 +694,14 @@
     contrast(0.8)
     brightness(0.68)
     drop-shadow(10px 14px 9px rgba(0, 0, 0, 0.5));
+}
+
+.hs-cosmetic-card.type-pets.missing .hs-cosmetic-image-wrap > img {
+  filter:
+    grayscale(1)
+    contrast(0.8)
+    brightness(0.68)
+    drop-shadow(0 13px 10px rgba(0, 0, 0, 0.52));
 }
 
 .hs-cosmetic-card:hover img {
@@ -747,7 +812,7 @@
   }
 
   .hs-collection-tabs {
-    grid-template-columns: 1fr;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .hs-collection-toolbar input {
