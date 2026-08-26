@@ -467,6 +467,108 @@
           "quota": 100
         }
       ]
+    },
+    {
+      "id": "vh-016",
+      "name": "都让开，药炸了",
+      "heroClass": "战士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "炸药工程师"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用炸药工程师造成30点额外伤害。",
+          "xpReward": 300,
+          "points": 30,
+          "quota": 30
+        },
+        {
+          "description": "用炸药工程师造成60点额外伤害。",
+          "xpReward": 600,
+          "points": 60,
+          "quota": 60
+        }
+      ]
+    },
+    {
+      "id": "vh-017",
+      "name": "潜伏内鬼",
+      "heroClass": "术士",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "暗金教密谋者",
+        "跟随证据",
+        "强力裁决"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤20个卧底小鬼。",
+          "xpReward": 300,
+          "points": 30,
+          "quota": 20
+        },
+        {
+          "description": "召唤40个卧底小鬼。",
+          "xpReward": 600,
+          "points": 60,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "vh-018",
+      "name": "一击毙命",
+      "heroClass": "潜行者",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "静默打击"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张静默打击造成10点或以上的伤害。",
+          "xpReward": 300,
+          "points": 30,
+          "quota": 10
+        },
+        {
+          "description": "用一张静默打击造成100点或以上的伤害。",
+          "xpReward": 600,
+          "points": 60,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "vh-019",
+      "name": "夺命凶铃",
+      "heroClass": "牧师",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "跟随幽灵"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用跟随幽灵在一回合中召唤4个幽灵。",
+          "xpReward": 300,
+          "points": 30,
+          "quota": 4
+        },
+        {
+          "description": "用跟随幽灵在一回合中召唤7个幽灵。",
+          "xpReward": 600,
+          "points": 60,
+          "quota": 7
+        }
+      ]
     }
   ]
 }

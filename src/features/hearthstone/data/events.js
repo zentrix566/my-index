@@ -3,6 +3,30 @@
 // 周任务在各自发布日一次性发放，每一期的用户进度按 id 独立保存。
 export const EVENTS = [
   {
+    id: 'break-free-adventure-2026-08',
+    name: '突破限制大冒险',
+    startDate: '2026-08-26',
+    endDate: '2026-09-15',
+    dailyPoints: 75,
+    weeklyTasks: [
+      { date: '2026-08-26', points: 400 },
+      { date: '2026-09-01', points: 800 },
+      { date: '2026-09-08', points: 1200 }
+    ],
+    targetTotal: 4000,
+    currentPoints: 0,
+    todayTaskDone: true,
+    xpPerMinute: 1,
+    dailyPlayMinutes: 60,
+    gameMinutes: 10,
+    rewardTiers: [
+      { xp: 400, label: '1包战士卡牌包+1包潜行者卡牌包' },
+      { xp: 1200, label: '2张最新的随机史诗卡牌' },
+      { xp: 2400, label: '逃生飞舰卡背图案+1包牧师卡牌包' },
+      { xp: 4000, label: '逃生幸运币+1包逃离紫罗兰监狱金色包+1包术士卡牌包' }
+    ]
+  },
+  {
     id: 'zulamat-2026-08',
     name: '祖拉玛特的狂暴',
     startDate: '2026-08-05',

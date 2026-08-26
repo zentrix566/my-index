@@ -22,13 +22,8 @@
           <button type="button" class="hs-btn hs-btn-ghost" @click="router.push('/hearthstone')">
             ← 返回成就查看器
           </button>
-          <button
-            type="button"
-            class="hs-btn hs-btn-ghost hs-theme-toggle"
-            :aria-label="hsTheme === 'dark' ? '切换到明亮主题' : '切换到暗色主题'"
-            @click="toggleTheme"
-          >
-            <svg v-if="hsTheme === 'dark'" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <!-- 主题切换统一由全站状态栏提供。 -->
+          <!--
               <circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>
             </svg>
             <svg v-else width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
@@ -36,6 +31,7 @@
             </svg>
             {{ hsTheme === 'dark' ? '明亮' : '暗色' }}
           </button>
+          -->
         </div>
       </header>
 
@@ -290,7 +286,7 @@ import { computeEvent, fmtDate, parseDate, daysBetween } from '../utils/eventCal
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 
 const router = useRouter()
-const { hsTheme, toggleTheme } = useHearthstoneTheme()
+const { hsTheme } = useHearthstoneTheme()
 
 // ===== 本地持久化（按活动期数隔离，刷新不丢） =====
 const eventOptions = EVENTS
@@ -311,32 +307,35 @@ function readJson(key) {
 }
 
 function normalizeEvent(raw, fallback) {
-  const value = { ...cloneEvent(fallback), ...(raw || {}) }
-  value.weeklyTasks = Array.isArray(raw?.weeklyTasks) ? raw.weeklyTasks : cloneEvent(fallback.weeklyTasks)
-  value.rewardTiers = Array.isArray(raw?.rewardTiers) && raw.rewardTiers.length
-    ? raw.rewardTiers
-    : cloneEvent(fallback.rewardTiers)
-  if (typeof value.todayTaskDone !== 'boolean') value.todayTaskDone = true
-
-  const oldLabels = ['奖励1', '奖励2', '奖励3', '奖励4']
-  value.rewardTiers = value.rewardTiers.map((tier, index) =>
-    oldLabels[index] && tier.label === oldLabels[index] && fallback.rewardTiers[index]
-      ? { ...tier, label: fallback.rewardTiers[index].label }
-      : tier
-  )
-  return value
+  // 活动名称、日期、每日/周任务和奖励是固定配置，不能被旧期缓存覆盖；
+  // 只保留用户填写的当前点数与游玩参数。
+  return {
+    ...cloneEvent(fallback),
+    currentPoints: Number.isFinite(Number(raw?.currentPoints))
+      ? Number(raw.currentPoints)
+      : fallback.currentPoints,
+    todayTaskDone: typeof raw?.todayTaskDone === 'boolean' ? raw.todayTaskDone : true,
+    xpPerMinute: Number.isFinite(Number(raw?.xpPerMinute)) ? Number(raw.xpPerMinute) : fallback.xpPerMinute,
+    dailyPlayMinutes: Number.isFinite(Number(raw?.dailyPlayMinutes)) ? Number(raw.dailyPlayMinutes) : fallback.dailyPlayMinutes,
+    gameMinutes: Number.isFinite(Number(raw?.gameMinutes)) ? Number(raw.gameMinutes) : fallback.gameMinutes
+  }
 }
 
 function loadEvent(id) {
   const fallback = eventOptions.find((item) => item.id === id) || DEFAULT_EVENT
   // 首次升级时把旧版单活动缓存迁移到第一期，保留用户已经填写的进度。
-  const stored = readJson(EVENT_STORAGE_PREFIX + id) || (id === eventOptions[0].id ? readJson(LEGACY_EVENT_KEY) : null)
+  const stored = readJson(EVENT_STORAGE_PREFIX + id) || (id === 'zulamat-2026-08' ? readJson(LEGACY_EVENT_KEY) : null)
   const value = normalizeEvent(stored, fallback)
   try { localStorage.setItem(EVENT_STORAGE_PREFIX + id, JSON.stringify(value)) } catch { /* ignore */ }
   return value
 }
 
-const selectedEventId = ref(readJson(EVENT_STORAGE_PREFIX + 'active') || eventOptions[0].id)
+const storedActiveEventId = readJson(EVENT_STORAGE_PREFIX + 'active')
+// 新活动上线后，将仍停留在上一期的用户自动带到当前期；历史期数据继续保留在本地。
+const initialEventId = storedActiveEventId === 'zulamat-2026-08' || !eventOptions.some((item) => item.id === storedActiveEventId)
+  ? eventOptions[0].id
+  : storedActiveEventId
+const selectedEventId = ref(initialEventId)
 const event = ref(loadEvent(selectedEventId.value))
 
 watch(event, (value) => {

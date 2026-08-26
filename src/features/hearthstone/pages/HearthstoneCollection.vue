@@ -390,6 +390,8 @@ const coins = ref([])
 const cardBacks = ref([])
 const catalogStatus = ref('loading') // loading | ready | error
 const catalogError = ref('')
+// 外观目录字段调整后递增，避免 force-cache 继续使用旧的职业分类数据。
+const COSMETIC_CATALOG_VERSION = '20260826'
 
 async function fetchJson(url) {
   const resp = await fetch(url, { cache: 'force-cache' })
@@ -402,9 +404,9 @@ async function loadCatalog() {
   catalogError.value = ''
   try {
     const [heroSkinData, coinData, cardBackData] = await Promise.all([
-      fetchJson('/hearthstone/hero-skins.json'),
-      fetchJson('/hearthstone/coins.json'),
-      fetchJson('/hearthstone/card-backs.json')
+      fetchJson(`/hearthstone/hero-skins.json?v=${COSMETIC_CATALOG_VERSION}`),
+      fetchJson(`/hearthstone/coins.json?v=${COSMETIC_CATALOG_VERSION}`),
+      fetchJson(`/hearthstone/card-backs.json?v=${COSMETIC_CATALOG_VERSION}`)
     ])
     heroSkins.value = heroSkinData
     coins.value = coinData

@@ -21,6 +21,10 @@ const classFolders = {
   法师: 'mage', 圣骑士: 'paladin', 牧师: 'priest', 潜行者: 'rogue', 萨满祭司: 'shaman',
   术士: 'warlock', 战士: 'warrior'
 }
+// 死亡之翼是萨满/战士共用的 Mythic 皮肤，不应计入任一职业的单职业数量。
+const crossClassHeroSkins = new Map([
+  ['HERO_02bx', '双职业']
+])
 
 function loadEnv() {
   const envPath = join(repoRoot, '.env')
@@ -103,8 +107,8 @@ async function main() {
   let downloaded = 0
 
   await runPool(cards, 8, async (card, index) => {
-    const heroClass = classNames[card.cardClass]
-    const heroFolder = classFolders[heroClass]
+    const heroClass = crossClassHeroSkins.get(card.id) || classNames[card.cardClass]
+    const heroFolder = classFolders[heroClass] || 'shaman'
     const directory = join(heroRoot, heroFolder)
     await mkdir(directory, { recursive: true })
     const details = splitHeroFlavor(card.flavor)

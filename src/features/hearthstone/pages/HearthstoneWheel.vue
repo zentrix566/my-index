@@ -11,6 +11,7 @@
             <select v-model="selectedTreasureId">
               <option v-for="item in treasureOptions" :key="item.id" :value="item.id">{{ item.name }}</option>
             </select>
+            <small v-if="currentTreasure.endRemaining">结束倒计时：{{ currentTreasure.endRemaining }}</small>
           </label>
         </div>
         <button type="button" class="hs-btn hs-btn-ghost" @click="router.push('/hearthstone')">返回炉石</button>
@@ -19,15 +20,17 @@
       <div class="hs-wheel-layout">
         <aside class="hs-prize-panel">
           <div class="hs-panel-heading"><span>{{ currentTreasure.name }}</span><small>{{ prizes.length }} 个奖励</small></div>
-          <div class="hs-prizes"><article v-for="prize in prizes" :key="prize.id" class="hs-prize" :class="'rarity-' + prize.rarity"><span class="hs-prize-icon">{{ prize.icon }}</span><div><strong>{{ prize.name }}</strong><small>{{ prize.note }}</small></div></article></div>
+          <div class="hs-prizes"><article v-for="prize in prizes" :key="prize.id" class="hs-prize" :class="'rarity-' + prize.rarity"><span class="hs-prize-icon">{{ prize.icon }}</span><div><strong>{{ prize.name }}</strong></div></article></div>
           <div class="hs-wheel-wallet"><span>奥术宝珠</span><strong>∞</strong><small>无限体验</small></div>
         </aside>
         <main class="hs-wheel-stage" aria-live="polite">
-          <div class="hs-action-bar"><button type="button" class="hs-spin-button" :disabled="spinning || !canSpin" @click="spin"><span>{{ spinning ? '宝藏转动中…' : canSpin ? (drawCount === 0 ? '免费抽取' : '抽取一次') : '已全部获得' }}</span><small v-if="drawCount > 0">第 {{ drawCount + 1 }} 抽 · {{ drawCosts[drawCount] || 0 }} 奥术宝珠</small></button><button type="button" class="hs-quick-button" :disabled="spinning || !canSpin" @click="quickDraw">快速抽奖：模拟到大奖</button><button type="button" class="hs-reset-button" :disabled="spinning" @click="resetTreasure">重置宝藏池</button></div>
-          <div class="hs-treasure-board" :class="{ spinning }">
-            <article v-for="prize in sidePrizes" :key="prize.id" class="hs-treasure-card" :class="['rarity-' + prize.rarity, { active: activeId === prize.id, selected: selectedIds.includes(prize.id) }]"><img :src="prize.image" :alt="prize.name"><strong>{{ prize.name }}</strong><small>{{ prize.note }}</small></article>
-            <article v-for="prize in grandPrizes" :key="prize.id" class="hs-treasure-grand" :class="['rarity-' + prize.rarity, { active: activeId === prize.id, selected: selectedIds.includes(prize.id) }]"><img :src="prize.image" :alt="prize.name"><strong>{{ prize.name }}</strong><small>{{ prize.note }}</small><em>大奖</em></article>
-            <button v-if="result" type="button" class="hs-board-result" aria-label="关闭抽奖结果" @click="result = null"><img :src="result.image" :alt="result.name"><div><small>本次获得</small><strong>{{ result.name }}</strong><span>点击关闭</span></div></button>
+          <div class="hs-action-bar"><button type="button" class="hs-spin-button" :disabled="spinning || !canSpin" @click="spin"><span>{{ spinning ? '宝藏转动中…' : canSpin ? (drawCount === 0 ? '免费抽取' : '抽取一次') : '已全部获得' }}</span><small v-if="drawCount > 0">{{ drawCount >= 10 ? '已全部获得' : `第 ${drawCount + 1} 抽 · ${drawCosts[drawCount] || 0} 奥术宝珠` }}</small></button><button type="button" class="hs-quick-button" :disabled="spinning || !canSpin" @click="quickDraw">快速抽奖：模拟到大奖</button><button type="button" class="hs-reset-button" :disabled="spinning" @click="resetTreasure">重置宝藏池</button></div>
+          <div class="hs-treasure-board" :class="{ spinning, 'has-single-grand': grandPrizes.length === 1 }">
+            <article v-for="prize in sidePrizes" :key="prize.id" role="button" tabindex="0" class="hs-treasure-card" :class="['rarity-' + prize.rarity, { active: activeId === prize.id, selected: selectedIds.includes(prize.id) }]" @click="showPrizeDetail(prize)" @keydown.enter="showPrizeDetail(prize)"><img v-if="prize.image" :src="prize.image" :alt="prize.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ prize.icon || '🎁' }}</span></article>
+            <article v-for="prize in grandPrizes" :key="prize.id" role="button" tabindex="0" class="hs-treasure-grand" :class="['rarity-' + prize.rarity, { active: activeId === prize.id, selected: selectedIds.includes(prize.id) }]" @click="showPrizeDetail(prize)" @keydown.enter="showPrizeDetail(prize)"><img v-if="prize.image" :src="prize.image" :alt="prize.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ prize.icon || '🎁' }}</span><em>大奖</em></article>
+            <div v-if="detailPrize" class="hs-detail-backdrop" aria-hidden="true" @click="detailPrize = null"></div>
+            <button v-if="detailPrize" type="button" class="hs-board-result" aria-label="关闭奖励详情" @click.stop="detailPrize = null"><img v-if="detailPrize.image" :src="detailPrize.image" :alt="detailPrize.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ detailPrize.icon || '🎁' }}</span><div><small>奖励详情</small><strong>{{ detailPrize.name }}</strong><span>点击关闭</span></div></button>
+            <button v-if="result" type="button" class="hs-board-result" aria-label="关闭抽奖结果" @click="result = null"><img v-if="result.image" :src="result.image" :alt="result.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ result.icon || '🎁' }}</span><div><small>本次获得</small><strong>{{ result.name }}</strong><span>点击关闭</span></div></button>
           </div>
           <p class="hs-wheel-hint">已抽取 {{ drawCount }}/10 次 · 下一抽 {{ drawCount < 10 ? (drawCount === 0 ? '免费' : drawCosts[drawCount] + ' 奥术宝珠') : '已全部获得' }}</p>
         </main>
@@ -88,6 +91,7 @@ const initialTreasureState = loadTreasureState(selectedTreasureId.value)
 const drawCount = ref(initialTreasureState.drawCount)
 const spinning = ref(false)
 const result = ref(null)
+const detailPrize = ref(null)
 const rotation = ref(0)
 const activeId = ref(null)
 const selectedIds = ref(initialTreasureState.selectedIds)
@@ -98,8 +102,13 @@ const canSpin = computed(() => drawCount.value < 10)
 const spentCost = computed(() => drawCosts.value.slice(0, drawCount.value).reduce((sum, cost) => sum + cost, 0))
 const remainingCost = computed(() => drawCosts.value.slice(drawCount.value).reduce((sum, cost) => sum + cost, 0))
 const availablePrizes = computed(() => prizes.value.filter((prize) => !selectedIds.value.includes(prize.id)))
-const grandPrizes = computed(() => prizes.value.slice(-2))
-const sidePrizes = computed(() => prizes.value.slice(0, 8))
+const hasExplicitGrandPrize = computed(() => prizes.value.some((prize) => prize.isGrand))
+const grandPrizes = computed(() => hasExplicitGrandPrize.value
+  ? prizes.value.filter((prize) => prize.isGrand)
+  : prizes.value.slice(-2))
+const sidePrizes = computed(() => hasExplicitGrandPrize.value
+  ? prizes.value.filter((prize) => !prize.isGrand)
+  : prizes.value.slice(0, 8))
 const wheelStyle = computed(() => ({ transform: 'rotate(' + rotation.value + 'deg)' }))
 const labelStyle = (index) => ({ transform: 'rotate(' + (index * 45 + 22.5) + 'deg) translateY(-112px) rotate(-' + (index * 45 + 22.5) + 'deg)' })
 
@@ -151,6 +160,10 @@ function saveDraw(prize) {
   saveTreasureState()
 }
 
+function showPrizeDetail(prize) {
+  detailPrize.value = prize
+}
+
 function pickPrize(pool) {
   const totalWeight = pool.reduce((sum, item) => sum + item.weight, 0)
   let roll = Math.random() * totalWeight
@@ -200,4 +213,10 @@ function resetTreasure() {
 .hs-wheel-layout{display:grid;grid-template-columns:280px minmax(0,1fr) 280px;align-items:start;gap:18px}.hs-prize-panel{grid-column:1;grid-row:1}.hs-wheel-stage{grid-column:2;grid-row:1;min-width:0}.hs-history-panel{grid-column:3;grid-row:1;min-width:0}.hs-history-panel .hs-draw-history{width:100%;margin-top:0}.hs-history-panel .hs-draw-history ol{grid-template-columns:1fr}.hs-history-panel .hs-draw-history li{align-items:flex-start;flex-wrap:wrap}.hs-history-panel .hs-draw-history li strong{width:100%}@media(max-width:1100px){.hs-wheel-layout{grid-template-columns:240px minmax(0,1fr)}.hs-history-panel{grid-column:1 / -1;grid-row:2}.hs-history-panel .hs-draw-history ol{grid-template-columns:repeat(2,minmax(0,1fr))}}@media(max-width:760px){.hs-wheel-layout{display:flex;flex-direction:column}.hs-prize-panel,.hs-wheel-stage,.hs-history-panel{width:100%}.hs-history-panel{order:3}.hs-history-panel .hs-draw-history ol{grid-template-columns:1fr}}
 .hs-wheel-stage{justify-content:flex-start;padding-top:82px}.hs-wheel-ribbon{top:22px}.hs-action-bar{position:relative;margin-top:0}.hs-treasure-board{margin-top:20px}
 .hs-wheel-stage{padding-top:24px}.hs-action-bar{margin-top:0}
+.hs-treasure-board.has-single-grand .hs-treasure-grand{grid-column:2 / 4;grid-row:2}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(5),.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(6){grid-row:2}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(5){grid-column:1}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(6){grid-column:4}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(7),.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(8),.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(9){grid-row:3}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(7){grid-column:1}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(8){grid-column:2}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(9){grid-column:4}
+.hs-treasure-board.has-single-grand{grid-template-columns:repeat(5,1fr);grid-template-rows:130px 170px 170px 130px;gap:10px}.hs-treasure-board.has-single-grand .hs-treasure-grand{grid-column:2 / 5;grid-row:1 / 4;align-self:stretch}.hs-treasure-board.has-single-grand .hs-treasure-grand img{height:100%;max-height:440px;object-fit:contain}.hs-treasure-board.has-single-grand .hs-prize-fallback{font-size:100px}.hs-treasure-board.has-single-grand .hs-treasure-card img{height:118px}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(1){grid-column:1;grid-row:1}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(2){grid-column:1;grid-row:2}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(3){grid-column:1;grid-row:3}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(4){grid-column:2;grid-row:4}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(5){grid-column:3;grid-row:4}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(6){grid-column:4;grid-row:4}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(7){grid-column:5;grid-row:4}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(8){grid-column:5;grid-row:3}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(9){grid-column:5;grid-row:2}
+.hs-treasure-board.has-single-grand{grid-template-columns:repeat(5,1fr);grid-template-rows:110px 155px 155px 110px;gap:6px;padding:10px}.hs-treasure-board.has-single-grand .hs-treasure-grand{grid-column:2 / 5;grid-row:1 / 4}.hs-treasure-board.has-single-grand .hs-treasure-card img{height:112px}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(1){grid-column:1;grid-row:1}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(2){grid-column:1;grid-row:2}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(3){grid-column:1;grid-row:3}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(4){grid-column:2;grid-row:4}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(5){grid-column:3;grid-row:4}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(6){grid-column:4;grid-row:4}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(7){grid-column:5;grid-row:3}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(8){grid-column:5;grid-row:2}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(9){grid-column:5;grid-row:1}
+.hs-treasure-board.has-single-grand{grid-template-rows:145px 145px 145px 145px}.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(3),.hs-treasure-board.has-single-grand .hs-treasure-card:nth-child(7){grid-row:3}.hs-treasure-board.has-single-grand .hs-treasure-card strong,.hs-treasure-board.has-single-grand .hs-treasure-grand strong{display:block;width:100%;overflow:hidden;font-size:clamp(9px,1.05vw,14px);line-height:1.2;white-space:nowrap;text-overflow:ellipsis}
+.hs-treasure-board.has-single-grand .hs-treasure-card small,.hs-treasure-board.has-single-grand .hs-treasure-grand small{display:block;width:100%;overflow:hidden;color:#c6d7bf;font-size:clamp(8px,.82vw,11px);line-height:1.15;white-space:nowrap;text-overflow:ellipsis}
+.hs-treasure-board.has-single-grand .hs-treasure-card{gap:0;padding:4px;overflow:hidden}.hs-treasure-board.has-single-grand .hs-treasure-card img{width:100%;height:100%;min-height:0;flex:1;object-fit:contain}.hs-treasure-board.has-single-grand .hs-treasure-card strong,.hs-treasure-board.has-single-grand .hs-treasure-card small{display:none}.hs-treasure-board.has-single-grand .hs-treasure-grand img{width:100%;height:100%;object-fit:contain}.hs-detail-backdrop{position:fixed;z-index:4;inset:0;background:transparent}.hs-board-result img{width:58%;height:min(65vh,420px);object-fit:contain}.hs-board-result .hs-prize-fallback{display:block;width:58%;font-size:150px;text-align:center}
 </style>

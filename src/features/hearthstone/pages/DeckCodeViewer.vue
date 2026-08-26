@@ -13,6 +13,7 @@
             <h1>炉石卡组代码解析</h1>
             <p class="dcv-sub">粘贴游戏内复制的卡组代码，立即查看卡组构成、法力曲线、合成造价，并可导出卡组图片。</p>
           </div>
+          <!--
           <button
             type="button"
             class="dcv-theme"
@@ -28,6 +29,7 @@
             </svg>
             {{ hsTheme === 'dark' ? '明亮' : '暗色' }}
           </button>
+          -->
         </div>
 
         <!-- 输入卡片 -->
@@ -105,7 +107,7 @@ import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 const DeckDetailModal = defineAsyncComponent(
   () => import('../components/DeckDetailModal.vue')
 )
-const { hsTheme, toggleTheme } = useHearthstoneTheme()
+const { hsTheme } = useHearthstoneTheme()
 
 const route = useRoute()
 const router = useRouter()

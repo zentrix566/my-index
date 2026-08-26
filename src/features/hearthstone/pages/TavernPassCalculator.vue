@@ -14,6 +14,7 @@
           <button type="button" class="hs-btn hs-btn-ghost" @click="router.push('/hearthstone')">
             ← 返回成就查看器
           </button>
+          <!--
           <button
             type="button"
             class="hs-btn hs-btn-ghost hs-theme-toggle"
@@ -28,6 +29,7 @@
             </svg>
             {{ hsTheme === 'dark' ? '明亮' : '暗色' }}
           </button>
+          -->
         </div>
       </header>
 
@@ -344,7 +346,7 @@ import {
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 
 const router = useRouter()
-const { hsTheme, toggleTheme } = useHearthstoneTheme()
+const { hsTheme } = useHearthstoneTheme()
 
 // ===== 本地持久化（刷新不丢） =====
 function persisted(key, initial) {

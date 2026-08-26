@@ -4,7 +4,7 @@ import { useRouter } from 'vue-router'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 
 const router = useRouter()
-const { hsTheme, toggleTheme } = useHearthstoneTheme()
+const { hsTheme } = useHearthstoneTheme()
 const activeStep = ref(3)
 const jugglerFirstRound = ref('')
 const jugglerSecondRound = ref('')
@@ -99,7 +99,7 @@ function convertCubeFormula() {
           <a class="ap-video-link" href="https://www.bilibili.com/video/BV1jL411A7Hx/" target="_blank" rel="noopener noreferrer">观看奥特兰克谜题视频攻略</a>
           <p class="ap-disclaimer"><strong>免责声明：</strong>本助手基于公开视频、地图和社区攻略整理；作者尚未亲自验证泽瑞拉、库尔特鲁斯和凯瑞尔三个谜题的完整流程。请结合游戏内实际状态谨慎操作。</p>
         </div>
-        <button type="button" class="ap-theme" @click="toggleTheme">{{ hsTheme === 'dark' ? '浅色' : '深色' }}</button>
+        <!-- 主题切换统一由全站状态栏提供。 -->
       </header>
 
       <nav class="ap-tabs" aria-label="谜题阶段">
