@@ -327,9 +327,19 @@ export const VALID_STATUS = new Set([
 const VALID_PRIORITY = new Set(['low', 'medium', 'high'])
 
 export async function createTask(userId, payload) {
+  // 完成时间维护与 updateTask 一致：显式传入 completedAt（补记/撤销恢复）以传入值为准；
+  // status=done 且未传 → 写当前时间；其余为 NULL
+  let completedAt = null
+  if (payload.completedAt !== undefined && payload.completedAt !== null && payload.completedAt !== '') {
+    const norm = normalizeCompletedAt(payload.completedAt)
+    if (norm === false) throw new Error('完成日期格式应为 YYYY-MM-DD 或 ISO 时间')
+    completedAt = norm
+  } else if (payload.status === 'done') {
+    completedAt = nowIso()
+  }
   const row = await queryOne(
-    `INSERT INTO todos(user_id, list_id, title, note, due_date, status, priority, is_harvest, position, created_at, updated_at)
-     VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11) RETURNING *`,
+    `INSERT INTO todos(user_id, list_id, title, note, due_date, status, priority, is_harvest, position, completed_at, created_at, updated_at)
+     VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`,
     [
       userId,
       payload.listId ?? null,
@@ -340,6 +350,7 @@ export async function createTask(userId, payload) {
       payload.priority && VALID_PRIORITY.has(payload.priority) ? payload.priority : 'medium',
       payload.isHarvest ? 1 : 0,
       0,
+      completedAt,
       nowIso(),
       nowIso()
     ]

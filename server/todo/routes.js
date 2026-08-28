@@ -171,13 +171,16 @@ router.get('/tasks', async (req, res) => {
 })
 
 router.post('/tasks', async (req, res) => {
-  const { title, note, dueDate, priority, isHarvest, listId, status } = req.body || {}
+  const { title, note, dueDate, priority, isHarvest, listId, status, completedAt } = req.body || {}
   if (typeof title !== 'string' || !title.trim() || title.trim().length > TODO_CONST.TITLE_MAX) {
     return res.status(400).json({ error: `任务标题需 1-${TODO_CONST.TITLE_MAX} 个字符` })
   }
   if (note !== undefined && typeof note !== 'string') return res.status(400).json({ error: '备注格式错误' })
   if (dueDate !== undefined && dueDate !== null && !isDateKey(dueDate)) {
     return res.status(400).json({ error: '日期格式应为 YYYY-MM-DD' })
+  }
+  if (completedAt !== undefined && completedAt !== null && completedAt !== '' && !/^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2}.*)?$/.test(completedAt)) {
+    return res.status(400).json({ error: '完成日期格式应为 YYYY-MM-DD' })
   }
   const safePriority = priority === 'low' || priority === 'high' ? priority : 'medium'
   try {
@@ -196,7 +199,8 @@ router.post('/tasks', async (req, res) => {
       priority: safePriority,
       status: VALID_STATUS.has(status) ? status : 'pending',
       isHarvest: Boolean(isHarvest),
-      listId: safeListId
+      listId: safeListId,
+      completedAt
     })
     res.json({ ok: true, task: serializeTask(row) })
   } catch (err) {

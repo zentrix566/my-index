@@ -480,17 +480,15 @@ async function submitTask() {
   }
   try {
     if (editingId.value) {
-      const r = await todoApi.updateTask(editingId.value, payload)
-      const idx = tasks.value.findIndex((x) => x.id === editingId.value)
-      if (idx >= 0) tasks.value[idx] = r.task
+      await todoApi.updateTask(editingId.value, payload)
       toast('已更新')
     } else {
-      const r = await todoApi.createTask(payload)
+      await todoApi.createTask(payload)
       setLastListId(payload.listId)
-      // 若当前视图应包含该任务则插入；否则仅提示
-      tasks.value.unshift(r.task)
       toast('已新建')
     }
+    // 保存后按服务端过滤结果重载：补记完成日期会让任务在视图间移动，本地原位更新无法体现这种成员关系变化
+    await loadTasks()
     taskModal.value = false
   } catch (e) {
     taskError.value = e.message

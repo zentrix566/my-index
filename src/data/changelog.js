@@ -3,6 +3,16 @@
 export const changelog = [
   {
     date: '2026-08-28',
+    title: '日程补记完成修复',
+    category: 'todo',
+    route: '/todo',
+    changes: [
+      '修复补记昨天的日程后，条目仍留在「今日已完成」里的问题，保存后列表立即按实际完成日期归位。',
+      '修复新建日程时直接勾选已完成并填写完成日期，完成日期未生效的问题；删除任务后撤销恢复也不再丢失完成日期。'
+    ]
+  },
+  {
+    date: '2026-08-28',
     title: '炉石外观图片刷新修复',
     category: 'hearthstone',
     route: '/hearthstone/collection',
