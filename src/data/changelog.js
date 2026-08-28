@@ -2,6 +2,15 @@
 // 按时间倒序排列；同一天涉及多个模块时分别记录，且同一天同一 category 只保留一条。
 export const changelog = [
   {
+    date: '2026-08-28',
+    title: '炉石外观图片刷新修复',
+    category: 'hearthstone',
+    route: '/hearthstone/collection',
+    changes: [
+      '修复英雄皮肤原画更新后列表仍显示旧缩略图的问题，刷新后可正常看到最新皮肤图片。'
+    ]
+  },
+  {
     date: '2026-08-27',
     title: '炉石外观收藏数据与图片更新',
     category: 'hearthstone',

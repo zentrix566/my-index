@@ -507,14 +507,22 @@ const importPreview = ref(null)
 // 图片加载状态：用于淡入与骨架占位，避免逐张硬刷出
 const loadedSet = ref(new Set())
 const errorSet = ref(new Set())
+const COSMETIC_IMAGE_VERSION = '20260828'
+
+function withCosmeticImageVersion(url) {
+  if (!url || !url.startsWith('/hearthstone-cosmetics/')) return url
+  return `${url}${url.includes('?') ? '&' : '?'}v=${COSMETIC_IMAGE_VERSION}`
+}
 
 // 列表用缩略图（384 WebP），详情弹窗仍用原图
 function thumbnailUrlFor(item) {
-  if (item.cosmeticType === 'pets' || item.ossObjectKey?.startsWith('hearthstone-cosmetics/pets/')) return item.imageUrl
+  if (item.cosmeticType === 'pets' || item.ossObjectKey?.startsWith('hearthstone-cosmetics/pets/')) {
+    return withCosmeticImageVersion(item.imageUrl)
+  }
   const key = item.ossObjectKey || String(item.imageUrl || '').replace(/^\//, '')
   const m = key.match(/^(hearthstone-cosmetics\/.+?)\/([^/]+)\.(png|jpe?g)$/i)
-  if (!m) return item.imageUrl
-  return `/${m[1]}/384/${m[2]}.webp`
+  if (!m) return withCosmeticImageVersion(item.imageUrl)
+  return withCosmeticImageVersion(`/${m[1]}/384/${m[2]}.webp`)
 }
 const globalItems = computed(() => getGlobalCosmeticItems(collectionCatalog.value))
 
