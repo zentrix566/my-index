@@ -48,7 +48,8 @@ CREATE TABLE IF NOT EXISTS users (
   created_at    TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 CREATE TABLE IF NOT EXISTS achievement_progress (
-  user_id         INT NOT NULL REFERENCES users(id) ON DELETE CASCADE,
+  -- 业务 uid 来自认证库；迁移工具也不能重新引入跨库账号外键。
+  user_id         INT NOT NULL,
   achievement_id  TEXT NOT NULL,
   stages_json     JSONB NOT NULL DEFAULT '{}'::jsonb,
   count           INT NOT NULL DEFAULT 0,

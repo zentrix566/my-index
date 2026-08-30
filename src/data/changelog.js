@@ -2,6 +2,26 @@
 // 按时间倒序排列；同一天涉及多个模块时分别记录，且同一天同一 category 只保留一条。
 export const changelog = [
   {
+    date: '2026-08-30',
+    title: '炉石成就进度保存修复',
+    category: 'hearthstone',
+    route: '/hearthstone',
+    changes: [
+      '修复部分新注册账号编辑炉石成就后提示“进度保存失败”的问题。',
+      '修复旧版本用户首次收藏宠物时可能保存失败的问题。'
+    ]
+  },
+  {
+    date: '2026-08-30',
+    title: '抵御心魔新账号保存修复',
+    category: 'willpower',
+    route: '/willpower',
+    changes: [
+      '修复部分新注册账号在抵御心魔中新增挑战、正能量记录或自定义项目时可能保存失败的问题。',
+      '修复首次生成 AI 分析报告时可能无法保存的问题。'
+    ]
+  },
+  {
     date: '2026-08-28',
     title: '日程补记完成修复',
     category: 'todo',

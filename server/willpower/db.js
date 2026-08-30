@@ -11,6 +11,7 @@
 import pg from 'pg'
 import path from 'node:path'
 import { getBuiltinDemon, isBuiltinDemon } from './catalog.js'
+import { buildDropLegacyUserForeignKeysSql } from '../db/schema-compat.js'
 
 const { Pool } = pg
 
@@ -150,7 +151,7 @@ CREATE TABLE IF NOT EXISTS ai_report_usage (
 );
 
 CREATE TABLE IF NOT EXISTS ai_reports (
-  id INTEGER PRIMARY KEY,
+  id ${pk},
   user_id INTEGER NOT NULL,
   scope TEXT NOT NULL,
   date_from TEXT NOT NULL,
@@ -175,8 +176,11 @@ async function createSqliteDriver() {
   fs.mkdirSync(path.dirname(filePath), { recursive: true })
   const database = new Database(filePath)
   database.pragma('journal_mode = WAL')
-  database.pragma('foreign_keys = ON')
   database.exec(buildSchema('sqlite'))
+  // 旧版 SQLite 心魔库的业务表曾引用本库 users；账号统一后 users 已不再维护，
+  // SQLite 又不能直接 DROP FOREIGN KEY，因此关闭本业务库的旧外键 enforcement。
+  // 当前 schema 没有任何仍需保留的业务外键。
+  database.pragma('foreign_keys = OFF')
 
   // 存量库可能没有 sort_order 列（旧表结构），这里补齐，不影响新库
   const hasSort = database.prepare("PRAGMA table_info(demons)").all().some((c) => c.name === 'sort_order')
@@ -202,6 +206,28 @@ async function createSqliteDriver() {
 async function createPgDriver() {
   const pool = new Pool(readPgConfig())
   await pool.query(buildSchema('pg'))
+  await pool.query(buildDropLegacyUserForeignKeysSql([
+    'demons',
+    'resistances',
+    'positive_logs',
+    'positive_activities',
+    'custom_achievements',
+    'achievement_unlocks',
+    'ai_report_usage',
+    'ai_reports'
+  ]))
+  // 旧版 ai_reports 在 PG 中使用 INTEGER PRIMARY KEY，却没有序列默认值；
+  // INSERT 又不传 id，生成 AI 报告时会因 id 为 NULL 保存失败。
+  await pool.query(`
+    CREATE SEQUENCE IF NOT EXISTS ai_reports_id_seq;
+    ALTER SEQUENCE ai_reports_id_seq OWNED BY ai_reports.id;
+    ALTER TABLE ai_reports ALTER COLUMN id SET DEFAULT nextval('ai_reports_id_seq');
+    SELECT setval(
+      'ai_reports_id_seq',
+      COALESCE((SELECT max(id) FROM ai_reports), 1),
+      EXISTS (SELECT 1 FROM ai_reports)
+    );
+  `)
   // 存量库补齐 sort_order 列
   const { rows: cols } = await pool.query(
     "SELECT column_name FROM information_schema.columns WHERE table_name = 'demons' AND column_name = 'sort_order'"

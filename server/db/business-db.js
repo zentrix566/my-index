@@ -5,6 +5,7 @@
 import pg from 'pg'
 import path from 'node:path'
 import { getAchievementMeta } from '../achievements-meta.js'
+import { buildDropLegacyUserForeignKeysSql } from './schema-compat.js'
 import {
   normalizeCosmeticCollection,
   normalizePinnedAchievementIds
@@ -78,6 +79,8 @@ CREATE TABLE IF NOT EXISTS hearthstone_profiles (
   updated_at             TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
+${buildDropLegacyUserForeignKeysSql(['achievement_progress', 'hearthstone_profiles'])}
+
 CREATE TABLE IF NOT EXISTS hearthstone_cosmetic_collection (
   user_id        INT NOT NULL,
   cosmetic_type  TEXT NOT NULL CHECK (cosmetic_type IN ('heroSkins', 'coins', 'cardBacks', 'pets')),
@@ -88,6 +91,43 @@ CREATE TABLE IF NOT EXISTS hearthstone_cosmetic_collection (
 
 CREATE INDEX IF NOT EXISTS idx_hearthstone_cosmetics_user_type
   ON hearthstone_cosmetic_collection(user_id, cosmetic_type);
+
+-- CREATE TABLE IF NOT EXISTS 不会更新旧表的 CHECK；只有旧约束仍不支持 pets 时才替换。
+DO $$
+DECLARE cosmetic_type_check RECORD;
+BEGIN
+  IF NOT EXISTS (
+    SELECT 1
+    FROM pg_constraint AS constraint_def
+    WHERE constraint_def.conrelid = 'hearthstone_cosmetic_collection'::regclass
+      AND constraint_def.contype = 'c'
+      AND pg_get_constraintdef(constraint_def.oid) LIKE '%pets%'
+  ) THEN
+    FOR cosmetic_type_check IN
+      SELECT constraint_def.conname AS constraint_name
+      FROM pg_constraint AS constraint_def
+      WHERE constraint_def.conrelid = 'hearthstone_cosmetic_collection'::regclass
+        AND constraint_def.contype = 'c'
+        AND EXISTS (
+          SELECT 1
+          FROM unnest(constraint_def.conkey) AS constrained_column(attnum)
+          JOIN pg_attribute AS column_def
+            ON column_def.attrelid = constraint_def.conrelid
+           AND column_def.attnum = constrained_column.attnum
+          WHERE column_def.attname = 'cosmetic_type'
+        )
+    LOOP
+      EXECUTE format(
+        'ALTER TABLE hearthstone_cosmetic_collection DROP CONSTRAINT %I',
+        cosmetic_type_check.constraint_name
+      );
+    END LOOP;
+
+    ALTER TABLE hearthstone_cosmetic_collection
+      ADD CONSTRAINT hearthstone_cosmetic_collection_cosmetic_type_check
+      CHECK (cosmetic_type IN ('heroSkins', 'coins', 'cardBacks', 'pets'));
+  END IF;
+END $$;
 
 INSERT INTO hearthstone_cosmetic_collection(user_id, cosmetic_type, cosmetic_id)
 SELECT profile.user_id, source.cosmetic_type, source.cosmetic_id
