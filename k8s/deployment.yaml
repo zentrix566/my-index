@@ -73,13 +73,15 @@ spec:
                   name: zentrix-secrets
                   key: pg-pass
             # ========== 统一认证库（用户/令牌/模块统计）独立连接 ==========
-            # 配置后账号体系与业务数据物理隔离；不配置则回退主库（过渡兼容）。
+            # 账号体系与业务数据物理隔离；生产缺失时服务拒绝启动，不再回退主库。
             # 连接串含密码，故放在 Secret（见 secret.yaml 的 auth-db-url）。
             - name: AUTH_DB_URL
               valueFrom:
                 secretKeyRef:
                   name: zentrix-secrets
                   key: auth-db-url
+            - name: AUTH_DB_NAME
+              value: "zentrix_auth"
             # ========== 「抵御域外心魔」独立数据层 ==========
             # 复用同一套 PG 凭据，但连独立的库 zentrix_willpower（与炉石库隔离）。
             - name: WILLPOWER_PG_HOST

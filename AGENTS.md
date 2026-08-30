@@ -21,6 +21,7 @@ zentrix-index 是个人全栈站点（Vue 3 + Vite + Express），含炉石卡�
 ### 账号库边界
 
 - `users`、登录令牌和 `module_activity` 只属于认证库 `server/db/auth-db.js`。
+- 生产环境必须配置 `AUTH_DB_URL` 指向 `zentrix_auth`，且启动时校验实际数据库名；禁止缺失时回退 `PG_DATABASE` 主业务库。
 - 主业务库、Todo 库、Willpower 库只保存主账号 `user_id`，**禁止写 `REFERENCES users(id)`**；数据库之间无法建立可靠外键，账号有效性由 `requireAuth` 和认证库保证。
 - 旧版本遗留账号外键统一通过 `server/db/schema-compat.js` 的白名单迁移清理，不能在各模块复制无边界的 DROP 逻辑。
 - 历史迁移/导入脚本也必须遵守账号库边界，不能因为是“一次性脚本”重新创建跨库用户外键。
@@ -41,6 +42,7 @@ zentrix-index 是个人全栈站点（Vue 3 + Vite + Express），含炉石卡�
 - 拆库或切换账号来源时，旧外键是否自动清理，新用户 ID 是否能直接写入业务表。
 - 本地 SQLite 与生产 PostgreSQL 是否都有对应升级路径，不能只验证其中一种。
 - 启动迁移失败时必须阻止服务带着半升级结构继续运行，错误需进入服务日志。
+- 主业务库的旧认证表只能在核对新认证库用户 ID、确认业务外键已清理并完成备份后改名归档；优先改名观察，稳定后再人工删除。
 
 ## 文档与更新日志规范（统一思想）
 

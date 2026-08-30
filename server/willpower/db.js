@@ -295,8 +295,8 @@ export function nowIso(ts = Date.now()) {
 }
 
 // ========== 心魔（用户自定义 / 对内置项的覆盖）==========
-// 注意：心魔的认证已统一到站点主账号体系（server/auth.js + 主库 users 表），
-// 本模块不再维护独立用户表，业务表的 user_id 直接引用主站用户 uid。
+// 注意：心魔的认证已统一到站点主账号体系（server/auth.js + zentrix_auth），
+// 本模块不再维护独立用户表，业务表只保存认证库签发的主账号 uid。
 
 export async function listUserDemons(userId) {
   const { rows } = await query(

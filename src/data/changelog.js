@@ -3,6 +3,15 @@
 export const changelog = [
   {
     date: '2026-08-30',
+    title: '账号数据源统一与登录稳定性修复',
+    category: 'site',
+    route: '/settings',
+    changes: [
+      '账号、登录令牌和用户资料统一从独立认证库读取，修复配置异常时可能误用旧账号数据的问题，避免新老账号在登录与功能保存时表现不一致。'
+    ]
+  },
+  {
+    date: '2026-08-30',
     title: '炉石成就进度保存修复',
     category: 'hearthstone',
     route: '/hearthstone',

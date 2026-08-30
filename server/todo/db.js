@@ -7,7 +7,7 @@
  * - 布尔统一用 SMALLINT 0/1：better-sqlite3 不接受 boolean 绑定
  *
  * 认证完全复用站点统一登录（server/auth.js 的 requireAuth，基于 site_token Cookie），
- * 本模块不维护独立用户表，业务表的 user_id 直接引用主站 users 表。
+ * 本模块不维护用户表，业务表只保存独立认证库签发的主账号 user_id。
  */
 import pg from 'pg'
 import path from 'node:path'

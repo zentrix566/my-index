@@ -29,6 +29,14 @@ if (!/CREATE TABLE IF NOT EXISTS ai_reports \(\s*id \$\{pk\}/m.test(willpowerSou
   violations.push('server/willpower/db.js：ai_reports.id 必须按数据库方言使用自增主键')
 }
 
+const authSource = fs.readFileSync('server/db/auth-db.js', 'utf8')
+if (!authSource.includes('生产环境缺少 AUTH_DB_URL')) {
+  violations.push('server/db/auth-db.js：生产环境必须在 AUTH_DB_URL 缺失时拒绝启动')
+}
+if (!authSource.includes('SELECT current_database() AS database_name')) {
+  violations.push('server/db/auth-db.js：生产启动时必须核对实际认证数据库名称')
+}
+
 if (violations.length) {
   console.error(`数据库边界检查失败：\n- ${violations.join('\n- ')}`)
   process.exit(1)

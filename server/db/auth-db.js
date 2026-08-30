@@ -10,7 +10,9 @@ const { Pool } = pg
 const isLocalDevMode =
   process.env.NODE_ENV !== 'production' && process.env.LOCAL_DEV_MODE === 'true'
 
-// 认证连接：优先用独立认证库连接串；未配置时回退到主库（迁移过渡期兼容）
+const requiredAuthDatabaseName = process.env.AUTH_DB_NAME || 'zentrix_auth'
+
+// 生产环境只允许使用独立认证库；开发环境保留 PG_* 回退，方便未启用本地 SQLite 时调试。
 function buildAuthPool() {
   if (process.env.AUTH_DB_URL) {
     return new Pool({
@@ -19,6 +21,9 @@ function buildAuthPool() {
       idleTimeoutMillis: 30000,
       connectionTimeoutMillis: 10000
     })
+  }
+  if (process.env.NODE_ENV === 'production') {
+    throw new Error('生产环境缺少 AUTH_DB_URL，拒绝回退主业务库创建或读取账号数据')
   }
   return new Pool({
     host: process.env.PG_HOST,
@@ -111,6 +116,14 @@ export async function ensureAuthSchema() {
     return
   }
   if (authSchemaReady) return
+  if (process.env.NODE_ENV === 'production') {
+    const { rows } = await authDb.query('SELECT current_database() AS database_name')
+    if (rows[0]?.database_name !== requiredAuthDatabaseName) {
+      throw new Error(
+        `认证数据库连接错误：期望 ${requiredAuthDatabaseName}，实际 ${rows[0]?.database_name || 'unknown'}`
+      )
+    }
+  }
   await authDb.query(AUTH_SCHEMA_SQL)
   authSchemaReady = true
 }
