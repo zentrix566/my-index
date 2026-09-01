@@ -11,7 +11,7 @@
     <label>标签 <span class="notes-label-hint">用逗号分隔，例如：历史, 产品灵感</span><input v-model="tagsText" maxlength="300" placeholder="给这条记录几个检索入口" /></label>
     <p v-if="error" class="notes-error" role="alert">{{ error }}</p>
     <p v-else-if="draftMessage" class="notes-draft-hint" role="status">{{ draftMessage }}</p>
-    <div class="notes-editor__footer"><button class="notes-button" type="submit" :disabled="saving">{{ saving ? '保存中…' : '保存记录' }}</button><div class="notes-editor__secondary"><button class="notes-button notes-button--quiet" type="button" :disabled="saving" @click="$emit('cancel')">取消</button><button class="notes-button notes-button--close" type="button" :disabled="saving" @click="$emit('cancel')">关闭</button></div></div>
+    <div class="notes-editor__footer"><div class="notes-editor__secondary"><button class="notes-button notes-button--quiet" type="button" :disabled="saving" @click="$emit('cancel')">取消</button><button class="notes-button notes-button--close" type="button" :disabled="saving" @click="$emit('cancel')">关闭</button></div><button class="notes-button notes-editor__save" type="submit" :disabled="saving">{{ saving ? '保存中…' : '保存记录' }}</button></div>
   </form>
 </template>
 

@@ -3,7 +3,7 @@
     <header class="changelog-header">
       <p class="eyebrow">Changelog</p>
       <h1>全站更新日志</h1>
-      <p>集中查看主站、炉石、抵御心魔、日程管理与其他工具的功能和数据更新。</p>
+      <p>集中查看主站、炉石、日程管理、灵感与其他工具的功能和数据更新。</p>
     </header>
 
     <nav class="changelog-filters" aria-label="更新日志分类">
@@ -49,7 +49,7 @@ const entries = changelog
     category: entry.category || 'hearthstone',
     categoryLabel: {
       site: '主站',
-      willpower: '抵御心魔',
+      notes: '灵感',
       todo: '日程管理',
       other: '其他'
     }[entry.category] || '炉石',
@@ -58,14 +58,14 @@ const entries = changelog
   .sort((a, b) => b.date.localeCompare(a.date))
 
 const selectedCategory = computed(() => (
-  ['site', 'hearthstone', 'willpower', 'todo', 'other'].includes(route.query.category) ? route.query.category : 'all'
+  ['site', 'hearthstone', 'todo', 'notes', 'other'].includes(route.query.category) ? route.query.category : 'all'
 ))
 
 const categoryOptions = computed(() => [
   { key: 'all', label: '全部', count: entries.length },
   { key: 'site', label: '主站', count: entries.filter((entry) => entry.category === 'site').length },
   { key: 'hearthstone', label: '炉石', count: entries.filter((entry) => entry.category === 'hearthstone').length },
-  { key: 'willpower', label: '抵御心魔', count: entries.filter((entry) => entry.category === 'willpower').length },
+  { key: 'notes', label: '灵感', count: entries.filter((entry) => entry.category === 'notes').length },
   { key: 'todo', label: '日程管理', count: entries.filter((entry) => entry.category === 'todo').length },
   { key: 'other', label: '其他', count: entries.filter((entry) => entry.category === 'other').length }
 ])

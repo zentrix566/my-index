@@ -4,12 +4,13 @@ export const changelog = [
   {
     date: '2026-09-01',
     title: '灵感收集上线',
-    category: 'other',
+    category: 'notes',
     route: '/notes',
     changes: [
       '新增按月整理个人想法与 Vibe Coding 灵感的备忘空间，记录会按账号独立保存。',
       'Vibe Coding 支持标记已完成、不可能或不确定；想法保持无状态，避免被误当成待办。',
       '支持关键词、标签和分类筛选，以及列表、时间轴、按日记录节奏三种查看方式；可导出当月记录或将单条内容生成图片。',
+      '优化记录节奏的月份切换、详情浏览与编辑操作，保存记录更醒目，长内容更便于阅读。',
       '人物生平纪年查询优化年谱整理规则，重点经历和终年信息展示更完整。'
     ]
   },
@@ -45,7 +46,7 @@ export const changelog = [
   {
     date: '2026-08-30',
     title: '抵御心魔新账号保存修复',
-    category: 'willpower',
+    category: 'other',
     route: '/willpower',
     changes: [
       '修复部分新注册账号在抵御心魔中新增挑战、正能量记录或自定义项目时可能保存失败的问题。',
@@ -445,7 +446,7 @@ export const changelog = [
   {
     date: '2026-08-07',
     title: '抵御心魔：登录与资源入口精简',
-    category: 'willpower',
+    category: 'other',
     route: '/willpower',
     changes: [
       '清理独立登录、注册和密码找回页面，旧地址统一跳转到主站账号入口。',
@@ -488,7 +489,7 @@ export const changelog = [
   {
     date: '2026-08-03',
     title: '抵御心魔上线',
-    category: 'willpower',
+    category: 'other',
     route: '/willpower',
     changes: [
       '记录每次扛住或破防，支持计时挑战、自定义心魔与拖动排序。',
