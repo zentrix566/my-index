@@ -48,7 +48,8 @@ CREATE TABLE IF NOT EXISTS idea_note_images (
   file_name TEXT NOT NULL,
   content_type TEXT NOT NULL,
   byte_size INTEGER NOT NULL,
-  created_at TEXT NOT NULL
+  created_at TEXT NOT NULL,
+  deleted_at TEXT
 );
 CREATE INDEX IF NOT EXISTS idx_idea_note_images_user_note ON idea_note_images(user_id, note_id, id);
 `
@@ -65,6 +66,10 @@ async function createSqliteDriver() {
   const columns = database.prepare('PRAGMA table_info(idea_notes)').all()
   if (!columns.some((column) => column.name === 'tags')) {
     database.exec("ALTER TABLE idea_notes ADD COLUMN tags TEXT NOT NULL DEFAULT '[]'")
+  }
+  const imageColumns = database.prepare('PRAGMA table_info(idea_note_images)').all()
+  if (!imageColumns.some((column) => column.name === 'deleted_at')) {
+    database.exec('ALTER TABLE idea_note_images ADD COLUMN deleted_at TEXT')
   }
   const schema = database.prepare("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'idea_notes'").get()?.sql || ''
   if (!schema.includes("'dream'")) {
@@ -99,6 +104,8 @@ async function createPgDriver() {
   await pool.query(buildSchema('pg'))
   const { rows } = await pool.query("SELECT 1 FROM information_schema.columns WHERE table_name = 'idea_notes' AND column_name = 'tags'")
   if (!rows.length) await pool.query("ALTER TABLE idea_notes ADD COLUMN tags TEXT NOT NULL DEFAULT '[]'")
+  const imageColumns = await pool.query("SELECT 1 FROM information_schema.columns WHERE table_name = 'idea_note_images' AND column_name = 'deleted_at'")
+  if (!imageColumns.rows.length) await pool.query('ALTER TABLE idea_note_images ADD COLUMN deleted_at TEXT')
   const constraints = await pool.query("SELECT conname FROM pg_constraint WHERE conrelid = 'idea_notes'::regclass AND contype = 'c' AND pg_get_constraintdef(oid) LIKE '%category%'")
   for (const { conname } of constraints.rows) await pool.query(`ALTER TABLE idea_notes DROP CONSTRAINT "${conname.replaceAll('"', '""')}"`)
   await pool.query("ALTER TABLE idea_notes ADD CONSTRAINT idea_notes_category_check CHECK (category IN ('idea', 'vibe_coding', 'memo', 'dream'))")
@@ -142,14 +149,14 @@ export async function listNoteImages(userId, noteIds) {
   if (!noteIds.length) return []
   const placeholders = noteIds.map((_, index) => `$${index + 2}`).join(',')
   return (await query(
-    `SELECT * FROM idea_note_images WHERE user_id = $1 AND note_id IN (${placeholders}) ORDER BY id ASC`,
+    `SELECT * FROM idea_note_images WHERE user_id = $1 AND note_id IN (${placeholders}) AND deleted_at IS NULL ORDER BY id ASC`,
     [userId, ...noteIds]
   )).rows
 }
 
 export async function getNoteImage(userId, noteId, imageId) {
   return queryOne(
-    'SELECT * FROM idea_note_images WHERE id = $1 AND note_id = $2 AND user_id = $3',
+    'SELECT * FROM idea_note_images WHERE id = $1 AND note_id = $2 AND user_id = $3 AND deleted_at IS NULL',
     [imageId, noteId, userId]
   )
 }
@@ -162,11 +169,14 @@ export async function createNoteImage(userId, noteId, image) {
   )
 }
 
-export async function deleteNoteImage(userId, noteId, imageId) {
-  return queryOne(
-    'DELETE FROM idea_note_images WHERE id = $1 AND note_id = $2 AND user_id = $3 RETURNING *',
-    [imageId, noteId, userId]
+export async function hideNoteImage(userId, noteId, imageId) {
+  const deletedAt = nowIso()
+  const image = await queryOne(
+    'UPDATE idea_note_images SET deleted_at = $1 WHERE id = $2 AND note_id = $3 AND user_id = $4 AND deleted_at IS NULL RETURNING *',
+    [deletedAt, imageId, noteId, userId]
   )
+  if (image) await query('UPDATE idea_notes SET updated_at = $1 WHERE id = $2 AND user_id = $3', [deletedAt, noteId, userId])
+  return image
 }
 
 export async function createNote(userId, note) {

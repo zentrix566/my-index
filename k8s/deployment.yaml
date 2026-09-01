@@ -103,11 +103,13 @@ spec:
             # 复用同一套 PG 凭据，记录落在独立的 zentrix_notes 库。
             - name: NOTES_PG_DATABASE
               value: "zentrix_notes"
-            # 灵感备忘图片：写入 OSS 的 notes-images/年份/YYYY-MM/ 目录，图片读取仍经过登录鉴权接口。
+            # 灵感备忘图片：生产路径独立，避免与测试环境共用前缀。
             - name: NOTES_OSS_BUCKET
               value: "zentrix-notes-images"
             - name: NOTES_OSS_REGION
               value: "cn-beijing"
+            - name: NOTES_OSS_PREFIX
+              value: "notes-images/production"
             - name: NOTES_OSS_ACCESS_KEY_ID
               valueFrom:
                 secretKeyRef:

@@ -8,7 +8,7 @@ import {
   createNote,
   createNoteImage,
   deleteNote,
-  deleteNoteImage,
+  hideNoteImage,
   getNote,
   getNoteImage,
   listNoteImages,
@@ -76,6 +76,11 @@ function detectImageType(buffer) {
 
 function getUploadFileName(req) {
   try { return decodeURIComponent(String(req.get('x-file-name') || '图片')).replace(/[\\/:*?"<>|]/g, '_').slice(0, 120) || '图片' } catch { return '图片' }
+}
+
+function getOssPrefix() {
+  const prefix = String(process.env.NOTES_OSS_PREFIX || 'notes-images').trim().replace(/^\/+|\/+$/g, '')
+  return prefix || 'notes-images'
 }
 
 async function getOssClient() {
@@ -146,8 +151,6 @@ router.delete('/:id', async (req, res) => {
   const id = parseInteger(req.params.id)
   if (!Number.isInteger(id)) return res.status(400).json({ error: '备忘不存在' })
   try {
-    const images = await listNoteImages(req.userId, [id])
-    await Promise.all(images.map((image) => removeObject(image.object_key)))
     res.json({ ok: Boolean(await deleteNote(req.userId, id)) })
   } catch { res.status(500).json({ error: '删除备忘失败，请稍后重试' }) }
 })
@@ -164,7 +167,7 @@ router.post('/:id/images', express.raw({ type: () => true, limit: MAX_NOTE_IMAGE
     if (!note) return res.status(404).json({ error: '备忘不存在' })
     if (images.length >= MAX_NOTE_IMAGES) return res.status(400).json({ error: `每条记录最多保存 ${MAX_NOTE_IMAGES} 张图片` })
     const year = note.month_key.slice(0, 4)
-    const objectKey = `notes-images/${year}/${note.month_key}/${req.userId}/${crypto.randomUUID()}.${imageType.extension}`
+    const objectKey = `${getOssPrefix()}/${year}/${note.month_key}/${req.userId}/${crypto.randomUUID()}.${imageType.extension}`
     // 即使同一 OSS Bucket 中的其他资源是公开读，笔记附件也必须覆盖为私有对象。
     // 浏览器只能经下方已鉴权的 API 读取，不能凭 OSS 对象地址绕过记录归属校验。
     await (await getOssClient()).put(objectKey, req.body, {
@@ -216,9 +219,8 @@ router.delete('/:id/images/:imageId', async (req, res) => {
   try {
     const image = await getNoteImage(req.userId, noteId, imageId)
     if (!image) return res.status(404).json({ error: '图片不存在' })
-    await removeObject(image.object_key)
-    await deleteNoteImage(req.userId, noteId, imageId)
-    res.json({ ok: true })
+    await hideNoteImage(req.userId, noteId, imageId)
+    res.json({ ok: true, note: serialize(await getNote(req.userId, noteId)) })
   } catch { res.status(500).json({ error: '删除图片失败，请稍后重试' }) }
 })
 

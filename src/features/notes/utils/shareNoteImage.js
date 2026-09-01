@@ -2,10 +2,7 @@ function wrapText(context, text, maxWidth) {
   const rows = []
   let line = ''
   for (const char of text) {
-    if (context.measureText(line + char).width > maxWidth && line) {
-      rows.push(line)
-      line = char
-    } else line += char
+    if (context.measureText(line + char).width > maxWidth && line) { rows.push(line); line = char } else line += char
   }
   if (line) rows.push(line)
   return rows
@@ -32,16 +29,36 @@ function drawPill(context, text, x, y, fill, color) {
   context.fillText(text, x + 20, y + 33)
 }
 
-/** 在浏览器本地绘制分享图，返回预览地址与下载文件名，不上传用户内容。 */
-export function createNoteImage(note, { categoryLabel, statusLabel }) {
+function loadImage(url) {
+  return new Promise((resolve, reject) => {
+    const image = new Image()
+    image.decoding = 'async'
+    image.onload = () => resolve(image)
+    image.onerror = reject
+    image.src = url
+  })
+}
+
+function drawCoverImage(context, image, x, y, width, height) {
+  const scale = Math.max(width / image.naturalWidth, height / image.naturalHeight)
+  const sourceWidth = width / scale
+  const sourceHeight = height / scale
+  context.drawImage(image, (image.naturalWidth - sourceWidth) / 2, (image.naturalHeight - sourceHeight) / 2, sourceWidth, sourceHeight, x, y, width, height)
+}
+
+/** 在浏览器本地绘制分享图，包含当前可见附件但不上传用户内容。 */
+export async function createNoteImage(note, { categoryLabel, statusLabel }) {
   const width = 1200
   const inset = 84
   const contentWidth = width - inset * 2
-  const canvas = document.createElement('canvas')
-  const context = canvas.getContext('2d')
   const title = note.title || '未命名灵感'
   const content = note.content || '一条被妥善保存的念头。'
-
+  const attachments = await Promise.all((note.images || []).slice(0, 12).map(async (attachment) => {
+    try { return { attachment, image: await loadImage(attachment.url) } } catch { return null }
+  }))
+  const images = attachments.filter(Boolean)
+  const canvas = document.createElement('canvas')
+  const context = canvas.getContext('2d')
   context.font = '700 68px sans-serif'
   const titleRows = wrapText(context, title, contentWidth)
   context.font = '400 36px "PingFang SC", "Microsoft YaHei", sans-serif'
@@ -50,10 +67,17 @@ export function createNoteImage(note, { categoryLabel, statusLabel }) {
   const titleHeight = titleRows.length * 86
   const contentHeight = Math.max(96, contentRows.length * 60 + Math.max(0, content.split('\n').length - 1) * 16)
   const tagsHeight = tags.length ? 76 : 0
-  const height = Math.max(920, 390 + titleHeight + contentHeight + tagsHeight + 170)
-
+  const cardHeight = contentHeight + tagsHeight + 76
+  const imageColumns = 3
+  const imageWidth = 300
+  const imageHeight = 200
+  const imageGap = 18
+  const imageRows = Math.ceil(images.length / imageColumns)
+  const attachmentsHeight = images.length ? 82 + imageRows * imageHeight + Math.max(0, imageRows - 1) * imageGap : 0
+  const height = Math.max(920, 390 + titleHeight + cardHeight + attachmentsHeight + 170)
   canvas.width = width
   canvas.height = height
+
   const background = context.createLinearGradient(0, 0, width, height)
   background.addColorStop(0, '#f1ebff')
   background.addColorStop(.48, '#fdfcff')
@@ -72,7 +96,6 @@ export function createNoteImage(note, { categoryLabel, statusLabel }) {
   titleRows.forEach((row) => { context.fillText(row, inset + 42, y); y += 86 })
 
   const cardY = y + 24
-  const cardHeight = contentHeight + tagsHeight + 76
   context.shadowColor = 'rgba(76, 29, 149, .12)'
   context.shadowBlur = 24
   context.shadowOffsetY = 8
@@ -87,7 +110,6 @@ export function createNoteImage(note, { categoryLabel, statusLabel }) {
   context.font = '400 36px "PingFang SC", "Microsoft YaHei", sans-serif'
   let contentY = cardY + 108
   contentRows.forEach((row) => { context.fillText(row, inset + 58, contentY); contentY += 60 })
-
   if (tags.length) {
     let tagX = inset + 58
     const tagY = cardY + contentHeight + 26
@@ -104,7 +126,32 @@ export function createNoteImage(note, { categoryLabel, statusLabel }) {
       tagX += tagWidth + 10
     })
   }
-
+  if (images.length) {
+    const imageSectionY = cardY + cardHeight + 48
+    context.fillStyle = '#8b5cf6'
+    context.font = '700 24px sans-serif'
+    context.fillText(`图片 · ${images.length} 张`, inset + 42, imageSectionY)
+    const gridY = imageSectionY + 28
+    images.forEach(({ attachment, image }, index) => {
+      const x = inset + 42 + (index % imageColumns) * (imageWidth + imageGap)
+      const imageY = gridY + Math.floor(index / imageColumns) * (imageHeight + imageGap)
+      context.save()
+      roundRect(context, x, imageY, imageWidth, imageHeight, 18)
+      context.clip()
+      drawCoverImage(context, image, x, imageY, imageWidth, imageHeight)
+      context.restore()
+      context.strokeStyle = 'rgba(139, 92, 246, .18)'
+      context.lineWidth = 2
+      roundRect(context, x, imageY, imageWidth, imageHeight, 18)
+      context.stroke()
+      context.fillStyle = 'rgba(35, 20, 64, .62)'
+      context.fillRect(x, imageY + imageHeight - 34, imageWidth, 34)
+      context.fillStyle = '#fff'
+      context.font = '400 16px "PingFang SC", "Microsoft YaHei", sans-serif'
+      const name = attachment.fileName.length > 24 ? `${attachment.fileName.slice(0, 23)}…` : attachment.fileName
+      context.fillText(name, x + 12, imageY + imageHeight - 12)
+    })
+  }
   context.fillStyle = '#6b5a82'
   context.font = '400 26px sans-serif'
   const editedAt = new Date(note.updatedAt || note.createdAt)
@@ -112,7 +159,6 @@ export function createNoteImage(note, { categoryLabel, statusLabel }) {
   context.fillText(`最后编辑于 ${date}`, inset + 42, height - 96)
   context.fillStyle = '#a78bfa'
   context.fillRect(inset + 42, height - 62, 180, 4)
-
   const timestamp = `${editedAt.getFullYear()}${String(editedAt.getMonth() + 1).padStart(2, '0')}${String(editedAt.getDate()).padStart(2, '0')}-${String(editedAt.getHours()).padStart(2, '0')}${String(editedAt.getMinutes()).padStart(2, '0')}${String(editedAt.getSeconds()).padStart(2, '0')}`
   return { dataUrl: canvas.toDataURL('image/png'), filename: `${title.slice(0, 30)}-${timestamp}-灵感分享.png` }
 }
