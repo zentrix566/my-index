@@ -99,6 +99,10 @@ spec:
                 secretKeyRef:
                   name: zentrix-secrets
                   key: pg-pass
+            # ========== 灵感备忘独立数据层 ==========
+            # 复用同一套 PG 凭据，记录落在独立的 zentrix_notes 库。
+            - name: NOTES_PG_DATABASE
+              value: "zentrix_notes"
             - name: WILLPOWER_HOLD_SECONDS
               value: "600"
             - name: WILLPOWER_TIME_ZONE

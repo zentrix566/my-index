@@ -65,6 +65,10 @@ data/auth.local.db-shm
 data/todo.local.db
 data/todo.local.db-wal
 data/todo.local.db-shm
+# 灵感备忘独立 SQLite 运行时库，不入库（含个人备忘记录）
+data/notes.local.db
+data/notes.local.db-wal
+data/notes.local.db-shm
 # 本地数据迁移备份可能包含账号、邮箱和业务记录，整目录不入库
 data/backups/
 server/seed/*.local.json

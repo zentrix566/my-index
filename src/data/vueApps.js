@@ -1,21 +1,14 @@
 // 我自己做的个人项目索引：新增页面只需在这里追加一项
-const PERSONAL_APP_ORDER = ['/hearthstone', '/todo', '/history', '/biography', '/subway', '/hearthstone/frog', '/dream', '/willpower']
+const PERSONAL_APP_ORDER = ['/hearthstone', '/todo', '/notes', '/willpower', '/history', '/biography', '/dream', '/subway']
 const personalAppRank = new Map(PERSONAL_APP_ORDER.map((path, index) => [path, index]))
 
 export const vueApps = [
   {
     to: '/hearthstone',
-    title: '炉石传说成就查看器',
+    title: '炉石传说成就档案',
     kicker: '游戏 · 数据浏览',
     summary: '按扩展包/职业浏览炉石传说成就，支持筛选、查看关联卡牌图片、一键复制推荐卡组代码。',
     tags: ['炉石传说', '成就', '卡牌']
-  },
-  {
-    to: '/willpower',
-    title: '抵御心魔',
-    kicker: '自律 · 记录',
-    summary: '记录每一次抵御诱惑的瞬间，含计时挑战、成就系统与正能量记录，专属独立账号。',
-    tags: ['自律', '成就', '记录']
   },
   {
     to: '/todo',
@@ -23,6 +16,20 @@ export const vueApps = [
     kicker: '自律 · 效率',
     summary: '按「今日待办 / 今日已完成」管理任务，支持自定义分组、月周日历、全量表格与 AI 日程分析，数据独立存储。',
     tags: ['待办', '分组', '日历', 'AI']
+  },
+  {
+    to: '/notes',
+    title: '灵感收集',
+    kicker: '记录 · 灵感档案',
+    summary: '按月收集想法和 Vibe Coding 灵感；想法不设状态，项目灵感可标记完成、不可能或不确定，并支持 AI 梳理与 JSON 导出。',
+    tags: ['想法', 'Vibe Coding', 'AI', '导出']
+  },
+  {
+    to: '/willpower',
+    title: '抵御心魔',
+    kicker: '自律 · 记录',
+    summary: '记录每一次抵御诱惑的瞬间，含计时挑战、成就系统与正能量记录，专属独立账号。',
+    tags: ['自律', '成就', '记录']
   },
   {
     to: '/history',
@@ -37,13 +44,6 @@ export const vueApps = [
     kicker: 'AI · 人生模拟',
     summary: '写下当前年龄、期望寿命与人生野心，由 DeepSeek 为你烹一锅按时间线铺陈的人间大梦。',
     tags: ['AI', 'DeepSeek', '模拟']
-  },
-  {
-    to: '/hearthstone/frog',
-    title: '蛙生模拟器',
-    kicker: '炉石 · 找茬小游戏',
-    summary: '三张真实随从牌中有一张被蛙生动了手脚，盯紧法力值、攻防与效果，把假牌揪出来。仅标准模式随从。',
-    tags: ['炉石传说', '随从', '找茬']
   },
   {
     to: '/hearthstone/deck',

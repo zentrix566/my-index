@@ -23,6 +23,11 @@ import {
   closeTodoDatabase,
   ensureTodoSchema
 } from './todo/db.js'
+import notesRouter from './notes/routes.js'
+import {
+  closeNotesDatabase,
+  ensureNotesSchema
+} from './notes/db.js'
 import {
   closeDatabase,
   ensureSchema,
@@ -220,6 +225,9 @@ app.use('/api/willpower', willpowerRouter)
 
 // ========== 日程管理 API（独立数据库，统一登录）==========
 app.use('/api/todo', todoRouter)
+
+// ========== 灵感备忘 API（独立数据库，统一登录）==========
+app.use('/api/notes', notesRouter)
 
 // ========== 成就进度 API ==========
 
@@ -1006,6 +1014,13 @@ async function bootstrap() {
     appLog('ERROR', `日程管理模块数据库初始化失败（该模块暂不可用）: ${err.message}`)
   }
 
+  try {
+    await ensureNotesSchema()
+    appLog('SERVER', '灵感备忘模块数据库已就绪')
+  } catch (err) {
+    appLog('ERROR', `灵感备忘模块数据库初始化失败（该模块暂不可用）: ${err.message}`)
+  }
+
   if (process.env.SEED_ON_STARTUP !== 'false') {
     try {
       const { ensureSeeded } = await import('./seed/seed.js')
@@ -1049,6 +1064,7 @@ async function shutdown(signal) {
     await closeDatabase()
     await closeWillpowerDatabase().catch(() => {})
     await closeTodoDatabase().catch(() => {})
+    await closeNotesDatabase().catch(() => {})
     clearTimeout(forceTimer)
     appLog('SERVER', '优雅停机完成')
     process.exit(0)

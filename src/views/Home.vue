@@ -30,7 +30,7 @@
       <div class="section-heading">
         <p class="eyebrow">Featured Products</p>
         <h2>每天都可能用到的核心产品</h2>
-        <p>从数据追踪到日程管理与自我成长，优先展示持续维护的三个核心入口。</p>
+        <p>炉石成就、日常管理与灵感收集，是目前持续维护的三个核心入口。</p>
       </div>
       <VueAppGrid :apps="featuredApps" />
       <div class="section-more">
@@ -94,7 +94,7 @@ import { changelog } from '../data/changelog.js'
 import { computed } from 'vue'
 import { useProjectPreferences } from '../composables/useProjectPreferences.js'
 
-const featuredPaths = ['/hearthstone', '/todo', '/willpower']
+const featuredPaths = ['/hearthstone', '/todo', '/notes']
 const featuredApps = vueApps.filter((app) => featuredPaths.includes(app.to))
 const latestUpdates = changelog.slice(0, 3)
 const latestUpdate = latestUpdates[0]

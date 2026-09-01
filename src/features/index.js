@@ -15,6 +15,7 @@ export {
   loadHearthstoneGuidePage
 } from './hearthstone/index.js'
 export { loadDreamPage } from './dream/index.js'
+export { loadNotesPage } from './notes/index.js'
 export { loadAgeCalculatorPage } from './age-calculator/index.js'
 export {
   loadWillpowerHome,

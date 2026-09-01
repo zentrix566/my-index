@@ -173,10 +173,9 @@ const workProjectLinks = projects.filter((project) => project.group === '工作�
 
 // 顶栏「个人项目」下拉只展示精选入口，其余统一收进「更多项目」
 const featuredPersonalApps = [
-  { title: '炉石传说成就查看器', to: '/hearthstone' },
+  { title: '炉石传说成就档案', to: '/hearthstone' },
   { title: '日常管理', to: '/todo' },
-  { title: '蛙生模拟器', to: '/hearthstone/frog' },
-  { title: '黄粱一梦', to: '/dream' }
+  { title: '灵感收集', to: '/notes' }
 ]
 
 const displayName = computed(() => user.value?.displayName || user.value?.username || '账号')
@@ -188,6 +187,7 @@ const moduleContext = computed(() => {
   const path = route.path
   const title = String(route.meta?.title || '').split('|')[0].trim()
   if (path.startsWith('/todo')) return { label: '日程管理', home: '/todo', icon: 'todo', tone: 'blue', page: path === '/todo' ? '' : title }
+  if (path.startsWith('/notes')) return { label: '灵感收集', home: '/notes', icon: 'grid', tone: 'violet', page: path === '/notes' ? '' : title }
   if (path.startsWith('/willpower')) return { label: '抵御心魔', home: '/willpower', icon: 'shield', tone: 'green', page: path === '/willpower' ? '' : title }
   if (path.startsWith('/hearthstone')) return { label: '炉石工具', home: '/hearthstone', icon: 'cards', tone: 'violet', page: path === '/hearthstone' ? '' : title }
   return null
