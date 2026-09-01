@@ -1,28 +1,113 @@
 import express from 'express'
+import crypto from 'node:crypto'
 import { requireAuth, trackModuleAccessMiddleware } from '../auth.js'
 import { callDeepSeek } from '../ai-advisor.js'
 import { appLog } from '../logger.js'
-import { countNotes, createNote, deleteNote, listNotes, updateNote } from './db.js'
+import {
+  countNotes,
+  createNote,
+  createNoteImage,
+  deleteNote,
+  deleteNoteImage,
+  getNote,
+  getNoteImage,
+  listNoteImages,
+  listNotes,
+  updateNote
+} from './db.js'
 
 const router = express.Router()
 const MONTH_RE = /^\d{4}-(0[1-9]|1[0-2])$/
-const CATEGORIES = new Set(['idea', 'vibe_coding', 'memo'])
+const CATEGORIES = new Set(['idea', 'vibe_coding', 'memo', 'dream'])
 const STATUSES = new Set(['done', 'impossible', 'uncertain'])
+const MAX_NOTE_IMAGE_BYTES = 8 * 1024 * 1024
+const MAX_NOTE_IMAGES = 12
+const imageTypes = {
+  jpeg: { contentType: 'image/jpeg', extension: 'jpg' },
+  png: { contentType: 'image/png', extension: 'png' },
+  gif: { contentType: 'image/gif', extension: 'gif' },
+  webp: { contentType: 'image/webp', extension: 'webp' }
+}
+let ossClientPromise = null
 
 router.use(requireAuth)
 router.use(trackModuleAccessMiddleware('notes'))
 
-function serialize(row) {
+function serializeImage(row) {
+  return {
+    id: row.id,
+    fileName: row.file_name,
+    contentType: row.content_type,
+    byteSize: Number(row.byte_size),
+    createdAt: row.created_at,
+    url: `/api/notes/${row.note_id}/images/${row.id}`
+  }
+}
+
+function serialize(row, images = []) {
   let tags = []
   try { tags = JSON.parse(row.tags || '[]') } catch { tags = [] }
-  return { id: row.id, monthKey: row.month_key, category: row.category, status: row.status, tags, title: row.title, content: row.content, createdAt: row.created_at, updatedAt: row.updated_at }
+  return { id: row.id, monthKey: row.month_key, category: row.category, status: row.status, tags, title: row.title, content: row.content, createdAt: row.created_at, updatedAt: row.updated_at, images: images.map(serializeImage) }
+}
+
+async function serializeNotes(userId, rows) {
+  const images = await listNoteImages(userId, rows.map((row) => row.id))
+  const imagesByNote = new Map()
+  for (const image of images) {
+    const items = imagesByNote.get(image.note_id) || []
+    items.push(image)
+    imagesByNote.set(image.note_id, items)
+  }
+  return rows.map((row) => serialize(row, imagesByNote.get(row.id) || []))
+}
+
+function parseInteger(value) {
+  const number = Number(value)
+  return Number.isInteger(number) && number > 0 ? number : null
+}
+
+function detectImageType(buffer) {
+  if (buffer.length >= 3 && buffer[0] === 0xff && buffer[1] === 0xd8 && buffer[2] === 0xff) return imageTypes.jpeg
+  if (buffer.length >= 8 && buffer.subarray(0, 8).equals(Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]))) return imageTypes.png
+  if (buffer.length >= 6 && (buffer.subarray(0, 6).toString('ascii') === 'GIF87a' || buffer.subarray(0, 6).toString('ascii') === 'GIF89a')) return imageTypes.gif
+  if (buffer.length >= 12 && buffer.subarray(0, 4).toString('ascii') === 'RIFF' && buffer.subarray(8, 12).toString('ascii') === 'WEBP') return imageTypes.webp
+  return null
+}
+
+function getUploadFileName(req) {
+  try { return decodeURIComponent(String(req.get('x-file-name') || '图片')).replace(/[\\/:*?"<>|]/g, '_').slice(0, 120) || '图片' } catch { return '图片' }
+}
+
+async function getOssClient() {
+  if (!ossClientPromise) {
+    const bucket = process.env.NOTES_OSS_BUCKET || process.env.OSS_BUCKET
+    const region = process.env.NOTES_OSS_REGION || process.env.OSS_REGION || 'cn-beijing'
+    const accessKeyId = process.env.NOTES_OSS_ACCESS_KEY_ID || process.env.OSS_ACCESS_KEY_ID
+    const accessKeySecret = process.env.NOTES_OSS_ACCESS_KEY_SECRET || process.env.OSS_ACCESS_KEY_SECRET
+    if (!bucket || !accessKeyId || !accessKeySecret) {
+      const error = new Error('图片存储尚未配置，请联系管理员补充 NOTES_OSS_* 配置')
+      error.status = 503
+      throw error
+    }
+    ossClientPromise = import('ali-oss').then(({ default: OssClient }) => new OssClient({
+      region: region.startsWith('oss-') ? region : `oss-${region}`,
+      bucket,
+      accessKeyId,
+      accessKeySecret
+    }))
+  }
+  return ossClientPromise
+}
+
+async function removeObject(objectKey) {
+  try { await (await getOssClient()).delete(objectKey) } catch (error) { appLog('ERROR', `灵感备忘图片清理失败: ${objectKey}, error=${error.message}`) }
 }
 
 function validate(payload) {
   const { monthKey, category, status, tags, title, content } = payload || {}
   if (!MONTH_RE.test(monthKey || '')) return '月份格式应为 YYYY-MM'
   if (!CATEGORIES.has(category)) return '分类不正确'
-  if ((category === 'idea' || category === 'memo') && status !== null && status !== undefined && status !== '') return '该分类无需状态'
+  if (category !== 'vibe_coding' && status !== null && status !== undefined && status !== '') return '该分类无需状态'
   if (category === 'vibe_coding' && status !== null && status !== undefined && status !== '' && !STATUSES.has(status)) return '状态不正确'
   if (typeof title !== 'string' || !title.trim() || title.trim().length > 200) return '标题需为 1-200 个字符'
   if (typeof content !== 'string' || content.length > 10000) return '正文最多 10000 个字符'
@@ -37,7 +122,7 @@ function clean(payload) {
 router.get('/', async (req, res) => {
   const month = typeof req.query.month === 'string' ? req.query.month : ''
   if (month && !MONTH_RE.test(month)) return res.status(400).json({ error: '月份格式应为 YYYY-MM' })
-  try { res.json({ notes: (await listNotes(req.userId, month)).map(serialize) }) } catch (error) { res.status(500).json({ error: '读取备忘失败，请稍后重试' }) }
+  try { res.json({ notes: await serializeNotes(req.userId, await listNotes(req.userId, month)) }) } catch (error) { res.status(500).json({ error: '读取备忘失败，请稍后重试' }) }
 })
 
 router.post('/', async (req, res) => {
@@ -58,9 +143,83 @@ router.patch('/:id', async (req, res) => {
 })
 
 router.delete('/:id', async (req, res) => {
-  const id = Number(req.params.id)
+  const id = parseInteger(req.params.id)
   if (!Number.isInteger(id)) return res.status(400).json({ error: '备忘不存在' })
-  try { res.json({ ok: Boolean(await deleteNote(req.userId, id)) }) } catch { res.status(500).json({ error: '删除备忘失败，请稍后重试' }) }
+  try {
+    const images = await listNoteImages(req.userId, [id])
+    await Promise.all(images.map((image) => removeObject(image.object_key)))
+    res.json({ ok: Boolean(await deleteNote(req.userId, id)) })
+  } catch { res.status(500).json({ error: '删除备忘失败，请稍后重试' }) }
+})
+
+router.post('/:id/images', express.raw({ type: () => true, limit: MAX_NOTE_IMAGE_BYTES }), async (req, res) => {
+  const noteId = parseInteger(req.params.id)
+  if (!noteId) return res.status(400).json({ error: '备忘不存在' })
+  if (!Buffer.isBuffer(req.body) || !req.body.length) return res.status(400).json({ error: '请选择要上传的图片' })
+  if (req.body.length > MAX_NOTE_IMAGE_BYTES) return res.status(413).json({ error: '单张图片不能超过 8 MB' })
+  const imageType = detectImageType(req.body)
+  if (!imageType) return res.status(415).json({ error: '仅支持 JPG、PNG、GIF、WebP 图片' })
+  try {
+    const [note, images] = await Promise.all([getNote(req.userId, noteId), listNoteImages(req.userId, [noteId])])
+    if (!note) return res.status(404).json({ error: '备忘不存在' })
+    if (images.length >= MAX_NOTE_IMAGES) return res.status(400).json({ error: `每条记录最多保存 ${MAX_NOTE_IMAGES} 张图片` })
+    const year = note.month_key.slice(0, 4)
+    const objectKey = `notes-images/${year}/${note.month_key}/${req.userId}/${crypto.randomUUID()}.${imageType.extension}`
+    // 即使同一 OSS Bucket 中的其他资源是公开读，笔记附件也必须覆盖为私有对象。
+    // 浏览器只能经下方已鉴权的 API 读取，不能凭 OSS 对象地址绕过记录归属校验。
+    await (await getOssClient()).put(objectKey, req.body, {
+      headers: {
+        'Content-Type': imageType.contentType,
+        'x-oss-object-acl': 'private'
+      }
+    })
+    try {
+      const image = await createNoteImage(req.userId, noteId, {
+        objectKey,
+        fileName: getUploadFileName(req),
+        contentType: imageType.contentType,
+        byteSize: req.body.length
+      })
+      res.status(201).json({ image: serializeImage(image) })
+    } catch (error) {
+      await removeObject(objectKey)
+      throw error
+    }
+  } catch (error) {
+    res.status(error.status || 500).json({ error: error.status === 503 ? error.message : '图片上传失败，请稍后重试' })
+  }
+})
+
+router.get('/:id/images/:imageId', async (req, res) => {
+  const noteId = parseInteger(req.params.id)
+  const imageId = parseInteger(req.params.imageId)
+  if (!noteId || !imageId) return res.status(404).end()
+  try {
+    const image = await getNoteImage(req.userId, noteId, imageId)
+    if (!image) return res.status(404).end()
+    const result = await (await getOssClient()).get(image.object_key)
+    res.setHeader('Content-Type', image.content_type)
+    res.setHeader('Content-Disposition', 'inline')
+    res.setHeader('Cache-Control', 'private, max-age=86400')
+    res.setHeader('X-Content-Type-Options', 'nosniff')
+    res.end(result.content)
+  } catch (error) {
+    appLog('ERROR', `灵感备忘图片读取失败: note=${noteId}, image=${imageId}, error=${error.message}`)
+    res.status(error.status === 404 ? 404 : 502).end()
+  }
+})
+
+router.delete('/:id/images/:imageId', async (req, res) => {
+  const noteId = parseInteger(req.params.id)
+  const imageId = parseInteger(req.params.imageId)
+  if (!noteId || !imageId) return res.status(400).json({ error: '图片不存在' })
+  try {
+    const image = await getNoteImage(req.userId, noteId, imageId)
+    if (!image) return res.status(404).json({ error: '图片不存在' })
+    await removeObject(image.object_key)
+    await deleteNoteImage(req.userId, noteId, imageId)
+    res.json({ ok: true })
+  } catch { res.status(500).json({ error: '删除图片失败，请稍后重试' }) }
 })
 
 router.post('/ai-analysis', async (req, res) => {
@@ -70,7 +229,7 @@ router.post('/ai-analysis', async (req, res) => {
     const notes = await listNotes(req.userId, monthKey)
     if (!notes.length) return res.json({ report: '这个月份还没有记录。先写下一条灵感，再让 AI 帮你梳理。' })
     const context = notes.map(({ category, status, tags, title, content }) => ({ category, status: status || '无状态', tags: JSON.parse(tags || '[]'), title, content }))
-    const prompt = '你是个人灵感档案分析助手。基于用户当月的想法和 Vibe Coding 记录，输出简洁中文 Markdown：先归纳 2-4 个主题，再挑出最值得继续探索的方向，最后指出可能重复、过于宽泛或需要补充的信息。不要把想法写成待办，不要替用户做价值判断。控制在 500 字内。'
+    const prompt = '你是个人灵感档案分析助手。基于用户当月的想法、Vibe Coding、备忘和梦境记录，输出简洁中文 Markdown：先归纳 2-4 个主题，再挑出最值得继续探索的方向，最后指出可能重复、过于宽泛或需要补充的信息。不要把想法写成待办，不要替用户做价值判断。控制在 500 字内。'
     res.json({ report: await callDeepSeek(prompt, JSON.stringify(context)) })
   } catch (error) {
     appLog('ERROR', `灵感备忘 AI 分析失败: uid=${req.userId}, error=${error.message}`)

@@ -37,6 +37,7 @@
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
+    "ali-oss": "^6.23.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.7",
     "echarts": "^5.6.0",
@@ -54,7 +55,6 @@
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.7",
-    "ali-oss": "^6.23.0",
     "better-sqlite3": "^12.11.1",
     "classic-level": "^3.0.0",
     "concurrently": "^10.0.3",
