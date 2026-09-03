@@ -260,9 +260,45 @@ npm run upload:oss:data
 # 3. 本地提交，让用户手动 push 触发部署
 ```
 
+### 上传图片到 OSS（强规则：原图与缩略图必须成对）
+
+任何新增或替换的**外观类图片**（`hearthstone-cosmetics/` 下的卡背、英雄皮肤、幸运币、宠物）在 OSS 上必须**成对存在**，缺一不可：
+
+| 角色 | OSS 路径 | 格式 |
+|---|---|---|
+| 原图 | `hearthstone-cosmetics/<类型>/<文件名>.png` | PNG，保留透明通道 |
+| 缩略图 | `hearthstone-cosmetics/<类型>/384/<文件名>.webp` | WebP，宽 384，quality 82 |
+
+固定顺序三步，中间任何一步都不能跳过：
+
+```bash
+# 1. 上传原图
+npm run upload:oss:cosmetics            # 或 node scripts/upload-hs-card-backs-to-oss.mjs
+# 2. 生成 384px WebP 缩略图（需要托管 venv 里的 Pillow）
+python scripts/gen-cosmetic-thumbnails.py
+# 3. 上传缩略图
+node scripts/upload-cosmetic-thumbnails.mjs
+```
+
+- **只上传原图、不上传缩略图，列表页会显示“原画未上传”**：列表默认读 `384/<文件名>.webp`，只有详情弹窗才读原图。
+- 本地 dev 由 `express.static` 直接服务本地目录，第 2 步生成后本地即可预览；但**生产环境必须原图和缩略图都传到 OSS 才算完成**。
+- 验收：`curl -I` 原图与 `384/<文件名>.webp` 两个地址，都要 200 且 content-type 正确（`image/png` / `image/webp`）。
+- 例外：卡牌图 `hearthstone-cards/` 不用 384 缩略图，它用 `full/` + `crop/` 两套原图，换图必须 bump `cardImages.js` 里的 `CARD_IMAGE_VERSION`；站点资源 `site-assets/` 按原样上传。
+
 ### 更新外观收藏（英雄皮肤/硬币/卡背/宠物）
 
-相关脚本：`scripts/upload-hs-cosmetics-to-oss.mjs`、`scripts/upload-cosmetic-thumbnails.mjs`、`scripts/upload-hs-card-backs-to-oss.mjs`。原图上传后必须执行 `scripts/gen-cosmetic-thumbnails.py` 生成 384px WebP，再执行 `scripts/upload-cosmetic-thumbnails.mjs` 上传缩略图；宠物目录也按同一规则处理。列表页默认读取 `384/<文件名>.webp`，只上传原图会导致界面显示“原画未上传”。
+相关脚本：`scripts/upload-hs-cosmetics-to-oss.mjs`、`scripts/upload-cosmetic-thumbnails.mjs`、`scripts/upload-hs-card-backs-to-oss.mjs`。图片来源优先级：**本机炉石客户端解包 > Firestone > wiki**；上传流程与缩略图规则按上一节执行，宠物目录同样适用。
+
+**卡背图命名两套，排查时必须分清（踩过坑）**：
+
+| 位置 | 命名 | 例子 |
+|---|---|---|
+| 本地目录 `hearthstone_cosmetics/card-backs/` | `{id}.png`（Firestone 下载件，无前缀） | `557.png` |
+| OSS 与 `card-backs.json` 的 `imageUrl` / `ossObjectKey` | `cardback_{id}.png`（**带前缀**） | `cardback_557.png` |
+
+判断"线上有没有这张卡背图"时，必须用带前缀的 `cardback_{id}.png` 去请求。用无前缀的 `{id}.png` 测会全部 404，会误判成缺图。缩略图同理：`384/cardback_{id}.webp`。
+
+因此本地图库与线上 OSS **不是一一对应**：线上存在但本地没有的图不能直接判定为缺失，先按带前缀的路径查 OSS；反过来，重跑上传脚本把本地 `{id}.png` 传上去也不会覆盖线上已有的 `cardback_{id}.png`，只会留下冗余副本。
 
 ### 新增炉石成就
 
@@ -287,7 +323,9 @@ npm run upload:oss:data
 | `node scripts/check-hs-card-updates.mjs` | 对比暴雪 API 与本地数据差异 |
 | `npm run upload:oss:data` | 上传 cards-db.json 到 OSS |
 | `node scripts/upload-hs-cards-to-oss.mjs` | 上传卡牌图片到 OSS |
-| `npm run upload:oss:cosmetics` | 上传外观图片到 OSS |
+| `npm run upload:oss:cosmetics` | 上传外观原图到 OSS |
+| `python scripts/gen-cosmetic-thumbnails.py` | 生成外观 384px WebP 缩略图（需托管 venv 的 Pillow） |
+| `node scripts/upload-cosmetic-thumbnails.mjs` | 上传外观缩略图到 OSS（原图上传后必跑） |
 | `npm run refresh:hearthstone-cards` | 从 HearthstoneJSON 刷新 dbfId 索引 |
 
 ## 关键文件速查
