@@ -20,6 +20,7 @@ import {
   ensureDefaultLists,
   getList,
   getTask,
+  listCalendarTasksInRange,
   listLists,
   listTasks,
   listTasksInRange,
@@ -325,10 +326,12 @@ router.get('/calendar', async (req, res) => {
   if (!/^\d{4}-\d{2}$/.test(month)) return res.status(400).json({ error: 'month 格式应为 YYYY-MM' })
   try {
     const { from, to } = monthRange(month)
-    const rows = await listTasksInRange(req.userId, from, to)
+    const rows = await listCalendarTasksInRange(req.userId, from, to)
     const days = {}
     for (const row of rows) {
-      const key = row.due_date
+      const key = row.status === 'done' && row.completed_at
+        ? row.completed_at.slice(0, 10)
+        : row.due_date
       if (!days[key]) days[key] = { total: 0, done: 0, cancelled: 0, active: 0, tasks: [] }
       days[key].total += 1
       if (row.status === 'done') days[key].done += 1
@@ -350,7 +353,7 @@ router.get('/range', async (req, res) => {
     return res.status(400).json({ error: 'from/to 格式应为 YYYY-MM-DD' })
   }
   try {
-    const rows = await listTasksInRange(req.userId, from, to)
+    const rows = await listCalendarTasksInRange(req.userId, from, to)
     res.json({ from, to, tasks: rows.map(serializeTask) })
   } catch (err) {
     appLog('ERROR', `区间任务读取失败: uid=${req.userId}, error=${err?.message}`)

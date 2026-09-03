@@ -2,6 +2,15 @@
 // 按时间倒序排列；同一天涉及多个模块时分别记录，且同一天同一 category 只保留一条。
 export const changelog = [
   {
+    date: '2026-09-03',
+    title: '日历完成日期显示修复',
+    category: 'todo',
+    route: '/todo/calendar',
+    changes: [
+      '修复待办完成后仍显示在原计划日期的问题，日历现会按实际完成日期归位。'
+    ]
+  },
+  {
     date: '2026-09-01',
     title: '灵感收集上线与体验完善',
     category: 'notes',

@@ -416,7 +416,7 @@ async function loadWeek() {
     const r = await todoApi.range(from, to)
     const map = {}
     for (const t of r.tasks || []) {
-      const k = t.dueDate
+      const k = t.status === 'done' && t.completedAt ? t.completedAt.slice(0, 10) : t.dueDate
       if (!k) continue
       if (!map[k]) map[k] = { total: 0, done: 0, cancelled: 0, active: 0, tasks: [] }
       map[k].tasks.push(t)

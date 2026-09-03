@@ -400,16 +400,47 @@ export async function listTasks(userId, view) {
   return rows
 }
 
-/** 单日明细：due_date 为该天的全部任务（含已完成）。 */
+/** 单日明细：已完成任务按完成日期，其余任务按计划日期归属。 */
 export async function dayTasks(userId, date) {
   const { rows } = await query(
-    'SELECT * FROM todos WHERE user_id = $1 AND due_date = $2 ORDER BY position ASC, id DESC',
+    `SELECT * FROM todos
+     WHERE user_id = $1
+       AND CASE
+         WHEN status = 'done' AND completed_at IS NOT NULL AND completed_at <> '' THEN substr(completed_at, 1, 10)
+         ELSE due_date
+       END = $2
+     ORDER BY position ASC, id DESC`,
     [userId, date]
   )
   return rows
 }
 
-/** 区间任务（按 due_date 在 [from,to]）。用于日历月视图聚合。 */
+/**
+ * 日历区间任务：已完成任务按完成日期归属，其余任务按计划日期归属。
+ * 缺少完成时间的历史已完成任务保留按计划日期显示。
+ */
+export async function listCalendarTasksInRange(userId, from, to) {
+  const { rows } = await query(
+    `SELECT * FROM todos
+     WHERE user_id = $1
+       AND CASE
+         WHEN status = 'done' AND completed_at IS NOT NULL AND completed_at <> '' THEN substr(completed_at, 1, 10)
+         ELSE due_date
+       END >= $2
+       AND CASE
+         WHEN status = 'done' AND completed_at IS NOT NULL AND completed_at <> '' THEN substr(completed_at, 1, 10)
+         ELSE due_date
+       END <= $3
+     ORDER BY CASE
+       WHEN status = 'done' AND completed_at IS NOT NULL AND completed_at <> '' THEN substr(completed_at, 1, 10)
+       ELSE due_date
+     END ASC, position ASC`,
+    [userId, from, to]
+  )
+  return rows
+}
+
+/** 区间任务（按 due_date 在 [from,to]）。用于计划日期相关的分析。 */
 export async function listTasksInRange(userId, from, to) {
   const { rows } = await query(
     'SELECT * FROM todos WHERE user_id = $1 AND due_date >= $2 AND due_date <= $3 ORDER BY due_date ASC, position ASC',
