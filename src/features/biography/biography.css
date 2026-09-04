@@ -56,6 +56,39 @@
   opacity: 0.6;
 }
 
+.biography-recent {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 14px;
+}
+
+.biography-recent-label {
+  color: var(--muted);
+  font-size: 0.85rem;
+  font-weight: 700;
+}
+
+.biography-recent-chip {
+  background: var(--surface);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--primary);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.85rem;
+  min-height: 44px;
+  padding: 8px 16px;
+  touch-action: manipulation;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.biography-recent-chip:hover {
+  background: var(--surface-soft);
+  border-color: var(--primary);
+}
+
 .biography-hint {
   color: var(--muted);
   font-size: 0.9rem;
@@ -125,6 +158,38 @@
   font-weight: 750;
 }
 
+.biography-result-meta {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px 10px;
+}
+
+.biography-cache-hint {
+  color: var(--muted);
+  font-size: 0.8rem;
+  font-weight: 400;
+}
+
+.biography-refresh-btn {
+  background: transparent;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--primary);
+  cursor: pointer;
+  font: inherit;
+  font-size: 0.8rem;
+  min-height: 44px;
+  padding: 8px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  touch-action: manipulation;
+}
+
+.biography-refresh-btn:hover {
+  background: var(--surface-soft);
+}
+
 .biography-copy-btn {
   background: var(--surface, #fff);
   border: 1px solid var(--line, rgba(128, 128, 128, 0.22));
@@ -163,5 +228,16 @@
 @media (max-width: 600px) {
   .biography-search {
     flex-direction: column;
+  }
+
+  .biography-result-head {
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .biography-result-meta {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 0;
   }
 }

@@ -11,6 +11,16 @@ export const changelog = [
     ]
   },
   {
+    date: '2026-09-04',
+    title: '人物纪年查询记录',
+    category: 'other',
+    route: '/biography',
+    changes: [
+      '新增最近查询记录与本地结果缓存，重复查询可立即查看，并支持手动重新查询获取最新结果。',
+      '重新打开人物纪年页面时会自动恢复最近一次查询结果。'
+    ]
+  },
+  {
     date: '2026-09-03',
     title: '日历完成日期显示修复',
     category: 'todo',

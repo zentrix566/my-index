@@ -136,6 +136,23 @@ export async function callDeepSeek(systemPrompt, userQuestion) {
   }
 }
 
+/** 从模型文本中提取 JSON 对象，兼容模型偶尔附加的 Markdown 代码块。 */
+export function parseAiJson(text) {
+  if (typeof text !== 'string') return null
+  const trimmed = text.trim()
+  const fenced = trimmed.match(/^```(?:json)?\s*([\s\S]*?)\s*```$/i)?.[1]
+  const candidate = fenced || trimmed
+  const start = candidate.indexOf('{')
+  const end = candidate.lastIndexOf('}')
+  if (start < 0 || end <= start) return null
+  try {
+    const value = JSON.parse(candidate.slice(start, end + 1))
+    return value && typeof value === 'object' && !Array.isArray(value) ? value : null
+  } catch {
+    return null
+  }
+}
+
 /** 系统提示词：把剩余成就清单作为上下文交给模型，约束输出为简洁中文 + Markdown */
 export function buildSystemPrompt(context) {
   return `你是炉石传说成就规划助手。下面是用户当前未完成的成就清单（JSON）：

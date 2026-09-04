@@ -1,7 +1,7 @@
 import express from 'express'
 import crypto from 'node:crypto'
 import { requireAuth, trackModuleAccessMiddleware } from '../auth.js'
-import { callDeepSeek } from '../ai-advisor.js'
+import { callDeepSeek, parseAiJson } from '../ai-advisor.js'
 import { appLog } from '../logger.js'
 import {
   countNotes,
@@ -228,16 +228,83 @@ router.post('/ai-analysis', async (req, res) => {
   const monthKey = req.body?.monthKey
   if (!MONTH_RE.test(monthKey || '')) return res.status(400).json({ error: '请选择要分析的月份' })
   try {
-    const notes = await listNotes(req.userId, monthKey)
+    const previousMonthKey = shiftMonthKey(monthKey, -1)
+    const [notes, previousNotes] = await Promise.all([
+      listNotes(req.userId, monthKey),
+      listNotes(req.userId, previousMonthKey)
+    ])
     if (!notes.length) return res.json({ report: '这个月份还没有记录。先写下一条灵感，再让 AI 帮你梳理。' })
-    const context = notes.map(({ category, status, tags, title, content }) => ({ category, status: status || '无状态', tags: JSON.parse(tags || '[]'), title, content }))
-    const prompt = '你是个人灵感档案分析助手。基于用户当月的想法、Vibe Coding、备忘和梦境记录，输出简洁中文 Markdown：先归纳 2-4 个主题，再挑出最值得继续探索的方向，最后指出可能重复、过于宽泛或需要补充的信息。不要把想法写成待办，不要替用户做价值判断。控制在 500 字内。'
-    res.json({ report: await callDeepSeek(prompt, JSON.stringify(context)) })
+    const currentNotes = notes.map(({ category, status, tags, title, content, created_at, updated_at }) => ({
+      category,
+      status: status || '无状态',
+      tags: parseTags(tags),
+      title,
+      content,
+      createdAt: created_at,
+      updatedAt: updated_at
+    }))
+    const previousSignals = previousNotes.map(({ category, tags, title }) => ({ category, tags: parseTags(tags), title }))
+    const prompt = [
+      '你是一位克制的个人灵感档案编辑，不是分类器或待办规划器。',
+      '请寻找当月记录之间不明显但有文本依据的联系，写出一个核心观察；不要按主题逐项归类，不要复述全部记录，也不要把想法转成任务。',
+      '可以参考上月标题判断某个关注是否正在延续，但只有证据充分时才提及变化。梦境只作为意象或联想材料，不要进行心理诊断；不要判断想法的价值，也不要推断用户性格。',
+      '最多引用 4 条记录标题作为依据。证据不足时直接说明暂时看不出稳定联系，不要强行概括。',
+      '只输出合法 JSON，不要输出 Markdown、代码块或额外说明，格式为：{"headline":"核心观察，不超过 32 字","insight":"一段 100-220 字的连贯编辑手记","evidence":["支撑观察的记录标题或联系，最多 4 条"],"reframe":"一个新的理解角度，不超过 100 字","question":"一个留给用户自己回答的问题，不超过 80 字"}。'
+    ].join('\n')
+    const rawReport = await callDeepSeek(prompt, JSON.stringify({
+      monthKey,
+      currentNotes,
+      previousMonth: { monthKey: previousMonthKey, notes: previousSignals }
+    }))
+    const analysis = normalizeNotesAnalysis(parseAiJson(rawReport))
+    const report = analysis ? notesAnalysisMarkdown(analysis) : rawReport
+    res.json({ report, analysis })
   } catch (error) {
     appLog('ERROR', `灵感备忘 AI 分析失败: uid=${req.userId}, error=${error.message}`)
     res.status(500).json({ error: 'AI 分析失败，请稍后重试' })
   }
 })
+
+function shiftMonthKey(monthKey, offset) {
+  const [year, month] = monthKey.split('-').map(Number)
+  const shifted = new Date(year, month - 1 + offset, 1)
+  return `${shifted.getFullYear()}-${String(shifted.getMonth() + 1).padStart(2, '0')}`
+}
+
+function parseTags(value) {
+  try {
+    const tags = JSON.parse(value || '[]')
+    return Array.isArray(tags) ? tags : []
+  } catch {
+    return []
+  }
+}
+
+function cleanAiText(value, maxLength) {
+  return typeof value === 'string' ? value.trim().slice(0, maxLength) : ''
+}
+
+function normalizeNotesAnalysis(value) {
+  if (!value) return null
+  const analysis = {
+    headline: cleanAiText(value.headline, 80),
+    insight: cleanAiText(value.insight, 700),
+    evidence: Array.isArray(value.evidence)
+      ? value.evidence.map((item) => cleanAiText(item, 180)).filter(Boolean).slice(0, 4)
+      : [],
+    reframe: cleanAiText(value.reframe, 300),
+    question: cleanAiText(value.question, 240)
+  }
+  return analysis.headline && analysis.insight && analysis.question ? analysis : null
+}
+
+function notesAnalysisMarkdown(analysis) {
+  const evidence = analysis.evidence.length
+    ? `\n\n**来自记录的线索**\n${analysis.evidence.map((item) => `- ${item}`).join('\n')}`
+    : ''
+  const reframe = analysis.reframe ? `\n\n**换个角度**\n${analysis.reframe}` : ''
+  return `## ${analysis.headline}\n\n${analysis.insight}${evidence}${reframe}\n\n**留给你的问题**\n${analysis.question}`
+}
 
 router.post('/seed-august-2026', async (req, res) => {
   try {

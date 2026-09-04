@@ -6,7 +6,7 @@
 import express from 'express'
 import { appLog } from '../logger.js'
 import { requireAuth, trackModuleAccessMiddleware } from '../auth.js'
-import { callDeepSeek } from '../ai-advisor.js'
+import { callDeepSeek, parseAiJson } from '../ai-advisor.js'
 import { isDateKey, isMonthKey, sendInternalError } from '../validation.js'
 import {
   TODO_CONST,
@@ -390,32 +390,62 @@ export function buildTodoSystemPrompt(scope) {
     '不要以任务优先级(priority)作为评判、排序或建议的依据——用户本人并不看重优先级，请忽略该维度，聚焦任务内容、分类与完成情况本身；数据中也不会提供 priority 字段。'
   if (scope === 'week') {
     return [
-      '你是一个周计划助理。下面是用户本周的日程清单（JSON 数组）。',
+      '你是帮助用户取舍的周计划编辑，而不是日程摘要工具。下面是用户本周的日程清单（JSON 数组）。',
       '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / in_progress 进行中 / deferred 已延期 / waiting 等待中 / done 已办 / cancelled 已取消)。',
       timingRule,
       priorityRule,
-      '请基于这份清单生成一份「周计划」：按日期梳理每天的重点任务、标注关键交付或里程碑、指出哪几天可能过载或冲突、给出精力分配建议。',
-      '用简洁的中文回答，使用 Markdown 排版（含小标题与 - 列表），控制在 600 字以内。'
+      '不要逐日复述任务，也不要重复总数、完成率或分类分布。请识别本周最值得守住的主线、任务之间最明显的阻塞或挤压，以及一个可执行的调整。最多引用 3 条任务作为证据；不要猜测耗时、动机或真实执行时间。',
+      todoJsonRule('本周的核心判断', '本周任务之间的结构与取舍', '下一步最具体的调整', '可以主动降低要求或延后处理的部分')
     ].join('\n')
   }
   if (scope === 'month') {
     return [
-      '你是一个月计划助理。下面是用户本月的日程清单（JSON 数组）。',
+      '你是帮助用户辨认主线的月计划编辑，而不是月度统计工具。下面是用户本月的日程清单（JSON 数组）。',
       '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / in_progress 进行中 / deferred 已延期 / waiting 等待中 / done 已办 / cancelled 已取消)。',
       timingRule,
       priorityRule,
-      '请生成一份「月计划概览」：整体完成率、各分类的任务分布、关键时间节点（按计划日期）、本月建议聚焦的主题与节奏安排。',
-      '用简洁的中文回答，使用 Markdown 排版（含小标题与 - 列表），控制在 600 字以内。'
+      '不要按日期或分类罗列任务，也不要复述总数与完成率。请找出本月最清晰的主线、正在反复占用注意力的结构性问题，以及一个能让后续安排更清楚的调整。最多引用 3 条任务作为证据；不要猜测耗时、动机或真实执行时间。',
+      todoJsonRule('本月的核心判断', '本月安排呈现出的主线与张力', '接下来最具体的调整', '可以停止维持或降低要求的部分')
     ].join('\n')
   }
   return [
-    '你是一个日程助理。下面是用户某一天的日程清单（JSON 数组）。',
-    '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / done 已办)。',
+    '你是帮助用户决定今天怎么做的日程编辑，而不是任务摘要工具。下面是用户某一天的日程清单（JSON 数组）。',
+    '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / in_progress 进行中 / deferred 已延期 / waiting 等待中 / done 已办 / cancelled 已取消)。',
     timingRule,
     priorityRule,
-    '请做一段「日程分析」：已完成 / 未完成各多少、当天任务的重点与均衡度、给出具体行动建议与风险提示（不要评价完成时间早晚，也不要猜测是否「深夜补录」；不要提及或依据任务优先级）。',
-    '用简洁的中文回答，使用 Markdown 排版（含小标题与 - 列表），控制在 450 字以内。'
+    '不要逐条复述任务，也不要重复已完成或未完成数量。请指出今天最值得守住的一件事、最可能造成分心或停滞的关系，以及一个能立即开始的动作。最多引用 3 条任务作为证据；不要猜测耗时、动机或真实执行时间。',
+    todoJsonRule('今天的核心判断', '今天任务之间的关系与取舍', '现在可以开始的动作', '今天可以主动放松的部分')
   ].join('\n')
+}
+
+function todoJsonRule(headlineHint, insightHint, nextMoveHint, releaseHint) {
+  return `只输出合法 JSON，不要输出 Markdown、代码块或额外说明，格式为：{"headline":"${headlineHint}，不超过 32 字","insight":"${insightHint}，写成 80-180 字的连贯短文","evidence":["支撑判断的任务或关系，最多 3 条"],"nextMove":"${nextMoveHint}，不超过 80 字","release":"${releaseHint}，不超过 80 字"}。evidence 只保留真正支撑判断的依据，不得把原始清单换一种说法全部列出。`
+}
+
+function cleanAiText(value, maxLength) {
+  return typeof value === 'string' ? value.trim().slice(0, maxLength) : ''
+}
+
+function normalizeTodoAnalysis(value) {
+  if (!value) return null
+  const analysis = {
+    headline: cleanAiText(value.headline, 80),
+    insight: cleanAiText(value.insight, 600),
+    evidence: Array.isArray(value.evidence)
+      ? value.evidence.map((item) => cleanAiText(item, 180)).filter(Boolean).slice(0, 3)
+      : [],
+    nextMove: cleanAiText(value.nextMove, 240),
+    release: cleanAiText(value.release, 240)
+  }
+  return analysis.headline && analysis.insight && analysis.nextMove ? analysis : null
+}
+
+function todoAnalysisMarkdown(analysis) {
+  const evidence = analysis.evidence.length
+    ? `\n\n**判断依据**\n${analysis.evidence.map((item) => `- ${item}`).join('\n')}`
+    : ''
+  const release = analysis.release ? `\n\n**可以放松**\n${analysis.release}` : ''
+  return `## ${analysis.headline}\n\n${analysis.insight}${evidence}\n\n**下一步**\n${analysis.nextMove}${release}`
 }
 
 router.post('/ai-analyze', async (req, res) => {
@@ -471,8 +501,10 @@ router.post('/ai-analyze', async (req, res) => {
     // 4) 调用内置 DeepSeek 生成分析
     const systemPrompt = buildTodoSystemPrompt(scope)
     const userQuestion = `以下是需要分析的日程数据（JSON）：\n${JSON.stringify(tasks, null, 2)}`
-    const report = await callDeepSeek(systemPrompt, userQuestion)
-    res.json({ scope, from, to, report })
+    const rawReport = await callDeepSeek(systemPrompt, userQuestion)
+    const analysis = normalizeTodoAnalysis(parseAiJson(rawReport))
+    const report = analysis ? todoAnalysisMarkdown(analysis) : rawReport
+    res.json({ scope, from, to, report, analysis })
   } catch (err) {
     appLog('ERROR', `日程 AI 分析失败: uid=${req.userId}, scope=${scope}, error=${err?.message}`)
     sendInternalError(res, 'AI 分析失败，请稍后重试')

@@ -54,7 +54,14 @@
             <span class="todo-ai-entry-time">{{ fmtTime(entry.savedAt) }}</span>
             <button class="todo-btn tiny" type="button" @click="copyEntry(entry)">复制</button>
           </div>
-          <MarkdownContent class-name="todo-markdown" :content="entry.report" />
+          <AiInsightPanel
+            v-if="entry.analysis"
+            :headline="entry.analysis.headline"
+            :body="entry.analysis.insight"
+            :evidence="entry.analysis.evidence"
+            :sections="todoInsightSections(entry.analysis)"
+          />
+          <MarkdownContent v-else class-name="todo-markdown" :content="entry.report" />
         </div>
       </div>
       <div v-else-if="!busy" class="todo-empty">
@@ -70,6 +77,7 @@
 <script setup>
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
+import AiInsightPanel from '../../../components/AiInsightPanel.vue'
 import MarkdownContent from '../../../components/MarkdownContent.vue'
 import { useAuth } from '../../../auth/useAuth.js'
 import todoApi from '../api/todo.js'
@@ -107,9 +115,9 @@ function loadCached() {
     history.value = []
   }
 }
-function saveCache(reportText) {
+function saveCache(result) {
   const now = Date.now()
-  history.value = [{ savedAt: now, report: reportText }, ...history.value]
+  history.value = [{ savedAt: now, report: result.report || '', analysis: result.analysis || null }, ...history.value]
   try {
     localStorage.setItem(cacheKey(), JSON.stringify(history.value))
   } catch {
@@ -117,7 +125,7 @@ function saveCache(reportText) {
   }
 }
 async function copyEntry(entry) {
-  const text = entry.report
+  const text = entry.report || formatAnalysis(entry.analysis)
   try {
     await navigator.clipboard.writeText(text)
   } catch {
@@ -136,6 +144,20 @@ async function copyEntry(entry) {
     document.body.removeChild(ta)
   }
   toast('已复制到剪贴板')
+}
+
+function todoInsightSections(analysis) {
+  return [
+    analysis.nextMove ? { label: '下一步', content: analysis.nextMove } : null,
+    analysis.release ? { label: '可以放松', content: analysis.release } : null
+  ].filter(Boolean)
+}
+
+function formatAnalysis(analysis) {
+  if (!analysis) return ''
+  const evidence = analysis.evidence?.length ? `\n\n判断依据\n${analysis.evidence.join('\n')}` : ''
+  const release = analysis.release ? `\n\n可以放松\n${analysis.release}` : ''
+  return `${analysis.headline}\n\n${analysis.insight}${evidence}\n\n下一步\n${analysis.nextMove || ''}${release}`
 }
 function clearHistory() {
   history.value = []
@@ -182,7 +204,7 @@ async function generate() {
     if (scope.value === 'day' || scope.value === 'week') payload.date = anchorDate.value
     else payload.month = anchorMonth.value
     const res = await todoApi.aiAnalyze(payload)
-    saveCache(res.report || '')
+    saveCache(res)
   } catch (err) {
     aiError.value = err.message || '分析失败，请稍后重试'
   } finally {
@@ -280,6 +302,14 @@ watch([scope, anchorDate, anchorMonth], () => {
 .todo-ai-entry {
   padding: 14px 16px;
   margin-bottom: 14px;
+}
+.todo-ai-entry :deep(.ai-insight-panel) {
+  --ai-insight-accent: var(--todo-primary);
+  --ai-insight-bg: var(--todo-panel);
+  --ai-insight-muted: var(--todo-hover-bg);
+  --ai-insight-border: var(--todo-border);
+  --ai-insight-section-bg: var(--todo-bg);
+  box-shadow: none;
 }
 .todo-ai-entry-head {
   display: flex;
