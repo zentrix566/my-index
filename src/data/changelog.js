@@ -2,6 +2,15 @@
 // 按时间倒序排列；同一天涉及多个模块时分别记录，且同一天同一 category 只保留一条。
 export const changelog = [
   {
+    date: '2026-09-04',
+    title: '炉石卡牌属性与卡面更新',
+    category: 'hearthstone',
+    route: '/hearthstone/cards',
+    changes: [
+      '更新 6 张炉石卡牌的卡面与属性数值，卡牌查询和卡组查看现会同步显示最新内容。'
+    ]
+  },
+  {
     date: '2026-09-03',
     title: '日历完成日期显示修复',
     category: 'todo',

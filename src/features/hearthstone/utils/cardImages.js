@@ -11,7 +11,7 @@ import cardImageManifest from '../data/deck-card-images.json' with { type: 'json
  * 卡图版本号——补丁更新卡面时递增此值即可强制刷新浏览器缓存。
  * 服务端以 req.path（不含 query）为缓存键，?v= 不会透传到 OSS，也不会产生重复缓存。
  */
-export const CARD_IMAGE_VERSION = '20260819'
+export const CARD_IMAGE_VERSION = '20260904'
 
 /** 给 /hearthstone-cards/ 相对路径追加版本号 query，用于浏览器缓存刷新；非卡图 URL 原样返回。 */
 export function withCardImgVersion(url) {
