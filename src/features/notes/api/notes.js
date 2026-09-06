@@ -3,6 +3,10 @@ import { request } from '../../../api/http.js'
 const BASE = '/api/notes'
 export const notesApi = {
   list: (month) => request(`${BASE}/?month=${encodeURIComponent(month || '')}`),
+  due: () => request(`${BASE}/due`),
+  random: () => request(`${BASE}/random`),
+  related: (id) => request(`${BASE}/${id}/related`),
+  projectOutline: (id) => request(`${BASE}/${id}/project-outline`, { method: 'POST' }),
   create: (payload) => request(BASE, { method: 'POST', body: JSON.stringify(payload) }),
   update: (id, payload) => request(`${BASE}/${id}`, { method: 'PATCH', body: JSON.stringify(payload) }),
   remove: (id) => request(`${BASE}/${id}`, { method: 'DELETE' }),
