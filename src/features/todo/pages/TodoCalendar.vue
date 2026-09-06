@@ -104,12 +104,17 @@
             v-for="d in weekDays"
             :key="d.key"
             class="todo-cal-week-day"
+            role="button"
+            tabindex="0"
+            :aria-label="`查看 ${d.dowLabel}${d.dayNum} 日的 ${d.tasks.length} 条日程`"
             :class="{
               today: d.key === todayKey,
               weekend: d.isWeekend,
               past: d.isPast
             }"
             @click="selectDay(d.key)"
+            @keydown.enter="selectDay(d.key)"
+            @keydown.space.prevent="selectDay(d.key)"
           >
             <div class="todo-cal-week-date">
               <span class="todo-cal-week-dow">{{ d.dowLabel }}</span>
@@ -123,7 +128,7 @@
                 :class="'status-' + t.status"
               >
                 <i class="todo-cal-task-dot" :class="t.status"></i>
-                <span>{{ t.title }}</span>
+                <span :title="t.title">{{ t.title }}</span>
               </div>
             </div>
             <div v-else class="todo-cal-week-empty">无日程</div>
@@ -646,11 +651,11 @@ onMounted(async () => {
 
 /* ===== 日历主区域（渐变背景卡片） ===== */
 .todo-cal-section {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.78), rgba(248, 250, 255, 0.72));
-  border: 1px solid rgba(99, 102, 241, 0.14);
+  background: rgba(255, 255, 255, 0.72);
+  border: 1px solid rgba(148, 163, 184, 0.22);
   border-radius: 18px;
   padding: 16px;
-  box-shadow: 0 14px 35px rgba(43, 55, 105, 0.08);
+  box-shadow: 0 10px 28px rgba(43, 55, 105, 0.06);
 }
 
 /* ===== 月份卡片 ===== */
@@ -862,44 +867,46 @@ onMounted(async () => {
 /* ===== 周视图 ===== */
 .todo-cal-week-grid {
   display: grid;
-  grid-template-columns: repeat(7, 1fr);
-  gap: 9px;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: 10px;
 }
 .todo-cal-week-day {
-  border: 1px solid rgba(148, 163, 184, 0.24);
-  border-radius: 14px;
-  padding: 11px;
-  min-height: 185px;
-  background: rgba(255, 255, 255, 0.76);
+  min-width: 0;
+  border: 1px solid rgba(148, 163, 184, 0.28);
+  border-radius: 12px;
+  padding: 12px;
+  min-height: 220px;
+  background: rgba(255, 255, 255, 0.88);
   cursor: pointer;
-  transition: all 0.15s;
+  transition: border-color 0.18s ease, box-shadow 0.18s ease, background-color 0.18s ease;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 8px;
 }
-.todo-cal-week-day:hover {
+.todo-cal-week-day:hover,
+.todo-cal-week-day:focus-visible {
   border-color: #818cf8;
-  transform: translateY(-2px);
-  box-shadow: 0 8px 18px rgba(79, 70, 229, 0.11);
+  box-shadow: 0 5px 14px rgba(79, 70, 229, 0.1);
+  outline: none;
 }
 .todo-cal-week-day.today {
   border-color: #6366f1;
-  background: linear-gradient(150deg, rgba(238, 242, 255, 0.96), rgba(255, 255, 255, 0.88));
-  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.16);
+  background: #f4f6ff;
+  box-shadow: inset 0 0 0 1px rgba(99, 102, 241, 0.14);
 }
 .todo-cal-week-day.weekend {
-  background: var(--todo-primary-soft);
+  background: rgba(99, 102, 241, 0.045);
 }
 .todo-cal-week-day.past {
-  background: rgba(107, 114, 128, 0.04);
-  border-style: dashed;
+  background: rgba(148, 163, 184, 0.035);
+  border-color: rgba(148, 163, 184, 0.2);
 }
 .todo-cal-week-date {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding-bottom: 6px;
+  padding-bottom: 8px;
   border-bottom: 1px solid var(--todo-border);
   margin-bottom: 4px;
 }
@@ -920,28 +927,34 @@ onMounted(async () => {
 .todo-cal-week-list {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 6px;
 }
 .todo-cal-week-item {
   display: flex;
   align-items: center;
   gap: 5px;
+  min-width: 0;
   font-size: 12px;
-  padding: 4px 7px;
-  border-radius: 6px;
-  background: rgba(59, 130, 246, 0.08);
+  line-height: 1.35;
+  padding: 6px 8px;
+  border-radius: 7px;
+  background: rgba(59, 130, 246, 0.07);
   color: var(--todo-text);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }
+.todo-cal-week-item > span { min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .todo-cal-week-item.done,
 .todo-cal-week-item.status-done {
-  background: rgba(22, 163, 74, 0.08);
+  background: rgba(22, 163, 74, 0.1);
   color: var(--todo-success);
-  opacity: 0.9;
 }
-.todo-cal-week-item.status-cancelled { opacity: 0.5; }
+.todo-cal-week-item.status-in_progress { background: rgba(245, 158, 11, 0.1); }
+.todo-cal-week-item.status-deferred { background: rgba(139, 92, 246, 0.1); }
+.todo-cal-week-item.status-waiting { background: rgba(239, 68, 68, 0.09); }
+.todo-cal-week-item.status-cancelled {
+  background: rgba(148, 163, 184, 0.1);
+  color: var(--todo-text-soft);
+  opacity: 0.72;
+}
 .todo-cal-week-empty {
   font-size: 12px;
   color: var(--todo-text-faint);
@@ -1000,5 +1013,9 @@ html[data-theme='dark'] .todo-cal-week-day.weekend { background: rgba(99, 102, 2
   .todo-cal-task { font-size: 9px; padding: 1px 3px; }
   .todo-cal-week-grid { grid-template-columns: 1fr; }
   .todo-cal-week-day { min-height: auto; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .todo-cal-week-day { transition: none; }
 }
 </style>

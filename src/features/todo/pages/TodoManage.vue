@@ -17,6 +17,10 @@
 
       <!-- 筛选条 -->
       <div class="todo-filters">
+        <label class="todo-filter todo-filter--search">
+          搜索
+          <input v-model.trim="filterQuery" type="search" class="todo-input" placeholder="标题、备注或分组" />
+        </label>
         <label class="todo-filter">
           起
           <input type="date" v-model="filterFrom" class="todo-input" />
@@ -190,15 +194,21 @@ const loadError = ref('')
 const prioLabel = { low: '低', medium: '中', high: '高' }
 
 // 筛选条件
-const filterFrom = ref('')
-const filterTo = ref('')
-const filterStatus = ref('all')
-const filterList = ref('')
+const manageFilterStorageKey = 'zentrix:todo-manage:filters'
+const savedFilters = (() => {
+  try { return JSON.parse(localStorage.getItem(manageFilterStorageKey) || '{}') } catch { return {} }
+})()
+const filterQuery = ref(savedFilters.query || '')
+const filterFrom = ref(savedFilters.from || '')
+const filterTo = ref(savedFilters.to || '')
+const filterStatus = ref(savedFilters.status || 'all')
+const filterList = ref(savedFilters.list || '')
 
 const hasFilter = computed(
-  () => !!(filterFrom.value || filterTo.value || filterStatus.value !== 'all' || filterList.value)
+  () => !!(filterQuery.value || filterFrom.value || filterTo.value || filterStatus.value !== 'all' || filterList.value)
 )
 function resetFilters() {
+  filterQuery.value = ''
   filterFrom.value = ''
   filterTo.value = ''
   filterStatus.value = 'all'
@@ -214,7 +224,10 @@ const cancelledCount = computed(() => filteredTasks.value.filter((t) => t.status
 const filteredTasks = computed(() => {
   const from = filterFrom.value
   const to = filterTo.value
+  const query = filterQuery.value.toLocaleLowerCase()
   const rows = tasks.value.filter((t) => {
+    const listName = t.listId ? listMap.value.get(t.listId)?.name || '' : ''
+    if (query && ![t.title, t.note, listName].join(' ').toLocaleLowerCase().includes(query)) return false
     if (filterStatus.value !== 'all' && t.status !== filterStatus.value) return false
     if (filterList.value && String(t.listId) !== String(filterList.value)) return false
     const d = t.dueDate || ''
@@ -255,8 +268,9 @@ const rangeEnd = computed(() =>
   Math.min(Math.min(currentPage.value, totalPages.value) * pageSize.value, filteredTasks.value.length)
 )
 // 筛选条件或每页大小变化后回到第 1 页
-watch([filterFrom, filterTo, filterStatus, filterList, pageSize], () => {
+watch([filterQuery, filterFrom, filterTo, filterStatus, filterList, pageSize], () => {
   currentPage.value = 1
+  localStorage.setItem(manageFilterStorageKey, JSON.stringify({ query: filterQuery.value, from: filterFrom.value, to: filterTo.value, status: filterStatus.value, list: filterList.value }))
 })
 // 删除导致总页数变小后，纠正越界页码
 watch(totalPages, (tp) => { if (currentPage.value > tp) currentPage.value = tp })
