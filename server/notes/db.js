@@ -159,14 +159,7 @@ export async function listNotes(userId, monthKey) {
   const params = [userId]
   let where = 'user_id = $1'
   if (monthKey) { where += ' AND month_key = $2'; params.push(monthKey) }
-  return (await query(`SELECT * FROM idea_notes WHERE ${where} ORDER BY month_key DESC, id DESC`, params)).rows
-}
-
-export async function listDueNotes(userId, dateKey) {
-  return (await query(
-    'SELECT * FROM idea_notes WHERE user_id = $1 AND revisit_at IS NOT NULL AND revisit_at <= $2 ORDER BY revisit_at ASC, id DESC',
-    [userId, dateKey]
-  )).rows
+  return (await query(`SELECT * FROM idea_notes WHERE ${where} ORDER BY is_pinned DESC, month_key DESC, id DESC`, params)).rows
 }
 
 export async function getNote(userId, id) {
@@ -210,17 +203,17 @@ export async function hideNoteImage(userId, noteId, imageId) {
 export async function createNote(userId, note) {
   const now = note.createdAt || nowIso()
   return queryOne(
-    `INSERT INTO idea_notes(user_id, month_key, category, status, tags, topic, is_pinned, revisit_at, title, content, created_at, updated_at)
-     VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10,$11,$12) RETURNING *`,
-    [userId, note.monthKey, note.category, note.status, JSON.stringify(note.tags), note.topic || '', note.isPinned ? 1 : 0, note.revisitAt || null, note.title, note.content, now, note.updatedAt || now]
+    `INSERT INTO idea_notes(user_id, month_key, category, status, is_pinned, title, content, created_at, updated_at)
+     VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
+    [userId, note.monthKey, note.category, note.status, note.isPinned ? 1 : 0, note.title, note.content, now, note.updatedAt || now]
   )
 }
 
 export async function updateNote(userId, id, note) {
   return queryOne(
-    `UPDATE idea_notes SET month_key=$1, category=$2, status=$3, tags=$4, topic=$5, is_pinned=$6, revisit_at=$7, title=$8, content=$9, updated_at=$10
-     WHERE id=$11 AND user_id=$12 RETURNING *`,
-    [note.monthKey, note.category, note.status, JSON.stringify(note.tags), note.topic || '', note.isPinned ? 1 : 0, note.revisitAt || null, note.title, note.content, nowIso(), id, userId]
+    `UPDATE idea_notes SET month_key=$1, category=$2, status=$3, is_pinned=$4, title=$5, content=$6, updated_at=$7
+     WHERE id=$8 AND user_id=$9 RETURNING *`,
+    [note.monthKey, note.category, note.status, note.isPinned ? 1 : 0, note.title, note.content, nowIso(), id, userId]
   )
 }
 

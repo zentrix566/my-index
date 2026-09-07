@@ -63,11 +63,9 @@ export async function createNoteImage(note, { categoryLabel, statusLabel }) {
   const titleRows = wrapText(context, title, contentWidth)
   context.font = '400 36px "PingFang SC", "Microsoft YaHei", sans-serif'
   const contentRows = content.split('\n').flatMap((paragraph) => wrapText(context, paragraph || '　', contentWidth - 64))
-  const tags = note.tags || []
   const titleHeight = titleRows.length * 86
   const contentHeight = Math.max(96, contentRows.length * 60 + Math.max(0, content.split('\n').length - 1) * 16)
-  const tagsHeight = tags.length ? 76 : 0
-  const cardHeight = contentHeight + tagsHeight + 76
+  const cardHeight = contentHeight + 76
   const imageColumns = 3
   const imageWidth = 300
   const imageHeight = 200
@@ -110,22 +108,6 @@ export async function createNoteImage(note, { categoryLabel, statusLabel }) {
   context.font = '400 36px "PingFang SC", "Microsoft YaHei", sans-serif'
   let contentY = cardY + 108
   contentRows.forEach((row) => { context.fillText(row, inset + 58, contentY); contentY += 60 })
-  if (tags.length) {
-    let tagX = inset + 58
-    const tagY = cardY + contentHeight + 26
-    tags.slice(0, 5).forEach((tag) => {
-      const text = `# ${tag}`
-      context.font = '600 24px sans-serif'
-      const tagWidth = context.measureText(text).width + 32
-      if (tagX + tagWidth > width - inset - 30) return
-      roundRect(context, tagX, tagY, tagWidth, 40, 20)
-      context.fillStyle = '#f0ebff'
-      context.fill()
-      context.fillStyle = '#604285'
-      context.fillText(text, tagX + 16, tagY + 28)
-      tagX += tagWidth + 10
-    })
-  }
   if (images.length) {
     const imageSectionY = cardY + cardHeight + 48
     context.fillStyle = '#8b5cf6'

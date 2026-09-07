@@ -9,9 +9,7 @@ import {
   createNoteImage,
   deleteNote,
   hideNoteImage,
-  getNote,
   getNoteImage,
-  listDueNotes,
   listNoteImages,
   listNotes,
   updateNote
@@ -46,9 +44,7 @@ function serializeImage(row) {
 }
 
 function serialize(row, images = []) {
-  let tags = []
-  try { tags = JSON.parse(row.tags || '[]') } catch { tags = [] }
-  return { id: row.id, monthKey: row.month_key, category: row.category, status: row.status, tags, topic: row.topic || '', isPinned: Boolean(row.is_pinned), revisitAt: row.revisit_at || '', title: row.title, content: row.content, createdAt: row.created_at, updatedAt: row.updated_at, images: images.map(serializeImage) }
+  return { id: row.id, monthKey: row.month_key, category: row.category, status: row.status, isPinned: Number(row.is_pinned) === 1, title: row.title, content: row.content, createdAt: row.created_at, updatedAt: row.updated_at, images: images.map(serializeImage) }
 }
 
 async function serializeNotes(userId, rows) {
@@ -110,41 +106,25 @@ async function removeObject(objectKey) {
 }
 
 function validate(payload) {
-  const { monthKey, category, status, tags, topic, isPinned, revisitAt, title, content } = payload || {}
+  const { monthKey, category, status, isPinned, title, content } = payload || {}
   if (!MONTH_RE.test(monthKey || '')) return '月份格式应为 YYYY-MM'
   if (!CATEGORIES.has(category)) return '分类不正确'
   if (category !== 'vibe_coding' && status !== null && status !== undefined && status !== '') return '该分类无需状态'
   if (category === 'vibe_coding' && status !== null && status !== undefined && status !== '' && !STATUSES.has(status)) return '状态不正确'
+  if (isPinned !== undefined && typeof isPinned !== 'boolean') return '置顶状态不正确'
   if (typeof title !== 'string' || !title.trim() || title.trim().length > 200) return '标题需为 1-200 个字符'
   if (typeof content !== 'string' || content.length > 10000) return '正文最多 10000 个字符'
-  if (!Array.isArray(tags) || tags.length > 12 || tags.some((tag) => typeof tag !== 'string' || !tag.trim() || tag.trim().length > 24)) return '标签最多 12 个，每个 1-24 个字符'
-  if (typeof topic !== 'string' || topic.trim().length > 60) return '主题最多 60 个字符'
-  if (typeof isPinned !== 'boolean') return '置顶状态不正确'
-  if (revisitAt !== null && revisitAt !== undefined && revisitAt !== '' && !/^\d{4}-\d{2}-\d{2}$/.test(revisitAt)) return '回看日期格式应为 YYYY-MM-DD'
   return null
 }
 
 function clean(payload) {
-  return { monthKey: payload.monthKey, category: payload.category, status: payload.category === 'vibe_coding' && payload.status ? payload.status : null, tags: [...new Set(payload.tags.map((tag) => tag.trim()))], topic: payload.topic.trim(), isPinned: payload.isPinned, revisitAt: payload.revisitAt || null, title: payload.title.trim(), content: payload.content.trim() }
+  return { monthKey: payload.monthKey, category: payload.category, status: payload.category === 'vibe_coding' && payload.status ? payload.status : null, isPinned: payload.isPinned === true, title: payload.title.trim(), content: payload.content.trim() }
 }
 
 router.get('/', async (req, res) => {
   const month = typeof req.query.month === 'string' ? req.query.month : ''
   if (month && !MONTH_RE.test(month)) return res.status(400).json({ error: '月份格式应为 YYYY-MM' })
   try { res.json({ notes: await serializeNotes(req.userId, await listNotes(req.userId, month)) }) } catch (error) { res.status(500).json({ error: '读取备忘失败，请稍后重试' }) }
-})
-
-router.get('/due', async (req, res) => {
-  const today = new Intl.DateTimeFormat('sv-SE', { timeZone: 'Asia/Shanghai' }).format(new Date())
-  try { res.json({ notes: await serializeNotes(req.userId, await listDueNotes(req.userId, today)) }) } catch { res.status(500).json({ error: '读取待回看记录失败，请稍后重试' }) }
-})
-
-router.get('/random', async (req, res) => {
-  try {
-    const notes = await listNotes(req.userId)
-    if (!notes.length) return res.status(404).json({ error: '还没有可回顾的记录' })
-    res.json({ note: serialize(notes[Math.floor(Math.random() * notes.length)]) })
-  } catch { res.status(500).json({ error: '抽取旧记录失败，请稍后重试' }) }
 })
 
 router.post('/', async (req, res) => {
@@ -162,43 +142,6 @@ router.patch('/:id', async (req, res) => {
     if (!note) return res.status(404).json({ error: '备忘不存在' })
     res.json({ note: serialize(note) })
   } catch { res.status(500).json({ error: '保存备忘失败，请稍后重试' }) }
-})
-
-router.get('/:id/related', async (req, res) => {
-  const id = parseInteger(req.params.id)
-  if (!id) return res.status(400).json({ error: '备忘不存在' })
-  try {
-    const note = await getNote(req.userId, id)
-    if (!note) return res.status(404).json({ error: '备忘不存在' })
-    const related = findRelatedNotes(note, await listNotes(req.userId))
-    res.json({ notes: related.map((item) => serialize(item)) })
-  } catch { res.status(500).json({ error: '查找相近记录失败，请稍后重试' }) }
-})
-
-router.post('/:id/project-outline', async (req, res) => {
-  const id = parseInteger(req.params.id)
-  if (!id) return res.status(400).json({ error: '备忘不存在' })
-  try {
-    const note = await getNote(req.userId, id)
-    if (!note) return res.status(404).json({ error: '备忘不存在' })
-    const prompt = [
-      '你是一位克制的产品编辑。根据用户的一条灵感，整理一个可供继续思考的项目雏形。',
-      '不得把不确定想法当成承诺，不要虚构用户没有提供的需求或技术细节。',
-      '只输出合法 JSON，格式为：{"name":"不超过32字","problem":"不超过100字","firstStep":"不超过100字","smallestVersion":"不超过140字","openQuestion":"不超过100字"}。'
-    ].join('\n')
-    const raw = await callDeepSeek(prompt, JSON.stringify({
-      category: note.category,
-      tags: parseTags(note.tags),
-      topic: note.topic || '',
-      title: note.title,
-      content: note.content
-    }))
-    const outline = normalizeProjectOutline(parseAiJson(raw))
-    res.json({ outline: outline || { name: note.title, problem: raw, firstStep: '', smallestVersion: '', openQuestion: '' } })
-  } catch (error) {
-    appLog('ERROR', `灵感项目雏形生成失败: uid=${req.userId}, note=${id}, error=${error.message}`)
-    res.status(500).json({ error: '项目雏形生成失败，请稍后重试' })
-  }
 })
 
 router.delete('/:id', async (req, res) => {
@@ -288,16 +231,15 @@ router.post('/ai-analysis', async (req, res) => {
       listNotes(req.userId, previousMonthKey)
     ])
     if (!notes.length) return res.json({ report: '这个月份还没有记录。先写下一条灵感，再让 AI 帮你梳理。' })
-    const currentNotes = notes.map(({ category, status, tags, title, content, created_at, updated_at }) => ({
+    const currentNotes = notes.map(({ category, status, title, content, created_at, updated_at }) => ({
       category,
       status: status || '无状态',
-      tags: parseTags(tags),
       title,
       content,
       createdAt: created_at,
       updatedAt: updated_at
     }))
-    const previousSignals = previousNotes.map(({ category, tags, title }) => ({ category, tags: parseTags(tags), title }))
+    const previousSignals = previousNotes.map(({ category, title }) => ({ category, title }))
     const prompt = [
       '你是一位克制的个人灵感档案编辑，不是分类器或待办规划器。',
       '请寻找当月记录之间不明显但有文本依据的联系，写出一个核心观察；不要按主题逐项归类，不要复述全部记录，也不要把想法转成任务。',
@@ -325,15 +267,6 @@ function shiftMonthKey(monthKey, offset) {
   return `${shifted.getFullYear()}-${String(shifted.getMonth() + 1).padStart(2, '0')}`
 }
 
-function parseTags(value) {
-  try {
-    const tags = JSON.parse(value || '[]')
-    return Array.isArray(tags) ? tags : []
-  } catch {
-    return []
-  }
-}
-
 function cleanAiText(value, maxLength) {
   return typeof value === 'string' ? value.trim().slice(0, maxLength) : ''
 }
@@ -350,43 +283,6 @@ function normalizeNotesAnalysis(value) {
     question: cleanAiText(value.question, 240)
   }
   return analysis.headline && analysis.insight && analysis.question ? analysis : null
-}
-
-function noteTerms(note) {
-  const text = [note.title, note.content, note.topic, ...parseTags(note.tags)].join(' ').toLocaleLowerCase()
-  const terms = new Set(text.match(/[\p{Script=Han}]{2,}|[a-z0-9]{2,}/gu) || [])
-  const compact = text.replace(/\s/g, '')
-  for (let index = 0; index < compact.length - 1; index += 1) terms.add(compact.slice(index, index + 2))
-  return terms
-}
-
-function findRelatedNotes(note, candidates) {
-  const sourceTerms = noteTerms(note)
-  const sourceTags = new Set(parseTags(note.tags).map((tag) => tag.toLocaleLowerCase()))
-  return candidates
-    .filter((candidate) => candidate.id !== note.id)
-    .map((candidate) => {
-      const sharedTerms = [...noteTerms(candidate)].filter((term) => sourceTerms.has(term)).length
-      const sharedTags = parseTags(candidate.tags).filter((tag) => sourceTags.has(tag.toLocaleLowerCase())).length
-      const sharedTopic = note.topic && note.topic === candidate.topic ? 1 : 0
-      return { candidate, score: sharedTerms + sharedTags * 8 + sharedTopic * 12 }
-    })
-    .filter(({ score }) => score >= 4)
-    .sort((left, right) => right.score - left.score || String(right.candidate.updated_at).localeCompare(String(left.candidate.updated_at)))
-    .slice(0, 5)
-    .map(({ candidate }) => candidate)
-}
-
-function normalizeProjectOutline(value) {
-  if (!value || typeof value !== 'object') return null
-  const outline = {
-    name: cleanAiText(value.name, 80),
-    problem: cleanAiText(value.problem, 240),
-    firstStep: cleanAiText(value.firstStep, 240),
-    smallestVersion: cleanAiText(value.smallestVersion, 360),
-    openQuestion: cleanAiText(value.openQuestion, 240)
-  }
-  return outline.name && outline.problem ? outline : null
 }
 
 function notesAnalysisMarkdown(analysis) {
@@ -490,7 +386,7 @@ router.post('/seed-august-2026', async (req, res) => {
       const day = String((index % 31) + 1).padStart(2, '0')
       const hour = String(8 + (index % 14)).padStart(2, '0')
       const createdAt = `2026-08-${day}T${hour}:33:23.000+08:00`
-      return createNote(req.userId, { monthKey: '2026-08', category, status, tags: [], title, content, createdAt })
+      return createNote(req.userId, { monthKey: '2026-08', category, status, title, content, createdAt })
     }))
     res.json({ notes: notes.map(serialize) })
   } catch { res.status(500).json({ error: '导入示例失败，请稍后重试' }) }

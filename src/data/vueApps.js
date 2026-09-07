@@ -21,8 +21,8 @@ export const vueApps = [
     to: '/notes',
     title: '灵感收集',
     kicker: '记录 · 灵感档案',
-    summary: '按月收集想法和 Vibe Coding 灵感；想法不设状态，项目灵感可标记完成、不可能或不确定，并支持 AI 梳理与 JSON 导出。',
-    tags: ['想法', 'Vibe Coding', 'AI', '导出']
+    summary: '按月收集想法和编程灵感；想法不设状态，编程灵感可标记完成、不可能或不确定，并支持 AI 梳理与 JSON 导出。',
+    tags: ['想法', '编程', 'AI', '导出']
   },
   {
     to: '/willpower',
