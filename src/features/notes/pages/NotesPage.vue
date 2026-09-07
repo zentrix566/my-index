@@ -2,7 +2,7 @@
   <main class="notes-page">
     <section class="notes-hero">
       <div><p class="notes-eyebrow">个人灵感档案</p><h1>灵感收集</h1><p>按月留下那些不必立刻完成、但值得被保存和回看的念头。</p></div>
-      <div class="notes-summary" aria-label="本月记录概览"><div class="notes-summary__total"><span>本月记录</span><strong>{{ notes.length }}</strong><small>条</small></div><dl class="notes-summary__breakdown"><div><dt>想法</dt><dd>{{ ideaCount }}</dd></div><div><dt>编程</dt><dd>{{ vibeCount }}</dd></div><div><dt>备忘</dt><dd>{{ memoCount }}</dd></div><div><dt>梦</dt><dd>{{ dreamCount }}</dd></div></dl></div>
+      <div class="notes-summary" aria-label="本月记录概览"><button class="notes-summary__total" type="button" :class="{ active: filter === 'all' }" @click="setSummaryFilter('all')"><span>本月记录</span><strong>{{ notes.length }}</strong><small>条</small></button><dl class="notes-summary__breakdown"><div :class="{ active: filter === 'idea' }" role="button" tabindex="0" @click="setSummaryFilter('idea')" @keydown.enter="setSummaryFilter('idea')"><dt>想法</dt><dd>{{ ideaCount }}</dd></div><div :class="{ active: filter === 'vibe_coding' }" role="button" tabindex="0" @click="setSummaryFilter('vibe_coding')" @keydown.enter="setSummaryFilter('vibe_coding')"><dt>编程</dt><dd>{{ vibeCount }}</dd></div><div :class="{ active: filter === 'memo' }" role="button" tabindex="0" @click="setSummaryFilter('memo')" @keydown.enter="setSummaryFilter('memo')"><dt>备忘</dt><dd>{{ memoCount }}</dd></div><div :class="{ active: filter === 'dream' }" role="button" tabindex="0" @click="setSummaryFilter('dream')" @keydown.enter="setSummaryFilter('dream')"><dt>梦</dt><dd>{{ dreamCount }}</dd></div></dl></div>
       <div class="notes-actions"><button class="notes-button notes-button--quiet" type="button" @click="exportNotes">导出 JSON</button><button class="notes-button notes-button--quiet" type="button" @click="startNew(true)">快速记录</button><button class="notes-button" type="button" @click="startNew()">记录灵感</button></div>
     </section>
     <section class="notes-toolbar" aria-label="备忘筛选">
@@ -23,7 +23,7 @@
 </template>
 
 <script setup>
-import { computed, onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import AiInsightPanel from '../../../components/AiInsightPanel.vue'
 import MarkdownContent from '../../../components/MarkdownContent.vue'
 import { useToast } from '../../../composables/useToast.js'
@@ -57,6 +57,7 @@ const activityHighlights = computed(() => busiestDay.value.count ? `连续记录
 const blank = () => ({ monthKey: monthKey.value, category: 'idea', status: '', isPinned: false, title: '', content: '', images: [], pendingImages: [], removedImageIds: [] }); const categoryLabel = (category) => ({ idea: '想法', vibe_coding: '编程', memo: '备忘', dream: '梦' })[category] || '想法'; const statusLabel = (status) => ({ done: '已完成', impossible: '不可能', uncertain: '不确定' })[status] || '未定'; const noteStatusClass = (note) => note.category === 'vibe_coding' && note.status ? `note-status--${note.status}` : ''; const formatShortDate = (value) => new Intl.DateTimeFormat('zh-CN', { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).format(new Date(value)).replaceAll(',', ''); const formatDateTime = (value) => new Intl.DateTimeFormat('zh-CN', { dateStyle: 'long', timeStyle: 'short' }).format(new Date(value)); const formatLocalDateKey = (value) => { const date = new Date(value); return `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, '0')}-${String(date.getDate()).padStart(2, '0')}` }; const timelinePreview = (content) => content.length > 62 ? `${content.slice(0, 62)}…` : content; const draftStorageKey = (note) => `zentrix-notes:draft:${note.monthKey}`
 async function loadNotes() { loading.value = true; timelineDayKey.value = ''; try { notes.value = (await notesApi.list(libraryScope.value === 'all' ? '' : monthKey.value)).notes || [] } catch (error) { toast.error(error.message) } finally { loading.value = false } }
 async function setLibraryScope(scope) { if (libraryScope.value === scope) return; libraryScope.value = scope; await loadNotes() }
+function setSummaryFilter(category) { filter.value = category; viewMode.value = 'list'; nextTick(() => document.querySelector('.notes-list')?.scrollIntoView({ behavior: 'smooth', block: 'start' })) }
 async function loadActivityNotes() { try { activityNotes.value = activityMonthKey.value === monthKey.value ? notes.value : ((await notesApi.list(activityMonthKey.value)).notes || []) } catch (error) { toast.error(error.message) } }
 async function openActivity() { activityMonthKey.value = monthKey.value; viewMode.value = 'activity'; await loadActivityNotes() }
 function shiftActivityMonth(offset) { const [year, month] = activityMonthKey.value.split('-').map(Number); const next = new Date(year, month - 1 + offset, 1); activityMonthKey.value = `${next.getFullYear()}-${String(next.getMonth() + 1).padStart(2, '0')}`; loadActivityNotes() }
