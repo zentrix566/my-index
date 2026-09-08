@@ -54,6 +54,22 @@ export function useBiographyCache() {
       evictOldestEntries()
       persistEntries()
     },
+    remove(name) {
+      const key = normalizeBiographyName(name)
+      if (!key || !entries[key]) return false
+
+      delete entries[key]
+      persistEntries()
+      return true
+    },
+    clear() {
+      const keys = Object.keys(entries)
+      if (!keys.length) return false
+
+      keys.forEach((key) => delete entries[key])
+      persistEntries()
+      return true
+    },
     recent(limit = MAX_ENTRIES) {
       return Object.values(entries)
         .filter((entry) => entry?.name && entry?.result && Number.isFinite(entry.savedAt))

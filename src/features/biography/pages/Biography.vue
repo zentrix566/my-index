@@ -25,15 +25,31 @@
 
       <div v-if="!loading && recentNames.length" class="biography-recent" aria-label="最近查询">
         <span class="biography-recent-label">最近查询</span>
-        <button
+        <button type="button" class="biography-clear-recent" @click="clearRecent">
+          清空记录
+        </button>
+        <span
           v-for="item in recentNames"
           :key="item.name"
-          type="button"
-          class="biography-recent-chip"
-          @click="searchRecent(item.name)"
+          class="biography-recent-item"
         >
-          {{ item.name }}
-        </button>
+          <button
+            type="button"
+            class="biography-recent-chip"
+            @click="searchRecent(item.name)"
+          >
+            {{ item.name }}
+          </button>
+          <button
+            type="button"
+            class="biography-remove-recent"
+            :aria-label="`删除查询记录：${item.name}`"
+            title="删除此记录"
+            @click="removeRecent(item.name)"
+          >
+            ×
+          </button>
+        </span>
       </div>
 
       <div v-if="loading" class="biography-loading" role="status" aria-live="polite">
@@ -84,12 +100,14 @@
 
 <script setup>
 import { nextTick, onMounted, ref, watch } from 'vue'
+import { useToast } from '../../../composables/useToast.js'
 import { formatDateTime } from '../../../utils/date.js'
 import { fetchBiography } from '../ark.js'
 import { normalizeBiographyName, useBiographyCache } from '../composables/useBiographyCache.js'
 import '../biography.css'
 
 const cache = useBiographyCache()
+const toast = useToast()
 
 const name = ref('')
 const loading = ref(false)
@@ -147,6 +165,33 @@ async function onSearch(forceRefresh = false) {
 function searchRecent(recentName) {
   name.value = recentName
   onSearch()
+}
+
+function removeRecent(recentName) {
+  if (!cache.remove(recentName)) return
+
+  refreshRecentNames()
+  if (normalizeBiographyName(name.value) === recentName) {
+    name.value = ''
+    result.value = ''
+    cachedAt.value = null
+    fromCache.value = false
+    copied.value = false
+  }
+  toast.success('已删除查询记录')
+}
+
+function clearRecent() {
+  if (!window.confirm('确定清空全部人物生平查询记录吗？')) return
+  if (!cache.clear()) return
+
+  recentNames.value = []
+  name.value = ''
+  result.value = ''
+  cachedAt.value = null
+  fromCache.value = false
+  copied.value = false
+  toast.success('已清空查询记录')
 }
 
 async function copyResult() {
