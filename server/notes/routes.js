@@ -4,6 +4,7 @@ import { requireAuth, trackModuleAccessMiddleware } from '../auth.js'
 import { callDeepSeek, parseAiJson } from '../ai-advisor.js'
 import { appLog } from '../logger.js'
 import {
+  countNoteContentCharacters,
   countNotes,
   createNote,
   createNoteImage,
@@ -124,13 +125,19 @@ function clean(payload) {
 router.get('/', async (req, res) => {
   const month = typeof req.query.month === 'string' ? req.query.month : ''
   if (month && !MONTH_RE.test(month)) return res.status(400).json({ error: '月份格式应为 YYYY-MM' })
-  try { res.json({ notes: await serializeNotes(req.userId, await listNotes(req.userId, month)) }) } catch (error) { res.status(500).json({ error: '读取备忘失败，请稍后重试' }) }
+  try {
+    const [rows, totalCharacterCount] = await Promise.all([listNotes(req.userId, month), countNoteContentCharacters(req.userId)])
+    res.json({ notes: await serializeNotes(req.userId, rows), totalCharacterCount })
+  } catch (error) { res.status(500).json({ error: '读取备忘失败，请稍后重试' }) }
 })
 
 router.post('/', async (req, res) => {
   const error = validate(req.body)
   if (error) return res.status(400).json({ error })
-  try { res.json({ note: serialize(await createNote(req.userId, clean(req.body))) }) } catch (err) { res.status(500).json({ error: '保存备忘失败，请稍后重试' }) }
+  try {
+    const note = await createNote(req.userId, clean(req.body))
+    res.json({ note: serialize(note), totalCharacterCount: await countNoteContentCharacters(req.userId) })
+  } catch (err) { res.status(500).json({ error: '保存备忘失败，请稍后重试' }) }
 })
 
 router.patch('/:id', async (req, res) => {
@@ -140,7 +147,7 @@ router.patch('/:id', async (req, res) => {
   try {
     const note = await updateNote(req.userId, id, clean(req.body))
     if (!note) return res.status(404).json({ error: '备忘不存在' })
-    res.json({ note: serialize(note) })
+    res.json({ note: serialize(note), totalCharacterCount: await countNoteContentCharacters(req.userId) })
   } catch { res.status(500).json({ error: '保存备忘失败，请稍后重试' }) }
 })
 
@@ -148,7 +155,8 @@ router.delete('/:id', async (req, res) => {
   const id = parseInteger(req.params.id)
   if (!Number.isInteger(id)) return res.status(400).json({ error: '备忘不存在' })
   try {
-    res.json({ ok: Boolean(await deleteNote(req.userId, id)) })
+    const ok = Boolean(await deleteNote(req.userId, id))
+    res.json({ ok, totalCharacterCount: await countNoteContentCharacters(req.userId) })
   } catch { res.status(500).json({ error: '删除备忘失败，请稍后重试' }) }
 })
 

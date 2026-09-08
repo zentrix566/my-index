@@ -2,6 +2,16 @@
 // 按时间倒序排列；同一天涉及多个模块时分别记录，且同一天同一 category 只保留一条。
 export const changelog = [
   {
+    date: '2026-09-08',
+    title: '灵感收集字数统计',
+    category: 'other',
+    route: '/notes',
+    changes: [
+      '新增详情正文实时字数与单条记录字数显示，记录长度更直观。',
+      '新增全部灵感详情总字数，跨月份查看时也能掌握积累。'
+    ]
+  },
+  {
     date: '2026-09-07',
     title: '灵感收集录入体验优化',
     category: 'other',

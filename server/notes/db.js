@@ -224,3 +224,8 @@ export async function deleteNote(userId, id) {
 export async function countNotes(userId) {
   return Number((await queryOne('SELECT COUNT(*) AS count FROM idea_notes WHERE user_id = $1', [userId]))?.count || 0)
 }
+
+/** 返回用户全部灵感详情正文的总字符数。 */
+export async function countNoteContentCharacters(userId) {
+  return Number((await queryOne('SELECT COALESCE(SUM(LENGTH(content)), 0) AS count FROM idea_notes WHERE user_id = $1', [userId]))?.count || 0)
+}

@@ -8,7 +8,7 @@
       <label v-if="note.category === 'vibe_coding'">状态<select v-model="note.status"><option value="">未定</option><option value="done">已完成</option><option value="impossible">不可能</option><option value="uncertain">不确定</option></select></label>
     </div>
     <label>标题<input ref="titleInput" v-model="note.title" maxlength="200" placeholder="一句话留下这个念头" /></label>
-    <template v-if="!compact"><label>详情<textarea v-model="note.content" rows="5" maxlength="10000" placeholder="背景、延伸、为什么现在想到它……" /></label>
+    <template v-if="!compact"><label>详情<textarea v-model="note.content" rows="5" :maxlength="contentMaxLength" placeholder="背景、延伸、为什么现在想到它……" /><small class="notes-editor__character-count">{{ note.content.length }} / {{ contentMaxLength }}</small></label>
     <section class="notes-image-field" aria-labelledby="notes-image-title">
       <div class="notes-image-field__heading"><div><h3 id="notes-image-title">图片</h3><p>最多 12 张，单张不超过 8 MB，支持 JPG、PNG、GIF、WebP。</p></div><label class="notes-image-field__add"><input type="file" accept="image/jpeg,image/png,image/gif,image/webp" multiple :disabled="saving || imageCount >= 12" @change="addImages" /><span>添加图片</span></label></div>
       <div v-if="imageCount" class="notes-image-grid"><figure v-for="image in images" :key="image.id"><img :src="image.url" :alt="image.fileName" loading="lazy" /><figcaption>{{ image.fileName }}</figcaption><button type="button" :disabled="saving" :aria-label="`移除图片：${image.fileName}`" @click="removeSavedImage(image.id)">移除</button></figure><figure v-for="file in pendingImages" :key="`${file.name}-${file.lastModified}`" class="notes-image-grid__pending"><img :src="previewUrl(file)" :alt="file.name" /><figcaption>{{ file.name }}</figcaption><button type="button" :disabled="saving" :aria-label="`取消上传：${file.name}`" @click="removePendingImage(file)">取消</button></figure></div>
@@ -24,6 +24,7 @@ import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 const note = defineModel('note', { required: true })
 const titleInput = ref(null)
+const contentMaxLength = 10000
 const props = defineProps({ saving: Boolean, compact: Boolean, error: { type: String, default: '' }, draftKey: { type: String, default: '' } })
 defineEmits(['save', 'cancel'])
 const draftMessage = ref('')
