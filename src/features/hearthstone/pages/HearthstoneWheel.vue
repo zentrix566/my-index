@@ -8,11 +8,12 @@
           <p>从精选宝藏中抽取奖励。每个宝藏只能获得一次，抽到后不会重复；首次抽取免费。</p>
           <label class="hs-wheel-period-select">
             <span>宝藏期数</span>
-            <select v-model="selectedTreasureId">
+            <select v-model="selectedTreasureId" :disabled="spinning">
               <option v-for="item in treasureOptions" :key="item.id" :value="item.id">{{ item.name }}</option>
             </select>
             <small v-if="currentTreasure.endAt">结束时间：{{ endTimeLabel }}</small>
           </label>
+          <p v-if="currentTreasure.sourceUrl"><a :href="currentTreasure.sourceUrl" target="_blank" rel="noopener noreferrer">本期资料：旅法师营地</a> · 概率为首抽概率，后续按剩余奖励权重计算。</p>
         </div>
         <button type="button" class="hs-btn hs-btn-ghost" @click="router.push('/hearthstone')">返回炉石</button>
       </header>
@@ -20,16 +21,16 @@
       <div class="hs-wheel-layout">
         <aside class="hs-prize-panel">
           <div class="hs-panel-heading"><span>{{ currentTreasure.name }}</span><small>{{ prizes.length }} 个奖励</small></div>
-          <div class="hs-prizes"><article v-for="prize in prizes" :key="prize.id" class="hs-prize" :class="'rarity-' + prize.rarity"><span class="hs-prize-icon">{{ prize.icon }}</span><div><strong>{{ prize.name }}</strong></div></article></div>
+          <div class="hs-prizes"><article v-for="prize in prizes" :key="prize.id" class="hs-prize" :class="'rarity-' + prize.rarity"><span class="hs-prize-icon">{{ prize.icon }}</span><div><strong>{{ prize.name }}</strong><small v-if="currentTreasure.sourceUrl">首抽概率 {{ prize.note }}</small></div></article></div>
         </aside>
         <main class="hs-wheel-stage" aria-live="polite">
           <div class="hs-action-bar"><button type="button" class="hs-spin-button" :disabled="spinning || !canSpin" @click="spin"><span>{{ spinning ? '宝藏转动中…' : canSpin ? (drawCount === 0 ? '免费抽取' : '抽取一次') : '已全部获得' }}</span><small v-if="drawCount > 0">{{ drawCount >= 10 ? '已全部获得' : `第 ${drawCount + 1} 抽 · ${drawCosts[drawCount] || 0} 奥术宝珠` }}</small></button><button type="button" class="hs-quick-button" :disabled="spinning || !canSpin" @click="quickDraw">快速抽奖：模拟到大奖</button><button type="button" class="hs-reset-button" :disabled="spinning" @click="resetTreasure">重置宝藏池</button></div>
           <div class="hs-treasure-board" :class="{ spinning, 'has-single-grand': grandPrizes.length === 1 }">
-            <article v-for="prize in sidePrizes" :key="prize.id" role="button" tabindex="0" class="hs-treasure-card" :class="['rarity-' + prize.rarity, { active: activeId === prize.id, selected: selectedIds.includes(prize.id) }]" @click="showPrizeDetail(prize)" @keydown.enter="showPrizeDetail(prize)"><img v-if="prize.image" :src="prize.image" :alt="prize.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ prize.icon || '🎁' }}</span></article>
-            <article v-for="prize in grandPrizes" :key="prize.id" role="button" tabindex="0" class="hs-treasure-grand" :class="['rarity-' + prize.rarity, { active: activeId === prize.id, selected: selectedIds.includes(prize.id) }]" @click="showPrizeDetail(prize)" @keydown.enter="showPrizeDetail(prize)"><img v-if="prize.image" :src="prize.image" :alt="prize.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ prize.icon || '🎁' }}</span><em>大奖</em></article>
+            <article v-for="prize in sidePrizes" :key="prize.id" role="button" tabindex="0" :aria-label="prize.name" class="hs-treasure-card" :class="['rarity-' + prize.rarity, { active: activeId === prize.id, selected: selectedIds.includes(prize.id) }]" @click="showPrizeDetail(prize)" @keydown.enter="showPrizeDetail(prize)"><img v-if="prize.image" :src="prize.image" :alt="prize.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ prize.icon || '🎁' }}</span></article>
+            <article v-for="prize in grandPrizes" :key="prize.id" role="button" tabindex="0" :aria-label="prize.name" class="hs-treasure-grand" :class="['rarity-' + prize.rarity, { active: activeId === prize.id, selected: selectedIds.includes(prize.id) }]" @click="showPrizeDetail(prize)" @keydown.enter="showPrizeDetail(prize)"><img v-if="prize.image" :src="prize.image" :alt="prize.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ prize.icon || '🎁' }}</span><em>大奖</em></article>
             <div v-if="detailPrize" class="hs-detail-backdrop" aria-hidden="true" @click="detailPrize = null"></div>
-            <button v-if="detailPrize" type="button" class="hs-board-result" :aria-label="`关闭${detailPrize.name}详情`" @click.stop="detailPrize = null"><img v-if="detailPrize.image" :src="detailPrize.image" :alt="detailPrize.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ detailPrize.icon || '🎁' }}</span><div><strong>{{ detailPrize.name }}</strong><span>点击关闭</span></div></button>
-            <button v-if="result" type="button" class="hs-board-result" aria-label="关闭抽奖结果" @click="result = null"><img v-if="result.image" :src="result.image" :alt="result.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ result.icon || '🎁' }}</span><div><small>本次获得</small><strong>{{ result.name }}</strong><span>点击关闭</span></div></button>
+            <button v-if="detailPrize" type="button" class="hs-board-result" :aria-label="`关闭${detailPrize.name}详情`" @click.stop="detailPrize = null"><img v-if="detailPrize.image" :src="detailPrize.image" :alt="detailPrize.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ detailPrize.icon || '🎁' }}</span><div><strong>{{ detailPrize.name }}</strong><span v-if="detailPrize.imageNote">{{ detailPrize.imageNote }}</span><span>点击关闭</span></div></button>
+            <button v-if="result" type="button" class="hs-board-result" aria-label="关闭抽奖结果" @click="result = null"><img v-if="result.image" :src="result.image" :alt="result.name"><span v-else class="hs-prize-fallback" aria-hidden="true">{{ result.icon || '🎁' }}</span><div><small>本次获得</small><strong>{{ result.name }}</strong><span v-if="result.imageNote">{{ result.imageNote }}</span><span>点击关闭</span></div></button>
           </div>
           <p class="hs-wheel-hint">已抽取 {{ drawCount }}/10 次 · 下一抽 {{ drawCount < 10 ? (drawCount === 0 ? '免费' : drawCosts[drawCount] + ' 奥术宝珠') : '已全部获得' }}</p>
         </main>
@@ -48,8 +49,8 @@ import { TREASURE_EVENTS } from '../data/treasures.js'
 
 const router = useRouter()
 const hsTheme = ref(localStorage.getItem('hs-theme') || 'dark')
-const treasureOptions = TREASURE_EVENTS
-const LEGACY_TREASURE_ID = treasureOptions[0].id
+const treasureOptions = [...TREASURE_EVENTS].reverse()
+const LEGACY_TREASURE_ID = TREASURE_EVENTS[0].id
 
 function readJson(key) {
   try {
@@ -84,7 +85,8 @@ function saveTreasureState() {
   } catch { /* ignore */ }
 }
 
-const selectedTreasureId = ref(readJson('hs:wheel:active') || LEGACY_TREASURE_ID)
+const savedTreasureId = readJson('hs:wheel:active')
+const selectedTreasureId = ref(treasureOptions.some((item) => item.id === savedTreasureId) ? savedTreasureId : treasureOptions[0].id)
 const currentTreasure = computed(() => treasureOptions.find((item) => item.id === selectedTreasureId.value) || treasureOptions[0])
 const initialTreasureState = loadTreasureState(selectedTreasureId.value)
 const drawCount = ref(initialTreasureState.drawCount)
@@ -121,6 +123,7 @@ watch(selectedTreasureId, (id) => {
   selectedIds.value = state.selectedIds
   history.value = state.history
   result.value = null
+  detailPrize.value = null
   activeId.value = null
   rotation.value = 0
 })
@@ -158,7 +161,7 @@ function spin() {
 }
 
 function saveDraw(prize) {
-  history.value.unshift({ draw: drawCount.value, name: prize.name, rarityLabel: prize.rarity === 'mythic' ? '神话大奖' : prize.rarity === 'legendary' ? '钻石大奖' : '已获得' })
+  history.value.unshift({ draw: drawCount.value, name: prize.name, rarityLabel: prize.rarity === 'mythic' ? '神话大奖' : prize.rarity === 'legendary' ? (prize.name.includes('钻石') ? '钻石奖励' : '传说奖励') : '已获得' })
   saveTreasureState()
 }
 
@@ -174,7 +177,7 @@ function pickPrize(pool) {
 
 function quickDraw() {
   if (spinning.value || !canSpin.value) return
-  while (drawCount.value < 10 && !selectedIds.value.some((id) => id === 'alleria' || id === 'turalyon')) {
+  while (drawCount.value < 10 && !selectedIds.value.some((id) => grandPrizes.value.some((prize) => prize.id === id))) {
     const pool = prizes.value.filter((prize) => !selectedIds.value.includes(prize.id))
     const prize = pickPrize(pool)
     drawCount.value += 1

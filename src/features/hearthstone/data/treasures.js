@@ -37,5 +37,26 @@ export const TREASURE_EVENTS = [
       { id: 'titans-golden-pack', name: '安戈洛龟途金色卡包*1', note: '安戈洛龟途金色卡包', weight: 280, image: '/hearthstone-cosmetics/treasure-packs/ANGORO_GOLDEN_PACK.png', icon: '📦', rarity: 'common' }
     ],
     drawCosts: [0, 120, 240, 360, 600, 840, 1160, 1580, 1980, 3280]
+  },
+  {
+    id: 'lich-lord-2026-09',
+    name: '巫妖领主克尔苏加德',
+    version: '36.4',
+    sourceUrl: 'https://www.iyingdi.com/tz/post/5714883',
+    // 来源未公布绝对结束时间；价格按逐抽人民币表换算（1 元 = 10 宝珠）。
+    endAt: null,
+    prizes: [
+      { id: 'spire-security', name: '异画尖塔保安', note: '30%', weight: 300, image: '/hearthstone-cards/逃离紫罗兰监狱/full/尖塔保安_126355.png', imageNote: '卡牌预览使用普通卡面', rarity: 'common' },
+      { id: 'violet-golden-pack', name: '逃离紫罗兰监狱金色卡包 ×1', note: '28%', weight: 280, icon: '📦', rarity: 'common' },
+      { id: 'lich-lord-cardback', name: '巫妖领主卡背', note: '11%', weight: 110, image: '/hearthstone-cosmetics/card-backs/564.png', rarity: 'rare' },
+      { id: 'arcane-misdirection', name: '异画秘法误导', note: '10%', weight: 100, image: '/hearthstone-cards/逃离紫罗兰监狱/full/秘法误导_126113.png', imageNote: '卡牌预览使用普通卡面', rarity: 'rare' },
+      { id: 'bounty-hunter-vivian', name: '赏金猎人薇薇安', note: '7.5%', weight: 75, image: '/hearthstone-cosmetics/hero-skins/hunter/HERO_05ca.png', rarity: 'epic' },
+      { id: 'improv-dancer', name: '异画机灵的即兴舞者', note: '5%', weight: 50, image: '/hearthstone-cards/逃离紫罗兰监狱/full/机灵的即兴舞者_126253.png', imageNote: '卡牌预览使用普通卡面', rarity: 'epic' },
+      { id: 'zulamat', name: '湮灭者祖拉玛特及配套卡背', note: '3.4%', weight: 34, image: '/hearthstone-cosmetics/hero-skins/warlock/HERO_07by.png', rarity: 'epic' },
+      { id: 'millhouse', name: '异画米尔牢斯·法力风暴', note: '2.5%', weight: 25, image: '/hearthstone-cards/逃离紫罗兰监狱/full/米尔牢斯·法力风暴_126353.png', imageNote: '卡牌预览使用普通卡面', rarity: 'legendary' },
+      { id: 'khadgar', name: '异画卡德加', note: '2.5%', weight: 25, image: '/hearthstone-cards/暗影崛起/full/卡德加_52502.png', imageNote: '卡牌预览使用普通卡面', rarity: 'legendary' },
+      { id: 'lich-lord', name: '巫妖领主克尔苏加德 · 死骑/法师神话', note: '0.1%', weight: 1, image: '/hearthstone-cosmetics/hero-skins/mage/HERO_08cs.png', rarity: 'mythic', isGrand: true }
+    ],
+    drawCosts: [0, 120, 240, 360, 600, 840, 1160, 1580, 1980, 3580]
   }
 ]
