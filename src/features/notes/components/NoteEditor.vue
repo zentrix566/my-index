@@ -1,6 +1,6 @@
 <template>
   <form class="notes-editor" @submit.prevent="$emit('save')">
-    <div class="notes-editor__head"><h2>{{ compact ? '快速记录' : note.id ? '编辑记录' : '记下一条' }}</h2><div class="notes-editor__head-actions"><button class="notes-button notes-button--quiet" type="button" :disabled="saving" @click="$emit('cancel')">取消</button><button class="notes-button notes-button--quiet" type="button" :disabled="saving" @click="$emit('cancel')">关闭</button><button class="notes-button notes-editor__save" type="submit" :disabled="saving">{{ saving ? '保存中…' : '保存' }}</button></div></div>
+    <div class="notes-editor__head"><h2>{{ compact ? '快速记录' : note.id ? '编辑记录' : '记下一条' }}</h2><FormActions :busy="saving" submit-type="submit" @cancel="$emit('cancel')" /></div>
     <p v-if="compact" class="notes-editor__hint">先留下一句话，细节可以以后再补。</p>
     <div v-if="!compact" class="notes-form-grid">
       <label>月份<input v-model="note.monthKey" type="month" /></label>
@@ -20,6 +20,7 @@
 </template>
 
 <script setup>
+import FormActions from '../../../components/FormActions.vue'
 import { computed, nextTick, onBeforeUnmount, onMounted, ref, watch } from 'vue'
 
 const note = defineModel('note', { required: true })

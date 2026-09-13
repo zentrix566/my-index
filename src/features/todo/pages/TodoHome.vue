@@ -151,7 +151,10 @@
     <!-- 新建 / 编辑任务弹窗 -->
     <div v-if="taskModal" class="todo-modal-mask" @click.self="taskModal = false">
       <div class="todo-modal">
-        <h3>{{ editingId ? '编辑任务' : '新建任务' }}</h3>
+        <div class="todo-task-modal-head">
+          <h3>{{ editingId ? '编辑任务' : '新建任务' }}</h3>
+          <FormActions :busy="taskBusy" @cancel="taskModal = false" @save="submitTask" />
+        </div>
         <div class="todo-field">
           <label>标题</label>
           <input v-model="form.title" class="todo-input" maxlength="200" placeholder="要做点什么？" @keyup.enter="submitTask" />
@@ -192,10 +195,6 @@
           <input v-model="form.completedDate" type="date" class="todo-input" />
         </div>
         <p v-if="taskError" class="todo-error">{{ taskError }}</p>
-        <div class="todo-modal-actions">
-          <button class="todo-btn ghost" type="button" @click="taskModal = false">取消</button>
-          <button class="todo-btn primary" type="button" :disabled="taskBusy" @click="submitTask">保存</button>
-        </div>
       </div>
     </div>
 
@@ -205,6 +204,7 @@
 </template>
 
 <script setup>
+import FormActions from '../../../components/FormActions.vue'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { toPng } from 'html-to-image'

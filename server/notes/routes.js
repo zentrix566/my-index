@@ -10,6 +10,7 @@ import {
   createNoteImage,
   deleteNote,
   hideNoteImage,
+  getNote,
   getNoteImage,
   listNoteImages,
   listNotes,
@@ -194,6 +195,7 @@ router.post('/:id/images', express.raw({ type: () => true, limit: MAX_NOTE_IMAGE
       throw error
     }
   } catch (error) {
+    appLog('ERROR', `灵感备忘图片上传失败: uid=${req.userId}, note=${noteId}, error=${error.message}`)
     res.status(error.status || 500).json({ error: error.status === 503 ? error.message : '图片上传失败，请稍后重试' })
   }
 })

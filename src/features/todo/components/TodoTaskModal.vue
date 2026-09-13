@@ -3,7 +3,7 @@
     <div class="todo-modal todo-task-modal">
       <div class="todo-task-modal-head">
         <div><span>TODO ITEM</span><h3>{{ isEdit ? '编辑任务' : '新建任务' }}</h3></div>
-        <button class="todo-icon-btn" type="button" aria-label="关闭" @click="close">×</button>
+        <FormActions :busy="busy" @cancel="close" @save="submit" />
       </div>
       <div class="todo-field">
         <label>标题</label>
@@ -62,15 +62,12 @@
         </div>
       </div>
       <p v-if="error" class="todo-error">{{ error }}</p>
-      <div class="todo-modal-actions">
-        <button class="todo-btn ghost" type="button" @click="close">取消</button>
-        <button class="todo-btn primary" type="button" :disabled="busy" @click="submit">保存</button>
-      </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import FormActions from '../../../components/FormActions.vue'
 import { ref } from 'vue'
 import { getAvailableLastListId, setLastListId } from '../utils/lastList.js'
 import { TASK_STATUS_LIST } from '../constants.js'

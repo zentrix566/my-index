@@ -545,7 +545,7 @@ html[data-theme='dark'] .todo-task {
 .todo-modal h3 { margin: 0 0 18px; font-size: 18px; }
 .todo-modal-actions { display: flex; justify-content: flex-end; gap: 10px; margin-top: 8px; }
 .todo-task-modal { max-width: 500px; }
-.todo-task-modal-head { display: flex; align-items: flex-start; justify-content: space-between; margin-bottom: 18px; }
+.todo-task-modal-head { position: sticky; top: -24px; z-index: 2; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; margin: -24px -24px 18px; padding: 18px 24px; border-bottom: 1px solid var(--todo-border); background: var(--todo-panel); }
 .todo-task-modal-head h3 { margin: 3px 0 0; }
 .todo-task-modal-head span, .todo-form-section-label { color: var(--todo-primary); font-size: 10px; font-weight: 800; letter-spacing: 1px; }
 .todo-form-section { margin: 18px 0; padding: 14px; border: 1px solid var(--todo-border); border-radius: 12px; background: var(--todo-hover-bg); }
