@@ -40,25 +40,25 @@
     "ali-oss": "^6.23.0",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.7",
-    "echarts": "^5.6.0",
+    "echarts": "^6.1.0",
     "express": "^4.19.2",
     "express-rate-limit": "^8.6.0",
     "html-to-image": "^1.11.13",
     "ip2region": "^2.3.0",
     "jsonwebtoken": "^9.0.3",
     "markdown-it": "^14.3.0",
-    "nodemailer": "^6.10.1",
+    "nodemailer": "^10.0.10",
     "pg": "^8.22.0",
     "vue": "^3.4.0",
     "vue-router": "^4.2.0",
-    "xlsx": "^0.18.5"
+    "xlsx": "https://cdn.sheetjs.com/xlsx-0.20.3/xlsx-0.20.3.tgz"
   },
   "devDependencies": {
     "@vitejs/plugin-vue": "^6.0.7",
     "better-sqlite3": "^12.11.1",
     "classic-level": "^3.0.0",
     "concurrently": "^10.0.3",
-    "pkg": "^5.8.1",
+    "@yao-pkg/pkg": "^5.11.5",
     "vite": "^8.0.16"
   }
 }
