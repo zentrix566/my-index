@@ -72,7 +72,7 @@
                   v-for="t in c.tasks.slice(0, 2)"
                   :key="t.id"
                   class="todo-cal-task"
-                  :class="'status-' + t.status"
+                  :class="['status-' + t.status, { 'is-late-completed': isLateCompleted(t) }]"
                 >
                   <i class="todo-cal-task-dot" :class="t.status"></i>
                   <span class="todo-cal-task-text" :title="calendarTaskLabel(t)">{{ calendarTaskLabel(t) }}</span>
@@ -93,6 +93,7 @@
           <span><i class="dot deferred"></i>已延期</span>
           <span><i class="dot waiting"></i>等待中</span>
           <span><i class="dot done"></i>已完成</span>
+          <span><i class="dot late-completed"></i>延期完成</span>
           <span><i class="dot cancelled"></i>已取消</span>
         </div>
       </section>
@@ -125,7 +126,7 @@
                 v-for="t in d.tasks"
                 :key="t.id"
                 class="todo-cal-week-item"
-                :class="'status-' + t.status"
+                :class="['status-' + t.status, { 'is-late-completed': isLateCompleted(t) }]"
               >
                 <i class="todo-cal-task-dot" :class="t.status"></i>
                 <span :title="calendarTaskLabel(t)">{{ calendarTaskLabel(t) }}</span>
@@ -149,22 +150,20 @@
         </div>
         <p v-if="selError" class="todo-error">{{ selError }}</p>
         <div v-if="dayTasks.length" class="todo-task-list">
-          <div v-for="t in dayTasks" :key="t.id" class="todo-task" :class="['status-' + t.status, { 'is-schedule-history': t.isScheduleHistory }]">
-            <span v-if="t.isScheduleHistory" class="todo-history-icon" aria-hidden="true">↪</span>
-            <select v-else class="todo-status-select" :value="t.status" :style="statusStyle(t.status)" @change="setDayStatus(t, $event.target.value)">
+          <div v-for="t in dayTasks" :key="t.id" class="todo-task" :class="['status-' + t.status, { 'is-late-completed': isLateCompleted(t) }]">
+            <select class="todo-status-select" :value="t.status" :style="statusStyle(t.status)" @change="setDayStatus(t, $event.target.value)">
               <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
             </select>
             <div class="todo-task-body">
               <div class="todo-task-title">{{ t.title }}</div>
-              <div v-if="t.isScheduleHistory" class="todo-task-note">{{ scheduleHistoryLabel(t) }}</div>
-              <div v-else-if="t.note" class="todo-task-note">{{ t.note }}</div>
+              <div v-if="t.note" class="todo-task-note">{{ t.note }}</div>
               <div class="todo-task-meta">
                 <span v-if="taskDelayLabel(t)" class="todo-tag delay" :class="{ completed: t.status === 'done' }">{{ taskDelayLabel(t) }}</span>
                 <span class="todo-tag" :class="'prio-' + t.priority">{{ prioLabel[t.priority] }}</span>
                 <span v-if="t.listId && listMap.get(t.listId)" class="todo-tag list">{{ listMap.get(t.listId).name }}</span>
               </div>
             </div>
-            <div v-if="!t.isScheduleHistory" class="todo-task-actions">
+            <div class="todo-task-actions">
               <button class="todo-icon-btn" type="button" title="编辑" @click="editTask(t)">✎</button>
               <button class="todo-icon-btn danger" type="button" title="删除" @click="removeTask(t)">✕</button>
             </div>
@@ -315,8 +314,18 @@ const calData = ref({})
 function sortCalendarDays(days = {}) {
   return Object.fromEntries(Object.entries(days).map(([key, day]) => [
     key,
-    { ...day, tasks: sortCalendarTasks(day.tasks || []) }
+    createCalendarDay(sortCalendarTasks((day.tasks || []).filter((task) => !task.isScheduleHistory)))
   ]))
+}
+
+function createCalendarDay(tasks = []) {
+  const summary = { total: tasks.length, done: 0, cancelled: 0, active: 0, tasks }
+  for (const task of tasks) {
+    if (task.status === 'done') summary.done += 1
+    else if (task.status === 'cancelled') summary.cancelled += 1
+    else summary.active += 1
+  }
+  return summary
 }
 
 function shortDate(dateKey) {
@@ -325,15 +334,7 @@ function shortDate(dateKey) {
   return `${month}月${day}日`
 }
 
-function scheduleHistoryLabel(task) {
-  if (task.scheduleHistoryType === 'late-completion') {
-    return `原计划这天完成，实际于 ${shortDate(task.completedAt?.slice(0, 10))} 完成`
-  }
-  return `原计划这天处理，已调整至 ${shortDate(task.rescheduledTo)}`
-}
-
 function taskDelayDays(task) {
-  if (task.isScheduleHistory && task.scheduleHistoryType !== 'late-completion') return 0
   const plannedDate = task.originalDueDate || task.dueDate
   if (!plannedDate) return 0
   if (task.status === 'done' && task.completedAt) {
@@ -348,13 +349,16 @@ function taskDelayDays(task) {
 function taskDelayLabel(task) {
   const days = taskDelayDays(task)
   if (!days) return ''
-  return task.status === 'done' ? `晚 ${days} 天完成` : `逾期 ${days} 天`
+  const plannedDate = task.originalDueDate || task.dueDate
+  return `计划 ${shortDate(plannedDate)} 完成 · 逾期 ${days} 天`
+}
+
+function isLateCompleted(task) {
+  return task.status === 'done' && taskDelayDays(task) > 0
 }
 
 function calendarTaskLabel(task) {
-  const base = task.isScheduleHistory ? `${task.title} · ${scheduleHistoryLabel(task)}` : task.title
-  const delay = taskDelayLabel(task)
-  return delay ? `${base} · ${delay}` : base
+  return task.title
 }
 
 const cells = computed(() => {
@@ -404,7 +408,6 @@ const periodStats = computed(() => {
   const source = mode.value === 'month' ? cells.value.filter((c) => !c.isOut) : weekDays.value
   for (const c of source) {
     for (const t of c.tasks) {
-      if (t.isScheduleHistory) continue
       if (t.status === 'done') {
         done++
         if (c.key <= todayKey) eligibleDone++
@@ -463,16 +466,14 @@ async function loadWeek() {
     const r = await todoApi.range(from, to)
     const map = {}
     for (const t of r.tasks || []) {
+      // 兼容仍在热更新中的旧服务：历史副本只用于旧版日历，当前视图始终只保留真实任务。
+      if (t.isScheduleHistory) continue
       const k = t.calendarDate || (t.status === 'done' && t.completedAt ? t.completedAt.slice(0, 10) : t.dueDate)
       if (!k) continue
-      if (!map[k]) map[k] = { total: 0, done: 0, cancelled: 0, active: 0, tasks: [] }
-      map[k].tasks.push(t)
-      map[k].total += 1
-      if (t.status === 'done') map[k].done += 1
-      else if (t.status === 'cancelled') map[k].cancelled += 1
-      else map[k].active += 1
+      if (!map[k]) map[k] = []
+      map[k].push(t)
     }
-    calData.value = sortCalendarDays(map)
+    calData.value = sortCalendarDays(Object.fromEntries(Object.entries(map).map(([key, tasks]) => [key, { tasks }])))
   } catch (e) {
     loadError.value = e.message
   }
@@ -851,6 +852,14 @@ onMounted(async () => {
   color: var(--todo-success);
   opacity: 0.9;
 }
+.todo-cal-task.is-late-completed {
+  background: var(--todo-tag-mid-bg);
+  color: var(--todo-tag-mid-fg);
+  opacity: 1;
+}
+.todo-cal-task.is-late-completed .todo-cal-task-dot.done {
+  background: var(--todo-warn);
+}
 .todo-cal-task.status-cancelled { opacity: 0.5; }
 .todo-cal-task-dot {
   width: 4px;
@@ -904,6 +913,7 @@ onMounted(async () => {
 .todo-cal-legend i.deferred { background: #8b5cf6; border-radius: 50%; }
 .todo-cal-legend i.waiting { background: #ef4444; border-radius: 50%; }
 .todo-cal-legend i.done { background: #22c55e; border-radius: 50%; }
+.todo-cal-legend i.late-completed { background: var(--todo-warn); border-radius: 50%; }
 .todo-cal-legend i.cancelled { background: #94a3b8; border-radius: 50%; }
 
 /* ===== 周视图 ===== */
@@ -989,6 +999,13 @@ onMounted(async () => {
   background: rgba(22, 163, 74, 0.1);
   color: var(--todo-success);
 }
+.todo-cal-week-item.is-late-completed {
+  background: var(--todo-tag-mid-bg);
+  color: var(--todo-tag-mid-fg);
+}
+.todo-cal-week-item.is-late-completed .todo-cal-task-dot.done {
+  background: var(--todo-warn);
+}
 .todo-cal-week-item.status-in_progress { background: rgba(245, 158, 11, 0.1); }
 .todo-cal-week-item.status-deferred { background: rgba(139, 92, 246, 0.1); }
 .todo-cal-week-item.status-waiting { background: rgba(239, 68, 68, 0.09); }
@@ -998,10 +1015,9 @@ onMounted(async () => {
   opacity: 0.72;
 }
 
-.todo-task.is-schedule-history {
-  border-style: dashed;
-  box-shadow: none;
-  opacity: 0.78;
+.todo-task.is-late-completed {
+  border-left-color: var(--todo-warn);
+  opacity: 1;
 }
 
 .todo-tag.delay {
@@ -1010,21 +1026,10 @@ onMounted(async () => {
   font-weight: 700;
 }
 .todo-tag.delay.completed {
-  background: rgba(22, 163, 74, 0.1);
-  color: var(--todo-success);
+  background: var(--todo-tag-mid-bg);
+  color: var(--todo-tag-mid-fg);
 }
 
-.todo-history-icon {
-  display: inline-grid;
-  width: 28px;
-  height: 28px;
-  flex: 0 0 28px;
-  place-items: center;
-  border-radius: 50%;
-  background: var(--todo-primary-soft);
-  color: var(--todo-primary);
-  font-weight: 800;
-}
 .todo-cal-week-empty {
   font-size: 12px;
   color: var(--todo-text-faint);

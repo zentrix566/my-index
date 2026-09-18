@@ -586,33 +586,6 @@ export async function updateTask(userId, id, patch) {
   return results[0].rows[0] || null
 }
 
-/** 返回日期范围内的改期历史，用于在原计划日留下可追溯标记。 */
-export async function listReschedulesInRange(userId, from, to) {
-  const { rows } = await query(
-    `SELECT history.id AS reschedule_id, history.todo_id, history.from_date, history.to_date,
-            history.created_at AS rescheduled_at, task.title, task.note, task.list_id,
-            task.priority, task.status, task.original_due_date, task.completed_at
-     FROM todo_reschedules AS history
-     JOIN todos AS task ON task.id = history.todo_id AND task.user_id = history.user_id
-     WHERE history.user_id = $1 AND history.from_date >= $2 AND history.from_date <= $3
-     ORDER BY history.from_date ASC, history.id ASC`,
-    [userId, from, to]
-  )
-  return rows
-}
-
-/** 已完成但未在计划日完成的任务，在计划日保留一条历史标记。 */
-export async function listLateCompletionMarkersInRange(userId, from, to) {
-  const { rows } = await query(
-    `SELECT * FROM todos
-     WHERE user_id = $1 AND status = 'done' AND due_date >= $2 AND due_date <= $3
-       AND completed_at IS NOT NULL AND substr(completed_at, 1, 10) <> due_date
-     ORDER BY due_date ASC, id ASC`,
-    [userId, from, to]
-  )
-  return rows
-}
-
 export async function deleteTask(userId, id) {
   const { rowCount } = await query('DELETE FROM todos WHERE id = $1 AND user_id = $2', [id, userId])
   return rowCount || 0
