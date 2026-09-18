@@ -68,7 +68,7 @@ function removePendingImage(file) {
 watch(note, (value) => {
   if (!props.draftKey) return
   try {
-    const { images, pendingImages, removedImageIds, ...draft } = value
+    const { id, images, pendingImages, removedImageIds, createdAt, updatedAt, ...draft } = value
     localStorage.setItem(props.draftKey, JSON.stringify({ ...draft, savedAt: new Date().toISOString() }))
     draftMessage.value = '草稿已自动保存在本机'
   } catch { /* 浏览器隐私模式下可正常编辑，只是不保存草稿。 */ }
@@ -78,7 +78,9 @@ onMounted(() => {
   if (props.draftKey) {
     try {
       const saved = JSON.parse(localStorage.getItem(props.draftKey) || 'null')
-      if (saved?.title || saved?.content) {
+      if (saved?.id) {
+        localStorage.removeItem(props.draftKey)
+      } else if (saved?.title || saved?.content) {
         const { savedAt, ...draft } = saved
         Object.assign(note.value, { ...draft, images: [], pendingImages: [], removedImageIds: [] })
         draftMessage.value = '已恢复本机草稿，会继续自动保存'
