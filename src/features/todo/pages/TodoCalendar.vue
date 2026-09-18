@@ -75,7 +75,7 @@
                   :class="'status-' + t.status"
                 >
                   <i class="todo-cal-task-dot" :class="t.status"></i>
-                  <span class="todo-cal-task-text">{{ calendarTaskLabel(t) }}</span>
+                  <span class="todo-cal-task-text" :title="calendarTaskLabel(t)">{{ calendarTaskLabel(t) }}</span>
                 </div>
                 <div v-if="c.tasks.length > 2" class="todo-cal-more">+{{ c.tasks.length - 2 }} 更多</div>
               </div>
@@ -159,6 +159,7 @@
               <div v-if="t.isScheduleHistory" class="todo-task-note">{{ scheduleHistoryLabel(t) }}</div>
               <div v-else-if="t.note" class="todo-task-note">{{ t.note }}</div>
               <div class="todo-task-meta">
+                <span v-if="taskDelayLabel(t)" class="todo-tag delay" :class="{ completed: t.status === 'done' }">{{ taskDelayLabel(t) }}</span>
                 <span class="todo-tag" :class="'prio-' + t.priority">{{ prioLabel[t.priority] }}</span>
                 <span v-if="t.listId && listMap.get(t.listId)" class="todo-tag list">{{ listMap.get(t.listId).name }}</span>
               </div>
@@ -331,8 +332,29 @@ function scheduleHistoryLabel(task) {
   return `原计划这天处理，已调整至 ${shortDate(task.rescheduledTo)}`
 }
 
+function taskDelayDays(task) {
+  if (task.isScheduleHistory && task.scheduleHistoryType !== 'late-completion') return 0
+  const plannedDate = task.originalDueDate || task.dueDate
+  if (!plannedDate) return 0
+  if (task.status === 'done' && task.completedAt) {
+    return Math.max(0, diffDays(task.completedAt.slice(0, 10), plannedDate))
+  }
+  if (isActiveStatus(task.status) && task.dueDate && task.dueDate < todayKey) {
+    return Math.max(0, diffDays(todayKey, task.dueDate))
+  }
+  return 0
+}
+
+function taskDelayLabel(task) {
+  const days = taskDelayDays(task)
+  if (!days) return ''
+  return task.status === 'done' ? `晚 ${days} 天完成` : `逾期 ${days} 天`
+}
+
 function calendarTaskLabel(task) {
-  return task.isScheduleHistory ? `${task.title} · ${scheduleHistoryLabel(task)}` : task.title
+  const base = task.isScheduleHistory ? `${task.title} · ${scheduleHistoryLabel(task)}` : task.title
+  const delay = taskDelayLabel(task)
+  return delay ? `${base} · ${delay}` : base
 }
 
 const cells = computed(() => {
@@ -980,6 +1002,16 @@ onMounted(async () => {
   border-style: dashed;
   box-shadow: none;
   opacity: 0.78;
+}
+
+.todo-tag.delay {
+  background: var(--todo-danger-bg);
+  color: var(--todo-danger);
+  font-weight: 700;
+}
+.todo-tag.delay.completed {
+  background: rgba(22, 163, 74, 0.1);
+  color: var(--todo-success);
 }
 
 .todo-history-icon {
