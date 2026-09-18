@@ -35,7 +35,10 @@
             <div class="todo-done-card-body">
               <div v-for="t in tasks" :key="t.id" class="todo-done-item">
                 <span class="todo-done-check"><span class="todo-done-check-inner">✓</span></span>
-                <span class="todo-done-text">{{ t.title }}</span>
+                <span class="todo-done-copy">
+                  <span class="todo-done-text">{{ t.title }}</span>
+                  <small v-if="completionDelayDays(t)">比原计划晚 {{ completionDelayDays(t) }} 天完成</small>
+                </span>
               </div>
             </div>
             <div class="todo-done-card-foot">
@@ -64,43 +67,56 @@
               <span class="todo-progress-count">{{ todayDoneCount }} / {{ todayTotal }} 已完成</span>
               <div class="todo-progress-track" aria-hidden="true"><span :style="{ width: `${todayProgress}%` }"></span></div>
             </div>
-            <div class="todo-task-list">
-              <div v-for="t in tasks" :key="t.id" class="todo-task" :class="'status-' + t.status">
-            <!-- 今日待办：点击圆钮直接标记完成，不用下拉 -->
-            <button
-              v-if="view === 'today_todo'"
-              class="todo-check"
-              type="button"
-              :class="{ done: t.status === 'done' }"
-              :aria-label="t.status === 'done' ? '标记为未完成' : '标记为已完成'"
-              :title="t.status === 'done' ? '标记为未完成' : '标记为已完成'"
-              @click="toggleDone(t)"
-            >
-              <span v-if="t.status === 'done'">✓</span>
-            </button>
-            <select
-              v-else
-              class="todo-status-select"
-              :value="t.status"
-              :style="statusStyle(t.status)"
-              @change="setStatus(t, $event.target.value)"
-            >
-              <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
-            </select>
-            <div class="todo-task-body">
-              <div class="todo-task-title">{{ t.title }}</div>
-              <div v-if="t.note" class="todo-task-note">{{ t.note }}</div>
-              <div class="todo-task-meta">
-                <span class="todo-tag" :class="'prio-' + t.priority">{{ prioLabel[t.priority] }}</span>
-                <span v-if="t.listId && listMap.get(t.listId)" class="todo-tag list">{{ listMap.get(t.listId).name }}</span>
+            <section v-for="section in taskSections" :key="section.key" class="todo-task-section">
+              <header v-if="section.label" class="todo-task-section-head">
+                <div>
+                  <strong>{{ section.label }}</strong>
+                  <span>{{ section.hint }}</span>
+                </div>
+                <b>{{ section.tasks.length }}</b>
+              </header>
+              <div class="todo-task-list">
+                <div v-for="t in section.tasks" :key="t.id" class="todo-task" :class="['status-' + t.status, { 'is-overdue': isOverdue(t) }]">
+                  <button
+                    v-if="view === 'today_todo'"
+                    class="todo-check"
+                    type="button"
+                    aria-label="标记为今天完成"
+                    title="标记为今天完成"
+                    @click="toggleDone(t)"
+                  ></button>
+                  <select
+                    v-else
+                    class="todo-status-select"
+                    :value="t.status"
+                    :style="statusStyle(t.status)"
+                    @change="setStatus(t, $event.target.value)"
+                  >
+                    <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
+                  </select>
+                  <div class="todo-task-body">
+                    <div class="todo-task-title">{{ t.title }}</div>
+                    <div v-if="t.note" class="todo-task-note">{{ t.note }}</div>
+                    <div class="todo-task-meta">
+                      <span v-if="isOverdue(t)" class="todo-tag overdue">已逾期 {{ overdueDays(t) }} 天</span>
+                      <span v-if="t.rescheduleCount" class="todo-tag rescheduled">原定 {{ shortDate(t.originalDueDate) }} · 已改期 {{ t.rescheduleCount }} 次</span>
+                      <span class="todo-tag" :class="'prio-' + t.priority">{{ prioLabel[t.priority] }}</span>
+                      <span v-if="t.listId && listMap.get(t.listId)" class="todo-tag list">{{ listMap.get(t.listId).name }}</span>
+                    </div>
+                    <div v-if="isOverdue(t)" class="todo-overdue-actions" aria-label="逾期任务快捷操作">
+                      <button type="button" :disabled="reschedulingId === t.id" @click="rescheduleTask(t, dateKey)">排到今天</button>
+                      <button type="button" :disabled="reschedulingId === t.id" @click="rescheduleTask(t, tomorrowKey)">排到明天</button>
+                      <button type="button" @click="editTask(t)">选择日期</button>
+                      <button type="button" @click="openCompletionEditor(t)">补记完成</button>
+                    </div>
+                  </div>
+                  <div class="todo-task-actions">
+                    <button class="todo-icon-btn" type="button" aria-label="编辑任务" title="编辑" @click="editTask(t)">✎</button>
+                    <button class="todo-icon-btn danger" type="button" aria-label="删除任务" title="删除" @click="removeTask(t)">✕</button>
+                  </div>
+                </div>
               </div>
-            </div>
-            <div class="todo-task-actions">
-              <button class="todo-icon-btn" type="button" title="编辑" @click="editTask(t)">✎</button>
-              <button class="todo-icon-btn danger" type="button" title="删除" @click="removeTask(t)">✕</button>
-            </div>
-              </div>
-            </div>
+            </section>
           </div>
 
           <aside v-if="view === 'today_todo'" class="todo-overview" aria-label="今日概览">
@@ -108,7 +124,7 @@
               <div><span class="todo-overview-kicker">TODAY</span><h2>今日概览</h2></div>
               <span class="todo-overview-ring" :style="{ '--progress': todayProgress }">{{ todayProgress }}%</span>
             </div>
-            <div class="todo-overview-stat main"><strong>{{ tasks.length }}</strong><span>待处理任务</span></div>
+            <div class="todo-overview-stat main"><strong>{{ tasks.length }}</strong><span>待处理任务<span v-if="overdueTasks.length"> · {{ overdueTasks.length }} 项逾期</span></span></div>
             <div class="todo-overview-grid">
               <div class="todo-overview-stat high"><strong>{{ priorityCounts.high }}</strong><span>高优先级</span></div>
               <div class="todo-overview-stat"><strong>{{ priorityCounts.medium }}</strong><span>中优先级</span></div>
@@ -167,6 +183,7 @@
           <div class="todo-field">
             <label>日期</label>
             <input v-model="form.dueDate" type="date" class="todo-input" />
+            <small v-if="form.rescheduleCount" class="todo-field-hint">最初计划 {{ shortDate(form.originalDueDate) }}，已改期 {{ form.rescheduleCount }} 次；再次修改日期会继续保留记录。</small>
           </div>
           <div class="todo-field">
             <label>优先级</label>
@@ -303,13 +320,53 @@ function fmtDateFull(dateKey) {
   const p = (n) => String(n).padStart(2, '0')
   return `${y}/${p(m)}/${p(d)} ${wd}`
 }
+function addDaysKey(dateKey, days) {
+  const [year, month, day] = dateKey.split('-').map(Number)
+  const date = new Date(year, month - 1, day + days)
+  const pad = (value) => String(value).padStart(2, '0')
+  return `${date.getFullYear()}-${pad(date.getMonth() + 1)}-${pad(date.getDate())}`
+}
+function diffDays(later, earlier) {
+  const toUtc = (key) => {
+    const [year, month, day] = key.split('-').map(Number)
+    return Date.UTC(year, month - 1, day)
+  }
+  return Math.max(0, Math.round((toUtc(later) - toUtc(earlier)) / 86400000))
+}
+function shortDate(dateKey) {
+  if (!dateKey) return '未设置'
+  const [, month, day] = dateKey.split('-').map(Number)
+  return `${month}月${day}日`
+}
 const dateKey = beijingToday()
+const tomorrowKey = addDaysKey(dateKey, 1)
 const dateLabel = fmtDateCn(dateKey)
 const dateLabelFull = fmtDateFull(dateKey)
 const todayDoneTasks = ref([])
 const todayDoneCount = computed(() => todayDoneTasks.value.length)
-const todayTotal = computed(() => tasks.value.length + todayDoneCount.value)
+const overdueTasks = computed(() => tasks.value
+  .filter((task) => isOverdue(task))
+  .sort((left, right) => String(left.dueDate).localeCompare(String(right.dueDate)) || Number(right.id) - Number(left.id)))
+const todayScheduledTasks = computed(() => tasks.value.filter((task) => task.dueDate === dateKey))
+const todayTotal = computed(() => todayScheduledTasks.value.length + todayDoneCount.value)
 const todayProgress = computed(() => todayTotal.value ? Math.round((todayDoneCount.value / todayTotal.value) * 100) : 0)
+const taskSections = computed(() => {
+  if (view.value !== 'today_todo') return [{ key: 'all', label: '', hint: '', tasks: tasks.value }]
+  return [
+    todayScheduledTasks.value.length ? {
+      key: 'today',
+      label: '今天计划',
+      hint: '安排在今天处理',
+      tasks: todayScheduledTasks.value
+    } : null,
+    overdueTasks.value.length ? {
+      key: 'overdue',
+      label: '逾期待处理',
+      hint: '这些任务原计划在今天之前完成',
+      tasks: overdueTasks.value
+    } : null
+  ].filter(Boolean)
+})
 const priorityCounts = computed(() => tasks.value.reduce((counts, task) => {
   const priority = ['high', 'medium', 'low'].includes(task.priority) ? task.priority : 'medium'
   counts[priority] += 1
@@ -407,6 +464,36 @@ async function toggleDone(t) {
   }
 }
 
+function isOverdue(task) {
+  return view.value === 'today_todo' && Boolean(task.dueDate) && task.dueDate < dateKey
+}
+
+function overdueDays(task) {
+  return task.dueDate ? diffDays(dateKey, task.dueDate) : 0
+}
+
+function completionDelayDays(task) {
+  const completedDate = task.completedAt?.slice(0, 10)
+  const plannedDate = task.originalDueDate || task.dueDate
+  return completedDate && plannedDate ? diffDays(completedDate, plannedDate) : 0
+}
+
+const reschedulingId = ref(null)
+async function rescheduleTask(task, dueDate) {
+  if (!dueDate || task.dueDate === dueDate) return
+  reschedulingId.value = task.id
+  try {
+    const result = await todoApi.updateTask(task.id, { dueDate })
+    Object.assign(task, result.task)
+    await loadTasks()
+    toast(`已重新安排到${dueDate === dateKey ? '今天' : dueDate === tomorrowKey ? '明天' : shortDate(dueDate)}`)
+  } catch (error) {
+    toast(error.message)
+  } finally {
+    reschedulingId.value = null
+  }
+}
+
 async function removeTask(t) {
   try {
     await todoApi.deleteTask(t.id)
@@ -430,7 +517,7 @@ const taskModal = ref(false)
 const editingId = ref(null)
 const taskBusy = ref(false)
 const taskError = ref('')
-const form = ref({ title: '', note: '', dueDate: dateKey, priority: 'medium', status: 'pending', listId: '', completedDate: '' })
+const form = ref({ title: '', note: '', dueDate: dateKey, originalDueDate: '', rescheduleCount: 0, priority: 'medium', status: 'pending', listId: '', completedDate: '' })
 
 function openNewTask() {
   editingId.value = null
@@ -439,6 +526,8 @@ function openNewTask() {
     title: '',
     note: '',
     dueDate: showDate.value ? dateKey : '',
+    originalDueDate: '',
+    rescheduleCount: 0,
     priority: 'medium',
     status: 'pending',
     listId: view.value.startsWith('list:')
@@ -455,12 +544,19 @@ function editTask(t) {
     title: t.title,
     note: t.note || '',
     dueDate: t.dueDate || '',
+    originalDueDate: t.originalDueDate || t.dueDate || '',
+    rescheduleCount: t.rescheduleCount || 0,
     priority: t.priority,
     status: t.status || 'pending',
     listId: t.listId || '',
     completedDate: t.completedAt ? t.completedAt.slice(0, 10) : ''
   }
   taskModal.value = true
+}
+function openCompletionEditor(task) {
+  editTask(task)
+  form.value.status = 'done'
+  form.value.completedDate = dateKey
 }
 async function submitTask() {
   if (!form.value.title.trim()) {
@@ -633,6 +729,8 @@ onMounted(async () => {
   word-break: break-word;
   font-weight: 500;
 }
+.todo-done-copy { display: flex; flex-direction: column; gap: 2px; }
+.todo-done-copy small { color: #6b8f80; font-size: 11px; }
 .todo-done-card-foot {
   background: #f4faf7;
   color: #5e7f71;
@@ -654,6 +752,47 @@ onMounted(async () => {
 }
 
 /* ===== 今日待办：让右侧留白成为概览区，而不是一整片白卡 ===== */
+.todo-task-section + .todo-task-section { margin-top: 20px; }
+.todo-task-section-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin: 0 2px 10px;
+}
+.todo-task-section-head div { display: flex; flex-direction: column; gap: 2px; }
+.todo-task-section-head strong { color: var(--todo-text); font-size: 15px; }
+.todo-task-section-head span { color: var(--todo-text-soft); font-size: 12px; }
+.todo-task-section-head b {
+  min-width: 28px;
+  padding: 3px 8px;
+  border-radius: 999px;
+  background: var(--todo-primary-soft);
+  color: var(--todo-primary);
+  text-align: center;
+  font-size: 12px;
+}
+.todo-task.is-overdue { border-left-color: var(--todo-danger); }
+.todo-tag.overdue { background: var(--todo-danger-bg); color: var(--todo-danger); font-weight: 700; }
+.todo-tag.rescheduled { background: rgba(139, 92, 246, 0.12); color: #7c3aed; }
+.todo-overdue-actions { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 11px; }
+.todo-overdue-actions button {
+  min-height: 36px;
+  padding: 7px 11px;
+  border: 1px solid var(--todo-border-strong);
+  border-radius: 9px;
+  background: var(--todo-input-bg);
+  color: var(--todo-text-soft);
+  cursor: pointer;
+  font: inherit;
+  font-size: 12px;
+  font-weight: 650;
+}
+.todo-overdue-actions button:hover,
+.todo-overdue-actions button:focus-visible { border-color: var(--todo-primary); color: var(--todo-primary); }
+.todo-overdue-actions button:disabled { opacity: 0.5; cursor: wait; }
+.todo-field-hint { color: var(--todo-text-soft); font-size: 12px; line-height: 1.5; }
+
 .todo-progress-card {
   display: grid;
   grid-template-columns: 1fr auto;
@@ -732,6 +871,8 @@ html[data-theme='dark'] .todo-overview-ring { box-shadow: inset 0 0 0 6px #1f253
   .todo-done-card-foot { padding: 12px 14px; font-size: 12px; }
   .todo-progress-card { padding: 14px; }
   .todo-overview { position: static; padding: 16px; }
+  .todo-overdue-actions button { min-height: 44px; }
+  .todo-task-actions { opacity: 1; }
 }
 
 /* ===== 底部波浪装饰 ===== */

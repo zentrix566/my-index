@@ -46,7 +46,7 @@ function serializeImage(row) {
 }
 
 function serialize(row, images = []) {
-  return { id: row.id, monthKey: row.month_key, category: row.category, status: row.status, isPinned: Number(row.is_pinned) === 1, title: row.title, content: row.content, createdAt: row.created_at, updatedAt: row.updated_at, images: images.map(serializeImage) }
+  return { id: row.id, monthKey: row.month_key, category: row.category, status: row.status, isPinned: Number(row.is_pinned) === 1, title: row.title, content: row.content, recordedAt: row.recorded_at || null, createdAt: row.created_at, updatedAt: row.updated_at, images: images.map(serializeImage) }
 }
 
 async function serializeNotes(userId, rows) {
@@ -108,7 +108,7 @@ async function removeObject(objectKey) {
 }
 
 function validate(payload) {
-  const { monthKey, category, status, isPinned, title, content } = payload || {}
+  const { monthKey, category, status, isPinned, title, content, recordedAt } = payload || {}
   if (!MONTH_RE.test(monthKey || '')) return '月份格式应为 YYYY-MM'
   if (!CATEGORIES.has(category)) return '分类不正确'
   if (category !== 'vibe_coding' && status !== null && status !== undefined && status !== '') return '该分类无需状态'
@@ -116,11 +116,17 @@ function validate(payload) {
   if (isPinned !== undefined && typeof isPinned !== 'boolean') return '置顶状态不正确'
   if (typeof title !== 'string' || !title.trim() || title.trim().length > 200) return '标题需为 1-200 个字符'
   if (typeof content !== 'string' || content.length > 10000) return '正文最多 10000 个字符'
+  if (category === 'dream' && recordedAt !== undefined && recordedAt !== null && recordedAt !== '') {
+    if (typeof recordedAt !== 'string' || !Number.isFinite(Date.parse(recordedAt))) return '梦境时间格式不正确'
+  }
   return null
 }
 
 function clean(payload) {
-  return { monthKey: payload.monthKey, category: payload.category, status: payload.category === 'vibe_coding' && payload.status ? payload.status : null, isPinned: payload.isPinned === true, title: payload.title.trim(), content: payload.content.trim() }
+  const recordedAt = payload.category === 'dream' && payload.recordedAt
+    ? new Date(payload.recordedAt).toISOString()
+    : null
+  return { monthKey: payload.monthKey, category: payload.category, status: payload.category === 'vibe_coding' && payload.status ? payload.status : null, isPinned: payload.isPinned === true, title: payload.title.trim(), content: payload.content.trim(), recordedAt }
 }
 
 router.get('/', async (req, res) => {

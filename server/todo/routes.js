@@ -21,7 +21,9 @@ import {
   getList,
   getTask,
   listCalendarTasksInRange,
+  listLateCompletionMarkersInRange,
   listLists,
+  listReschedulesInRange,
   listTasks,
   listTasksInRange,
   todayKey,
@@ -55,9 +57,43 @@ function serializeTask(row) {
     priority: row.priority,
     isHarvest: Boolean(row.is_harvest),
     position: Number(row.position) || 0,
+    originalDueDate: row.original_due_date || row.due_date || '',
+    rescheduleCount: Number(row.reschedule_count) || 0,
+    lastRescheduledAt: row.last_rescheduled_at || null,
     createdAt: row.created_at,
     completedAt: row.completed_at || null,
     updatedAt: row.updated_at
+  }
+}
+
+function serializeRescheduleMarker(row) {
+  return {
+    id: `reschedule-${row.reschedule_id}`,
+    sourceTaskId: row.todo_id,
+    title: row.title,
+    note: row.note || '',
+    dueDate: row.from_date,
+    calendarDate: row.from_date,
+    status: 'deferred',
+    priority: row.priority,
+    listId: row.list_id,
+    originalDueDate: row.original_due_date || row.from_date,
+    completedAt: row.completed_at || null,
+    isScheduleHistory: true,
+    scheduleHistoryType: 'rescheduled',
+    rescheduledTo: row.to_date,
+    rescheduledAt: row.rescheduled_at
+  }
+}
+
+function serializeLateCompletionMarker(row) {
+  return {
+    ...serializeTask(row),
+    id: `late-completion-${row.id}`,
+    sourceTaskId: row.id,
+    calendarDate: row.due_date,
+    isScheduleHistory: true,
+    scheduleHistoryType: 'late-completion'
   }
 }
 
@@ -326,18 +362,25 @@ router.get('/calendar', async (req, res) => {
   if (!/^\d{4}-\d{2}$/.test(month)) return res.status(400).json({ error: 'month 格式应为 YYYY-MM' })
   try {
     const { from, to } = monthRange(month)
-    const rows = await listCalendarTasksInRange(req.userId, from, to)
+    const [rows, reschedules, lateCompletions] = await Promise.all([
+      listCalendarTasksInRange(req.userId, from, to),
+      listReschedulesInRange(req.userId, from, to),
+      listLateCompletionMarkersInRange(req.userId, from, to)
+    ])
     const days = {}
-    for (const row of rows) {
-      const key = row.status === 'done' && row.completed_at
-        ? row.completed_at.slice(0, 10)
-        : row.due_date
+    const entries = [
+      ...rows.map((row) => ({ key: row.status === 'done' && row.completed_at ? row.completed_at.slice(0, 10) : row.due_date, task: serializeTask(row) })),
+      ...reschedules.map((row) => ({ key: row.from_date, task: serializeRescheduleMarker(row) })),
+      ...lateCompletions.map((row) => ({ key: row.due_date, task: serializeLateCompletionMarker(row) }))
+    ]
+    for (const { key, task } of entries) {
+      if (!key) continue
       if (!days[key]) days[key] = { total: 0, done: 0, cancelled: 0, active: 0, tasks: [] }
       days[key].total += 1
-      if (row.status === 'done') days[key].done += 1
-      else if (row.status === 'cancelled') days[key].cancelled += 1
+      if (!task.isScheduleHistory && task.status === 'done') days[key].done += 1
+      else if (!task.isScheduleHistory && task.status === 'cancelled') days[key].cancelled += 1
       else days[key].active += 1
-      days[key].tasks.push(serializeTask(row))
+      days[key].tasks.push(task)
     }
     res.json({ month, today: todayKey(), days })
   } catch (err) {
@@ -353,8 +396,21 @@ router.get('/range', async (req, res) => {
     return res.status(400).json({ error: 'from/to 格式应为 YYYY-MM-DD' })
   }
   try {
-    const rows = await listCalendarTasksInRange(req.userId, from, to)
-    res.json({ from, to, tasks: rows.map(serializeTask) })
+    const [rows, reschedules, lateCompletions] = await Promise.all([
+      listCalendarTasksInRange(req.userId, from, to),
+      listReschedulesInRange(req.userId, from, to),
+      listLateCompletionMarkersInRange(req.userId, from, to)
+    ])
+    const tasks = [
+      ...rows.map((row) => {
+        const task = serializeTask(row)
+        task.calendarDate = row.status === 'done' && row.completed_at ? row.completed_at.slice(0, 10) : row.due_date
+        return task
+      }),
+      ...reschedules.map(serializeRescheduleMarker),
+      ...lateCompletions.map(serializeLateCompletionMarker)
+    ]
+    res.json({ from, to, tasks })
   } catch (err) {
     appLog('ERROR', `区间任务读取失败: uid=${req.userId}, error=${err?.message}`)
     res.status(500).json({ error: '读取失败，请稍后重试' })

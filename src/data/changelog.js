@@ -2,9 +2,30 @@
 // 按时间倒序排列；同一天涉及多个模块时分别记录，且同一天同一 category 只保留一条。
 export const changelog = [
   {
+    date: '2026-09-18',
+    title: '逾期任务与改期记录上线',
+    category: 'todo',
+    route: '/todo',
+    changes: [
+      '今日待办会主动提醒以前未处理的逾期任务，可快速安排到今天、明天或补记实际完成日期。',
+      '任务改期后会保留原计划日期和改期次数，日历也会在旧计划日显示去向；延期完成时可直接看到晚了多少天。',
+      '今日待办会先展示今天计划，再列出逾期待处理内容，当前安排更容易优先确认。'
+    ]
+  },
+  {
+    date: '2026-09-18',
+    title: '灵感记录时间与排序优化',
+    category: 'notes',
+    route: '/notes',
+    changes: [
+      '修复灵感卡片没有按最后更新时间排列的问题，置顶内容之后会优先显示最近编辑的记录。',
+      '梦境记录支持自行设置日期和时间，补记昨天的梦或记录未来日期时，会按所选时间展示和归档。'
+    ]
+  },
+  {
     date: '2026-09-17',
     title: '灵感记录节奏与查看方式优化',
-    category: 'other',
+    category: 'notes',
     route: '/notes',
     changes: [
       '记录节奏改用按日期展示的柱状图，每天的日期和记录数都可直接查看，手机端也能横向浏览整月。',
@@ -24,7 +45,7 @@ export const changelog = [
   {
     date: '2026-09-13',
     title: '灵感收集图片上传与保存体验优化',
-    category: 'other',
+    category: 'notes',
     route: '/notes',
     changes: [
       '修复灵感记录上传图片时提示“图片上传失败，请稍后重试”的问题。',
@@ -44,7 +65,7 @@ export const changelog = [
   {
     date: '2026-09-08',
     title: '灵感收集与人物生平体验优化',
-    category: 'other',
+    category: 'notes',
     route: '/notes',
     changes: [
       '新增详情正文实时字数与单条记录字数显示，记录长度更直观。',
@@ -55,7 +76,7 @@ export const changelog = [
   {
     date: '2026-09-07',
     title: '灵感收集录入体验优化',
-    category: 'other',
+    category: 'notes',
     route: '/notes',
     changes: [
       '灵感记录聚焦标题、详情和图片，移除不常用的标签、主题、回看、随机重读与单条 AI 延伸功能。',
@@ -70,7 +91,7 @@ export const changelog = [
   {
     date: '2026-09-06',
     title: '灵感收集回顾与整理升级',
-    category: 'other',
+    category: 'notes',
     route: '/notes',
     changes: [
       '新增全部时间检索、主题归档、置顶和待回看功能，旧灵感更容易重新找到与整理。',

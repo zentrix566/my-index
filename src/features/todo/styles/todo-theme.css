@@ -500,6 +500,7 @@ html[data-theme='dark'] .todo-task {
 /* ===== 表单 ===== */
 .todo-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
 .todo-field label { font-size: 13px; color: var(--todo-text-soft); font-weight: 600; }
+.todo-field-hint { color: var(--todo-text-soft); font-size: 12px; line-height: 1.5; }
 .todo-input, .todo-textarea, .todo-select {
   padding: 10px 12px;
   border: 1px solid var(--todo-border-strong);

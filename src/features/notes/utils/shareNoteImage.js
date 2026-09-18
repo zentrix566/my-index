@@ -136,12 +136,12 @@ export async function createNoteImage(note, { categoryLabel, statusLabel }) {
   }
   context.fillStyle = '#6b5a82'
   context.font = '400 26px sans-serif'
-  const editedAt = new Date(note.updatedAt || note.createdAt)
-  const date = new Intl.DateTimeFormat('zh-CN', { dateStyle: 'long', timeStyle: 'medium', hour12: false }).format(editedAt)
-  context.fillText(`最后编辑于 ${date}`, inset + 42, height - 96)
+  const displayedAt = new Date(note.category === 'dream' ? note.recordedAt || note.updatedAt || note.createdAt : note.updatedAt || note.createdAt)
+  const date = new Intl.DateTimeFormat('zh-CN', { dateStyle: 'long', timeStyle: 'medium', hour12: false }).format(displayedAt)
+  context.fillText(`${note.category === 'dream' ? '梦境时间' : '最后编辑于'} ${date}`, inset + 42, height - 96)
   context.fillStyle = '#a78bfa'
   context.fillRect(inset + 42, height - 62, 180, 4)
-  const timestamp = `${editedAt.getFullYear()}${String(editedAt.getMonth() + 1).padStart(2, '0')}${String(editedAt.getDate()).padStart(2, '0')}-${String(editedAt.getHours()).padStart(2, '0')}${String(editedAt.getMinutes()).padStart(2, '0')}${String(editedAt.getSeconds()).padStart(2, '0')}`
+  const timestamp = `${displayedAt.getFullYear()}${String(displayedAt.getMonth() + 1).padStart(2, '0')}${String(displayedAt.getDate()).padStart(2, '0')}-${String(displayedAt.getHours()).padStart(2, '0')}${String(displayedAt.getMinutes()).padStart(2, '0')}${String(displayedAt.getSeconds()).padStart(2, '0')}`
   return { dataUrl: canvas.toDataURL('image/png'), filename: `${title.slice(0, 30)}-${timestamp}-灵感分享.png` }
 }
 

@@ -30,6 +30,7 @@
         <div class="todo-field">
           <label>日期</label>
           <input v-model="form.dueDate" type="date" class="todo-input" />
+          <small v-if="form.rescheduleCount" class="todo-field-hint">最初计划 {{ shortDate(form.originalDueDate) }}，已改期 {{ form.rescheduleCount }} 次；再次修改日期会继续保留记录。</small>
         </div>
         <div class="todo-field">
           <label>优先级</label>
@@ -83,7 +84,13 @@ const busy = ref(false)
 const error = ref('')
 const isEdit = ref(false)
 const editId = ref(null)
-const form = ref({ title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: '', completedDate: '' })
+const form = ref({ title: '', note: '', dueDate: '', originalDueDate: '', rescheduleCount: 0, priority: 'medium', status: 'pending', listId: '', completedDate: '' })
+
+function shortDate(dateKey) {
+  if (!dateKey) return '未设置'
+  const [, month, day] = dateKey.split('-').map(Number)
+  return `${month}月${day}日`
+}
 
 function open(initial = null) {
   error.value = ''
@@ -94,6 +101,8 @@ function open(initial = null) {
     title: initial?.title || '',
     note: initial?.note || '',
     dueDate: initial?.dueDate || '',
+    originalDueDate: initial?.originalDueDate || initial?.dueDate || '',
+    rescheduleCount: initial?.rescheduleCount || 0,
     priority: initial?.priority || 'medium',
     status: initial?.status || 'pending',
     listId: isEdit.value

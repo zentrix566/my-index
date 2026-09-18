@@ -64,7 +64,10 @@
           </thead>
           <tbody>
             <tr v-for="t in pagedTasks" :key="t.id" :class="'status-' + t.status">
-              <td class="todo-td-date">{{ t.dueDate || '—' }}</td>
+              <td class="todo-td-date">
+                {{ t.dueDate || '—' }}
+                <small v-if="t.rescheduleCount" class="todo-reschedule-note">原定 {{ shortDate(t.originalDueDate) }} · {{ t.rescheduleCount }} 次改期</small>
+              </td>
               <td>{{ doneTime(t) }}</td>
               <td class="todo-td-title">{{ t.title }}</td>
               <td>
@@ -132,6 +135,7 @@
           <div class="todo-field">
             <label>日期</label>
             <input v-model="form.dueDate" type="date" class="todo-input" />
+            <small v-if="form.rescheduleCount" class="todo-field-hint">最初计划 {{ shortDate(form.originalDueDate) }}，已改期 {{ form.rescheduleCount }} 次；再次修改日期会继续保留记录。</small>
           </div>
           <div class="todo-field">
             <label>优先级</label>
@@ -369,18 +373,24 @@ const taskModal = ref(false)
 const editingId = ref(null)
 const taskBusy = ref(false)
 const taskError = ref('')
-const form = ref({ title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: '', completedDate: '' })
+const form = ref({ title: '', note: '', dueDate: '', originalDueDate: '', rescheduleCount: 0, priority: 'medium', status: 'pending', listId: '', completedDate: '' })
+
+function shortDate(dateKey) {
+  if (!dateKey) return '未设置'
+  const [, month, day] = dateKey.split('-').map(Number)
+  return `${month}月${day}日`
+}
 
 function openNewTask() {
   editingId.value = null
   taskError.value = ''
-  form.value = { title: '', note: '', dueDate: '', priority: 'medium', status: 'pending', listId: filterList.value ? Number(filterList.value) : getAvailableLastListId(lists.value), completedDate: '' }
+  form.value = { title: '', note: '', dueDate: '', originalDueDate: '', rescheduleCount: 0, priority: 'medium', status: 'pending', listId: filterList.value ? Number(filterList.value) : getAvailableLastListId(lists.value), completedDate: '' }
   taskModal.value = true
 }
 function editTask(t) {
   editingId.value = t.id
   taskError.value = ''
-  form.value = { title: t.title, note: t.note || '', dueDate: t.dueDate || '', priority: t.priority, status: t.status || 'pending', listId: t.listId || '', completedDate: t.completedAt ? t.completedAt.slice(0, 10) : '' }
+  form.value = { title: t.title, note: t.note || '', dueDate: t.dueDate || '', originalDueDate: t.originalDueDate || t.dueDate || '', rescheduleCount: t.rescheduleCount || 0, priority: t.priority, status: t.status || 'pending', listId: t.listId || '', completedDate: t.completedAt ? t.completedAt.slice(0, 10) : '' }
   taskModal.value = true
 }
 async function submitTask() {
@@ -494,6 +504,7 @@ onMounted(async () => {
 .todo-td-title { font-weight: 600; min-width: 160px; }
 .todo-td-note { color: var(--todo-text-soft); max-width: 280px; white-space: pre-wrap; word-break: break-word; }
 .todo-td-date { white-space: nowrap; }
+.todo-reschedule-note { display: block; margin-top: 3px; color: var(--todo-text-soft); font-size: 11px; }
 .todo-th-actions { white-space: nowrap; text-align: right; }
 .todo-table tbody tr .todo-th-actions { text-align: right; }
 .todo-text-faint { color: var(--todo-text-faint); }

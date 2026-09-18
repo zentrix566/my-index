@@ -3,9 +3,10 @@
     <div class="notes-editor__head"><h2>{{ compact ? '快速记录' : note.id ? '编辑记录' : '记下一条' }}</h2><FormActions :busy="saving" submit-type="submit" @cancel="$emit('cancel')" /></div>
     <p v-if="compact" class="notes-editor__hint">先留下一句话，细节可以以后再补。</p>
     <div v-if="!compact" class="notes-form-grid">
-      <label>月份<input v-model="note.monthKey" type="month" /></label>
+      <label v-if="note.category !== 'dream'">月份<input v-model="note.monthKey" type="month" /></label>
       <label>分类<select v-model="note.category"><option value="idea">想法</option><option value="vibe_coding">编程</option><option value="memo">备忘</option><option value="dream">梦</option></select></label>
       <label v-if="note.category === 'vibe_coding'">状态<select v-model="note.status"><option value="">未定</option><option value="done">已完成</option><option value="impossible">不可能</option><option value="uncertain">不确定</option></select></label>
+      <label v-if="note.category === 'dream'" class="notes-form-grid__wide">梦境时间<input v-model="note.recordedAt" type="datetime-local" /><small class="notes-label-hint">补录昨天的梦或预先记录时，可以自行调整日期和时间。</small></label>
     </div>
     <label>标题<input ref="titleInput" v-model="note.title" maxlength="200" placeholder="一句话留下这个念头" /></label>
     <template v-if="!compact"><label>详情<textarea v-model="note.content" rows="5" :maxlength="contentMaxLength" placeholder="背景、延伸、为什么现在想到它……" /><small class="notes-editor__character-count">{{ note.content.length }} / {{ contentMaxLength }}</small></label>
@@ -31,7 +32,14 @@ defineEmits(['save', 'cancel'])
 const draftMessage = ref('')
 const imageMessage = ref('')
 const previewUrls = new Map()
-watch(() => note.value.category, (category) => { if (category !== 'vibe_coding') note.value.status = '' })
+function currentLocalDateTime() {
+  const now = new Date()
+  return new Date(now.getTime() - now.getTimezoneOffset() * 60000).toISOString().slice(0, 16)
+}
+watch(() => note.value.category, (category) => {
+  if (category !== 'vibe_coding') note.value.status = ''
+  if (category === 'dream' && !note.value.recordedAt) note.value.recordedAt = currentLocalDateTime()
+})
 const images = computed(() => note.value.images || [])
 const pendingImages = computed(() => note.value.pendingImages || [])
 const imageCount = computed(() => images.value.length + pendingImages.value.length)
@@ -66,6 +74,7 @@ watch(note, (value) => {
   } catch { /* 浏览器隐私模式下可正常编辑，只是不保存草稿。 */ }
 }, { deep: true })
 onMounted(() => {
+  if (note.value.category === 'dream' && !note.value.recordedAt) note.value.recordedAt = currentLocalDateTime()
   if (props.draftKey) {
     try {
       const saved = JSON.parse(localStorage.getItem(props.draftKey) || 'null')

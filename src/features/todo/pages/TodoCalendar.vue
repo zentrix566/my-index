@@ -75,7 +75,7 @@
                   :class="'status-' + t.status"
                 >
                   <i class="todo-cal-task-dot" :class="t.status"></i>
-                  <span class="todo-cal-task-text">{{ t.title }}</span>
+                  <span class="todo-cal-task-text">{{ calendarTaskLabel(t) }}</span>
                 </div>
                 <div v-if="c.tasks.length > 2" class="todo-cal-more">+{{ c.tasks.length - 2 }} 更多</div>
               </div>
@@ -128,7 +128,7 @@
                 :class="'status-' + t.status"
               >
                 <i class="todo-cal-task-dot" :class="t.status"></i>
-                <span :title="t.title">{{ t.title }}</span>
+                <span :title="calendarTaskLabel(t)">{{ calendarTaskLabel(t) }}</span>
               </div>
             </div>
             <div v-else class="todo-cal-week-empty">无日程</div>
@@ -149,19 +149,21 @@
         </div>
         <p v-if="selError" class="todo-error">{{ selError }}</p>
         <div v-if="dayTasks.length" class="todo-task-list">
-          <div v-for="t in dayTasks" :key="t.id" class="todo-task" :class="'status-' + t.status">
-            <select class="todo-status-select" :value="t.status" :style="statusStyle(t.status)" @change="setDayStatus(t, $event.target.value)">
+          <div v-for="t in dayTasks" :key="t.id" class="todo-task" :class="['status-' + t.status, { 'is-schedule-history': t.isScheduleHistory }]">
+            <span v-if="t.isScheduleHistory" class="todo-history-icon" aria-hidden="true">↪</span>
+            <select v-else class="todo-status-select" :value="t.status" :style="statusStyle(t.status)" @change="setDayStatus(t, $event.target.value)">
               <option v-for="s in TASK_STATUS_LIST" :key="s.value" :value="s.value">{{ s.label }}</option>
             </select>
             <div class="todo-task-body">
               <div class="todo-task-title">{{ t.title }}</div>
-              <div v-if="t.note" class="todo-task-note">{{ t.note }}</div>
+              <div v-if="t.isScheduleHistory" class="todo-task-note">{{ scheduleHistoryLabel(t) }}</div>
+              <div v-else-if="t.note" class="todo-task-note">{{ t.note }}</div>
               <div class="todo-task-meta">
                 <span class="todo-tag" :class="'prio-' + t.priority">{{ prioLabel[t.priority] }}</span>
                 <span v-if="t.listId && listMap.get(t.listId)" class="todo-tag list">{{ listMap.get(t.listId).name }}</span>
               </div>
             </div>
-            <div class="todo-task-actions">
+            <div v-if="!t.isScheduleHistory" class="todo-task-actions">
               <button class="todo-icon-btn" type="button" title="编辑" @click="editTask(t)">✎</button>
               <button class="todo-icon-btn danger" type="button" title="删除" @click="removeTask(t)">✕</button>
             </div>
@@ -316,6 +318,23 @@ function sortCalendarDays(days = {}) {
   ]))
 }
 
+function shortDate(dateKey) {
+  if (!dateKey) return ''
+  const [, month, day] = dateKey.split('-').map(Number)
+  return `${month}月${day}日`
+}
+
+function scheduleHistoryLabel(task) {
+  if (task.scheduleHistoryType === 'late-completion') {
+    return `原计划这天完成，实际于 ${shortDate(task.completedAt?.slice(0, 10))} 完成`
+  }
+  return `原计划这天处理，已调整至 ${shortDate(task.rescheduledTo)}`
+}
+
+function calendarTaskLabel(task) {
+  return task.isScheduleHistory ? `${task.title} · ${scheduleHistoryLabel(task)}` : task.title
+}
+
 const cells = computed(() => {
   const [y, m] = month.value.split('-').map(Number)
   const first = new Date(y, m - 1, 1)
@@ -363,6 +382,7 @@ const periodStats = computed(() => {
   const source = mode.value === 'month' ? cells.value.filter((c) => !c.isOut) : weekDays.value
   for (const c of source) {
     for (const t of c.tasks) {
+      if (t.isScheduleHistory) continue
       if (t.status === 'done') {
         done++
         if (c.key <= todayKey) eligibleDone++
@@ -421,7 +441,7 @@ async function loadWeek() {
     const r = await todoApi.range(from, to)
     const map = {}
     for (const t of r.tasks || []) {
-      const k = t.status === 'done' && t.completedAt ? t.completedAt.slice(0, 10) : t.dueDate
+      const k = t.calendarDate || (t.status === 'done' && t.completedAt ? t.completedAt.slice(0, 10) : t.dueDate)
       if (!k) continue
       if (!map[k]) map[k] = { total: 0, done: 0, cancelled: 0, active: 0, tasks: [] }
       map[k].tasks.push(t)
@@ -512,7 +532,7 @@ function openNewTask(date) {
   taskModalRef.value?.open({ title: '', note: '', dueDate: date || todayKey, priority: 'medium', listId: '' })
 }
 function editTask(t) {
-  taskModalRef.value?.open({ id: t.id, title: t.title, note: t.note || '', dueDate: t.dueDate || '', priority: t.priority, listId: t.listId || '', completedAt: t.completedAt || '' })
+  taskModalRef.value?.open({ id: t.id, title: t.title, note: t.note || '', dueDate: t.dueDate || '', originalDueDate: t.originalDueDate || t.dueDate || '', rescheduleCount: t.rescheduleCount || 0, priority: t.priority, status: t.status || 'pending', listId: t.listId || '', completedAt: t.completedAt || '' })
 }
 async function handleSave({ payload, id }) {
   try {
@@ -954,6 +974,24 @@ onMounted(async () => {
   background: rgba(148, 163, 184, 0.1);
   color: var(--todo-text-soft);
   opacity: 0.72;
+}
+
+.todo-task.is-schedule-history {
+  border-style: dashed;
+  box-shadow: none;
+  opacity: 0.78;
+}
+
+.todo-history-icon {
+  display: inline-grid;
+  width: 28px;
+  height: 28px;
+  flex: 0 0 28px;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--todo-primary-soft);
+  color: var(--todo-primary);
+  font-weight: 800;
 }
 .todo-cal-week-empty {
   font-size: 12px;

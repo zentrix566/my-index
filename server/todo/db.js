@@ -80,14 +80,28 @@ CREATE TABLE IF NOT EXISTS todos (
   priority TEXT NOT NULL DEFAULT 'medium',
   is_harvest SMALLINT NOT NULL DEFAULT 0,
   position INTEGER NOT NULL DEFAULT 0,
+  original_due_date TEXT,
+  reschedule_count INTEGER NOT NULL DEFAULT 0,
+  last_rescheduled_at TEXT,
   created_at TEXT NOT NULL,
   completed_at TEXT,
   updated_at TEXT NOT NULL
 );
 
+CREATE TABLE IF NOT EXISTS todo_reschedules (
+  id ${pk},
+  todo_id INTEGER NOT NULL REFERENCES todos(id) ON DELETE CASCADE,
+  user_id INTEGER NOT NULL,
+  from_date TEXT NOT NULL,
+  to_date TEXT NOT NULL,
+  created_at TEXT NOT NULL
+);
+
 CREATE INDEX IF NOT EXISTS idx_todo_user ON todos(user_id, status);
 CREATE INDEX IF NOT EXISTS idx_todo_due ON todos(user_id, due_date);
 CREATE INDEX IF NOT EXISTS idx_todo_list ON todos(user_id, list_id);
+CREATE INDEX IF NOT EXISTS idx_todo_reschedules_task ON todo_reschedules(user_id, todo_id, created_at);
+CREATE INDEX IF NOT EXISTS idx_todo_reschedules_from ON todo_reschedules(user_id, from_date);
 `
 }
 
@@ -106,6 +120,19 @@ async function createSqliteDriver() {
   database.pragma('journal_mode = WAL')
   database.pragma('foreign_keys = ON')
   database.exec(buildSchema('sqlite'))
+  let todoColumns = database.prepare('PRAGMA table_info(todos)').all()
+  const addTodoColumn = (name, sql) => {
+    if (todoColumns.some((column) => column.name === name)) return
+    database.exec(`ALTER TABLE todos ADD COLUMN ${sql}`)
+    todoColumns = database.prepare('PRAGMA table_info(todos)').all()
+  }
+  addTodoColumn('original_due_date', 'original_due_date TEXT')
+  addTodoColumn('reschedule_count', 'reschedule_count INTEGER NOT NULL DEFAULT 0')
+  addTodoColumn('last_rescheduled_at', 'last_rescheduled_at TEXT')
+  database.exec(`
+    UPDATE todos SET original_due_date = due_date
+    WHERE original_due_date IS NULL AND due_date IS NOT NULL;
+  `)
   return {
     async query(sql, params = []) {
       const { text, values } = toSqliteStatement(sql, normalizeParams(params))
@@ -114,6 +141,17 @@ async function createSqliteDriver() {
       if (returnsRows) return { rows: statement.all(...values) }
       const info = statement.run(...values)
       return { rows: [], rowCount: info.changes }
+    },
+    async transaction(statements) {
+      return database.transaction(() => statements.map(({ sql, params = [] }) => {
+        const { text, values } = toSqliteStatement(sql, normalizeParams(params))
+        const statement = database.prepare(text)
+        if (/^\s*(select|with)\b/i.test(text) || /\breturning\b/i.test(text)) {
+          return { rows: statement.all(...values) }
+        }
+        const info = statement.run(...values)
+        return { rows: [], rowCount: info.changes }
+      }))()
     },
     async close() {
       database.close()
@@ -124,9 +162,30 @@ async function createSqliteDriver() {
 async function createPgDriver() {
   const pool = new Pool(readPgConfig())
   await pool.query(buildSchema('pg'))
+  await pool.query('ALTER TABLE todos ADD COLUMN IF NOT EXISTS original_due_date TEXT')
+  await pool.query('ALTER TABLE todos ADD COLUMN IF NOT EXISTS reschedule_count INTEGER NOT NULL DEFAULT 0')
+  await pool.query('ALTER TABLE todos ADD COLUMN IF NOT EXISTS last_rescheduled_at TEXT')
+  await pool.query('UPDATE todos SET original_due_date = due_date WHERE original_due_date IS NULL AND due_date IS NOT NULL')
   return {
     async query(sql, params = []) {
       return pool.query(sql, normalizeParams(params))
+    },
+    async transaction(statements) {
+      const client = await pool.connect()
+      try {
+        await client.query('BEGIN')
+        const results = []
+        for (const statement of statements) {
+          results.push(await client.query(statement.sql, normalizeParams(statement.params || [])))
+        }
+        await client.query('COMMIT')
+        return results
+      } catch (error) {
+        await client.query('ROLLBACK')
+        throw error
+      } finally {
+        client.release()
+      }
     },
     async close() {
       await pool.end()
@@ -338,8 +397,8 @@ export async function createTask(userId, payload) {
     completedAt = nowIso()
   }
   const row = await queryOne(
-    `INSERT INTO todos(user_id, list_id, title, note, due_date, status, priority, is_harvest, position, completed_at, created_at, updated_at)
-     VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12) RETURNING *`,
+    `INSERT INTO todos(user_id, list_id, title, note, due_date, status, priority, is_harvest, position, original_due_date, completed_at, created_at, updated_at)
+     VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *`,
     [
       userId,
       payload.listId ?? null,
@@ -350,6 +409,7 @@ export async function createTask(userId, payload) {
       payload.priority && VALID_PRIORITY.has(payload.priority) ? payload.priority : 'medium',
       payload.isHarvest ? 1 : 0,
       0,
+      payload.dueDate || null,
       completedAt,
       nowIso(),
       nowIso()
@@ -376,9 +436,9 @@ export async function listTasks(userId, view) {
   let where = 'user_id = $1'
   const params = [userId]
   if (view === 'today_todo') {
-    // 今日待办 = 今天到期且处于活跃态（未完成、非已取消）
+    // 今日待办同时带出历史逾期事项，避免旧任务从视野中消失。
     where +=
-      " AND due_date = $2 AND status IN ('pending','in_progress','deferred','waiting')"
+      " AND due_date <= $2 AND status IN ('pending','in_progress','deferred','waiting')"
     params.push(tk)
   } else if (view === 'today_done') {
     where += " AND status = 'done' AND substr(completed_at, 1, 10) = $2"
@@ -413,6 +473,11 @@ export async function dayTasks(userId, date) {
     [userId, date]
   )
   return rows
+}
+
+async function transaction(statements) {
+  const driver = await getDriver()
+  return driver.transaction(statements)
 }
 
 /**
@@ -450,6 +515,10 @@ export async function listTasksInRange(userId, from, to) {
 }
 
 export async function updateTask(userId, id, patch) {
+  const current = await getTask(userId, id)
+  if (!current) return null
+  const isReschedule = patch.dueDate !== undefined &&
+    current.due_date && patch.dueDate && current.due_date !== patch.dueDate
   const allowed = {
     title: patch.title,
     note: patch.note,
@@ -471,6 +540,13 @@ export async function updateTask(userId, id, patch) {
       params.push(val)
       i += 1
     }
+  }
+  if (isReschedule) {
+    sets.push('original_due_date = COALESCE(original_due_date, due_date)')
+    sets.push('reschedule_count = COALESCE(reschedule_count, 0) + 1')
+    sets.push(`last_rescheduled_at = $${i}`)
+    params.push(nowIso())
+    i += 1
   }
   // 完成时间维护：
   // - 显式传入 completedAt（前端仅在"已完成"时提供，并已预填原完成日期）→ 以传入值为准
@@ -497,11 +573,44 @@ export async function updateTask(userId, id, patch) {
   params.push(nowIso())
   i += 1
   params.push(id, userId)
-  const row = await queryOne(
-    `UPDATE todos SET ${sets.join(', ')} WHERE id = $${i} AND user_id = $${i + 1} RETURNING *`,
-    params
+  const updateSql = `UPDATE todos SET ${sets.join(', ')} WHERE id = $${i} AND user_id = $${i + 1} RETURNING *`
+  if (!isReschedule) return queryOne(updateSql, params)
+  const results = await transaction([
+    { sql: updateSql, params },
+    {
+      sql: `INSERT INTO todo_reschedules(todo_id, user_id, from_date, to_date, created_at)
+            VALUES($1, $2, $3, $4, $5)`,
+      params: [id, userId, current.due_date, patch.dueDate, nowIso()]
+    }
+  ])
+  return results[0].rows[0] || null
+}
+
+/** 返回日期范围内的改期历史，用于在原计划日留下可追溯标记。 */
+export async function listReschedulesInRange(userId, from, to) {
+  const { rows } = await query(
+    `SELECT history.id AS reschedule_id, history.todo_id, history.from_date, history.to_date,
+            history.created_at AS rescheduled_at, task.title, task.note, task.list_id,
+            task.priority, task.status, task.original_due_date, task.completed_at
+     FROM todo_reschedules AS history
+     JOIN todos AS task ON task.id = history.todo_id AND task.user_id = history.user_id
+     WHERE history.user_id = $1 AND history.from_date >= $2 AND history.from_date <= $3
+     ORDER BY history.from_date ASC, history.id ASC`,
+    [userId, from, to]
   )
-  return row
+  return rows
+}
+
+/** 已完成但未在计划日完成的任务，在计划日保留一条历史标记。 */
+export async function listLateCompletionMarkersInRange(userId, from, to) {
+  const { rows } = await query(
+    `SELECT * FROM todos
+     WHERE user_id = $1 AND status = 'done' AND due_date >= $2 AND due_date <= $3
+       AND completed_at IS NOT NULL AND substr(completed_at, 1, 10) <> due_date
+     ORDER BY due_date ASC, id ASC`,
+    [userId, from, to]
+  )
+  return rows
 }
 
 export async function deleteTask(userId, id) {

@@ -36,6 +36,7 @@ CREATE TABLE IF NOT EXISTS idea_notes (
   revisit_at TEXT,
   title TEXT NOT NULL,
   content TEXT NOT NULL DEFAULT '',
+  recorded_at TEXT,
   created_at TEXT NOT NULL,
   updated_at TEXT NOT NULL,
   CHECK (category IN ('idea', 'vibe_coding', 'memo', 'dream')),
@@ -84,6 +85,8 @@ async function createSqliteDriver() {
   addColumn('topic', "topic TEXT NOT NULL DEFAULT ''")
   addColumn('is_pinned', 'is_pinned INTEGER NOT NULL DEFAULT 0')
   addColumn('revisit_at', 'revisit_at TEXT')
+  addColumn('recorded_at', 'recorded_at TEXT')
+  database.exec("UPDATE idea_notes SET recorded_at = updated_at WHERE category = 'dream' AND recorded_at IS NULL")
   const imageColumns = database.prepare('PRAGMA table_info(idea_note_images)').all()
   if (!imageColumns.some((column) => column.name === 'deleted_at')) {
     database.exec('ALTER TABLE idea_note_images ADD COLUMN deleted_at TEXT')
@@ -91,7 +94,7 @@ async function createSqliteDriver() {
   const schema = database.prepare("SELECT sql FROM sqlite_master WHERE type = 'table' AND name = 'idea_notes'").get()?.sql || ''
   if (!schema.includes("'dream'")) {
     database.exec(buildSchema('sqlite').replaceAll('idea_notes', 'idea_notes_upgrade'))
-    database.exec("INSERT INTO idea_notes_upgrade(id,user_id,month_key,category,status,tags,topic,is_pinned,revisit_at,title,content,created_at,updated_at) SELECT id,user_id,month_key,category,status,tags,topic,is_pinned,revisit_at,title,content,created_at,updated_at FROM idea_notes")
+    database.exec("INSERT INTO idea_notes_upgrade(id,user_id,month_key,category,status,tags,topic,is_pinned,revisit_at,title,content,recorded_at,created_at,updated_at) SELECT id,user_id,month_key,category,status,tags,topic,is_pinned,revisit_at,title,content,recorded_at,created_at,updated_at FROM idea_notes")
     database.exec('DROP TABLE idea_notes; ALTER TABLE idea_notes_upgrade RENAME TO idea_notes')
   }
   database.exec(buildLibraryIndexes())
@@ -124,6 +127,8 @@ async function createPgDriver() {
   await pool.query("ALTER TABLE idea_notes ADD COLUMN IF NOT EXISTS topic TEXT NOT NULL DEFAULT ''")
   await pool.query('ALTER TABLE idea_notes ADD COLUMN IF NOT EXISTS is_pinned INTEGER NOT NULL DEFAULT 0')
   await pool.query('ALTER TABLE idea_notes ADD COLUMN IF NOT EXISTS revisit_at TEXT')
+  await pool.query('ALTER TABLE idea_notes ADD COLUMN IF NOT EXISTS recorded_at TEXT')
+  await pool.query("UPDATE idea_notes SET recorded_at = updated_at WHERE category = 'dream' AND recorded_at IS NULL")
   const imageColumns = await pool.query("SELECT 1 FROM information_schema.columns WHERE table_name = 'idea_note_images' AND column_name = 'deleted_at'")
   if (!imageColumns.rows.length) await pool.query('ALTER TABLE idea_note_images ADD COLUMN deleted_at TEXT')
   const constraints = await pool.query("SELECT conname FROM pg_constraint WHERE conrelid = 'idea_notes'::regclass AND contype = 'c' AND pg_get_constraintdef(oid) LIKE '%category%'")
@@ -159,7 +164,13 @@ export async function listNotes(userId, monthKey) {
   const params = [userId]
   let where = 'user_id = $1'
   if (monthKey) { where += ' AND month_key = $2'; params.push(monthKey) }
-  return (await query(`SELECT * FROM idea_notes WHERE ${where} ORDER BY is_pinned DESC, month_key DESC, id DESC`, params)).rows
+  return (await query(
+    `SELECT * FROM idea_notes WHERE ${where}
+     ORDER BY is_pinned DESC,
+       CASE WHEN category = 'dream' THEN COALESCE(recorded_at, updated_at) ELSE updated_at END DESC,
+       id DESC`,
+    params
+  )).rows
 }
 
 export async function getNote(userId, id) {
@@ -203,17 +214,20 @@ export async function hideNoteImage(userId, noteId, imageId) {
 export async function createNote(userId, note) {
   const now = note.createdAt || nowIso()
   return queryOne(
-    `INSERT INTO idea_notes(user_id, month_key, category, status, is_pinned, title, content, created_at, updated_at)
-     VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9) RETURNING *`,
-    [userId, note.monthKey, note.category, note.status, note.isPinned ? 1 : 0, note.title, note.content, now, note.updatedAt || now]
+    `INSERT INTO idea_notes(user_id, month_key, category, status, is_pinned, title, content, recorded_at, created_at, updated_at)
+     VALUES($1,$2,$3,$4,$5,$6,$7,$8,$9,$10) RETURNING *`,
+    [userId, note.monthKey, note.category, note.status, note.isPinned ? 1 : 0, note.title, note.content, note.category === 'dream' ? note.recordedAt || now : null, now, note.updatedAt || now]
   )
 }
 
 export async function updateNote(userId, id, note) {
   return queryOne(
-    `UPDATE idea_notes SET month_key=$1, category=$2, status=$3, is_pinned=$4, title=$5, content=$6, updated_at=$7
-     WHERE id=$8 AND user_id=$9 RETURNING *`,
-    [note.monthKey, note.category, note.status, note.isPinned ? 1 : 0, note.title, note.content, nowIso(), id, userId]
+    `UPDATE idea_notes
+     SET month_key=$1, category=$2, status=$3, is_pinned=$4, title=$5, content=$6,
+         recorded_at=CASE WHEN $2 = 'dream' THEN COALESCE($7, recorded_at, updated_at) ELSE NULL END,
+         updated_at=$8
+     WHERE id=$9 AND user_id=$10 RETURNING *`,
+    [note.monthKey, note.category, note.status, note.isPinned ? 1 : 0, note.title, note.content, note.recordedAt || null, nowIso(), id, userId]
   )
 }
 
