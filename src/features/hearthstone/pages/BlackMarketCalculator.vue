@@ -81,7 +81,7 @@ const defaults = [
   { id: 'yogg-ramen', name: '法师皮肤「尤格-拉面」', initialPrice: 1050, quantity: 1 },
   { id: 'dark-empire-pack', name: '黑暗帝国的统治卡牌包', initialPrice: 900, quantity: 4 },
   { id: 'fireside-friends', name: '卡背「炉边好友」', initialPrice: 750, quantity: 1 },
-  { id: 'golden-standard-pack', name: '金色标准包', initialPrice: 1050, quantity: 2 }
+  { id: 'golden-standard-pack', name: '金色标准包', initialPrice: 900, quantity: 1 }
 ]
 
 function readStoredValue() {
