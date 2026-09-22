@@ -2,6 +2,15 @@
 // 按时间倒序排列；同一天涉及多个模块时分别记录，且同一天同一 category 只保留一条。
 export const changelog = [
   {
+    date: '2026-09-22',
+    title: '炉石黑市血石计算器上线',
+    category: 'hearthstone',
+    route: '/hearthstone/black-market',
+    changes: [
+      '新增黑市血石计算器：填写商品当前价格和已有血石后，可查看相对首发价的涨跌、实际所需血石与预计攒取天数。'
+    ]
+  },
+  {
     date: '2026-09-18',
     title: '逾期任务与改期记录上线',
     category: 'todo',

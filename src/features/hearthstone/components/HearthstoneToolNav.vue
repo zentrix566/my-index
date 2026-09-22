@@ -7,6 +7,7 @@
       <button type="button" class="hs-tool-btn" @click="$emit('navigate', '/hearthstone/wheel')">暗月宝藏模拟器</button>
       <button type="button" class="hs-tool-btn" @click="$emit('navigate', '/hearthstone/frog')">蛙生模拟器</button>
       <button type="button" class="hs-tool-btn" @click="$emit('navigate', '/hearthstone/event')">活动计算器</button>
+      <button type="button" class="hs-tool-btn" @click="$emit('navigate', '/hearthstone/black-market')">黑市血石计算器</button>
       <button type="button" class="hs-tool-btn" @click="$emit('navigate', '/hearthstone/xp')">战令计算器</button>
       <button type="button" class="hs-tool-btn" @click="$emit('navigate', '/hearthstone/deck')">卡组代码解析</button>
       <button type="button" class="hs-tool-btn" @click="$emit('navigate', '/hearthstone/lookup')">查看卡牌</button>

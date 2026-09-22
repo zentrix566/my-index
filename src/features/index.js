@@ -9,6 +9,7 @@ export {
   loadHearthstoneCollectionPage,
   loadTavernPassXpPage,
   loadEventCalculatorPage,
+  loadBlackMarketCalculatorPage,
   loadCardLookupPage,
   loadHearthstoneWheelPage,
   loadAlteracPuzzleAssistantPage,

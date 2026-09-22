@@ -7,6 +7,7 @@ export const loadHearthstoneAchievementsPage = () => loadWithStyles(() => import
 export const loadDeckCodeViewerPage = () => loadWithStyles(() => import('./pages/DeckCodeViewer.vue'))
 export const loadTavernPassXpPage = () => loadWithStyles(() => import('./pages/TavernPassCalculator.vue'))
 export const loadEventCalculatorPage = () => loadWithStyles(() => import('./pages/EventCalculator.vue'))
+export const loadBlackMarketCalculatorPage = () => loadWithStyles(() => import('./pages/BlackMarketCalculator.vue'))
 export const loadFrogSuspectCardPage = () => loadWithStyles(() => import('./pages/FrogSuspectCard.vue'))
 export const loadFrogReviewPage = () => loadWithStyles(() => import('./pages/FrogReviewPage.vue'))
 export const loadCardLookupPage = () => loadWithStyles(() => import('./pages/CardLookup.vue'))

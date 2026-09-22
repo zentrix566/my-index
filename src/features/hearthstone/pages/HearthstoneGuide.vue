@@ -31,8 +31,9 @@ const guideItems = [
   { index: '03', title: '卡组代码解析', description: '粘贴游戏内卡组代码，查看卡牌构成、法力曲线、合成造价并导出图片。', to: '/hearthstone/deck' },
   { index: '04', title: '外观收藏', description: '管理英雄皮肤、幸运币和卡背，导入采集结果后查看拥有情况与收藏进度。', to: '/hearthstone/collection' },
   { index: '05', title: '活动与战令计算器', description: '根据当前点数、任务和每日游玩计划，估算活动或战令的完成进度。', to: '/hearthstone/event' },
-  { index: '06', title: '暗月宝藏模拟器', description: '模拟暗月宝藏抽取过程，查看奖池、抽取记录和当前结果。', to: '/hearthstone/wheel' },
-  { index: '07', title: '蛙生模拟器', description: '从三张随从牌中找出被蛙生修改过的卡牌，支持标准和狂野卡池。', to: '/hearthstone/frog' },
+  { index: '06', title: '黑市血石计算器', description: '录入黑市当前价格和已有血石，比较首发价的涨跌并计算还需攒取的天数。', to: '/hearthstone/black-market' },
+  { index: '07', title: '暗月宝藏模拟器', description: '模拟暗月宝藏抽取过程，查看奖池、抽取记录和当前结果。', to: '/hearthstone/wheel' },
+  { index: '08', title: '蛙生模拟器', description: '从三张随从牌中找出被蛙生修改过的卡牌，支持标准和狂野卡池。', to: '/hearthstone/frog' },
 ]
 </script>
 
