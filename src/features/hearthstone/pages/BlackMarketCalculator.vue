@@ -96,7 +96,12 @@ const marketItems = computed(() => defaults.map((item) => {
   const isExchanged = exchanged.value[item.id]
   const currentPrice = Math.max(0, Number(prices.value[item.id]) || 0)
   const result = isExchanged ? null : calculateBlackMarketItem({ ...item, currentPrice, currentBloodstones: currentBloodstones.value })
-  return { ...item, isExchanged, result, advice: result ? getBlackMarketAdvice(result.changePercent) : null }
+  return {
+    ...item,
+    isExchanged,
+    result,
+    advice: result ? getBlackMarketAdvice(result.changePercent) : { level: 'neutral', title: '已兑换' }
+  }
 }).sort((a, b) => Number(a.isExchanged) - Number(b.isExchanged)))
 
 watch([currentBloodstones, prices, exchanged], () => {
