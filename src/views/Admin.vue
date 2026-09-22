@@ -8,15 +8,15 @@
         返回账号中心
       </RouterLink>
 
+      <p class="ad-section-label">站点后台</p>
       <nav class="ad-tabs" aria-label="后台功能">
-        <button type="button" :class="{ active: activeTab === 'users' }" @click="setActiveTab('users')">用户与模块</button>
-        <button type="button" :class="{ active: activeTab === 'stats' }" @click="setActiveTab('stats')">访问统计</button>
+        <button type="button" :class="{ active: activeTab === 'stats' }" :aria-pressed="activeTab === 'stats'" @click="setActiveTab('stats')">访问统计</button>
+        <button type="button" :class="{ active: activeTab === 'users' }" :aria-pressed="activeTab === 'users'" @click="setActiveTab('users')">用户与模块</button>
       </nav>
 
       <template v-if="activeTab === 'users'">
         <header class="ad-head">
         <div>
-          <p class="ad-eyebrow">站点后台</p>
           <h1 class="ad-title">用户与模块</h1>
         </div>
         <button class="ad-manage-btn" type="button" :disabled="loading" @click="load">
@@ -101,7 +101,7 @@
         </p>
       </template>
 
-      <StatsPage v-else />
+      <StatsPage v-else-if="user?.isOwner" />
     </div>
   </div>
 </template>
@@ -126,7 +126,7 @@ const users = ref([])
 const loading = ref(false)
 const error = ref('')
 const filter = ref('all')
-const activeTab = computed(() => route.query.tab === 'stats' ? 'stats' : 'users')
+const activeTab = computed(() => route.query.tab === 'users' ? 'users' : 'stats')
 
 const idleCount = computed(() => users.value.filter((u) => !u.modules.length).length)
 
@@ -215,11 +215,11 @@ async function load() {
 }
 
 function setActiveTab(tab) {
-  router.replace({ path: '/admin', query: tab === 'stats' ? { tab: 'stats' } : {} })
+  router.push({ path: '/admin', query: { tab } })
 }
 
 watch(activeTab, (tab) => {
-  if (tab === 'users' && !users.value.length && !loading.value) load()
+  if (tab === 'users' && user.value?.isOwner && !users.value.length && !loading.value) load()
 })
 
 onMounted(async () => {
@@ -263,13 +263,25 @@ onMounted(async () => {
 }
 .ad-back:hover { color: #38bdf8; }
 
+.ad-section-label {
+  margin: 0 0 12px;
+  color: var(--text);
+  font-size: 18px;
+  font-weight: 700;
+}
 .ad-tabs {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   margin-bottom: 24px;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  background: var(--color-surface);
 }
 .ad-tabs button {
-  min-height: 40px;
+  flex: 1;
+  min-height: 44px;
   padding: 0 16px;
   border: 1px solid rgba(148, 163, 184, 0.2);
   border-radius: 10px;
@@ -301,14 +313,6 @@ onMounted(async () => {
   justify-content: space-between;
   gap: 16px;
   margin-bottom: 22px;
-}
-.ad-eyebrow {
-  margin: 0 0 4px;
-  color: #38bdf8;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
 }
 .ad-title {
   margin: 0;

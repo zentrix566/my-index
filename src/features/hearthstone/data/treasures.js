@@ -58,5 +58,25 @@ export const TREASURE_EVENTS = [
       { id: 'lich-lord', name: '巫妖领主克尔苏加德 · 死骑/法师神话', note: '0.1%', weight: 1, image: '/hearthstone-cosmetics/hero-skins/mage/HERO_08cs.png', rarity: 'mythic', isGrand: true }
     ],
     drawCosts: [0, 120, 240, 360, 600, 840, 1160, 1580, 1980, 3580]
+  },
+  {
+    id: 'bigglesworth-2026-09',
+    name: '比格沃斯先生',
+    version: '36.6',
+    sourceUrl: 'https://www.iyingdi.com/tz/post/5716114',
+    endAt: null,
+    prizes: [
+      { id: 'corpse-cannon', name: '异画残骸大炮', note: '30%', weight: 300, image: '/hearthstone-cards/逃离紫罗兰监狱/full/残骸大炮_126502.png', imageNote: '卡牌预览使用普通卡面', rarity: 'common' },
+      { id: 'violet-golden-pack-bigglesworth', name: '逃离紫罗兰监狱金色卡包 ×1', note: '28%', weight: 280, icon: '📦', rarity: 'common' },
+      { id: 'slime-kitten-coin', name: '幸运币异画：软泥小猫', note: '11%', weight: 110, icon: '🪙', imageNote: '新幸运币图片待收录', rarity: 'rare' },
+      { id: 'sawbones', name: '异画锯骨巨魔', note: '10%', weight: 100, image: '/hearthstone-cards/逃离紫罗兰监狱/full/锯骨巨魔_126260.png', imageNote: '卡牌预览使用普通卡面', rarity: 'rare' },
+      { id: 'little-thief-edwin', name: '小毛贼艾德温', note: '7.5%', weight: 75, icon: '🗡️', imageNote: '新英雄皮肤图片待收录', rarity: 'epic' },
+      { id: 'tower-of-ghouls', name: '异画累叠食尸鬼', note: '5%', weight: 50, image: '/hearthstone-cards/逃离紫罗兰监狱/full/累叠食尸鬼_126252.png', imageNote: '卡牌预览使用普通卡面', rarity: 'epic' },
+      { id: 'pet-companion-malganis', name: '宠物伴侣玛尔加尼斯', note: '3.4%', weight: 34, icon: '👿', imageNote: '新英雄皮肤图片待收录', rarity: 'legendary' },
+      { id: 'victor-nefarius', name: '异画维克多·奈法里奥斯', note: '2.5%', weight: 25, image: '/hearthstone-cards/大地的裂变/full/维克多·奈法里奥斯_122778.png', imageNote: '卡牌预览使用普通卡面', rarity: 'legendary' },
+      { id: 'living-plague', name: '钻石活体疫病', note: '2.5%', weight: 25, image: '/hearthstone-cards/逃离紫罗兰监狱/full/活体疫病_126259.png', imageNote: '卡牌预览使用普通卡面', rarity: 'legendary' },
+      { id: 'mr-bigglesworth', name: '新宠物：比格沃斯先生', note: '0.1%', weight: 1, icon: '🐈', imageNote: '新宠物图片待收录', rarity: 'mythic', isGrand: true }
+    ],
+    drawCosts: [0, 120, 240, 360, 600, 840, 1160, 1580, 1980, 3280]
   }
 ]
