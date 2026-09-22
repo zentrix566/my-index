@@ -1,16 +1,20 @@
-/** 黑市血石价格与攒取天数计算。 */
-export function calculateBlackMarketItem({ initialPrice, currentPrice, quantity = 1, currentBloodstones = 900 }) {
+/** 黑市血石价格与攒取天数计算。owned 为已拥有份数，仅对剩余份数计算所需血石。 */
+export function calculateBlackMarketItem({ initialPrice, currentPrice, quantity = 1, owned = 0, currentBloodstones = 900 }) {
   const base = Math.max(0, Number(initialPrice) || 0)
   const current = Math.max(0, Number(currentPrice) || 0)
   const count = Math.max(1, Math.floor(Number(quantity) || 1))
+  const ownedCount = Math.min(Math.max(0, Math.floor(Number(owned) || 0)), count)
+  const remainingCount = count - ownedCount
   const bloodstones = Math.max(0, Number(currentBloodstones) || 0)
-  const initialTotal = base * count
-  const currentTotal = current * count
+  const initialTotal = base * remainingCount
+  const currentTotal = current * remainingCount
   const priceDifference = currentTotal - initialTotal
   const changePercent = initialTotal ? (priceDifference / initialTotal) * 100 : 0
   const remainingBloodstones = Math.max(0, currentTotal - bloodstones)
 
   return {
+    ownedCount,
+    remainingCount,
     initialTotal,
     currentTotal,
     priceDifference,
