@@ -8,11 +8,13 @@
         返回账号中心
       </RouterLink>
 
-      <p class="ad-section-label">站点后台</p>
-      <nav class="ad-tabs" aria-label="后台功能">
-        <button type="button" :class="{ active: activeTab === 'stats' }" :aria-pressed="activeTab === 'stats'" @click="setActiveTab('stats')">访问统计</button>
-        <button type="button" :class="{ active: activeTab === 'users' }" :aria-pressed="activeTab === 'users'" @click="setActiveTab('users')">用户与模块</button>
-      </nav>
+      <section class="ad-navigation" aria-label="站点后台功能">
+        <p class="ad-section-label">站点后台</p>
+        <nav class="ad-tab-list" aria-label="后台功能">
+          <button type="button" :class="{ active: activeTab === 'stats' }" :aria-pressed="activeTab === 'stats'" @click="setActiveTab('stats')">访问统计</button>
+          <button type="button" :class="{ active: activeTab === 'users' }" :aria-pressed="activeTab === 'users'" @click="setActiveTab('users')">用户与模块</button>
+        </nav>
+      </section>
 
       <template v-if="activeTab === 'users'">
         <header class="ad-head">
@@ -263,24 +265,25 @@ onMounted(async () => {
 }
 .ad-back:hover { color: #38bdf8; }
 
+.ad-navigation {
+  margin-bottom: 24px;
+}
 .ad-section-label {
   margin: 0 0 12px;
   color: var(--text);
   font-size: 18px;
   font-weight: 700;
 }
-.ad-tabs {
-  display: flex;
-  flex-wrap: wrap;
+.ad-tab-list {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
-  margin-bottom: 24px;
   padding: 8px;
   border: 1px solid var(--line);
   border-radius: 14px;
   background: var(--color-surface);
 }
-.ad-tabs button {
-  flex: 1;
+.ad-tab-list button {
   min-height: 44px;
   padding: 0 16px;
   border: 1px solid rgba(148, 163, 184, 0.2);
@@ -290,12 +293,12 @@ onMounted(async () => {
   font-weight: 700;
   cursor: pointer;
 }
-.ad-tabs button.active {
+.ad-tab-list button.active {
   border-color: rgba(56, 189, 248, 0.5);
   color: #e0f2fe;
   background: rgba(56, 189, 248, 0.14);
 }
-.ad-tabs button:focus-visible {
+.ad-tab-list button:focus-visible {
   outline: 3px solid rgba(56, 189, 248, 0.5);
   outline-offset: 3px;
 }

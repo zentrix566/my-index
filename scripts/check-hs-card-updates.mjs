@@ -16,6 +16,7 @@ import { readFileSync, existsSync } from 'node:fs'
 import { resolve, dirname } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import { BLIZZARD_API_BASE as API_BASE, SETS_URL, CARDS_URL } from './blizzard-endpoints.mjs'
+import { applyGameCardOverrides, GAME_CARD_OVERRIDES } from './hs-card-overrides.mjs'
 
 const __dirname = dirname(fileURLToPath(import.meta.url))
 const repoRoot = resolve(__dirname, '..')
@@ -123,13 +124,17 @@ async function main() {
   console.log(`远程 ${remote.length} 张，本地 ${Object.keys(local).length} 张\n`)
 
   const remoteById = new Map()
-  for (const c of remote) remoteById.set(c.id, c)
+  for (const sourceCard of remote) {
+    const c = applyGameCardOverrides(sourceCard)
+    remoteById.set(c.id, c)
+  }
 
   const added = []
   const changed = []
   let sameCount = 0
 
-  for (const c of remote) {
+  for (const sourceCard of remote) {
+    const c = applyGameCardOverrides(sourceCard)
     const dbCard = local[c.id]
     if (!dbCard) {
       added.push(c)
@@ -151,6 +156,12 @@ async function main() {
   }
 
   console.log('═══════════════════════════════════════')
+  const overrideNames = remote
+    .filter((card) => GAME_CARD_OVERRIDES[card.id])
+    .map((card) => card.name)
+  if (overrideNames.length) {
+    console.log(`游戏实测覆盖：${overrideNames.join('、')}（国服 API 当前值未采用）`)
+  }
   if (!changed.length && !added.length && !removed.length) {
     console.log('✓ 卡牌数值与上游完全一致，无需更新。')
   } else {

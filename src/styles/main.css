@@ -284,7 +284,7 @@
   color: #64748b;
 }
 
-:root[data-theme="light"] .ad-tabs button,
+:root[data-theme="light"] .ad-tab-list button,
 :root[data-theme="light"] .ad-manage-btn,
 :root[data-theme="light"] .ad-filter {
   border-color: rgba(100, 116, 139, 0.24);
@@ -292,14 +292,14 @@
   background: rgba(255, 255, 255, 0.84);
 }
 
-:root[data-theme="light"] .ad-tabs button.active,
+:root[data-theme="light"] .ad-tab-list button.active,
 :root[data-theme="light"] .ad-filter.active {
   border-color: rgba(2, 132, 199, 0.42);
   color: #075985;
   background: rgba(14, 165, 233, 0.12);
 }
 
-:root[data-theme="light"] .ad-tabs button:hover,
+:root[data-theme="light"] .ad-tab-list button:hover,
 :root[data-theme="light"] .ad-manage-btn:hover:not(:disabled),
 :root[data-theme="light"] .ad-filter:hover {
   border-color: rgba(2, 132, 199, 0.38);

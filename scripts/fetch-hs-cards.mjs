@@ -49,6 +49,7 @@ try {
 } catch { /* ignore */ }
 
 import { BLIZZARD_API_BASE as API_BASE, SETS_URL, CARDS_URL } from './blizzard-endpoints.mjs'
+import { applyGameCardOverrides } from './hs-card-overrides.mjs'
 const LOCAL_ROOT = process.env.HS_LOCAL_ROOT || 'E:/github/我的炉石2/hs-cards-id'
 const DATA_DIR = resolve(process.env.HS_DATA_OUT || join(repoRoot, 'src/features/hearthstone/data'))
 const PAGE_SIZE = 200
@@ -300,7 +301,7 @@ async function main() {
   // 收集卡片元数据 + 下载图片（离线/试跑跳过下载）
   const dlTasks = []
   for (const rc of rawCards) {
-    const c = extractCard(rc)
+    const c = applyGameCardOverrides(extractCard(rc))
     if (!c.id || !c.name) continue
     const setName = setById.get(c.cardSetId) || SET_NAME_OVERRIDES[String(c.cardSetId)] || `set-${c.cardSetId}`
     c.setName = setName
