@@ -2,6 +2,15 @@
 // 按时间倒序排列；同一天涉及多个模块时分别记录，且同一天同一 category 只保留一条。
 export const changelog = [
   {
+    date: '2026-09-24',
+    title: '黑市价格参考',
+    category: 'hearthstone',
+    route: '/hearthstone/black-market',
+    changes: [
+      '黑市血石计算器新增涨跌 15% 参考价、剩余商品总价及购买计划，可按已兑换包数计算剩余卡包，并判断活动截止前能否买齐奖励。'
+    ]
+  },
+  {
     date: '2026-09-22',
     title: '炉石功能与卡牌更新',
     category: 'hearthstone',
