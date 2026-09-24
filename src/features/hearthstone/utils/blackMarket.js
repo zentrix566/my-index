@@ -5,6 +5,14 @@ const MARKET_DEADLINE = new Date('2026-10-06T16:00:00Z')
 const DEADLINE_DATE_KEY = '2026-10-07'
 const DAY_MS = 24 * 60 * 60 * 1000
 
+/** 返回距离下次北京时间 15:00 变价的秒数。 */
+export function secondsUntilBlackMarketChange(now = new Date()) {
+  const todayKey = formatBeijingDateKey(now)
+  const todayChange = Date.parse(`${todayKey}T07:00:00Z`)
+  const nextChange = now.getTime() < todayChange ? todayChange : todayChange + DAY_MS
+  return Math.ceil((nextChange - now.getTime()) / 1000)
+}
+
 /** 黑市血石价格与攒取天数计算。 */
 export function calculateBlackMarketItem({ initialPrice, currentPrice, quantity = 1, currentBloodstones = 900 }) {
   const base = Math.max(0, Number(initialPrice) || 0)
