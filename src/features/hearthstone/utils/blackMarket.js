@@ -13,19 +13,23 @@ export function secondsUntilBlackMarketChange(now = new Date()) {
   return Math.ceil((nextChange - now.getTime()) / 1000)
 }
 
-/** 黑市血石价格与攒取天数计算。 */
-export function calculateBlackMarketItem({ initialPrice, currentPrice, quantity = 1, currentBloodstones = 900 }) {
+/** 黑市血石价格与攒取天数计算，支持扣除已拥有份数。 */
+export function calculateBlackMarketItem({ initialPrice, currentPrice, quantity = 1, owned = 0, currentBloodstones = 900 }) {
   const base = Math.max(0, Number(initialPrice) || 0)
   const current = Math.max(0, Number(currentPrice) || 0)
   const count = Math.max(0, Math.floor(Number(quantity) || 0))
+  const ownedCount = Math.min(count, Math.max(0, Math.floor(Number(owned) || 0)))
+  const remainingCount = count - ownedCount
   const bloodstones = Math.max(0, Number(currentBloodstones) || 0)
-  const initialTotal = base * count
-  const currentTotal = current * count
+  const initialTotal = base * remainingCount
+  const currentTotal = current * remainingCount
   const priceDifference = currentTotal - initialTotal
   const changePercent = initialTotal ? (priceDifference / initialTotal) * 100 : 0
   const remainingBloodstones = Math.max(0, currentTotal - bloodstones)
 
   return {
+    ownedCount,
+    remainingCount,
     initialTotal,
     currentTotal,
     lowerPrice: Math.round(current * 0.85),

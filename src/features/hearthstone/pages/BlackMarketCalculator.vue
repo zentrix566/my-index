@@ -39,9 +39,10 @@
                   <th scope="col">商品</th>
                   <th scope="col">原价</th>
                   <th scope="col">现价</th>
-                  <th scope="col">±15% 后</th>
-                  <th scope="col">相对首发</th>
-                  <th scope="col">血石变化</th>
+                  <th scope="col">建议入手</th>
+                  <th scope="col">±15%</th>
+                  <th scope="col">涨跌</th>
+                  <th scope="col">差额</th>
                   <th scope="col">建议</th>
                   <th scope="col">购买计划</th>
                   <th scope="col">状态</th>
@@ -50,14 +51,14 @@
               <tbody>
                 <tr v-for="item in marketItems" :key="item.id" :class="{ 'is-exchanged': item.isExchanged }">
                   <th scope="row">{{ item.name }}</th>
-                  <td>{{ formatNumber(item.initialPrice) }}<small v-if="item.quantity > 1"> / 份</small></td>
+                  <td>{{ formatNumber(item.initialPrice) }}<small v-if="item.quantity > 1"> / 包</small></td>
                   <td>
                     <label class="hs-bm-input" :for="`black-market-${item.id}`">
                       <span class="sr-only">{{ item.name }}{{ item.quantity > 1 ? '每包' : '' }}当前价格</span>
                       <input :id="`black-market-${item.id}`" v-model.number="prices[item.id]" type="number" min="0" step="1" inputmode="numeric">
-                      <b>{{ item.quantity > 1 ? '血石/包' : '血石' }}</b>
                     </label>
                   </td>
+                  <td :class="suggestedClass(item)">{{ formatNumber(suggestedPrice(item)) }}</td>
                   <td>
                     <span v-if="item.isExchanged">—</span>
                     <span v-else class="hs-bm-range">
@@ -90,7 +91,7 @@
 
           <p class="hs-bm-summary-note">按当前价格、现有血石和此后每天获得 900 血石估算；已兑换的商品和卡包不计入。购买计划逐项比较现有血石，买齐日期按全部未兑换商品计算。</p>
           <p class="hs-bm-note">直接修改现价即可查看相对首发的涨跌、血石变化和入手建议。跌 15% 和涨 15% 为以当前价格计算的参考价，四舍五入到整数。黑暗帝国卡包现价按每包填写，剩余价格按未兑换包数计算。</p>
-          <p class="hs-bm-rule">建议规则：低于首发价 10% 及以上建议入手；低于首发价但不足 10% 可酌情入手；高于首发价建议观望。</p>
+          <p class="hs-bm-rule">建议入手价为原价的 9 折。现价不高于该价格建议入手；低于原价但未到入手价可酌情入手；高于原价建议观望。</p>
         </section>
       </main>
     </div>
@@ -117,8 +118,9 @@ const defaults = [
   { id: 'yogg-ramen', name: '法师皮肤「尤格-拉面」', initialPrice: 1050, quantity: 1 },
   { id: 'dark-empire-pack', name: '黑暗帝国的统治卡牌包', initialPrice: 900, quantity: 4 },
   { id: 'fireside-friends', name: '卡背「炉边好友」', initialPrice: 750, quantity: 1 },
-  { id: 'golden-standard-pack', name: '金色标准包', initialPrice: 900, quantity: 1 }
+  { id: 'golden-standard-pack', name: '金色标准包', initialPrice: 750, quantity: 1 }
 ]
+const LEGACY_DEFAULT_PRICES = { 'golden-standard-pack': 900 }
 
 function readStoredValue() {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '{}') } catch { return {} }
@@ -126,11 +128,15 @@ function readStoredValue() {
 
 const stored = readStoredValue()
 const currentBloodstones = ref(stored.currentBloodstones == null ? 900 : Math.max(0, Number(stored.currentBloodstones) || 0))
-const prices = ref(Object.fromEntries(defaults.map((item) => [item.id, Math.max(0, Number(stored.prices?.[item.id]) || item.initialPrice)])))
+const prices = ref(Object.fromEntries(defaults.map((item) => {
+  const storedPrice = Number(stored.prices?.[item.id])
+  const price = storedPrice === LEGACY_DEFAULT_PRICES[item.id] ? item.initialPrice : storedPrice
+  return [item.id, Math.max(0, price || item.initialPrice)]
+})))
 const exchanged = ref(Object.fromEntries(defaults.map((item) => [item.id, Boolean(stored.exchanged?.[item.id])])))
 const redeemedCounts = ref(Object.fromEntries(defaults.filter((item) => item.quantity > 1).map((item) => [
   item.id,
-  Math.min(item.quantity, Math.max(0, Math.floor(Number(stored.redeemedCounts?.[item.id] ?? (stored.exchanged?.[item.id] ? item.quantity : 0)) || 0)))
+  Math.min(item.quantity, Math.max(0, Math.floor(Number(stored.redeemedCounts?.[item.id] ?? stored.owned?.[item.id] ?? (stored.exchanged?.[item.id] ? item.quantity : 0)) || 0)))
 ])))
 const marketItems = computed(() => defaults.map((item) => {
   const remainingQuantity = item.quantity > 1 ? item.quantity - redeemedCounts.value[item.id] : Number(!exchanged.value[item.id])
@@ -163,6 +169,12 @@ watch([currentBloodstones, prices, exchanged, redeemedCounts], () => {
 }, { deep: true })
 
 function toggleExchanged(id) { exchanged.value[id] = !exchanged.value[id] }
+function suggestedPrice(item) { return Math.round(item.initialPrice * 0.9) }
+function suggestedClass(item) {
+  if (item.isExchanged) return ''
+  const current = Math.max(0, Number(prices.value[item.id]) || 0)
+  return current <= suggestedPrice(item) ? 'is-down' : 'is-flat'
+}
 function formatNumber(value) { return Math.round(Number(value) || 0).toLocaleString('zh-CN') }
 function formatChange(value) { const rounded = Math.round(Number(value) || 0); return `${rounded > 0 ? '+' : ''}${formatNumber(rounded)}` }
 function formatChangePercent(value) { const amount = Number(value) || 0; return `${amount > 0 ? '+' : ''}${amount.toFixed(1)}%` }
@@ -177,7 +189,7 @@ function changeClass(value) { return value > 0 ? 'is-up' : value < 0 ? 'is-down'
 .hs-bm-timer{display:grid;justify-items:end;gap:4px;text-align:right}.hs-bm-timer strong{color:#fff0c4;font:700 17px Georgia,serif;font-variant-numeric:tabular-nums}
 .hs-bm-summary{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:16px 0 0}.hs-bm-summary>div{min-width:0;padding:14px 16px;border:1px solid rgba(217,172,89,.38);border-radius:8px;background:linear-gradient(135deg,rgba(106,71,43,.3),rgba(18,15,19,.62))}.hs-bm-summary>div.hs-bm-summary-balance{border-color:rgba(239,103,90,.55);background:linear-gradient(135deg,rgba(117,42,37,.55),rgba(40,22,24,.75))}.hs-bm-summary dt{color:var(--bm-muted);font-size:12px}.hs-bm-summary dd{margin:7px 0 0;color:#fff0c4;font:700 25px Georgia,'Microsoft YaHei',serif;font-variant-numeric:tabular-nums}.hs-bm-summary dd small{color:#dfc58e;font-size:12px}.hs-bm-summary-balance dd{display:flex;align-items:baseline;gap:4px}.hs-bm-summary-balance input{width:100%;min-width:0;border:0;background:transparent;color:#fff0c4;font:inherit;font-variant-numeric:tabular-nums}.hs-bm-summary-balance input:focus-visible{outline:3px solid #ffe19a;outline-offset:3px}.hs-bm-summary-note{margin:12px 0 0;color:var(--bm-muted);font-size:12px;line-height:1.5}
 .hs-bm-deadline{display:flex;flex-wrap:wrap;gap:5px 14px;align-items:center;margin:12px 0 0;padding:10px 14px;border:1px solid;border-radius:7px;font-size:13px;line-height:1.5}.hs-bm-deadline.is-possible{border-color:rgba(131,223,149,.45);background:rgba(42,90,50,.22);color:#baf3be}.hs-bm-deadline.is-impossible{border-color:rgba(239,103,90,.45);background:rgba(105,39,35,.22);color:#ffaaa0}.hs-bm-deadline strong{color:#fff0c4}
-.hs-bm-table{min-width:1100px}.hs-bm-table th:nth-child(1){width:19%}.hs-bm-table th:nth-child(2){width:7%}.hs-bm-table th:nth-child(3),.hs-bm-table th:nth-child(4){width:11%}.hs-bm-table th:nth-child(5),.hs-bm-table th:nth-child(7){width:8%}.hs-bm-table th:nth-child(6){width:9%}.hs-bm-table th:nth-child(8){width:15%}.hs-bm-table th:nth-child(9){width:12%}.hs-bm-range{display:grid;gap:3px;white-space:nowrap;font-variant-numeric:tabular-nums}.hs-bm-plan{font-size:12px;line-height:1.4}.hs-bm-plan.is-ready{color:#baf3be}.hs-bm-plan.is-late{color:#ffaaa0}.hs-bm-quantity{display:grid;gap:4px;color:var(--bm-muted);font-size:11px}.hs-bm-quantity select{width:100%;min-height:30px;padding:4px;border:1px solid #88734f;border-radius:4px;background:#2d2928;color:#f0dfb8;font:inherit;font-size:12px}.hs-bm select:focus-visible{outline:3px solid #ffe19a;outline-offset:3px}
+.hs-bm-table{min-width:1060px}.hs-bm-table th,.hs-bm-table td{padding:9px 8px}.hs-bm-table th:nth-child(1){width:19%}.hs-bm-table th:nth-child(2){width:7%}.hs-bm-table th:nth-child(3),.hs-bm-table th:nth-child(4){width:9%}.hs-bm-table th:nth-child(5){width:10%}.hs-bm-table th:nth-child(6),.hs-bm-table th:nth-child(7){width:8%}.hs-bm-table th:nth-child(8){width:7%}.hs-bm-table th:nth-child(9){width:13%}.hs-bm-table th:nth-child(10){width:10%}.hs-bm-input input{box-sizing:border-box;appearance:textfield;padding:7px 6px}.hs-bm-input input::-webkit-inner-spin-button,.hs-bm-input input::-webkit-outer-spin-button{margin:0;appearance:none}.hs-bm-range{display:grid;gap:3px;white-space:nowrap;font-variant-numeric:tabular-nums}.hs-bm-plan{font-size:12px;line-height:1.4}.hs-bm-plan.is-ready{color:#baf3be}.hs-bm-plan.is-late{color:#ffaaa0}.hs-bm-quantity{display:grid;gap:4px;color:var(--bm-muted);font-size:11px}.hs-bm-quantity select{width:100%;min-height:30px;padding:4px;border:1px solid #88734f;border-radius:4px;background:#2d2928;color:#f0dfb8;font:inherit;font-size:12px}.hs-bm select:focus-visible{outline:3px solid #ffe19a;outline-offset:3px}
 @media (max-width:760px){.hs-bm-timer{justify-items:start;text-align:left}.hs-bm-summary{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.hs-bm-summary>div{padding:10px 13px}.hs-bm-summary dd{margin-top:3px;font-size:21px}}
 @media (max-width:760px){.hs-bm{padding:12px 0 36px}.hs-bm-wrap{padding:0 8px}.hs-bm-panel{border-width:3px;border-radius:12px}.hs-bm-topbar{grid-template-columns:1fr auto;gap:8px;padding:10px}.hs-bm-sign{grid-row:1;grid-column:1/-1;justify-self:center;width:min(220px,90%)}.hs-bm-sign strong{font-size:20px}.hs-bm-back{grid-row:2}.hs-bm-overview{padding:18px 11px}.hs-bm-overview-head{align-items:start;flex-direction:column;gap:4px}.hs-bm-overview h1{font-size:26px}.hs-bm-table-wrap{border-radius:6px}.hs-bm-table th,.hs-bm-table td{padding:9px 10px}.hs-bm-table{font-size:12px}}@media (prefers-reduced-motion:reduce){.hs-bm *,.hs-bm *::before,.hs-bm *::after{transition-duration:.01ms!important}}
 </style>
