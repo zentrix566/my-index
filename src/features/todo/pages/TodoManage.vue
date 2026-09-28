@@ -104,9 +104,7 @@
             </select>
             项
           </label>
-          <button class="todo-btn ghost small" type="button" :disabled="currentPage <= 1" @click="currentPage--">上一页</button>
-          <span class="todo-page-num">第 {{ currentPage }} / {{ totalPages }} 页</span>
-          <button class="todo-btn ghost small" type="button" :disabled="currentPage >= totalPages" @click="currentPage++">下一页</button>
+          <AppPagination v-model:page="currentPage" :page-count="totalPages" />
         </div>
       </div>
 
@@ -173,6 +171,7 @@
 
 <script setup>
 import FormActions from '../../../components/FormActions.vue'
+import AppPagination from '../../../components/AppPagination.vue'
 import { computed, onMounted, ref, watch } from 'vue'
 import { useRouter } from 'vue-router'
 import * as XLSX from 'xlsx'
@@ -565,11 +564,4 @@ onMounted(async () => {
   font-weight: 600;
 }
 .todo-select.small { min-width: auto; width: 72px; padding: 6px 8px; }
-.todo-page-num {
-  font-size: 13px;
-  color: var(--todo-text);
-  font-weight: 600;
-  min-width: 92px;
-  text-align: center;
-}
 </style>

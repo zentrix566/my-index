@@ -2,6 +2,25 @@
 // 按时间倒序排列；同一天涉及多个模块时分别记录，且同一天同一 category 只保留一条。
 export const changelog = [
   {
+    date: '2026-09-28',
+    title: '分页操作更完整',
+    category: 'todo',
+    route: '/todo/manage',
+    changes: [
+      '日程管理列表分页新增首页、末页按钮和页码跳转，条目多时不必反复翻页。'
+    ]
+  },
+  {
+    date: '2026-09-28',
+    title: '记录节奏优先展示最近',
+    category: 'notes',
+    route: '/notes',
+    changes: [
+      '记录节奏图表打开即显示最近 7 天，今天排在最后，还没到的日期不再展示；向左拖动可回看本月更早记录。',
+      '日期归档分页新增首页、末页按钮和页码跳转。'
+    ]
+  },
+  {
     date: '2026-09-24',
     title: '黑市价格参考',
     category: 'hearthstone',
