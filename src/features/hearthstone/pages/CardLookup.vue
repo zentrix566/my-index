@@ -223,7 +223,9 @@ function safeCardText(value) {
   return escaped.replace(/__CARD_TAG_(\d+)__/g, (_, index) => tags[Number(index)] || '')
 }
 
-// 按名称（模糊）或 dbfId（精确）在卡牌库中查找，返回所有匹配
+// 按名称（模糊）或 dbfId（精确）在卡牌库中查找，返回所有匹配。
+// 名称匹配不做「精确命中即短路」：存在同名旧卡时（如搜「亚煞极」命中旧卡
+// 「亚煞极」，挡住「亚煞极，泰坦杀神」），一律全量包含匹配，按 id 倒序（新卡优先）。
 function findCards(raw) {
   const q = (raw || '').trim()
   if (!q) return []
@@ -231,9 +233,10 @@ function findCards(raw) {
   if (/^\d+$/.test(q)) {
     return vals.filter((c) => String(c.id) === q)
   }
-  const exact = vals.filter((c) => c.name === q)
-  if (exact.length) return exact
-  return vals.filter((c) => c.name.includes(q))
+  const lower = q.toLocaleLowerCase('zh-CN')
+  const matched = vals.filter((c) => String(c.name || '').toLocaleLowerCase('zh-CN').includes(lower))
+  matched.sort((a, b) => Number(b.id) - Number(a.id))
+  return matched
 }
 
 function lookup() {
