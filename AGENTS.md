@@ -2,6 +2,14 @@
 
 本文件供 AI 编程助手阅读，包含项目架构要点、目录地图和运维流程，无需反向探索代码即可上手。
 
+## 本文件维护约定（强制）
+
+本文件由历次 AI 会话沉淀维护，**内容不会自动跟着代码变**：
+
+- 修改代码时，若发现本文件中的目录结构、脚本名、数量、流程描述与现实不符，必须顺手更正本文件，不要留着过期信息。
+- 新增/删除页面、composable、脚本、数据文件，或改变某个流程的命令时，同步更新对应章节。
+- 拿不准某条描述是否还有效时，先对照仓库核实再引用，不要照抄。
+
 ## 项目概述
 
 zentrix-index 是个人全栈站点（Vue 3 + Vite + Express），含炉石卡牌/成就/收藏、Todo、意志力追踪、黄粱一梦（AI）、地铁/历史时间线等功能。生产环境通过 GitHub Actions 构建 Docker 镜像部署到 K3s，推送 main 分支即自动部署。
@@ -98,10 +106,10 @@ my-index/
 │   ├── mailer.js               # SMTP 邮件
 │   ├── logger.js               # 文件日志（90 天轮转）
 │   └── local-dev.mjs           # 本地开发用 SQLite 替代 PG
-├── scripts/                    # 运维/数据脚本（约 50 个，见下方常用脚本）
+├── scripts/                    # 运维/数据脚本（66 个，见下方常用脚本）
 ├── k8s/                        # Kubernetes 部署清单
 ├── public/                     # Vite 静态资源（会打进 dist/）
-│   └── hearthstone/            # 收藏 JSON（card-backs/hero-skins/coins）
+│   └── hearthstone/            # 收藏 JSON（card-backs/hero-skins/coins/pets + treasure-packs）
 ├── tools/                      # 外部配套工具
 │   ├── hs-cosmetics-collector/ # C# 采集器（读游戏内存导出收藏/成就）
 │   ├── hs-cosmetics-viewer/    # 独立 HTML 导入预览器
@@ -121,49 +129,64 @@ my-index/
 
 ```
 src/features/hearthstone/
-├── index.js                    # 懒加载入口，导出 8 个页面路由
+├── index.js                    # 懒加载入口，导出 12 个页面路由
 ├── pages/                      # 页面组件
-│   ├── HearthstoneAchievements.vue  # 成就主页（查看器+编辑器+分享）
-│   ├── CardLookup.vue          # 卡牌查询（按名称/dbfId）
-│   ├── DeckCodeViewer.vue      # 卡组代码解析
-│   ├── HearthstoneCollection.vue   # 外观收藏（皮肤/硬币/卡背）
-│   ├── FrogSuspectCard.vue     # 蛙生找茬游戏
-│   ├── FrogReviewPage.vue      # 蛙生验收台
-│   ├── EventCalculator.vue     # 活动计算器
-│   └── TavernPassCalculator.vue # 酒馆战棋通行证计算器
+│   ├── HearthstoneAchievements.vue  # 成就主页（查看器+编辑器+分享，/hearthstone）
+│   ├── HearthstoneGuide.vue    # 炉石功能导航页（/hearthstone/guide）
+│   ├── HearthstoneCollection.vue   # 外观收藏（皮肤/硬币/卡背/宠物，/hearthstone/collection）
+│   ├── HearthstoneWheel.vue    # 暗月宝藏模拟抽赏（/hearthstone/wheel）
+│   ├── AlteracPuzzleAssistant.vue  # 奥特兰克谜题助手（/hearthstone/alterac-puzzle）
+│   ├── CardLookup.vue          # 卡牌查询（/hearthstone/lookup）
+│   ├── DeckCodeViewer.vue      # 卡组代码解析（/hearthstone/deck）
+│   ├── BlackMarketCalculator.vue   # 黑市血石计算器（/hearthstone/black-market）
+│   ├── EventCalculator.vue     # 活动计算器（/hearthstone/event）
+│   ├── TavernPassCalculator.vue # 通行证 XP 计算（/hearthstone/xp）
+│   ├── FrogSuspectCard.vue     # 蛙生找茬游戏（/hearthstone/frog）
+│   └── FrogReviewPage.vue      # 蛙生验收台（/hearthstone/frog/review）
 ├── components/                 # 约 20 个组件（成就卡、弹窗、筛选栏、卡图库等）
-├── composables/                # 核心逻辑
+├── composables/                # 核心逻辑（13 个）
 │   ├── useCardDatabase.js      # ★ 共享卡牌库加载器（从 OSS 加载 cards-db.json）
 │   ├── useFrogGame.js          # 蛙生游戏逻辑
 │   ├── useAchievementCatalog.js # 成就目录加载/筛选
 │   ├── useAchievementProgress.js # 进度状态管理
+│   ├── useAchievementFilters.js # 成就筛选状态
 │   ├── useAchievementSprint.js  # 冲刺待办清单
 │   ├── useAchievementBackup.js  # 导出/导入进度
-│   ├── useAchievementGameImport.js # 从采集器 JSON 导入
-│   └── useHearthstoneProfile.js # 固定成就 + 显示偏好
-├── utils/                      # 工具函数
+│   ├── useAchievementGameImport.js # 从采集器 JSON 导入游戏进度
+│   ├── useAchievementFeedback.js # 成就页反馈收集
+│   ├── useHearthstoneProfile.js # 固定成就 + 显示偏好
+│   ├── useHearthstoneTheme.js   # 模块主题切换
+│   ├── useDialogFocus.js        # 弹窗焦点管理
+│   └── usePersistentRef.js      # localStorage 持久化 ref
+├── utils/                      # 工具函数（13 个）
 │   ├── cardImages.js           # ★ 卡牌图片路径 + CARD_IMAGE_VERSION 版本号
 │   ├── achievementCardImages.js # 成就卡图路径
 │   ├── deckstring.js           # 卡组代码 base64/varint 解码
 │   ├── achievements.js         # 职业映射/搜索/分组
 │   ├── achievementRecommendations.js # 规则推荐排序
 │   ├── achievementShareImage.js # Canvas 分享图生成
+│   ├── achievementExport.js    # 成就进度导出/导入纯函数
+│   ├── blackMarket.js          # 黑市血石计算器纯函数
 │   ├── cosmetics.js            # 外观类型定义
 │   ├── eventCalculator.js      # 活动计算器纯函数
-│   └── xpCalculator.js         # 通行证 XP 计算
+│   ├── xpCalculator.js         # 通行证 XP 计算
+│   ├── shareCanvas.js          # 分享图 Canvas 缩放/导出公共工具
+│   └── constants.js            # 成就共享常量（前后端同源）
 ├── data/                       # 静态数据（import 进 JS 包）
-│   ├── achievements/*.json     # 26 个版本的成就定义
+│   ├── achievements/*.json     # 27 个版本的成就定义
 │   ├── dbfid-cardnames.json    # dbfId→卡名（卡组解析用）
 │   ├── deck-card-images.json   # 卡名→图片路径（约 6000 条）
 │   ├── achievement-card-images.json # 成就关联卡图
-│   ├── achievement-id-map.json # slug↔游戏内数字 ID
+│   ├── achievement-id-map.json # slug↔游戏内数字 ID（见「成就进度导入与 ID 映射」）
+│   ├── core-expansion-ids.js   # ★ 核心版本 ID 单一事实源（前端+服务端共用）
 │   ├── expansions.js           # 版本索引
 │   ├── version-name-map.js     # 跨系统版本名映射
+│   ├── events.js / rewardsTrack.js / treasures.js # 活动、奖励轨道、宝藏数据
 │   ├── card-back-map.json      # 卡背映射（仅构建脚本用）
-│   └── cosmetic-*.json         # 外观相关映射
+│   └── cosmetic-coin-map.json  # 硬币外观映射
 ├── api/                        # 前端 API 调用（progress.js, profile.js）
-├── ai/                         # AI 建议组件（实验性）
-└── styles/                     # 模块 CSS
+├── ai/                         # AI 建议组件（实验性：AiAdvisor.vue + config.js）
+└── styles/                     # 模块 CSS（index.js 统一挂载）
 ```
 
 ## 全站公共架构规范
@@ -209,7 +232,7 @@ src/features/hearthstone/
 
 ### 卡牌数据库（唯一数据源）
 
-- **`cards-db.json`** 是唯一的全量卡牌数据库（约 5.3 MB），由 `scripts/fetch-hs-cards.mjs` 从暴雪国服 API 拉取生成，本地路径 `public/hearthstone/cards-db.json`，线上托管在 OSS `hearthstone-data/cards-db.json`。
+- **`cards-db.json`** 是唯一的全量卡牌数据库（约 5.7 MB），由 `scripts/fetch-hs-cards.mjs` 从暴雪国服 API 拉取生成，本地路径 `public/hearthstone/cards-db.json`，线上托管在 OSS `hearthstone-data/cards-db.json`。
 - 该文件**不打进 Docker 镜像**（`.dockerignore` 已排除），前端通过 `/hearthstone-data/cards-db.json` 运行时 fetch。
 - 共享加载器：`src/features/hearthstone/composables/useCardDatabase.js`，提供：
   - `loadCardDatabase()` — 加载全量库（多页面共享同一次 fetch）
@@ -304,12 +327,29 @@ node scripts/upload-cosmetic-thumbnails.mjs
 
 成就总数由 `src/features/hearthstone/data/achievements/*.json` 中所有版本的 `achievements` 数组实时汇总，不要在页面里手动修改“收录成就”数字。
 
-1. **确认归属版本**：已有版本直接修改对应 JSON；新版本先创建独立 JSON，并在 `src/features/hearthstone/data/expansions.js` 中 import 后加入 `expansions`。如果是新增版本，还要根据是否属于原有版本维护 `CORE_EXPANSION_IDS` / `ADDED_EXPANSION_ORDER`。
+1. **确认归属版本**：已有版本直接修改对应 JSON；新版本先创建独立 JSON，并在 `src/features/hearthstone/data/expansions.js` 中 import 后加入 `expansions`。如果是新增版本，还要根据是否属于原有版本维护 `core-expansion-ids.js`（`CORE_EXPANSION_IDS` 单一事实源，前端与服务端共用）和 `expansions.js` 里的 `ADDED_EXPANSION_ORDER`。
 2. **添加成就对象**：使用全局唯一的站内 slug（例如 `vh-010`），填写 `name`、`heroClass`、`type`、`difficulty`、`stages` 等字段。累计成就的阶段必须提供正确的 `quota`；需要卡牌详情时补充 `relatedCards`，需要攻略或卡组时补充 `guide` / `recommendedDecks`。
 3. **检查数据关联**：如果 `relatedCards` 使用了新卡名，确认卡牌名称索引和卡图映射也已更新；否则成就数量会增加，但关联卡牌可能没有图片或详情。
-4. **更新游戏导入映射**：若需要支持采集器导入游戏内进度，准备最新的 `hs-achievement-data.json` 后执行 `node scripts/build-achievement-id-map.mjs --hs-data <hs-achievement-data.json 路径>`，检查未匹配清单。
-5. **本地验证**：运行 `npm run check:syntax` 和 `npm run build`，打开成就页确认版本数量、成就数量、筛选结果和成就详情均正常。
+4. **更新游戏导入映射（必须，不是可选）**：新增或修改成就后必须重建 `achievement-id-map.json`，否则这些成就无法通过游戏内进度导入（踩过坑，见下方「成就进度导入与 ID 映射」）。执行 `node scripts/build-achievement-id-map.mjs`（默认自动优先使用最新 HSAchieveGuide 校准数据），检查未匹配清单。
+5. **本地验证**：运行 `npm run check`（其中 `check:achievement-map` 守卫会拦截映射缺失）和打开成就页确认版本数量、成就数量、筛选结果和成就详情均正常。
 6. **提交前检查**：确认 ID 没有重复、阶段顺序和 quota 正确、中文字段无误；不要直接删除旧成就 ID，以免历史用户进度失去对应目标。若只是暂时下线某个工具，应先隐藏入口并保留路由与页面代码，观察后再决定是否删除。
+
+### 成就进度导入与 ID 映射（踩坑记录）
+
+成就页「导入游戏内进度」读取采集器导出的 achievements.json（只含游戏数字成就 ID），靠 `src/features/hearthstone/data/achievement-id-map.json` 换算成站内 slug 进度。该映射由 `scripts/build-achievement-id-map.mjs` 生成、**静态打包进前端 bundle，改动必须部署才生效**。
+
+**数据源：[LeaDYonovic/HSAchieveGuide](https://github.com/LeaDYonovic/HSAchieveGuide)**（站内 slug ↔ 游戏成就数字 ID / 中文名 / quota 的唯一来源）：
+
+- 优先用仓库里的 `data/official-calibration/flat.zh-CN.json`（官方成就表快照，对新版本成就最全），构建脚本已原生支持该格式并默认优先；`data/hs-achievement-data.json` 依赖 Firestone 运行时刷新，常滞后于新补丁。
+- 本地解压备份在 `C:/Users/19872/Downloads/HSAchieveGuide-main/`，会过期；更新方式：`git clone --depth 1 https://github.com/LeaDYonovic/HSAchieveGuide`（raw.githubusercontent.com 直连不通，走 git clone 或 api.github.com 的 git/blobs 接口）。
+- 版本未上线时成就数据源里没有对应条目，等上线补丁后项目更新才出现（2026-10-21《黑暗帝国的统治》即属此例，上线后再加成就）。
+
+**2026-10 事故**：紫罗兰监狱版本 8-26 加入站内后没有重建映射表（旧映射 8-16 生成），且当时的数据源快照里也没有该版本成就，导致用户导入时新成就全部匹配不到——预览显示「新增 0 个完成阶段」、确认按钮被禁用。规约：
+
+1. 站内成就 JSON 任何新增/修改后，**必须**拉最新 HSAchieveGuide 数据重建映射，并检查未匹配清单为空或有合理解释。
+2. 重建后做回归对比：**已有 slug 的 ID 数组不允许变化**（变了老用户导入会错位），只接受「新增、确认旧映射本来就错的纠错、零丢失」。
+3. 名称匹配不到的成就不要臆断为「站内自制」——紫罗兰 4 个成就（药炸了/潜伏内鬼等）后来被证实是 36.4 补丁新增的真实成就，换新数据就匹配上了。
+4. `npm run check` 中的 `check:achievement-map` 守卫会在映射覆盖不全时直接失败，不要绕过。
 
 ## 常用脚本速查
 
@@ -318,6 +358,8 @@ node scripts/upload-cosmetic-thumbnails.mjs
 | `npm run dev` | 启动 Vite + Express 开发服务器 |
 | `npm run build` | 生产构建 |
 | `npm run check:syntax` | 语法检查（server/scripts/src） |
+| `npm run check:achievement-map` | 守卫：站内成就必须全部有游戏进度导入映射 |
+| `node scripts/build-achievement-id-map.mjs` | 重建成就导入 ID 映射（默认优先 HSAchieveGuide 校准数据，也可 `--hs-data` 指定） |
 | `node scripts/fetch-hs-cards.mjs` | 从暴雪 API 拉卡牌数据+图片 |
 | `HS_DATA_ONLY=1 node scripts/fetch-hs-cards.mjs` | 仅更新卡牌数据，不下载图片 |
 | `node scripts/check-hs-card-updates.mjs` | 对比暴雪 API 与本地数据差异 |
