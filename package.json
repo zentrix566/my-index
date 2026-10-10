@@ -10,7 +10,7 @@
     "build": "vite build",
     "check:syntax": "node scripts/check-syntax.mjs",
     "check:schema": "node scripts/check-schema-boundaries.mjs",
-    "check": "npm run check:syntax && npm run check:schema && npm run build",
+    "check": "npm run check:syntax && npm run check:schema && npm run check:achievement-map && npm run build",
     "archive:legacy-auth": "node scripts/archive-legacy-main-auth.mjs",
     "build:firestone-exporter": "pkg tools/firestone-collection-exporter/export-firestone-collection.cjs --targets node18-win-x64 --output tools/firestone-collection-exporter/Firestone收藏导出工具.exe",
     "refresh:hearthstone-cards": "node scripts/fetch-hsjson-cards.mjs",
@@ -33,7 +33,8 @@
     "upload:oss:pets": "node scripts/upload-hs-pets-to-oss.mjs",
     "upload:oss:card-backs": "node scripts/upload-hs-card-backs-to-oss.mjs",
     "upload:oss:data": "node scripts/upload-hs-data-to-oss.mjs",
-    "check:hs-updates": "node scripts/check-hs-card-updates.mjs"
+    "check:hs-updates": "node scripts/check-hs-card-updates.mjs",
+    "check:achievement-map": "node scripts/check-achievement-id-map.mjs"
   },
   "dependencies": {
     "bcryptjs": "^3.0.3",
