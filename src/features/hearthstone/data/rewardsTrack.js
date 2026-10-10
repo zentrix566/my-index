@@ -31,8 +31,9 @@ const XP_TO_LEVEL_1_100 = [
 export const MAX_LEVEL = 400
 
 // 当前赛季时间（所有人一致，结束日期固定、不可编辑）
+// 结束日期 = 新版本《黑暗帝国的统治》上线日（2026-10-21），赛季随新版本开启而结束
 export const SEASON_START = '2026-07-08'
-export const SEASON_END = '2026-11-05'
+export const SEASON_END = '2026-10-21'
 
 // 升级到每一级所需的经验
 export const xpToNext = (() => {
