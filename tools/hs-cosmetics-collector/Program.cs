@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
 using System.Windows.Forms;
 
 namespace HsCosmeticsCollector
@@ -53,11 +54,8 @@ namespace HsCosmeticsCollector
             {
                 Console.ForegroundColor = ConsoleColor.Red;
                 Console.Error.WriteLine();
-                Console.Error.WriteLine("[错误] 程序运行中出现未捕获的异常：");
-                Console.Error.WriteLine("  " + ex.Message);
-                if (ex.InnerException != null)
-                    Console.Error.WriteLine("  内部异常: " + ex.InnerException.Message);
-                Console.Error.WriteLine("  请将以上信息截图反馈。");
+                Console.Error.WriteLine(DescribeException(ex));
+                Console.Error.WriteLine("  请将以上信息完整复制反馈。");
                 Console.ResetColor();
                 exitCode = 99;
             }
@@ -75,8 +73,150 @@ namespace HsCosmeticsCollector
             Console.WriteLine();
         }
 
+        // ── 诊断信息（v1.4.1）：完整异常链 + 系统环境，供远程排障 ─────────────────
+        // v1.4.0 之前只打印两层异常 Message，最内层真实原因（通常是 GAC 依赖冲突的
+        // FileLoadException）被吞掉，反馈日志无法定位。这里逐层展开异常链并附带
+        // .NET Framework 版本与 GAC 残留清单。
+
+        /// <summary>单行环境摘要，采集开始时打印，方便对照不同用户的日志。</summary>
+        public static string DescribeEnvironmentLine()
+        {
+            return $"采集器 v{typeof(Program).Assembly.GetName().Version} | {DescribeFramework()}"
+                + $" | {Environment.OSVersion.VersionString} | {(Environment.Is64BitProcess ? "x64" : "x86")} 进程";
+        }
+
+        /// <summary>
+        /// 完整异常诊断：逐层异常链（类型/消息/HResult）、最内层堆栈前几帧、
+        /// 系统环境与依赖程序集（本地 DLL 版本 + GAC 残留）清单。
+        /// </summary>
+        public static string DescribeException(Exception ex)
+        {
+            var sb = new StringBuilder();
+            sb.AppendLine("[错误] 程序运行中出现未捕获的异常：");
+            int level = 0;
+            Exception? innermost = ex;
+            for (var e = ex; e != null; e = e.InnerException)
+            {
+                level++;
+                innermost = e;
+                sb.AppendLine($"  {level}. {e.GetType().Name}: {e.Message}"
+                    + (e.HResult != 0 ? $" (HResult=0x{e.HResult:X8})" : ""));
+            }
+            if (innermost?.StackTrace is { Length: > 0 } stack)
+            {
+                sb.AppendLine("  最内层堆栈:");
+                var frames = stack.Split(new[] { "\r\n", "\n" }, StringSplitOptions.RemoveEmptyEntries);
+                foreach (var frame in frames.Take(5))
+                    sb.AppendLine("    " + frame.Trim());
+            }
+            sb.AppendLine("  ---- 系统环境 ----");
+            sb.AppendLine("  " + DescribeEnvironmentLine());
+            foreach (var line in DescribeAssemblyState())
+                sb.AppendLine("  " + line);
+            return sb.ToString().TrimEnd();
+        }
+
+        /// <summary>.NET Framework 4.x 安装版本（注册表 Release 号换算），读不到时明确说明。</summary>
+        static string DescribeFramework()
+        {
+            try
+            {
+                using var baseKey = Microsoft.Win32.RegistryKey.OpenBaseKey(
+                    Microsoft.Win32.RegistryHive.LocalMachine, Microsoft.Win32.RegistryView.Registry32);
+                using var ndp = baseKey.OpenSubKey(@"SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full");
+                if (ndp?.GetValue("Release") is int release)
+                {
+                    var name = release >= 533320 ? "4.8.1"
+                             : release >= 528040 ? "4.8"
+                             : release >= 461808 ? "4.7.2"
+                             : release >= 461308 ? "4.7.1"
+                             : "低于 4.8（程序理论上无法启动）";
+                    return $".NET Framework {name} (Release={release})";
+                }
+            }
+            catch { }
+            return ".NET Framework 版本未知";
+        }
+
+        /// <summary>
+        /// 逐个列出导出依赖的 System.* 程序集：exe 旁的 DLL 版本，以及 GAC 里是否有同名残留
+        /// （机器级绑定策略会把本地正确的 DLL 劫持到旧版，是同类崩溃的头号嫌疑）。
+        /// </summary>
+        static IEnumerable<string> DescribeAssemblyState()
+        {
+            var names = new[]
+            {
+                "System.Runtime.CompilerServices.Unsafe", "System.Memory", "System.Buffers",
+                "System.Numerics.Vectors", "System.Text.Json", "System.Text.Encodings.Web",
+                "System.Threading.Tasks.Extensions", "Microsoft.Bcl.AsyncInterfaces", "System.ValueTuple"
+            };
+            var windir = Environment.GetFolderPath(Environment.SpecialFolder.Windows);
+            var gacRoots = new[]
+            {
+                Path.Combine(windir, "Microsoft.NET", "assembly", "GAC_MSIL"),
+                Path.Combine(windir, "Microsoft.NET", "assembly", "GAC_64")
+            };
+            foreach (var name in names)
+            {
+                string local;
+                try
+                {
+                    var path = Path.Combine(AppContext.BaseDirectory, name + ".dll");
+                    local = File.Exists(path)
+                        ? System.Diagnostics.FileVersionInfo.GetVersionInfo(path).FileVersion ?? "?"
+                        : "缺失";
+                }
+                catch { local = "?"; }
+
+                var hits = new List<string>();
+                try
+                {
+                    foreach (var root in gacRoots)
+                    {
+                        var dir = Path.Combine(root, name);
+                        if (!Directory.Exists(dir)) continue;
+                        hits.AddRange(Directory.GetDirectories(dir)
+                            .Select(Path.GetFileName)
+                            .Where(f => !string.IsNullOrEmpty(f))!);
+                    }
+                }
+                catch { hits.Add("枚举失败"); }
+                yield return $"{name}: 本地 {local} | " + (hits.Count > 0 ? "GAC 残留: " + string.Join("; ", hits) : "GAC 无");
+            }
+        }
+
         public static int RunCollector(string[] args)
         {
+            Console.WriteLine("环境: " + DescribeEnvironmentLine());
+
+            // 导出序列化自检：提前触发与 WriteJson 完全相同的 System.Text.Json 初始化路径。
+            // 个别机器 GAC 残留旧版 System.* 程序集时，编码器静态初始化会失败，过去表现为
+            // 「采集全部成功却在写文件时崩」。在读取游戏数据之前先暴露，避免白采集一趟。
+            try
+            {
+                var probeOptions = new System.Text.Json.JsonSerializerOptions
+                {
+                    Encoder = System.Text.Encodings.Web.JavaScriptEncoder.UnsafeRelaxedJsonEscaping
+                };
+                _ = System.Text.Json.JsonSerializer.Serialize(new { probe = 1 }, probeOptions);
+            }
+            catch (Exception ex)
+            {
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Error.WriteLine("[错误] JSON 导出组件自检失败：本机 .NET Framework 组件存在冲突或损坏，导出必然失败（尚未读取游戏，可先修环境）。");
+                Console.Error.WriteLine(DescribeException(ex));
+                Console.Error.WriteLine("  常见原因：GAC 中残留旧版 System.* 程序集（见上方清单），或 .NET Framework 4.8 安装不完整。");
+                Console.ResetColor();
+                return 3;
+            }
+
+            // 导出管线自测：不依赖游戏进程，用与真实导出一致的数据形状完整走一遍
+            // 序列化 → 写文件 → latest 副本 → 回读校验。用于无游戏环境验证导出路径。
+            if (args.Length > 0 && args.Contains("selftest"))
+            {
+                return RunExportSelfTest();
+            }
+
             string libDir = Path.Combine(AppContext.BaseDirectory, "lib");
             string hsLibPath = Path.Combine(libDir, "UnitySpy.HearthstoneLib.dll");
             if (!File.Exists(hsLibPath))
@@ -794,6 +934,8 @@ namespace HsCosmeticsCollector
                     });
                 }
                 Console.WriteLine($"  [achievement] 单条成就 {outItems.Count} 条，完成(状态3/4) {completed}，带名称 {enriched} 条");
+                if (enriched == 0 && outItems.Count > 0)
+                    Console.WriteLine("  [achievement] 提示：未能富化出成就名称（当前客户端字段名与预期不符），名称兜底导入将失效；建议用 dumpachievedbf 模式导出全字段帮助排查。");
                 return new Dictionary<string, object?>
                 {
                     ["total"] = outItems.Count,
@@ -1035,6 +1177,118 @@ namespace HsCosmeticsCollector
             }
             // 便携模式：直接写到 exe 旁边，用户解压后能在同文件夹找到 4 个 JSON
             return AppContext.BaseDirectory;
+        }
+
+        // selftest 模式：合成与真实导出同构的数据（中文名/引号/换行/emoji/null 字段），验证
+        // 「序列化 → 写文件 → latest 副本 → JSON 回读」全链路。全部写入临时目录，
+        // 不触碰真实输出（cosmetics.json / achievements.json），也不读取游戏。
+        static int RunExportSelfTest()
+        {
+            var dataDir = Path.Combine(Path.GetTempPath(), "hs-collector-selftest");
+            try { Directory.Delete(dataDir, true); } catch { }
+            Directory.CreateDirectory(dataDir);
+            Console.WriteLine("[selftest] 导出管线自测（合成数据，未附加游戏）");
+            Console.WriteLine("  输出目录: " + dataDir);
+
+            var stamp = DateTime.Now.ToString("o");
+            var fileStamp = DateTime.Now.ToString("yyyyMMdd-HHmmss");
+            var src = "selftest (synthetic data, no game attached)";
+
+            // 形状与真实导出一致：卡背数字 id、硬币/皮肤字符串 id、byClass 中文职业键
+            var cardBackIds = Enumerable.Range(1, 170).Select(i => (object)(5000 + i)).ToList();
+            var coinIds = Enumerable.Range(1, 28).Select(i => (object)$"COIN_{800 + i:000}").ToList();
+            var heroSkins = Enumerable.Range(1, 165).Select(i => (object)$"HERO_{1000 + i:000}").ToList();
+            var heroByClass = new Dictionary<string, Dictionary<string, int>>
+            {
+                ["法师"] = new Dictionary<string, int> { ["owned"] = 12, ["total"] = 20 },
+                ["战士"] = new Dictionary<string, int> { ["owned"] = 8, ["total"] = 19 },
+                ["恶魔猎手"] = new Dictionary<string, int> { ["owned"] = 3, ["total"] = 10 },
+            };
+            var cosmetics = new Dictionary<string, object?>
+            {
+                ["source"] = src,
+                ["collectedAt"] = stamp,
+                ["cardBacks"] = new Dictionary<string, object?> { ["count"] = cardBackIds.Count, ["ids"] = cardBackIds },
+                ["coins"] = new Dictionary<string, object?> { ["count"] = coinIds.Count, ["ids"] = coinIds },
+                ["heroSkins"] = new Dictionary<string, object?> { ["count"] = heroSkins.Count, ["ids"] = heroSkins, ["byClass"] = heroByClass }
+            };
+
+            // 刁钻字符压测编码器：引号、反斜杠、换行、制表符、emoji、零宽字符
+            string[] tricky =
+            {
+                "紫罗兰监狱：营救行动", "带\"引号\"的成就", "带\\反斜杠的成就",
+                "换行\n成就", "制表\t成就", "表情 🐸☕ 成就", "\uFEFF零宽字符成就"
+            };
+            var items = new List<Dictionary<string, object?>>();
+            for (int i = 1; i <= 800; i++)
+            {
+                int status = i % 3 == 0 ? 3 : i % 7 == 0 ? 4 : 2;
+                items.Add(new Dictionary<string, object?>
+                {
+                    ["id"] = 100000 + i * 3,
+                    ["status"] = status,
+                    ["statusText"] = StatusText(status),
+                    ["progress"] = i % 5,
+                    ["isComplete"] = status == 3 || status == 4,
+                    ["name"] = i % 9 == 0 ? null : tricky[i % tricky.Length] + " #" + i,
+                    ["quota"] = i % 4 == 0 ? (int?)null : i % 4,
+                });
+            }
+            var categories = new List<object>
+            {
+                new Dictionary<string, object?>
+                {
+                    ["id"] = 394, ["name"] = "游戏玩法", ["icon"] = "achievement_zone_gameplay",
+                    ["numCompleted"] = 1234, ["numPoints"] = 25600
+                },
+                new Dictionary<string, object?>
+                {
+                    ["id"] = 395, ["name"] = "收集\",祸水\"", ["icon"] = null, ["numCompleted"] = 2797
+                },
+            };
+
+            var cosmeticsFile = Path.Combine(dataDir, $"cosmetics-{fileStamp}.json");
+            WriteJson(cosmeticsFile, cosmetics);
+            CopyLatest(cosmeticsFile, Path.Combine(dataDir, "cosmetics.json"), "外观收藏");
+
+            var payload = new Dictionary<string, object?>
+            {
+                ["source"] = src,
+                ["collectedAt"] = stamp,
+                ["totalCompleted"] = 2797,
+                ["categories"] = categories,
+                ["itemsTotal"] = items.Count,
+                ["itemsCompleted"] = 2797,
+                ["items"] = items,
+            };
+            var achFile = Path.Combine(dataDir, $"achievements-{fileStamp}.json");
+            WriteJson(achFile, payload);
+            CopyLatest(achFile, Path.Combine(dataDir, "achievements.json"), "成就明细");
+
+            // 回读校验：与网站导入侧相同，按 JSON 解析并核对条数
+            using (var doc = System.Text.Json.JsonDocument.Parse(File.ReadAllText(achFile)))
+            {
+                int n = doc.RootElement.GetProperty("items").GetArrayLength();
+                if (n != items.Count)
+                    throw new InvalidOperationException($"成就条目回读条数不一致: {n} != {items.Count}");
+                Console.WriteLine($"  [selftest] 回读 OK: 成就条目 {n} 条，与写入一致");
+            }
+            using (var doc = System.Text.Json.JsonDocument.Parse(File.ReadAllText(cosmeticsFile)))
+            {
+                int cb = doc.RootElement.GetProperty("cardBacks").GetProperty("ids").GetArrayLength();
+                if (cb != cardBackIds.Count)
+                    throw new InvalidOperationException($"卡背回读条数不一致: {cb} != {cardBackIds.Count}");
+                Console.WriteLine($"  [selftest] 回读 OK: 卡背 {cb} 条，与写入一致");
+            }
+            foreach (var f in new[] { cosmeticsFile, achFile, Path.Combine(dataDir, "cosmetics.json"), Path.Combine(dataDir, "achievements.json") })
+                Console.WriteLine($"  [selftest] 文件: {Path.GetFileName(f)} ({new FileInfo(f).Length / 1024.0:F1} KB)");
+
+            Console.ForegroundColor = ConsoleColor.Green;
+            Console.WriteLine("========== 导出自测通过 ==========");
+            Console.ResetColor();
+            Console.WriteLine("  已验证: 序列化(含中文/引号/换行/emoji) → 写文件 → latest 副本 → JSON 回读。");
+            Console.WriteLine("  未覆盖: 游戏内存读取（需炉石运行中，由正式采集验证）。");
+            return 0;
         }
 
         static void WriteJson(string path, object value)

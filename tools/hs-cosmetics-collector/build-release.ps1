@@ -156,6 +156,16 @@ if (-not $ok) { throw '编译失败' }
 
 if (-not (Test-Path (Join-Path $binDir 'HsCosmeticsCollector.exe'))) { throw "找不到构建输出目录: $binDir" }
 
+# 绑定重定向：csc 编译不会生成 exe.config，而 System.Memory 等程序集按旧版
+# System.Runtime.CompilerServices.Unsafe 4.0.4.1 编译引用，缺这条重定向会在
+# 导出 JSON 阶段报"程序集清单定义与程序集引用不匹配"(v1.4.0 事故)。必带。
+$appConfig = Join-Path $projectDir 'App.config'
+if (Test-Path $appConfig) {
+  Copy-Item $appConfig (Join-Path $binDir 'HsCosmeticsCollector.exe.config') -Force
+} else {
+  throw "缺少 App.config（绑定重定向），打包出的 zip 导出时必崩"
+}
+
 # ── 打包 ────────────────────────────────────────────────────────────────
 # 说明文件：优先 README-dist.txt（随包分发的使用说明）
 $readme = Join-Path $projectDir 'README-dist.txt'

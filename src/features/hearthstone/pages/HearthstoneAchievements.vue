@@ -273,7 +273,7 @@
           另有 {{ gameImportPreview.stats.unmatchedItems }} 条记录属于游戏内其他类别成就（生涯 / 游戏玩法 / 冒险模式等）或本站未收录内容，不在本次导入范围。
         </small>
         <small v-if="gameImportPreview.stats.excludedVersions?.length">
-          {{ gameImportPreview.stats.excludedVersions.map((v) => v.name).join('、') }}尚未建立游戏 ID 映射（数据源未收录）：使用新版采集器（v1.4.0+）导出时可通过成就名称自动识别；旧版导出将跳过这些成就。
+          {{ gameImportPreview.stats.excludedVersions.map((v) => v.name).join('、') }}尚未建立游戏 ID 映射（数据源未收录）：使用新版采集器（v1.4.1+）导出时可通过成就名称自动识别；旧版导出将跳过这些成就。
         </small>
         <small>导入只会推进进度，不会清除已手动勾选的阶段或回退累计次数。</small>
       </div>

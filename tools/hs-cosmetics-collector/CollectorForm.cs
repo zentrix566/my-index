@@ -190,9 +190,7 @@ namespace HsCosmeticsCollector
             catch (Exception ex)
             {
                 AppendLog("");
-                AppendLog("[错误] " + ex.Message);
-                if (ex.InnerException != null) AppendLog("  内部异常: " + ex.InnerException.Message);
-                AppendLog("请点击「复制日志」并反馈。");
+                AppendLog(Program.DescribeException(ex));
                 exitCode = 99;
             }
             finally
