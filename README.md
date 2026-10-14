@@ -135,14 +135,14 @@ node scripts/gen-card-back-gallery.mjs
 
 ## 炉石收藏与成就采集工具（Windows）
 
-`tools/hs-cosmetics-collector/` 是一个 C# Windows 图形界面程序（WinForms），趁游戏运行时读取《炉石传说》内存，一键导出带时间戳的 `cosmetics-YYYYMMDD-HHMMSS.json`（已拥有的卡背/幸运币/英雄皮肤）与 `achievements-YYYYMMDD-HHMMSS.json`（成就逐条进度，同一次采集共用一个时间戳成对出现），并自动同步最新一份固定名 `cosmetics.json` / `achievements.json`，供网站「炉石收藏」与「炉石成就」页面导入。
+`tools/hs-cosmetics-collector/` 是一个 C# Windows 图形界面程序（WinForms），趁游戏运行时读取《炉石传说》内存，一键导出带时间戳的 `cosmetics-YYYYMMDD-HHMMSS.json`（已拥有的卡背/幸运币/英雄皮肤）与 `achievements-YYYYMMDD-HHMMSS.json`（成就逐条进度，含成就名称与档位配额，同一次采集共用一个时间戳成对出现），并自动同步最新一份固定名 `cosmetics.json` / `achievements.json`，供网站「炉石收藏」与「炉石成就」页面导入。
 
 - **使用**：启动炉石 → 双击 `HsCosmeticsCollector.exe` → 等顶部两个状态灯变绿 → 点「开始采集」→ 按摘要提示把两个 JSON 在网站导入（成就导入只推进进度、不回退已有勾选）。
 - **运行环境**：电脑系统为 Windows，需 **.NET Framework 4.8**（Windows 10 / 11 一般已自带，无需额外安装）。
 - **缺少运行库时**：若双击 `hs-cosmetics-collector.exe` 报错「找不到 .NET Framework」或「需要 .NET Framework 4.8」，请前往微软官网下载并安装 .NET Framework 4.8 运行时：
   - 下载地址：<https://dotnet.microsoft.com/download/dotnet-framework/net48>
 - **杀毒误报**：程序需读取游戏内存，未签名的小工具可能被杀软启发式误判，加白名单即可；下载后可按发布说明核对 SHA256。exe 已嵌入图标、完整版本信息与 manifest 以降低误报概率。
-- **成就 ID 映射**：游戏内成就数字 ID 与站内成就的对应表由 `node scripts/build-achievement-id-map.mjs --hs-data <hs-achievement-data.json 路径>` 生成（`src/features/hearthstone/data/achievement-id-map.json`）。
+- **成就 ID 映射**：游戏内成就数字 ID 与站内成就的对应表由 `node scripts/build-achievement-id-map.mjs --hs-data <hs-achievement-data.json 路径>` 生成（`src/features/hearthstone/data/achievement-id-map.json`）。尚无 ID 映射的新版本成就，网站导入时按「成就名称 + 阶段结构」兜底匹配（依赖 v1.4.0+ 导出的名称字段）。带 `dumpachievedbf` 参数启动可单独导出成就 DBF 全表（`achievement-dbf-*.json`，游戏内成就 ID/名称/配额的权威快照），用于校准映射。
 - **重新构建发布包**（可选，开发者用）：运行 `tools/hs-cosmetics-collector/build-release.ps1` 生成带版本号的 `hs-cosmetics-collector-vX.Y.Z.zip` 并输出 SHA256；本机没有 .NET SDK 时脚本会自动下载 Roslyn 编译器编译。构建后请将生成的 zip 提交到仓库以更新下载。
 
 ## Docker

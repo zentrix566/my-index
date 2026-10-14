@@ -251,6 +251,12 @@
           {{ gameImportPreview.stats.stageHits }} 个完成阶段<template v-if="gameImportPreview.stats.countUpdates">，并更新 {{ gameImportPreview.stats.countUpdates }} 个成就的累计进度</template>。
         </p>
         <p v-if="gameImportPreview.stats.newlyCompleted">其中 {{ gameImportPreview.stats.newlyCompleted }} 个成就将达成全部阶段。</p>
+        <p v-if="gameImportPreview.stats.nameMatched">
+          其中 {{ gameImportPreview.stats.nameMatched }} 个成就暂无游戏 ID 映射，已按成就名称匹配导入。
+        </p>
+        <p v-if="gameImportPreview.stats.nameAmbiguous">
+          另有 {{ gameImportPreview.stats.nameAmbiguous }} 个无映射成就因名称无法唯一对应而跳过。
+        </p>
         <div v-if="gameImportPreview.stats.lowerProgressUpdateCount" class="hs-import-regression-warning">
           <strong>发现 {{ gameImportPreview.stats.lowerProgressUpdateCount }} 个成就的导入值低于网站已有值</strong>
           <ul>
@@ -267,7 +273,7 @@
           另有 {{ gameImportPreview.stats.unmatchedItems }} 条记录属于游戏内其他类别成就（生涯 / 游戏玩法 / 冒险模式等）或本站未收录内容，不在本次导入范围。
         </small>
         <small v-if="gameImportPreview.stats.excludedVersions?.length">
-          {{ gameImportPreview.stats.excludedVersions.map((v) => v.name).join('、') }}在游戏内尚未正式上线，这些版本的成就暂不支持导入进度，上线后更新数据即可自动匹配。
+          {{ gameImportPreview.stats.excludedVersions.map((v) => v.name).join('、') }}尚未建立游戏 ID 映射（数据源未收录）：使用新版采集器（v1.4.0+）导出时可通过成就名称自动识别；旧版导出将跳过这些成就。
         </small>
         <small>导入只会推进进度，不会清除已手动勾选的阶段或回退累计次数。</small>
       </div>

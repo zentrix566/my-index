@@ -437,6 +437,14 @@ namespace HsCosmeticsCollector
                 return 0;
             }
 
+            // 导出成就 DBF 全表：游戏内存里的成就数据库（数字 ID ↔ 名称 ↔ 配额）的权威来源，
+            // 供网站 scripts/build-achievement-id-map.mjs 建立 站内 slug ↔ 游戏数字 ID 映射。
+            // 第三方成就数据（HSAchieveGuide）对新版本常滞后，游戏本体内数据永远与当前补丁一致。
+            if (args.Length > 0 && args.Contains("dumpachievedbf"))
+            {
+                return DumpAchievementDbf(mv, mvType);
+            }
+
             var cardBacks = TryRead(mv, mvType, "CardBack");
             var coins = TryRead(mv, mvType, "Coin");
             var cardBackIds = Normalize(cardBacks, "cardBack");
@@ -751,6 +759,11 @@ namespace HsCosmeticsCollector
 
                 var outItems = new List<Dictionary<string, object?>>();
                 int completed = 0;
+
+                // 名称/配额富化：优先读条目自身字段；条目没有时从成就 DBF 表按 ID 补。
+                // 网站对尚无 ID 映射的新版本成就按「名称+阶段结构」兜底匹配，名称是关键。
+                var dbfByName = BuildAchievementDbfLookup(mv, mvType);
+                int enriched = 0;
                 foreach (var it in raw)
                 {
                     var t = it.GetType();
@@ -759,16 +772,28 @@ namespace HsCosmeticsCollector
                     int status = ToInt(t.GetProperty("Status")?.GetValue(it)) ?? 0;
                     bool isComplete = status == 3 || status == 4; // COMPLETE / REWARD_GRANTED
                     if (isComplete) completed++;
+
+                    string? name = ReadFirstString(it, "Name", "AchievementName", "Title", "DisplayName");
+                    int? quota = ReadFirstInt(it, "Quota", "MaxProgress", "Goal", "Target", "RequiredProgress");
+                    if ((name == null || quota == null) && id != null && dbfByName.TryGetValue(id.Value, out var dbf))
+                    {
+                        name ??= dbf.Name;
+                        quota ??= dbf.Quota;
+                    }
+                    if (!string.IsNullOrWhiteSpace(name)) enriched++;
+
                     outItems.Add(new Dictionary<string, object?>
                     {
                         ["id"] = id,
                         ["status"] = status,
                         ["statusText"] = StatusText(status),
                         ["progress"] = progress,
-                        ["isComplete"] = isComplete
+                        ["isComplete"] = isComplete,
+                        ["name"] = name != null && name.Trim().Length > 0 ? name.Trim() : null,
+                        ["quota"] = quota
                     });
                 }
-                Console.WriteLine($"  [achievement] 单条成就 {outItems.Count} 条，完成(状态3/4) {completed}");
+                Console.WriteLine($"  [achievement] 单条成就 {outItems.Count} 条，完成(状态3/4) {completed}，带名称 {enriched} 条");
                 return new Dictionary<string, object?>
                 {
                     ["total"] = outItems.Count,
@@ -781,6 +806,136 @@ namespace HsCosmeticsCollector
                 Console.WriteLine($"  [achievement] 读取单条成就失败: {ex.Message}");
                 return null;
             }
+        }
+
+        // net48 不支持 record（需 IsExternalInit），用元组承载 DBF 富化信息
+        static Dictionary<int, (string? Name, int? Quota)> BuildAchievementDbfLookup(object mv, Type mvType)
+        {
+            var lookup = new Dictionary<int, (string? Name, int? Quota)>();
+            var dbfM = mvType.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .FirstOrDefault(x => x.Name.Equals("GetAchievementsDbf", StringComparison.OrdinalIgnoreCase));
+            if (dbfM == null) return lookup;
+            try
+            {
+                foreach (var x in (IEnumerable)dbfM.Invoke(mv, null)!)
+                {
+                    if (x == null) continue;
+                    int? id = ReadFirstInt(x, "ID", "Id", "AchievementId", "id");
+                    if (id == null) continue;
+                    string? name = ReadFirstString(x, "Name", "NameValue", "AchievementName", "Title", "Text");
+                    int? quota = ReadFirstInt(x, "Quota", "MaxProgress", "Goal", "Target", "RequiredProgress");
+                    lookup[id.Value] = (name != null && name.Trim().Length > 0 ? name.Trim() : null, quota);
+                }
+                Console.WriteLine($"  [achievement] DBF 富化表 {lookup.Count} 条");
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"  [achievement] DBF 富化失败（不影响导出）: {ex.Message}");
+            }
+            return lookup;
+        }
+
+        static string? ReadFirstString(object item, params string[] propNames)
+        {
+            var t = item.GetType();
+            foreach (var p in propNames)
+            {
+                var m = t.GetProperty(p, BindingFlags.Public | BindingFlags.Instance);
+                if (m == null) continue;
+                try { if (m.GetValue(item) is string s && !string.IsNullOrWhiteSpace(s)) return s; } catch { }
+            }
+            return null;
+        }
+
+        static int? ReadFirstInt(object item, params string[] propNames)
+        {
+            var t = item.GetType();
+            foreach (var p in propNames)
+            {
+                var m = t.GetProperty(p, BindingFlags.Public | BindingFlags.Instance);
+                if (m == null) continue;
+                try { var v = ToInt(m.GetValue(item)); if (v != null) return v; } catch { }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// 导出成就 DBF 全表（dumpachievedbf 模式）：字段全量转储，不依赖玩家进度。
+        /// 同时附带逐条成就状态对象的全属性（可能携带名称类字段）作为对照，
+        /// 便于网站侧确认哪个字段是中文名 / 配额。写出 achievement-dbf-{时间戳}.json + latest 副本。
+        /// </summary>
+        static int DumpAchievementDbf(object mv, Type mvType)
+        {
+            List<Dictionary<string, object?>> dbfRows = new();
+            string dbfSource = "";
+            var dbfM = mvType.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .FirstOrDefault(x => x.Name.Equals("GetAchievementsDbf", StringComparison.OrdinalIgnoreCase));
+            if (dbfM != null)
+            {
+                try
+                {
+                    foreach (var x in (IEnumerable)dbfM.Invoke(mv, null)!)
+                        if (x != null && ToPropDict(x) is { } row) dbfRows.Add(row);
+                    dbfSource = "GetAchievementsDbf";
+                    Console.WriteLine($"  [dbf] 成就数据库 {dbfRows.Count} 条");
+                }
+                catch (Exception ex) { Console.WriteLine($"  [dbf] GetAchievementsDbf 调用失败: {ex.Message}"); }
+            }
+            else
+            {
+                Console.WriteLine("  [dbf] 未发现 GetAchievementsDbf 方法");
+            }
+
+            List<Dictionary<string, object?>> progressItems = new();
+            var infoM = mvType.GetMethods(BindingFlags.Public | BindingFlags.Instance)
+                .FirstOrDefault(x => x.Name.Equals("GetAchievementsInfo", StringComparison.OrdinalIgnoreCase) && x.GetParameters().Length == 0);
+            if (infoM != null)
+            {
+                try
+                {
+                    var info = infoM.Invoke(mv, null);
+                    var listProp = info?.GetType().GetProperty("Achievements");
+                    if (listProp != null)
+                    {
+                        foreach (var x in (IEnumerable)listProp.GetValue(info)!)
+                            if (x != null && ToPropDict(x) is { } item) progressItems.Add(item);
+                        Console.WriteLine($"  [dbf] 逐条成就状态 {progressItems.Count} 条（全属性）");
+                    }
+                }
+                catch (Exception ex) { Console.WriteLine($"  [dbf] GetAchievementsInfo 转储失败: {ex.Message}"); }
+            }
+
+            if (dbfRows.Count == 0 && progressItems.Count == 0)
+            {
+                Console.Error.WriteLine("  [dbf] 没有读到任何成就记录，未写出文件。");
+                return 1;
+            }
+            if (dbfRows.Count > 0)
+            {
+                Console.WriteLine($"  [dbf] 数据库记录字段: {string.Join(", ", dbfRows[0].Keys)}");
+            }
+
+            string? dataDir = FindDataDir();
+            if (dataDir == null)
+            {
+                Console.Error.WriteLine("  [dbf] 找不到输出目录。");
+                return 1;
+            }
+            var payload = new Dictionary<string, object?>
+            {
+                ["source"] = dbfSource,
+                ["dumpedAt"] = DateTime.Now.ToString("yyyy-MM-dd HH:mm:ss"),
+                ["dbfCount"] = dbfRows.Count,
+                ["records"] = dbfRows,
+                ["progressItemCount"] = progressItems.Count,
+                ["progressItems"] = progressItems
+            };
+            var fileStamp = DateTime.Now.ToString("yyyyMMdd-HHmmss");
+            var outFile = Path.Combine(dataDir, $"achievement-dbf-{fileStamp}.json");
+            WriteJson(outFile, payload);
+            CopyLatest(outFile, Path.Combine(dataDir, "achievement-dbf.json"), "成就DBF");
+            Console.WriteLine("成就 DBF 导出完成。");
+            return 0;
         }
 
         static int? ToInt(object? v) { try { return v == null ? null : Convert.ToInt32(v); } catch { return null; } }

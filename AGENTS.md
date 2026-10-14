@@ -330,7 +330,7 @@ node scripts/upload-cosmetic-thumbnails.mjs
 1. **确认归属版本**：已有版本直接修改对应 JSON；新版本先创建独立 JSON，并在 `src/features/hearthstone/data/expansions.js` 中 import 后加入 `expansions`。如果是新增版本，还要根据是否属于原有版本维护 `core-expansion-ids.js`（`CORE_EXPANSION_IDS` 单一事实源，前端与服务端共用）和 `expansions.js` 里的 `ADDED_EXPANSION_ORDER`。
 2. **添加成就对象**：使用全局唯一的站内 slug（例如 `vh-010`），填写 `name`、`heroClass`、`type`、`difficulty`、`stages` 等字段。累计成就的阶段必须提供正确的 `quota`；需要卡牌详情时补充 `relatedCards`，需要攻略或卡组时补充 `guide` / `recommendedDecks`。
 3. **检查数据关联**：如果 `relatedCards` 使用了新卡名，确认卡牌名称索引和卡图映射也已更新；否则成就数量会增加，但关联卡牌可能没有图片或详情。
-4. **更新游戏导入映射（必须，不是可选）**：新增或修改成就后必须重建 `achievement-id-map.json`，否则这些成就无法通过游戏内进度导入（踩过坑，见下方「成就进度导入与 ID 映射」）。执行 `node scripts/build-achievement-id-map.mjs`（默认自动优先使用最新 HSAchieveGuide 校准数据），检查未匹配清单。**例外**：版本在游戏内尚未上线、HSAchieveGuide 里必然没有条目时，在版本 JSON 顶层加 `"gameImportable": false` 并重建映射——该版本全部成就在 build/check 中豁免，`meta.excludedVersions` 登记；版本上线后立刻移除该标记、拉最新数据重建，把 15 个（或实际数量）slug 正式补进 map。
+4. **更新游戏导入映射（必须，不是可选）**：新增或修改成就后必须重建 `achievement-id-map.json`，否则这些成就无法通过游戏内进度导入（踩过坑，见下方「成就进度导入与 ID 映射」）。执行 `node scripts/build-achievement-id-map.mjs`（默认自动优先使用最新 HSAchieveGuide 校准数据），检查未匹配清单。**例外**：版本在游戏内尚未上线、HSAchieveGuide 里必然没有条目时，在版本 JSON 顶层加 `"gameImportable": false` 并重建映射——该版本全部成就在 build/check 中豁免，`meta.excludedVersions` 登记；版本上线后立刻移除该标记、拉最新数据重建，把对应 slug 正式补进 map。**注意**：`gameImportable: false` 只豁免 ID 映射要求，不阻断导入——前端导入有名称兜底匹配（`utils/achievementImportTranslate.js`，按「成就名称+阶段结构」匹配采集器 ≥1.4.0 导出的 name/quota 字段），名称识别不依赖 ID 映射。
 5. **本地验证**：运行 `npm run check`（其中 `check:achievement-map` 守卫会拦截映射缺失）和打开成就页确认版本数量、成就数量、筛选结果和成就详情均正常。
 6. **提交前检查**：确认 ID 没有重复、阶段顺序和 quota 正确、中文字段无误；不要直接删除旧成就 ID，以免历史用户进度失去对应目标。若只是暂时下线某个工具，应先隐藏入口并保留路由与页面代码，观察后再决定是否删除。
 

@@ -1,141 +1,10 @@
 import { ref } from 'vue'
 import rawIdMap from '../data/achievement-id-map.json'
+import { translateGameExport } from '../utils/achievementImportTranslate.js'
 import { saveAchievementProgress } from '../api/progress.js'
 
 // 站内成就 slug → 游戏内成就数字 ID（按阶段顺序），由 scripts/build-achievement-id-map.mjs 生成
 const ID_MAP = rawIdMap.map
-
-// 采集器导出的 status：3=COMPLETE、4=REWARD_GRANTED 视为已完成；isComplete 字段兜底
-function isGameItemDone(item) {
-  if (!item) return false
-  if (item.isComplete === true) return true
-  return item.status != null && item.status >= 3
-}
-
-// 与 useAchievementProgress.isStageCompleted 同口径地判断「站内已有进度」里某阶段是否完成，
-// 用于导入预览统计（新增了多少），以及合并时避免回退已有勾选。
-function isStageDoneInEntry(entry, achievement, stageIdx) {
-  if (!entry) return false
-  const stage = achievement.stages?.[stageIdx]
-  if (!stage) return false
-  if (entry.stages?.[String(stageIdx)]) return true
-  if (achievement.trackClasses || achievement.trackItems || achievement.type === '累计') {
-    return entry.count != null && entry.count >= stage.quota
-  }
-  return false
-}
-
-/**
- * 把采集器导出的 achievements.json 翻译成站内进度增量。
- * 返回 null 表示文件不是采集器导出格式。
- */
-function translateGameExport(payload, achievementsBySlug, currentProgress) {
-  const items = Array.isArray(payload?.items) ? payload.items : null
-  if (!items?.length || typeof items[0]?.id !== 'number') return null
-
-  const itemsById = new Map()
-  let sourceCompleted = 0
-  for (const item of items) {
-    itemsById.set(item.id, item)
-    if (isGameItemDone(item)) sourceCompleted += 1
-  }
-
-  const entries = {}
-  let matched = 0
-  let stageHits = 0
-  let countUpdates = 0
-  const lowerProgressUpdates = []
-  let newlyCompleted = 0
-
-  for (const [slug, hsIds] of Object.entries(ID_MAP)) {
-    const achievement = achievementsBySlug.get(slug)
-    if (!achievement?.stages?.length) continue
-
-    const stages = {}
-    let maxProgress = 0
-    let touched = false
-    const stageCount = Math.min(hsIds.length, achievement.stages.length)
-    for (let i = 0; i < stageCount; i++) {
-      const item = itemsById.get(hsIds[i])
-      if (!item) continue
-      touched = true
-      if (isGameItemDone(item)) stages[String(i)] = true
-      if (typeof item.progress === 'number' && item.progress > maxProgress) {
-        maxProgress = item.progress
-      }
-    }
-    // 少数隐藏谜题在游戏数据中只有一个「最终完成」成就 ID，却在站内拆成多步展示。
-    // 只有该最终 ID 被游戏标为完成时，才补全所有步骤；进行中状态绝不会被扩展为完成。
-    const gameCompletionFillsStages = achievement.gameCompletionFillsStages === true &&
-      hsIds.some((id) => isGameItemDone(itemsById.get(id)))
-    if (gameCompletionFillsStages) {
-      for (let i = 0; i < achievement.stages.length; i++) stages[String(i)] = true
-    }
-    if (!touched) continue
-    matched += 1
-
-    const entry = { stages }
-    const usesCount =
-      achievement.trackClasses || achievement.trackItems || achievement.type === '累计'
-    if (usesCount && maxProgress > 0) entry.count = maxProgress
-
-    const existing = currentProgress?.[slug]
-    let hasNew = false
-    for (let i = 0; i < achievement.stages.length; i++) {
-      const doneAfter = Boolean(stages[String(i)]) ||
-        (entry.count != null && entry.count >= achievement.stages[i].quota)
-      const doneBefore = isStageDoneInEntry(existing, achievement, i)
-      if (doneAfter && !doneBefore) {
-        stageHits += 1
-        hasNew = true
-      }
-    }
-    if (entry.count != null && (existing?.count ?? 0) < entry.count) {
-      countUpdates += 1
-      hasNew = true
-    }
-    if (entry.count != null && Number.isFinite(existing?.count) && existing.count > entry.count) {
-      lowerProgressUpdates.push({
-        slug,
-        name: achievement.name,
-        existing: Math.trunc(existing.count),
-        imported: Math.trunc(entry.count)
-      })
-    }
-    if (achievement.stages.every((_, i) =>
-      isStageDoneInEntry(existing, achievement, i) ||
-      Boolean(stages[String(i)]) ||
-      (entry.count != null && entry.count >= achievement.stages[i].quota)
-    ) && !achievement.stages.every((_, i) => isStageDoneInEntry(existing, achievement, i))) {
-      newlyCompleted += 1
-    }
-    if (hasNew || !existing || lowerProgressUpdates.some((item) => item.slug === slug)) entries[slug] = entry
-  }
-
-  const mappedIds = new Set(Object.values(ID_MAP).flat())
-  let unmatchedItems = 0
-  for (const item of items) {
-    if (!mappedIds.has(item.id)) unmatchedItems += 1
-  }
-
-  return {
-    entries,
-    stats: {
-      sourceItems: items.length,
-      sourceCompleted,
-      matched,
-      stageHits,
-      countUpdates,
-      lowerProgressUpdates,
-      lowerProgressUpdateCount: lowerProgressUpdates.length,
-      newlyCompleted,
-      unmatchedItems,
-      // 游戏内尚未上线的版本（成就 JSON 顶层 gameImportable: false），其成就没有数字 ID
-      // 映射，导入时跳过；上线并重建映射后自动纳入。
-      excludedVersions: rawIdMap.meta?.excludedVersions || []
-    }
-  }
-}
 
 /**
  * 导入采集器（hs-cosmetics-collector）导出的成就进度文件：
@@ -170,12 +39,18 @@ export function useAchievementGameImport({
       const achievementsBySlug = new Map(
         achievements.value.map((achievement) => [achievement.id, achievement])
       )
-      const translated = translateGameExport(parsed, achievementsBySlug, progress.value)
+      const translated = translateGameExport(parsed, {
+        idMap: ID_MAP,
+        achievementsBySlug,
+        currentProgress: progress.value
+      })
       if (!translated) {
         throw new Error(
           '不是采集器导出的成就文件（需要包含 items 数组，且元素带数字 id 字段）。如需恢复网站备份请用「导入 JSON 备份」'
         )
       }
+      // 未上线/暂无 ID 映射的版本提示（名称兜底匹配可部分覆盖，见预览统计）
+      translated.stats.excludedVersions = rawIdMap.meta?.excludedVersions || []
       importPreview.value = translated
       allowLowerProgress.value = false
       if (!translated.stats.matched) {
