@@ -90,7 +90,7 @@
                 <strong>{{ stage.description }}</strong>
                 <span class="epm-goal-rewards">
                   <span v-if="stage.xpReward">{{ stage.xpReward }} 经验</span>
-                  <span v-if="stage.points">{{ stage.points }} 成就点</span>
+                  <span v-if="stage.points">{{ stage.points }} 事迹名望</span>
                 </span>
               </span>
             </label>
@@ -102,7 +102,7 @@
                 <strong>{{ stage.description }}</strong>
                 <span class="epm-goal-rewards">
                   <span v-if="stage.xpReward">{{ stage.xpReward }} 经验</span>
-                  <span v-if="stage.points">{{ stage.points }} 成就点</span>
+                  <span v-if="stage.points">{{ stage.points }} 事迹名望</span>
                 </span>
               </span>
             </div>

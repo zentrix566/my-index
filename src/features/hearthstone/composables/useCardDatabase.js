@@ -15,6 +15,7 @@ import { withCardImgVersion } from '../utils/cardImages.js'
  * 每年轮换更新一次；真源：暴雪国服构筑卡接口的「标准卡牌」分类 id。
  */
 export const STANDARD_SETS = [
+  { id: 1994, name: '黑暗帝国的统治' },
   { id: 1988, name: '逃离紫罗兰监狱' },
   { id: 1980, name: '大地的裂变' },
   { id: 1957, name: '穿越时间流' },

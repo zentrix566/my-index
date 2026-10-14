@@ -4,10 +4,18 @@
     "generatedAt": "2026-10-10T06:39:03.015Z",
     "source": "HSAchieveGuide 成就数据（hs-achievement-data.json 或 official-calibration/flat.zh-CN.json）",
     "sourcePath": "E:/github/my-index/.build-tmp-hag-clone/data/official-calibration/flat.zh-CN.json",
-    "total": 952,
+    "total": 967,
+    "importable": 952,
     "matched": 952,
     "unmatched": 0,
-    "unmatchedIds": []
+    "unmatchedIds": [],
+    "excluded": 15,
+    "excludedVersions": [
+      {
+        "id": "dark-empire",
+        "name": "黑暗帝国"
+      }
+    ]
   },
   "map": {
     "alterac-001": [

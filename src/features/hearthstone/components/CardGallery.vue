@@ -104,14 +104,14 @@ onBeforeUnmount(() => window.removeEventListener('keydown', onZoomKeydown))
 }
 .cg-img {
   width: 100%;
-  max-width: 200px;
+  max-width: 260px;
   border-radius: 8px;
   display: block;
   border: 1px solid var(--hs-border, rgba(148, 163, 184, 0.25));
 }
 .cg-img-button {
   display: block;
-  max-width: 200px;
+  max-width: 260px;
   padding: 0;
   border: 0;
   border-radius: 8px;

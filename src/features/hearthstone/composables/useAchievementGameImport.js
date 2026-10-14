@@ -129,7 +129,10 @@ function translateGameExport(payload, achievementsBySlug, currentProgress) {
       lowerProgressUpdates,
       lowerProgressUpdateCount: lowerProgressUpdates.length,
       newlyCompleted,
-      unmatchedItems
+      unmatchedItems,
+      // 游戏内尚未上线的版本（成就 JSON 顶层 gameImportable: false），其成就没有数字 ID
+      // 映射，导入时跳过；上线并重建映射后自动纳入。
+      excludedVersions: rawIdMap.meta?.excludedVersions || []
     }
   }
 }

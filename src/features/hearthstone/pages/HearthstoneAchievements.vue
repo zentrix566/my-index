@@ -266,6 +266,9 @@
         <small v-if="gameImportPreview.stats.unmatchedItems">
           另有 {{ gameImportPreview.stats.unmatchedItems }} 条记录属于游戏内其他类别成就（生涯 / 游戏玩法 / 冒险模式等）或本站未收录内容，不在本次导入范围。
         </small>
+        <small v-if="gameImportPreview.stats.excludedVersions?.length">
+          {{ gameImportPreview.stats.excludedVersions.map((v) => v.name).join('、') }}在游戏内尚未正式上线，这些版本的成就暂不支持导入进度，上线后更新数据即可自动匹配。
+        </small>
         <small>导入只会推进进度，不会清除已手动勾选的阶段或回退累计次数。</small>
       </div>
       <div class="hs-firestone-import-actions">
@@ -1052,7 +1055,7 @@ const overviewRemaining = computed(() => {
   }
   return { achievements, countRemain, pointRemain, oneTimeRemain, cumCountAch, cumPointsAch }
 })
-// 总览面板说明：拆成两行、数字高亮（成就/累计 一行，经验/成就值 一行）
+// 总览面板说明：拆成两行、数字高亮（成就/累计 一行，经验/事迹名望 一行）
 // 数值均来源于本地统计（安全整数），故用 v-html 包裹 .hs-num 高亮
 const overviewSummaryHtml = computed(() => {
   const stats = overviewStats.value
@@ -1062,7 +1065,7 @@ const overviewSummaryHtml = computed(() => {
   const completedAch = stats.completedAchievements
   const remaining = totalAch - completedAch
   const { countRemain, pointRemain, oneTimeRemain, cumCountAch, cumPointsAch } = overviewRemaining.value
-  // 通行证经验加成：已获得/总经验均按 (1+加成) 放大（成就值不受加成影响）
+  // 通行证经验加成：已获得/总经验均按 (1+加成) 放大（事迹名望不受加成影响）
   const earnedXp = Math.round(stats.earnedXp * (1 + passBonus.value))
   const totalXp = Math.round(stats.totalXp * (1 + passBonus.value))
   const remainXp = Math.max(0, totalXp - earnedXp)
@@ -1080,7 +1083,7 @@ const overviewSummaryHtml = computed(() => {
     `已完成 ${n(`${completedAch}/${totalAch}`)} 个成就，剩余 ${n(remaining)} 个成就；` + cumClause
   const line2 =
     `已获得经验值 ${n(`${earnedXp}/${totalXp}`)}，剩余可获得经验值 ${n(remainXp)}；` +
-    `已获得成就值 ${n(`${stats.earnedPoints}/${stats.totalPoints}`)}，剩余可获得成就值 ${n(remainPts)} 点。`
+    `已获得事迹名望 ${n(`${stats.earnedPoints}/${stats.totalPoints}`)}，剩余可获得事迹名望 ${n(remainPts)}。`
   return { line1, line2 }
 })
 // 通行证经验加成：默认不加成；可选 10% / 15% / 20%

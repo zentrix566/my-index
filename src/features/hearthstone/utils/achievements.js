@@ -111,6 +111,7 @@ const EXPANSION_CLASS_ORDER = {
   "legend-festival": GAME_CLASS_ORDER_WITH_DK_DUAL, // 传奇音乐节（含 11 个双职业成就，双职业分组置于中立之前）
   "lich-king": GAME_CLASS_ORDER_WITH_DK,       // 巫妖王
   // 用户指定顺序：圣骑士→…→死亡骑士→…→中立（无双职业成就）
+  "dark-empire": GAME_CLASS_ORDER_WITH_DK,     // 黑暗帝国
   "violet-hold": GAME_CLASS_ORDER_WITH_DK,     // 紫罗兰监狱
   cataclysm: GAME_CLASS_ORDER_WITH_DK,         // 大地的裂变
   ungoro: GAME_CLASS_ORDER_WITH_DK,            // 安戈洛龟途

@@ -23,7 +23,7 @@ const EXPORT_COLUMNS = [
   '类型',
   '难度',
   '经验值',
-  '成就值',
+  '事迹名望',
   '最后更新'
 ]
 
@@ -104,7 +104,7 @@ export function buildExportRows(allAchievements, passBonus) {
       '类型': ach.type === '累计' ? `累计·${getUnit(ach) === '点' ? '点数' : '次数'}` : ach.type,
       '难度': ach.difficulty,
       '经验值': Math.round(getAchievementXp(ach) * (1 + passBonus)),
-      '成就值': (ach.stages || []).reduce((s, st) => s + (st.points || 0), 0),
+      '事迹名望': (ach.stages || []).reduce((s, st) => s + (st.points || 0), 0),
       '最后更新': formatExportTime(progress.value[ach.id]?.updatedAt)
     })
   }

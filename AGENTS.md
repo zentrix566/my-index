@@ -173,7 +173,7 @@ src/features/hearthstone/
 │   ├── shareCanvas.js          # 分享图 Canvas 缩放/导出公共工具
 │   └── constants.js            # 成就共享常量（前后端同源）
 ├── data/                       # 静态数据（import 进 JS 包）
-│   ├── achievements/*.json     # 27 个版本的成就定义
+│   ├── achievements/*.json     # 28 个版本的成就定义
 │   ├── dbfid-cardnames.json    # dbfId→卡名（卡组解析用）
 │   ├── deck-card-images.json   # 卡名→图片路径（约 6000 条）
 │   ├── achievement-card-images.json # 成就关联卡图
@@ -330,7 +330,7 @@ node scripts/upload-cosmetic-thumbnails.mjs
 1. **确认归属版本**：已有版本直接修改对应 JSON；新版本先创建独立 JSON，并在 `src/features/hearthstone/data/expansions.js` 中 import 后加入 `expansions`。如果是新增版本，还要根据是否属于原有版本维护 `core-expansion-ids.js`（`CORE_EXPANSION_IDS` 单一事实源，前端与服务端共用）和 `expansions.js` 里的 `ADDED_EXPANSION_ORDER`。
 2. **添加成就对象**：使用全局唯一的站内 slug（例如 `vh-010`），填写 `name`、`heroClass`、`type`、`difficulty`、`stages` 等字段。累计成就的阶段必须提供正确的 `quota`；需要卡牌详情时补充 `relatedCards`，需要攻略或卡组时补充 `guide` / `recommendedDecks`。
 3. **检查数据关联**：如果 `relatedCards` 使用了新卡名，确认卡牌名称索引和卡图映射也已更新；否则成就数量会增加，但关联卡牌可能没有图片或详情。
-4. **更新游戏导入映射（必须，不是可选）**：新增或修改成就后必须重建 `achievement-id-map.json`，否则这些成就无法通过游戏内进度导入（踩过坑，见下方「成就进度导入与 ID 映射」）。执行 `node scripts/build-achievement-id-map.mjs`（默认自动优先使用最新 HSAchieveGuide 校准数据），检查未匹配清单。
+4. **更新游戏导入映射（必须，不是可选）**：新增或修改成就后必须重建 `achievement-id-map.json`，否则这些成就无法通过游戏内进度导入（踩过坑，见下方「成就进度导入与 ID 映射」）。执行 `node scripts/build-achievement-id-map.mjs`（默认自动优先使用最新 HSAchieveGuide 校准数据），检查未匹配清单。**例外**：版本在游戏内尚未上线、HSAchieveGuide 里必然没有条目时，在版本 JSON 顶层加 `"gameImportable": false` 并重建映射——该版本全部成就在 build/check 中豁免，`meta.excludedVersions` 登记；版本上线后立刻移除该标记、拉最新数据重建，把 15 个（或实际数量）slug 正式补进 map。
 5. **本地验证**：运行 `npm run check`（其中 `check:achievement-map` 守卫会拦截映射缺失）和打开成就页确认版本数量、成就数量、筛选结果和成就详情均正常。
 6. **提交前检查**：确认 ID 没有重复、阶段顺序和 quota 正确、中文字段无误；不要直接删除旧成就 ID，以免历史用户进度失去对应目标。若只是暂时下线某个工具，应先隐藏入口并保留路由与页面代码，观察后再决定是否删除。
 
@@ -342,7 +342,7 @@ node scripts/upload-cosmetic-thumbnails.mjs
 
 - 优先用仓库里的 `data/official-calibration/flat.zh-CN.json`（官方成就表快照，对新版本成就最全），构建脚本已原生支持该格式并默认优先；`data/hs-achievement-data.json` 依赖 Firestone 运行时刷新，常滞后于新补丁。
 - 本地解压备份在 `C:/Users/19872/Downloads/HSAchieveGuide-main/`，会过期；更新方式：`git clone --depth 1 https://github.com/LeaDYonovic/HSAchieveGuide`（raw.githubusercontent.com 直连不通，走 git clone 或 api.github.com 的 git/blobs 接口）。
-- 版本未上线时成就数据源里没有对应条目，等上线补丁后项目更新才出现（2026-10-21《黑暗帝国的统治》即属此例，上线后再加成就）。
+- 版本未上线时成就数据源里没有对应条目。自 2026-10 起允许提前把未上线版本的成就录入站内：版本 JSON 顶层标记 `"gameImportable": false`，build/check 守卫豁免这些 slug 并在映射 `meta.excludedVersions` 登记，导入预览会提示「该版本尚未上线，暂不支持导入」。**上线当天必须**：拉最新 HSAchieveGuide 数据 → 移除 `gameImportable` 标记 → 重建映射确认新 slug 全部匹配 → 随部署生效。2026-10-21《黑暗帝国的统治》即按此流程提前录入（2026-10-14 录入 15 个成就）。
 
 **2026-10 事故**：紫罗兰监狱版本 8-26 加入站内后没有重建映射表（旧映射 8-16 生成），且当时的数据源快照里也没有该版本成就，导致用户导入时新成就全部匹配不到——预览显示「新增 0 个完成阶段」、确认按钮被禁用。规约：
 
@@ -358,7 +358,7 @@ node scripts/upload-cosmetic-thumbnails.mjs
 | `npm run dev` | 启动 Vite + Express 开发服务器 |
 | `npm run build` | 生产构建 |
 | `npm run check:syntax` | 语法检查（server/scripts/src） |
-| `npm run check:achievement-map` | 守卫：站内成就必须全部有游戏进度导入映射 |
+| `npm run check:achievement-map` | 守卫：可导入成就必须全部有游戏进度映射（`gameImportable: false` 的未上线版本豁免并核对 meta） |
 | `node scripts/build-achievement-id-map.mjs` | 重建成就导入 ID 映射（默认优先 HSAchieveGuide 校准数据，也可 `--hs-data` 指定） |
 | `node scripts/fetch-hs-cards.mjs` | 从暴雪 API 拉卡牌数据+图片 |
 | `HS_DATA_ONLY=1 node scripts/fetch-hs-cards.mjs` | 仅更新卡牌数据，不下载图片 |

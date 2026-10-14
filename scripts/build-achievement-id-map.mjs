@@ -116,15 +116,26 @@ for (const bucket of buckets.values()) {
   bucket.sort((a, b) => (a.quota || 0) - (b.quota || 0));
 }
 
-// 站内成就：全部扩展包文件里的 achievements 摊平
+// 站内成就：全部扩展包文件里的 achievements 摊平。
+// 顶层 gameImportable: false 的版本尚未在游戏内上线，HSAchieveGuide 里没有对应条目，
+// 这些成就不参与匹配、不计入未匹配，只登记到 meta.excluded，避免守卫误报；
+// 版本上线并移除该标记后，正常走匹配流程。
 const siteAchievements = [];
+const exemptSlugs = new Set();
+const exemptVersions = [];
 for (const file of readdirSync(ACHIEVEMENTS_DIR)) {
   if (!file.endsWith('.json')) continue;
   const data = readJson(join(ACHIEVEMENTS_DIR, file));
+  const importable = data.gameImportable !== false;
+  if (!importable) {
+    exemptVersions.push({ id: data.id, name: data.name });
+  }
   for (const achievement of data.achievements || []) {
     siteAchievements.push({ ...achievement, expansionFile: file });
+    if (!importable) exemptSlugs.add(achievement.id);
   }
 }
+const importableAchievements = siteAchievements.filter((a) => !exemptSlugs.has(a.id));
 
 const map = {};
 const unmatchedIds = [];
@@ -133,7 +144,7 @@ let level1 = 0;
 let level2 = 0;
 let conflicts = 0;
 
-for (const site of siteAchievements) {
+for (const site of importableAchievements) {
   const quotas = (site.stages || [])
     .map((stage) => stage.quota)
     .filter((q) => typeof q === 'number')
@@ -206,7 +217,8 @@ for (const site of siteAchievements) {
 }
 
 const total = siteAchievements.length;
-const matchedCount = total - unmatchedIds.length;
+const importableTotal = importableAchievements.length;
+const matchedCount = importableTotal - unmatchedIds.length;
 const output = {
   meta: {
     description: '站内成就 slug → 游戏内成就数字 ID（按阶段顺序），供成就进度导入换算使用',
@@ -214,9 +226,12 @@ const output = {
     source: 'HSAchieveGuide 成就数据（hs-achievement-data.json 或 official-calibration/flat.zh-CN.json）',
     sourcePath: hsDataPath.replace(/\\/g, '/'),
     total,
+    importable: importableTotal,
     matched: matchedCount,
     unmatched: unmatchedIds.length,
     unmatchedIds,
+    excluded: exemptSlugs.size,
+    excludedVersions: exemptVersions,
   },
   map,
 };
@@ -224,7 +239,7 @@ const output = {
 writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + '\n', 'utf8');
 
 console.log(`源数据: ${hsDataPath}`);
-console.log(`站内成就 ${total} 个，匹配 ${matchedCount} 个（L1 精确 ${level1} + L2 整组 ${level2}），未匹配 ${unmatchedIds.length} 个`);
+console.log(`站内成就 ${total} 个（含未上线豁免 ${exemptSlugs.size} 个），可导入 ${importableTotal} 个，匹配 ${matchedCount} 个（L1 精确 ${level1} + L2 整组 ${level2}），未匹配 ${unmatchedIds.length} 个`);
 if (conflicts) console.warn(`警告: ${conflicts} 个成就因游戏 ID 重复归属而放弃匹配`);
 console.log(`已生成: ${OUTPUT_PATH}`);
 if (unmatchedIds.length) {

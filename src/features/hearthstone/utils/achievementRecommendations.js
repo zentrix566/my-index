@@ -72,7 +72,7 @@ function scoreAchievement(
   if (pinnedScore) tags.push('已置顶')
   if (progress.percent >= 75 || remaining <= 1) tags.push('接近完成')
   if (xpEfficiencyScore >= 12) tags.push('经验效率高')
-  if (pointEfficiencyScore >= 10) tags.push('成就点效率高')
+  if (pointEfficiencyScore >= 10) tags.push('名望效率高')
   if (sharedCards.length) tags.push('可顺带完成')
   if (!tags.length) tags.push(achievement.type === '累计' ? '稳步推进' : '目标明确')
 
@@ -107,7 +107,7 @@ function buildReason({ progress, remaining, xp, points, sharedCards }) {
   } else {
     parts.push(`还差 ${remaining} 个目标`)
   }
-  if (xp || points) parts.push(`可获 ${xp} 经验 / ${points} 成就点`)
+  if (xp || points) parts.push(`可获 ${xp} 经验 / ${points} 事迹名望`)
   if (sharedCards.length) {
     parts.push(`与其他目标共享 ${sharedCards.slice(0, 2).join('、')}`)
   }

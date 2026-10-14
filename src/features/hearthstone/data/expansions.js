@@ -2,6 +2,7 @@
  * 炉石传说扩展包/版本数据索引
  * 版本列表按发布时间从新到旧排列
  */
+import darkEmpire from './achievements/dark-empire.json'
 import violetHold from './achievements/violet-hold.json'
 import cataclysm from './achievements/cataclysm.json'
 import cavernsOfTime from './achievements/caverns-of-time.json'
@@ -33,6 +34,7 @@ import CORE_EXPANSION_IDS from './core-expansion-ids.js'
 
 // 版本列表（按发布时间从新到旧排列）
 export const expansions = [
+  darkEmpire,        // 黑暗帝国的统治
   violetHold,        // 紫罗兰监狱
   cataclysm,         // 大地的裂变
   cavernsOfTime,     // 穿越时间流
@@ -106,13 +108,13 @@ export const addedExpansions = expansions
 export const getExpansionById = (id) => expansions.find((exp) => exp.id === id)
 
 /**
- * 官方全部版本清单 —— 44 个（按官方接口返回顺序记录，以后参考）
+ * 官方全部版本清单 —— 45 个（按官方接口返回顺序记录，以后参考）
  * ------------------------------------------------------------------
  * 来源：GET https://webapi.blizzard.cn/hs-cards-api-server/api/web/cards/constructed/set
  *       （狂野卡牌分类的 subcategories 完整列表，含 44 个版本；标准分类是其子集）
  * 说明：
  *   - 记录全部 44 个官方版本（含无成就数据的），供其他功能（如卡牌检索/图库）参考；
- *     成就视图只用其中「有成就数据」的 27 个版本（见下方 expansions 数组）。
+ *     成就视图只用其中「有成就数据」的 28 个版本（见下方 expansions 数组）。
  *   - 顺序 = 官方接口返回顺序（序号低在前）。注意：**此顺序不是发布时间倒序**
  *     （例：深暗领域第 1、紫罗兰监狱第 10、翡翠梦境排在活动之后），
  *     仅作「官方版本清单」参考，不要用它推导发布时间。
@@ -122,6 +124,7 @@ export const getExpansionById = (id) => expansions.find((exp) => exp.id === id)
  * 后续若官方接口调整版本，只需更新此数组。
  */
 export const EXPANSION_OFFICIAL_ORDER = [
+  { cardSetId: 1994, nameEn: 'reign-of-the-black-empire',  setName: '黑暗帝国的统治' },
   { cardSetId: 1935, nameEn: 'the-great-dark-beyond',      setName: '深暗领域' },
   { cardSetId: 1905, nameEn: 'perils-in-paradise',         setName: '胜地历险记' },
   { cardSetId: 1897, nameEn: 'whizbangs-workshop',         setName: '威兹班的工坊' },

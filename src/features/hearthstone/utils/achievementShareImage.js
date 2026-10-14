@@ -283,7 +283,7 @@ export async function generateAchievementShareImage({ achievement, progressInfo,
       // 奖励（右对齐）
       const rewardText = []
       if (stage.xpReward) rewardText.push(`${stage.xpReward} 经验`)
-      if (stage.points) rewardText.push(`${stage.points} 点`)
+      if (stage.points) rewardText.push(`${stage.points} 名望`)
       if (rewardText.length) {
         ctx.fillStyle = palette.accentSoft
         ctx.font = `600 13px ${FONT_FAMILY}`

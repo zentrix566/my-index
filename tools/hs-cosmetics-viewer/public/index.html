@@ -287,7 +287,7 @@ function renderAchievements () {
   const pctAll = totalAll ? Math.round(doneAll / totalAll * 100) : 0
 
   let html = `<div class="ach-summary">`
-  html += `<div class="ach-total">已达成成就 <b>${ach.totalCompleted ?? doneAll}</b> · 完成度 ${pctAll}%（${doneAll}/${totalAll}） · 成就点数 <b>${ptsAll}</b>/${availAll}</div>`
+  html += `<div class="ach-total">已达成成就 <b>${ach.totalCompleted ?? doneAll}</b> · 完成度 ${pctAll}%（${doneAll}/${totalAll}） · 事迹名望 <b>${ptsAll}</b>/${availAll}</div>`
   html += `<div class="ach-bar"><div class="ach-fill" style="width:${pctAll}%"></div></div>`
   html += `</div>`
 

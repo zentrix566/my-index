@@ -1,0 +1,393 @@
+{
+  "id": "dark-empire",
+  "name": "黑暗帝国",
+  "description": "炉石传说黑暗帝国版本成就数据",
+  "updatedAt": "2026-10-14",
+  "cardImageDir": "dark-empire",
+  "referenceLinks": [],
+  "gameImportable": false,
+  "achievements": [
+    {
+      "id": "de-001",
+      "name": "拼装产线",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "F3TCH3R寻回机"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "拼装25张随从牌。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 25
+        },
+        {
+          "description": "拼装50张随从牌。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "拼装100张随从牌。",
+          "xpReward": 900,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "de-002",
+      "name": "神老心不老",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "克苏恩，帝国之眼",
+        "恩佐斯，梦境之末",
+        "亚煞极，泰坦杀神",
+        "古神主谋尤格-萨隆"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用20张古神牌。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "使用40张古神牌。",
+          "xpReward": 400,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "de-003",
+      "name": "邪恶眼线",
+      "heroClass": "中立",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "克苏恩，帝国之眼"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "触发20个克苏恩，帝国之眼的技能。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "触发50个克苏恩，帝国之眼的技能。",
+          "xpReward": 300,
+          "points": 10,
+          "quota": 50
+        },
+        {
+          "description": "触发100个克苏恩，帝国之眼的技能。",
+          "xpReward": 800,
+          "points": 20,
+          "quota": 100
+        }
+      ]
+    },
+    {
+      "id": "de-004",
+      "name": "闹铃响起",
+      "heroClass": "中立",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "恩佐斯，梦境之末"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张法力值消耗为（0）的恩佐斯，梦境之末。",
+          "xpReward": 800,
+          "points": 20,
+          "quota": 0
+        }
+      ]
+    },
+    {
+      "id": "de-005",
+      "name": "先锋卫士",
+      "heroClass": "圣骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "投身战争"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用投身战争召唤一个法力值消耗为（10）的士兵。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "用投身战争召唤一个法力值消耗为（11）的士兵。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 11
+        }
+      ]
+    },
+    {
+      "id": "de-006",
+      "name": "翡翠筑梦",
+      "heroClass": "德鲁伊",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "弗蕾亚，翡翠构筑师"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用弗蕾亚，翡翠构筑师使你手牌中的一张野兽牌获得10点生命值。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "用弗蕾亚，翡翠构筑师使你手牌中的一张野兽牌获得20点生命值。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "de-007",
+      "name": "那可不是狼",
+      "heroClass": "恶魔猎手",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "召唤20只虚空兽。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "召唤50只虚空兽。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "de-008",
+      "name": "舍弃护甲",
+      "heroClass": "战士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "塞特斯"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用塞特斯召唤一个具有至少20点生命值的魔像。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "用塞特斯召唤一个具有至少40点生命值的魔像。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 40
+        }
+      ]
+    },
+    {
+      "id": "de-009",
+      "name": "原始蹦床",
+      "heroClass": "术士",
+      "type": "一次性",
+      "difficulty": "易",
+      "relatedCards": [
+        "漂浮教程"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "使用一张法力值消耗为（3）的漂浮教程。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 3
+        },
+        {
+          "description": "使用一张法力值消耗为（4）的漂浮教程。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 4
+        }
+      ]
+    },
+    {
+      "id": "de-010",
+      "name": "极恶血神",
+      "heroClass": "死亡骑士",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "戈霍恩"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张戈霍恩偷取10点生命值。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "用一张戈霍恩偷取20点生命值。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "de-011",
+      "name": "元素星轮",
+      "heroClass": "法师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "冰轮法师"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用冰轮法师召唤15个水元素。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 15
+        },
+        {
+          "description": "用冰轮法师召唤30个水元素。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 30
+        }
+      ]
+    },
+    {
+      "id": "de-012",
+      "name": "深藏地底",
+      "heroClass": "潜行者",
+      "type": "累计",
+      "difficulty": "中等",
+      "relatedCards": [
+        "德雷阿佳丝"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用德雷阿佳丝获取10张古神牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 10
+        },
+        {
+          "description": "用德雷阿佳丝获取20张古神牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 20
+        }
+      ]
+    },
+    {
+      "id": "de-013",
+      "name": "至暗之夜",
+      "heroClass": "牧师",
+      "type": "累计",
+      "difficulty": "难",
+      "relatedCards": [
+        "黑暗帝国之刃"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用黑暗帝国之刃使你的对手受到20次疲劳伤害。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 20
+        },
+        {
+          "description": "用黑暗帝国之刃使你的对手受到50次疲劳伤害。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 50
+        }
+      ]
+    },
+    {
+      "id": "de-014",
+      "name": "正在装弹！",
+      "heroClass": "猎人",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "重新装填"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用一张重新装填发现4张法术牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 4
+        },
+        {
+          "description": "用一张重新装填发现6张法术牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 6
+        }
+      ]
+    },
+    {
+      "id": "de-015",
+      "name": "帝国之癫",
+      "heroClass": "萨满祭司",
+      "type": "一次性",
+      "difficulty": "中等",
+      "relatedCards": [
+        "癫狂元素"
+      ],
+      "recommendedDecks": [],
+      "stages": [
+        {
+          "description": "用癫狂元素获取一张法力值消耗为（5）的法术牌。",
+          "xpReward": 100,
+          "points": 10,
+          "quota": 5
+        },
+        {
+          "description": "用癫狂元素获取一张法力值消耗为（10）的法术牌。",
+          "xpReward": 200,
+          "points": 20,
+          "quota": 10
+        }
+      ]
+    }
+  ]
+}
