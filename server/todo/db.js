@@ -105,6 +105,13 @@ CREATE INDEX IF NOT EXISTS idx_todo_reschedules_from ON todo_reschedules(user_id
 `
 }
 
+// 2026-10 状态精简：已延期→已挂起，进行中/等待中→待办。
+// 驱动初始化时幂等执行，新库无旧值时 UPDATE 为空操作。
+const STATUS_NORMALIZATION_SQL = `
+UPDATE todos SET status = 'suspended' WHERE status = 'deferred';
+UPDATE todos SET status = 'pending' WHERE status IN ('in_progress', 'waiting');
+`
+
 let driverPromise = null
 
 async function createSqliteDriver() {
@@ -133,6 +140,7 @@ async function createSqliteDriver() {
     UPDATE todos SET original_due_date = due_date
     WHERE original_due_date IS NULL AND due_date IS NOT NULL;
   `)
+  database.exec(STATUS_NORMALIZATION_SQL)
   return {
     async query(sql, params = []) {
       const { text, values } = toSqliteStatement(sql, normalizeParams(params))
@@ -166,6 +174,7 @@ async function createPgDriver() {
   await pool.query('ALTER TABLE todos ADD COLUMN IF NOT EXISTS reschedule_count INTEGER NOT NULL DEFAULT 0')
   await pool.query('ALTER TABLE todos ADD COLUMN IF NOT EXISTS last_rescheduled_at TEXT')
   await pool.query('UPDATE todos SET original_due_date = due_date WHERE original_due_date IS NULL AND due_date IS NOT NULL')
+  await pool.query(STATUS_NORMALIZATION_SQL)
   return {
     async query(sql, params = []) {
       return pool.query(sql, normalizeParams(params))
@@ -377,9 +386,7 @@ const TITLE_MAX = 200
 const NOTE_MAX = 2000
 export const VALID_STATUS = new Set([
   'pending',
-  'in_progress',
-  'deferred',
-  'waiting',
+  'suspended',
   'done',
   'cancelled'
 ])
@@ -437,8 +444,9 @@ export async function listTasks(userId, view) {
   const params = [userId]
   if (view === 'today_todo') {
     // 今日待办同时带出历史逾期事项，避免旧任务从视野中消失。
+    // 已挂起(suspended)也带出，由前端单独分区展示、不计入今日进度与逾期提醒。
     where +=
-      " AND due_date <= $2 AND status IN ('pending','in_progress','deferred','waiting')"
+      " AND due_date <= $2 AND status IN ('pending', 'suspended')"
     params.push(tk)
   } else if (view === 'today_done') {
     where += " AND status = 'done' AND substr(completed_at, 1, 10) = $2"

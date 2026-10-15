@@ -297,10 +297,11 @@ router.get('/day/:date', async (req, res) => {
   try {
     const rows = await dayTasks(req.userId, date)
     const tasks = rows.map(serializeTask)
-    const summary = { total: tasks.length, done: 0, cancelled: 0, active: 0 }
+    const summary = { total: tasks.length, done: 0, cancelled: 0, active: 0, suspended: 0 }
     for (const t of tasks) {
       if (t.status === 'done') summary.done += 1
       else if (t.status === 'cancelled') summary.cancelled += 1
+      else if (t.status === 'suspended') summary.suspended += 1
       else summary.active += 1
     }
     res.json({
@@ -337,10 +338,11 @@ router.get('/calendar', async (req, res) => {
     }))
     for (const { key, task } of entries) {
       if (!key) continue
-      if (!days[key]) days[key] = { total: 0, done: 0, cancelled: 0, active: 0, tasks: [] }
+      if (!days[key]) days[key] = { total: 0, done: 0, cancelled: 0, active: 0, suspended: 0, tasks: [] }
       days[key].total += 1
       if (task.status === 'done') days[key].done += 1
       else if (task.status === 'cancelled') days[key].cancelled += 1
+      else if (task.status === 'suspended') days[key].suspended += 1
       else days[key].active += 1
       days[key].tasks.push(task)
     }
@@ -401,7 +403,7 @@ export function buildTodoSystemPrompt(scope) {
   if (scope === 'week') {
     return [
       '你是帮助用户取舍的周计划编辑，而不是日程摘要工具。下面是用户本周的日程清单（JSON 数组）。',
-      '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / in_progress 进行中 / deferred 已延期 / waiting 等待中 / done 已办 / cancelled 已取消)。',
+      '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / suspended 已挂起，即用户主动搁置、暂不处理的任务，不要催促也不要视为延期 / done 已办 / cancelled 已取消)。',
       timingRule,
       priorityRule,
       '不要逐日复述任务，也不要重复总数、完成率或分类分布。请识别本周最值得守住的主线、任务之间最明显的阻塞或挤压，以及一个可执行的调整。最多引用 3 条任务作为证据；不要猜测耗时、动机或真实执行时间。',
@@ -411,7 +413,7 @@ export function buildTodoSystemPrompt(scope) {
   if (scope === 'month') {
     return [
       '你是帮助用户辨认主线的月计划编辑，而不是月度统计工具。下面是用户本月的日程清单（JSON 数组）。',
-      '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / in_progress 进行中 / deferred 已延期 / waiting 等待中 / done 已办 / cancelled 已取消)。',
+      '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / suspended 已挂起，即用户主动搁置、暂不处理的任务，不要催促也不要视为延期 / done 已办 / cancelled 已取消)。',
       timingRule,
       priorityRule,
       '不要按日期或分类罗列任务，也不要复述总数与完成率。请找出本月最清晰的主线、正在反复占用注意力的结构性问题，以及一个能让后续安排更清楚的调整。最多引用 3 条任务作为证据；不要猜测耗时、动机或真实执行时间。',
@@ -420,7 +422,7 @@ export function buildTodoSystemPrompt(scope) {
   }
   return [
     '你是帮助用户决定今天怎么做的日程编辑，而不是任务摘要工具。下面是用户某一天的日程清单（JSON 数组）。',
-    '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / in_progress 进行中 / deferred 已延期 / waiting 等待中 / done 已办 / cancelled 已取消)。',
+    '字段：date 计划日期、title 标题、note 备注、category 分类、status 状态(pending 待办 / suspended 已挂起，即用户主动搁置、暂不处理的任务，不要催促也不要视为延期 / done 已办 / cancelled 已取消)。',
     timingRule,
     priorityRule,
     '不要逐条复述任务，也不要重复已完成或未完成数量。请指出今天最值得守住的一件事、最可能造成分心或停滞的关系，以及一个能立即开始的动作。最多引用 3 条任务作为证据；不要猜测耗时、动机或真实执行时间。',

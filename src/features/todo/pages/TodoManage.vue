@@ -182,7 +182,7 @@ import TodoNewGroupModal from '../components/TodoNewGroupModal.vue'
 import { useFeedback } from '../../../composables/useFeedback.js'
 import { taskToCreatePayload } from '../utils/taskPayload.js'
 import { getAvailableLastListId, setLastListId } from '../utils/lastList.js'
-import { TASK_STATUS_LIST, statusStyle, TASK_STATUS_META, TASK_STATUS_WEIGHT } from '../constants.js'
+import { TASK_STATUS_LIST, statusStyle, TASK_STATUS_META, TASK_STATUS_WEIGHT, isActiveStatus } from '../constants.js'
 import { useToast } from '../../../composables/useToast.js'
 import { formatBeijingDateKey } from '../../../utils/date.js'
 
@@ -204,7 +204,11 @@ const savedFilters = (() => {
 const filterQuery = ref(savedFilters.query || '')
 const filterFrom = ref(savedFilters.from || '')
 const filterTo = ref(savedFilters.to || '')
-const filterStatus = ref(savedFilters.status || 'all')
+// 旧版本筛选值可能是已下线的状态（进行中/已延期/等待中），兜底为全部避免列表空白
+const savedStatus = savedFilters.status || 'all'
+const filterStatus = ref(
+  savedStatus === 'all' || TASK_STATUS_META[savedStatus] ? savedStatus : 'all'
+)
 const filterList = ref(savedFilters.list || '')
 
 const hasFilter = computed(
@@ -219,7 +223,7 @@ function resetFilters() {
 }
 
 const activeCount = computed(() =>
-  filteredTasks.value.filter((t) => t.status !== 'done' && t.status !== 'cancelled').length
+  filteredTasks.value.filter((t) => isActiveStatus(t.status)).length
 )
 const doneCount = computed(() => filteredTasks.value.filter((t) => t.status === 'done').length)
 const cancelledCount = computed(() => filteredTasks.value.filter((t) => t.status === 'cancelled').length)

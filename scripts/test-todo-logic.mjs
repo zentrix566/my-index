@@ -54,6 +54,18 @@ try {
   assert.equal(wk.length, 2, '今日~三日后 区间 2 条')
   ok('listTasksInRange(今日~+3) 返回 2 条')
 
+  // ===== 任务状态：挂起任务仍进今日待办（前端单独分区、不施压），旧枚举值回退待办 =====
+  const yesterday = addDaysToKey(today, -1)
+  await createTask(1, { title: '今天挂起', dueDate: today, status: 'suspended', listId })
+  await createTask(1, { title: '逾期挂起', dueDate: yesterday, status: 'suspended', listId })
+  const legacy = await createTask(1, { title: '旧状态', dueDate: today, status: 'in_progress', listId })
+  assert.equal(legacy.status, 'pending', '已下线的 in_progress 回退 pending')
+  const todoToday = await listTasks(1, 'today_todo')
+  assert.ok(todoToday.some((t) => t.title === '今天挂起'), '今天到期的挂起任务在今日待办中可见')
+  assert.ok(todoToday.some((t) => t.title === '逾期挂起'), '逾期挂起任务也带出（前端不标逾期）')
+  assert.ok(todoToday.some((t) => t.title === '旧状态' && t.status === 'pending'), '旧状态迁移后按待办返回')
+  ok('挂起任务在今日待办可见，旧状态值回退待办')
+
   const lists = await listLists(1)
   assert.ok(lists.some((l) => l.id === listId), 'listLists 含测试组')
   ok('listLists 含新建分组')
@@ -69,9 +81,14 @@ try {
   assert.equal(addDaysToKey(wr.to, 1), addDaysToKey(wr.from, 7), '周区间跨度 7 天')
   ok(`weekRangeOf 周一~周日: ${wr.from} ~ ${wr.to}`)
 
-  assert.match(buildTodoSystemPrompt('day'), /日程助理/, 'day 提示词')
-  assert.match(buildTodoSystemPrompt('week'), /周计划助理/, 'week 提示词')
-  assert.match(buildTodoSystemPrompt('month'), /月计划助理/, 'month 提示词')
+  assert.match(buildTodoSystemPrompt('day'), /日程编辑/, 'day 提示词')
+  assert.match(buildTodoSystemPrompt('week'), /周计划编辑/, 'week 提示词')
+  assert.match(buildTodoSystemPrompt('month'), /月计划编辑/, 'month 提示词')
+  for (const scope of ['day', 'week', 'month']) {
+    const prompt = buildTodoSystemPrompt(scope)
+    assert.match(prompt, /suspended 已挂起/, `${scope} 提示词含已挂起`)
+    assert.doesNotMatch(prompt, /in_progress|deferred|waiting/, `${scope} 提示词无旧状态`)
+  }
   ok('buildTodoSystemPrompt 三种 scope 提示词正确')
 
   console.log(`\nTODO_LOGIC_OK ✅ 通过 ${passed} 项`)

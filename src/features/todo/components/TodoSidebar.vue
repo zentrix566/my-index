@@ -69,7 +69,8 @@ const todayDoneCount = ref(null)
 async function loadTaskCounts() {
   try {
     const [pending, done] = await Promise.all([todoApi.listTasks('today_todo'), todoApi.listTasks('today_done')])
-    todayPendingCount.value = (pending.tasks || []).length
+    // 角标只数今天要做的待办；已挂起任务在今日页单独展示，不施加数量压力
+    todayPendingCount.value = (pending.tasks || []).filter((t) => t.status !== 'suspended').length
     todayDoneCount.value = (done.tasks || []).length
   } catch {
     // 导航数量只作辅助展示，加载失败不影响页面主体。

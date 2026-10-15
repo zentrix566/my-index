@@ -124,7 +124,7 @@
               <div><span class="todo-overview-kicker">TODAY</span><h2>今日概览</h2></div>
               <span class="todo-overview-ring" :style="{ '--progress': todayProgress }">{{ todayProgress }}%</span>
             </div>
-            <div class="todo-overview-stat main"><strong>{{ tasks.length }}</strong><span>待处理任务<span v-if="overdueTasks.length"> · {{ overdueTasks.length }} 项逾期</span></span></div>
+            <div class="todo-overview-stat main"><strong>{{ pendingTaskCount }}</strong><span>待处理任务<span v-if="overdueTasks.length"> · {{ overdueTasks.length }} 项逾期</span><span v-if="suspendedTasks.length"> · {{ suspendedTasks.length }} 项已挂起</span></span></div>
             <div class="todo-overview-grid">
               <div class="todo-overview-stat high"><strong>{{ priorityCounts.high }}</strong><span>高优先级</span></div>
               <div class="todo-overview-stat"><strong>{{ priorityCounts.medium }}</strong><span>中优先级</span></div>
@@ -228,7 +228,7 @@ import { toPng } from 'html-to-image'
 import { useAuth } from '../../../auth/useAuth.js'
 import todoApi from '../api/todo.js'
 import { getAvailableLastListId, setLastListId } from '../utils/lastList.js'
-import { TASK_STATUS_LIST, statusStyle, TASK_STATUS_META } from '../constants.js'
+import { TASK_STATUS_LIST, statusStyle, TASK_STATUS_META, isActiveStatus, isParkedStatus } from '../constants.js'
 import TodoSidebar from '../components/TodoSidebar.vue'
 import TodoNewGroupModal from '../components/TodoNewGroupModal.vue'
 import { useFeedback } from '../../../composables/useFeedback.js'
@@ -347,7 +347,15 @@ const todayDoneCount = computed(() => todayDoneTasks.value.length)
 const overdueTasks = computed(() => tasks.value
   .filter((task) => isOverdue(task))
   .sort((left, right) => String(left.dueDate).localeCompare(String(right.dueDate)) || Number(right.id) - Number(left.id)))
-const todayScheduledTasks = computed(() => tasks.value.filter((task) => task.dueDate === dateKey))
+// 今天计划只统计待办；已挂起任务单独分区展示，不计入今日进度
+const todayScheduledTasks = computed(() =>
+  tasks.value.filter((task) => isActiveStatus(task.status) && task.dueDate === dateKey)
+)
+const suspendedTasks = computed(() =>
+  tasks.value.filter((task) => isParkedStatus(task.status))
+    .sort((left, right) => String(left.dueDate).localeCompare(String(right.dueDate)) || Number(right.id) - Number(left.id))
+)
+const pendingTaskCount = computed(() => tasks.value.filter((task) => isActiveStatus(task.status)).length)
 const todayTotal = computed(() => todayScheduledTasks.value.length + todayDoneCount.value)
 const todayProgress = computed(() => todayTotal.value ? Math.round((todayDoneCount.value / todayTotal.value) * 100) : 0)
 const taskSections = computed(() => {
@@ -364,10 +372,17 @@ const taskSections = computed(() => {
       label: '逾期待处理',
       hint: '这些任务原计划在今天之前完成',
       tasks: overdueTasks.value
+    } : null,
+    suspendedTasks.value.length ? {
+      key: 'suspended',
+      label: '已挂起',
+      hint: '先记在这里，今天不用处理',
+      tasks: suspendedTasks.value
     } : null
   ].filter(Boolean)
 })
 const priorityCounts = computed(() => tasks.value.reduce((counts, task) => {
+  if (!isActiveStatus(task.status)) return counts
   const priority = ['high', 'medium', 'low'].includes(task.priority) ? task.priority : 'medium'
   counts[priority] += 1
   return counts
@@ -465,7 +480,8 @@ async function toggleDone(t) {
 }
 
 function isOverdue(task) {
-  return view.value === 'today_todo' && Boolean(task.dueDate) && task.dueDate < dateKey
+  // 已挂起任务虽然展示在今日页，但不施压：不标逾期、不进逾期分区
+  return view.value === 'today_todo' && isActiveStatus(task.status) && Boolean(task.dueDate) && task.dueDate < dateKey
 }
 
 function overdueDays(task) {

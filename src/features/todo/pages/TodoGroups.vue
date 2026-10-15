@@ -40,6 +40,7 @@
                 <RouterLink :to="`/todo/list/${l.id}`" class="todo-grp-name">{{ l.name }}</RouterLink>
                 <div class="todo-grp-stat">
                   未完成 <b>{{ statOf(l.id).pending }}</b>
+                  · 已挂起 <b>{{ statOf(l.id).suspended }}</b>
                   · 已完成 <b>{{ statOf(l.id).done }}</b>
                   · 已取消 <b>{{ statOf(l.id).cancelled }}</b>
                 </div>
@@ -62,6 +63,7 @@
                 <span class="todo-grp-name plain">未分组</span>
                 <div class="todo-grp-stat">
                   未完成 <b>{{ statOf(null).pending }}</b>
+                  · 已挂起 <b>{{ statOf(null).suspended }}</b>
                   · 已完成 <b>{{ statOf(null).done }}</b>
                   · 已取消 <b>{{ statOf(null).cancelled }}</b>
                 </div>
@@ -157,9 +159,10 @@ const missingDefaults = computed(() => {
   return DEFAULT_NAMES.filter((n) => !have.has(n))
 })
 
-/** 某分组下的未完成 / 已完成 / 已取消数量；listId 传 null 表示「未分组」 */
+/** 某分组下的待办 / 已挂起 / 已完成 / 已取消数量；listId 传 null 表示「未分组」 */
 function statOf(listId) {
   let pending = 0
+  let suspended = 0
   let done = 0
   let cancelled = 0
   for (const t of tasks.value) {
@@ -167,9 +170,10 @@ function statOf(listId) {
     if (!matched) continue
     if (t.status === 'done') done += 1
     else if (t.status === 'cancelled') cancelled += 1
+    else if (t.status === 'suspended') suspended += 1
     else pending += 1
   }
-  return { pending, done, cancelled }
+  return { pending, suspended, done, cancelled }
 }
 
 const { push: toast } = useToast()
@@ -231,7 +235,7 @@ async function submit() {
 
 async function removeList(l) {
   const s = statOf(l.id)
-  const total = s.pending + s.done + s.cancelled
+  const total = s.pending + s.suspended + s.done + s.cancelled
   const extra = total ? `\n该组下 ${total} 个任务不会被删除，将移到「未分组」。` : ''
   const confirmed = await confirmAction({
     title: '删除分组？',

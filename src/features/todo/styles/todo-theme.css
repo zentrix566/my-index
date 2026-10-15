@@ -385,9 +385,7 @@ html[data-theme='dark'] .todo-task {
   box-shadow: 0 8px 22px rgba(42, 63, 96, 0.11);
 }
 .todo-task.status-pending { border-left-color: #3b82f6; }
-.todo-task.status-in_progress { border-left-color: #f59e0b; }
-.todo-task.status-deferred { border-left-color: #8b5cf6; }
-.todo-task.status-waiting { border-left-color: #ef4444; }
+.todo-task.status-suspended { border-left-color: #f59e0b; }
 .todo-task.status-done,
 .todo-task.done { border-left-color: #22c55e; }
 .todo-task.status-cancelled { border-left-color: #94a3b8; }

@@ -101,7 +101,8 @@ async function loadProfile() {
       todoApi.listTasks('today_done'),
       todoApi.range(from, today)
     ])
-    activeTasks.value = active.tasks || []
+    // 今日待办视图含已挂起任务；进度统计只计算真正待完成的，挂起不计入
+    activeTasks.value = (active.tasks || []).filter((t) => t.status !== 'suspended')
     doneTasks.value = done.tasks || []
     const completedByDate = new Map()
     for (const task of weekly.tasks || []) {
