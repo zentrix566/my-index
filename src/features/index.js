@@ -13,7 +13,8 @@ export {
   loadCardLookupPage,
   loadHearthstoneWheelPage,
   loadAlteracPuzzleAssistantPage,
-  loadHearthstoneGuidePage
+  loadHearthstoneGuidePage,
+  loadHearthstoneJourneyPage
 } from './hearthstone/index.js'
 export { loadDreamPage } from './dream/index.js'
 export { loadNotesPage } from './notes/index.js'

@@ -15,3 +15,4 @@ export const loadHearthstoneCollectionPage = () => loadWithStyles(() => import('
 export const loadHearthstoneWheelPage = () => loadWithStyles(() => import('./pages/HearthstoneWheel.vue'))
 export const loadAlteracPuzzleAssistantPage = () => loadWithStyles(() => import('./pages/AlteracPuzzleAssistant.vue'))
 export const loadHearthstoneGuidePage = () => loadWithStyles(() => import('./pages/HearthstoneGuide.vue'))
+export const loadHearthstoneJourneyPage = () => loadWithStyles(() => import('./pages/HearthstoneJourney.vue'))

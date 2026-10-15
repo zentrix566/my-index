@@ -1,0 +1,534 @@
+/* ============================
+   旅途剧情与任务页（尼奥罗萨之路）
+   明亮暴雪官网风：羊皮纸 + 酒红 + 金色，沿用 --hs-* 主题变量
+   ============================ */
+
+.hs-journey-page {
+  padding-bottom: 64px;
+}
+
+/* ===== Hero ===== */
+.hs-journey-hero {
+  position: relative;
+  padding: 30px 32px 26px;
+  border: 1px solid var(--hs-border);
+  border-top: 4px solid var(--hs-gold);
+  border-radius: 18px;
+  background: var(--hs-hero-bg);
+  box-shadow: var(--hs-shadow-hero);
+  overflow: hidden;
+}
+.hs-journey-hero::after {
+  content: "";
+  position: absolute;
+  right: -70px;
+  top: -70px;
+  width: 240px;
+  height: 240px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(212, 160, 23, 0.16), transparent 70%);
+  pointer-events: none;
+}
+.hs-journey-hero .eyebrow {
+  margin: 0 0 10px;
+  color: var(--hs-link);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.hs-journey-hero h1 {
+  margin: 0 0 14px;
+  color: var(--hs-text);
+  font-size: clamp(1.9rem, 3.6vw, 3rem);
+}
+.hs-journey-hero h1 small {
+  display: block;
+  margin-top: 4px;
+  color: var(--hs-text-soft);
+  font-size: 0.46em;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.hs-journey-summary {
+  max-width: 760px;
+  margin: 0;
+  color: var(--hs-text-soft);
+  line-height: 1.85;
+}
+.hs-journey-summary p { margin: 0 0 8px; }
+.hs-journey-hero-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 16px 0 0;
+}
+.hs-journey-meta-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border: 1px solid var(--hs-border);
+  border-radius: 999px;
+  background: var(--hs-inset-bg);
+  color: var(--hs-text-soft);
+  font-size: 12.5px;
+}
+.hs-journey-meta-chip strong { color: var(--hs-gold-soft); }
+.hs-journey-hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  margin-top: 16px;
+  font-size: 13px;
+}
+.hs-journey-hero-links a {
+  color: var(--hs-link);
+  font-weight: 700;
+  text-decoration: none;
+}
+.hs-journey-hero-links a:hover { text-decoration: underline; }
+.hs-journey-spoiler {
+  margin-top: 18px;
+  padding: 10px 14px;
+  border: 1px solid rgba(196, 30, 58, 0.35);
+  border-radius: 10px;
+  background: rgba(196, 30, 58, 0.07);
+  color: var(--hs-link-soft);
+  font-size: 12.5px;
+  line-height: 1.7;
+}
+
+/* ===== 工具条：部分锚点 + 仅看任务 ===== */
+.hs-journey-toolbar {
+  position: sticky;
+  /* 吸顶偏移由页面按全站导航实时占位注入（--hs-header-offset），导航显隐时同步让位 */
+  top: var(--hs-header-offset, 0px);
+  z-index: 20;
+  transition: top 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  margin: 18px 0 8px;
+  padding: 10px 14px;
+  border: 1px solid var(--hs-border);
+  border-radius: 12px;
+  background: var(--hs-surface-overlay);
+  backdrop-filter: blur(6px);
+}
+.hs-journey-part-nav {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  scrollbar-width: thin;
+}
+.hs-journey-part-nav a {
+  flex: none;
+  padding: 6px 14px;
+  border: 1px solid var(--hs-border);
+  border-radius: 999px;
+  background: var(--hs-inset-bg);
+  color: var(--hs-text-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.hs-journey-part-nav a:hover {
+  border-color: var(--hs-gold);
+  color: var(--hs-link);
+}
+.hs-journey-toolbar-side {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+/* 三态分段切换：全部 / 只看剧情 / 仅看任务 */
+.hs-journey-mode {
+  display: inline-flex;
+  gap: 2px;
+  padding: 3px;
+  border: 1px solid var(--hs-border);
+  border-radius: 999px;
+  background: var(--hs-inset-bg);
+}
+.hs-journey-mode-option {
+  position: relative;
+  padding: 5px 13px;
+  border-radius: 999px;
+  color: var(--hs-text-soft);
+  font-size: 12.5px;
+  font-weight: 600;
+  line-height: 1.4;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+  transition: color 0.15s, background 0.15s;
+}
+.hs-journey-mode-option:hover { color: var(--hs-link); }
+.hs-journey-mode-option input {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.hs-journey-mode-option.active {
+  background: var(--hs-primary);
+  color: #fdf6e3;
+}
+.hs-journey-mode-option.active:hover { color: #fdf6e3; }
+.hs-journey-source-link {
+  flex: none;
+  padding: 6px 4px;
+  color: var(--hs-link);
+  font-size: 12.5px;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+}
+.hs-journey-source-link:hover { text-decoration: underline; }
+
+/* ===== 部分卡片 ===== */
+.hs-journey-part {
+  margin-top: 26px;
+  border: 1px solid var(--hs-border);
+  border-radius: 16px;
+  background: var(--hs-surface-raised);
+  box-shadow: var(--hs-shadow-card);
+  /* 不能用 overflow:hidden，否则部分标题的 sticky 会失效；圆角改由 head/foot 自身承担 */
+  scroll-margin-top: 133px;
+}
+/* 工具条高度 + 2px 缝隙：部分标题停在吸顶工具条之下（窄屏工具条两行，值更大） */
+.hs-journey-page { --hs-toolbar-gap: 58px; }
+.hs-journey-part-head {
+  position: sticky;
+  /* 顶栏实时占位（--hs-header-offset）+ 工具条高度，导航显隐时自动跟随 */
+  top: calc(var(--hs-header-offset, 0px) + var(--hs-toolbar-gap, 58px));
+  z-index: 15;
+  margin: 0;
+  transition: top 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 15px 22px;
+  border-bottom: 1px solid var(--hs-border);
+  border-radius: 15px 15px 0 0;
+  background-color: var(--hs-surface-raised);
+  background-image: linear-gradient(135deg, rgba(196, 30, 58, 0.12), rgba(212, 160, 23, 0.1));
+  box-shadow: 0 8px 18px -10px rgba(74, 20, 16, 0.35);
+}
+.hs-journey-part-head h2 {
+  margin: 0;
+  color: var(--hs-text);
+  font-size: 19px;
+}
+.hs-journey-part-range {
+  display: block;
+  margin-top: 2px;
+  color: var(--hs-text-soft);
+  font-size: 12px;
+  font-weight: 400;
+}
+.hs-journey-part-reward {
+  flex: none;
+  padding: 6px 14px;
+  border: 1px solid rgba(212, 160, 23, 0.55);
+  border-radius: 999px;
+  background: rgba(212, 160, 23, 0.12);
+  color: var(--hs-gold-soft);
+  font-size: 12.5px;
+  font-weight: 700;
+  white-space: nowrap;
+}
+.hs-journey-scenes {
+  padding: 24px 24px 6px;
+}
+
+/* ===== 片段时间线 ===== */
+.hs-journey-scene {
+  position: relative;
+  display: grid;
+  grid-template-columns: 42px 1fr;
+  gap: 14px;
+  padding-bottom: 24px;
+}
+.hs-journey-scene.tasks-only { padding-bottom: 14px; }
+.hs-journey-scene::before {
+  content: "";
+  position: absolute;
+  left: 20px;
+  top: 38px;
+  bottom: 0;
+  width: 2px;
+  background: var(--hs-border);
+}
+.hs-journey-scene:last-child::before { display: none; }
+.hs-journey-scene-node {
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border: 2px solid var(--hs-gold);
+  border-radius: 50%;
+  background: var(--hs-surface-raised);
+  color: var(--hs-link);
+  font-size: 14px;
+  font-weight: 800;
+  box-shadow: 0 0 0 4px var(--hs-surface-raised);
+}
+.hs-journey-scene-body { min-width: 0; }
+.hs-journey-scene-body h4 {
+  margin: 6px 0 0;
+  color: var(--hs-text);
+  font-size: 16.5px;
+}
+.hs-journey-story {
+  margin-top: 8px;
+  color: var(--hs-text-soft);
+  font-size: 14px;
+  line-height: 1.9;
+}
+.hs-journey-story p { margin: 0 0 6px; }
+
+/* ===== 任务块 ===== */
+.hs-journey-tasks {
+  margin-top: 12px;
+  padding: 12px 16px;
+  border: 1px solid var(--hs-border);
+  border-radius: 12px;
+  background: var(--hs-inset-bg);
+}
+.hs-journey-tasks-head {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 6px;
+  color: var(--hs-link);
+  font-size: 12.5px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+}
+.hs-journey-choice {
+  padding: 1px 9px;
+  border: 1px solid rgba(212, 160, 23, 0.6);
+  border-radius: 999px;
+  background: rgba(212, 160, 23, 0.12);
+  color: var(--hs-gold-soft);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0;
+}
+.hs-journey-task-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.hs-journey-task {
+  position: relative;
+  padding: 8px 0 8px 18px;
+}
+.hs-journey-task::before {
+  content: "";
+  position: absolute;
+  left: 2px;
+  top: 16px;
+  width: 7px;
+  height: 7px;
+  border: 1.5px solid var(--hs-gold-soft);
+  transform: rotate(45deg);
+  background: var(--hs-surface-raised);
+}
+.hs-journey-task + .hs-journey-task {
+  margin-top: 4px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--hs-border);
+}
+.hs-journey-task + .hs-journey-task::after {
+  content: "或";
+  position: absolute;
+  top: -10px;
+  left: 26px;
+  padding: 0 7px;
+  border-radius: 8px;
+  background: var(--hs-surface-raised);
+  color: var(--hs-gold-soft);
+  font-size: 11px;
+  font-weight: 700;
+}
+.hs-journey-task-text {
+  margin: 0;
+  color: var(--hs-text);
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.7;
+}
+.hs-journey-bonus {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  margin-top: 7px;
+}
+.hs-journey-bonus-label {
+  color: var(--hs-muted);
+  font-size: 11px;
+}
+.hs-journey-bonus-tag {
+  padding: 1px 9px;
+  border: 1px solid rgba(212, 160, 23, 0.45);
+  border-radius: 999px;
+  background: rgba(212, 160, 23, 0.08);
+  color: var(--hs-gold-soft);
+  font-size: 11.5px;
+  font-weight: 600;
+}
+.hs-journey-task-note {
+  margin: 6px 0 0;
+  color: var(--hs-muted);
+  font-size: 12.5px;
+  line-height: 1.6;
+}
+.hs-journey-task-note::before { content: "※ "; }
+
+/* ===== 语音 ===== */
+.hs-journey-voice {
+  margin-top: 10px;
+  border: 1px solid var(--hs-border);
+  border-radius: 10px;
+  background: rgba(139, 105, 20, 0.06);
+}
+.hs-journey-voice summary {
+  padding: 9px 14px;
+  color: var(--hs-text-soft);
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  user-select: none;
+}
+.hs-journey-voice summary:hover { color: var(--hs-link); }
+.hs-journey-voice-lines { padding: 2px 14px 10px; }
+.hs-journey-voice-line {
+  display: flex;
+  gap: 10px;
+  margin: 8px 0;
+  font-size: 13.5px;
+  line-height: 1.8;
+  color: var(--hs-text-soft);
+}
+.hs-journey-speaker {
+  flex: none;
+  margin-top: 2px;
+  padding: 1px 9px;
+  border-radius: 6px;
+  font-size: 11.5px;
+  font-weight: 800;
+  height: fit-content;
+}
+.hs-journey-voice-line.is-priest .hs-journey-speaker {
+  background: rgba(196, 30, 58, 0.14);
+  color: var(--hs-link-soft);
+}
+.hs-journey-voice-line.is-merchant .hs-journey-speaker {
+  background: rgba(212, 160, 23, 0.2);
+  color: var(--hs-gold-soft);
+}
+
+/* ===== 第七部分分支 ===== */
+.hs-journey-branch-note {
+  position: relative;
+  margin: 0 0 18px 58px;
+  padding: 11px 16px;
+  border-left: 3px solid var(--hs-gold);
+  border-radius: 0 10px 10px 0;
+  background: var(--hs-surface-raised);
+  color: var(--hs-text-soft);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.hs-journey-branches {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+.hs-journey-branch-col {
+  padding: 16px 18px 2px;
+  border: 1px solid var(--hs-border);
+  border-radius: 14px;
+  background: var(--hs-surface-card);
+}
+.hs-journey-branch-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 14px;
+  color: var(--hs-text);
+  font-size: 14.5px;
+  font-weight: 800;
+}
+.hs-journey-branch-key {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--hs-primary);
+  color: #fdf6e3;
+  font-size: 13px;
+  font-weight: 800;
+}
+.hs-journey-branch-col .hs-journey-scene { grid-template-columns: 36px 1fr; gap: 10px; }
+.hs-journey-branch-col .hs-journey-scene-node {
+  width: 36px;
+  height: 36px;
+  font-size: 12.5px;
+}
+.hs-journey-branch-col .hs-journey-scene::before { left: 17px; top: 34px; }
+
+/* ===== 部分奖励脚注 ===== */
+.hs-journey-part-foot {
+  margin: 0;
+  padding: 13px 22px;
+  border-top: 1px solid var(--hs-border);
+  border-radius: 0 0 15px 15px;
+  background: linear-gradient(90deg, rgba(212, 160, 23, 0.12), rgba(196, 30, 58, 0.08));
+  color: var(--hs-gold-soft);
+  font-size: 13px;
+  font-weight: 700;
+  text-align: center;
+}
+
+.hs-journey-page-foot {
+  margin-top: 28px;
+  text-align: center;
+  color: var(--hs-muted);
+  font-size: 12.5px;
+  line-height: 1.8;
+}
+.hs-journey-page-foot a { color: var(--hs-link); text-decoration: none; }
+.hs-journey-page-foot a:hover { text-decoration: underline; }
+
+/* ===== 响应式 ===== */
+@media (max-width: 860px) {
+  .hs-journey-hero { padding: 24px 20px; }
+  /* 窄屏工具条换成两行（约 116px），标题停位同步加大 */
+  .hs-journey-page { --hs-toolbar-gap: 118px; }
+  .hs-journey-part { scroll-margin-top: 193px; }
+  .hs-journey-toolbar { flex-direction: column; align-items: stretch; }
+  .hs-journey-toolbar-side { justify-content: center; }
+  .hs-journey-scenes { padding: 18px 16px 4px; }
+  .hs-journey-branches { grid-template-columns: 1fr; }
+}
+@media (max-width: 520px) {
+  .hs-journey-part-head { flex-direction: column; align-items: flex-start; gap: 8px; }
+  .hs-journey-scene { grid-template-columns: 34px 1fr; gap: 10px; }
+  .hs-journey-scene-node { width: 34px; height: 34px; font-size: 12px; }
+  .hs-journey-scene::before { left: 16px; top: 32px; }
+  .hs-journey-branch-note { margin-left: 44px; }
+}

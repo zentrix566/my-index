@@ -129,10 +129,11 @@ my-index/
 
 ```
 src/features/hearthstone/
-├── index.js                    # 懒加载入口，导出 12 个页面路由
+├── index.js                    # 懒加载入口，导出 13 个页面路由
 ├── pages/                      # 页面组件
 │   ├── HearthstoneAchievements.vue  # 成就主页（查看器+编辑器+分享，/hearthstone）
 │   ├── HearthstoneGuide.vue    # 炉石功能导航页（/hearthstone/guide）
+│   ├── HearthstoneJourney.vue  # 旅途剧情与任务（/hearthstone/journey，尼奥罗萨之路）
 │   ├── HearthstoneCollection.vue   # 外观收藏（皮肤/硬币/卡背/宠物，/hearthstone/collection）
 │   ├── HearthstoneWheel.vue    # 暗月宝藏模拟抽赏（/hearthstone/wheel）
 │   ├── AlteracPuzzleAssistant.vue  # 奥特兰克谜题助手（/hearthstone/alterac-puzzle）
@@ -143,7 +144,7 @@ src/features/hearthstone/
 │   ├── TavernPassCalculator.vue # 通行证 XP 计算（/hearthstone/xp）
 │   ├── FrogSuspectCard.vue     # 蛙生找茬游戏（/hearthstone/frog）
 │   └── FrogReviewPage.vue      # 蛙生验收台（/hearthstone/frog/review）
-├── components/                 # 约 20 个组件（成就卡、弹窗、筛选栏、卡图库等）
+├── components/                 # 约 21 个组件（成就卡、弹窗、筛选栏、卡图库、旅途片段卡等）
 ├── composables/                # 核心逻辑（13 个）
 │   ├── useCardDatabase.js      # ★ 共享卡牌库加载器（从 OSS 加载 cards-db.json）
 │   ├── useFrogGame.js          # 蛙生游戏逻辑
@@ -174,6 +175,7 @@ src/features/hearthstone/
 │   └── constants.js            # 成就共享常量（前后端同源）
 ├── data/                       # 静态数据（import 进 JS 包）
 │   ├── achievements/*.json     # 28 个版本的成就定义
+│   ├── journeys.js             # 旅途系统剧情/任务（尼奥罗萨之路 7 部分，含双分支）
 │   ├── dbfid-cardnames.json    # dbfId→卡名（卡组解析用）
 │   ├── deck-card-images.json   # 卡名→图片路径（约 6000 条）
 │   ├── achievement-card-images.json # 成就关联卡图

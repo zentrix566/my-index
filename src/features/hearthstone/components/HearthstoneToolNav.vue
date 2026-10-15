@@ -5,6 +5,7 @@
         <strong>外观收藏</strong><small>英雄皮肤 · 幸运币 · 卡背</small>
       </button>
       <button type="button" class="hs-tool-btn" @click="$emit('navigate', '/hearthstone/wheel')">暗月宝藏模拟器</button>
+      <button type="button" class="hs-tool-btn" @click="$emit('navigate', '/hearthstone/journey')">旅途剧情与任务</button>
       <button type="button" class="hs-tool-btn" @click="$emit('navigate', '/hearthstone/frog')">蛙生模拟器</button>
       <button type="button" class="hs-tool-btn" @click="$emit('navigate', '/hearthstone/event')">活动计算器</button>
       <!-- 黑市血石计算器已暂时下线（活动结束）：入口隐藏，路由与页面代码保留 -->

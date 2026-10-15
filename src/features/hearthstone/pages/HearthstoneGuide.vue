@@ -35,6 +35,7 @@ const guideItems = [
   // { index: '06', title: '黑市血石计算器', description: '录入黑市当前价格和已有血石，比较首发价的涨跌并计算还需攒取的天数。', to: '/hearthstone/black-market' },
   { index: '06', title: '暗月宝藏模拟器', description: '模拟暗月宝藏抽取过程，查看奖池、抽取记录和当前结果。', to: '/hearthstone/wheel' },
   { index: '07', title: '蛙生模拟器', description: '从三张随从牌中找出被蛙生修改过的卡牌，支持标准和狂野卡池。', to: '/hearthstone/frog' },
+  { index: '08', title: '旅途剧情与任务', description: '《黑暗帝国的统治》旅途第一章《尼奥罗萨之路》：7 个部分的剧情文本、任务要求、计数加成、游戏内语音与双结局分支。', to: '/hearthstone/journey' },
 ]
 </script>
 
