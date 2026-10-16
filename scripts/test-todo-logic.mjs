@@ -17,7 +17,8 @@ const {
   createTask,
   listLists,
   listTasks,
-  listTasksInRange
+  listTasksInRange,
+  updateTask
 } = await import('../server/todo/db.js')
 
 const { addDaysToKey, weekRangeOf, buildTodoSystemPrompt } = await import('../server/todo/routes.js')
@@ -65,6 +66,17 @@ try {
   assert.ok(todoToday.some((t) => t.title === '逾期挂起'), '逾期挂起任务也带出（前端不标逾期）')
   assert.ok(todoToday.some((t) => t.title === '旧状态' && t.status === 'pending'), '旧状态迁移后按待办返回')
   ok('挂起任务在今日待办可见，旧状态值回退待办')
+
+  // ===== 挂起语义：曾挂起的任务完成后不算「晚于预期」，由 was_suspended 标记驱动 =====
+  const parked = await createTask(1, { title: '挂起后完成', dueDate: yesterday, status: 'suspended', listId })
+  const parkedDone = await updateTask(1, parked.id, { status: 'done' })
+  assert.equal(parkedDone.was_suspended, 1, '挂起转完成保留 was_suspended 标记')
+  const resumedAndDone = await updateTask(1, parkedDone.id, { status: 'pending' })
+  assert.equal(resumedAndDone.was_suspended, 1, '标记是历史事实，撤销完成也不回滚')
+  const plain = await createTask(1, { title: '普通逾期完成', dueDate: yesterday, listId })
+  const plainDone = await updateTask(1, plain.id, { status: 'done' })
+  assert.equal(plainDone.was_suspended, 0, '从未挂起的任务完成不带标记，照常显示晚于预期')
+  ok('曾挂起任务完成后带 was_suspended 标记，普通任务不带')
 
   const lists = await listLists(1)
   assert.ok(lists.some((l) => l.id === listId), 'listLists 含测试组')

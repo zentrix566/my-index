@@ -339,7 +339,8 @@ function shortDate(dateKey) {
 function taskDelayDays(task) {
   const plannedDate = task.originalDueDate || task.dueDate
   if (!plannedDate) return 0
-  if (task.status === 'done' && task.completedAt) {
+  // 曾挂起的任务完成晚于计划是预期内的，不按「延期完成」提示；未完成的仍照常计逾期
+  if (task.status === 'done' && !task.wasSuspended && task.completedAt) {
     return Math.max(0, diffDays(task.completedAt.slice(0, 10), plannedDate))
   }
   if (isActiveStatus(task.status) && task.dueDate && task.dueDate < todayKey) {

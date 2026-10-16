@@ -489,6 +489,8 @@ function overdueDays(task) {
 }
 
 function completionDelayDays(task) {
+  // 曾挂起的任务完成晚于计划是预期内的（主动搁置），不算「晚于预期」
+  if (task.wasSuspended) return 0
   const completedDate = task.completedAt?.slice(0, 10)
   const plannedDate = task.originalDueDate || task.dueDate
   return completedDate && plannedDate ? diffDays(completedDate, plannedDate) : 0

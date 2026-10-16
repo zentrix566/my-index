@@ -83,6 +83,7 @@ CREATE TABLE IF NOT EXISTS todos (
   original_due_date TEXT,
   reschedule_count INTEGER NOT NULL DEFAULT 0,
   last_rescheduled_at TEXT,
+  was_suspended SMALLINT NOT NULL DEFAULT 0,
   created_at TEXT NOT NULL,
   completed_at TEXT,
   updated_at TEXT NOT NULL
@@ -136,6 +137,7 @@ async function createSqliteDriver() {
   addTodoColumn('original_due_date', 'original_due_date TEXT')
   addTodoColumn('reschedule_count', 'reschedule_count INTEGER NOT NULL DEFAULT 0')
   addTodoColumn('last_rescheduled_at', 'last_rescheduled_at TEXT')
+  addTodoColumn('was_suspended', 'was_suspended SMALLINT NOT NULL DEFAULT 0')
   database.exec(`
     UPDATE todos SET original_due_date = due_date
     WHERE original_due_date IS NULL AND due_date IS NOT NULL;
@@ -173,6 +175,7 @@ async function createPgDriver() {
   await pool.query('ALTER TABLE todos ADD COLUMN IF NOT EXISTS original_due_date TEXT')
   await pool.query('ALTER TABLE todos ADD COLUMN IF NOT EXISTS reschedule_count INTEGER NOT NULL DEFAULT 0')
   await pool.query('ALTER TABLE todos ADD COLUMN IF NOT EXISTS last_rescheduled_at TEXT')
+  await pool.query('ALTER TABLE todos ADD COLUMN IF NOT EXISTS was_suspended SMALLINT NOT NULL DEFAULT 0')
   await pool.query('UPDATE todos SET original_due_date = due_date WHERE original_due_date IS NULL AND due_date IS NOT NULL')
   await pool.query(STATUS_NORMALIZATION_SQL)
   return {
@@ -404,8 +407,8 @@ export async function createTask(userId, payload) {
     completedAt = nowIso()
   }
   const row = await queryOne(
-    `INSERT INTO todos(user_id, list_id, title, note, due_date, status, priority, is_harvest, position, original_due_date, completed_at, created_at, updated_at)
-     VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13) RETURNING *`,
+    `INSERT INTO todos(user_id, list_id, title, note, due_date, status, priority, is_harvest, position, original_due_date, was_suspended, completed_at, created_at, updated_at)
+     VALUES($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, $13, $14) RETURNING *`,
     [
       userId,
       payload.listId ?? null,
@@ -417,6 +420,7 @@ export async function createTask(userId, payload) {
       payload.isHarvest ? 1 : 0,
       0,
       payload.dueDate || null,
+      payload.status === 'suspended' ? 1 : 0,
       completedAt,
       nowIso(),
       nowIso()
@@ -555,6 +559,10 @@ export async function updateTask(userId, id, patch) {
     sets.push(`last_rescheduled_at = $${i}`)
     params.push(nowIso())
     i += 1
+  }
+  // 曾挂起是历史事实，置位后不回滚：这类任务完成后不算「晚于预期」（前端据此隐藏延期提示）
+  if (patch.status === 'suspended' && current.status !== 'suspended') {
+    sets.push('was_suspended = 1')
   }
   // 完成时间维护：
   // - 显式传入 completedAt（前端仅在"已完成"时提供，并已预填原完成日期）→ 以传入值为准

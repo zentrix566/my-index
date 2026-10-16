@@ -52,6 +52,7 @@ function serializeTask(row) {
     note: row.note || '',
     dueDate: row.due_date || '',
     status: row.status,
+    wasSuspended: Boolean(row.was_suspended),
     priority: row.priority,
     isHarvest: Boolean(row.is_harvest),
     position: Number(row.position) || 0,
