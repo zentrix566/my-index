@@ -2,7 +2,7 @@
   "id": "violet-hold",
   "name": "紫罗兰监狱",
   "description": "炉石传说紫罗兰监狱版本成就数据",
-  "updatedAt": "2026-07-09",
+  "updatedAt": "2026-10-20",
   "cardImageDir": "violet-hold",
   "referenceLinks": [
     {
@@ -477,7 +477,12 @@
       "relatedCards": [
         "炸药工程师"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "炸药工程战",
+          "code": "AAEBAbyRBQSb8wLerQOO7QOp9QYNS8CvAtadA6S2A8C5A47UBIWCBouUBp+eBuypBo6/BqbgB6jgBwAA"
+        }
+      ],
       "stages": [
         {
           "description": "用炸药工程师造成30点额外伤害。",
@@ -491,7 +496,8 @@
           "points": 60,
           "quota": 60
         }
-      ]
+      ],
+      "guide": "起手找海盗藏品和自助大餐，然后一直过牌苟活。9费开始就能启动：炸药工程师+冒进的艇长+疯狂召唤师。12费以后可以再加1个苦战傀儡复制一套，拉满就是4套，直接做完这个成就。提速可以去掉1个解牌换大帝减费。"
     },
     {
       "id": "vh-017",
@@ -504,7 +510,12 @@
         "跟随证据",
         "强力裁决"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "卧底小鬼术",
+          "code": "AAEBAZT9BgLFgATxkQQO58sC9YADnakD184Dld4DwJIF8KkGlbMGk8sG64QHqYgHueAHy+AH0uAHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "召唤20个卧底小鬼。",
@@ -518,7 +529,8 @@
           "points": 60,
           "quota": 40
         }
-      ]
+      ],
+      "guide": "起手找免票入场。通过荆棘大德鲁伊复制暗金教密谋者的亡语，强能雷象翻倍洗卧底小鬼的数量。最后塔姆辛的护命匣配合卧底小鬼或者邪恶船运洗14个卧底小鬼。合理运用解牌清自己的场，就可以2局游戏搞定此成就。"
     },
     {
       "id": "vh-018",
@@ -529,7 +541,12 @@
       "relatedCards": [
         "静默打击"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "无限龙贼",
+          "code": "AAEBAfahBwTn3QO2tQbKqweI2QcNxAHeB9/jAr2ABJGfBPefBMGhBcj7BciUBu6eBtmiBsGXB7TgBwAA"
+        }
+      ],
       "stages": [
         {
           "description": "用一张静默打击造成10点或以上的伤害。",
@@ -543,7 +560,8 @@
           "points": 60,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "注意别把伤害打在圣盾上，记得先弄掉对手的圣盾。无限龙一直都有bug，不过0进度时做成就没啥问题。不行就翻倍奇利亚斯或者翻倍龙蹲坑，也可以奥术巨人+合计4张（焦油飞溅或者莫尔葛工匠或附魔师）+静默打击。"
     },
     {
       "id": "vh-019",
@@ -554,7 +572,12 @@
       "relatedCards": [
         "跟随幽灵"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "跟随幽灵牧",
+          "code": "AAEBAdG+BQLdqwOZ6wMOpQmf6wLyrAOTugPLzQPXzgOMgQSitgTFqAaZwAbSrweyxQeT3wfW4AcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用跟随幽灵在一回合中召唤4个幽灵。",
@@ -568,7 +591,8 @@
           "points": 60,
           "quota": 7
         }
-      ]
+      ],
+      "guide": "起手找跟随幽灵和随从。积攒一手的低费法术后，费用足够就可以启动，有aoe在手就只需要4张低费法术了。"
     }
   ]
 }

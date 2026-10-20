@@ -2,7 +2,7 @@
   "id": "darkmoon",
   "name": "暗月马戏团",
   "description": "暗月马戏团成就数据（来自 ifindhs wiki）",
-  "updatedAt": "2026-07-20",
+  "updatedAt": "2026-10-20",
   "cardImageDir": "darkmoon",
   "referenceLinks": [
     {
@@ -12,6 +12,10 @@
     {
       "name": "旅法师营地：暗月马戏团全成就攻略",
       "url": "https://www.iyingdi.com/tz/post/2361620"
+    },
+    {
+      "name": "旅法师营地：暗月马戏团全成就攻略（与时俱进版）",
+      "url": "https://www.iyingdi.com/tz/post/5715398"
     }
   ],
   "achievements": [
@@ -24,12 +28,8 @@
       "relatedCards": [],
       "recommendedDecks": [
         {
-          "name": "森林反击 卡组1",
-          "code": "AAECAZICCl/0ogPbpQPmugOj0QOd2AO/4AOi4QOl4QOm4QMKQMa3A+i6A6HRA/DUA4ngA4rgA5bgA9HhA4zkAwA="
-        },
-        {
-          "name": "森林反击 卡组2",
-          "code": "AAECAeSiBAbanQP9tgPUugOj0QOd2AOm4QMMQF+TBLmUA9ulA+S6A+a6A+i6A/DUA4ngA4rgA6LhAwA="
+          "name": "森林反击 卡组",
+          "code": "AAEBAc6LBQTD6gKK4AOJiwTd+gUNX4ngA5bgA4zkA9L5A6+ABK7ABLeYBZegBomhBoriBqqvB6yvBwAA"
         }
       ],
       "stages": [
@@ -45,7 +45,8 @@
           "points": 20,
           "quota": 120
         }
-      ]
+      ],
+      "guide": "累积型成就，不算难。只有马戏团树艺师和树木生长召唤的树人才算暗月树人。多带点复制和复活就好了。虽然可以用双雷象刷法术，但德鲁伊解自己场面的能力太差了，所以还是复制复活的速度更快，效率更高。攻略就是起手找马戏团树艺师和树木生长，召唤出暗月树人后各种复制。死7个暗月树人后，一张无尽虫群就能召唤7个暗月树人。后续复制无尽虫群即可，如果送不掉树人可以考虑带末日和无界空宇。"
     },
     {
       "id": "darkmoon-002",
@@ -57,7 +58,12 @@
       "relatedCards": [
         "猜重量"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "一定有诈 卡组",
+          "code": "AAEBAc6LBQaFF6XhA5egBN36BZ2XB9eXBwzR4QP09gOHtwSf1ATt/QXrmAbOnAakuwbCvgauwAbk6gaNvgcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "猜重量猜对10次。",
@@ -65,7 +71,8 @@
           "points": 20,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "累积型成就，很简单。虚灵任务套稳定检索，后续就是一直猜大小。攻略就是起手找虚灵神谕者，干鳞警长和潮地学徒。后续一直使用猜重量，时间问题。"
     },
     {
       "id": "darkmoon-003",
@@ -77,7 +84,12 @@
         "月蚀",
         "日蚀"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "日月随心 卡组",
+          "code": "AAEBAc6LBQSFF6XhA5egBJ2XBw2J4AOK4AP09gOf1ATB3wTt/QXrmAbOnAakuwbCvgauwAbk6gaggQcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在一局对战中施放6个月蚀或日蚀。",
@@ -85,7 +97,8 @@
           "points": 20,
           "quota": 6
         }
-      ]
+      ],
+      "guide": "在一局对战中施放6个月蚀或者日蚀。一次性成就，很简单。现在有了任务虚空套，不管是检索还是复制法术都简单多了。攻略就是起手找虚灵神谕者和森林再生，干鳞警长和潮地学徒。通过复制，集齐合计6张月蚀和日蚀，全都用光就搞定这个成就了。猎人成就"
     },
     {
       "id": "darkmoon-004",
@@ -96,7 +109,12 @@
       "relatedCards": [
         "格雷布"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "开枝散叶 卡组",
+          "code": "AAEBAc6LBQbUugOm4QPI4QPC7AOJiwTg0AUMX+a6A4rtA6+ABM+sBK7ABMHfBJegBomhBtW6BvPKBqqvBwAA"
+        }
+      ],
       "stages": [
         {
           "description": "召唤20个格雷布。",
@@ -116,7 +134,8 @@
           "points": 20,
           "quota": 200
         }
-      ]
+      ],
+      "guide": "累积型成就，很精污。200个数量过多了，毕竟格子就7个，再加上德鲁伊解自己场面的能力太差了，所以只能和人机互刷，这样效率高。攻略就是起手找跳费，然后过牌苟活，期间通过复制召唤多个格雷布，然后用血魔全吃掉并复制一个血魔，再用暗月把其中一个血魔送给对手。2个血魔都解掉，双方场上就会有多个格雷布，后续就是紧张刺激的随从交换环节。直到一方疲劳死或者投降，一直刷进度即可。"
     },
     {
       "id": "darkmoon-005",
@@ -127,7 +146,12 @@
       "relatedCards": [
         "制造法力饼干"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "压缩饼干 卡组",
+          "code": "AAEBAauwBAKp3gSnmwcO97gDutUDheQDn9QE6MUF7f0F65gG8psGzpwGwr4GrsAG5OoGn5YHrdoHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "吃掉10块法力饼干。",
@@ -141,7 +165,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "累积型成就，很简单。依然用虚灵任务套，30次法术真不多。法师复制法术的卡挺多的，都带上。应该一局就能做完这个成就，不行还有雷象。攻略就是起手找虚灵神谕者，干鳞警官和潮地学徒，然后一直复制并使用法力饼干，争取一把搞定该成就。"
     },
     {
       "id": "darkmoon-006",
@@ -154,8 +179,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "摘不掉的",
-          "code": "AAECAf0EBqsE7AWNuwPZ0QP63QOV4QMMcbsClgW+pAO/pAP0qwPCuAOk0QP73QOQ4QOR4QPo4QMA"
+          "name": "摘不掉的 卡组",
+          "code": "AAEBAauwBAbAAb6kA/bWA6PkBL3kBKTZBwz3DfSrA/vdA5HhA+efBP7sBLztBP+SBduhBejoBbGgBqOmBgAA"
         }
       ],
       "stages": [
@@ -165,7 +190,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。反正正常的卡组打人机都简单，无非就是用克苏恩面具斩杀对手罢了。索性就用奥秘法了。攻略就是正常的奥秘法打法，把对手打到残血，然后用克苏恩面具斩杀对手。圣骑士成就"
     },
     {
       "id": "darkmoon-007",
@@ -176,7 +202,12 @@
       "relatedCards": [
         "隐秘咒术师"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "镜像大厅 卡组",
+          "code": "AAEBAauwBAL21gOoigQOwAGW5AKfmwP0qwPgzAOQ4QOfkgTOnAaxoAbEogaBvwaGxAeSxAeT2gcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时，拥有4个隐秘咒术师。",
@@ -184,7 +215,8 @@
           "points": 20,
           "quota": 4
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。奥术直接用冰箱，只要格子足够，使用2张隐秘咒术师就搞定了。攻略就是起手找博学者或者小弗丁，尽快抽齐隐秘咒术师，然后挂上冰箱，8费使用2张隐秘咒术师就搞定了。"
     },
     {
       "id": "darkmoon-008",
@@ -197,8 +229,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "前途迷蒙",
-          "code": "AAECAbTqAwRxuAjCuAOV4QMNqwTmBO0E/50DvqQDv6QD9KsDwbgDpNED5dEDkeED6OEDheQDAA=="
+          "name": "前途迷蒙 卡组",
+          "code": "AAEBAauwBAbAAcPqAr6kA5XhA73kBOntBgz3DfSrA5HhA+efBP7sBLztBP+SBduhBejoBe+bBrGgBqOmBgAA"
         }
       ],
       "stages": [
@@ -220,7 +252,8 @@
           "points": 20,
           "quota": 50
         }
-      ]
+      ],
+      "guide": "使用赛格抽50张牌。累积型成就，很简单。奥秘法稍作修改就能做这个成就了。复制多个赛格，用基尔加丹防疲劳，然后一直抽就完事了。攻略就是正常的奥秘法打法，通过幻觉药水小熊猫等卡使用多个赛格，用基尔加丹免疫疲劳，最后使用几次赛格就搞定了。"
     },
     {
       "id": "darkmoon-009",
@@ -233,12 +266,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "打一赠二 卡组1",
-          "code": "AAECAR8G8ZYDg7kD1LoD4c4DkuMDl6AEDPKWA7acA6GhA72mA46tA/a6A/+6A57LA5XNA/rhA4PiA43kAwA="
-        },
-        {
-          "name": "打一赠二 卡组2",
-          "code": "AAECAR8MxwPJBMIG8pYDn6UDhbAD2LIDpLkDj+MDkuMD4OUD5J8ECbUDxQjkpAOKrQPzuwOs1AOD4gOE4gON5AMA"
+          "name": "打一赠二 卡组",
+          "code": "AAEBAda+BQT4B5egBMeyB9nbBw31gAPWnQPYqQP3uwO61QON5AP09gO4xQXrmAbOnAbCvgbk6gas2AcAAA=="
         }
       ],
       "stages": [
@@ -254,7 +283,8 @@
           "points": 20,
           "quota": 60
         }
-      ]
+      ],
+      "guide": "累积型成就，不算难。法术成就几乎都能用虚灵神域套。所以这个成就的难度就是足够多的杂毛，这种不能指望全对手，所以要带一些铺场随从，比如我们的成就好帮手644疯狂召唤师。攻略就是起手找虚灵神谕者，干鳞警长和潮地学徒。尽可能每张套索射击都能消灭3个随从。"
     },
     {
       "id": "darkmoon-010",
@@ -263,7 +293,12 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "同生共死 卡组",
+          "code": "AAEBAda+BQTl7wOXoATHsgfZ2wcN+AfolgPy4QPh5AP09gPOnAaE5gbk6gbXlwfunwftrAeNvgfX2gcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时，拥有三个相同的亡语随从。",
@@ -271,7 +306,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "一次性成就，白给型成就。使用一张天降蛛群就搞定了。任务虚灵套稳定检索。剩下都带过牌随从提高效率即可。攻略就是起手找虚灵神谕者，捕鼠机就好了。抽到天降蛛群并使用就搞定了。"
     },
     {
       "id": "darkmoon-011",
@@ -282,7 +318,12 @@
       "relatedCards": [
         "玛克希玛·雷管"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "送你一程 卡组",
+          "code": "AAEBAda+BQj21gOS4wOoigTHpAaZpweapwebpwfUrwcLkgWFsAP3+AO7oATypQb/pQavkgfOmweQpwe5wAfb2gcAAQPzswbHpAb2swbHpAbo3gbHpAYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "向对手发射一个随从，造成致命伤害。",
@@ -290,7 +331,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。用快攻猎带上雷管就好了，为了检索雷管带上小弗丁和博学者。剩下的卡都用来抢血。攻略就是起手找雷管，然后一直抢血，等对手残血就用雷管斩杀对手。法师成就"
     },
     {
       "id": "darkmoon-012",
@@ -301,7 +343,12 @@
       "relatedCards": [
         "暗月坦克"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "坦克军官 卡组",
+          "code": "AAEBAda+BQSP4wOrjQTbkQTHpAYN39IC49IC+68Dlc0Dg+ID458E5J8Ema0Ep5AF6OgF6vIF7JsH19oHAAED8rMGx6QG9bMGx6QG6N4Gx6QGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用暗月坦克造成50点伤害。",
@@ -321,7 +368,8 @@
           "points": 20,
           "quota": 500
         }
-      ]
+      ],
+      "guide": "累积型成就，不算难。有了蚀解软泥怪，这类伤害成就简单多了。无限龙翻倍奇利亚斯一吃，buff一下暗月坦克，一脚就能搞定这个成就。攻略就是起手找奇利亚斯蹲坑，攻击叠得差不多后就用蚀解软泥怪吃掉，buff暗月坦克后再用扫把突袭，争取一把就搞定这个成就。ps：不用无限龙是因为无限龙bug很多，大家可以先用无限龙，如果失败就用翻倍奇利亚斯蹲坑。"
     },
     {
       "id": "darkmoon-013",
@@ -334,8 +382,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "暗月快餐",
-          "code": "AAECAa0GBNIKgbEDjrEDmN4DDdiYA6+lA5i2A5O6A5u6A6+6A97MA9fOA7TRA9TeA/rjA/vjA5HkAwA="
+          "name": "暗月快餐 卡组",
+          "code": "AAEBAdG+BQLPxgWp9QYO0grqvwLRwQLo0AKXhwPWnQOTugPi3gP73wP64wOH9wOKowTt9wWZ/AcAAA=="
         }
       ],
       "stages": [
@@ -351,7 +399,8 @@
           "points": 20,
           "quota": 90
         }
-      ]
+      ],
+      "guide": "累积型成就，很简单。有我们的好朋友644疯狂召唤师在，这类成就都很简单。洞察牧启动。攻略就是起手找洞察造物协议。然后过牌空场，高费回合直接圣光战马+644+双治疗之环。卡组带了伊瑟拉，可以14费双圣光战马+644+双治疗之环。潜行者成就"
     },
     {
       "id": "darkmoon-014",
@@ -364,8 +413,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "专职剧透",
-          "code": "AAECAa0GBMi+A8vNA53YA7/gAw0e3AGZqQPRrAPyrAOTugPi3gP73wP83wPL4QP44wOEnwSFnwQA"
+          "name": "专职剧透 卡组",
+          "code": "AAEBAdG+BQKH9wPPxgUO6r8C0cEC6NACl4cDk7oD4t4D+98D/N8Dy+EDiqME7fcFmqAGna0HmfwHAAA="
         }
       ],
       "stages": [
@@ -375,7 +424,8 @@
           "points": 20,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。洞察牧带上2张占卜机，然后一直攒手牌就好了。亚煞极雕像也能做这个成就。攻略就是起手找占卜机或者洞察，亚煞极雕像也行。占卜机上手2张就使用1张。手里只有1张占卜机时就一直攒手牌，手里9张法术时就能使用占卜机完成这个成就了。或者亚煞极雕像一卡做。"
     },
     {
       "id": "darkmoon-015",
@@ -386,7 +436,12 @@
       "relatedCards": [
         "无名者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "无名之辈 卡组",
+          "code": "AAEBAdG+BQa00QOY3gOntgTPxgXz4Qbk4wYM6r8C0cEC6NACl4cDk7oD4t4D+98DiqME7fcFna0H0q8HmfwHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用无名者一次偷取3个或以上的附加效果。",
@@ -394,7 +449,8 @@
           "points": 20,
           "quota": 3
         }
-      ]
+      ],
+      "guide": "一次性成就，有点难。就是哪些算附加效果作者我至今搞不清楚。所以作者我带上很多buff卡。攻略就是起手找洞察和造物协议，过牌苟活，然后攒一手的buff法术，全部buff1个随从，最后用无名者偷取。"
     },
     {
       "id": "darkmoon-016",
@@ -405,8 +461,8 @@
       "relatedCards": [],
       "recommendedDecks": [
         {
-          "name": "神表遗憾",
-          "code": "AAECAcOPBAjWCtqdA5+pA8i+A/vRA6bVA53YA/3fAwuXAskG06UDmakD0awD8qwDk7oD184D4t4D+98D+OMDAA=="
+          "name": "神表遗憾 卡组",
+          "code": "AAEBAdG+BQLPxgXJwQYO6r8C0cEC6NACl4cD5ogDk7oD4t4D+98DiqMEu8cF7fcFna0Hka4Hm8YHAAA="
         }
       ],
       "stages": [
@@ -428,7 +484,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "累积型成就，不算难。当初牧师能消耗生命值使用的卡只有戈霍恩，鲜血之神抽的2张卡，所以这个成就极其恶心。但现在有了卖血鱼人，所以这个成就难度大减，用洞察牧一直复制并使用速逝鱼人就好了。50次还是挺快的。攻略就是起手找造物协议，使用多个速逝鱼人后就可以改为复制欢乐术士了。每次使用欢乐术士都能拿一手的速逝鱼人。"
     },
     {
       "id": "darkmoon-017",
@@ -439,7 +496,16 @@
       "relatedCards": [
         "蕉猾诡计"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "耍猴把戏 卡组1",
+          "code": "AAEBAfahBwLI4QOI2QcO5dECutUDg+QD9PYDvYAEn9QE7f0F65gGzpwGwr4GrsAGsMoG5OoGzuAHAAA="
+        },
+        {
+          "name": "耍猴把戏 卡组2",
+          "code": "AAEBAdKLBQbWEf3rAvf2A5igBPfDBfSBCAz1gAPZxgPW0QO61QP51QOw4QP19gPysQS+ygSPkAbfwAbe/wYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使你的对手抽到10张香蕉。",
@@ -453,7 +519,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "累积型成就，挺难的。作者我考虑过洗香蕉算不算数，但已经没法测试了。但挂奥秘的效率实在太慢了。如果香蕉洗入牌库也算，直接用瞎子的滑翔做这个成就就好了。由于没法测试，所以这里用的卡组还是奥秘卡组，暗月1个淘金客给对手就能稳定触发了，担心对手送掉淘金客的话，可以用波地造浪者将其变成0攻。攻略就是起手找虚灵神谕者和干鳞警长，潮地学徒。一直挂奥秘等对手触发。只能说30次不算多。这里还有用雷滑组合香蕉的瞎子卡组，大家可以试试，但个人感觉做不了成就。攻略就是正常的任务瞎打法，用任务和大帝减费。高费回合通过双雷象洗一牌库的香蕉给自己，30张以上即可。然后通过狗头人国王和蟊贼脏鼠的组合永久互换牌库，然后用滑翔把对手抽香蕉。"
     },
     {
       "id": "darkmoon-018",
@@ -464,7 +531,12 @@
       "relatedCards": [
         "暗影克隆"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "禁忌之术 卡组",
+          "code": "AAEBAfahBwTHmwPI4QP7igSI2QcNxAHi3QPk3QPn3QP+7gPG+QP3nwS3swT13QTungbZoga2tQbVxQcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用暗影克隆召唤一个法力值消耗大于或等于（10）的随从。",
@@ -472,7 +544,8 @@
           "points": 20,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。就是用暗月送对手一个10费随从就好了。就用海滨巨人或者闪金镇豺狼人这类自带减费效果的10费随从。攻略就是起手找闪金镇豺狼人，然后过牌控场。高费回合消失清场下豺狼人，暗月送给对手，在回手暗月，最后挂上奥秘等对手踢脸即可。萨满祭司成就"
     },
     {
       "id": "darkmoon-019",
@@ -485,16 +558,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "迈拉女皇 卡组1",
-          "code": "AAECAcKPBAaKB6eoA/vEA+TdA7/gA4LkAwztAvuaA/6aA865A9C5A6rLA6TRA+XTA+fdA/PdA+jhA4PkAwA="
-        },
-        {
-          "name": "迈拉女皇 卡组2",
-          "code": "AAECAaIHBJ3YA+rdA+jhA4LkAw20Ae0CiAevkQP7ogPOuQPQuQOqywOk0QPf3QPn3QPz3QOD5AMA"
-        },
-        {
-          "name": "迈拉女皇 卡组3",
-          "code": "AAECAaIHCO0FkpcDhKYDwa4D47QD6b4Dy8ADyOEDC7QBmwWPlwOhoQO5rgP+rgPOrwPzuwPk3QPn3QP2nwQA"
+          "name": "迈拉女皇 卡组",
+          "code": "AAEBAfahBwTn+gLq3QP7igSI2QcNxAHl0QKvkQPn3QP+7gP3nwS3swSf1ATt/QXunga2tQauwAbO4AcAAA=="
         }
       ],
       "stages": [
@@ -504,7 +569,8 @@
           "points": 20,
           "quota": 5
         }
-      ]
+      ],
+      "guide": "一次性成就，不算难。阴谋一卡就能洗一牌库的同名卡。如果担心自己脸黑就带上迈拉抽光牌库。攻略就是起手找阴谋，过牌苟活，到高费回合直接迈拉抽卡牌库，再用阴谋洗5个以上的随从，最后使用大女皇夏柯扎稳定完成这个成就。"
     },
     {
       "id": "darkmoon-020",
@@ -515,7 +581,12 @@
       "relatedCards": [
         "奖品掠夺者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "奖品真棒 卡组",
+          "code": "AAEBAfahBwT7igSp9QblrweI2QcN5dECtIYD590D890D/u4D958En9QE9ZwF7f0F7p4GtrUGrsAGxcEHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用奖品掠夺者的连击效果造成10点伤害。",
@@ -535,7 +606,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "累积型成就，很简单。有新卡附魔师的存在，这类伤害类成就就简单多了。2附魔师在场只需要25点伤害，附魔师越多越简单。攻略就是起手找过牌，然后控场苟活，到高费回合提前使用鲨鱼之灵，然后下回合gou尾，再用奖品掠夺者者战吼打对手随从。"
     },
     {
       "id": "darkmoon-021",
@@ -548,16 +620,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "过载塌陷 卡组1",
-          "code": "AAECAaoIBJMJtq0Dqt4D3+EDDYEEvgadowPapQP5pQO1rQOWuQPhzAObzQOm0QO30gPw1AOJ5AMA"
-        },
-        {
-          "name": "过载塌陷 卡组2",
-          "code": "AAECAaoIBu0F/wXtrQOczgOu3gOH5AMM7wHgAvkD4AbGmQO2rQPbuAPhzAPw1AOo3gOq3gOJ5AMA"
-        },
-        {
-          "name": "过载塌陷 卡组3",
-          "code": "AAECAaoIBOGoA+2tA/O3A5zOAw2cAsaZA9adA9ipA924A5vNA/vOA/7RA7PcA6beA6neA6reA4nkAwA="
+          "name": "过载塌陷 卡组",
+          "code": "AAEBAdOLBQLhqAON9QUOwAfRvAL1gAPhzAO61QOJ5APj7gPt/QWzjQbrmAamwAauwAb44gbk6gYAAA=="
         }
       ],
       "stages": [
@@ -573,7 +637,8 @@
           "points": 20,
           "quota": 60
         }
-      ]
+      ],
+      "guide": "触发60次大地塌陷。累积型成就，不算难。任务虚空套定向检索大地塌陷，用三角测量等卡复制大地塌陷，然后挂武器给自己过载一直用就好了。攻略就是起手找虚灵神谕者，干鳞警长，潮地学徒，三角测量。然后过牌苟活到高费，过载后一通乱甩大地塌陷即可。"
     },
     {
       "id": "darkmoon-022",
@@ -584,7 +649,12 @@
       "relatedCards": [
         "异变轮转"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "恐怖转轮 卡组",
+          "code": "AAEBAdOLBQL21gPC9gMO1p0Dpt4D4+4DwfYD9PYDn9QE7f0Fs40GzpwGnJ4GpKcGpsAGrsAG5OoGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用异变轮转一次变形14个随从。",
@@ -592,7 +662,8 @@
           "points": 20,
           "quota": 14
         }
-      ]
+      ],
+      "guide": "使用异变转轮一次变形14个随从。一次性成就，很简单。644疯狂召唤师+异变轮转就搞定了。攻略就是起手找博学者或者644疯狂召唤师，尽快抽到644疯狂召唤师，通过其他随从抽到异变轮转。只要场上没有地标和休眠随从，就可以644+异变轮转搞定这个成就。术士成就"
     },
     {
       "id": "darkmoon-023",
@@ -601,7 +672,12 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "两拳超人 卡组",
+          "code": "AAEBAdKLBQKw3gT3wwUO0c0Dxd0D2d4DjrAE8rEEvsoEr94EquIEheUE9ZwF8OwF4fgF6Z4G38AGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在一回合中，用英雄攻击造成16点伤害。",
@@ -609,7 +685,8 @@
           "points": 20,
           "quota": 16
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。因为有附魔师的存在，这类成就简单多了。2个附魔师站场就只需要英雄4攻打怪，或者英雄2攻风怒打怪了。瞎子比萨满加攻击更快，过牌也厉害，还有多次攻击的能力，所以肯定用瞎子做这个成就。攻略就是起手找附魔师或者无底海渊，也可以找低沉摇滚。2个附魔师站场，用4点攻击的脸解怪就好了。对手杂毛够多就用低沉摇滚。"
     },
     {
       "id": "darkmoon-024",
@@ -620,7 +697,12 @@
       "relatedCards": [
         "巨型图腾埃索尔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "暗月木匠 卡组",
+          "code": "AAEBAdOLBQT21gPf4QOoigTknQcNnaMD+aUDlrkD+rQEssEEqtkElaoF8egFnJ4GltMGq+EG6LIHufYHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用巨型图腾埃索尔强化10个图腾。",
@@ -640,7 +722,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "累积型成就，很简单。现在低费图腾比当年多多了，所以可以带上博学者和小弗丁的组合稳定抽到巨型图腾，其他卡都带2费以下的图腾和复制图腾的卡就好了。攻略就是起手找巨型图腾或者博学者小弗丁，抽到巨型图腾后配合复制一起使用，很快就能刷完这个成就。"
     },
     {
       "id": "darkmoon-025",
@@ -649,7 +732,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "正气逼人…… 卡组",
+          "code": "AAEBAfahBwTn+gL7igS3swSI2QcNxAHl0QLq8wKo9wLn3QOp6wP3nwTTsgXawwW/9wW2tQai4Qak4QYAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用吸血武器恢复60点生命值。",
@@ -663,7 +751,8 @@
           "points": 20,
           "quota": 180
         }
-      ]
+      ],
+      "guide": "累积型成就，有点难。这类恢复生命值的成就必须要求残血，圣骑士可以带高阶祭司一卡卖血，但圣骑士的吸血武器太垃圾了。因此这个成就还是剽窃贼做比较舒服。把吸血刀养起来，卖血可以靠疲劳，所以带上迈拉一卡进疲劳。攻略就是起手找武器，然后给武器加攻击，不断卖脸吸血，时机合适就用迈拉进疲劳。"
     },
     {
       "id": "darkmoon-026",
@@ -674,7 +763,12 @@
       "relatedCards": [
         "大主教伊瑞尔"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "伊人赐教 卡组",
+          "code": "AAEBAdK+BQan9wLOhwPWnQOI3gO6wQap9QYM2f4C/bgD67kD070E4tMEuMUFmY4G9ZUG7d8GkuAGnOgGn+gGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用大主教伊瑞尔恢复100点生命值。",
@@ -682,7 +776,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "累积型成就，很恶心。这类恢复生命值的成就必须要求残血 ，大主教伊瑞尔还需要光铸，但光铸骑没法带好用的复制和回手，因此作者我放弃了光铸骑的构建，决定拖到疲劳阶段再触大主教伊瑞尔的效果，或者直接给白板大主教伊瑞尔贴吸血。攻略就是正常的圣契骑打法，控场拖后期，用马林给的酒杯抽一手的大主教伊瑞尔，然后慢慢吸血。卖血靠疲劳和高阶祭司。"
     },
     {
       "id": "darkmoon-027",
@@ -695,12 +790,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "古神至上 卡组1",
-          "code": "AAEBAZ8FBO8I3QqKrgKKmgMNi70C7dIC1uUC/PwC7IYDlrYD+7gDysEDns0Dy80D/tsDg94D+t4DAA=="
-        },
-        {
-          "name": "古神至上 卡组2",
-          "code": "AAECAZ8FBO8I6rkDhMEDk9ADDdwD9gfdCpa2A8q4A/24A+u5A+y5A8rBA5XNA8DRA4PeA/fjAwA="
+          "name": "古神至上 卡组",
+          "code": "AAEBAdK+BQaUF6fLA4PeA4X+Ban1BrOwBwzZ/gL9uAPruQPTvQTi0wS4xQWZjgb1lQbt3waS4Aac6Aaf6AYAAA=="
         }
       ],
       "stages": [
@@ -710,7 +801,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "一次性成就，不算难。这个成就是作者我梦开始的地方，这个成就当年极其阴间，卡了作者我4个月，直到版本末期才成功做完。因此作者我开始写全成就攻略造福大家。曾经这个成就极其阴间，但随着新卡的不断增加，这个成就已经变得很容易做完了，只需要遇到1个不会跑路不会挂机的人机，这个成就就能稳定完成。这个成就关键在于11费以上的法术不会被变形，所以只需要使用11费以上的伤害法术斩杀对手就能完成这个成就。法术加费用抗性光环，伤害法术用拉法姆的10费打10。古神在上和抗性光环用周卓复制给对手，这样套路就成型了。攻略就是正常的圣契骑打法，控场到后期。使用拉法姆发现10费打10，下周卓并复制，通过周卓给对手2张抗性光环和2张古神在上。只要对手成功使用了古神在上和抗性光环，就可以将对手打残，最后用11费打10斩杀对手，搞定这个成就。牧师成就"
     },
     {
       "id": "darkmoon-028",
@@ -723,12 +815,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "洛萨克森气球店 卡组1",
-          "code": "AAECAZ8FBJuuA/y4A4TBA4jeAw3cA90KkK4DnK4DyrgD/bgD6rkD67kD7LkDysEDns0Dg94D/eMDAA=="
-        },
-        {
-          "name": "洛萨克森气球店 卡组2",
-          "code": "AAECAZ8FBtIEm64D/LgDk9ADh94DiN4DDNwD3QqcrgOWtgPKwQOezQOC3gOD3gOE3gOi3gP34wP84wMA"
+          "name": "洛萨克森气球店 卡组",
+          "code": "AAEBAdK+BQT21gOH3gOoigSElgUN0xO4xwLZxwKC3gOi3gPM4gSU9QWOlQatpgah4QaDwgfmxQfD4wcAAA=="
         }
       ],
       "stages": [
@@ -750,7 +838,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "累积型成就，很简单。现在给报告贴盾的卡很多了，已经不需要洛萨克森单c了。各种新兵和圣盾相关德卡拉满就完事了。攻略就是起手找洛萨克森，然后一直召唤报告贴圣盾，还能用其他卡给报告补盾。守护者德力量可以用来破盾，圣骑士自伤德aoe太少了。"
     },
     {
       "id": "darkmoon-029",
@@ -759,7 +848,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "不要躲，不要藏 卡组",
+          "code": "AAEBAZT9BgL24wO07QQO58sCnakDv7kD184DzdIDld4Dg/sD56AE+vkF7qEG8KkGlbMGk8sGhJkHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用术士职业使用6张终极随从牌。",
@@ -773,7 +867,8 @@
           "points": 20,
           "quota": 18
         }
-      ]
+      ],
+      "guide": "累积型成就，不算难。使用黑门术尽快抽到铁锈特使，然后多次触发它的亡语，后续一直使用终极随从即可，18张真不多。攻略就是起手找黑暗之门或者铁锈特使，后续通过亡者复生等卡多次触发铁锈特使的效果。只要有腾格子的思路，一局就能刷完这个成就。"
     },
     {
       "id": "darkmoon-030",
@@ -784,7 +879,12 @@
       "relatedCards": [
         "暗月兔子"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "缺少物品：神圣手雷 卡组",
+          "code": "AAEBAZT9BgLanQP6+QUO58sC2psDnakDv7kD184DzdIDveEDg/sD56AE7qEG8KkGlbMGk8sGhJkHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "消耗1点法力值使用暗月兔子。",
@@ -792,7 +892,8 @@
           "points": 20,
           "quota": 1
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。比起混乱套牌，还是黑门术抽耶托比更舒服。攻略就是起手找黑暗之门，抽到耶托比就能启动，暗月兔子上手可以用情势反转洗入牌库。战士成就"
     },
     {
       "id": "darkmoon-031",
@@ -805,8 +906,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "我们是一起的",
-          "code": "AAECAa35AwLWuQP24wMOMM4Hwgi1uQO2uQPLuQPXzgPM0gOS3gOT3gOV3gOW3gPQ4QOT5AMA"
+          "name": "我们是一起的 卡组",
+          "code": "AAEBAZT9BgAPMNqbA8zSA5XeA5PkA4SgBKWSBcfCBebFBYSeBpTKBpXKBqnhBoSZB6qtBwAA"
         }
       ],
       "stages": [
@@ -816,7 +917,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "一次性成就，白给型成就。卡组里全带2费以下的恶魔随从和抽牌法术即可。攻略就是起手找免票入场，用了就搞定这个成就了。"
     },
     {
       "id": "darkmoon-032",
@@ -827,7 +929,12 @@
       "relatedCards": [
         "连环灾难"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "车祸不断 卡组",
+          "code": "AAEBAZT9BgT83gOoigSp9QbHsgcN4vgC9YAD1p0D97sDutUDxt4D7f0F65gGzpwGwr4GrsAG5OoG5/0HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用连环灾难消灭5个随从。",
@@ -847,7 +954,8 @@
           "points": 20,
           "quota": 50
         }
-      ]
+      ],
+      "guide": "累积型成就，不算难。任务虚空套稳定检索，双雷象还能直接复制已腐蚀的连环灾难，所以带上644等给对手铺场的卡就好了。攻略就是起手找虚灵神谕者，干鳞警长和潮地学徒，用雷象洗连环灾难，后续一直用连环灾难解场即可。"
     },
     {
       "id": "darkmoon-033",
@@ -858,7 +966,12 @@
       "relatedCards": [
         "伊利达雷研习"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "邪能大道 卡组",
+          "code": "AAEBAdKLBQLXrAXvmAcO9YADutUD9PYDn9QEuMUF4fgF7f0F65gGzpwG7p4Gwr4GrsAG5OoG15cHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "施放伊利达雷研习10次。",
@@ -872,7 +985,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "累积型成就，很简单。根据作者我的记忆，伊利达雷研习进入核心系列后就没出来过。所以正常玩家，只要玩恶魔猎手，这个成就肯定早就做完了。现在有任务虚空套和雷象组合，法术成就简单多了。攻略就是起手找虚灵神域者，干鳞警长和潮地学徒，后续用雷象复制，很容易一把就刷完这个成就。"
     },
     {
       "id": "darkmoon-034",
@@ -883,7 +997,12 @@
       "relatedCards": [
         "投掷利刃"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "投刃好手 卡组",
+          "code": "AAEBAdKLBQSJvAPL3QOXoATvmAcN3sQC2KkD9PYDs6AE4aQEuMUFuf4FzpwG054G7p4G7eYG5OoG4okHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在一个回合中，使用投掷利刃消灭5个随从。",
@@ -891,7 +1010,8 @@
           "points": 20,
           "quota": 5
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。有了虚灵任务套，检索法术太简单了。卡组就任务，投掷利刃和统率伊利达雷3张法术，一个虚灵神谕者就能抽齐全部组件。剩下都带过牌和铺场随从，杂毛多了就不需要统率伊利达雷就能提前启动了。攻略就是起手找虚灵神谕者，然后过牌铺场，组件集齐后启动，先用统率伊利达雷召唤6个杂毛，用投掷利刃依次点死5个就完事了。德鲁伊成就"
     },
     {
       "id": "darkmoon-035",
@@ -904,8 +1024,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "并不孤单",
-          "code": "AAECAbn5AwKhBs7SAw79pwOHugPXuwPpvgP3wwO6xgPHxgPZxgPUyAPVyAP+0QPd0wPI3QPz4wMA"
+          "name": "并不孤单 卡组",
+          "code": "AAEBAdKLBQAPgrQC2cYDyN0Dtp8E8rEEvsoE8OwFnJoG7J4G7p4G3v8G7JsH550H6LEHk+gHAAA="
         }
       ],
       "stages": [
@@ -915,7 +1035,8 @@
           "points": 20,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。现在有了蚀解软泥怪，这类叠攻击力的成就没啥难度了。无限龙或者翻倍奇利亚斯都能轻松爆攻，而这个成就只需要10攻，巨人就能搞定。攻略就是起手找无底海渊，然后过牌苟活，组件集齐后启动，下奥术巨人用蚀解软泥怪吃掉再buff获救的流民就10攻了，最后点回合结束就搞定了。"
     },
     {
       "id": "darkmoon-036",
@@ -928,8 +1049,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "噫……格诺斯",
-          "code": "AAECAbn5AwjtBcy6A727A4TDA9TIA9bRA9DdA9neAwuHugPXuwPgvgPpvgP3wwPHxgPZxgPO0gPd0wPH3QPz4wMA"
+          "name": "噫……格诺斯 卡组",
+          "code": "AAEBAdKLBQbQ3QP39gP8wAaKqgeSqgeTqgcM6b4D8skDztIDx90DlegD9fYDi5IF9ZwFmp4G38AGkr8Hk+gHAAA="
         }
       ],
       "stages": [
@@ -951,7 +1072,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "累积型成就，很简单。法强叠一叠，再加上莫尔葛工匠和驱魔师，很容易一个吸血法术就打满100点伤害。攻略就是起手找伊格诺斯，然后过牌苟活，组件集齐后就启动，100点伤害真不多。"
     },
     {
       "id": "darkmoon-037",
@@ -960,7 +1082,12 @@
       "type": "累计",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "最佳防御 卡组",
+          "code": "AAEBAc6LBQSZ0wLBhgOj9gOj2gcNmgjWnQP5rQOi4QOuwASC4AXVugai4gbosQfk2QeR2ge85wfK5wcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "当你拥有护甲值时，用你的英雄攻击10次。",
@@ -974,7 +1101,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "累积型成就，比起战士做这个成就，比如用德鲁伊做。所以磕头德启动。攻略就是正常的口德打法，一直攻击就好了，30次真不多。"
     },
     {
       "id": "darkmoon-038",
@@ -987,8 +1115,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "有雷！有雷！",
-          "code": "AAECAQcM1p0DhKcD3q0D360Dk9ADqtID99QDm9gDut4Dzt4DuuED6uEDCUuQA+LMA7XeA7beA8HeA8TeA/TfA5HkAwA="
+          "name": "有雷！有雷！ 卡组",
+          "code": "AAEBAbyRBQKRvALUlwcOswGNELds4soC3oID6b4Dtt4DssEElaoFtNEFovoFjr8GltMG5OoGAAA="
         }
       ],
       "stages": [
@@ -998,7 +1126,8 @@
           "points": 20,
           "quota": 5
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。因为有莫尔葛工匠的存在，这个成就很简单。起手找虚灵神谕者和过牌，然后过牌控场。组件抽齐就可以启动了。杂毛多了可以提前启动，否定等2个莫尔葛工匠上手再启动。让场上的随从4血以下，然后使用2张莫尔葛工匠和杂毛，让场上有5个以上的随从，最后使用雷区挑战就完事了。中立成就"
     },
     {
       "id": "darkmoon-039",
@@ -1009,7 +1138,12 @@
       "relatedCards": [
         "帐篷摧毁者"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "帐目清空 卡组",
+          "code": "AAEBAbyRBQL21gOoigQOswGNELds4soC3oIDz9EDxN4D9N8DssEElaoFtNEFovoFjr8GltMGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张法力值消耗为（0）的帐篷摧毁者。",
@@ -1017,7 +1151,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。其实新版本的海盗战就能直接做。不过成就卡组更专业。攻略就是起手找帐篷摧毁者或者博学者小弗丁，帐篷摧毁者上手后下一地的杂毛就搞定这个成就了。"
     },
     {
       "id": "darkmoon-040",
@@ -1030,8 +1165,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "低音轰头",
-          "code": "AAECAQcMFqIEsgj8owPerQPjzAOVzQOK0AOT0AOq0gOr1APO3gMJS5AD1AT/B9ypA6S2A/fUA7XeA7beAwA="
+          "name": "低音轰头 卡组",
+          "code": "AAEBAbyRBQTO3gPJwQb6yQap9QYNS58D1p0Dlc0DjtQE44AGhYIGi5QG75sG7KkG1boG88oGouIGAAA="
         }
       ],
       "stages": [
@@ -1053,7 +1188,8 @@
           "points": 20,
           "quota": 50
         }
-      ]
+      ],
+      "guide": "累积型成就，不算难。复制多个精英牛头人酋长，金属之神配合扫把就好了。欢乐术士可以拿一手的精英牛头人酋长，金属之神和扫把。攻略就是起手找精英牛头人酋长，金属之神，通过复制和回手多次使用它。后期用欢乐术士拿一手精英牛头人酋长，金属之神，配合扫把进度暴涨。50次真不多。"
     },
     {
       "id": "darkmoon-041",
@@ -1064,7 +1200,12 @@
       "relatedCards": [
         "月牙"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "触不可及 卡组",
+          "code": "AAEBAbyRBQKV5APHpAYOuLkDju0DhqAEnaAEjLYEjtQE69AFhYIGn54Gh6AG7KkGjr8Gy5gH7JsHAAED8bMGx6QG8rMGx6QG6N4Gx6QGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "月牙在受到伤害后依然存活，累计10次。",
@@ -1078,7 +1219,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "月牙在受到伤害后依然存活，累积30次。累积型成就，不算难。用战士做这个成就，毕竟自助大餐一卡检索翻倍奇利亚斯，疯狂的炼金师和月牙太舒服了。攻略就是起手找自助大餐和蚀解软泥怪 ，翻倍奇利亚斯蹲坑 ，攻击力大于28攻以后就用疯狂的炼金师把攻击变成血，然后用蚀解软泥怪吃掉。清场后下月牙，buff到31血以上，最后使用剑刃风暴就搞定了。"
     },
     {
       "id": "darkmoon-042",
@@ -1089,7 +1231,12 @@
       "relatedCards": [
         "窜逃的黑翼龙"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "谁把龙放出来了？ 卡组",
+          "code": "AAEBAdG+BQLPxgWp9QYO+hHqvwLRwQLo0AKXhwOTugPXzgPi3gP73wOU5AO7xwXt9wWaoAadrQcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "使用窜逃的黑翼龙消灭10个随从。",
@@ -1103,7 +1250,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "累积型成就，不算难。继续用洞察牧即可，只要对手随从足够多，一局就能搞定这个成就。攻略就是起手找洞察和造物协议。苟活到高费回合，然后一直使用窜逃的黑翼龙解场即可，30次不算多。"
     },
     {
       "id": "darkmoon-043",
@@ -1116,16 +1264,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "黑暗大古神 卡组1",
-          "code": "AAECAf0GCtsG66MDhKcDz9ID9tYD/N4Dv+ADzuED9uMDk+QDCtqWA9qbA+usA6zLA83SA7PcA8beA/XjA/jjA5LkAwA="
-        },
-        {
-          "name": "黑暗大古神 卡组2",
-          "code": "AAECAaoIBpAH2p0Dl7kDk8IDm80Dv+ADDJwCsgbFmQPGmQPPpQPhzAOfzQP7zgOu0gPw1AOJ5AOK5AMA"
-        },
-        {
-          "name": "黑暗大古神 卡组3",
-          "code": "AAECAeSiBAbkCNqdA+q6A6PRA7/gA+DlAwxAVl+FBrmUA9ulA/m1A+a6A+i6A/DUA4ngA4rgAwA="
+          "name": "黑暗大古神 卡组",
+          "code": "AAEBAdG+BQS/4APPxgWAuAbAhAcN6r8C0cEC6NACl4cDk7oD184D4t4D+98D7fcFpPoFmqAGna0HmfwHAAA="
         }
       ],
       "stages": [
@@ -1135,7 +1275,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "一次性成就，有点难。因为对手必须满血，所以就用牧师，毕竟牧师可以奶对手。好在锐目搜寻者可以稳定抽到克苏恩的碎片，所以这个成就难度大减。攻略就是起手找洞察和造物协议，通关锐目搜寻者稳定抽齐4个克苏恩碎片并使用。用艾维娜把所有卡变1费，然后奶妈满对手的血，1费的大解清场再用1费的克苏恩满血斩杀就搞定了。【与时俱进】系列的更新毫无规律，作者我有空就会更新，各位读者不必久等，顺其自然就好。还没有评论"
     },
     {
       "id": "darkmoon-044",
@@ -1146,7 +1287,12 @@
       "relatedCards": [
         "恩佐斯，深渊之神"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "举触手之劳 卡组",
+          "code": "AAEBAbyRBQT21gOb2AOoigTHpAYNswGNELds4soC3oIDz9ED9N8DssEElaoF69AFtNEFjr8GltMGAAED87MGx6QG9rMGx6QG6N4Gx6QGAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用恩佐斯，深渊之神一次复活6个随从。",
@@ -1154,7 +1300,8 @@
           "points": 20,
           "quota": 6
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。就用光牙战即可。带上博学者和小弗丁稳定检索恩佐斯就好了。攻略就是起手找自助大餐，先使用6张融合怪，然后送掉，最后使用恩佐斯，深渊之神就搞定了。"
     },
     {
       "id": "darkmoon-045",
@@ -1165,7 +1312,12 @@
       "relatedCards": [
         "狂欢小丑"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "小丑恐惧症 卡组",
+          "code": "AAEBAZT9BgAP58sCnakDv7kD184D/tsDld4Dg/sD56AE7qEG8KkGlbMGk8sGhJkHqa0H174HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "在你的回合结束时，拥有满场的狂欢小丑。",
@@ -1173,7 +1325,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。用黑门术抽1张4费的狂欢小丑腐蚀后使用就好了。攻略就是起手找黑暗之门，然后腐蚀抽到的狂欢小丑，最后使用就好了。"
     },
     {
       "id": "darkmoon-046",
@@ -1184,7 +1337,12 @@
       "relatedCards": [
         "恐怖增生体"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "癣疥之疾 卡组",
+          "code": "AAEBAdG+BQLPxgXksgcO6r8C0cEC6NACl4cD8qwDk7oD4t4D+98D9eED7fcFgoEGmqAGna0HrK0HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张攻击力大于或等于7点的恐怖增生体。",
@@ -1198,7 +1356,8 @@
           "points": 20,
           "quota": 15
         }
-      ]
+      ],
+      "guide": "一次性成就，很简单。洞察牧定向检索养养就好了。攻略就是起手找恐怖增生体或者洞察造物协议。然后再手里一直养，15攻后就使用，轻松搞定。"
     },
     {
       "id": "darkmoon-047",
@@ -1209,8 +1368,8 @@
       "relatedCards": [],
       "recommendedDecks": [
         {
-          "name": "拥抱虚空",
-          "code": "AAECAeSiBAjmugOSzQP1zgO60APB0AOj0QP83gOV5AML26UD6LoDlc0DvNADk9ED3tED8NQDs9wDouED5uEDjOQDAA=="
+          "name": "拥抱虚空 卡组",
+          "code": "AAEBAdG+BQTo0AL83gP54wOp9QYN0cEC5ogD184Ds9wD1N4D494D+98Dx+ED6uED7eED9eEDu8cFxqEGAAA="
         }
       ],
       "stages": [
@@ -1238,7 +1397,8 @@
           "points": 20,
           "quota": 500
         }
-      ]
+      ],
+      "guide": "累积型成就，很精污。牧师的腐蚀卡最多，所有腐蚀卡拉满，腐蚀好就用。攻略就是起手找黑暗审判官，后续一直使用已腐蚀的牌。如果可以，多复制几个亚萨极，这样进度会快很多。"
     },
     {
       "id": "darkmoon-048",
@@ -1247,7 +1407,12 @@
       "type": "一次性",
       "difficulty": "中等",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "免费游戏 卡组",
+          "code": "AAEBAdG+BQT83gPPxgWaoAap9QYN6r8C0cEC6NACl4cD5ogDk7oD184D4t4D+98Du8cF7fcFxqEGna0HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张法力值消耗为（0）的已腐蚀牌。",
@@ -1273,7 +1438,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "累积型成就，有点难。用洞察牧做这个成就比较好。就是复制大量亚煞极使用0费洞察就好了。攻略就是起手找洞察，尽可能多使用已腐蚀的洞察和暗言术：禁。然后用亚煞极拿一手0费的洞察和暗言术：禁 ，这个卡组复制牌很多，全都用来复制亚煞极就好了。"
     },
     {
       "id": "darkmoon-049",
@@ -1284,7 +1450,12 @@
       "relatedCards": [
         "尤格-萨隆"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "尤格萨轮 卡组",
+          "code": "AAEBAdKLBQSFF53YA9HdA5WSBQ3vyQO+ygSv3gSw3gSq4gSF5QSGkgWQkgXw7AXh+AXunga2lweesQcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "转动尤格-萨隆的命运之轮。",
@@ -1298,7 +1469,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "一次性成就，有点难。稳赢的方法就是自己英雄免疫并转到炎爆权杖。瞎子有0费的免疫，就用瞎子做这个成就了。法术瞎启动。攻略就是正常的法术瞎打法。高费回合就用闪避加尤格萨隆，出炎爆就赢。卡组还带了多彩艺人和铜须，控制好手牌可以复制2个尤格萨隆，这样效率更高。"
     },
     {
       "id": "darkmoon-050",
@@ -1309,7 +1481,12 @@
       "relatedCards": [
         "尤格-萨隆"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "灾难之轮 卡组",
+          "code": "AAEBAfahBwSd2AOh9AP7igSI2QcNxAHf4wKvkQO9gAT3nwS6pAS3swT13QTZoga2tQaM1gbBlwfVxQcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "从尤格-萨隆的命运之轮中获得3种不同的结果。",
@@ -1323,7 +1500,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "累积型成就，不算难。只要是炎爆几率就5%太低了，用贼的阴谋洗一牌库的尤格萨隆即可。攻略就是起手找阴谋，然后过牌控场，高费回合使用尤格萨隆并用阴谋洗一牌库。后续每回合都使用尤格萨隆，直到6个选项都出现。"
     },
     {
       "id": "darkmoon-051",
@@ -1336,16 +1514,8 @@
       ],
       "recommendedDecks": [
         {
-          "name": "人畜无害 卡组1",
-          "code": "AAECAZICBl/anQPmugOj0QOd2AO/4AMMQLmUA9ulA+S6A+i6A5vOA/DUA4ngA4rgA6LhA73hA4zkAwA="
-        },
-        {
-          "name": "人畜无害 卡组2",
-          "code": "AAECAZICCNACxQT2rQOIsAObzgOj0QPg5QPanwQL26UD/a0DjK4D5LoD5roD6LoDrNQD8NQDi+QDjOQDlOQDAA=="
-        },
-        {
-          "name": "人畜无害 卡组3",
-          "code": "AAECAa0GBh6WugP70QOd2AP44wP54wMM3AGXAskGmakD0awD8qwDk7oD3swDy80D4t4D+98D9eEDAA=="
+          "name": "人畜无害 卡组",
+          "code": "AAEBAdG+BQLPxgWp9QYO+hHqvwLRwQLo0AKXhwOTugPXzgPi3gP73wO94QO7xwXt9wWaoAadrQcAAA=="
         }
       ],
       "stages": [
@@ -1367,7 +1537,8 @@
           "points": 20,
           "quota": 25
         }
-      ]
+      ],
+      "guide": "累积型成就，不算难难。黑门术和洞察牧都能做这个成就，黑门术启动快，洞察牧效率高，所以还是用洞察牧了。攻略就是起手找洞察或者造物协议，拖到高费回合用暗月兔子解场。各种复活和复制，可以使用很多张暗月兔子。只要对手随从够多，一局就能做完这个成就。"
     }
   ]
 }

@@ -25,11 +25,11 @@
       "recommendedDecks": [
         {
           "name": "轻量读物 1",
-          "code": "AAEBAdK+BQTj4wKN/gXSuQaI5gYN2f4CyrgD/bgD67kD7LkDgeIEuMUF7ckG7d8GkuAGpeEGnOgGn+gGAAA"
+          "code": "AAEBAdK+BQTj4wKN/gXSuQaEwQMN2f4CyrgD/bgD67kD7LkDgeIEuMUF7ckG7d8GkuAGpeEGnOgGn+gGAA=="
         },
         {
           "name": "轻量读物 2",
-          "code": "AAEBAZm4BAScnwTBxgWI5gal6AYNyrgD/bgD6rkD67kD7LkDvI8G6qkG4t8G7d8GkuAGnOgGn+gGougGAAA"
+          "code": "AAEBAZm4BAScnwTBxgWEwQOl6AYNyrgD/bgD6rkD67kD7LkDvI8G6qkG4t8G7d8GkuAGnOgGn+gGougGAA=="
         }
       ],
       "stages": [
@@ -89,7 +89,7 @@
       "recommendedDecks": [
         {
           "name": "空间",
-          "code": "AAEBAcTbBARfv/ICiYsElLEGDeQI6LoDiuADr4AErp8EsKUErsAE2/oF76kG1boG88oGoOMG9+UGAAA"
+          "code": "AAEBAcTbBARfv/ICiYsElLEGDeQI6LoDiuADr4AErp8EsKUErsAE2/oF76kG1boG88oGoOMGQAA="
         }
       ],
       "stages": [
@@ -120,7 +120,7 @@
       "recommendedDecks": [
         {
           "name": "航母末日",
-          "code": "AAEBAc6LBQSJiwSW1AT93wWT9AYNX+i6A8+sBMHfBJegBomhBu+pBtW6BvPKBqLiBov0Boz0Bpb0BgAA"
+          "code": "AAEBAc6LBQSJiwTD6gL93wWT9AYNX+i6A8+sBMHfBJegBomhBu+pBtW6BvPKBqLiBov0Boz0Bpb0BgA="
         }
       ],
       "stages": [
@@ -149,7 +149,7 @@
       "recommendedDecks": [
         {
           "name": "同心同德（莱尼）",
-          "code": "AAEBAdKLBQLsoAT3wwUO8rEEvsoE5OQF4fgF4/gFnJoG7p4Gw7AG4+MG0eUGouoGvuoG5OoG0f4GAAA="
+          "code": "AAEBAdKLBQLsoAT3wwUO8rEEvsoE5OQF4fgF3dMDnJoG7p4Gw7AG4+MG0eUGouoGvuoG5OoG0f4GAA=="
         }
       ],
       "stages": [
@@ -180,7 +180,7 @@
       "recommendedDecks": [
         {
           "name": "我是怪咖",
-          "code": "AAEBAdKLBQbWEfbWA6/eBMnBBs7xBtuXBwzysQS+ygSq4gSF5QTh+AXj+AXungaf8QbC8Qbj8Qbl8Qao9wYAAA=="
+          "code": "AAEBAdKLBQbWEfbWA6/eBMnBBs7xBtuXBwzysQS+ygSq4gSF5QTh+AXd0wPungaf8QbC8Qbj8Qbl8Qao9wYA"
         }
       ],
       "stages": [
@@ -211,7 +211,7 @@
       "recommendedDecks": [
         {
           "name": "你服了吗？",
-          "code": "AAEBAbyRBQK+4gbC4gYOhqAEiKAEjtQE69AFnPYFtPgFofsFhYIGn54Gh6AG7KkGi78G98kGvOEGAAA="
+          "code": "AAEBAbyRBQK+4gbC4gYOhqAES47UBOvQBZz2Bbi5A6H7BYWCBp+eBoegBuypBou/BvfJBrzhBgA="
         }
       ],
       "stages": [
@@ -241,7 +241,7 @@
       "recommendedDecks": [
         {
           "name": "航路制霸",
-          "code": "AAEBAbyRBQSFF5bUBPrJBvbdBg2coASO1ATr0AWFggbvmwbsqQbVugbzygai4gbY8Qbp8Qa79Aa89AYAAA=="
+          "code": "AAEBAbyRBQSFF8PqAvrJBvbdBg2fA47UBOvQBYWCBu+bBuypBtW6BvPKBqLiBtjxBunxBrv0Brz0BgA="
         }
       ],
       "stages": [
@@ -272,7 +272,7 @@
       "recommendedDecks": [
         {
           "name": "不是疗石是炉石",
-          "code": "AAEBAZT9BgAP+v4C66wDv7kDld4Dk+QDxYAEhKAE56AEyOsFxJ4GxKIG8KkGnLMGw7gGyeQGAAA="
+          "code": "AAEBAZT9BgAP+v4C66wDv7kDld4Dk+QDxYAEhKAE56AE58sCxJ4GxKIG8KkGnLMGw7gGyeQGAA=="
         }
       ],
       "stages": [
@@ -365,7 +365,7 @@
       "recommendedDecks": [
         {
           "name": "菌淋天下",
-          "code": "AAEBAf7gBgL07QbO8QYO9eMEjOQEmMQF88gF8OgFzpwGz7wG3eUGvugGwOgGn/EGvvEGqPcG//cGAAA="
+          "code": "AAEBAf7gBgL07QbO8QYO9eMEjOQEmMQF88gF8OgFzpwGz7wGguQEvugGwOgGn/EGvvEGqPcG//cGAA=="
         }
       ],
       "stages": [
@@ -396,7 +396,7 @@
       "recommendedDecks": [
         {
           "name": "空间意识 1",
-          "code": "AAEBAdeEBQLlsAT14gYOwAHV4QKhkgS4xQXoxQXe+AWQgwbrmAbymwbOnAbPngbpyQbw5Qbk6gYAAA"
+          "code": "AAEBAdeEBQLlsAT14gYOwAHV4QKhkgS4xQXoxQWW5AKQgwbrmAbymwbOnAaS5APpyQbw5Qbk6gYA"
         },
         {
           "name": "空间意识 2",
@@ -551,7 +551,7 @@
       "recommendedDecks": [
         {
           "name": "-400/-400",
-          "code": "AAEBAdG+BQLmiAOT9AYO0cECk7oD+98DrYoEhqQFu8cF7fcFzNUGi/QGjPQGkPQGs/QGxfgGyvgGAAA="
+          "code": "AAEBAdG+BQLmiAOT9AYO0cECk7oD+98DmfwHkg+7xwXt9wXM1QaL9AaM9AaQ9Aaz9AbF+AbK+AYA"
         }
       ],
       "stages": [
@@ -582,11 +582,11 @@
       "recommendedDecks": [
         {
           "name": "异形克敌 1",
-          "code": "AAEBAda+BQLHD9y4Bg6czQLf0gLylgOeywOU/AOpnwTknwSZrQTw6AXq8gW+nAbOwAaT4gaC5gYAAA"
+          "code": "AAEBAda+BQLHD9y4Bg6czQLf0gLylgOeywOU/AOpnwTknwSZrQTw6AXq8gW+nAbOwAaT4garjQQA"
         },
         {
           "name": "异形克敌 2",
-          "code": "AAEBAbuRBQaFF9jCAqf3AuyWA/+6A5bUBAyczQLTzQLJ+ALylgOVzQPI+QPDgATopQbcuAbOwAaT4gb+5QYAAA"
+          "code": "AAEBAbuRBQaFF9jCAqf3AuyWA/+6A8PqAgyczQLTzQLJ+ALylgOVzQPI+QPDgATopQbcuAbOwAaT4gakiAMA"
         }
       ],
       "stages": [
@@ -651,7 +651,7 @@
       "recommendedDecks": [
         {
           "name": "渐次灭绝",
-          "code": "AAECAdOLBQa1igSangaopQbUpQat4Qah4gYMs40GhY4Gw48GpKcGzsAG0MAGl+EGmOEGmOIG+OIG5OoGjfgGAAA="
+          "code": "AAECAdOLBQaErgeangaopQbUpQat4Qah4gYMs40GhY4Gw48GpKcGzsAG0MAGl+EGmOEGmOIG+OIG5OoGjfgGAA=="
         }
       ],
       "stages": [
@@ -682,7 +682,7 @@
       "recommendedDecks": [
         {
           "name": "克骨铭心",
-          "code": "AAEBAdOLBQThqAOW1ATR0Ab23QYNxpkDlZIE46AEs40Gw48Gz54Gy58Gi9wGtPEG2PEG7PEGu/QGyPkGAAA="
+          "code": "AAEBAdOLBQThqAPD6gLR0Ab23QYNxpkDlZIEioADs40Gw48GkuQDy58Gi9wGtPEG2PEG7PEGu/QGyPkGAA=="
         }
       ],
       "stages": [
@@ -713,7 +713,7 @@
       "recommendedDecks": [
         {
           "name": "三位数！",
-          "code": "AAEBAZT9BgStEL+5A+6hBqrqBg3amwPWnQOdqQOttgOsywPN0gOV3gOD+wPFgAScoATnoATI6wWVswYAAA=="
+          "code": "AAEBAZT9BgStEL+5A+6hBqrqBg3amwPWnQOdqQOttgOsywPN0gOV3gOD+wPFgASfA+egBOfLApWzBgA="
         }
       ],
       "stages": [
@@ -735,7 +735,7 @@
       "recommendedDecks": [
         {
           "name": "迸发风味",
-          "code": "AAECAdW+BQSRnwTllQa2tQar6gYN9p8E958E2sMF38MFv/cF5voFuYYGyJQG7p4GracGwKgG7qkGjNYGAAA="
+          "code": "AAECAdW+BQSRnwTllQa2tQar6gYN7QL3nwTawwXfwwW/9wXm+gW5hgbIlAbungatpwbAqAbuqQaM1gYA"
         }
       ],
       "stages": [
@@ -799,7 +799,7 @@
       "recommendedDecks": [
         {
           "name": "仍需装配",
-          "code": "AAEBAf7gBgSoigSs0QW6wQb23QYNh/YEzpwGkqAGu7EG/7oGkMsGi9wGnNwGpdwGnuIGoOIG5uUG6+oGAAA="
+          "code": "AAEBAf7gBgSoigSs0QW6wQb23QYNh/YEzpwGkqAGu7EG/7oGkMsGi9wGnNwGpdwGnuIGoOIG/eME6+oGAA=="
         }
       ],
       "stages": [
@@ -875,7 +875,7 @@
       "recommendedDecks": [
         {
           "name": "建造更多水晶塔",
-          "code": "AAEBAdG+BQLPxgWT9AYO+hHRwQKXhwOTugPi3gOMgQStigSL5gaL9AaM9AaQ9AaY9Aaz9AbK+AYAAA=="
+          "code": "AAEBAdG+BQLPxgWT9AYO+hHRwQKXhwOTugPi3gOMgQSZ/Afj6QKL9AaM9AaQ9AaY9Aaz9AbK+AYA"
         }
       ],
       "stages": [
@@ -909,7 +909,7 @@
       "recommendedDecks": [
         {
           "name": "营地推荐卡组",
-          "code": "AAEBAbyRBQSW1AT6yQb23Qav8QYNiKAEjtQE75sG7KkG1boG88oGi9wGouIGtPEG2PEG6fEGu/QGvPQGAAA="
+          "code": "AAEBAbyRBQTD6gL6yQb23Qav8QYNS47UBO+bBuypBtW6BvPKBovcBqLiBrTxBtjxBunxBrv0Brz0BgA="
         }
       ],
       "stages": [

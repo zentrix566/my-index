@@ -28,11 +28,11 @@
       "recommendedDecks": [
         {
           "name": "万年折磨 1",
-          "code": "AAEBAdPwBgT21gOU1ATh+AX8wAYNjb0DzNIDzdID99UDivcDg58Etp8Es6AEtKAEi5IF4/gF1sAG38AGAAA"
+          "code": "AAEBAdPwBgT21gPDvAPh+AX8wAYNjb0DzNIDzdID99UDivcDg58Etp8Es6AEtKAEi5IF3dMD1sAG38AGAA=="
         },
         {
           "name": "万年折磨 2",
-          "code": "AAEBAc7WAwT3wwPV3gOXoASU1AQN2dMDyd0DivcDtp8Es6AEtKAEi5IF8OwF4/gFmoAGpYEG7J4G38AGAAA"
+          "code": "AAEBAc7WAwT3wwPV3gOXoATDvAMN2dMDyd0DivcDtp8Es6AEtKAEi5IF8OwF3dMDmoAGpYEG7J4G38AGAA=="
         }
       ],
       "stages": [
@@ -88,7 +88,7 @@
       "recommendedDecks": [
         {
           "name": "深层智慧 1",
-          "code": "AAEBAYoWCNYRhtMC9tYDyPkD25EE1/kFi9YG/uUGC/+6A/u7A+OfBO2xBKekBejoBd/tBeryBcj2BdL4BeqlBgAA"
+          "code": "AAEBAYoWCNYRhtMC9tYDyPkD25EE1/kFi9YGpIgDC/+6A/u7A+OfBO2xBKekBejoBd/tBeryBcj2BdL4BeqlBgA="
         },
         {
           "name": "深层智慧 2",
@@ -138,11 +138,11 @@
       "recommendedDecks": [
         {
           "name": "必读书目 1",
-          "code": "AAEBAcOfAwbZ/gLGxwXx6AXrgAb4lAaI5gYMyrgD/bgD67kD7LkDlc0DwNEDzOsDwOIEvI8GzpwGkqAG0akGAAA"
+          "code": "AAEBAcOfAwbZ/gLGxwXx6AXrgAb4lAaEwQMMyrgD/bgD67kD7LkDlc0DwNEDzOsDwOIEvI8GzpwGkqAG0akGAA=="
         },
         {
           "name": "必读书目 2",
-          "code": "AAEBAZ3DAwbZ/gLM6wPA4gTrgAbOnAaI5gYMyrgD/bgD67kD7LkDlc0DwNED8egFlPUFvI8G+JQGkqAG0akGAAA"
+          "code": "AAEBAZ3DAwbZ/gLM6wPA4gTrgAbOnAaEwQMMyrgD/bgD67kD7LkDlc0DwNED8egFlPUFvI8G+JQGkqAG0akGAA=="
         }
       ],
       "stages": [
@@ -168,11 +168,11 @@
       "recommendedDecks": [
         {
           "name": "记忆复苏 1",
-          "code": "AAEBAd7hBgSFF5egBJbUBKSdBg3RwQKn9wKTugOwugOEnwTWoASGgwW5xAXrmAbvmwbOnAbBnwaWoAYAAA"
+          "code": "AAEBAd7hBgSFF5egBMPqAqSdBg3RwQKn9wKTugOwugOEnwTWoASGgwW5xAXrmAbvmwbOnAbBnwaWoAYA"
         },
         {
           "name": "记忆复苏 2",
-          "code": "AAEBAZ/HAgSFF5egBJbUBKSdBg3RwQKn9wKTugOwugOEnwTWoASGgwWFjgbrmAbvmwbOnAbBnwaWoAYAAA"
+          "code": "AAEBAZ/HAgSFF5egBMPqAqSdBg3RwQKn9wKTugOwugOEnwTWoASGgwWFjgbrmAbvmwbOnAbBnwaWoAYA"
         }
       ],
       "stages": [
@@ -202,7 +202,7 @@
         },
         {
           "name": "终极攻击 2",
-          "code": "AAEBAZvDAwTf4wKzhQPSuQPi3QMN9bsClc0D590D0/MDt7MEwPgFkIMGjZYGtrUG6ckG8skGjNYGpeEGAAA"
+          "code": "AAEBAZvDAwTf4wKzhQPSuQPi3QMN9bsClc0D590D0/MDt7ME2+MCkIMGjZYGtrUG6ckG8skGjNYGpeEGAA=="
         }
       ],
       "stages": [
@@ -229,10 +229,6 @@
         {
           "name": "摩天图腾 1",
           "code": "AAEBAZu1AwjWEdqlA/bWA9/hA7bcBLbtBJ+eBqelBgvvAYEE9qoClrkDqtkEveUE1tAF9PIFw48GnJ4Gq+EGAAA"
-        },
-        {
-          "name": "摩天图腾 2",
-          "code": "AAEBAdOLBQTWEdqlA9/hA7HZBA3vAYEE9qoClrkDk"
         }
       ],
       "stages": [
@@ -282,11 +278,11 @@
       "recommendedDecks": [
         {
           "name": "操纵比赛 1",
-          "code": "AAEBAYwWBNYR9tYDju0D+skGDffzAru5A47UBKH7BZyeBp+eBpGoBuypBo6/BvPKBsHhBqLiBuPrBgAA"
+          "code": "AAEBAYwWBNYR9tYDju0D+skGDffzAru5A47UBKH7BZyeBp+eBpGoBuypBo6/BvPKBsHhBqLiBu7UBgA="
         },
         {
           "name": "操纵比赛 2",
-          "code": "AAEBAQcE1hHAuQOFjgb6yQYN9/MCu7kD99QDju0DjtQEtfgFofsFnJ4G7KkGw7oG88oGouIG4+sGAAA"
+          "code": "AAEBAQcE1hHAuQOFjgb6yQYN9/MCu7kD99QDju0DjtQE+IAEofsFnJ4G7KkGw7oG88oGouIG7tQGAA=="
         }
       ],
       "stages": [
@@ -312,11 +308,11 @@
       "recommendedDecks": [
         {
           "name": "规整伤害 1",
-          "code": "AAEBAZu1AwbWEYUXltQEncUFzpwGpMAGDJMEutICk7kD6b4DhdQEq+0E6aMF2dAF4NAFwfkFnJ4GiuIGAAA"
+          "code": "AAEBAZu1AwbWEYUXw+oCncUFzpwGpMAGDJMEutICk7kD6b4DhdQEq+0E6aMF2dAF4NAFwfkFnJ4GiuIGAA=="
         },
         {
           "name": "规整伤害 2",
-          "code": "AAEBAZu1AwbWEYUXltQE9PIFwfkFpMAGDJMEutICk7kD6b4DhdQEq+0E6aMF2dAF4NAFnJ4GpKcGiuIGAAA"
+          "code": "AAEBAZu1AwbWEYUXw+oC9PIFwfkFpMAGDJMEutICk7kD6b4DhdQEq+0E6aMF2dAF4NAFnJ4GpKcGiuIGAA=="
         }
       ],
       "stages": [

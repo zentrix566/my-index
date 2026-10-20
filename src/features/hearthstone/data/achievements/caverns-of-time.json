@@ -132,7 +132,7 @@
       "recommendedDecks": [
         {
           "name": "你们还不满意吗？",
-          "code": "AAEBAbyRBQAPvsMCm/MC1p0DwLkD99QDju0D+YwEhqAEiKAEjLYEjtQE69AFjr8G6qcH/K8HAAA="
+          "code": "AAEBAbyRBQAPvsMCm/MC1p0DwLkD99QDju0D+YwEhqAES4y2BI7UBOvQBY6/BuqnB/yvBwA="
         }
       ]
     },
@@ -288,7 +288,7 @@
       "recommendedDecks": [
         {
           "name": "免费洗车",
-          "code": "AAEBAdG+BQTPxgWZwAbemweCrQcN6r8C0cEC8qwDk7oD4t4DrYoEhZ8EorYE9vEEhoMF+/gFwrYG4K0HAAA="
+          "code": "AAEBAdG+BQTPxgWZwAbemweCrQcN6r8C0cEC8qwDk7oD4t4DmfwHhZ8EorYE9vEEhoMF+/gFwrYG4K0HAA=="
         }
       ],
       "guide": "攻略就是起手找体型互换。在使用体型互换前随从上手就投降重开，没上手就拿下了。换完血的净化的光耀之子直接能打28点伤害，一次就搞定了。 / 一次性成就，非常简单。别老老实实用设计师给的套路，那些太慢了。直接用体型互换抽净化的光耀之子和超摩天龙就完事了。所以作者我卡组就2随从，还带了大量的地标，便于暗影视界和暗影成长找体型互换。其实还可以带更多地标和武器的。"
@@ -384,7 +384,7 @@
       "recommendedDecks": [
         {
           "name": "灌注2：末世之战",
-          "code": "AAEBAfahBwTHmwPMoAWp9QbysgcNr5ED/u4D9p8E958EndQE38MFyJQGtrUG1voG94EH67IHmrMHurMHAAA="
+          "code": "AAEBAfahBwTHmwPMoAWp9QbysgcNr5ED/u4D7QL3nwSd1ATfwwXIlAa2tQbW+gb3gQfrsgeaswe6swcA"
         }
       ],
       "guide": "攻略就是起手留灌注，然后一直灌注就完事了。 / 一次性成就，白给的。贼带满回手和阴谋灌注几十次都不成问题，所以就是白给型成就。"
@@ -419,7 +419,7 @@
       "recommendedDecks": [
         {
           "name": "脱骨连击",
-          "code": "AAEBAfahBwTHmwPMoAWp9QbysgcNr5ED/u4D9p8E958EndQE38MFyJQGtrUG1voG94EH67IHmrMHurMHAAA="
+          "code": "AAEBAfahBwTHmwPMoAWp9QbysgcNr5ED/u4D7QL3nwSd1ATfwwXIlAa2tQbW+gb3gQfrsgeaswe6swcA"
         }
       ],
       "guide": "Ps：注意过载 / 攻略就是起手找阴谋，然后一起过牌控场。通过3张阴谋洗一牌库的飞翼畸变体。然后没格子了就用末日和战略转移清自己的场。触发连击的牌可以靠灌注技能。 / 累积型成就，很简单。就用上面的灌注贼改一改就完事了。为了更好地使用飞翼畸变体，带上新伊瑟拉。为了清场，带上了末日和战略转移。"
@@ -733,7 +733,7 @@
       "recommendedDecks": [
         {
           "name": "英雄之影",
-          "code": "AAEBAdKLBQbD6gKHtwSkkgXvmAf6rQfysgcMndQEj6UFuMUFkIMGj5AG65gGzpwGwr4GltYG5OoGkqQH5LEHAAA="
+          "code": "AAEBAdKLBQbD6gKHtwSkkgXvmAfR3QPysgcMndQEj6UFuMUFkIMGj5AG65gGzpwGwr4GltYG5OoGkqQH5LEHAA=="
         }
       ],
       "guide": "攻略就是起手找222双娜迦还有机器调酒师。然后记住残骸数量，尽可能触发流放。没格子了就下末日清自己的场。 / 累积型成就，有点麻烦。继续任务虚灵套。复制旧时回响不难，但流放很难。腾格子也是大问题，所以作者我带上了末日。"
@@ -795,7 +795,7 @@
       "recommendedDecks": [
         {
           "name": "穿越克罗米",
-          "code": "AAEBAdG+BQLPxgXysgcO+hHRwQLmiAPyrAOTugPXzgPi3gP73wOtigSEnwS7xwXt9wWsrQfksgcAAA=="
+          "code": "AAEBAdG+BQLPxgXysgcO+hHRwQLmiAPyrAOTugPXzgPi3gP73wOZ/AeEnwS7xwXt9wWsrQfksgcA"
         }
       ],
       "guide": "攻略就是起手找洞察或者造物协议，然后通过复制让多个米罗克战场，然后使用多张回溯卡就好了。 / 累积型成就，很简单。用我们的老朋友洞察牧就好了，牧师的复制太多了，再加上多个米克罗战场能叠加次数，所以这个成就很简单。 / 写这个攻略耗时3个多小时，终于写完了，真心累啊。希望能帮助到大家。好了，作者我的全成就攻略贴未来还会继续，下次就要等迷你包了。"
@@ -843,12 +843,7 @@
           "quota": 150
         }
       ],
-      "recommendedDecks": [
-        {
-          "name": "还记得我吗？",
-          "code": "AAECAbyRBQHzsgYAAAA="
-        }
-      ]
+      "recommendedDecks": []
     },
     {
       "id": "cot-027",
