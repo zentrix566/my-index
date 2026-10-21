@@ -101,6 +101,7 @@ export function simulate(params) {
   let xp = startXp
   let dailyTotal = 0
   let weeklyTotal = 0
+  let weeklyCount = 0
   for (let d = 0; d < days; d++) {
     const date = addDays(startDate, d)
     let dayXp = Math.round(perDayBase)
@@ -109,6 +110,7 @@ export function simulate(params) {
       const w = Math.round(weekly)
       dayXp += w
       weeklyTotal += w
+      weeklyCount++
     }
     xp += dayXp
   }
@@ -124,6 +126,7 @@ export function simulate(params) {
     gainedXp: xp - startXp,
     dailyTotal,
     weeklyTotal,
+    weeklyCount,
     perDay: Math.round(perDayBase),
     level,
     partialIntoLevel,
@@ -133,19 +136,24 @@ export function simulate(params) {
 }
 
 // 正向：到赛季结束可达等级
-export function projectToSeasonEnd(params, seasonEndDate, today = new Date()) {
+// 经验只从「赛季开始日与今天中较晚者」起累计：跨赛季间隙打开页面时，任务次数不会多算开赛前的天数。
+export function projectToSeasonEnd(params, seasonEndDate, today = new Date(), seasonStartDate = null) {
   const end = toDate(seasonEndDate)
-  const days = Math.max(0, daysBetween(today, end))
-  const sim = simulate({ ...params, days, startDate: today })
+  const start = seasonStartDate ? toDate(seasonStartDate) : null
+  const from = start && start > today ? start : today
+  const days = Math.max(0, daysBetween(from, end))
+  const sim = simulate({ ...params, days, startDate: from })
   return { ...sim, days, seasonEnd: fmtDate(end), seasonEndDate: end }
 }
 
 // 反向：达到目标等级所需天数与截止日期
 // 周任务同样计入周一，与 simulate / 日历一致。
-export function projectToLevel(params, targetLevel, seasonEndDate, today = new Date()) {
+export function projectToLevel(params, targetLevel, seasonEndDate, today = new Date(), seasonStartDate = null) {
   const target = Math.max(1, Math.min(MAX_LEVEL, Math.floor(Number(targetLevel) || 1)))
   const targetXp = cumulativeXpForLevel(target)
   const startXp = xpForProgress(params.currentLevel, params.currentPartialXp)
+  const start = seasonStartDate ? toDate(seasonStartDate) : null
+  const t0 = start && start > today ? start : today
   const mult = 1 + (Number(params.boost) || 0)
   const perDayBase = (Number(params.dailyQuestXp) + Number(params.playXpPerHour) * Number(params.hoursPerDay)) * mult
   const weekly = (Number(params.weeklyQuestXp) || 0) * mult
@@ -154,7 +162,7 @@ export function projectToLevel(params, targetLevel, seasonEndDate, today = new D
   let day = 0
   const maxDays = 3650
   while (xp < targetXp && day < maxDays) {
-    const date = addDays(today, day)
+    const date = addDays(t0, day)
     let dayXp = Math.round(perDayBase)
     if (date.getDay() === 1) dayXp += Math.round(weekly)
     xp += dayXp
@@ -162,11 +170,11 @@ export function projectToLevel(params, targetLevel, seasonEndDate, today = new D
   }
 
   const reached = xp >= targetXp
-  const deadline = addDays(today, day)
+  const deadline = addDays(t0, day)
   const end = seasonEndDate ? toDate(seasonEndDate) : null
   const onTime = end ? deadline <= end : true
   const overByDays = end && deadline > end ? daysBetween(end, deadline) : 0
-  const seasonDays = end ? Math.max(0, daysBetween(today, end)) : null
+  const seasonDays = end ? Math.max(0, daysBetween(t0, end)) : null
   const seasonEndLevel = seasonDays != null ? simulate({ ...params, days: seasonDays }).level : null
 
   return {
@@ -185,12 +193,14 @@ export function projectToLevel(params, targetLevel, seasonEndDate, today = new D
 
 // 反向（二）：给定目标等级与截止日期，反推“每日需游戏多少小时”
 // 假设各模式时长比例不变（按比例放大/缩小总时长），用加权每小时经验反解。
-export function requiredHoursPerDay(params, targetLevel, deadlineDate, today = new Date()) {
+export function requiredHoursPerDay(params, targetLevel, deadlineDate, today = new Date(), seasonStartDate = null) {
   const target = Math.max(1, Math.min(MAX_LEVEL, Math.floor(Number(targetLevel) || 1)))
   const startXp = xpForProgress(params.currentLevel, params.currentPartialXp)
   const targetXp = cumulativeXpForLevel(target)
   const needXp = targetXp - startXp
-  const days = Math.max(0, daysBetween(today, toDate(deadlineDate)))
+  const start = seasonStartDate ? toDate(seasonStartDate) : null
+  const from = start && start > today ? start : today
+  const days = Math.max(0, daysBetween(from, toDate(deadlineDate)))
   const result = { target, days, impossible: false, alreadyMet: false, hoursNeeded: 0 }
 
   if (needXp <= 0) {
@@ -226,9 +236,9 @@ export function requiredHoursPerDay(params, targetLevel, deadlineDate, today = n
 }
 
 // 逐日投影：从今天起逐天模拟，返回每日应达等级与经验明细（日历视图数据源）
-// 周任务统一计入周一（周一额外增加 weekly×加成 经验）。
+// 周任务统一计入周一（周一额外增加 weekly×加成 经验）；赛季开始日之前的天数不计经验。
 // 返回 { days: [{ date, isMonday, dayXp, weeklyXp, cumulativeXp, level, partialIntoLevel, targetReached }], ... }
-export function projectDaily(params, targetLevel, seasonEndDate, today = new Date()) {
+export function projectDaily(params, targetLevel, seasonEndDate, today = new Date(), seasonStartDate = null) {
   const target = Math.max(1, Math.min(MAX_LEVEL, Math.floor(Number(targetLevel) || 1)))
   const targetXp = cumulativeXpForLevel(target)
   const startXp = xpForProgress(params.currentLevel, params.currentPartialXp)
@@ -238,6 +248,7 @@ export function projectDaily(params, targetLevel, seasonEndDate, today = new Dat
   const weeklyXp = (Number(params.weeklyQuestXp) || 0) * mult
   const perDayBase = Math.round(dailyQuest + playXp)
   const end = seasonEndDate ? toDate(seasonEndDate) : null
+  const seasonStart = seasonStartDate ? toDate(seasonStartDate) : null
 
   let xp = startXp
   let day = 0
@@ -275,9 +286,10 @@ export function projectDaily(params, targetLevel, seasonEndDate, today = new Dat
 
   while (day < maxDays && xp < targetXp) {
     const date = addDays(today, day)
+    const active = !seasonStart || date >= seasonStart
     const isMonday = date.getDay() === 1
-    const wXp = isMonday ? Math.round(weeklyXp) : 0
-    const dayXp = perDayBase + wXp
+    const wXp = active && isMonday ? Math.round(weeklyXp) : 0
+    const dayXp = active ? perDayBase + wXp : 0
     xp += dayXp
     const level = levelForXp(xp)
     const partialIntoLevel = xp - cumulativeXpForLevel(level)

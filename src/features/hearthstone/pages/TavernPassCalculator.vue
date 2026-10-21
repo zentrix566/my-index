@@ -42,36 +42,15 @@
       <div class="hs-xp-grid">
         <!-- 左：输入 -->
         <div class="hs-xp-card">
-          <h2>输入参数</h2>
-
           <div class="hs-xp-field">
             <label>赛季时间</label>
             <div class="hs-xp-season">
               <span class="hs-xp-season-range">{{ SEASON_START }} – {{ SEASON_END }}</span>
-              <span class="hs-xp-season-fixed">结束日期固定（所有人一致）</span>
             </div>
           </div>
 
           <!-- 自动模式 -->
           <template v-if="mode === 'auto'">
-            <div class="hs-xp-note">
-              <b>经验计算方式（按无加成基础值）：</b>每日任务 <b>1000</b> / 每周任务 <b>6000</b>（= 3000 + 2100×2）/ 每小时对战 <b>350</b>。
-              日均经验 =（每日任务经验 + 每小时对战经验 × 每日游戏时长）×（1 + 战令加成）；每周任务经验 ×（1 + 加成）每 7 天结算一次；将每日/每周收益累计到赛季结束，对照奖励轨道得可达等级。
-              <br />战令加成按<b>当前通行证等级</b>自动换算（1 级 +10% / 20 级 +15% / 70 级 +20%），切换「当前等级」时每小时经验会随之变化；也可在下方手动覆盖。
-            </div>
-            <div class="hs-xp-field">
-              <label for="xp-auto-boost">战令加成<span class="hs-xp-auto-tag">（自动随等级）</span></label>
-              <select id="xp-auto-boost" v-model.number="autoBoost">
-                <option :value="0">无加成</option>
-                <option :value="0.1">通行证 +10%</option>
-                <option :value="0.15">通行证 +15%</option>
-                <option :value="0.2">通行证 +20%</option>
-              </select>
-            </div>
-            <div class="hs-xp-field">
-              <label for="xp-auto-hours">每日游戏时长（小时）</label>
-              <input id="xp-auto-hours" type="number" min="0" step="0.5" v-model.number="autoHours" />
-            </div>
             <div class="hs-xp-field-row">
               <div class="hs-xp-field">
                 <label for="xp-cur-level">当前等级</label>
@@ -82,19 +61,43 @@
                 <input id="xp-cur-xp" type="number" min="0" v-model.number="currentPartialXp" />
               </div>
             </div>
+            <div class="hs-xp-field">
+              <label for="xp-auto-hours">每日游戏时长（小时）</label>
+              <input id="xp-auto-hours" type="number" min="0" step="0.1" v-model.number="autoHours" />
+            </div>
+            <div class="hs-xp-field">
+              <label for="xp-auto-boost">战令加成<span class="hs-xp-auto-tag">（自动随等级）</span></label>
+              <select id="xp-auto-boost" v-model.number="autoBoost">
+                <option :value="0">无加成</option>
+                <option :value="0.1">通行证 +10%</option>
+                <option :value="0.15">通行证 +15%</option>
+                <option :value="0.2">通行证 +20%</option>
+              </select>
+            </div>
             <div class="hs-xp-preset">
               <span>每日 {{ showDaily }}</span>
               <span>每周 {{ showWeekly }}</span>
               <span>每小时 {{ showHourly }}</span>
               <span class="boost">{{ Math.round(autoBoost * 100) }}% 加成</span>
             </div>
+            <div class="hs-xp-note">
+              <b>经验计算方式（按无加成基础值）：</b>每日任务 <b>1000</b> / 每周任务 <b>6000</b>（= 3000 + 2100×2）/ 每小时对战 <b>350</b>。
+              日均经验 =（每日任务经验 + 每小时对战经验 × 每日游戏时长）×（1 + 战令加成）；每周任务经验 ×（1 + 加成）每 7 天结算一次；将每日/每周收益累计到赛季结束，对照奖励轨道得可达等级。
+              <br />战令加成按<b>当前通行证等级</b>自动换算（1 级 +10% / 20 级 +15% / 70 级 +20%），切换「当前等级」时每小时经验会随之变化；也可在上方手动覆盖。
+            </div>
           </template>
 
           <!-- 手动模式 -->
           <template v-else>
-            <div class="hs-xp-note">
-              <b>计算方式（按无加成基础值）：</b>每日任务 <b>1000</b> / 每周任务 <b>6000</b>（= 3000 + 2100×2）；任务与对战经验统一 ×（1 + 战令加成），下方「每日任务 / 每周任务」数值已随加成实时变化。
-              各模式每小时经验 = 60 ×（胜率 × 胜每分钟经验 +（1 − 胜率）× 负每分钟经验）；每日对战经验 = Σ（模式时长 × 该模式每小时经验）；累计到赛季结束对照奖励轨道得可达等级。
+            <div class="hs-xp-field-row">
+              <div class="hs-xp-field">
+                <label for="xp-cur-level">当前等级</label>
+                <input id="xp-cur-level" type="number" min="1" :max="MAX_LEVEL" v-model.number="currentLevel" />
+              </div>
+              <div class="hs-xp-field">
+                <label for="xp-cur-xp">本级已累计经验</label>
+                <input id="xp-cur-xp" type="number" min="0" v-model.number="currentPartialXp" />
+              </div>
             </div>
             <div class="hs-xp-field">
               <label for="xp-mboost">战令加成</label>
@@ -109,16 +112,6 @@
               <span>每日任务 {{ Math.round(FIXED_DAILY * (1 + manualBoost)) }}</span>
               <span>每周任务 {{ Math.round(FIXED_WEEKLY * (1 + manualBoost)) }}</span>
             </div>
-            <div class="hs-xp-field-row">
-              <div class="hs-xp-field">
-                <label for="xp-cur-level">当前等级</label>
-                <input id="xp-cur-level" type="number" min="1" :max="MAX_LEVEL" v-model.number="currentLevel" />
-              </div>
-              <div class="hs-xp-field">
-                <label for="xp-cur-xp">本级已累计经验</label>
-                <input id="xp-cur-xp" type="number" min="0" v-model.number="currentPartialXp" />
-              </div>
-            </div>
 
             <div class="hs-xp-modes">
               <div class="hs-xp-mode-block" v-for="(m, i) in modes" :key="m.key">
@@ -126,7 +119,7 @@
                 <div class="hs-xp-field-row">
                   <div class="hs-xp-field">
                     <label :for="`xp-h-${i}`">时长（小时/天）</label>
-                    <input :id="`xp-h-${i}`" type="number" min="0" step="0.5" v-model.number="m.hoursPerDay" />
+                    <input :id="`xp-h-${i}`" type="number" min="0" step="0.1" v-model.number="m.hoursPerDay" />
                   </div>
                   <div class="hs-xp-field">
                     <label :for="`xp-wr-${i}`">胜率（%）</label>
@@ -151,10 +144,14 @@
 
             <div class="hs-xp-note">
               每日对战总经验 ≈ <b>{{ Math.round(totalDailyPlayXp(modes) * (1 + manualBoost)) }}</b> · 每日总时长 <b>{{ totalManualHours }}</b> 小时 · 加权每小时 ≈ <b>{{ Math.round(manualPlayXpPerHour * (1 + manualBoost)) }}</b>            </div>
+            <div class="hs-xp-note">
+              <b>计算方式（按无加成基础值）：</b>每日任务 <b>1000</b> / 每周任务 <b>6000</b>（= 3000 + 2100×2）；任务与对战经验统一 ×（1 + 战令加成），上方「每日任务 / 每周任务」数值已随加成实时变化。
+              各模式每小时经验 = 60 ×（胜率 × 胜每分钟经验 +（1 − 胜率）× 负每分钟经验）；每日对战经验 = Σ（模式时长 × 该模式每小时经验）；累计到赛季结束对照奖励轨道得可达等级。
+            </div>
           </template>
         </div>
 
-        <!-- 右：结果 -->
+        <!-- 中：正向 -->
         <div class="hs-xp-card">
           <h2>正向：赛季结束可达等级</h2>
           <div class="hs-xp-level">{{ forward.level }}<span> / {{ MAX_LEVEL }}</span></div>
@@ -165,16 +162,48 @@
             日均 <b>{{ formatXp(forward.perDay) }}</b> XP/天
             <span class="hs-xp-perday-detail">（每日任务 {{ showDaily }} + 对战 {{ showHourly }} × {{ hoursShown }}h）</span>
           </div>
-          <div class="hs-xp-breakdown">
-            <div><span>每日任务累计（全赛季）</span><b>{{ formatXp(forward.dailyTotal) }}</b></div>
-            <div><span>每周任务累计（全赛季）</span><b>{{ formatXp(forward.weeklyTotal) }}</b></div>
-            <div><span>本赛季将获得</span><b>{{ formatXp(forward.gainedXp) }}</b></div>
+
+          <!-- 等级达成时间：50 / 100 级里程碑 + 自定义目标，重点展示 -->
+          <div class="hs-xp-milestones">
+            <div class="hs-xp-ms-head">🎯 等级达成时间预测</div>
+            <div class="hs-xp-ms-list">
+              <div
+                v-for="ms in milestones"
+                :key="ms.level"
+                class="hs-xp-ms-item"
+                :class="{ 'is-done': ms.alreadyDone, 'is-late': !ms.alreadyDone && (!ms.reached || !ms.onTime), 'is-custom': ms.custom }"
+              >
+                <div class="hs-xp-ms-lv">{{ ms.custom ? '目标' : '里程碑' }} Lv {{ ms.level }}</div>
+                <template v-if="ms.alreadyDone">
+                  <div class="hs-xp-ms-date">已达成</div>
+                  <div class="hs-xp-ms-sub">当前进度已达到该等级</div>
+                </template>
+                <template v-else>
+                  <div class="hs-xp-ms-date">{{ formatFullDate(ms.deadlineDate) }}</div>
+                  <div class="hs-xp-ms-sub">
+                    还需 <b>{{ ms.daysNeeded }}</b> 天<template v-if="ms.onTime"> · 赛季内可达</template><template v-else> · 超出赛季 {{ ms.overByDays }} 天</template>
+                  </div>
+                  <span class="hs-xp-tag" :class="ms.onTime ? 'hs-xp-tag-ok' : 'hs-xp-tag-late'">
+                    {{ ms.onTime ? '✓ 赛季内可达' : '✕ 赛季内无法达成' }}
+                  </span>
+                </template>
+              </div>
+            </div>
           </div>
 
-          <h2 class="hs-xp-h2">反向：规划肝度 / 核对进度</h2>
+          <div class="hs-xp-breakdown">
+            <div><span>每日任务累计</span><b>{{ formatXp(forward.dailyTotal) }}</b></div>
+            <div><span>每周任务累计</span><b>{{ formatXp(forward.weeklyTotal) }}</b></div>
+            <div><span>本赛季将获得</span><b>{{ formatXp(forward.gainedXp) }}</b></div>
+          </div>
+        </div>
+
+        <!-- 右：反向 -->
+        <div class="hs-xp-card">
+          <h2>反向：规划肝度 / 核对进度</h2>
           <p class="hs-xp-rev-desc">
-            给定一个目标等级，反推在赛季结束（<b>{{ SEASON_END }}</b>）前达成所需的<b>每日游戏时长</b>，
-            并预测<b>目标等级的预计完成日期</b>（按当前参数逐日模拟，周任务统一计入周一）。
+            目标等级的预计达成日期见上方「目标」瓦片；这里按赛季结束（<b>{{ SEASON_END }}</b>）倒推，
+            计算达成目标所需的<b>每日游戏时长</b>（周任务统一计入周一）。
           </p>
           <div class="hs-xp-field">
             <label for="xp-target">目标等级</label>
@@ -182,11 +211,11 @@
           </div>
           <div v-if="reverse.valid" class="hs-xp-reverse">
             <div class="hs-xp-reverse-main">
-              达到 <b>{{ reverse.target }}</b> 级 → 需每日游戏约 <b>{{ formatHours(reverse.hoursNeeded) }}</b> 小时
+              达到 <b>{{ reverse.target }}</b> 级 → 需每日游戏约 <b>{{ formatHours(reverse.hoursNeeded) }}</b>
             </div>
             <div v-if="!reverse.alreadyMet && !reverse.impossible" class="hs-xp-rev-detail">
               剩余 <b>{{ reverse.days }}</b> 天；任务/周常约贡献 <b>{{ formatXp(reverse.questDailyAvg) }}</b> / 天，
-              对战需再贡献 <b>{{ formatXp(reverse.needPlayDaily) }}</b> / 天（≈ {{ formatHours(reverse.hoursNeeded) }} 小时）。
+              对战需再贡献 <b>{{ formatXp(reverse.needPlayDaily) }}</b> / 天（≈ {{ formatHours(reverse.hoursNeeded) }}）。
             </div>
             <div v-if="reverse.alreadyMet" class="hs-xp-ok">
               ✓ 当前每日任务 + 周常已能在赛季结束前达到该等级，无需额外对战时间。
@@ -194,60 +223,42 @@
             <div v-else-if="reverse.impossible" class="hs-xp-warn">
               ✕ 无法计算对战时长（请在各模式里设置每日游戏时长，让每小时经验 > 0）。
             </div>
-
-            <!-- 目标等级预计完成日期（按当前参数逐日模拟，周任务计入周一） -->
-            <div class="hs-xp-target-date">
-              <div class="hs-xp-td-title">目标等级预计完成日期</div>
-              <template v-if="targetPlan.valid">
-                <div v-if="targetPlan.reached" class="hs-xp-td-ok">
-                  <span class="hs-xp-td-date">{{ formatFullDate(targetPlan.reachDate) }}</span>
-                  <span class="hs-xp-td-sub">
-                    预计 <b>{{ targetPlan.daysNeeded }}</b> 天达成（周一计入周任务
-                    <b>+{{ formatXp(targetPlan.weeklyXp) }}</b> XP）
-                  </span>
-                  <div class="hs-xp-td-status">
-                    <span v-if="targetPlan.onTime" class="hs-xp-tag hs-xp-tag-ok">
-                      ✓ 版本结束前可达成
-                    </span>
-                    <span v-else class="hs-xp-tag hs-xp-tag-late">
-                      ✕ 版本结束前无法达成（超出 {{ targetPlan.overByDays }} 天）
-                    </span>
-                  </div>
-                </div>
-                <div v-else class="hs-xp-warn">
-                  ✕ 按当前参数无法在赛季结束前达到目标等级（赛季结束 {{ SEASON_END }} 时预计 {{ targetPlan.endLevel }} 级）。
-                </div>
-              </template>
-              <div v-else class="hs-xp-warn">目标等级超出 1–{{ MAX_LEVEL }} 的范围，请调整。</div>
-            </div>
           </div>
           <div v-else class="hs-xp-warn">目标等级超出 1–{{ MAX_LEVEL }} 的范围，请调整。</div>
-
-          <h2 class="hs-xp-h2">进度曲线</h2>
-          <svg class="hs-xp-chart" :viewBox="`0 0 ${chartW} ${chartH}`" preserveAspectRatio="xMidYMid meet" role="img" aria-label="累计经验曲线">
-            <!-- 横向网格 + Y 轴标签 -->
-            <g class="hs-xp-grid">
-              <template v-for="(g, i) in gridY" :key="'g' + i">
-                <line :x1="pad.l" :y1="g.y" :x2="chartW - pad.r" :y2="g.y" />
-                <text :x="pad.l - 8" :y="g.y + 4" text-anchor="end">{{ g.label }}</text>
-              </template>
-            </g>
-            <!-- 曲线 -->
-            <polyline class="hs-xp-curve" :points="curvePath" />
-            <!-- 目标等级标记 -->
-            <line class="hs-xp-target-line" :x1="tgtX" :y1="pad.t" :x2="tgtX" :y2="chartH - pad.b" />
-            <circle class="hs-xp-target-dot" :cx="tgtX" :cy="tgtY" r="5" />
-            <text class="hs-xp-target-text" :x="tgtX" :y="pad.t - 2" text-anchor="middle">目标 {{ reverse.target }}</text>
-            <!-- 当前可达等级标记 -->
-            <line class="hs-xp-proj-line" :x1="projX" :y1="pad.t" :x2="projX" :y2="chartH - pad.b" />
-            <circle class="hs-xp-proj-dot" :cx="projX" :cy="projY" r="5" />
-            <text class="hs-xp-proj-text" :x="projX" :y="chartH - pad.b + 18" text-anchor="middle">可达 {{ forward.level }}</text>
-            <!-- X 轴标签 -->
-            <text :x="pad.l" :y="chartH - 6" text-anchor="start">等级 1</text>
-            <text :x="chartW - pad.r" :y="chartH - 6" text-anchor="end">等级 {{ MAX_LEVEL }}</text>
-          </svg>
         </div>
       </div>
+
+      <!-- 进度曲线：全宽区块 -->
+      <section class="hs-xp-chart-card">
+        <h2>进度曲线</h2>
+        <svg class="hs-xp-chart" :viewBox="`0 0 ${chartW} ${chartH}`" preserveAspectRatio="xMidYMid meet" role="img" aria-label="累计经验曲线">
+          <!-- 横向网格 + Y 轴标签 -->
+          <g class="hs-xp-grid">
+            <template v-for="(g, i) in gridY" :key="'g' + i">
+              <line :x1="pad.l" :y1="g.y" :x2="chartW - pad.r" :y2="g.y" />
+              <text :x="pad.l - 8" :y="g.y + 4" text-anchor="end">{{ g.label }}</text>
+            </template>
+          </g>
+          <!-- 曲线 -->
+          <polyline class="hs-xp-curve" :points="curvePath" />
+          <!-- 里程碑等级标记（50 / 100） -->
+          <g v-for="cm in chartMilestones" :key="'cms' + cm.level">
+            <circle class="hs-xp-mschart-dot" :cx="cm.x" :cy="cm.y" r="4" />
+            <text class="hs-xp-mschart-label" :x="cm.x" :y="cm.y - 8" text-anchor="middle">Lv{{ cm.level }}</text>
+          </g>
+          <!-- 目标等级标记 -->
+          <line class="hs-xp-target-line" :x1="tgtX" :y1="pad.t" :x2="tgtX" :y2="chartH - pad.b" />
+          <circle class="hs-xp-target-dot" :cx="tgtX" :cy="tgtY" r="5" />
+          <text class="hs-xp-target-text" :x="tgtX" :y="pad.t - 2" text-anchor="middle">目标 {{ safeTarget }}</text>
+          <!-- 当前可达等级标记 -->
+          <line class="hs-xp-proj-line" :x1="projX" :y1="pad.t" :x2="projX" :y2="chartH - pad.b" />
+          <circle class="hs-xp-proj-dot" :cx="projX" :cy="projY" r="5" />
+          <text class="hs-xp-proj-text" :x="projX" :y="chartH - pad.b + 18" text-anchor="middle">可达 {{ forward.level }}</text>
+          <!-- X 轴标签 -->
+          <text :x="pad.l" :y="chartH - 6" text-anchor="start">等级 1</text>
+          <text :x="chartW - pad.r" :y="chartH - 6" text-anchor="end">等级 {{ MAX_LEVEL }}</text>
+        </svg>
+      </section>
 
       <!-- 进度日历：全宽醒目区块（以当前等级为基数逐日模拟，周任务计入周一） -->
       <section class="hs-xp-cal-section">
@@ -255,8 +266,7 @@
           <div class="hs-xp-cal-head-text">
             <h2>📅 进度日历</h2>
             <p>
-              以当前等级为基数，按上方参数逐日模拟应达等级：<b>周任务经验统一计入周一</b>
-              （周一相比上周五额外增加 <b>+{{ formatXp(targetPlan.weeklyXp) }}</b> XP 对应的等级）。
+              以当前等级为基数，按上方参数逐日模拟应达等级：<b>周任务经验统一计入周一</b><template v-if="calendar.valid">（周一额外增加 <b>+{{ formatXp(calendar.weeklyXp) }}</b> XP）</template>。
               对照日历即可随时自查，判断是否跟上预期节奏。
             </p>
           </div>
@@ -338,6 +348,7 @@ import {
 import {
   projectToSeasonEnd,
   projectDaily,
+  projectToLevel,
   modeHourlyXp,
   totalDailyPlayXp,
   blendedPlayXpPerHour,
@@ -457,53 +468,40 @@ const params = computed(() => {
   }
 })
 
-const forward = computed(() => projectToSeasonEnd(params.value, SEASON_END, new Date()))
+const todayStart = startOfDay(new Date())
+const forward = computed(() => projectToSeasonEnd(params.value, SEASON_END, new Date(), SEASON_START))
 const reverse = computed(() => {
   const t = Number(targetLevel.value)
   const valid = t >= 1 && t <= MAX_LEVEL
   if (!valid) return { valid: false }
-  const req = requiredHoursPerDay(params.value, t, SEASON_END, new Date())
+  const req = requiredHoursPerDay(params.value, t, SEASON_END, new Date(), SEASON_START)
   return { valid: true, ...req }
 })
 
-// ===== 目标等级预计完成日期（与日历同源：projectDaily 逐日模拟，周任务计入周一） =====
+// ===== 等级达成时间：50 / 100 级里程碑 + 自定义目标瓦片，随赛季日期自动测算 =====
+const milestones = computed(() => {
+  const startXpNow =
+    cumulativeXpForLevel(Number(params.value.currentLevel) || 1) + (Number(params.value.currentPartialXp) || 0)
+  const t = Number(targetLevel.value)
+  const levels = [50, 100]
+  if (t >= 1 && t <= MAX_LEVEL && !levels.includes(t)) levels.push(t)
+  return levels.map((lv) => {
+    const r = projectToLevel(params.value, lv, SEASON_END, todayStart, SEASON_START)
+    return {
+      ...r,
+      level: lv,
+      custom: lv === t && lv !== 50 && lv !== 100,
+      alreadyDone: startXpNow >= cumulativeXpForLevel(lv)
+    }
+  })
+})
+
 function startOfDay(d) {
   return new Date(d.getFullYear(), d.getMonth(), d.getDate())
 }
 
-const targetPlan = computed(() => {
-  const t = Number(targetLevel.value)
-  const valid = t >= 1 && t <= MAX_LEVEL
-  if (!valid) return { valid: false }
-  const today = startOfDay(new Date())
-  const plan = projectDaily(params.value, t, SEASON_END, today)
-  const reached = plan.targetReached
-  const reachDate = plan.targetReachedDate
-  const endDate = plan.seasonEndDate
-  const end = startOfDay(new Date(SEASON_END))
-  const daysNeeded = reached && reachDate ? daysBetweenLocal(today, reachDate) + 1 : null
-  const onTime = reached && reachDate && endDate ? reachDate <= end : false
-  const overByDays = reached && endDate && reachDate > end ? daysBetweenLocal(end, reachDate) : 0
-  const endLevel = endDate ? projectToSeasonEnd(params.value, SEASON_END, today).level : null
-  return {
-    valid: true,
-    target: t,
-    reached,
-    reachDate,
-    daysNeeded,
-    onTime,
-    overByDays,
-    weeklyXp: plan.weeklyXp,
-    endLevel
-  }
-})
-
 // ===== 进度日历：按月分组渲染 =====
 const WEEK_LABELS = ['一', '二', '三', '四', '五', '六', '日']
-
-function daysBetweenLocal(a, b) {
-  return Math.round((startOfDay(b) - startOfDay(a)) / 86400000)
-}
 
 const calendar = computed(() => {
   const t = Number(targetLevel.value)
@@ -511,7 +509,7 @@ const calendar = computed(() => {
   if (!valid) return { valid: false }
 
   const today = startOfDay(new Date())
-  const plan = projectDaily(params.value, t, SEASON_END, today)
+  const plan = projectDaily(params.value, t, SEASON_END, today, SEASON_START)
   const reachDate = plan.targetReachedDate
   // 日历终点：达成日（若有）否则版本结束日
   const horizonEnd = (reachDate || plan.seasonEndDate || today)
@@ -641,12 +639,18 @@ const curvePath = computed(() => {
   }
   return pts.join(' ')
 })
+// 曲线是静态的，里程碑坐标也只需算一次
+const chartMilestones = [50, 100].map((lv) => ({
+  level: lv,
+  x: xFor(lv),
+  y: yFor(cumulativeXpForLevel(lv))
+}))
 const projX = computed(() => xFor(forward.value.level))
 const projY = computed(() => yFor(forward.value.totalXp))
 const safeTarget = computed(() =>
   Math.min(Math.max(Number(targetLevel.value) || 1, 1), MAX_LEVEL)
 )
-const tgtX = computed(() => xFor(cumulativeXpForLevel(safeTarget.value)))
+const tgtX = computed(() => xFor(safeTarget.value))
 const tgtY = computed(() => yFor(cumulativeXpForLevel(safeTarget.value)))
 const gridY = [0, 0.25, 0.5, 0.75, 1].map((p) => ({
   y: pad.t + plotH - p * plotH,
@@ -685,7 +689,7 @@ const gridY = [0, 0.25, 0.5, 0.75, 1].map((p) => ({
   --xp-border: rgba(74, 222, 128, 0.3);
   --xp-input-bg: #232c34;
 }
-.hs-xp-wrap { max-width: 1080px; margin: 0 auto; padding: 0 20px; }
+.hs-xp-wrap { max-width: 1240px; margin: 0 auto; padding: 0 14px; }
 
 .hs-xp-head { display: flex; justify-content: space-between; align-items: flex-start; gap: 16px; flex-wrap: wrap; }
 .hs-xp-head .eyebrow { display: inline-flex; align-items: center; gap: 6px; color: var(--xp-green); font-weight: 700; font-size: 13px; margin: 0 0 6px; }
@@ -702,12 +706,11 @@ const gridY = [0, 0.25, 0.5, 0.75, 1].map((p) => ({
 .hs-xp-mode button { font: inherit; border: 0; background: transparent; color: var(--xp-muted); padding: 8px 18px; border-radius: 8px; cursor: pointer; font-weight: 600; }
 .hs-xp-mode button.active { background: var(--xp-card); color: var(--xp-green); box-shadow: 0 1px 3px rgba(0,0,0,.12); }
 
-.hs-xp-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
-@media (max-width: 880px) { .hs-xp-grid { grid-template-columns: 1fr; } }
+.hs-xp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; align-items: start; }
+@media (max-width: 920px) { .hs-xp-grid { grid-template-columns: 1fr; } }
 
-.hs-xp-card { background: var(--xp-card); border: 1px solid var(--xp-border); border-radius: 14px; padding: 20px; }
+.hs-xp-card { background: var(--xp-card); border: 1px solid var(--xp-border); border-radius: 14px; padding: 16px; }
 .hs-xp-card h2 { font-size: 16px; margin: 0 0 14px; }
-.hs-xp-h2 { margin-top: 26px !important; }
 
 .hs-xp-field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
 .hs-xp-field-row { display: flex; gap: 14px; }
@@ -750,13 +753,34 @@ const gridY = [0, 0.25, 0.5, 0.75, 1].map((p) => ({
 
 .hs-xp-season { display: flex; flex-direction: column; gap: 2px; }
 .hs-xp-season-range { font-weight: 700; color: var(--xp-green); font-size: 15px; }
-.hs-xp-season-fixed { font-size: 12px; color: var(--xp-muted); }
 .hs-xp-breakdown { display: flex; gap: 10px; flex-wrap: wrap; }
 .hs-xp-breakdown div { flex: 1; min-width: 90px; background: var(--xp-green-soft); border-radius: 10px; padding: 10px 12px; }
 .hs-xp-breakdown span { display: block; font-size: 12px; color: var(--xp-muted); margin-bottom: 4px; }
 .hs-xp-breakdown b { font-size: 16px; color: var(--xp-text); }
 
 .hs-xp-target { max-width: 200px; }
+
+/* ===== 关键里程碑（50 / 100 级）重点展示 ===== */
+.hs-xp-milestones {
+  margin: 0 0 16px;
+  border: 1.5px solid var(--xp-green);
+  border-radius: 12px;
+  background: linear-gradient(180deg, var(--xp-green-soft), transparent);
+  padding: 12px 14px 13px;
+}
+.hs-xp-ms-head { font-size: 13px; font-weight: 800; color: var(--xp-green); letter-spacing: .5px; margin-bottom: 10px; }
+.hs-xp-ms-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(118px, 1fr)); gap: 8px; }
+.hs-xp-ms-item {
+  background: var(--xp-card); border: 1px solid var(--xp-border); border-radius: 10px; padding: 9px 10px;
+}
+.hs-xp-ms-lv { font-size: 12px; font-weight: 800; color: var(--xp-amber); }
+.hs-xp-ms-date { font-size: 16px; font-weight: 800; color: var(--xp-green); line-height: 1.3; font-variant-numeric: tabular-nums; white-space: nowrap; }
+.hs-xp-ms-sub { font-size: 12px; color: var(--xp-muted); margin-top: 3px; }
+.hs-xp-ms-sub b { color: var(--xp-text); }
+.hs-xp-ms-item .hs-xp-tag { display: inline-block; margin-top: 7px; }
+.hs-xp-ms-item.is-done .hs-xp-ms-date { color: var(--xp-muted); font-size: 18px; }
+.hs-xp-ms-item.is-late .hs-xp-ms-date { color: var(--xp-red); }
+.hs-xp-ms-item.is-custom { border-color: var(--xp-amber); background: rgba(180,83,9,.06); }
 
 .hs-xp-reverse { margin-top: 12px; }
 .hs-xp-reverse-main { font-size: 15px; }
@@ -769,10 +793,20 @@ const gridY = [0, 0.25, 0.5, 0.75, 1].map((p) => ({
 .hs-xp-ok { margin-top: 8px; font-size: 13px; color: var(--xp-green); line-height: 1.5; }
 .hs-xp-warn { margin-top: 8px; font-size: 13px; color: var(--xp-red); line-height: 1.5; }
 
-.hs-xp-chart { width: 100%; height: auto; margin-top: 8px; }
+.hs-xp-chart-card {
+  margin-top: 14px;
+  background: var(--xp-card);
+  border: 1px solid var(--xp-border);
+  border-radius: 14px;
+  padding: 16px 18px;
+}
+.hs-xp-chart-card h2 { font-size: 16px; margin: 0 0 8px; }
+.hs-xp-chart { display: block; width: 100%; max-width: 980px; height: auto; margin: 0 auto; }
 .hs-xp-grid line { stroke: var(--xp-border); stroke-width: 1; }
 .hs-xp-grid text { fill: var(--xp-muted); font-size: 11px; }
 .hs-xp-curve { fill: none; stroke: var(--xp-green); stroke-width: 2.5; }
+.hs-xp-mschart-dot { fill: var(--xp-amber); }
+.hs-xp-mschart-label { fill: var(--xp-amber); font-size: 11px; font-weight: 700; }
 .hs-xp-proj-line { stroke: var(--xp-green); stroke-width: 1.5; stroke-dasharray: 4 3; }
 .hs-xp-proj-dot { fill: var(--xp-green); }
 .hs-xp-proj-text { fill: var(--xp-green); font-size: 12px; font-weight: 700; }
@@ -780,17 +814,10 @@ const gridY = [0, 0.25, 0.5, 0.75, 1].map((p) => ({
 .hs-xp-target-dot { fill: var(--xp-amber); }
 .hs-xp-target-text { fill: var(--xp-amber); font-size: 12px; font-weight: 700; }
 
-/* ===== 目标等级预计完成日期 ===== */
-.hs-xp-target-date { margin-top: 14px; padding: 12px 14px; border: 1px solid var(--xp-border); border-radius: 10px; background: var(--xp-green-soft); }
-.hs-xp-td-title { font-size: 12px; font-weight: 700; color: var(--xp-muted); margin-bottom: 6px; letter-spacing: .5px; }
-.hs-xp-td-date { display: block; font-size: 30px; font-weight: 800; color: var(--xp-green); line-height: 1.2; font-variant-numeric: tabular-nums; }
-.hs-xp-td-sub { display: block; font-size: 13px; color: var(--xp-text); margin-top: 4px; }
-.hs-xp-td-sub b { color: var(--xp-green); }
-.hs-xp-td-status { margin-top: 8px; display: flex; gap: 8px; flex-wrap: wrap; }
+/* ===== 等级达成时间瓦片状态标签 ===== */
 .hs-xp-tag { font-size: 12px; font-weight: 700; border-radius: 999px; padding: 4px 12px; }
 .hs-xp-tag-ok { background: var(--xp-green-mid); color: var(--xp-green); }
 .hs-xp-tag-late { background: rgba(220,38,38,.12); color: var(--xp-red); }
-.hs-xp-td-ok .hs-xp-warn { margin: 0; }
 
 /* ===== 进度日历（全宽醒目区块） ===== */
 .hs-xp-cal-section {
