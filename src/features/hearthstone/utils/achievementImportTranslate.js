@@ -48,8 +48,10 @@ function hasUsableName(name) {
  * @param {{ idMap: Record<string, number[]>, achievementsBySlug: Map, currentProgress: object }} ctx
  */
 export function translateGameExport(payload, { idMap, achievementsBySlug, currentProgress }) {
-  const items = Array.isArray(payload?.items) ? payload.items : null
-  if (!items?.length || typeof items[0]?.id !== 'number') return null
+  const rawItems = Array.isArray(payload?.items) ? payload.items : null
+  // 条目 id 必须是数字；个别条目 id 读不到（采集器写 null）时跳过该条，不影响整份文件的识别
+  const items = rawItems ? rawItems.filter((it) => it && typeof it.id === 'number') : null
+  if (!items?.length) return null
 
   const itemsById = new Map()
   let sourceCompleted = 0
@@ -244,10 +246,24 @@ export function translateGameExport(payload, { idMap, achievementsBySlug, curren
     if (!mappedIds.has(item.id)) unmatchedItems += 1
   }
 
+  // 采集器导出质量诊断（用于预览时区分「数据识别不了」的具体原因）：
+  //   - sourceNamedItems：带可用成就名称的条目数（名称兜底匹配的原料）
+  //   - legacyExport：整份文件都没有 name 字段 → v1.4.1 之前的旧版采集器导出，
+  //     新版本成就（无 ID 映射、只能按名称识别）会全部跳过
+  //   - nameEnrichmentFailed：文件带 name 字段但全部为空 → v1.4.1+ 但当前游戏客户端
+  //     内存里富化不出名称（游戏更新后字段名可能变化）
+  const withNameKey = items.filter((it) => 'name' in it).length
+  const sourceNamedItems = items.filter(
+    (it) => typeof it.name === 'string' && hasUsableName(it.name)
+  ).length
+
   return {
     entries,
     stats: {
       sourceItems: items.length,
+      sourceNamedItems,
+      legacyExport: sourceNamedItems === 0 && withNameKey === 0,
+      nameEnrichmentFailed: sourceNamedItems === 0 && withNameKey > 0,
       sourceCompleted,
       matched,
       stageHits,

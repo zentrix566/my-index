@@ -2,9 +2,14 @@
   "id": "dark-empire",
   "name": "黑暗帝国",
   "description": "炉石传说黑暗帝国版本成就数据",
-  "updatedAt": "2026-10-14",
+  "updatedAt": "2026-10-22",
   "cardImageDir": "dark-empire",
-  "referenceLinks": [],
+  "referenceLinks": [
+    {
+      "name": "旅法师营地：黑暗帝国全成就攻略",
+      "url": "https://www.iyingdi.com/tz/post/5759598"
+    }
+  ],
   "gameImportable": false,
   "achievements": [
     {
@@ -16,7 +21,12 @@
       "relatedCards": [
         "F3TCH3R寻回机"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "拼装产线",
+          "code": "AAEBAdK+BQT21gPdlAeNvged3QcNswG3bOLKAoSxA8/RA/T2A53UBIHiBM6cBuTqBteXB8vVB/zuBwABAd6BCJ3dBwAA"
+        }
+      ],
       "stages": [
         {
           "description": "拼装25张随从牌。",
@@ -36,7 +46,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "攻略就是起手找服务呼叫铃或者虚灵神谕者，博学者也行。在服务呼叫铃上手前尽可能腾手牌，这样就能抽更多的拼装。深潜炸弹和末日都是用来腾格子的，要使用好。剩下的就是一直拼装一直爽了，100次还是挺浪费时间的。 / 累积型成就，有点精污。100次拼装还是有点多的，所以作者我用了超级拼装骑做这个成就，卡组里自带了12张拼装，所以不必带复制和回手的卡了。为了抽取大量拼装卡，作者我使用了特殊构建，靠将卡组里的职业卡数量控制在3张以下，使用服务呼叫铃就能稳定1卡抽10，然后任务虚灵套的组合提高服务呼叫铃的上手几率，剩下都带低费宝宝和低费过牌，这样方便腾手牌。"
     },
     {
       "id": "de-002",
@@ -50,7 +61,12 @@
         "亚煞极，泰坦杀神",
         "古神主谋尤格-萨隆"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "神老心不老",
+          "code": "AAEBAfahBwb7igSp9QaI2QeF6wfm9geZ9wcMxAHtAoAS3voCr5ED0/MD958EidIEoZMF38MFtrUGp5IIAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用20张古神牌。",
@@ -64,7 +80,8 @@
           "points": 20,
           "quota": 40
         }
-      ]
+      ],
+      "guide": "攻略就是起手找阴谋和简略情报，过牌苟活到高费，阴谋洗一牌库的恩佐斯，40次真不多。 / 累积型成就，很简单。这个成就是和盗贼成就一起做的，卡组都不用变，唯一要改变的是阴谋的对象，从洗德雷阿佳丝变成洗恩佐斯。"
     },
     {
       "id": "de-003",
@@ -75,7 +92,12 @@
       "relatedCards": [
         "克苏恩，帝国之眼"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "邪恶眼线",
+          "code": "AAEBAZT9BgKp9QbziQgO58sCv7kD184Dj58E56AEtO0E7qEG8KkGlbMGk8sGhJkHhp0Hqa0H6fkHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "触发20个克苏恩，帝国之眼的技能。",
@@ -95,7 +117,8 @@
           "points": 20,
           "quota": 100
         }
-      ]
+      ],
+      "guide": "ps1：克苏恩的吸血技能敌人空场时也能使用。 / ps2：克苏恩的召唤技能自己满场时也能使用。 / 攻略就是起手兆黑暗之门。通过黑暗之门和裂解术搞到低费的克苏恩，然后使用克苏恩并送掉。到11费就能使用尸身保护令和蝙蝠面具复制一地的克苏恩，并且回合结束会自动团灭腾格子，非常舒服。卡组就2随从，再加上克苏恩技能召唤的嘲讽，所以尸身保护令能稳定复活克苏恩。 / 累积型成就，很简单。继续用我们的老朋友黑门术，面具配克恩苏，一次性就能+14进度，100次真的很快。"
     },
     {
       "id": "de-004",
@@ -106,7 +129,12 @@
       "relatedCards": [
         "恩佐斯，梦境之末"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "闹铃响起",
+          "code": "AAEBAda+BQTUugP21gOoigSF6wcNuK0C3sQCo7kDoaAEhY4G344GhOYG15cHzpsH7p8HhLEH19oH29oHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张法力值消耗为（0）的恩佐斯，梦境之末。",
@@ -114,7 +142,8 @@
           "points": 20,
           "quota": 0
         }
-      ]
+      ],
+      "guide": "攻略就是起手找恩佐斯，或者博学者小弗丁中的一个。然后一直使用亡语随从，等恩佐斯变0费后再使用它即可。 / 一次性成就，很简单。其实用上面的盗贼卡组做成就时，顺带能做完这个成就，但专门的成就卡组还得是亡语猎。"
     },
     {
       "id": "de-005",
@@ -125,7 +154,12 @@
       "relatedCards": [
         "投身战争"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "先锋卫士",
+          "code": "AAEBAdK+BQKHrQOp9QYO/PwCz4YDtJsDy80Di40EktQEgeIEmY4G9ZUGhqMG6qkGnOgGvrIHlvoHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用投身战争召唤一个法力值消耗为（10）的士兵。",
@@ -139,7 +173,8 @@
           "points": 20,
           "quota": 11
         }
-      ]
+      ],
+      "guide": "攻略就是起手找时光巨龙诺兹多姆或者抽随从的法术。一边过牌一边苟活。投身战争上手就能488+避其锋芒启动，真的很简单。 / 一次性成就，很简单。一个新伊瑟拉就能搞定的成就，带上488跳费龙更加效率。剩下都带苟活和过牌。"
     },
     {
       "id": "de-006",
@@ -150,7 +185,12 @@
       "relatedCards": [
         "弗蕾亚，翡翠构筑师"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "翡翠筑梦",
+          "code": "AAEBAc6LBQLemweR9wcOj/YC6LoDieADiuADr4AEsKUErsAEmqAG76kG2bEG88oGouIGkJcHqq8HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用弗蕾亚，翡翠构筑师使你手牌中的一张野兽牌获得10点生命值。",
@@ -164,7 +204,8 @@
           "points": 20,
           "quota": 20
         }
-      ]
+      ],
+      "guide": "攻略就是起手找随从或者抽随从的法术。一边跳费一边过牌，2个随从都上手后使用弗蕾亚，翡翠构筑师就搞定了。 / 一次性成就，白给型成就。卡组就带2随从，巨摩天龙还有弗蕾亚，翡翠构筑师，只要这2随从上手就能搞定这个成就。"
     },
     {
       "id": "de-007",
@@ -173,21 +214,27 @@
       "type": "累计",
       "difficulty": "难",
       "relatedCards": [],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "那可不是狼",
+          "code": "AAEBAdKLBQLR3QPvmAcO9YADutUDndQEn9QEuMUF7f0F65gGzpwG7p4Gwr4GrsAG5OoG2PsH+PwHAAA="
+        }
+      ],
       "stages": [
         {
-          "description": "召唤20只虚空兽。",
+          "description": "召唤20只裂爪兽。",
           "xpReward": 100,
           "points": 10,
           "quota": 20
         },
         {
-          "description": "召唤50只虚空兽。",
+          "description": "召唤50只裂爪兽。",
           "xpReward": 200,
           "points": 20,
           "quota": 50
         }
-      ]
+      ],
+      "guide": "攻略就是起手找虚灵神谕者，潮地学徒，干鳞警官。不必强行配合双雷象，费用合适才用。注意腾格子，所以末日要用好。 / 累积型成就，很简单。任务虚灵套专门做这类成就，还能带上双雷象爽刷。4费法术能召唤3个，6费法术能召唤5个，50个真不多。"
     },
     {
       "id": "de-008",
@@ -198,7 +245,12 @@
       "relatedCards": [
         "塞特斯"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "舍弃护甲",
+          "code": "AAEBAbyRBQT21gOoigTd8QeP9wcN8dMC+YwEjtQE8M0FkPsFofsFi5QGnJ4Gh6AG7KkG6qcHxdcHh/wHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用塞特斯召唤一个具有至少20点生命值的魔像。",
@@ -212,7 +264,8 @@
           "points": 20,
           "quota": 40
         }
-      ]
+      ],
+      "guide": "攻略就是起手找解牌，一边叠甲一边苟活，赛特斯有就用，遇到人机叠六七十甲真不难。 / 一次性成就，很简单。狂野叠甲卡很多，所以40甲真不难。过牌和叠甲牌拉满，剩下就是用来检索赛特斯的45组合，"
     },
     {
       "id": "de-009",
@@ -223,7 +276,12 @@
       "relatedCards": [
         "漂浮教程"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "原始蹦床",
+          "code": "AAEBAZT9BgKp9Qbr+QcO58sCp84C66wDv7kDld4Dg/sD56AE7qEG8KkGlbMGk8sGhJkH174HjfYHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "使用一张法力值消耗为（3）的漂浮教程。",
@@ -237,7 +295,8 @@
           "points": 20,
           "quota": 4
         }
-      ]
+      ],
+      "guide": "攻略就是起手找黑暗之门，然后就是过牌苟活，黑暗之门能减到蛛魔拆解者就很舒服，那1+3+4=8，8费就能搞定这个成就。如果没有，那就是6+3+4=13费。差距过大，所以最好黑暗之门能发力。 / 一次性成就，有点难。蛛魔拆解者+喉魔异教徒就能使用4费的漂浮教程了。黑门术最适合做这类高费随从相关的成就，但这个成就的难点还是费用问题，毕竟黑门不上手就尴尬了。所以作者我在几次尝试过后，还是带上了新伊瑟拉。"
     },
     {
       "id": "de-010",
@@ -248,7 +307,12 @@
       "relatedCards": [
         "戈霍恩"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "极恶血神",
+          "code": "AAEBAf7gBgj21gPt/wWv9AbQvwfqyQeb1Aew5Ael+gcL/eMEieQEq4AF2OUG/fwGgf0GloIHj74HmsUH0MUHi/oHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张戈霍恩偷取10点生命值。",
@@ -262,7 +326,8 @@
           "points": 20,
           "quota": 20
         }
-      ]
+      ],
+      "guide": "攻略就是起手找戈霍恩，然后一直解场苟活，等戈霍恩的数值显示20+再使用就搞定了。 / 一次性成就，很简单。这个成就就是玩三红dk硬拖时间就好了。带上红符文的好卡，剩下的就是时间问题。dk在狂野是区，但欺负人机还是简单的。"
     },
     {
       "id": "de-011",
@@ -273,7 +338,12 @@
       "relatedCards": [
         "冰轮法师"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "元素星轮",
+          "code": "AAEBAauwBATDgwf1pQf/3wfY8AcNywS50QK/pAPl0QOn9wOEkwWBvwaxzgaSpAeSxAeT2gf79Qfh9gcAAA=="
+        }
+      ],
       "stages": [
         {
           "description": "用冰轮法师召唤15个水元素。",
@@ -287,7 +357,8 @@
           "points": 20,
           "quota": 30
         }
-      ]
+      ],
+      "guide": "ps：疲劳牌不算随从牌，所以疲劳后使用冰轮法师能稳定召唤2个水元素。 / 攻略就是起手找冰轮法师或者诺甘农的圆盘，尽可能用卡德加配合冰轮法师召唤4个。幻觉药水复制冰轮法师，模拟幻影尽可能复制1费的冰轮法师。卡组带了很多小解，可以用来解自己的场面腾格子。 / 累积型成就，不算难。这个成就基本要法术法的构建，但这样检索冰轮法师就太依赖诺甘农的圆盘了。所以作者我加入了不少检索随从的随从，并带上了卡德加翻倍冰轮法师的效果。"
     },
     {
       "id": "de-012",
@@ -298,7 +369,12 @@
       "relatedCards": [
         "德雷阿佳丝"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "深藏地底",
+          "code": "AAEBAfahBwb7igSp9QaI2QeF6wfm9geZ9wcMxAHtAoAS3voCr5ED0/MD958EidIEoZMF38MFtrUGp5IIAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用德雷阿佳丝获取10张古神牌。",
@@ -312,7 +388,8 @@
           "points": 20,
           "quota": 20
         }
-      ]
+      ],
+      "guide": "攻略就是起手找阴谋和简略情报，过牌苟活到高费，阴谋洗一牌库的德雷阿佳丝，20次真不多。 / 累积型成就，不算难。亡语贼启动，复制大量德雷阿佳丝就能做这个成就，新恩佐斯还能反复复活和触发德雷阿佳丝。为了腾格子方便，作者我还带上了黑铁先驱。回手用在恩佐斯身上，殒命暗影最好能复制阴谋。"
     },
     {
       "id": "de-013",
@@ -323,7 +400,12 @@
       "relatedCards": [
         "黑暗帝国之刃"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "至暗之夜",
+          "code": "AAEBAdG+BQL94QLi+gcO0cEC6NACl4cDk7oD4t4D+98DmesDhvcDuMUF7fcFpp0GmcAG6PEH4foHAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用黑暗帝国之刃使你的对手受到20次疲劳伤害。",
@@ -337,7 +419,8 @@
           "points": 20,
           "quota": 50
         }
-      ]
+      ],
+      "guide": "攻略就是起手找武器或者乐器技师，都没有就找洞察和造物协议。挂刀后每回合都要使用暗影法术，达卡莱看情况上。治疗法术和技能尽可能用来奶你的对手。 / 累积型成就，有点麻烦。做这个成就又要用我们的老朋友洞察牧，要拉满暗影法术。为了提高效率，作者我还带上了达卡莱。这个成就最大的难点其实是人机血太少了，所以作者我带上了不少治疗法术，用来给对手加血。"
     },
     {
       "id": "de-014",
@@ -348,7 +431,12 @@
       "relatedCards": [
         "重新装填"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "正在装弹！",
+          "code": "AAEBAda+BQLHsgfZ2wcO3sQCn9QE7f0F65gGzpwG054Gwr4GrsAG5OoG4okHucAH19oHn/YHp5IIAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用一张重新装填发现4张法术牌。",
@@ -362,7 +450,8 @@
           "points": 20,
           "quota": 6
         }
-      ]
+      ],
+      "guide": "攻略就是起手找虚灵神谕者，潮地学徒，干鳞警官或者捕鼠机。靠嘲讽苟活到高费回合，然后一直使用重新装填即可，不过使用前记得腾手牌，不然你就会傻眼。剩下的就看运气，总之每次发现选最低费的那个选项，作者我2次就搞定这个成就了。 / 一次性成就，很简单。任务虚灵套启动，雷象就没必要了，娜迦组合足矣。"
     },
     {
       "id": "de-015",
@@ -373,7 +462,12 @@
       "relatedCards": [
         "癫狂元素"
       ],
-      "recommendedDecks": [],
+      "recommendedDecks": [
+        {
+          "name": "帝国之癫",
+          "code": "AAEBAdOLBQTQvweC1Aeb1AfQ2wcNqt4D1vUDwPYD9PYDzpwGnJ4GpKcGpsAG4J0Hj74HycAH5v0HwP8HAAA="
+        }
+      ],
       "stages": [
         {
           "description": "用癫狂元素获取一张法力值消耗为（5）的法术牌。",
@@ -387,7 +481,8 @@
           "points": 20,
           "quota": 10
         }
-      ]
+      ],
+      "guide": "攻略就是起手找癫狂元素，然后双倍战吼尽可能用在兆示上。5兆6兆后，在2个48身材的奥拉基士兵之间使用癫狂元素就搞定了。 / 一次性成就，很简单。这个成就只要你能想到兆示就很简单。为了效率，作者我采用了随从萨的构建，用双倍战吼加快兆示进度。"
     }
   ]
 }

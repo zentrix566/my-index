@@ -54,7 +54,12 @@ export function useAchievementGameImport({
       importPreview.value = translated
       allowLowerProgress.value = false
       if (!translated.stats.matched) {
-        showToast('error', '文件内没有能匹配到网站成就库的记录')
+        showToast(
+          'error',
+          translated.stats.legacyExport
+            ? '文件内没有能匹配到网站成就库的记录：该文件来自 v1.4.1 之前的旧版采集器（不含成就名称），请更新采集器后重新采集导出'
+            : '文件内没有能匹配到网站成就库的记录'
+        )
       }
     } catch (error) {
       showToast('error', `读取成就文件失败：${error.message || error}`)

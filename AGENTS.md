@@ -344,7 +344,7 @@ node scripts/upload-cosmetic-thumbnails.mjs
 
 - 优先用仓库里的 `data/official-calibration/flat.zh-CN.json`（官方成就表快照，对新版本成就最全），构建脚本已原生支持该格式并默认优先；`data/hs-achievement-data.json` 依赖 Firestone 运行时刷新，常滞后于新补丁。
 - 本地解压备份在 `C:/Users/19872/Downloads/HSAchieveGuide-main/`，会过期；更新方式：`git clone --depth 1 https://github.com/LeaDYonovic/HSAchieveGuide`（raw.githubusercontent.com 直连不通，走 git clone 或 api.github.com 的 git/blobs 接口）。
-- 版本未上线时成就数据源里没有对应条目。自 2026-10 起允许提前把未上线版本的成就录入站内：版本 JSON 顶层标记 `"gameImportable": false`，build/check 守卫豁免这些 slug 并在映射 `meta.excludedVersions` 登记，导入预览会提示「该版本尚未上线，暂不支持导入」。**上线当天必须**：拉最新 HSAchieveGuide 数据 → 移除 `gameImportable` 标记 → 重建映射确认新 slug 全部匹配 → 随部署生效。2026-10-21《黑暗帝国的统治》即按此流程提前录入（2026-10-14 录入 15 个成就）。
+- 版本未上线时成就数据源里没有对应条目。自 2026-10 起允许提前把未上线版本的成就录入站内：版本 JSON 顶层标记 `"gameImportable": false`，build/check 守卫豁免这些 slug 并在映射 `meta.excludedVersions` 登记，导入预览会提示「该版本尚未上线，暂不支持导入」。**上线当天必须**：拉最新 HSAchieveGuide 数据 → 移除 `gameImportable` 标记 → 重建映射确认新 slug 全部匹配 → 随部署生效。《黑暗帝国的统治》即按此流程提前录入（2026-10-14 录入 15 个成就），2026-10-21 版本上线，2026-10-22 已补全全版本攻略与推荐卡组；但上游 HSAchieveGuide 迟迟未收录该版本成就（2026-10-22 检查时上游最后提交仍停在 2026-08-31），`gameImportable: false` 暂保留（名称兜底导入不受影响），待上游更新后立即移除标记并重建映射。
 
 **2026-10 事故**：紫罗兰监狱版本 8-26 加入站内后没有重建映射表（旧映射 8-16 生成），且当时的数据源快照里也没有该版本成就，导致用户导入时新成就全部匹配不到——预览显示「新增 0 个完成阶段」、确认按钮被禁用。规约：
 

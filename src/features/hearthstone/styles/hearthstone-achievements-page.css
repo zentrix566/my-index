@@ -1,4 +1,4 @@
-﻿.hs-class-overview-browse-count {
+.hs-class-overview-browse-count {
   font-size: 15px;
   font-weight: 600;
   color: var(--hs-text-soft);
@@ -620,3 +620,12 @@
 }
 .hs-import-regression-warning ul { margin: 5px 0 8px 18px; padding: 0; }
 .hs-import-regression-toggle { display: flex; align-items: center; gap: 7px; cursor: pointer; }
+/* 导入预览里「新版本成就被跳过」的原因说明（旧版采集器 / 名称读取失败等） */
+.hs-import-blocked-warning {
+  display: block;
+  margin-top: 6px;
+  padding: 7px 9px;
+  border: 1px solid rgba(199, 122, 53, 0.55);
+  border-radius: 8px;
+  background: rgba(199, 122, 53, 0.1);
+}

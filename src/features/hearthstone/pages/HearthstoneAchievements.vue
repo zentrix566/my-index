@@ -1,4 +1,4 @@
-﻿<template>
+<template>
   <section
     class="section page-section hs-page"
     :class="{ 'hs-compact': compactMode, 'hs-mini-mode': miniMode }"
@@ -274,6 +274,21 @@
         </small>
         <small v-if="gameImportPreview.stats.excludedVersions?.length">
           {{ gameImportPreview.stats.excludedVersions.map((v) => v.name).join('、') }}尚未建立游戏 ID 映射（数据源未收录）：使用新版采集器（v1.4.1+）导出时可通过成就名称自动识别；旧版导出将跳过这些成就。
+        </small>
+        <small
+          v-if="gameImportPreview.stats.nameNoData && gameImportPreview.stats.legacyExport"
+          class="hs-import-blocked-warning"
+        >
+          导出文件不含成就名称（v1.4.1 之前的采集器格式），{{ gameImportPreview.stats.nameNoData }} 个新版本成就无法按名称识别、本次已跳过：请更新采集器到 v1.4.1 并重新采集导出后再导入。
+        </small>
+        <small
+          v-else-if="gameImportPreview.stats.nameNoData && gameImportPreview.stats.nameEnrichmentFailed"
+          class="hs-import-blocked-warning"
+        >
+          采集器未能从当前游戏客户端读取成就名称，{{ gameImportPreview.stats.nameNoData }} 个新版本成就只能按名称识别、本次已跳过：请用采集器的 dumpachievedbf 模式导出诊断文件并反馈，便于适配新客户端。
+        </small>
+        <small v-else-if="gameImportPreview.stats.nameNoData" class="hs-import-blocked-warning">
+          另有 {{ gameImportPreview.stats.nameNoData }} 个新版本成就未能在导出文件中按名称识别到，已跳过。
         </small>
         <small>导入只会推进进度，不会清除已手动勾选的阶段或回退累计次数。</small>
       </div>
