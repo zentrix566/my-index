@@ -1,6 +1,6 @@
 # 构建阶段
 # 必须用 glibc 镜像（slim），不能用 alpine(musl)：better-sqlite3 等原生模块无 musl 预编译。
-FROM node:20-slim AS build
+FROM node:22-slim AS build
 WORKDIR /app
 
 # 安装原生模块编译工具（node-gyp 需要 python3 + make + g++）。
@@ -29,7 +29,7 @@ ENV VITE_OSS_BASE=$VITE_OSS_BASE
 RUN npm run build
 
 # 运行时仅安装生产依赖；本地 SQLite 驱动属于开发依赖，不进入生产镜像。
-FROM node:20-slim
+FROM node:22-slim
 LABEL maintainer="Zentrix"
 WORKDIR /app
 
