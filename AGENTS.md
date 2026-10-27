@@ -332,7 +332,7 @@ node scripts/upload-cosmetic-thumbnails.mjs
 1. **确认归属版本**：已有版本直接修改对应 JSON；新版本先创建独立 JSON，并在 `src/features/hearthstone/data/expansions.js` 中 import 后加入 `expansions`。如果是新增版本，还要根据是否属于原有版本维护 `core-expansion-ids.js`（`CORE_EXPANSION_IDS` 单一事实源，前端与服务端共用）和 `expansions.js` 里的 `ADDED_EXPANSION_ORDER`。
 2. **添加成就对象**：使用全局唯一的站内 slug（例如 `vh-010`），填写 `name`、`heroClass`、`type`、`difficulty`、`stages` 等字段。累计成就的阶段必须提供正确的 `quota`；需要卡牌详情时补充 `relatedCards`，需要攻略或卡组时补充 `guide` / `recommendedDecks`。
 3. **检查数据关联**：如果 `relatedCards` 使用了新卡名，确认卡牌名称索引和卡图映射也已更新；否则成就数量会增加，但关联卡牌可能没有图片或详情。
-4. **更新游戏导入映射（必须，不是可选）**：新增或修改成就后必须重建 `achievement-id-map.json`，否则这些成就无法通过游戏内进度导入（踩过坑，见下方「成就进度导入与 ID 映射」）。执行 `node scripts/build-achievement-id-map.mjs`（默认自动优先使用最新 HSAchieveGuide 校准数据），检查未匹配清单。**例外**：版本在游戏内尚未上线、HSAchieveGuide 里必然没有条目时，在版本 JSON 顶层加 `"gameImportable": false` 并重建映射——该版本全部成就在 build/check 中豁免，`meta.excludedVersions` 登记；版本上线后立刻移除该标记、拉最新数据重建，把对应 slug 正式补进 map。**注意**：`gameImportable: false` 只豁免 ID 映射要求，不阻断导入——前端导入有名称兜底匹配（`utils/achievementImportTranslate.js`，按「成就名称+阶段结构」匹配采集器 ≥1.4.0 导出的 name/quota 字段），名称识别不依赖 ID 映射。
+4. **更新游戏导入映射（必须，不是可选）**：新增或修改成就后必须重建 `achievement-id-map.json`，否则这些成就无法通过游戏内进度导入（踩过坑，见下方「成就进度导入与 ID 映射」）。执行 `node scripts/build-achievement-id-map.mjs`（默认自动优先使用最新 HSAchieveGuide 校准数据），检查未匹配清单。**例外**：版本在游戏内尚未上线、HSAchieveGuide 里必然没有条目时，在版本 JSON 顶层加 `"gameImportable": false` 并重建映射——该版本全部成就在 build/check 中豁免，`meta.excludedVersions` 登记；版本上线后立刻移除该标记，按下方「成就进度导入与 ID 映射」的 gameIds 流程或拉最新上游数据把对应 slug 正式补进 map。**注意**：`gameImportable: false` 只豁免 ID 映射要求，不阻断导入——前端导入有名称兜底匹配（`utils/achievementImportTranslate.js`，按「成就名称+阶段结构」匹配采集器 ≥1.4.0 导出的 name/quota 字段），名称识别不依赖 ID 映射。
 5. **本地验证**：运行 `npm run check`（其中 `check:achievement-map` 守卫会拦截映射缺失）和打开成就页确认版本数量、成就数量、筛选结果和成就详情均正常。
 6. **提交前检查**：确认 ID 没有重复、阶段顺序和 quota 正确、中文字段无误；不要直接删除旧成就 ID，以免历史用户进度失去对应目标。若只是暂时下线某个工具，应先隐藏入口并保留路由与页面代码，观察后再决定是否删除。
 
@@ -344,7 +344,9 @@ node scripts/upload-cosmetic-thumbnails.mjs
 
 - 优先用仓库里的 `data/official-calibration/flat.zh-CN.json`（官方成就表快照，对新版本成就最全），构建脚本已原生支持该格式并默认优先；`data/hs-achievement-data.json` 依赖 Firestone 运行时刷新，常滞后于新补丁。
 - 本地解压备份在 `C:/Users/19872/Downloads/HSAchieveGuide-main/`，会过期；更新方式：`git clone --depth 1 https://github.com/LeaDYonovic/HSAchieveGuide`（raw.githubusercontent.com 直连不通，走 git clone 或 api.github.com 的 git/blobs 接口）。
-- 版本未上线时成就数据源里没有对应条目。自 2026-10 起允许提前把未上线版本的成就录入站内：版本 JSON 顶层标记 `"gameImportable": false`，build/check 守卫豁免这些 slug 并在映射 `meta.excludedVersions` 登记，导入预览会提示「该版本尚未上线，暂不支持导入」。**上线当天必须**：拉最新 HSAchieveGuide 数据 → 移除 `gameImportable` 标记 → 重建映射确认新 slug 全部匹配 → 随部署生效。《黑暗帝国的统治》即按此流程提前录入（2026-10-14 录入 15 个成就），2026-10-21 版本上线，2026-10-22 已补全全版本攻略与推荐卡组；但上游 HSAchieveGuide 迟迟未收录该版本成就（2026-10-22 检查时上游最后提交仍停在 2026-08-31），`gameImportable: false` 暂保留（名称兜底导入不受影响），待上游更新后立即移除标记并重建映射。
+- 版本未上线时成就数据源里没有对应条目。自 2026-10 起允许提前把未上线版本的成就录入站内：版本 JSON 顶层标记 `"gameImportable": false`，build/check 守卫豁免这些 slug 并在映射 `meta.excludedVersions` 登记，导入预览会提示「该版本尚未上线，暂不支持导入」。**上线当天必须**：移除 `gameImportable` 标记 → 补齐游戏内数字 ID → 重建映射确认新 slug 全部匹配 → 随部署生效。
+- **上游滞后时的 ID 补齐**：上游更新以月计（黑暗帝国 10-21 上线，10-27 检查上游最后提交仍停在 2026-08-31），不等上游，直接走下方「获取新版本成就的游戏 ID」流程把 ID 写死进站内。
+- 显式 `gameIds` 是防上游倒退的保险：紫罗兰监狱 vh-016~019 的 ID 只存在于某个已删除的临时 HSAchieveGuide 克隆（36.4 数据），用过期快照重建映射会把它们洗掉——现在这 4 个成就也写了 `gameIds`，任何数据源重建都不会再丢。
 
 **2026-10 事故**：紫罗兰监狱版本 8-26 加入站内后没有重建映射表（旧映射 8-16 生成），且当时的数据源快照里也没有该版本成就，导致用户导入时新成就全部匹配不到——预览显示「新增 0 个完成阶段」、确认按钮被禁用。规约：
 
@@ -352,6 +354,48 @@ node scripts/upload-cosmetic-thumbnails.mjs
 2. 重建后做回归对比：**已有 slug 的 ID 数组不允许变化**（变了老用户导入会错位），只接受「新增、确认旧映射本来就错的纠错、零丢失」。
 3. 名称匹配不到的成就不要臆断为「站内自制」——紫罗兰 4 个成就（药炸了/潜伏内鬼等）后来被证实是 36.4 补丁新增的真实成就，换新数据就匹配上了。
 4. `npm run check` 中的 `check:achievement-map` 守卫会在映射覆盖不全时直接失败，不要绕过。
+
+### 获取新版本成就的游戏 ID（游戏内存 + Wiki 双源）
+
+适用：版本已上线、上游 HSAchieveGuide 还没收录。用「游戏内存 + Wiki」两条独立来源交叉验证，三条全对上才可写入。黑暗帝国即按此流程实锤（2026-10-27）。
+
+**前置：把客户端更到当前补丁**
+
+- 客户端版本落后时直启 `E:/Hearthstone/Hearthstone.exe` 会启动 2 秒闪退（`E:/Hearthstone/Logs/` 最新目录里有 ServiceLocator failure），必须走战网：
+
+  ```bash
+  "D:/Program Files/Battle.net/Battle.net.exe" --exec="launch WTCG"
+  ```
+
+- `--exec` 首次会被「下载补丁」流程消耗：`E:/Hearthstone` 停止写入新文件即补丁完成，此时需再执行一次同命令才会拉起游戏。
+
+**步骤 1：游戏内存导出（验证源，需炉石在运行中）**
+
+```bash
+tools/hs-cosmetics-collector/bin/Release/net48/HsCosmeticsCollector.exe dumpachievedbf
+```
+
+- 输出 `achievement-dbf-{时间戳}.json` + 固定名 `achievement-dbf.json`，写在 exe 旁（便携模式），不是 viewer 的 data 目录；
+- DBF 记录只有 `AchievementId + RewardTrackXp` 两个字段，**没有名称/quota**（MindVision 包装层未映射，采集器「名称富化 0 条」即此原因）；进度对象也只有 AchievementId/Progress/Index/Status。它只能当验证源，出不了名称。
+
+**步骤 2：自动匹配写入（脚本一条龙，推荐）**
+
+Wiki 页地址形如 `https://hearthstone.wiki.gg/wiki/Feats/Gameplay_-_<版本英文名>`（如 `Gameplay_-_Black_Empire`），新版本上线后即有逐条 `ID | 名称 | 描述 | XP/点数` 表；**先把该链接加进版本 JSON 的 `referenceLinks`**，脚本默认从这里找页面。
+
+```bash
+node scripts/auto-match-achievement-ids.mjs --version <版本文件名不含 .json>
+```
+
+- 脚本自动拉取 Wiki Feats 页（默认用版本 JSON `referenceLinks` 里的 `hearthstone.wiki.gg/wiki/Feats/` 链接；网络不通时浏览器另存 HTML 后 `--wiki-html <file>` 重试），按「职业分组 + 阶段数 + 描述数值 quota 序列」匹配站内成就；
+- 内置硬校验（任一不过就整体不写入并列出人工排查清单）：wiki 每阶段 XP 与 DBF `RewardTrackXp` 逐一相等、匹配到的 ID 在 DBF 全部存在、同一游戏 ID 不允许归属两个成就；
+- 校验通过后自动写入显式 `"gameIds": [数字数组]`（与 `stages` 顺序一一对应），build 脚本按 L0 最高优先级采用、跳过名称匹配；同时提示站内 `xpReward`/`points` 与权威值的差异（只提示不自动改，黑暗帝国 1 处、紫罗兰监狱 5 处错误就是这么发现的）；
+- 幂等可重跑；覆盖不一致的旧 gameIds 需 `--force`。脚本不可用时兜底：人工按上一节三条标准对照 wiki 页与 DBF 后写入。
+
+**步骤 3：重建映射与回归**
+
+- `node scripts/build-achievement-id-map.mjs`，未匹配清单必须为空；
+- 回归对比：已有 slug 的 ID 数组不允许变化、零丢失，只接受新增；
+- `npm run check` 通过；映射打包进前端 bundle，随部署生效。
 
 ## 常用脚本速查
 
@@ -362,6 +406,8 @@ node scripts/upload-cosmetic-thumbnails.mjs
 | `npm run check:syntax` | 语法检查（server/scripts/src） |
 | `npm run check:achievement-map` | 守卫：可导入成就必须全部有游戏进度映射（`gameImportable: false` 的未上线版本豁免并核对 meta） |
 | `node scripts/build-achievement-id-map.mjs` | 重建成就导入 ID 映射（默认优先 HSAchieveGuide 校准数据，也可 `--hs-data` 指定） |
+| `node scripts/auto-match-achievement-ids.mjs --version <版本>` | 自动匹配新版本成就游戏 ID（Wiki+DBF 双源校验后写入 gameIds，见「获取新版本成就的游戏 ID」） |
+| `tools/hs-cosmetics-collector/bin/Release/net48/HsCosmeticsCollector.exe dumpachievedbf` | 炉石运行中导出成就 DBF 全表（ID+XP，新版本成就 ID 的验证源，见「获取新版本成就的游戏 ID」） |
 | `node scripts/fetch-hs-cards.mjs` | 从暴雪 API 拉卡牌数据+图片 |
 | `HS_DATA_ONLY=1 node scripts/fetch-hs-cards.mjs` | 仅更新卡牌数据，不下载图片 |
 | `node scripts/check-hs-card-updates.mjs` | 对比暴雪 API 与本地数据差异 |
