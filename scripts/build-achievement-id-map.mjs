@@ -17,6 +17,8 @@
 //   node scripts/build-achievement-id-map.mjs [--hs-data <成就数据 JSON 路径>]
 //
 // 匹配策略（多层，宁缺毋滥，避免错配）：
+//   L0 显式 gameIds：站内成就对象直接给出数字 ID 数组（与 stages 顺序一一对应）时优先采用，
+//      跳过名称匹配；用于上游数据源尚未收录的成就（ID 经游戏内 DBF 转储交叉验证后人工录入）
 //   L1 归一化名称相同 + 阶段 quota 序列（站内 quota=0 视为 1）按升序精确对齐
 //   L2 归一化名称相同的游戏条目总数恰好等于站内阶段数 → 整组接受（quota 随版本调整过）
 //   L3 名称是纯符号（如隐藏谜题「？？？」）时名称无区分度，改按归一化描述互为子串取桶，
@@ -142,9 +144,33 @@ const unmatchedIds = [];
 const hsIdOwners = new Map();
 let level1 = 0;
 let level2 = 0;
+let explicitCount = 0;
 let conflicts = 0;
 
 for (const site of importableAchievements) {
+  // L0：显式 gameIds 优先（见文件头匹配策略说明）
+  const explicitIds = Array.isArray(site.gameIds)
+    && site.gameIds.length > 0
+    && site.gameIds.every((id) => typeof id === 'number')
+    ? site.gameIds
+    : null;
+  if (explicitIds) {
+    const stageCount = (site.stages || []).length;
+    if (stageCount && explicitIds.length !== stageCount) {
+      console.warn(`警告: ${site.id} 显式 gameIds 数量（${explicitIds.length}）与阶段数（${stageCount}）不一致`);
+    }
+    const clash = explicitIds.some((id) => hsIdOwners.has(id));
+    if (clash) {
+      conflicts += 1;
+      unmatchedIds.push(site.id);
+      continue;
+    }
+    for (const id of explicitIds) hsIdOwners.set(id, site.id);
+    map[site.id] = explicitIds;
+    explicitCount += 1;
+    continue;
+  }
+
   const quotas = (site.stages || [])
     .map((stage) => stage.quota)
     .filter((q) => typeof q === 'number')
@@ -228,6 +254,7 @@ const output = {
     total,
     importable: importableTotal,
     matched: matchedCount,
+    explicit: explicitCount,
     unmatched: unmatchedIds.length,
     unmatchedIds,
     excluded: exemptSlugs.size,
@@ -239,7 +266,7 @@ const output = {
 writeFileSync(OUTPUT_PATH, JSON.stringify(output, null, 2) + '\n', 'utf8');
 
 console.log(`源数据: ${hsDataPath}`);
-console.log(`站内成就 ${total} 个（含未上线豁免 ${exemptSlugs.size} 个），可导入 ${importableTotal} 个，匹配 ${matchedCount} 个（L1 精确 ${level1} + L2 整组 ${level2}），未匹配 ${unmatchedIds.length} 个`);
+console.log(`站内成就 ${total} 个（含未上线豁免 ${exemptSlugs.size} 个），可导入 ${importableTotal} 个，匹配 ${matchedCount} 个（显式 ${explicitCount} + L1 精确 ${level1} + L2 整组 ${level2}），未匹配 ${unmatchedIds.length} 个`);
 if (conflicts) console.warn(`警告: ${conflicts} 个成就因游戏 ID 重复归属而放弃匹配`);
 console.log(`已生成: ${OUTPUT_PATH}`);
 if (unmatchedIds.length) {

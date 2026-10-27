@@ -180,13 +180,13 @@
       "stages": [
         {
           "description": "用活体疫病的一次攻击将15张疾疫牌洗入对手的牌库。",
-          "xpReward": 300,
+      "xpReward": 400,
           "points": 10,
           "quota": 15
         },
         {
           "description": "用活体疫病的一次攻击将无穷大张疾疫牌洗入对手的牌库。",
-          "xpReward": 400,
+      "xpReward": 300,
           "points": 20,
           "quota": 999
         }
@@ -470,6 +470,7 @@
     },
     {
       "id": "vh-016",
+      "gameIds": [11250, 11251],
       "name": "都让开，药炸了",
       "heroClass": "战士",
       "type": "累计",
@@ -486,13 +487,13 @@
       "stages": [
         {
           "description": "用炸药工程师造成30点额外伤害。",
-          "xpReward": 300,
+      "xpReward": 325,
           "points": 30,
           "quota": 30
         },
         {
           "description": "用炸药工程师造成60点额外伤害。",
-          "xpReward": 600,
+      "xpReward": 650,
           "points": 60,
           "quota": 60
         }
@@ -501,6 +502,7 @@
     },
     {
       "id": "vh-017",
+      "gameIds": [11244, 11245],
       "name": "潜伏内鬼",
       "heroClass": "术士",
       "type": "累计",
@@ -519,13 +521,13 @@
       "stages": [
         {
           "description": "召唤20个卧底小鬼。",
-          "xpReward": 300,
+      "xpReward": 325,
           "points": 30,
           "quota": 20
         },
         {
           "description": "召唤40个卧底小鬼。",
-          "xpReward": 600,
+      "xpReward": 650,
           "points": 60,
           "quota": 40
         }
@@ -534,6 +536,7 @@
     },
     {
       "id": "vh-018",
+      "gameIds": [11248, 11249],
       "name": "一击毙命",
       "heroClass": "潜行者",
       "type": "一次性",
@@ -550,13 +553,13 @@
       "stages": [
         {
           "description": "用一张静默打击造成10点或以上的伤害。",
-          "xpReward": 300,
+      "xpReward": 325,
           "points": 30,
           "quota": 10
         },
         {
           "description": "用一张静默打击造成100点或以上的伤害。",
-          "xpReward": 600,
+      "xpReward": 650,
           "points": 60,
           "quota": 100
         }
@@ -565,6 +568,7 @@
     },
     {
       "id": "vh-019",
+      "gameIds": [11246, 11247],
       "name": "夺命凶铃",
       "heroClass": "牧师",
       "type": "一次性",
@@ -581,13 +585,13 @@
       "stages": [
         {
           "description": "用跟随幽灵在一回合中召唤4个幽灵。",
-          "xpReward": 300,
+      "xpReward": 325,
           "points": 30,
           "quota": 4
         },
         {
           "description": "用跟随幽灵在一回合中召唤7个幽灵。",
-          "xpReward": 600,
+      "xpReward": 650,
           "points": 60,
           "quota": 7
         }

@@ -2,6 +2,16 @@
 // 按时间倒序排列；同一天涉及多个模块时分别记录，且同一天同一 category 只保留一条。
 export const changelog = [
   {
+    date: '2026-10-27',
+    title: '黑暗帝国成就支持游戏内进度导入',
+    category: 'hearthstone',
+    route: '/hearthstone',
+    changes: [
+      '黑暗帝国 15 个成就已接入游戏内进度导入，可在成就页一键同步游戏内的完成阶段与累计次数。',
+      '修正黑暗帝国、紫罗兰监狱共 6 个成就显示的成就点数经验奖励与游戏内实际值不一致的问题。'
+    ]
+  },
+  {
     date: '2026-10-22',
     title: '黑暗帝国全成就攻略与卡组收录',
     category: 'hearthstone',

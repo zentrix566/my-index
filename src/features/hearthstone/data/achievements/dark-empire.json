@@ -2,18 +2,22 @@
   "id": "dark-empire",
   "name": "黑暗帝国",
   "description": "炉石传说黑暗帝国版本成就数据",
-  "updatedAt": "2026-10-22",
+  "updatedAt": "2026-10-27",
   "cardImageDir": "dark-empire",
   "referenceLinks": [
     {
       "name": "旅法师营地：黑暗帝国全成就攻略",
       "url": "https://www.iyingdi.com/tz/post/5759598"
+    },
+    {
+      "name": "Hearthstone Wiki：Gameplay – Black Empire Feats（含游戏内数字 ID）",
+      "url": "https://hearthstone.wiki.gg/wiki/Feats/Gameplay_-_Black_Empire"
     }
   ],
-  "gameImportable": false,
   "achievements": [
     {
       "id": "de-001",
+      "gameIds": [10789, 10790, 10791],
       "name": "拼装产线",
       "heroClass": "中立",
       "type": "累计",
@@ -42,7 +46,7 @@
         },
         {
           "description": "拼装100张随从牌。",
-          "xpReward": 900,
+          "xpReward": 800,
           "points": 20,
           "quota": 100
         }
@@ -51,6 +55,7 @@
     },
     {
       "id": "de-002",
+      "gameIds": [10784, 10785],
       "name": "神老心不老",
       "heroClass": "中立",
       "type": "累计",
@@ -85,6 +90,7 @@
     },
     {
       "id": "de-003",
+      "gameIds": [10786, 10787, 10788],
       "name": "邪恶眼线",
       "heroClass": "中立",
       "type": "累计",
@@ -122,6 +128,7 @@
     },
     {
       "id": "de-004",
+      "gameIds": [10783],
       "name": "闹铃响起",
       "heroClass": "中立",
       "type": "一次性",
@@ -147,6 +154,7 @@
     },
     {
       "id": "de-005",
+      "gameIds": [10771, 10772],
       "name": "先锋卫士",
       "heroClass": "圣骑士",
       "type": "一次性",
@@ -178,6 +186,7 @@
     },
     {
       "id": "de-006",
+      "gameIds": [10765, 10766],
       "name": "翡翠筑梦",
       "heroClass": "德鲁伊",
       "type": "一次性",
@@ -209,6 +218,7 @@
     },
     {
       "id": "de-007",
+      "gameIds": [10763, 10764],
       "name": "那可不是狼",
       "heroClass": "恶魔猎手",
       "type": "累计",
@@ -238,6 +248,7 @@
     },
     {
       "id": "de-008",
+      "gameIds": [10781, 10782],
       "name": "舍弃护甲",
       "heroClass": "战士",
       "type": "一次性",
@@ -269,6 +280,7 @@
     },
     {
       "id": "de-009",
+      "gameIds": [10779, 10780],
       "name": "原始蹦床",
       "heroClass": "术士",
       "type": "一次性",
@@ -300,6 +312,7 @@
     },
     {
       "id": "de-010",
+      "gameIds": [10761, 10762],
       "name": "极恶血神",
       "heroClass": "死亡骑士",
       "type": "一次性",
@@ -331,6 +344,7 @@
     },
     {
       "id": "de-011",
+      "gameIds": [10769, 10770],
       "name": "元素星轮",
       "heroClass": "法师",
       "type": "累计",
@@ -362,6 +376,7 @@
     },
     {
       "id": "de-012",
+      "gameIds": [10775, 10776],
       "name": "深藏地底",
       "heroClass": "潜行者",
       "type": "累计",
@@ -393,6 +408,7 @@
     },
     {
       "id": "de-013",
+      "gameIds": [10773, 10774],
       "name": "至暗之夜",
       "heroClass": "牧师",
       "type": "累计",
@@ -424,6 +440,7 @@
     },
     {
       "id": "de-014",
+      "gameIds": [10767, 10768],
       "name": "正在装弹！",
       "heroClass": "猎人",
       "type": "一次性",
@@ -455,6 +472,7 @@
     },
     {
       "id": "de-015",
+      "gameIds": [10777, 10778],
       "name": "帝国之癫",
       "heroClass": "萨满祭司",
       "type": "一次性",

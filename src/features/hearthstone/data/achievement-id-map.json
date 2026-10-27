@@ -1,21 +1,17 @@
 {
   "meta": {
     "description": "站内成就 slug → 游戏内成就数字 ID（按阶段顺序），供成就进度导入换算使用",
-    "generatedAt": "2026-10-10T06:39:03.015Z",
+    "generatedAt": "2026-10-27T07:33:44.663Z",
     "source": "HSAchieveGuide 成就数据（hs-achievement-data.json 或 official-calibration/flat.zh-CN.json）",
-    "sourcePath": "E:/github/my-index/.build-tmp-hag-clone/data/official-calibration/flat.zh-CN.json",
+    "sourcePath": "C:/Users/19872/Downloads/HSAchieveGuide-main/data/official-calibration/flat.zh-CN.json",
     "total": 967,
-    "importable": 952,
-    "matched": 952,
+    "importable": 967,
+    "matched": 967,
+    "explicit": 19,
     "unmatched": 0,
     "unmatchedIds": [],
-    "excluded": 15,
-    "excludedVersions": [
-      {
-        "id": "dark-empire",
-        "name": "黑暗帝国"
-      }
-    ]
+    "excluded": 0,
+    "excludedVersions": []
   },
   "map": {
     "alterac-001": [
@@ -1102,6 +1098,67 @@
       2721,
       2722,
       2723
+    ],
+    "de-001": [
+      10789,
+      10790,
+      10791
+    ],
+    "de-002": [
+      10784,
+      10785
+    ],
+    "de-003": [
+      10786,
+      10787,
+      10788
+    ],
+    "de-004": [
+      10783
+    ],
+    "de-005": [
+      10771,
+      10772
+    ],
+    "de-006": [
+      10765,
+      10766
+    ],
+    "de-007": [
+      10763,
+      10764
+    ],
+    "de-008": [
+      10781,
+      10782
+    ],
+    "de-009": [
+      10779,
+      10780
+    ],
+    "de-010": [
+      10761,
+      10762
+    ],
+    "de-011": [
+      10769,
+      10770
+    ],
+    "de-012": [
+      10775,
+      10776
+    ],
+    "de-013": [
+      10773,
+      10774
+    ],
+    "de-014": [
+      10767,
+      10768
+    ],
+    "de-015": [
+      10777,
+      10778
     ],
     "darkmoon-001": [
       2563,
