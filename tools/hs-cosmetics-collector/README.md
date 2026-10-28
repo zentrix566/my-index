@@ -127,6 +127,7 @@ node scripts/build-achievement-id-map.mjs --hs-data <HSAchieveGuide 的 hs-achie
 
 - 界面显示「读取库：缺失」：确认 `lib/` 与 exe 同级，且 DLL 未被杀软删除（先加白名单再重新解压）。
 - `炉石传说未运行`：先开游戏，等状态灯变绿。
+- 创建实例时报「拒绝访问」并退出（码 3）：v1.4.1 及之前按进程名取第一个同名进程，机器上若存在多个名为 `Hearthstone` 的进程（实测有用户机器上 5 个、仅 1 个是游戏），选到非游戏进程即失败。换 v1.4.2+ 即可：启动时会列出所有同名进程的诊断（PID / 可见模块数 / 是否加载 Mono），并自动定位真游戏进程显式传入 PID。
 - 采集全部成功却在导出文件时报「类型初始值设定项引发异常」并退出（码 99）：v1.4.0 的已知缺陷——发布包缺少 `HsCosmeticsCollector.exe.config` 绑定重定向（System.Memory 按旧版 Unsafe 4.0.4.1 编译引用，而包内是 6.0.0.0）。换 v1.4.1+ 即可；v1.4.1 起启动时会先做 JSON 导出自检，环境有问题会在读取游戏前直接给出完整诊断（异常链 + GAC 残留清单）。
 - GUI 内报错：点「复制日志」把内容反馈；也可用命令行 `HsCosmeticsCollector.exe diag` 收集输出。
 - 无游戏环境验证导出链路：`HsCosmeticsCollector.exe selftest`，用合成数据（含中文/引号/换行/emoji）走完序列化 → 写文件 → latest 副本 → JSON 回读，输出在 `%TEMP%\hs-collector-selftest`，不影响真实采集数据。

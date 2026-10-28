@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
@@ -280,17 +281,35 @@ namespace HsCosmeticsCollector
                 Console.WriteLine("  (" + string.Join(", ", ps.Select(p => p.ParameterType.FullName + " " + p.Name)) + ")");
             }
 
+            // 机器上可能同时存在多个名为 Hearthstone 的进程（实测有用户机器上 5 个同名进程、
+            // 仅 1 个加载了 Mono）。UnitySpy 默认按名称 FirstOrDefault() 自选，选到非游戏进程
+            // 就在读内存阶段抛「拒绝访问」。这里先定位真游戏进程，把 PID 显式传给构造函数。
+            int? gamePid = SelectHearthstoneProcess();
+
             object mv;
             try
             {
-                mv = CreateInstanceAdaptive(mvType);
+                mv = CreateInstanceAdaptive(mvType, gamePid);
             }
             catch (Exception ex)
             {
-                var msg = ex.Message;
-                if (ex.InnerException != null && !string.IsNullOrEmpty(ex.InnerException.Message))
-                    msg += " | 内部: " + ex.InnerException.Message;
-                Console.Error.WriteLine("创建采集实例失败（炉石可能未运行 / 构造参数不匹配）: " + msg);
+                Console.ForegroundColor = ConsoleColor.Red;
+                Console.Error.WriteLine("创建采集实例失败（构造参数不匹配，或目标进程无法访问）");
+                Console.Error.WriteLine("  本次传入 PID: " + (gamePid?.ToString() ?? "未指定（未筛选到加载 Mono 的游戏进程）"));
+                var inner = ex.InnerException;
+                if (inner == null)
+                    Console.Error.WriteLine($"  {ex.GetType().Name}: {ex.Message}");
+                while (inner != null)
+                {
+                    Console.Error.WriteLine($"  内部 {inner.GetType().Name}: {inner.Message}"
+                        + (inner.HResult != 0 ? $" (HResult=0x{inner.HResult:X8})" : ""));
+                    var frame = inner.StackTrace?.Split('\n').FirstOrDefault()?.Trim();
+                    if (!string.IsNullOrEmpty(frame))
+                        Console.Error.WriteLine("    于 " + frame);
+                    inner = inner.InnerException;
+                }
+                Console.Error.WriteLine("  若上方 PID 为「未指定」，请确认炉石已启动并进入主界面后重试。");
+                Console.ResetColor();
                 return 3;
             }
 
@@ -1092,23 +1111,80 @@ namespace HsCosmeticsCollector
             _ => "UNKNOWN(" + s + ")"
         };
 
+        // ── 目标进程选择 ──────────────────────────────────────────────────────
+        // 真正的炉石是 Unity/Mono 程序，必然加载 mono* 模块（现行版本为 mono-2.0-bdwgc.dll）；
+        // 同名的非游戏进程通常只有主模块可枚举。按这个特征筛选，不依赖进程顺序。
+
+        /// <summary>
+        /// 枚举所有名为 Hearthstone 的进程并逐个打印诊断（可见模块数 / 是否加载 Mono），
+        /// 返回其中加载了 Mono 的真游戏进程 PID；找不到时返回 null。
+        /// </summary>
+        static int? SelectHearthstoneProcess()
+        {
+            Process[] candidates;
+            try { candidates = Process.GetProcessesByName("Hearthstone"); }
+            catch (Exception ex)
+            {
+                Console.WriteLine("枚举 Hearthstone 进程失败: " + ex.Message);
+                return null;
+            }
+            if (candidates.Length == 0)
+            {
+                Console.WriteLine("未检测到名为 Hearthstone 的进程（游戏可能未启动）。");
+                return null;
+            }
+
+            Console.WriteLine($"检测到 {candidates.Length} 个名为 Hearthstone 的进程：");
+            int? gamePid = null;
+            foreach (var p in candidates)
+            {
+                int moduleCount = 0;
+                bool hasMono = false;
+                try
+                {
+                    foreach (ProcessModule m in p.Modules)
+                    {
+                        moduleCount++;
+                        if (m.ModuleName.StartsWith("mono", StringComparison.OrdinalIgnoreCase)) hasMono = true;
+                    }
+                }
+                catch { /* 权限不足或进程刚退出：按已枚举到的部分判断 */ }
+
+                Console.WriteLine($"  PID {p.Id}: 可见模块 {moduleCount} 个"
+                    + (hasMono ? "，已加载 Mono（游戏进程）" : "，未加载 Mono"));
+                if (hasMono && gamePid == null) gamePid = p.Id;
+            }
+
+            if (gamePid == null)
+                Console.WriteLine("以上进程均未加载 Mono 模块，无法确定游戏进程，将交由读取库按名称自选。");
+            else
+                Console.WriteLine("选定游戏进程 PID: " + gamePid);
+            return gamePid;
+        }
+
         // 自适应构造：优先无参；否则取参数最少的构造函数，尽量补全参数
-        static object CreateInstanceAdaptive(Type t)
+        static object CreateInstanceAdaptive(Type t, int? processId)
         {
             var ctors = t.GetConstructors(BindingFlags.Public | BindingFlags.Instance);
             var p0 = ctors.FirstOrDefault(c => c.GetParameters().Length == 0);
             if (p0 != null) return Activator.CreateInstance(t)!;
 
             var ctor = ctors.OrderBy(c => c.GetParameters().Length).First();
-            var args = ctor.GetParameters().Select(p => MakeArg(p.ParameterType)).ToArray();
+            var args = ctor.GetParameters().Select(p => MakeArg(p.ParameterType, processId)).ToArray();
             return ctor.Invoke(args)!;
         }
 
-        static object? MakeArg(Type pt)
+        static object? MakeArg(Type pt, int? processId)
         {
+            // MindVision 构造函数的 inputProcessId（int?）：显式传入筛选出的游戏进程 PID，
+            // 避免 UnitySpy 按名称 FirstOrDefault() 自选到非游戏进程
+            if (Nullable.GetUnderlyingType(pt) == typeof(int))
+                return processId; // 有值→装箱 int；无值→null
+            if (pt == typeof(int))
+                return processId ?? 0;
             if (pt == typeof(string)) return "Hearthstone";
             if (pt == typeof(EventHandler))
-                return new EventHandler((s, e) => Console.WriteLine("  [MindVision] " + (e?.ToString() ?? "")));
+                return new EventHandler(OnMindVisionMessage);
             if (pt.IsValueType) return Activator.CreateInstance(pt)!;
             if (!pt.IsInterface && !pt.IsAbstract)
             {
@@ -1118,6 +1194,20 @@ namespace HsCosmeticsCollector
             }
             // 接口/抽象或无法无参构造 → 暂时传 null，交由构造函数容忍
             return null;
+        }
+
+        // MindVision 通过 MessageEventArgs.Message 属性传日志文本；直接 ToString() 只会打印
+        // 类型名（v1.4.1 排障时初始化日志因此全部被吞）。反射取 Message，取不到再退回 ToString。
+        static void OnMindVisionMessage(object? sender, EventArgs e)
+        {
+            string text = e?.ToString() ?? "";
+            try
+            {
+                if (e?.GetType().GetProperty("Message")?.GetValue(e) is string msg && msg.Length > 0)
+                    text = msg;
+            }
+            catch { }
+            Console.WriteLine("  [MindVision] " + text);
         }
 
         // 向上查找仓库内的外观目录文件（src/features/hearthstone/data/<name>）
