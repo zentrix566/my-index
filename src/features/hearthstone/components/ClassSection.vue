@@ -22,7 +22,9 @@ const props = defineProps({
   selectMode: { type: Boolean, default: false },
   selectedIds: { type: Array, default: () => [] },
   pinnedIds: { type: Array, default: () => [] },
-  pinning: { type: Boolean, default: false }
+  pinning: { type: Boolean, default: false },
+  // 成就 slug → 玩家分享公开卡组数组（页内批量拉取后透传给卡片）
+  communityDecksMap: { type: Object, default: () => ({}) }
 })
 
 const emit = defineEmits([
@@ -31,7 +33,8 @@ const emit = defineEmits([
   'toggle-select',
   'deck-click',
   'toggle-pin',
-  'share'
+  'share',
+  'share-deck'
 ])
 
 const toggleCollapse = () => {
@@ -71,6 +74,7 @@ const toggleCollapse = () => {
         v-for="ach in achievements"
         :key="ach.id"
         :achievement="ach"
+        :community-decks="communityDecksMap.get(ach.id) || []"
         :editable="useMyCard ? editable : undefined"
         :show-remaining="useMyCard ? showRemaining : undefined"
         :style="classStyle"
@@ -83,6 +87,7 @@ const toggleCollapse = () => {
         @deck-click="emit('deck-click', $event)"
         @toggle-pin="emit('toggle-pin', $event)"
         @share="emit('share', $event)"
+        @share-deck="emit('share-deck', $event)"
       />
     </div>
   </section>

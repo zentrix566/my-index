@@ -96,7 +96,7 @@ my-index/
 │   ├── auth.js                 # 注册/登录/JWT/bcrypt
 │   ├── db.js                   # 数据层统一出口（auth-db + business-db）
 │   ├── db/                     # 数据库连接（PG 生产 / SQLite 本地）
-│   ├── routes/                 # API 路由（stats 等）
+│   ├── routes/                 # API 路由（stats、hearthstone-decks 卡组分享等）
 │   ├── migrations/             # PostgreSQL schema 迁移
 │   ├── todo/                   # Todo 独立数据层 + 路由
 │   ├── willpower/              # 意志力独立数据层 + 路由 + 成就引擎
@@ -129,7 +129,7 @@ my-index/
 
 ```
 src/features/hearthstone/
-├── index.js                    # 懒加载入口，导出 13 个页面路由
+├── index.js                    # 懒加载入口，导出 14 个页面路由
 ├── pages/                      # 页面组件
 │   ├── HearthstoneAchievements.vue  # 成就主页（查看器+编辑器+分享，/hearthstone）
 │   ├── HearthstoneGuide.vue    # 炉石功能导航页（/hearthstone/guide）
@@ -138,7 +138,8 @@ src/features/hearthstone/
 │   ├── HearthstoneWheel.vue    # 暗月宝藏模拟抽赏（/hearthstone/wheel）
 │   ├── AlteracPuzzleAssistant.vue  # 奥特兰克谜题助手（/hearthstone/alterac-puzzle）
 │   ├── CardLookup.vue          # 卡牌查询（/hearthstone/lookup）
-│   ├── DeckCodeViewer.vue      # 卡组代码解析（/hearthstone/deck）
+│   ├── HearthstoneDecks.vue    # 卡组分享（广场+我的卡组，/hearthstone/decks）
+│   ├── DeckCodeViewer.vue      # 卡组代码解析（/hearthstone/deck，含保存到我的卡组）
 │   ├── BlackMarketCalculator.vue   # 黑市血石计算器（/hearthstone/black-market）
 │   ├── EventCalculator.vue     # 活动计算器（/hearthstone/event）
 │   ├── TavernPassCalculator.vue # 通行证 XP 计算（/hearthstone/xp）
@@ -159,10 +160,11 @@ src/features/hearthstone/
 │   ├── useHearthstoneTheme.js   # 模块主题切换
 │   ├── useDialogFocus.js        # 弹窗焦点管理
 │   └── usePersistentRef.js      # localStorage 持久化 ref
-├── utils/                      # 工具函数（13 个）
+├── utils/                      # 工具函数（14 个）
 │   ├── cardImages.js           # ★ 卡牌图片路径 + CARD_IMAGE_VERSION 版本号
 │   ├── achievementCardImages.js # 成就卡图路径
-│   ├── deckstring.js           # 卡组代码 base64/varint 解码
+│   ├── deckstring.js           # 卡组代码解码 + 快照卡牌图片富化
+│   ├── deckstringCore.js       # 卡组代码线格式纯解析（零依赖，前后端共用）
 │   ├── achievements.js         # 职业映射/搜索/分组
 │   ├── achievementRecommendations.js # 规则推荐排序
 │   ├── achievementShareImage.js # Canvas 分享图生成
@@ -186,10 +188,18 @@ src/features/hearthstone/
 │   ├── events.js / rewardsTrack.js / treasures.js # 活动、奖励轨道、宝藏数据
 │   ├── card-back-map.json      # 卡背映射（仅构建脚本用）
 │   └── cosmetic-coin-map.json  # 硬币外观映射
-├── api/                        # 前端 API 调用（progress.js, profile.js）
+├── api/                        # 前端 API 调用（progress.js, profile.js, decks.js）
 ├── ai/                         # AI 建议组件（实验性：AiAdvisor.vue + config.js）
 └── styles/                     # 模块 CSS（index.js 统一挂载）
 ```
+
+### 卡组分享（/hearthstone/decks）
+
+- 数据在主业务库 `hs_decks` 表（`server/db/business-db.js`，SQLite 镜像在 `server/db/local-sqlite.js`），归档 SQL 见 `server/migrations/007`；路由在 `server/routes/hearthstone-decks.js`。
+- **卡组代码保存后不可改**；保存时服务端解析代码并生成 `cards_json` 卡牌快照（dbfId/名称/费用/稀有度/类型），渲染走快照、复制导入游戏才用 `deck_code`——这是防 dbfId 日后退役的关键设计，不要改成"只存代码现解析"。含未收录 dbfId 的卡组会拒绝保存（提示刷新卡牌索引后再试）。
+- **关联成就（可选）**：`achievement_id` 存站内成就 slug（如 `alterac-001`），保存时用 `hasAchievementMeta` 校验，每用户每成就限 3 套，保存后不可改。关联后公开卡组出现在成就卡片「玩家分享」区（成就页经 `/public/by-achievements?ids=` 批量拉取，ClassSection/结果组件透传 `communityDecksMap`）；分享主入口是成就卡片「+ 分享我的卡组」按钮 → 就地弹出 `ShareDeckModal.vue`（贴码/自动解析/保存一体，`share-deck` 事件从卡片经 ClassSection/结果组件冒泡到成就页）；深链接 `/hearthstone/deck?achievement=<slug>` 仍可用（解析页保存弹窗预选）。客户端成就索引/搜索工具在 `utils/achievements.js` 的 `getAchievementRef`/`searchAchievements`（expansions.js 聚合，无额外请求）。
+- 可见性三态：`private`/`public`/`hidden`。`hidden` 仅管理员可设/恢复（`requireOwner` 的 `/admin/all` 与 `/:id/moderation`，后台在 Admin 页「卡组管理」）；作者对自己被 hidden 的卡组改回 public 会被拒绝。
+- 卡组代码线格式解析的单一事实源是 `utils/deckstringCore.js`（零依赖），前端 `deckstring.js` 与服务端路由共用；`dbfid-cardnames.json` 服务端用 fs 直读同一份文件。
 
 ## 全站公共架构规范
 

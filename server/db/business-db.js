@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS hearthstone_profiles (
   updated_at             TIMESTAMPTZ NOT NULL DEFAULT now()
 );
 
-${buildDropLegacyUserForeignKeysSql(['achievement_progress', 'hearthstone_profiles'])}
+${buildDropLegacyUserForeignKeysSql(['achievement_progress', 'hearthstone_profiles', 'hs_decks'])}
 
 CREATE TABLE IF NOT EXISTS hearthstone_cosmetic_collection (
   user_id        INT NOT NULL,
@@ -161,6 +161,33 @@ CREATE TABLE IF NOT EXISTS ai_advisor_usage (
   free_count  INT NOT NULL DEFAULT 0,
   PRIMARY KEY (user_key, day)
 );
+
+-- 炉石卡组分享：cards_json 是保存时的卡牌快照（dbfId/名称/费用/稀有度），
+-- 保证 dbfId 日后退役时卡组仍可完整渲染；deck_code 仅用于复制导入游戏。
+-- achievement_id 是可选的站内成就 slug（如 alterac-001），关联后出现在该成就的「玩家分享」区。
+CREATE TABLE IF NOT EXISTS hs_decks (
+  id             SERIAL PRIMARY KEY,
+  user_id        INT NOT NULL,
+  name           TEXT NOT NULL,
+  description    TEXT NOT NULL DEFAULT '',
+  deck_code      TEXT NOT NULL,
+  cards_json     JSONB NOT NULL,
+  hero_class     TEXT NOT NULL DEFAULT '未知',
+  game_format    INT NOT NULL DEFAULT 2,
+  card_count     INT NOT NULL DEFAULT 0,
+  achievement_id TEXT,
+  visibility     TEXT NOT NULL DEFAULT 'private' CHECK (visibility IN ('private', 'public', 'hidden')),
+  author_name    TEXT NOT NULL DEFAULT '',
+  created_at     TIMESTAMPTZ NOT NULL DEFAULT now(),
+  updated_at     TIMESTAMPTZ NOT NULL DEFAULT now()
+);
+
+CREATE INDEX IF NOT EXISTS idx_hs_decks_user ON hs_decks(user_id, updated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_hs_decks_public ON hs_decks(visibility, updated_at DESC);
+
+-- 先补列再建索引：旧结构的表 CREATE TABLE IF NOT EXISTS 会跳过，索引直接建会报 no such column
+ALTER TABLE hs_decks ADD COLUMN IF NOT EXISTS achievement_id TEXT;
+CREATE INDEX IF NOT EXISTS idx_hs_decks_achievement ON hs_decks(achievement_id);
 
 CREATE TABLE IF NOT EXISTS schema_migrations (
   version    INT PRIMARY KEY,
@@ -357,6 +384,246 @@ export async function clearHearthstoneCollectionType(userId, type) {
     [userId, type]
   )
   return getHearthstoneProfile(userId)
+}
+
+// ========== 炉石卡组分享（hs_decks）==========
+
+function deckTimestampIso(value) {
+  if (value instanceof Date) return value.toISOString()
+  if (typeof value === 'string' && /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/.test(value)) {
+    // SQLite CURRENT_TIMESTAMP 是不带时区的 UTC 字符串，补成 ISO 8601（带 Z）后前端才按同一时刻解析
+    return `${value.replace(' ', 'T')}Z`
+  }
+  return value || null
+}
+
+/** 统一把数据库行映射为路由层使用的驼峰结构；列表查询不取 deck_code/cards_json 时对应字段为 undefined。 */
+function normalizeDeckRow(row) {
+  if (!row) return null
+  let cards = row.cards_json ?? []
+  if (typeof cards === 'string') {
+    try { cards = JSON.parse(cards) } catch { cards = [] }
+  }
+  return {
+    id: row.id,
+    userId: row.user_id,
+    name: row.name,
+    description: row.description || '',
+    deckCode: row.deck_code,
+    cards,
+    heroClass: row.hero_class,
+    gameFormat: row.game_format,
+    cardCount: row.card_count,
+    achievementId: row.achievement_id || null,
+    visibility: row.visibility,
+    authorName: row.author_name || '',
+    createdAt: deckTimestampIso(row.created_at),
+    updatedAt: deckTimestampIso(row.updated_at)
+  }
+}
+
+/** 行已按 updated_at 倒序，逐成就截取前 perLimit 套。 */
+function groupDecksPerAchievement(rows, perLimit) {
+  const grouped = new Map()
+  for (const row of rows) {
+    const list = grouped.get(row.achievement_id)
+    if (list) {
+      if (list.length < perLimit) list.push(normalizeDeckRow(row))
+    } else {
+      grouped.set(row.achievement_id, [normalizeDeckRow(row)])
+    }
+  }
+  return grouped
+}
+
+export async function createDeck(userId, deck) {
+  if (isLocalDevMode) {
+    const store = await getLocalBusinessStore()
+    return normalizeDeckRow(store.createDeck(userId, deck))
+  }
+  const { rows } = await db.query(
+    `INSERT INTO hs_decks(user_id, name, description, deck_code, cards_json, hero_class, game_format, card_count, achievement_id, visibility, author_name)
+     VALUES($1, $2, $3, $4, $5::jsonb, $6, $7, $8, $9, $10, $11) RETURNING *`,
+    [
+      userId,
+      deck.name,
+      deck.description || '',
+      deck.deckCode,
+      JSON.stringify(deck.cards || []),
+      deck.heroClass,
+      deck.gameFormat,
+      deck.cardCount,
+      deck.achievementId || null,
+      deck.visibility,
+      deck.authorName || ''
+    ]
+  )
+  return normalizeDeckRow(rows[0])
+}
+
+export async function getDeckById(id) {
+  if (isLocalDevMode) {
+    const store = await getLocalBusinessStore()
+    return normalizeDeckRow(store.getDeckById(id))
+  }
+  const { rows } = await db.query('SELECT * FROM hs_decks WHERE id = $1', [id])
+  return normalizeDeckRow(rows[0])
+}
+
+export async function listUserDecks(userId) {
+  if (isLocalDevMode) {
+    const store = await getLocalBusinessStore()
+    return store.listUserDecks(userId).map(normalizeDeckRow)
+  }
+  const { rows } = await db.query(
+    'SELECT * FROM hs_decks WHERE user_id = $1 ORDER BY updated_at DESC, id DESC',
+    [userId]
+  )
+  return rows.map(normalizeDeckRow)
+}
+
+export async function countUserDecks(userId) {
+  if (isLocalDevMode) {
+    const store = await getLocalBusinessStore()
+    return store.countUserDecks(userId)
+  }
+  const { rows } = await db.query('SELECT COUNT(*) AS cnt FROM hs_decks WHERE user_id = $1', [userId])
+  return Number(rows[0]?.cnt ?? 0)
+}
+
+/** 用户在同一成就下已分享的卡组数（含私密的，配额按全部计）。 */
+export async function countUserDecksByAchievement(userId, achievementId) {
+  if (isLocalDevMode) {
+    const store = await getLocalBusinessStore()
+    return store.countUserDecksByAchievement(userId, achievementId)
+  }
+  const { rows } = await db.query(
+    'SELECT COUNT(*) AS cnt FROM hs_decks WHERE user_id = $1 AND achievement_id = $2',
+    [userId, achievementId]
+  )
+  return Number(rows[0]?.cnt ?? 0)
+}
+
+/** 作者更新元信息（名称/描述/可见性）；deck_code 与快照保存后不变。 */
+export async function updateDeckMeta(userId, id, patch) {
+  if (isLocalDevMode) {
+    const store = await getLocalBusinessStore()
+    return normalizeDeckRow(store.updateDeckMeta(userId, id, patch))
+  }
+  const allowed = { name: patch.name, description: patch.description, visibility: patch.visibility }
+  const sets = []
+  const params = []
+  let i = 1
+  for (const [col, val] of Object.entries(allowed)) {
+    if (val !== undefined) {
+      sets.push(`${col} = $${i}`)
+      params.push(val)
+      i += 1
+    }
+  }
+  if (!sets.length) return getDeckById(id)
+  sets.push(`updated_at = now()`)
+  params.push(id, userId)
+  const { rows } = await db.query(
+    `UPDATE hs_decks SET ${sets.join(', ')} WHERE id = $${i} AND user_id = $${i + 1} RETURNING *`,
+    params
+  )
+  return normalizeDeckRow(rows[0])
+}
+
+/** 管理员隐藏/恢复：绕过作者校验，仅动 visibility。 */
+export async function updateDeckVisibilityByAdmin(id, visibility) {
+  if (isLocalDevMode) {
+    const store = await getLocalBusinessStore()
+    return normalizeDeckRow(store.updateDeckVisibilityByAdmin(id, visibility))
+  }
+  const { rows } = await db.query(
+    'UPDATE hs_decks SET visibility = $1 WHERE id = $2 RETURNING *',
+    [visibility, id]
+  )
+  return normalizeDeckRow(rows[0])
+}
+
+export async function deleteDeck(userId, id) {
+  if (isLocalDevMode) return (await getLocalBusinessStore()).deleteDeck(userId, id)
+  const { rowCount } = await db.query('DELETE FROM hs_decks WHERE id = $1 AND user_id = $2', [id, userId])
+  return rowCount || 0
+}
+
+/**
+ * 公开卡组列表（广场）：轻量字段，按职业/模式/名称关键词过滤，updated_at 倒序分页。
+ * @returns {{ decks:Array, total:number }}
+ */
+export async function listPublicDecks({ heroClass, gameFormat, keyword, achievementId, limit, offset }) {
+  if (isLocalDevMode) {
+    const store = await getLocalBusinessStore()
+    const result = await store.listPublicDecks({ heroClass, gameFormat, keyword, achievementId, limit, offset })
+    return { decks: result.decks.map(normalizeDeckRow), total: result.total }
+  }
+  const where = ["visibility = 'public'"]
+  const params = []
+  if (heroClass) { params.push(heroClass); where.push(`hero_class = $${params.length}`) }
+  if (Number.isInteger(gameFormat)) { params.push(gameFormat); where.push(`game_format = $${params.length}`) }
+  if (achievementId) { params.push(achievementId); where.push(`achievement_id = $${params.length}`) }
+  if (keyword) {
+    params.push(`%${keyword.replace(/[\\%_]/g, '\\$&')}%`)
+    where.push(`name ILIKE $${params.length} ESCAPE '\\'`)
+  }
+  const whereSql = where.join(' AND ')
+  const { rows } = await db.query(
+    `SELECT id, user_id, name, description, hero_class, game_format, card_count, achievement_id, visibility, author_name, created_at, updated_at
+     FROM hs_decks WHERE ${whereSql} ORDER BY updated_at DESC, id DESC LIMIT ${limit} OFFSET ${offset}`,
+    params
+  )
+  const { rows: countRows } = await db.query(
+    `SELECT COUNT(*) AS cnt FROM hs_decks WHERE ${whereSql}`,
+    params
+  )
+  return { decks: rows.map(normalizeDeckRow), total: Number(countRows[0]?.cnt ?? 0) }
+}
+
+/**
+ * 批量拉取一批成就的公开卡组（成就页「玩家分享」）：每成就按 updated_at 取前 perLimit 套。
+ * @returns {Map<string, Array>} achievementId → 卡组数组（轻量字段）
+ */
+export async function listPublicDecksByAchievements(achievementIds, perLimit) {
+  let rows
+  if (isLocalDevMode) {
+    const store = await getLocalBusinessStore()
+    rows = store.listPublicDecksByAchievements(achievementIds, perLimit)
+  } else {
+    ;({ rows } = await db.query(
+      `SELECT id, user_id, name, description, deck_code, hero_class, game_format, card_count, achievement_id, visibility, author_name, created_at, updated_at
+       FROM hs_decks
+       WHERE visibility = 'public' AND achievement_id = ANY($1::text[])
+       ORDER BY updated_at DESC, id DESC`,
+      [achievementIds]
+    ))
+  }
+  return groupDecksPerAchievement(rows, perLimit)
+}
+
+/** 管理后台列表：可按可见性过滤，含被隐藏卡组。 */
+export async function listAllDecksAdmin({ visibility, limit, offset }) {
+  if (isLocalDevMode) {
+    const store = await getLocalBusinessStore()
+    const result = await store.listAllDecksAdmin({ visibility, limit, offset })
+    return { decks: result.decks.map(normalizeDeckRow), total: result.total }
+  }
+  const where = []
+  const params = []
+  if (visibility) { params.push(visibility); where.push(`visibility = $${params.length}`) }
+  const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : ''
+  const { rows } = await db.query(
+    `SELECT id, user_id, name, description, hero_class, game_format, card_count, visibility, author_name, created_at, updated_at
+     FROM hs_decks ${whereSql} ORDER BY updated_at DESC, id DESC LIMIT ${limit} OFFSET ${offset}`,
+    params
+  )
+  const { rows: countRows } = await db.query(
+    `SELECT COUNT(*) AS cnt FROM hs_decks ${whereSql}`,
+    params
+  )
+  return { decks: rows.map(normalizeDeckRow), total: Number(countRows[0]?.cnt ?? 0) }
 }
 
 export async function transaction(fn) {

@@ -1979,3 +1979,26 @@
 .hs-count-stage-done .hs-count-stage-text strong {
   color: #4caf50;
 }
+
+/* 成就卡片：分享我的卡组入口（玩家分享卡组） */
+.hs-share-row {
+  margin-top: 10px;
+}
+
+.hs-share-btn {
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #8b7355;
+  background: transparent;
+  border: 1px dashed rgba(139, 115, 85, 0.45);
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+
+.hs-share-btn:hover {
+  color: #6b5540;
+  border-color: rgba(139, 115, 85, 0.8);
+  background: rgba(139, 115, 85, 0.08);
+}

@@ -10,10 +10,12 @@
         :class-style="getClassStyle(heroClass)"
         :summary="{ total: filteredByClass[heroClass].length }"
         summary-total-only
+        :community-decks-map="communityDecksMap"
         @update:collapsed="$emit('set-class-collapsed', heroClass, $event)"
         @card-click="$emit('card-click', $event)"
         @deck-click="$emit('deck-click', $event)"
         @share="$emit('share', $event)"
+        @share-deck="$emit('share-deck', $event)"
       />
     </template>
   </div>
@@ -25,10 +27,12 @@
         v-for="achievement in classFlatAchievements"
         :key="achievement.id"
         :achievement="achievement"
+        :community-decks="communityDecksMap.get(achievement.id) || []"
         :style="expansionStyle"
         @click="$emit('card-click', $event)"
         @deck-click="$emit('deck-click', $event)"
         @share="$emit('share', $event)"
+        @share-deck="$emit('share-deck', $event)"
       />
     </div>
   </div>
@@ -45,6 +49,7 @@
         :summary="classViewSummaries[heroClass]"
         use-my-card
         show-remaining
+        :community-decks-map="communityDecksMap"
         :editable="Boolean(user)"
         :select-mode="batchMode"
         :selected-ids="selectedAchIds"
@@ -56,6 +61,7 @@
         @toggle-select="$emit('toggle-select', $event)"
         @toggle-pin="$emit('toggle-pin', $event)"
         @share="$emit('share', $event)"
+        @share-deck="$emit('share-deck', $event)"
       />
     </template>
   </div>
@@ -83,6 +89,7 @@
           v-for="achievement in section.achievements"
           :key="achievement.id"
           :achievement="achievement"
+          :community-decks="communityDecksMap.get(achievement.id) || []"
           show-remaining
           :editable="Boolean(user)"
           :style="expansionStyle"
@@ -95,6 +102,7 @@
           @toggle-select="$emit('toggle-select', $event)"
           @toggle-pin="$emit('toggle-pin', $event)"
           @share="$emit('share', $event)"
+          @share-deck="$emit('share-deck', $event)"
         />
       </div>
     </section>
@@ -134,6 +142,7 @@
           v-for="achievement in section.achievements"
           :key="achievement.id"
           :achievement="achievement"
+          :community-decks="communityDecksMap.get(achievement.id) || []"
           show-remaining
           :editable="Boolean(user)"
           :pinned="pinnedIds.includes(achievement.id)"
@@ -142,6 +151,7 @@
           @deck-click="$emit('deck-click', $event)"
           @toggle-pin="$emit('toggle-pin', $event)"
           @share="$emit('share', $event)"
+          @share-deck="$emit('share-deck', $event)"
         />
       </div>
     </section>
@@ -184,7 +194,9 @@ const props = defineProps({
   sprintOneTimeRemain: { type: Number, required: true },
   sprintAllList: { type: Array, required: true },
   recommendations: { type: Array, default: () => [] },
-  recommendationsCollapsed: { type: Boolean, default: true }
+  recommendationsCollapsed: { type: Boolean, default: true },
+  // 成就 slug → 玩家分享公开卡组数组（成就页批量拉取后透传）
+  communityDecksMap: { type: Object, default: () => ({}) }
 })
 
 defineEmits([
@@ -195,7 +207,8 @@ defineEmits([
   'deck-click',
   'toggle-select',
   'toggle-pin',
-  'share'
+  'share',
+  'share-deck'
 ])
 
 const sprintSections = computed(() => [

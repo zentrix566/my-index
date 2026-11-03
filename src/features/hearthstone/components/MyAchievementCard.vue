@@ -10,10 +10,12 @@ const props = defineProps({
   selectMode: { type: Boolean, default: false },
   selected: { type: Boolean, default: false },
   pinned: { type: Boolean, default: false },
-  pinning: { type: Boolean, default: false }
+  pinning: { type: Boolean, default: false },
+  // 该成就下的玩家分享公开卡组（页内批量拉取后传入）
+  communityDecks: { type: Array, default: () => [] }
 })
 
-const emit = defineEmits(['click', 'toggle-select', 'deck-click', 'toggle-pin', 'share'])
+const emit = defineEmits(['click', 'toggle-select', 'deck-click', 'toggle-pin', 'share', 'share-deck'])
 
 const { isStageCompleted, isAchievementCompleted, getCount, getProgressInfo, getMetric } = useAchievementProgress()
 
@@ -89,7 +91,24 @@ const trackProgressTitle = computed(() =>
 
 const onDeckClick = (deck, event) => {
   if (event) event.stopPropagation()
-  emit('deck-click', { ...deck, heroClass: props.achievement.heroClass })
+  emit('deck-click', {
+    name: deck.name,
+    code: deck.deckCode || deck.code,
+    cards: deck.cards,
+    gameFormat: deck.gameFormat,
+    cardCount: deck.cardCount,
+    heroClass: props.achievement.heroClass
+  })
+}
+
+// 就地弹出分享弹窗（成就上下文已带），保存后出现在本成就的「玩家分享」区
+const goShareDeck = (event) => {
+  if (event) event.stopPropagation()
+  emit('share-deck', {
+    id: props.achievement.id,
+    name: props.achievement.name,
+    heroClass: props.achievement.heroClass
+  })
 }
 
 const copyDeckCode = async (deck, event) => {
@@ -293,6 +312,31 @@ const copyDeckCode = async (deck, event) => {
             </button>
           </div>
         </div>
+      </div>
+      <div v-if="communityDecks.length > 0" class="hs-deck-section">
+        <div class="hs-deck-label">玩家分享：</div>
+        <div class="hs-deck-list">
+          <div v-for="deck in communityDecks" :key="deck.id" class="hs-deck-item">
+            <button type="button" class="hs-deck-name hs-deck-name-btn" @click="onDeckClick(deck, $event)">
+              {{ deck.name }}
+            </button>
+            <button
+              class="hs-copy-button"
+              type="button"
+              :class="{ 'hs-copied': copiedDeckName === deck.name }"
+              @click="copyDeckCode(deck, $event)"
+              title="复制卡组代码"
+            >
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/>
+              </svg>
+              <span>{{ copiedDeckName === deck.name ? '已复制' : '复制' }}</span>
+            </button>
+          </div>
+        </div>
+      </div>
+      <div class="hs-share-row" @click.stop>
+        <button type="button" class="hs-share-btn" @click="goShareDeck($event)">+ 分享我的卡组</button>
       </div>
       <div v-if="achievement.guide" class="hs-guide-section">
         <details class="hs-guide-details" @click.stop>

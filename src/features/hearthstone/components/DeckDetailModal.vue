@@ -15,7 +15,7 @@
       <!-- 顶部信息区：职业标签 + 卡组名 + 概览 + 操作栏 -->
       <div class="ddm-header">
         <div class="ddm-header-main">
-          <span class="ddm-class-tag">{{ displayClass }}</span>
+          <span class="ddm-class-tag">{{ displayClass }}</span><span v-if="formatLabel" class="ddm-format-tag">{{ formatLabel }}</span>
           <h3 id="ddm-title" class="ddm-title">{{ deck.name }}</h3>
           <p v-if="decoded.valid" class="ddm-meta">
             <span>共 {{ decoded.total }} 张</span>
@@ -176,7 +176,7 @@
 
 <script setup>
 import { ref, reactive, computed, toRef } from 'vue'
-import { decodeDeck } from '../utils/deckstring.js'
+import { decodeDeck, enrichSnapshotCards, FORMAT_LABELS } from '../utils/deckstring.js'
 import { getRarityClass, getCardFullImage, getRarityDust, RARITY_LABELS } from '../utils/cardImages.js'
 import { useDialogFocus } from '../composables/useDialogFocus.js'
 import { drawImageCover, prepareShareCanvas } from '../utils/shareCanvas.js'
@@ -188,7 +188,23 @@ const props = defineProps({
 const emit = defineEmits(['close'])
 const modalElement = ref(null)
 
-const decoded = computed(() => (props.deck ? decodeDeck(props.deck.code) : { valid: false, heroClass: '未知', total: 0, cards: [] }))
+const decoded = computed(() => {
+  if (!props.deck) return { valid: false, format: 0, heroClass: '未知', total: 0, cards: [] }
+  // 服务端保存的卡组带上传时的卡牌快照：优先用快照渲染，dbfId 日后退役也不影响展示
+  if (Array.isArray(props.deck.cards) && props.deck.cards.length) {
+    const cards = enrichSnapshotCards(props.deck.cards)
+    return {
+      valid: true,
+      format: props.deck.gameFormat || 0,
+      heroClass: props.deck.heroClass || '未知',
+      heroes: [],
+      cards,
+      total: props.deck.cardCount || cards.reduce((a, c) => a + c.count, 0)
+    }
+  }
+  return decodeDeck(props.deck.code)
+})
+const formatLabel = computed(() => FORMAT_LABELS[decoded.value.format] || '')
 const displayClass = computed(() => (props.deck && props.deck.heroClass) || decoded.value.heroClass)
 const copied = ref(false)
 
@@ -577,6 +593,18 @@ async function exportImage() {
   letter-spacing: 0.05em;
   background: linear-gradient(135deg, #e65100, #f57c00);
   color: #fff;
+}
+.ddm-format-tag {
+  display: inline-block;
+  margin-left: 6px;
+  padding: 3px 10px;
+  border-radius: 6px;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  background: var(--hs-panel, rgba(148, 163, 184, .16));
+  border: 1px solid currentColor;
+  color: var(--hs-muted, #94a3b8);
 }
 .ddm-title { margin: 8px 0 2px; color: var(--hs-text); font-size: 22px; font-weight: 700; }
 .ddm-meta { margin: 0; color: var(--hs-muted); font-size: 13px; display: flex; align-items: center; gap: 8px; }

@@ -5,6 +5,7 @@ const loadWithStyles = (loadPage) => Promise.all([
 
 export const loadHearthstoneAchievementsPage = () => loadWithStyles(() => import('./pages/HearthstoneAchievements.vue'))
 export const loadDeckCodeViewerPage = () => loadWithStyles(() => import('./pages/DeckCodeViewer.vue'))
+export const loadHearthstoneDecksPage = () => loadWithStyles(() => import('./pages/HearthstoneDecks.vue'))
 export const loadTavernPassXpPage = () => loadWithStyles(() => import('./pages/TavernPassCalculator.vue'))
 export const loadEventCalculatorPage = () => loadWithStyles(() => import('./pages/EventCalculator.vue'))
 export const loadBlackMarketCalculatorPage = () => loadWithStyles(() => import('./pages/BlackMarketCalculator.vue'))

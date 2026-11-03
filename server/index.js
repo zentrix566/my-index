@@ -28,6 +28,7 @@ import {
   closeNotesDatabase,
   ensureNotesSchema
 } from './notes/db.js'
+import hearthstoneDecksRouter from './routes/hearthstone-decks.js'
 import {
   closeDatabase,
   ensureSchema,
@@ -228,6 +229,9 @@ app.use('/api/todo', todoRouter)
 
 // ========== 灵感备忘 API（独立数据库，统一登录）==========
 app.use('/api/notes', notesRouter)
+
+// ========== 炉石卡组分享 API（主业务库，统一登录）==========
+app.use('/api/hearthstone/decks', hearthstoneDecksRouter)
 
 // ========== 成就进度 API ==========
 

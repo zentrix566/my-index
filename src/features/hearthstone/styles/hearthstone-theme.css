@@ -1696,3 +1696,15 @@
 
   @page { margin: 12mm; }
 }
+
+/* 成就卡片：分享我的卡组入口（玩家分享卡组） */
+.hs-share-btn {
+  color: var(--hs-muted);
+  border-color: var(--hs-border);
+}
+
+.hs-share-btn:hover {
+  color: var(--hs-text);
+  border-color: var(--hs-link);
+  background: var(--hs-inset-bg);
+}

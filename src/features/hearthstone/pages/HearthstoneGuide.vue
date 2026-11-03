@@ -29,13 +29,14 @@ const guideItems = [
   { index: '01', title: '成就档案', description: '按版本、职业、难度和完成状态浏览成就，登录后可保存进度、置顶目标和导入游戏进度。', to: '/hearthstone' },
   { index: '02', title: '查看卡牌', description: '按名称或 dbfId 查询卡牌，查看费用、身材、效果和卡面信息。', to: '/hearthstone/lookup' },
   { index: '03', title: '卡组代码解析', description: '粘贴游戏内卡组代码，查看卡牌构成、法力曲线、合成造价并导出图片。', to: '/hearthstone/deck' },
-  { index: '04', title: '外观收藏', description: '管理英雄皮肤、幸运币和卡背，导入采集结果后查看拥有情况与收藏进度。', to: '/hearthstone/collection' },
-  { index: '05', title: '活动与战令计算器', description: '根据当前点数、任务和每日游玩计划，估算活动或战令的完成进度。', to: '/hearthstone/event' },
+  { index: '04', title: '卡组分享', description: '保存解析过的卡组，私密仅自己可见，公开进入广场供所有玩家浏览复制。', to: '/hearthstone/decks' },
+  { index: '05', title: '外观收藏', description: '管理英雄皮肤、幸运币和卡背，导入采集结果后查看拥有情况与收藏进度。', to: '/hearthstone/collection' },
+  { index: '06', title: '活动与战令计算器', description: '根据当前点数、任务和每日游玩计划，估算活动或战令的完成进度。', to: '/hearthstone/event' },
   // 黑市血石计算器已暂时下线（活动结束）：入口隐藏，路由 /hearthstone/black-market 与页面代码保留，恢复时取消注释并顺延后续序号
-  // { index: '06', title: '黑市血石计算器', description: '录入黑市当前价格和已有血石，比较首发价的涨跌并计算还需攒取的天数。', to: '/hearthstone/black-market' },
-  { index: '06', title: '暗月宝藏模拟器', description: '模拟暗月宝藏抽取过程，查看奖池、抽取记录和当前结果。', to: '/hearthstone/wheel' },
-  { index: '07', title: '蛙生模拟器', description: '从三张随从牌中找出被蛙生修改过的卡牌，支持标准和狂野卡池。', to: '/hearthstone/frog' },
-  { index: '08', title: '旅途剧情与任务', description: '《黑暗帝国的统治》旅途第一章《尼奥罗萨之路》：7 个部分的剧情文本、任务要求、计数加成、游戏内语音与双结局分支。', to: '/hearthstone/journey' },
+  // { index: '07', title: '黑市血石计算器', description: '录入黑市当前价格和已有血石，比较首发价的涨跌并计算还需攒取的天数。', to: '/hearthstone/black-market' },
+  { index: '07', title: '暗月宝藏模拟器', description: '模拟暗月宝藏抽取过程，查看奖池、抽取记录和当前结果。', to: '/hearthstone/wheel' },
+  { index: '08', title: '蛙生模拟器', description: '从三张随从牌中找出被蛙生修改过的卡牌，支持标准和狂野卡池。', to: '/hearthstone/frog' },
+  { index: '09', title: '旅途剧情与任务', description: '《黑暗帝国的统治》旅途第一章《尼奥罗萨之路》：7 个部分的剧情文本、任务要求、计数加成、游戏内语音与双结局分支。', to: '/hearthstone/journey' },
 ]
 </script>
 

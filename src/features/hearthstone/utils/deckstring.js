@@ -1,68 +1,18 @@
 // 炉石传说卡组代码（deckstring）解码工具
-// 卡组代码是 base64 编码的字节流，标准结构（Blizzard deckstring 规范）：
-//   [保留字节(1B, 固定 0)] [版本(1B, 固定 1)] [format(varint)] [heroCount(varint)]
-//   [hero dbfId(varint)...] [x1Count(varint)] [card dbfId(varint)...]              // 各 1 张
-//   [x2Count(varint)] [card dbfId(varint)...]             // 各 2 张
-//   [xNCount(varint)] [(card dbfId, count)(varint 对)...] // 各 N 张
-//   [可选: nameLen(varint)] [name(bytes)]                 // UTF-8 卡组名
-// 因此读取 varint 时需从索引 2 开始（跳过保留字节与版本字节）。
-// dbfId 是卡牌在游戏数据库中的 ID；本应用内置 dbfid-cardnames.json（数据来自 HearthstoneJSON 的 zhCN 卡牌库）
-// 将 dbfId 解析为中文牌名与英雄职业，无需联网。
+// 线格式解析在 ./deckstringCore.js（前后端共用），本文件负责浏览器侧 base64 解码
+// 与卡牌信息富化（中文名/费用/稀有度/本地图片路径），数据来自内置 dbfid-cardnames.json
+// （HearthstoneJSON 的 zhCN 卡牌库），无需联网。
 
 import cardNameData from '../data/dbfid-cardnames.json' with { type: 'json' }
 import { getLocalCardImages, normalizeRarity } from './cardImages.js'
+import {
+  isPlausibleDeckCode,
+  parseDeckBytes,
+  HERO_CLASS_FALLBACK,
+  FORMAT_LABELS
+} from './deckstringCore.js'
+
 const { cards: cardNames, heroClasses } = cardNameData
-
-// 极端情况（JSON 未覆盖的双职业英雄等）兜底，取自在用推荐卡组代码实测推导
-const HERO_CLASS_FALLBACK = {
-  71723: '法师',
-  82519: '法师',
-  83406: '德鲁伊',
-  83410: '恶魔猎手',
-  83411: '萨满祭司',
-  84146: '中立',
-  84156: '战士',
-  89937: '牧师',
-  89938: '圣骑士',
-  89941: '潜行者',
-  89942: '猎人',
-  108417: '法师',
-  110718: '死亡骑士',
-  114324: '术士',
-  119030: '潜行者'
-}
-
-const MAX_DECK_CODE_LENGTH = 4096
-const MAX_VARINT_BYTES = 8
-
-function base64ToBytes(b64) {
-  if (typeof b64 !== 'string' || b64.length === 0 || b64.length > MAX_DECK_CODE_LENGTH) {
-    throw new Error('bad deck code length')
-  }
-  if (!/^[A-Za-z0-9+/_-]+={0,2}$/.test(b64) || b64.length % 4 === 1) {
-    throw new Error('bad base64')
-  }
-  let norm = b64.replace(/-/g, '+').replace(/_/g, '/')
-  norm += '='.repeat((4 - (norm.length % 4)) % 4)
-  const bin = atob(norm)
-  const bytes = new Uint8Array(bin.length)
-  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i)
-  return bytes
-}
-
-function readVarint(bytes, i) {
-  let result = 0
-  let multiplier = 1
-  for (let count = 0; count < MAX_VARINT_BYTES; count++) {
-    if (i >= bytes.length) throw new Error('truncated varint')
-    const byte = bytes[i++]
-    result += (byte & 0x7f) * multiplier
-    if (!Number.isSafeInteger(result)) throw new Error('varint overflow')
-    if ((byte & 0x80) === 0) return { value: result, next: i }
-    multiplier *= 128
-  }
-  throw new Error('varint too long')
-}
 
 /**
  * 从 dbfId 查找卡组展示需要的最小卡牌信息。
@@ -88,56 +38,44 @@ function enrichCardImages(card) {
   }
 }
 
+function base64ToBytes(b64) {
+  if (!isPlausibleDeckCode(b64)) throw new Error('bad deck code')
+  let norm = b64.replace(/-/g, '+').replace(/_/g, '/')
+  norm += '='.repeat((4 - (norm.length % 4)) % 4)
+  const bin = atob(norm)
+  const bytes = new Uint8Array(bin.length)
+  for (let i = 0; i < bin.length; i++) bytes[i] = bin.charCodeAt(i)
+  return bytes
+}
+
 /**
  * 解码卡组代码为结构化数据（含中文牌名、费用、类型、稀有度、本地图片路径等）
- * @returns {{ valid:boolean, heroClass:string, heroes:number[], cards:Array<{dbfId:number,count:number,name:string,cost:number,rarity:string,rarityKey:string,cropImage:string,fullImage:string}>, total:number }}
+ * @returns {{ valid:boolean, format:number, heroClass:string, heroes:number[], cards:Array<{dbfId:number,count:number,name:string,cost:number,rarity:string,rarityKey:string,cropImage:string,fullImage:string}>, total:number }}
  */
 export function decodeDeck(code) {
   try {
-    const bytes = base64ToBytes(code)
-    if (bytes.length < 3 || bytes[0] !== 0 || bytes[1] !== 1) {
-      throw new Error('bad header')
-    }
-    let i = 2 // 跳过保留字节(0)与版本字节(1)
-    const fmt = readVarint(bytes, i); i = fmt.next
-    if (fmt.value < 1 || fmt.value > 3) throw new Error('bad format')
-    const nh = readVarint(bytes, i); i = nh.next
-    if (i > bytes.length || nh.value < 1 || nh.value > 3) throw new Error('bad hero count')
-    const heroes = []
-    for (let h = 0; h < nh.value; h++) { const r = readVarint(bytes, i); i = r.next; heroes.push(r.value) }
-    const nx = readVarint(bytes, i); i = nx.next
-    if (i > bytes.length || nx.value > 40) throw new Error('bad single count')
-    const singles = []
-    for (let k = 0; k < nx.value; k++) { const r = readVarint(bytes, i); i = r.next; singles.push(r.value) }
-    const n2 = readVarint(bytes, i); i = n2.next
-    if (i > bytes.length || n2.value > 40) throw new Error('bad double count')
-    const doubles = []
-    for (let k = 0; k < n2.value; k++) { const r = readVarint(bytes, i); i = r.next; doubles.push(r.value) }
-    const nn = readVarint(bytes, i); i = nn.next
-    if (i > bytes.length || nn.value > 40) throw new Error('bad multi count')
-    const multis = []
-    for (let k = 0; k < nn.value; k++) {
-      const d = readVarint(bytes, i); i = d.next
-      const c = readVarint(bytes, i); i = c.next
-      multis.push({ dbfId: d.value, count: c.value })
-    }
-
+    const parsed = parseDeckBytes(base64ToBytes(code))
     const resolve = (dbfId, count) => {
       const base = getCardInfo(dbfId)
       return { ...base, ...enrichCardImages(base), dbfId, count }
     }
-
-    const cards = [
-      ...singles.map((dbfId) => resolve(dbfId, 1)),
-      ...doubles.map((dbfId) => resolve(dbfId, 2)),
-      ...multis.map((m) => resolve(m.dbfId, m.count))
-    ]
-    const total = cards.reduce((a, c) => a + c.count, 0)
-    if (total < 1 || total > 40) throw new Error('bad total')
-    const heroClassList = heroes.map((h) => heroClasses[h] || HERO_CLASS_FALLBACK[h]).filter(Boolean)
+    const cards = parsed.cards.map((c) => resolve(c.dbfId, c.count))
+    const heroClassList = parsed.heroes.map((h) => heroClasses[h] || HERO_CLASS_FALLBACK[h]).filter(Boolean)
     const heroClass = heroClassList[0] || '未知'
-    return { valid: true, heroClass, heroes, cards, total }
+    return { valid: true, format: parsed.format, heroClass, heroes: parsed.heroes, cards, total: parsed.total }
   } catch {
-    return { valid: false, heroClass: '未知', heroes: [], cards: [], total: 0 }
+    return { valid: false, format: 0, heroClass: '未知', heroes: [], cards: [], total: 0 }
   }
 }
+
+/**
+ * 富化服务端快照卡牌（cards_json：dbfId/count/name/cost/rarity），
+ * 补齐本地图片路径与标准化稀有度，供 DeckDetailModal 快照渲染使用。
+ * @param {Array<{dbfId:number,count:number,name:string,cost:number,rarity:string}>} snapshotCards
+ */
+export function enrichSnapshotCards(snapshotCards) {
+  if (!Array.isArray(snapshotCards)) return []
+  return snapshotCards.map((card) => ({ ...card, ...enrichCardImages(card) }))
+}
+
+export { HERO_CLASS_FALLBACK, FORMAT_LABELS }

@@ -13,6 +13,7 @@
         <nav class="ad-tab-list" aria-label="后台功能">
           <button type="button" :class="{ active: activeTab === 'stats' }" :aria-pressed="activeTab === 'stats'" @click="setActiveTab('stats')">访问统计</button>
           <button type="button" :class="{ active: activeTab === 'users' }" :aria-pressed="activeTab === 'users'" @click="setActiveTab('users')">用户与模块</button>
+          <button type="button" :class="{ active: activeTab === 'decks' }" :aria-pressed="activeTab === 'decks'" @click="setActiveTab('decks')">卡组管理</button>
         </nav>
       </section>
 
@@ -103,6 +104,63 @@
         </p>
       </template>
 
+      <template v-else-if="activeTab === 'decks'">
+        <header class="ad-head">
+          <div>
+            <h1 class="ad-title">卡组管理</h1>
+          </div>
+          <button class="ad-manage-btn" type="button" :disabled="decksLoading" @click="loadDecks(decksPage)">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"/><path d="M21 3v5h-5"/>
+              <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"/><path d="M8 16H3v5"/>
+            </svg>
+            {{ decksLoading ? '加载中…' : '刷新' }}
+          </button>
+        </header>
+
+        <p v-if="decksError" class="ad-error" role="alert">{{ decksError }}</p>
+
+        <nav class="ad-filters" aria-label="按可见性筛选">
+          <button
+            v-for="option in deckFilterOptions"
+            :key="option.key"
+            class="ad-filter"
+            :class="{ active: deckFilter === option.key }"
+            type="button"
+            @click="switchDeckFilter(option.key)"
+          >{{ option.label }}</button>
+        </nav>
+
+        <section class="ad-card">
+          <div v-if="decksLoading && !decks.length" class="ad-empty">正在读取卡组数据…</div>
+          <div v-else-if="!decks.length" class="ad-empty">没有符合条件的卡组。</div>
+          <ul v-else class="ad-list">
+            <li v-for="deck in decks" :key="deck.id" class="ad-row">
+              <div class="ad-identity">
+                <strong>{{ deck.name }}</strong>
+                <span>{{ deck.heroClass }} · {{ deck.cardCount }} 张 · {{ deck.authorName || '神秘旅店老板' }} · {{ formatDate(deck.updatedAt) }}</span>
+              </div>
+              <span class="ad-tag" :class="{ 'ad-tag-idle': deck.visibility !== 'public' }">{{ deckVisibilityLabel(deck.visibility) }}</span>
+              <div class="ad-modules">
+                <button type="button" class="ad-filter" @click="toggleDeckVisibility(deck)">
+                  {{ deck.visibility === 'hidden' ? '恢复公开' : '隐藏' }}
+                </button>
+              </div>
+            </li>
+          </ul>
+        </section>
+
+        <div v-if="decksTotal > decksPageSize" class="ad-deck-pager">
+          <button type="button" class="ad-filter" :disabled="decksPage <= 1" @click="loadDecks(decksPage - 1)">上一页</button>
+          <span>{{ decksPage }} / {{ Math.max(1, Math.ceil(decksTotal / decksPageSize)) }}</span>
+          <button type="button" class="ad-filter" :disabled="decksPage >= Math.ceil(decksTotal / decksPageSize)" @click="loadDecks(decksPage + 1)">下一页</button>
+        </div>
+
+        <p class="ad-note">
+          被隐藏的卡组立即从广场与详情接口下线，作者也不能自行改回公开；恢复后重新可见。列表按更新时间倒序分页。
+        </p>
+      </template>
+
       <StatsPage v-else-if="user?.isOwner" />
     </div>
   </div>
@@ -113,6 +171,7 @@ import { computed, onMounted, ref, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth } from '../auth/useAuth.js'
 import StatsPage from '../features/analytics/pages/Stats.vue'
+import { fetchAllDecksAdmin, moderateDeck } from '../features/hearthstone/api/decks.js'
 
 // 模块登记表：新增模块时在这里加一行，统计与标签会自动跟上
 const moduleCatalog = [
@@ -128,7 +187,66 @@ const users = ref([])
 const loading = ref(false)
 const error = ref('')
 const filter = ref('all')
-const activeTab = computed(() => route.query.tab === 'users' ? 'users' : 'stats')
+const activeTab = computed(() => {
+  if (route.query.tab === 'users') return 'users'
+  if (route.query.tab === 'decks') return 'decks'
+  return 'stats'
+})
+
+// ── 卡组管理（tab=decks）──
+const decks = ref([])
+const decksLoading = ref(false)
+const decksError = ref('')
+const decksTotal = ref(0)
+const decksPage = ref(1)
+const decksPageSize = 20
+const deckFilter = ref('all')
+const deckFilterOptions = [
+  { key: 'all', label: '全部' },
+  { key: 'public', label: '公开' },
+  { key: 'private', label: '私密' },
+  { key: 'hidden', label: '已隐藏' }
+]
+
+async function loadDecks(page = 1) {
+  decksLoading.value = true
+  decksError.value = ''
+  try {
+    const data = await fetchAllDecksAdmin({
+      visibility: deckFilter.value === 'all' ? undefined : deckFilter.value,
+      page
+    })
+    decks.value = Array.isArray(data.decks) ? data.decks : []
+    decksTotal.value = data.total || 0
+    decksPage.value = data.page || page
+  } catch (e) {
+    decksError.value = e.message || '读取失败'
+  } finally {
+    decksLoading.value = false
+  }
+}
+
+function switchDeckFilter(key) {
+  deckFilter.value = key
+  loadDecks(1)
+}
+
+function deckVisibilityLabel(visibility) {
+  if (visibility === 'public') return '公开'
+  if (visibility === 'hidden') return '已隐藏'
+  return '私密'
+}
+
+async function toggleDeckVisibility(deck) {
+  const next = deck.visibility === 'hidden' ? 'public' : 'hidden'
+  try {
+    const data = await moderateDeck(deck.id, next)
+    const idx = decks.value.findIndex((d) => d.id === deck.id)
+    if (idx >= 0) decks.value.splice(idx, 1, { ...decks.value[idx], ...data.deck })
+  } catch (e) {
+    decksError.value = e.message || '操作失败'
+  }
+}
 
 const idleCount = computed(() => users.value.filter((u) => !u.modules.length).length)
 
@@ -222,6 +340,7 @@ function setActiveTab(tab) {
 
 watch(activeTab, (tab) => {
   if (tab === 'users' && user.value?.isOwner && !users.value.length && !loading.value) load()
+  if (tab === 'decks' && user.value?.isOwner && !decks.value.length && !decksLoading.value) loadDecks()
 })
 
 onMounted(async () => {
@@ -516,6 +635,17 @@ onMounted(async () => {
   color: #64748b;
   font-size: 12px;
   line-height: 1.7;
+}
+
+.ad-deck-pager {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: 16px 0 0;
+  color: #475569;
+  font-size: 13px;
+  font-weight: 600;
 }
 
 .ad-back:focus-visible,

@@ -68,6 +68,10 @@
               从剪贴板粘贴
             </button>
             <button type="button" class="dcv-btn dcv-ghost" @click="fillSample">填入示例</button>
+            <button v-if="canSave" type="button" class="dcv-btn dcv-save" @click="openSaveDialog">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/></svg>
+              保存到我的卡组
+            </button>
           </div>
 
           <p v-if="error" class="dcv-error" role="alert">
@@ -94,15 +98,91 @@
           :deck="deckData"
           @close="modalVisible = false"
         />
+
+        <!-- 保存卡组弹窗 -->
+        <div v-if="saveDialogVisible" class="dcv-overlay" @click.self="closeSaveDialog">
+          <div
+            ref="saveDialogEl"
+            class="dcv-dialog"
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="dcv-save-title"
+          >
+            <h3 id="dcv-save-title" class="dcv-dialog-title">保存到我的卡组</h3>
+            <p class="dcv-dialog-sub">{{ saveSummary }}</p>
+            <label class="dcv-label" for="dcv-save-name">卡组名称</label>
+            <input
+              id="dcv-save-name"
+              v-model="saveForm.name"
+              class="dcv-input"
+              type="text"
+              maxlength="50"
+              placeholder="不填则自动命名为「职业 + 卡组」"
+            />
+            <label class="dcv-label" for="dcv-save-desc">描述（可选）</label>
+            <textarea
+              id="dcv-save-desc"
+              v-model="saveForm.description"
+              class="dcv-textarea dcv-desc"
+              maxlength="200"
+              placeholder="给其他玩家介绍一下这套卡组（200 字以内）"
+            ></textarea>
+            <label class="dcv-label" for="dcv-ach-search">关联成就（可选）</label>
+            <div v-if="!saveForm.achievementId" class="dcv-ach-picker">
+              <input
+                id="dcv-ach-search"
+                v-model="achievementQuery"
+                class="dcv-input"
+                type="text"
+                autocomplete="off"
+                placeholder="搜索成就名称或编号，关联后其他玩家在该成就下可见"
+                @input="onAchievementQuery"
+              />
+              <ul v-if="achievementCandidates.length" class="dcv-ach-list">
+                <li v-for="ref in achievementCandidates" :key="ref.id">
+                  <button type="button" class="dcv-ach-item" @click="selectAchievement(ref)">
+                    <span class="dcv-ach-name">{{ ref.name }}</span>
+                    <small class="dcv-ach-meta">{{ ref.version }} · {{ ref.heroClass }}</small>
+                  </button>
+                </li>
+              </ul>
+            </div>
+            <div v-else class="dcv-ach-chip">
+              <span class="dcv-ach-chip-text">🎯 {{ saveAchievementLabel }}</span>
+              <button type="button" class="dcv-ach-clear" @click="clearAchievement">移除关联</button>
+            </div>
+            <div class="dcv-visibility">
+              <label class="dcv-radio">
+                <input v-model="saveForm.visibility" type="radio" value="private" />
+                <span>私密 · 仅自己可见</span>
+              </label>
+              <label class="dcv-radio">
+                <input v-model="saveForm.visibility" type="radio" value="public" />
+                <span>公开 · 所有人可见</span>
+              </label>
+            </div>
+            <p v-if="saveError" class="dcv-error" role="alert">{{ saveError }}</p>
+            <div class="dcv-dialog-actions">
+              <button type="button" class="dcv-btn dcv-ghost" :disabled="savingDeck" @click="closeSaveDialog">取消</button>
+              <button type="button" class="dcv-btn dcv-primary" :disabled="savingDeck" @click="submitSave">
+                {{ savingDeck ? '保存中...' : '保存' }}
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </section>
 </template>
 
 <script setup>
-import { defineAsyncComponent, ref, onMounted } from 'vue'
+import { defineAsyncComponent, ref, reactive, computed, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
+import { useDialogFocus } from '../composables/useDialogFocus.js'
+import { useAuth } from '../../../auth/useAuth.js'
+import { useToast } from '../../../composables/useToast.js'
+import { createDeck } from '../api/decks.js'
 
 const DeckDetailModal = defineAsyncComponent(
   () => import('../components/DeckDetailModal.vue')
@@ -111,6 +191,8 @@ const { hsTheme } = useHearthstoneTheme()
 
 const route = useRoute()
 const router = useRouter()
+const toast = useToast()
+const { user, init: initAuth } = useAuth()
 
 const code = ref('')
 const deckName = ref('')
@@ -120,6 +202,36 @@ const analyzing = ref(false)
 const modalVisible = ref(false)
 const deckData = ref(null)
 const codeEl = ref(null)
+
+// 最近一次解析成功的卡组（保存入口依赖它，代码再改动后需重新解析）
+const analyzed = ref(null)
+const canSave = computed(() => Boolean(analyzed.value && analyzed.value.code === (code.value || '').trim()))
+
+const saveDialogVisible = ref(false)
+const saveDialogEl = ref(null)
+const saveForm = reactive({ name: '', description: '', visibility: 'private', achievementId: '' })
+const savingDeck = ref(false)
+const saveError = ref('')
+const achievementQuery = ref('')
+const achievementCandidates = ref([])
+const saveSummary = computed(() =>
+  analyzed.value ? `「${analyzed.value.heroClass}」卡组 · 共 ${analyzed.value.total || ''} 张` : ''
+)
+const saveAchievementLabel = computed(() => {
+  const ref = achievementRefModule.value?.getAchievementRef(saveForm.achievementId)
+  if (!saveForm.achievementId) return ''
+  return ref ? `${ref.name}（${ref.version}）` : '成就索引加载中…'
+})
+useDialogFocus(saveDialogVisible, saveDialogEl, closeSaveDialog)
+
+// 成就索引体积大（连带全部版本成就数据），只能按需异步加载，不静态打进页面 chunk
+const achievementRefModule = ref(null)
+const loadAchievementRefs = async () => {
+  if (!achievementRefModule.value) {
+    achievementRefModule.value = await import('../utils/achievementRefs.js')
+  }
+  return achievementRefModule.value
+}
 
 const SAMPLE = 'AAECAf7gBgL/lwbO8QYO9eMEh/YEmMQFhY4G/7oGkMsG/eYGwOgGn/EGrPEGwvEG4/EGqPcG//cGAAA='
 
@@ -150,10 +262,12 @@ async function analyze() {
     if (!decoded.valid) {
       error.value = '卡组代码无法解析，请确认代码完整、未被截断，且不含多余空格或换行。'
       hint.value = ''
+      analyzed.value = null
       return
     }
     error.value = ''
     hint.value = `已识别为「${decoded.heroClass}」卡组，共 ${decoded.total} 张，点击下方卡片可查看大图。`
+    analyzed.value = { code: raw, heroClass: decoded.heroClass, total: decoded.total }
     const name = deckName.value.trim() || `${decoded.heroClass}卡组`
     deckData.value = { code: raw, name, heroClass: decoded.heroClass, deckIntro: '' }
     modalVisible.value = true
@@ -200,7 +314,86 @@ function fillSample() {
   analyze()
 }
 
+// ── 保存到我的卡组 ──
+
+function openSaveDialog() {
+  if (!user.value) {
+    toast.error('请先登录后再保存卡组')
+    router.push({ path: '/login', query: { redirect: route.fullPath, source: 'hearthstone' } })
+    return
+  }
+  saveForm.name = deckName.value.trim()
+  saveForm.description = ''
+  saveForm.visibility = 'private'
+  saveError.value = ''
+  achievementQuery.value = ''
+  achievementCandidates.value = []
+  // 成就页「分享卡组」深链接：?achievement=<slug> 预选关联成就（无效 slug 忽略）
+  const preset = typeof route.query.achievement === 'string' ? route.query.achievement : ''
+  if (preset) {
+    void loadAchievementRefs().then((module) => {
+      const presetRef = module.getAchievementRef(preset)
+      if (presetRef && saveDialogVisible.value && !saveForm.achievementId) {
+        saveForm.achievementId = presetRef.id
+      }
+    })
+  }
+  saveDialogVisible.value = true
+}
+
+function closeSaveDialog() {
+  if (savingDeck.value) return
+  saveDialogVisible.value = false
+}
+
+function onAchievementQuery() {
+  const module = achievementRefModule.value
+  if (!module) {
+    // 索引尚未就绪：先加载再搜索
+    void loadAchievementRefs().then(() => onAchievementQuery())
+    return
+  }
+  achievementCandidates.value = module.searchAchievements(achievementQuery.value, 6)
+}
+
+function selectAchievement(ref) {
+  saveForm.achievementId = ref.id
+  achievementQuery.value = ''
+  achievementCandidates.value = []
+}
+
+function clearAchievement() {
+  saveForm.achievementId = ''
+}
+
+async function submitSave() {
+  if (savingDeck.value || !analyzed.value) return
+  savingDeck.value = true
+  saveError.value = ''
+  try {
+    await createDeck({
+      deckCode: analyzed.value.code,
+      name: saveForm.name,
+      description: saveForm.description,
+      visibility: saveForm.visibility,
+      achievementId: saveForm.achievementId || undefined
+    })
+    saveDialogVisible.value = false
+    toast.success(saveForm.achievementId ? '卡组已保存并关联成就，可在成就页「玩家分享」中查看' : '卡组已保存，可在「卡组广场 · 我的卡组」中查看')
+  } catch (e) {
+    saveError.value = e.message || '保存失败，请稍后重试'
+  } finally {
+    savingDeck.value = false
+  }
+}
+
 onMounted(() => {
+  initAuth().catch(() => {})
+  // 后台预热重型资源：卡组解码 chunk（约 1.3MB）与详情弹窗 chunk，
+  // 首次点「解析」时即已就绪，避免主线程集中解析大 JSON 造成灰屏卡顿
+  getDeckDecoder().catch(() => {})
+  import('../components/DeckDetailModal.vue').catch(() => {})
+  loadAchievementRefs().catch(() => {})
   const c = route.query.code
   if (typeof c === 'string' && c.trim()) {
     code.value = c.trim()
@@ -359,6 +552,130 @@ onMounted(() => {
   border-color: var(--hs-border);
 }
 .dcv-ghost:hover { background: var(--hs-surface-overlay); }
+.dcv-save {
+  color: var(--hs-gold, #b45309);
+  background: var(--hs-surface-soft);
+  border-color: var(--hs-gold, #b45309);
+}
+.dcv-save:hover { filter: brightness(1.05); background: var(--hs-surface-overlay); }
+
+/* 保存卡组弹窗 */
+.dcv-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  background: rgba(15, 23, 42, .55);
+  backdrop-filter: blur(2px);
+}
+.dcv-dialog {
+  width: 100%;
+  max-width: 460px;
+  max-height: min(86vh, 640px);
+  overflow-y: auto;
+  padding: 22px;
+  border-radius: 16px;
+  background: var(--hs-surface-raised, #fff);
+  border: 1px solid var(--hs-border);
+  box-shadow: var(--hs-shadow-strong, 0 24px 48px rgba(15, 23, 42, .25));
+}
+.dcv-dialog-title {
+  margin: 0 0 4px;
+  font-size: 18px;
+  font-weight: 800;
+  color: var(--hs-text);
+}
+.dcv-dialog-sub {
+  margin: 0 0 6px;
+  font-size: 13px;
+  color: var(--hs-muted);
+}
+.dcv-desc {
+  min-height: 72px;
+  font-family: inherit;
+  letter-spacing: normal;
+}
+.dcv-visibility {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+  margin-top: 14px;
+}
+.dcv-radio {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--hs-text-soft);
+  cursor: pointer;
+}
+.dcv-radio input { accent-color: var(--hs-primary); }
+.dcv-ach-picker { position: relative; }
+.dcv-ach-list {
+  position: absolute;
+  z-index: 5;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  max-height: 220px;
+  overflow-y: auto;
+  margin: 0;
+  padding: 4px;
+  list-style: none;
+  border-radius: 10px;
+  background: var(--hs-surface-raised, #fff);
+  border: 1px solid var(--hs-border);
+  box-shadow: var(--hs-shadow-strong, 0 12px 24px rgba(15, 23, 42, .18));
+}
+.dcv-ach-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  width: 100%;
+  padding: 8px 10px;
+  text-align: left;
+  border: none;
+  border-radius: 7px;
+  background: transparent;
+  color: var(--hs-text);
+  font-size: 13px;
+  cursor: pointer;
+}
+.dcv-ach-item:hover { background: var(--hs-surface-overlay, rgba(148, 163, 184, .14)); }
+.dcv-ach-name { font-weight: 700; }
+.dcv-ach-meta { color: var(--hs-muted); font-size: 12px; white-space: nowrap; }
+.dcv-ach-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  padding: 7px 10px 7px 12px;
+  border-radius: 9px;
+  background: var(--hs-surface-soft);
+  border: 1px solid var(--hs-border);
+}
+.dcv-ach-chip-text { font-size: 13px; font-weight: 700; color: var(--hs-text); }
+.dcv-ach-clear {
+  padding: 3px 9px;
+  border-radius: 6px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--hs-muted);
+  background: transparent;
+  border: 1px solid var(--hs-border);
+  cursor: pointer;
+}
+.dcv-ach-clear:hover { color: var(--hs-text); background: var(--hs-surface-overlay); }
+.dcv-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  margin-top: 18px;
+}
 
 /* 提示 */
 .dcv-error {

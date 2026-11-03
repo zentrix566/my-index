@@ -90,6 +90,27 @@ CREATE TABLE IF NOT EXISTS ai_advisor_usage (
   free_count INTEGER NOT NULL DEFAULT 0,
   PRIMARY KEY (user_key, day)
 );
+
+-- 炉石卡组分享：与 business-db.js 的 hs_decks 保持同构（cards_json 本地存 TEXT）
+CREATE TABLE IF NOT EXISTS hs_decks (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  user_id INTEGER NOT NULL,
+  name TEXT NOT NULL,
+  description TEXT NOT NULL DEFAULT '',
+  deck_code TEXT NOT NULL,
+  cards_json TEXT NOT NULL DEFAULT '[]',
+  hero_class TEXT NOT NULL DEFAULT '未知',
+  game_format INTEGER NOT NULL DEFAULT 2,
+  card_count INTEGER NOT NULL DEFAULT 0,
+  achievement_id TEXT,
+  visibility TEXT NOT NULL DEFAULT 'private' CHECK (visibility IN ('private', 'public', 'hidden')),
+  author_name TEXT NOT NULL DEFAULT '',
+  created_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  updated_at TEXT NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
+
+CREATE INDEX IF NOT EXISTS idx_hs_decks_user ON hs_decks(user_id, updated_at DESC);
+CREATE INDEX IF NOT EXISTS idx_hs_decks_public ON hs_decks(visibility, updated_at DESC);
 `
 
 function openSqlite(filePath) {
@@ -282,6 +303,13 @@ export function createLocalBusinessStore(filePath) {
   const database = openSqlite(filePath)
   database.exec(BUSINESS_SCHEMA)
 
+  // 兼容早期本地库：hs_decks 可能建在 achievement_id 列加入之前；先补列再建索引
+  const hsDeckColumns = database.prepare('PRAGMA table_info(hs_decks)').all()
+  if (hsDeckColumns.length && !hsDeckColumns.some((column) => column.name === 'achievement_id')) {
+    database.exec('ALTER TABLE hs_decks ADD COLUMN achievement_id TEXT')
+  }
+  database.exec('CREATE INDEX IF NOT EXISTS idx_hs_decks_achievement ON hs_decks(achievement_id)')
+
   const migrateLegacyCollection = database.transaction(() => {
     const insert = database.prepare(`
       INSERT OR IGNORE INTO hearthstone_cosmetic_collection(user_id, cosmetic_type, cosmetic_id)
@@ -444,6 +472,117 @@ export function createLocalBusinessStore(filePath) {
     clearHearthstoneCollectionType(userId, type) {
       st.deleteCosmeticType.run(Number(userId), type)
       return this.getHearthstoneProfile(userId)
+    },
+    createDeck(userId, deck) {
+      const row = database.prepare(`
+        INSERT INTO hs_decks(
+          user_id, name, description, deck_code, cards_json,
+          hero_class, game_format, card_count, achievement_id, visibility, author_name
+        )
+        VALUES(?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?) RETURNING *
+      `).get(
+        Number(userId),
+        deck.name,
+        deck.description || '',
+        deck.deckCode,
+        JSON.stringify(deck.cards || []),
+        deck.heroClass,
+        deck.gameFormat,
+        deck.cardCount,
+        deck.achievementId || null,
+        deck.visibility,
+        deck.authorName || ''
+      )
+      return row || null
+    },
+    getDeckById(id) {
+      return database.prepare('SELECT * FROM hs_decks WHERE id = ?').get(Number(id)) || null
+    },
+    listUserDecks(userId) {
+      return database.prepare(
+        'SELECT * FROM hs_decks WHERE user_id = ? ORDER BY updated_at DESC, id DESC'
+      ).all(Number(userId))
+    },
+    countUserDecks(userId) {
+      const row = database.prepare('SELECT COUNT(*) AS cnt FROM hs_decks WHERE user_id = ?').get(Number(userId))
+      return Number(row?.cnt ?? 0)
+    },
+    countUserDecksByAchievement(userId, achievementId) {
+      const row = database.prepare(
+        'SELECT COUNT(*) AS cnt FROM hs_decks WHERE user_id = ? AND achievement_id = ?'
+      ).get(Number(userId), achievementId)
+      return Number(row?.cnt ?? 0)
+    },
+    updateDeckMeta(userId, id, patch) {
+      const allowed = { name: patch.name, description: patch.description, visibility: patch.visibility }
+      const sets = []
+      const params = []
+      for (const [col, val] of Object.entries(allowed)) {
+        if (val !== undefined) {
+          sets.push(`${col} = ?`)
+          params.push(val)
+        }
+      }
+      if (!sets.length) return this.getDeckById(id)
+      sets.push('updated_at = CURRENT_TIMESTAMP')
+      params.push(Number(id), Number(userId))
+      database.prepare(
+        `UPDATE hs_decks SET ${sets.join(', ')} WHERE id = ? AND user_id = ?`
+      ).run(...params)
+      return this.getDeckById(id)
+    },
+    updateDeckVisibilityByAdmin(id, visibility) {
+      database.prepare('UPDATE hs_decks SET visibility = ? WHERE id = ?').run(visibility, Number(id))
+      return this.getDeckById(id)
+    },
+    deleteDeck(userId, id) {
+      const info = database.prepare('DELETE FROM hs_decks WHERE id = ? AND user_id = ?')
+        .run(Number(id), Number(userId))
+      return info.changes || 0
+    },
+    listPublicDecks({ heroClass, gameFormat, keyword, achievementId, limit, offset }) {
+      const where = ["visibility = 'public'"]
+      const params = []
+      if (heroClass) { where.push('hero_class = ?'); params.push(heroClass) }
+      if (Number.isInteger(gameFormat)) { where.push('game_format = ?'); params.push(gameFormat) }
+      if (achievementId) { where.push('achievement_id = ?'); params.push(achievementId) }
+      if (keyword) {
+        where.push(`name LIKE ? ESCAPE '\\'`)
+        params.push(`%${keyword.replace(/[\\%_]/g, '\\$&')}%`)
+      }
+      const whereSql = where.join(' AND ')
+      const decks = database.prepare(
+        `SELECT id, user_id, name, description, hero_class, game_format, card_count, achievement_id, visibility, author_name, created_at, updated_at
+         FROM hs_decks WHERE ${whereSql} ORDER BY updated_at DESC, id DESC LIMIT ? OFFSET ?`
+      ).all(...params, limit, offset)
+      const total = Number(database.prepare(
+        `SELECT COUNT(*) AS cnt FROM hs_decks WHERE ${whereSql}`
+      ).get(...params)?.cnt ?? 0)
+      return { decks, total }
+    },
+    /** 返回原始行数组（已按 updated_at 倒序），分组由 business-db.js 统一处理。 */
+    listPublicDecksByAchievements(achievementIds, perLimit) {
+      const placeholders = achievementIds.map(() => '?').join(', ')
+      return database.prepare(
+        `SELECT id, user_id, name, description, deck_code, hero_class, game_format, card_count, achievement_id, visibility, author_name, created_at, updated_at
+         FROM hs_decks
+         WHERE visibility = 'public' AND achievement_id IN (${placeholders})
+         ORDER BY updated_at DESC, id DESC`
+      ).all(...achievementIds)
+    },
+    listAllDecksAdmin({ visibility, limit, offset }) {
+      const where = []
+      const params = []
+      if (visibility) { where.push('visibility = ?'); params.push(visibility) }
+      const whereSql = where.length ? `WHERE ${where.join(' AND ')}` : ''
+      const decks = database.prepare(
+        `SELECT id, user_id, name, description, hero_class, game_format, card_count, visibility, author_name, created_at, updated_at
+         FROM hs_decks ${whereSql} ORDER BY updated_at DESC, id DESC LIMIT ? OFFSET ?`
+      ).all(...params, limit, offset)
+      const total = Number(database.prepare(
+        `SELECT COUNT(*) AS cnt FROM hs_decks ${whereSql}`
+      ).get(...params)?.cnt ?? 0)
+      return { decks, total }
     },
     getAiUsage(userKey, day) {
       const row = st.getAiUsage.get(userKey, day)

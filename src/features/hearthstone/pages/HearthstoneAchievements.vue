@@ -338,6 +338,7 @@
               v-for="achievement in pinnedAchievements"
               :key="achievement.id"
               :achievement="achievement"
+              :community-decks="communityDecksOf(achievement.id)"
               show-remaining
               editable
               pinned
@@ -345,6 +346,7 @@
               @click="openCardModal"
               @toggle-pin="togglePinnedAchievement"
               @share="openShareAchievement"
+              @share-deck="openShareDeckModal"
             />
           </div>
         </section>
@@ -418,6 +420,7 @@
         :sprint-all-list="sprintAllList"
         :recommendations="ruleRecommendations"
         :recommendations-collapsed="sprintSectionCollapsed.recommendations"
+        :community-decks-map="communityDecksMap"
         @set-class-collapsed="setClassCollapsed"
         @toggle-sprint-section="toggleSprintSection"
         @toggle-my-class-section="toggleMyClassSection"
@@ -426,6 +429,7 @@
         @toggle-select="toggleSelect"
         @toggle-pin="togglePinnedAchievement"
         @share="openShareAchievement"
+        @share-deck="openShareDeckModal"
       />
 
       <div v-if="showEmpty && !(viewMode === 'my' && myGroupBy === 'sprint')" class="hs-empty-state">
@@ -452,6 +456,13 @@
         :visible="deckDetailVisible"
         :deck="deckDetailData"
         @close="deckDetailVisible = false"
+      />
+
+      <ShareDeckModal
+        :visible="shareDeckState.visible"
+        :achievement="shareDeckState.achievement"
+        @close="closeShareDeckModal"
+        @saved="onDeckShared"
       />
 
       <ShareAchievementModal
@@ -535,6 +546,8 @@ import MyAchievementCard from '../components/MyAchievementCard.vue'
 import { AI_ADVISOR_ENABLED } from '../ai/config.js'
 import { rankAchievementRecommendations } from '../utils/achievementRecommendations.js'
 import { saveAchievementProgress } from '../api/progress.js'
+import { fetchDecksByAchievements } from '../api/decks.js'
+import ShareDeckModal from '../components/ShareDeckModal.vue'
 import { useHearthstoneTheme } from '../composables/useHearthstoneTheme.js'
 import { useHearthstoneProfile } from '../composables/useHearthstoneProfile.js'
 import { useDialogFocus } from '../composables/useDialogFocus.js'
@@ -1217,6 +1230,83 @@ const openDeckDetail = (deck) => {
   deckDetailData.value = deck
   deckDetailVisible.value = true
 }
+
+// ── 玩家分享卡组：批量拉取当前视图成就的公开卡组，透传给成就卡片 ──
+const communityDecksMap = ref(new Map())
+const communityDecksOf = (achievementId) => communityDecksMap.value.get(achievementId) || []
+
+// 当前会展示出来的全部成就 id（各视图数据源取并集，卡片只在这些成就上渲染）
+const displayedAchievementIds = computed(() => {
+  const ids = new Set()
+  const collect = (list) => {
+    if (Array.isArray(list)) for (const ach of list) if (ach?.id) ids.add(ach.id)
+  }
+  const collectObject = (obj) => {
+    if (obj && typeof obj === 'object') for (const value of Object.values(obj)) collect(value)
+  }
+  collectObject(filteredByClass.value)
+  collect(classFlatAchievements.value)
+  collectObject(myFilteredByClass.value)
+  collectObject(myClassGroups.value)
+  collectObject(sprintGroups.value)
+  collect(sprintAllList.value)
+  collect(ruleRecommendations.value)
+  collect(pinnedAchievements.value)
+  return [...ids]
+})
+
+let communityFetchTimer = null
+let communityFetchSeq = 0
+async function loadCommunityDecks(ids) {
+  if (!ids.length) {
+    communityDecksMap.value = new Map()
+    return
+  }
+  const seq = ++communityFetchSeq
+  try {
+    // 单次请求最多 200 个 id，超出分片并行
+    const chunks = []
+    for (let i = 0; i < ids.length; i += 200) chunks.push(ids.slice(i, i + 200))
+    const results = await Promise.all(chunks.map((chunk) => fetchDecksByAchievements(chunk)))
+    if (seq !== communityFetchSeq) return // 已有更新的请求，丢弃过期结果
+    const merged = new Map()
+    for (const result of results) {
+      for (const [achievementId, decks] of Object.entries(result || {})) {
+        merged.set(achievementId, decks)
+      }
+    }
+    communityDecksMap.value = merged
+  } catch {
+    // 拉取失败不影响成就浏览，下次视图变化会重试
+  }
+}
+
+watch(displayedAchievementIds, (ids) => {
+  clearTimeout(communityFetchTimer)
+  communityFetchTimer = setTimeout(() => { void loadCommunityDecks(ids) }, 350)
+}, { immediate: true })
+
+// 就地分享卡组弹窗：从成就卡片「+ 分享我的卡组」打开
+const shareDeckState = ref({ visible: false, achievement: null })
+const openShareDeckModal = (achievement) => {
+  if (!achievement) return
+  shareDeckState.value = { visible: true, achievement }
+}
+const closeShareDeckModal = () => {
+  shareDeckState.value = { visible: false, achievement: null }
+}
+// 分享成功后立即刷新该成就的玩家分享区
+const onDeckShared = () => {
+  const achievement = shareDeckState.value.achievement
+  if (achievement) {
+    const next = new Map(communityDecksMap.value)
+    next.delete(achievement.id)
+    communityDecksMap.value = next
+  }
+  void loadCommunityDecks(displayedAchievementIds.value)
+  showToast('success', '卡组已分享，其他玩家可在该成就下查看')
+}
+
 const showEmpty = computed(() => filteredAchievements.value.length === 0)
 </script>
 
