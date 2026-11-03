@@ -9,7 +9,33 @@ const FOCUSABLE_SELECTOR = [
   '[tabindex]:not([tabindex="-1"])'
 ].join(',')
 
-/** 为弹窗提供焦点进入/恢复、Tab 循环和 Escape 关闭。 */
+// 弹窗打开期间锁定背景滚动：模块级计数器支持同屏多个/嵌套弹窗，
+// 全部关闭后才恢复。补偿滚动条消失引起的页面横向跳动。
+let scrollLockCount = 0
+let savedBodyOverflow = ''
+let savedBodyPaddingRight = ''
+
+function lockBodyScroll() {
+  if (scrollLockCount === 0) {
+    savedBodyOverflow = document.body.style.overflow
+    savedBodyPaddingRight = document.body.style.paddingRight
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth
+    if (scrollbarWidth > 0) document.body.style.paddingRight = `${scrollbarWidth}px`
+    document.body.style.overflow = 'hidden'
+  }
+  scrollLockCount += 1
+}
+
+function unlockBodyScroll() {
+  if (scrollLockCount === 0) return
+  scrollLockCount -= 1
+  if (scrollLockCount === 0) {
+    document.body.style.overflow = savedBodyOverflow
+    document.body.style.paddingRight = savedBodyPaddingRight
+  }
+}
+
+/** 为弹窗提供焦点进入/恢复、Tab 循环、Escape 关闭与背景滚动锁定。 */
 export function useDialogFocus(visible, dialogElement, close) {
   let previouslyFocused = null
 
@@ -48,6 +74,7 @@ export function useDialogFocus(visible, dialogElement, close) {
 
   const stop = (restoreFocus = true) => {
     window.removeEventListener('keydown', onKeydown)
+    unlockBodyScroll()
     if (restoreFocus && previouslyFocused?.isConnected) previouslyFocused.focus()
     previouslyFocused = null
   }
@@ -60,6 +87,7 @@ export function useDialogFocus(visible, dialogElement, close) {
         return
       }
       previouslyFocused = document.activeElement
+      lockBodyScroll()
       window.addEventListener('keydown', onKeydown)
       nextTick(() => {
         const first = focusableElements()[0]
