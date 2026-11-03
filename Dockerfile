@@ -45,6 +45,10 @@ COPY scripts/archive-legacy-main-auth.mjs ./scripts/archive-legacy-main-auth.mjs
 COPY src/features/hearthstone/data/achievements ./server/achievements-data/
 # 硬核模式过滤用的核心版本 ID 列表（ai-advisor.js 在生产镜像里的第 1 候选路径）。
 COPY src/features/hearthstone/data/core-expansion-ids.js ./server/achievements-data/
+# 卡组分享：线格式解析模块（hearthstone-decks 路由第 1 候选路径的动态 import）。
+COPY src/features/hearthstone/utils/deckstringCore.js ./server/achievements-data/
+# 卡组分享：dbfId→卡名索引（hearthstone-decks 路由读取，第 1 候选路径）。
+COPY src/features/hearthstone/data/dbfid-cardnames.json ./server/achievements-data/
 
 RUN mkdir -p /app/logs
 

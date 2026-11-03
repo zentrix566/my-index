@@ -8,7 +8,7 @@
 import express from 'express'
 import fs from 'node:fs'
 import path from 'node:path'
-import { fileURLToPath } from 'node:url'
+import { fileURLToPath, pathToFileURL } from 'node:url'
 import { requireAuth, requireOwner, getUserIdFromReq, trackModuleAccessMiddleware } from '../auth.js'
 import { getUserById } from '../db/auth-db.js'
 import {
@@ -26,7 +26,6 @@ import {
 } from '../db/business-db.js'
 import { sendInternalError } from '../validation.js'
 import { hasAchievementMeta } from '../achievements-meta.js'
-import { isPlausibleDeckCode, parseDeckBytes, HERO_CLASS_FALLBACK } from '../../src/features/hearthstone/utils/deckstringCore.js'
 
 const router = express.Router()
 const trackHearthstoneDecks = trackModuleAccessMiddleware('hearthstone')
@@ -40,12 +39,40 @@ const BY_ACHIEVEMENT_MAX_IDS = 200
 const OWNER_VISIBILITY = new Set(['private', 'public'])
 const ALL_VISIBILITY = new Set(['private', 'public', 'hidden'])
 
-// dbfid-cardnames.json 与前端同源（deckstring.js 用同一份），懒加载 + 模块级缓存
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
+
+// deckstringCore.js 同时被前端（src/…）与服务端引用。生产镜像里没有 src/
+// （Dockerfile 仅复制 server/ + 数据文件到 server/achievements-data/），
+// 故优先从 server/achievements-data/ 加载，本地开发回退到 ../src/…。
+// 候选路径动态 import，模式同 ai-advisor.js 的 core-expansion-ids 加载。
+let deckstringCorePromise = null
+function loadDeckstringCore() {
+  if (!deckstringCorePromise) {
+    deckstringCorePromise = import(
+      pathToFileURL(path.resolve(__dirname, '../achievements-data/deckstringCore.js')).href
+    ).catch(() =>
+      import(
+        pathToFileURL(path.resolve(__dirname, '../../src/features/hearthstone/utils/deckstringCore.js')).href
+      )
+    ).catch((error) => {
+      deckstringCorePromise = null // 加载失败清空缓存，下次请求重试
+      throw error
+    })
+  }
+  return deckstringCorePromise
+}
+
+// dbfid-cardnames.json 与前端同源（deckstring.js 用同一份），懒加载 + 模块级缓存。
+// 候选路径同上：生产镜像在 server/achievements-data/，本地开发在 src/。
+const CARD_NAME_INDEX_CANDIDATES = [
+  path.resolve(__dirname, '../achievements-data/dbfid-cardnames.json'),
+  path.resolve(__dirname, '../../src/features/hearthstone/data/dbfid-cardnames.json')
+]
 let cardNameIndex = null
 function getCardNameIndex() {
   if (!cardNameIndex) {
-    const filePath = path.resolve(__dirname, '../../src/features/hearthstone/data/dbfid-cardnames.json')
+    const filePath = CARD_NAME_INDEX_CANDIDATES.find((candidate) => fs.existsSync(candidate))
+    if (!filePath) throw new Error('找不到 dbfid-cardnames.json（卡组解析索引缺失）')
     cardNameIndex = JSON.parse(fs.readFileSync(filePath, 'utf8'))
   }
   return cardNameIndex
@@ -98,7 +125,8 @@ function toDetailDeck(deck) {
 }
 
 /** 解析卡组代码并生成保存所需字段；失败返回 { error }。 */
-function buildDeckFromCode(code) {
+async function buildDeckFromCode(code) {
+  const { isPlausibleDeckCode, parseDeckBytes, HERO_CLASS_FALLBACK } = await loadDeckstringCore()
   if (!isPlausibleDeckCode(code)) return { error: '卡组代码格式不正确' }
   let parsed
   try {
@@ -130,7 +158,7 @@ router.post('/', requireAuth, trackHearthstoneDecks, asyncRoute(async (req, res)
   const code = typeof body.deckCode === 'string' ? body.deckCode.trim() : ''
   if (!code) return res.status(400).json({ error: '缺少卡组代码' })
 
-  const built = buildDeckFromCode(code)
+  const built = await buildDeckFromCode(code)
   if (built.error) return res.status(400).json({ error: built.error })
 
   // 关联成就（可选）：必须是站内成就 slug；每成就每人限 DECKS_PER_ACHIEVEMENT 套

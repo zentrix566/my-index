@@ -199,7 +199,7 @@ src/features/hearthstone/
 - **卡组代码保存后不可改**；保存时服务端解析代码并生成 `cards_json` 卡牌快照（dbfId/名称/费用/稀有度/类型），渲染走快照、复制导入游戏才用 `deck_code`——这是防 dbfId 日后退役的关键设计，不要改成"只存代码现解析"。含未收录 dbfId 的卡组会拒绝保存（提示刷新卡牌索引后再试）。
 - **关联成就（可选）**：`achievement_id` 存站内成就 slug（如 `alterac-001`），保存时用 `hasAchievementMeta` 校验，每用户每成就限 3 套，保存后不可改。关联后公开卡组出现在成就卡片「玩家分享」区（成就页经 `/public/by-achievements?ids=` 批量拉取，ClassSection/结果组件透传 `communityDecksMap`）；分享主入口是成就卡片「+ 分享我的卡组」按钮 → 就地弹出 `ShareDeckModal.vue`（贴码/自动解析/保存一体，`share-deck` 事件从卡片经 ClassSection/结果组件冒泡到成就页）；深链接 `/hearthstone/deck?achievement=<slug>` 仍可用（解析页保存弹窗预选）。客户端成就索引/搜索工具在 `utils/achievements.js` 的 `getAchievementRef`/`searchAchievements`（expansions.js 聚合，无额外请求）。
 - 可见性三态：`private`/`public`/`hidden`。`hidden` 仅管理员可设/恢复（`requireOwner` 的 `/admin/all` 与 `/:id/moderation`，后台在 Admin 页「卡组管理」）；作者对自己被 hidden 的卡组改回 public 会被拒绝。
-- 卡组代码线格式解析的单一事实源是 `utils/deckstringCore.js`（零依赖），前端 `deckstring.js` 与服务端路由共用；`dbfid-cardnames.json` 服务端用 fs 直读同一份文件。
+- 卡组代码线格式解析的单一事实源是 `utils/deckstringCore.js`（零依赖），前端 `deckstring.js` 与服务端路由共用；`dbfid-cardnames.json` 服务端用 fs 直读同一份文件。**注意生产镜像没有 `src/`**：服务端引用这两个文件必须走候选路径（`server/achievements-data/` 优先、回退 `src/`，同 ai-advisor.js 惯例），且 Dockerfile 要显式 COPY 进镜像——静态 import `src/` 会让线上服务启动即崩（2026-11 踩过）。
 
 ## 全站公共架构规范
 
