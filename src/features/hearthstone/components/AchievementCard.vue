@@ -31,6 +31,7 @@ const onDeckClick = (deck, event) => {
   emit('deck-click', {
     name: deck.name,
     code: deck.deckCode || deck.code,
+    deckIntro: deck.description || '',
     cards: deck.cards,
     gameFormat: deck.gameFormat,
     cardCount: deck.cardCount,
@@ -157,8 +158,8 @@ const copyDeckCode = async (deck, event) => {
       <div v-if="communityDecks.length > 0" class="hs-deck-section">
         <div class="hs-deck-label">玩家分享：</div>
         <div class="hs-deck-list">
-          <div v-for="deck in communityDecks" :key="deck.id" class="hs-deck-item">
-            <button type="button" class="hs-deck-name hs-deck-name-btn" @click="onDeckClick(deck, $event)">
+          <div v-for="deck in communityDecks" :key="deck.id" class="hs-deck-item hs-deck-item-community">
+            <button type="button" class="hs-deck-name hs-deck-name-btn" :title="deck.description" @click="onDeckClick(deck, $event)">
               {{ deck.name }}
             </button>
             <button
@@ -173,6 +174,7 @@ const copyDeckCode = async (deck, event) => {
               </svg>
               <span>{{ copiedDeckName === deck.name ? '已复制' : '复制' }}</span>
             </button>
+            <span v-if="deck.description" class="hs-deck-desc-line">{{ deck.description }}</span>
           </div>
         </div>
       </div>

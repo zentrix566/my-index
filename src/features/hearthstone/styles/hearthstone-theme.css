@@ -1161,6 +1161,9 @@
 .hs-deck-item {
   color: var(--hs-text-soft);
 }
+.hs-deck-desc-line {
+  color: var(--hs-muted);
+}
 .hs-guide-text {
   color: var(--hs-text-soft);
   background: var(--hs-inset-bg);

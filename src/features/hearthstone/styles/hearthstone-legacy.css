@@ -1458,7 +1458,19 @@
   justify-content: space-between;
   gap: 8px;
   padding: 4px 0;
-  font-size: 13px;
+}
+
+/* 玩家分享卡组：描述小字换行显示在名称/复制按钮下方 */
+.hs-deck-item.hs-deck-item-community {
+  flex-wrap: wrap;
+}
+
+.hs-deck-desc-line {
+  flex-basis: 100%;
+  font-size: 12px;
+  line-height: 1.5;
+  color: rgba(139, 115, 85, 0.9);
+  word-break: break-word;
 }
 
 .hs-deck-name {

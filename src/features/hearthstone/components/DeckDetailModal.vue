@@ -38,6 +38,12 @@
         </div>
       </div>
 
+      <!-- 卡组介绍：置于标题下方，玩家打开弹窗即可看到 -->
+      <div v-if="deck.deckIntro" class="ddm-intro">
+        <p class="ddm-intro-label">卡组介绍</p>
+        <p class="ddm-intro-text">{{ deck.deckIntro }}</p>
+      </div>
+
       <!-- 主体：卡牌列表（旅法师营地风格）+ 统计面板 -->
       <div v-if="decoded.valid && decoded.cards.length" class="ddm-body">
         <div class="ddm-cards">
@@ -139,14 +145,8 @@
         </div>
       </div>
 
-      <div v-else-if="!decoded.valid" class="ddm-empty">
+      <div v-if="!decoded.valid" class="ddm-empty">
         <p>卡组代码解析失败，请检查代码是否完整。</p>
-      </div>
-
-      <!-- 卡组介绍 -->
-      <div v-if="deck.deckIntro" class="ddm-intro">
-        <p class="ddm-intro-label">卡组介绍</p>
-        <p class="ddm-intro-text">{{ deck.deckIntro }}</p>
       </div>
 
     </div>
