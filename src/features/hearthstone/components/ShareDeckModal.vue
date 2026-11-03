@@ -93,7 +93,8 @@ const analyzed = ref(null)
 const parseError = ref('')
 const saving = ref(false)
 const saveError = ref('')
-useDialogFocus(toRef(props, 'visible'), dialogEl, () => emit('close'))
+// 浮层式弹窗：不锁背景滚动，弹出后页面照常滚动，弹窗固定在视口不动
+useDialogFocus(toRef(props, 'visible'), dialogEl, () => emit('close'), { lockScroll: false })
 
 // 代码变化后自动解析预览（防抖），无需额外点按钮
 let parseTimer = null

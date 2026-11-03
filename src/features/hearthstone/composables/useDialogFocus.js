@@ -35,8 +35,12 @@ function unlockBodyScroll() {
   }
 }
 
-/** 为弹窗提供焦点进入/恢复、Tab 循环、Escape 关闭与背景滚动锁定。 */
-export function useDialogFocus(visible, dialogElement, close) {
+/**
+ * 为弹窗提供焦点进入/恢复、Tab 循环、Escape 关闭与背景滚动锁定。
+ * @param {object} [options] lockScroll=true 时锁定背景滚动；浮层类弹窗可传 false，
+ *                           让背景页面照常滚动、弹窗固定在视口不动。
+ */
+export function useDialogFocus(visible, dialogElement, close, { lockScroll = true } = {}) {
   let previouslyFocused = null
 
   const focusableElements = () => {
@@ -74,7 +78,7 @@ export function useDialogFocus(visible, dialogElement, close) {
 
   const stop = (restoreFocus = true) => {
     window.removeEventListener('keydown', onKeydown)
-    unlockBodyScroll()
+    if (lockScroll) unlockBodyScroll()
     if (restoreFocus && previouslyFocused?.isConnected) previouslyFocused.focus()
     previouslyFocused = null
   }
@@ -87,7 +91,7 @@ export function useDialogFocus(visible, dialogElement, close) {
         return
       }
       previouslyFocused = document.activeElement
-      lockBodyScroll()
+      if (lockScroll) lockBodyScroll()
       window.addEventListener('keydown', onKeydown)
       nextTick(() => {
         const first = focusableElements()[0]
