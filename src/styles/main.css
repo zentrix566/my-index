@@ -1037,7 +1037,10 @@ a.content-card:hover {
 }
 .card-cta { display: flex; align-items: center; justify-content: space-between; padding-top: 8px; border-top: 1px solid color-mix(in srgb, var(--line) 72%, transparent); }
 
-.route-view > * { animation: page-enter 240ms cubic-bezier(.2,.8,.2,1) both; }
+/* fill-mode 必须用 backwards：both 会让动画结束后元素仍残留 transform 帧
+ * （恒等矩阵也创建 containing block），页面内 position:fixed 弹窗将改为相对页面定位，
+ * 弹窗高于视口时按钮永远够不到。backwards 下动画结束回归无 transform 的自然样式。 */
+.route-view > * { animation: page-enter 240ms cubic-bezier(.2,.8,.2,1) backwards; }
 @keyframes page-enter { from { opacity: 0; transform: translateY(8px); } }
 :root[data-theme="dark"] .content-card,
 :root[data-theme="dark"] .signal-card,
