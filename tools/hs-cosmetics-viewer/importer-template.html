@@ -61,7 +61,7 @@
 <body>
 <header>
   <h1>炉石外观收藏导入器</h1>
-  <p>用「采集器」生成 2 个 JSON（cosmetics.json + achievements.json）→ 在此上传 → 立即查看你的卡背 / 幸运币 / 英雄皮肤 / 成就明细</p>
+  <p>用「采集器」生成 2 个 JSON（外观收藏-*.json + 成就进度-*.json，旧版为 cosmetics.json / achievements.json）→ 在此上传 → 立即查看你的卡背 / 幸运币 / 英雄皮肤 / 成就明细</p>
 </header>
 
 <div class="wrap">
@@ -69,12 +69,12 @@
     <h2>① 上传采集器产物（2 个文件）</h2>
     <div class="grid">
       <div class="filebox">
-        <label>外观收藏 · cosmetics.json</label>
+        <label>外观收藏 · 外观收藏-*.json</label>
         <input type="file" id="f-cosmetics" accept=".json" />
         <div class="st" id="st-cosmetics">未选择</div>
       </div>
       <div class="filebox">
-        <label>成就明细 · achievements.json</label>
+        <label>成就进度 · 成就进度-*.json</label>
         <input type="file" id="f-achievements" accept=".json" />
         <div class="st" id="st-achievements">未选择</div>
       </div>
@@ -111,7 +111,7 @@ for (const kind of Object.keys(fileMap)) {
       try {
         const obj = JSON.parse(ev.target.result);
         if (kind === 'cosmetics' && !(obj.cardBacks && obj.coins && obj.heroSkins))
-          throw new Error('cosmetics.json 结构不对（需含 cardBacks/coins/heroSkins）');
+          throw new Error('外观收藏文件结构不对（需含 cardBacks/coins/heroSkins）');
         owned[kind] = obj;
         const st = document.getElementById('st-'+kind);
         st.textContent = '已载入: ' + f.name;

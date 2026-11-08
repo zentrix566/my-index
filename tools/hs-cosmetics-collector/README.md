@@ -72,6 +72,18 @@ cd tools/hs-cosmetics-collector
 
 ## 输出格式
 
+v1.4.3 起按运行环境分两种输出（采集完成后日志与 GUI 摘要会逐个列出「本次导出文件」并标注用途）：
+
+- **便携模式**（分发给用户的 zip，exe 旁找不到仓库）：exe 旁「采集导出」子目录下只写 2 个中文名文件
+  `外观收藏-{时间戳}.json` + `成就进度-{时间戳}.json`，不与 exe/依赖 DLL/历史诊断文件混放；
+- **仓库开发模式**（exe 位于仓库内，向上能找到 `tools/hs-cosmetics-viewer/data`）：写入该目录，
+  文件名为 `cosmetics-{时间戳}.json` / `achievements-{时间戳}.json` 并同步固定名副本
+  `cosmetics.json` / `achievements.json`（`tools/hs-cosmetics-viewer/server.mjs` 与
+  `scripts/dump-owned-cosmetics.mjs` 按固定名读取，勿改英文名）。
+
+网站导入按文件内容识别、与文件名无关，旧版导出的英文文件名仍可导入。
+`dumpachievedbf` 输出的 `achievement-dbf-*.json` 是诊断文件，网站导入用不到。
+
 `cosmetics.json`：
 ```json
 {

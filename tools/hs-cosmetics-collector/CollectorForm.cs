@@ -204,14 +204,17 @@ namespace HsCosmeticsCollector
             if (exitCode == 0 && Program.LastResult != null)
             {
                 var r = Program.LastResult;
+                var cosmeticsName = string.IsNullOrEmpty(r.CosmeticsFile) ? "cosmetics-*.json" : Path.GetFileName(r.CosmeticsFile);
                 _summaryLabel.Text =
                     $"采集完成：卡背 {r.CardBacks} 个、幸运币 {r.Coins} 个、英雄皮肤 {r.HeroSkins} 个" +
-                    (r.Achievements != null ? $"、成就完成 {r.Achievements} 项。" : "。") +
-                    $"点「打开网站导入页」，收藏页选带时间后缀的 cosmetics-*.json（或 cosmetics.json），成就页「导入游戏内进度」选 achievements-*.json。";
+                    (r.Achievements != null ? $"、成就完成 {r.Achievements} 项。" : "。") + Environment.NewLine +
+                    (string.IsNullOrEmpty(r.AchievementFile)
+                        ? $"导入网站：收藏页选 {cosmeticsName}（本次未读取到成就数据）。"
+                        : $"导入网站：收藏页选 {cosmeticsName}，成就页「导入游戏内进度」选 {Path.GetFileName(r.AchievementFile)}。");
                 _summaryLabel.Visible = true;
                 _openFolderButton.Enabled = Directory.Exists(r.DataDir);
                 AppendLog("");
-                AppendLog("采集成功。下一步：点「打开网站导入页」到网站导入两个 JSON 文件。");
+                AppendLog("采集成功。导入哪个 JSON 见上方绿色摘要和日志末尾的「本次导出文件」清单。");
             }
             else
             {

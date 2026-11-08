@@ -13,7 +13,9 @@ namespace HsCosmeticsCollector
     /// <summary>
     /// 炉石外观收藏采集器：趁炉石传说运行期间，通过 Firestone 的 UnitySpy.HearthstoneLib
     /// （MindVision，读取游戏内存）抓取你「已拥有」的卡背 / 幸运币 / 英雄皮肤 / 成就进度，
-    /// 写出带时间戳的 cosmetics-*.json + achievements-*.json（并同步固定名 latest），供网站收藏页 / 成就页导入。
+    /// 写出 2 个 JSON 供网站收藏页 / 成就页导入：
+    /// 便携模式（分发给用户）→ exe 旁「采集导出」子目录下的 外观收藏-{时间戳}.json + 成就进度-{时间戳}.json；
+    /// 仓库开发模式（检测到本地查看器 data 目录）→ 英文文件名 + 固定名副本，与查看器脚本兼容。
     ///
     /// 采用运行时反射，不依赖 Firestone fork 的具体方法名/类型，适配不同版本。
     /// 默认启动 WinForms 图形界面；带命令行参数（diag* 诊断等）时走原控制台逻辑。
@@ -28,6 +30,9 @@ namespace HsCosmeticsCollector
             public int Coins;
             public int HeroSkins;
             public int? Achievements;
+            // 本次采集写出的两个导入文件（成就可能因读取失败而不存在），GUI 摘要按实际文件名提示
+            public string? CosmeticsFile;
+            public string? AchievementFile;
         }
 
         public static CollectorResult? LastResult;
@@ -620,17 +625,19 @@ namespace HsCosmeticsCollector
             // 单条成就（id/name/状态）尽力读取；失败不影响分类级数据
             var achItems = ReadAchievementItems(mv, mvType);
 
-            string? dataDir = FindDataDir();
-            if (dataDir == null)
+            string? outputRoot = FindDataDir(out bool repoDevMode);
+            if (outputRoot == null)
             {
                 Console.Error.WriteLine("找不到输出目录，无法写出文件。");
                 return 5;
             }
+            // 便携模式把文件写进「采集导出」子目录（不存在则创建），不与 exe/依赖 DLL/历史诊断文件混放
+            string dataDir = repoDevMode ? outputRoot : Path.Combine(outputRoot, "采集导出");
+            Directory.CreateDirectory(dataDir);
             var stamp = DateTime.Now.ToString("o");
-            // 文件名时间戳：每次采集产出独立文件，避免多次运行覆盖历史；另同步固定名 latest 供本地查看器/server 读取
+            // 文件名时间戳：每次采集产出独立文件，避免多次运行覆盖历史；开发模式另同步固定名副本供本地查看器/server 读取
             var fileStamp = DateTime.Now.ToString("yyyyMMdd-HHmmss");
             var src = "MindVision (Hearthstone game memory)";
-            // 合并为 2 个文件：cosmetics + achievements（均带时间戳，并维护 latest 副本）
             var cosmetics = new Dictionary<string, object?>
             {
                 ["source"] = src,
@@ -639,10 +646,12 @@ namespace HsCosmeticsCollector
                 ["coins"] = new Dictionary<string, object?> { ["count"] = coinIds.Count, ["ids"] = coinIds },
                 ["heroSkins"] = new Dictionary<string, object?> { ["count"] = heroSkins.Count, ["ids"] = heroSkins, ["byClass"] = heroByClass }
             };
-            var cosmeticsFile = Path.Combine(dataDir, $"cosmetics-{fileStamp}.json");
+            var cosmeticsFile = Path.Combine(dataDir, repoDevMode ? $"cosmetics-{fileStamp}.json" : $"外观收藏-{fileStamp}.json");
             WriteJson(cosmeticsFile, cosmetics);
-            CopyLatest(cosmeticsFile, Path.Combine(dataDir, "cosmetics.json"), "外观收藏");
+            if (repoDevMode)
+                CopyLatest(cosmeticsFile, Path.Combine(dataDir, "cosmetics.json"), "外观收藏");
 
+            string? achFile = null;
             if (achievements != null || achItems != null)
             {
                 var ach = achievements as Dictionary<string, object?>;
@@ -659,13 +668,20 @@ namespace HsCosmeticsCollector
                     payload["itemsCompleted"] = ai.TryGetValue("completed", out var c) ? c : null;
                     payload["items"] = ai.TryGetValue("items", out var it) ? it : new List<object>();
                 }
-                var achFile = Path.Combine(dataDir, $"achievements-{fileStamp}.json");
+                achFile = Path.Combine(dataDir, repoDevMode ? $"achievements-{fileStamp}.json" : $"成就进度-{fileStamp}.json");
                 WriteJson(achFile, payload);
-                CopyLatest(achFile, Path.Combine(dataDir, "achievements.json"), "成就明细");
+                if (repoDevMode)
+                    CopyLatest(achFile, Path.Combine(dataDir, "achievements.json"), "成就明细");
             }
 
             int? achTotal = achievements is Dictionary<string, object?> ad ? ToInt(ad["totalCompleted"]) : null;
             PrintCompletion(dataDir, cardBackIds.Count, coinIds.Count, heroSkins.Count, heroByClass, achTotal);
+            if (LastResult != null)
+            {
+                LastResult.CosmeticsFile = cosmeticsFile;
+                LastResult.AchievementFile = achFile;
+            }
+            PrintImportFiles(dataDir, cosmeticsFile, achFile, repoDevMode);
             Console.WriteLine("完成后刷新查看器页面即可看到「已拥有」标记。");
 
             try { ((IDisposable)mv).Dispose(); } catch { }
@@ -1076,7 +1092,7 @@ namespace HsCosmeticsCollector
                 Console.WriteLine($"  [dbf] 数据库记录字段: {string.Join(", ", dbfRows[0].Keys)}");
             }
 
-            string? dataDir = FindDataDir();
+            string? dataDir = FindDataDir(out _);
             if (dataDir == null)
             {
                 Console.Error.WriteLine("  [dbf] 找不到输出目录。");
@@ -1256,26 +1272,31 @@ namespace HsCosmeticsCollector
         }
 
         // 查找 hs-cosmetics-viewer/data 目录（向上查找仓库）；仓库外（便携包）运行时直接输出到 exe 所在目录
-        static string? FindDataDir()
+        // 输出根目录：仓库开发模式（向上找到本地查看器的 data 目录）或便携模式（exe 旁）。
+        // repoDevMode 区分两者：开发模式沿用英文文件名 + 固定名副本（viewer/server.mjs、
+        // scripts/dump-owned-cosmetics.mjs 按固定名读取）；便携模式只写 2 个中文名 JSON
+        // 进「采集导出」子目录（v1.4.3：此前 4 个英文文件与历史诊断文件混在 exe 文件夹，分不清用途）。
+        static string? FindDataDir(out bool repoDevMode)
         {
             var dir = new DirectoryInfo(AppContext.BaseDirectory);
             for (int i = 0; i < 10 && dir != null; i++)
             {
                 var candidate = Path.Combine(dir.FullName, "tools", "hs-cosmetics-viewer", "data");
-                if (Directory.Exists(candidate)) return candidate;
+                if (Directory.Exists(candidate)) { repoDevMode = true; return candidate; }
                 dir = dir.Parent;
             }
-            // 便携模式：直接写到 exe 旁边，用户解压后能在同文件夹找到 4 个 JSON
+            repoDevMode = false;
             return AppContext.BaseDirectory;
         }
 
         // selftest 模式：合成与真实导出同构的数据（中文名/引号/换行/emoji/null 字段），验证
-        // 「序列化 → 写文件 → latest 副本 → JSON 回读」全链路。全部写入临时目录，
-        // 不触碰真实输出（cosmetics.json / achievements.json），也不读取游戏。
+        // 「序列化 → 写文件（含中文名 + 采集导出子目录）→ latest 副本 → JSON 回读」全链路。
+        // 全部写入临时目录，不触碰真实输出（cosmetics.json / achievements.json），也不读取游戏。
         static int RunExportSelfTest()
         {
-            var dataDir = Path.Combine(Path.GetTempPath(), "hs-collector-selftest");
-            try { Directory.Delete(dataDir, true); } catch { }
+            // 与便携模式同构：文件落在「采集导出」子目录、用中文名，顺带回归验证非 ASCII 路径
+            var dataDir = Path.Combine(Path.GetTempPath(), "hs-collector-selftest", "采集导出");
+            try { Directory.Delete(Path.Combine(Path.GetTempPath(), "hs-collector-selftest"), true); } catch { }
             Directory.CreateDirectory(dataDir);
             Console.WriteLine("[selftest] 导出管线自测（合成数据，未附加游戏）");
             Console.WriteLine("  输出目录: " + dataDir);
@@ -1337,7 +1358,7 @@ namespace HsCosmeticsCollector
                 },
             };
 
-            var cosmeticsFile = Path.Combine(dataDir, $"cosmetics-{fileStamp}.json");
+            var cosmeticsFile = Path.Combine(dataDir, $"外观收藏-{fileStamp}.json");
             WriteJson(cosmeticsFile, cosmetics);
             CopyLatest(cosmeticsFile, Path.Combine(dataDir, "cosmetics.json"), "外观收藏");
 
@@ -1351,7 +1372,7 @@ namespace HsCosmeticsCollector
                 ["itemsCompleted"] = 2797,
                 ["items"] = items,
             };
-            var achFile = Path.Combine(dataDir, $"achievements-{fileStamp}.json");
+            var achFile = Path.Combine(dataDir, $"成就进度-{fileStamp}.json");
             WriteJson(achFile, payload);
             CopyLatest(achFile, Path.Combine(dataDir, "achievements.json"), "成就明细");
 
@@ -1395,12 +1416,31 @@ namespace HsCosmeticsCollector
             try
             {
                 File.Copy(srcFile, latestFile, true);
-                Console.WriteLine("  已同步最新副本: " + latestFile);
+                Console.WriteLine($"  [{label}] 已同步同内容副本: {latestFile}");
             }
             catch (Exception ex)
             {
                 Console.WriteLine($"  [warn] {label} 最新副本同步失败（不影响带时间戳文件导入）: " + ex.Message);
             }
+        }
+
+        // 采集完成后的文件清单：逐个标明哪个文件导入哪个页面。
+        // 文件名已用中文区分用途（v1.4.3），清单再点明输出目录与「导入最新一份」，
+        // 避免用户面对目录里多个历史文件时不知道选哪个。
+        static void PrintImportFiles(string dataDir, string cosmeticsFile, string? achFile, bool repoDevMode)
+        {
+            Console.WriteLine();
+            Console.WriteLine("========== 本次导出文件（网站导入用） ==========");
+            Console.WriteLine($"  导出目录: {dataDir}");
+            Console.WriteLine($"  ★ 收藏数据（导入网站「外观收藏」页）: {Path.GetFileName(cosmeticsFile)}");
+            if (achFile != null)
+                Console.WriteLine($"  ★ 成就进度（网站成就页「导入游戏内进度」用）: {Path.GetFileName(achFile)}");
+            if (repoDevMode)
+                Console.WriteLine("  说明：同目录下不带时间戳的 cosmetics.json / achievements.json 是副本，导入效果相同。");
+            else
+                Console.WriteLine("  说明：每次采集各生成一对新文件，导入最新一份即可；旧文件可自行清理。");
+            Console.WriteLine("  achievement-dbf-*.json 是 dumpachievedbf 排障诊断文件，网站导入用不到，可忽略或删除。");
+            Console.WriteLine("================================================");
         }
 
         // 采集成功后的醒目摘要（彩色 + 分隔线 + 各类数量 + 输出目录），同时填充 LastResult 供 GUI 使用

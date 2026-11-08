@@ -26,16 +26,20 @@
    输出会写入 stdout（可重定向到文件）。
 
 【产物】
-运行后，输出文件夹（界面上会显示路径，一般在本文件夹下）会多出以下文件：
-   cosmetics-YYYYMMDD-HHMMSS.json       外观收藏（带时间戳，每次采集独立文件，便于保留历史）
-   achievements-YYYYMMDD-HHMMSS.json    成就（与 cosmetics 同一时间戳成对出现）
-   以及自动同步的最新副本（方便随时导入，等价于最近一次 *-时间戳 文件）：
-   cosmetics.json       外观收藏最新一份
-   achievements.json    成就最新一份
+运行后，exe 旁会生成「采集导出」子文件夹，每次采集在里面新增 2 个 JSON
+（中文名 + 时间戳，看文件名就知道是干什么的，历史文件不会被覆盖）：
+   采集导出\外观收藏-YYYYMMDD-HHMMSS.json   卡背 / 幸运币 / 英雄皮肤
+   采集导出\成就进度-YYYYMMDD-HHMMSS.json   成就完成情况
 导入位置（需登录网站）：
-   - 「炉石收藏」页面 → 选择采集的 JSON 文件 → 导入 cosmetics-*.json（或 cosmetics.json）
-   - 「炉石成就」页面 → 导出与备份 → 导入游戏内进度 → 选择 achievements-*.json（或 achievements.json）
+   - 「炉石收藏」页面 → 选择采集的 JSON 文件 → 导入 外观收藏-*.json
+   - 「炉石成就」页面 → 导出与备份 → 导入游戏内进度 → 选择 成就进度-*.json
    成就导入只会推进进度，不会清除你已手动勾选的内容。
+其他说明：
+   - 旧版采集器导出的 cosmetics-*.json / achievements.json 仍然可以导入（网站按文件内容识别，
+     与文件名无关）；
+   - 每次采集完成后，界面日志末尾会列出「本次导出文件」清单，逐个标明哪个文件导入哪个页面；
+   - 若你之前跑过 dumpachievedbf 诊断模式，exe 旁会有 achievement-dbf-*.json，
+     那是排障用的诊断文件，网站导入用不到，可忽略或删除。
 
 【关于杀毒软件 / Windows SmartScreen 误报】
 本程序的工作原理是读取炉石传说的游戏内存（与 Firestone 插件同源的技术），
