@@ -173,7 +173,7 @@
         <template v-if="isGlobalSearch">
           正在全部收藏中搜索“{{ normalizedQuery }}”，找到 {{ filteredItems.length }} 个结果
         </template>
-        <template v-else>仅按名称搜索全部英雄皮肤、幸运币、卡背和宠物。先下载并运行收藏采集工具，再选择生成的 cosmetics-*.json（或 cosmetics.json）即可预览导入。</template>
+        <template v-else>仅按名称搜索全部英雄皮肤、幸运币、卡背和宠物。先下载并运行收藏采集工具，再选择「采集导出」文件夹里的 外观收藏-*.json 即可预览导入。</template>
       </p>
 
       <div v-if="profileLoading" class="hs-collection-empty" role="status">正在加载收藏…</div>
@@ -755,11 +755,11 @@ async function previewImport(event) {
   if (!file) return
   try {
     const payload = JSON.parse(await file.text())
-    // 收藏页只导入外观（cosmetics.json）。若误传成就文件，给出引导。
+    // 收藏页只导入外观（采集器的外观收藏文件）。若误传成就文件，给出引导。
     const isAchievementsFile = payload && !payload.cardBacks && !payload.coins && !payload.heroSkins &&
       Array.isArray(payload.items)
     if (isAchievementsFile) {
-      saveError.value = '这是成就数据（achievements-*.json）。收藏页只需 cosmetics-*.json（或 cosmetics.json）；成就明细请在本地查看器查看。'
+      saveError.value = '这是成就数据（成就进度-*.json）。收藏页只需 外观收藏-*.json；成就数据请到炉石成就页「导入游戏内进度」。'
       return
     }
     const imported = getImportedIds(payload)
@@ -783,7 +783,7 @@ async function previewImport(event) {
     }
     saveError.value = ''
   } catch {
-    saveError.value = '无法识别导入文件。请选择采集工具生成的 cosmetics-*.json（或 cosmetics.json）。'
+    saveError.value = '无法识别导入文件。请选择采集工具生成的 外观收藏-*.json。'
   }
 }
 

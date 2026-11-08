@@ -251,6 +251,21 @@
           {{ gameImportPreview.stats.stageHits }} 个完成阶段<template v-if="gameImportPreview.stats.countUpdates">，并更新 {{ gameImportPreview.stats.countUpdates }} 个成就的累计进度</template>。
         </p>
         <p v-if="gameImportPreview.stats.newlyCompleted">其中 {{ gameImportPreview.stats.newlyCompleted }} 个成就将达成全部阶段。</p>
+        <!-- 本次导入将逐个更新的成就明细：全部完成的排最前，回退冲突在下方单独警示 -->
+        <div v-if="gameImportPreview.stats.updates?.length" class="hs-import-updates">
+          <strong>将更新的成就（{{ gameImportPreview.stats.updates.length }} 个）</strong>
+          <ul>
+            <li v-for="item in gameImportPreview.stats.updates" :key="item.slug">
+              <span class="hs-import-updates-name">{{ item.name }}</span>
+              <span v-if="item.newlyCompleted" class="hs-import-updates-tag">全部完成</span>
+              <span class="hs-import-updates-detail">
+                <template v-if="item.newStages">新增完成阶段 {{ item.newStages }}/{{ item.stageTotal }}</template>
+                <template v-if="item.lowerProgress">{{ item.newStages ? '；' : '' }}累计已有 {{ item.countBefore }}，导入值 {{ item.countAfter }}（默认不回退）</template>
+                <template v-else-if="item.countAfter != null && (item.countBefore == null || item.countAfter > item.countBefore)">{{ item.newStages ? '；' : '' }}累计 {{ item.countBefore ?? 0 }} → {{ item.countAfter }}</template>
+              </span>
+            </li>
+          </ul>
+        </div>
         <p v-if="gameImportPreview.stats.nameMatched">
           其中 {{ gameImportPreview.stats.nameMatched }} 个成就暂无游戏 ID 映射，已按成就名称匹配导入。
         </p>

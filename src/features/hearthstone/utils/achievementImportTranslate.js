@@ -246,6 +246,38 @@ export function translateGameExport(payload, { idMap, achievementsBySlug, curren
     if (!mappedIds.has(item.id)) unmatchedItems += 1
   }
 
+  // 逐成就的导入增量明细（预览面板展示用，不再只列回退冲突）。
+  // 从 entries 反推：与 recordEntry 同一套「doneAfter && !doneBefore」口径，sum(newStages) === stageHits。
+  // 无任何变化的占位条目（首次导入但游戏内尚无进度）不出现在明细里。
+  const updates = Object.entries(entries).map(([slug, entry]) => {
+    const achievement = achievementsBySlug.get(slug)
+    const existing = currentProgress?.[slug]
+    const stageDoneAfter = (i) =>
+      Boolean(entry.stages?.[String(i)]) || (entry.count != null && entry.count >= achievement.stages[i].quota)
+    let newStages = 0
+    for (let i = 0; i < achievement.stages.length; i++) {
+      if (stageDoneAfter(i) && !isStageDoneInEntry(existing, achievement, i)) newStages += 1
+    }
+    const countBefore = existing?.count != null ? Math.trunc(existing.count) : null
+    const countAfter = entry.count != null ? Math.trunc(entry.count) : null
+    const lowerProgress = countBefore != null && countAfter != null && countAfter < countBefore
+    return {
+      slug,
+      name: achievement.name,
+      newStages,
+      stageTotal: achievement.stages.length,
+      countBefore,
+      countAfter,
+      newlyCompleted:
+        achievement.stages.every((_, i) => stageDoneAfter(i)) &&
+        !achievement.stages.every((_, i) => isStageDoneInEntry(existing, achievement, i)),
+      lowerProgress
+    }
+  }).filter((u) => u.newStages > 0 || u.newlyCompleted || u.lowerProgress ||
+    (u.countAfter != null && (u.countBefore == null || u.countAfter > u.countBefore)))
+  // 全部完成的排最前，其余保持匹配顺序（sort 在现代引擎中稳定）
+  updates.sort((a, b) => (b.newlyCompleted ? 1 : 0) - (a.newlyCompleted ? 1 : 0))
+
   // 采集器导出质量诊断（用于预览时区分「数据识别不了」的具体原因）：
   //   - sourceNamedItems：带可用成就名称的条目数（名称兜底匹配的原料）
   //   - legacyExport：整份文件都没有 name 字段 → v1.4.1 之前的旧版采集器导出，
@@ -271,6 +303,7 @@ export function translateGameExport(payload, { idMap, achievementsBySlug, curren
       lowerProgressUpdates,
       lowerProgressUpdateCount: lowerProgressUpdates.length,
       newlyCompleted,
+      updates,
       unmatchedItems,
       // 名称兜底匹配的统计：无 ID 映射但通过名称识别 / 无法唯一识别的个数
       nameMatched,
