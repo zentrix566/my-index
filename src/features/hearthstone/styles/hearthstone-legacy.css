@@ -260,7 +260,8 @@
 .hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-count-progress,
 .hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-related-cards,
 .hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-deck-section,
-.hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-guide-section {
+.hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-guide-section,
+.hs-page.hs-mini-mode .hs-achievement-card:not(.hs-mini-expanded) .hs-share-row {
   display: none;
 }
 
